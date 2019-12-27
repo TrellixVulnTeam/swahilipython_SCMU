@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="fc513a6e-8098-42be-8315-da8b032e054b" kpf_version="5" name="CustomPythonSW.komodoproject">
+<preference-set idref="fc513a6e-8098-42be-8315-da8b032e054b" id="project" preftype="project">
+  <long id="codeintel.scanner.max_depth">4</long>
+  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__</string>
+  <long id="prefs_version">1</long>
+</preference-set>
+</project>
