@@ -1821,7 +1821,7 @@ static PyObject *
 builtin_print(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
     static const char * const _keywords[] = {"sep", "end", "file", "flush", 0};
-    static struct _PyArg_Parser _parser = {"|OOOO:print", _keywords, 0};
+    static struct _PyArg_Parser _parser = {"|OOOO:andika", _keywords, 0};
     PyObject *sep = NULL, *end = NULL, *file = NULL, *flush = NULL;
     int i, err;
 
@@ -2725,7 +2725,7 @@ static PyMethodDef builtin_methods[] = {
     BUILTIN_HASH_METHODDEF
     BUILTIN_HEX_METHODDEF
     BUILTIN_ID_METHODDEF
-    BUILTIN_INPUT_METHODDEF
+	BUILTIN_ULIZA_METHODDEF
     BUILTIN_ISINSTANCE_METHODDEF
     BUILTIN_ISSUBCLASS_METHODDEF
     {"iter",            (PyCFunction)(void(*)(void))builtin_iter,       METH_FASTCALL, iter_doc},

@@ -389,7 +389,7 @@ validate_stmt(stmt_ty stmt)
     case For_kind:
         return validate_expr(stmt->v.For.target, Store) &&
             validate_expr(stmt->v.For.iter, Load) &&
-            validate_body(stmt->v.For.body, "For") &&
+            validate_body(stmt->v.For.body, "Kila") &&
             validate_stmts(stmt->v.For.orelse);
     case AsyncFor_kind:
         return validate_expr(stmt->v.AsyncFor.target, Store) &&
@@ -398,14 +398,14 @@ validate_stmt(stmt_ty stmt)
             validate_stmts(stmt->v.AsyncFor.orelse);
     case While_kind:
         return validate_expr(stmt->v.While.test, Load) &&
-            validate_body(stmt->v.While.body, "While") &&
+            validate_body(stmt->v.While.body, "Wakati") &&
             validate_stmts(stmt->v.While.orelse);
     case If_kind:
         return validate_expr(stmt->v.If.test, Load) &&
-            validate_body(stmt->v.If.body, "If") &&
+            validate_body(stmt->v.If.body, "Ikiwa") &&
             validate_stmts(stmt->v.If.orelse);
     case With_kind:
-        if (!validate_nonempty_seq(stmt->v.With.items, "items", "With"))
+        if (!validate_nonempty_seq(stmt->v.With.items, "items", "Ukijumuisha"))
             return 0;
         for (i = 0; i < asdl_seq_LEN(stmt->v.With.items); i++) {
             withitem_ty item = asdl_seq_GET(stmt->v.With.items, i);
@@ -413,7 +413,7 @@ validate_stmt(stmt_ty stmt)
                 (item->optional_vars && !validate_expr(item->optional_vars, Store)))
                 return 0;
         }
-        return validate_body(stmt->v.With.body, "With");
+        return validate_body(stmt->v.With.body, "Ukijumuisha");
     case AsyncWith_kind:
         if (!validate_nonempty_seq(stmt->v.AsyncWith.items, "items", "AsyncWith"))
             return 0;
@@ -435,7 +435,7 @@ validate_stmt(stmt_ty stmt)
         }
         return 1;
     case Try_kind:
-        if (!validate_body(stmt->v.Try.body, "Try"))
+        if (!validate_body(stmt->v.Try.body, "Jaribu"))
             return 0;
         if (!asdl_seq_LEN(stmt->v.Try.handlers) &&
             !asdl_seq_LEN(stmt->v.Try.finalbody)) {
@@ -462,7 +462,7 @@ validate_stmt(stmt_ty stmt)
         return validate_expr(stmt->v.Assert.test, Load) &&
             (!stmt->v.Assert.msg || validate_expr(stmt->v.Assert.msg, Load));
     case Import_kind:
-        return validate_nonempty_seq(stmt->v.Import.names, "names", "Import");
+        return validate_nonempty_seq(stmt->v.Import.names, "names", "Agiza");
     case ImportFrom_kind:
         if (stmt->v.ImportFrom.level < 0) {
             PyErr_SetString(PyExc_ValueError, "Negative ImportFrom level");
@@ -1092,7 +1092,7 @@ get_expr_name(expr_ty e)
                 return "Uongo";
             }
             if (value == Py_True) {
-                return "Ukweli";
+                return "Kweli";
             }
             if (value == Py_Ellipsis) {
                 return "Ellipsis";
@@ -3995,7 +3995,10 @@ ast_for_if_stmt(struct compiling *c, const node *n)
     }
 
     s = STR(CHILD(n, 4));
-    /* s[0] will be 'i' for isipokua, or
+    /* s[2], the third character in the string, will be
+       's' for el_s_e, or
+       'i' for el_i_f
+       In case of Swahili, s[0] will be 'i' for isipokua, or
        'l' for la_sivyo
     */
     if (s[0] == 'i' && s[1] == 's') {
@@ -4025,7 +4028,7 @@ ast_for_if_stmt(struct compiling *c, const node *n)
         /* must reference the child n_elif+1 since 'else' token is third,
            not fourth, child from the end. */
         if (TYPE(CHILD(n, (n_elif + 1))) == NAME
-            && ((STR(CHILD(n, (n_elif + 1)))[0] == 'i' && STR(CHILD(n, (n_elif + 1)))[1] == 's'))) {
+            && (STR(CHILD(n, (n_elif + 1)))[0] == 'i' && STR(CHILD(n, (n_elif + 1)))[1] == 's')) {
             has_else = 1;
             n_elif -= 3;
         }
