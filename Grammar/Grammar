@@ -113,7 +113,7 @@ assert_stmt: 'assert' test [',' test]
 
 compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
-if_stmt: 'ikiwa' namedexpr_test ':' suite ('lasivyo' namedexpr_test ':' suite)* ['isipokua' ':' suite]
+if_stmt: ('ikiwa' namedexpr_test ':' suite ('lasivyo' namedexpr_test ':' suite)* ['isipokua' ':' suite])
 while_stmt: 'wakati' namedexpr_test ':' suite ['isipokua' ':' suite]
 for_stmt: 'kila' exprlist 'kwenye' testlist ':' [TYPE_COMMENT] suite ['isipokua' ':' suite]
 try_stmt: ('jaribu' ':' suite
@@ -128,13 +128,13 @@ except_clause: 'tatizo' [test ['kama' NAME]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
 namedexpr_test: test [':=' test]
-test: or_test ['ikiwa' or_test 'isipokua' test] | lambdef
+test: (or_test ['ikiwa' or_test 'isipokua' test] | lambdef)
 test_nocond: or_test | lambdef_nocond
 lambdef: 'lambda' [varargslist] ':' test
 lambdef_nocond: 'lambda' [varargslist] ':' test_nocond
 or_test: and_test ('ama' and_test)*
 and_test: not_test ('na' not_test)*
-not_test: 'sio' not_test | comparison
+not_test: ('sio' not_test | comparison)
 comparison: expr (comp_op expr)*
 # <> isn't actually a valid comparison operator in Python. It's here for the
 # sake of a __future__ import described in PEP 401 (which really works :-)
