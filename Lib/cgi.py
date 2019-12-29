@@ -131,7 +131,7 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
             blank values are to be ignored na treated kama ikiwa they were
             sio included.
 
-        strict_parsing: flag indicating what to do with parsing errors.
+        strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
             If true, errors ashiria a ValueError exception.
     """
@@ -155,7 +155,7 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
         ctype, pdict = parse_header(environ['CONTENT_TYPE'])
         ikiwa ctype == 'multipart/form-data':
             rudisha parse_multipart(fp, pdict)
-        elikiwa ctype == 'application/x-www-form-urlencoded':
+        lasivyo ctype == 'application/x-www-form-urlencoded':
             clength = int(environ['CONTENT_LENGTH'])
             ikiwa maxlen na clength > maxlen:
                 ashiria ValueError('Maximum content length exceeded')
@@ -165,11 +165,11 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
         ikiwa 'QUERY_STRING' kwenye environ:
             ikiwa qs: qs = qs + '&'
             qs = qs + environ['QUERY_STRING']
-        elikiwa sys.argv[1:]:
+        lasivyo sys.argv[1:]:
             ikiwa qs: qs = qs + '&'
             qs = qs + sys.argv[1]
         environ['QUERY_STRING'] = qs    # XXX Shouldn't, really
-    elikiwa 'QUERY_STRING' kwenye environ:
+    lasivyo 'QUERY_STRING' kwenye environ:
         qs = environ['QUERY_STRING']
     isipokua:
         ikiwa sys.argv[1:]:
@@ -338,7 +338,7 @@ kundi FieldStorage:
             blank values are to be ignored na treated kama ikiwa they were
             sio included.
 
-        strict_parsing: flag indicating what to do with parsing errors.
+        strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
             If true, errors ashiria a ValueError exception.
 
@@ -366,7 +366,7 @@ kundi FieldStorage:
         ikiwa method == 'GET' ama method == 'HEAD':
             ikiwa 'QUERY_STRING' kwenye environ:
                 qs = environ['QUERY_STRING']
-            elikiwa sys.argv[1:]:
+            lasivyo sys.argv[1:]:
                 qs = sys.argv[1]
             isipokua:
                 qs = ""
@@ -394,7 +394,7 @@ kundi FieldStorage:
         ikiwa fp ni Tupu:
             self.fp = sys.stdin.buffer
         # self.fp.read() must rudisha bytes
-        elikiwa isinstance(fp, TextIOWrapper):
+        lasivyo isinstance(fp, TextIOWrapper):
             self.fp = fp.buffer
         isipokua:
             ikiwa sio (hasattr(fp, 'read') na hasattr(fp, 'readline')):
@@ -440,7 +440,7 @@ kundi FieldStorage:
         # but it happens to be something we don't understand.
         ikiwa 'content-type' kwenye self.headers:
             ctype, pdict = parse_header(self.headers['content-type'])
-        elikiwa self.outerboundary ama method != 'POST':
+        lasivyo self.outerboundary ama method != 'POST':
             ctype, pdict = "text/plain", {}
         isipokua:
             ctype, pdict = 'application/x-www-form-urlencoded', {}
@@ -468,7 +468,7 @@ kundi FieldStorage:
         self.done = 0
         ikiwa ctype == 'application/x-www-form-urlencoded':
             self.read_urlencoded()
-        elikiwa ctype[:10] == 'multipart/':
+        lasivyo ctype[:10] == 'multipart/':
             self.read_multi(environ, keep_blank_values, strict_parsing)
         isipokua:
             self.read_single()
@@ -500,7 +500,7 @@ kundi FieldStorage:
             self.file.seek(0)
             value = self.file.read()
             self.file.seek(0)
-        elikiwa self.list ni sio Tupu:
+        lasivyo self.list ni sio Tupu:
             value = self.list
         isipokua:
             value = Tupu
@@ -643,7 +643,7 @@ kundi FieldStorage:
                 toa headers['content-length']
 
             limit = Tupu ikiwa self.limit ni Tupu \
-                else self.limit - self.bytes_read
+                isipokua self.limit - self.bytes_read
             part = klass(self.fp, headers, ib, environ, keep_blank_values,
                          strict_parsing, limit,
                          self.encoding, self.errors, max_num_fields)
@@ -759,11 +759,11 @@ kundi FieldStorage:
                 delim = b"\r\n"
                 line = line[:-2]
                 last_line_lfend = Kweli
-            elikiwa line.endswith(b"\n"):
+            lasivyo line.endswith(b"\n"):
                 delim = b"\n"
                 line = line[:-1]
                 last_line_lfend = Kweli
-            elikiwa line.endswith(b"\r"):
+            lasivyo line.endswith(b"\r"):
                 # We may interrupt \r\n sequences ikiwa they span the 2**16
                 # byte boundary
                 delim = b"\r"
@@ -841,7 +841,7 @@ eleza test(environ=os.environ):
     andika()
     sys.stderr = sys.stdout
     jaribu:
-        form = FieldStorage()   # Replace with other classes to test those
+        form = FieldStorage()   # Replace ukijumuisha other classes to test those
         print_directory()
         print_arguments()
         print_form(form)
@@ -856,12 +856,12 @@ eleza test(environ=os.environ):
     except:
         print_exception()
 
-    andika("<H1>Second try with a small maxlen...</H1>")
+    andika("<H1>Second try ukijumuisha a small maxlen...</H1>")
 
     global maxlen
     maxlen = 50
     jaribu:
-        form = FieldStorage()   # Replace with other classes to test those
+        form = FieldStorage()   # Replace ukijumuisha other classes to test those
         print_directory()
         print_arguments()
         print_form(form)

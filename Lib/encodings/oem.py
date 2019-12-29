@@ -12,10 +12,10 @@ agiza codecs
 encode = oem_encode
 
 eleza decode(input, errors='strict'):
-    rudisha oem_decode(input, errors, True)
+    rudisha oem_decode(input, errors, Kweli)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha oem_encode(input, self.errors)[0]
 
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):

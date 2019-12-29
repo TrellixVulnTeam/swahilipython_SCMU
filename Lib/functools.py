@@ -1,4 +1,4 @@
-"""functools.py - Tools kila working with functions na callable objects
+"""functools.py - Tools kila working ukijumuisha functions na callable objects
 """
 # Python module wrapper kila _functools C module
 # to allow utilities written kwenye Python to be added
@@ -42,7 +42,7 @@ eleza update_wrapper(wrapper,
        kutoka the wrapped function to the wrapper function (defaults to
        functools.WRAPPER_ASSIGNMENTS)
        updated ni a tuple naming the attributes of the wrapper that
-       are updated with the corresponding attribute kutoka the wrapped
+       are updated ukijumuisha the corresponding attribute kutoka the wrapped
        function (defaults to functools.WRAPPER_UPDATES)
     """
     kila attr kwenye assigned:
@@ -65,7 +65,7 @@ eleza wraps(wrapped,
           updated = WRAPPER_UPDATES):
     """Decorator factory to apply update_wrapper() to a wrapper function
 
-       Returns a decorator that invokes update_wrapper() with the decorated
+       Returns a decorator that invokes update_wrapper() ukijumuisha the decorated
        function kama the wrapper argument na the arguments to wraps() kama the
        remaining arguments. Default arguments are kama kila update_wrapper().
        This ni a convenience function to simplify applying partial() to
@@ -246,7 +246,7 @@ eleza reduce(function, sequence, initial=_initial_missing):
         jaribu:
             value = next(it)
         tatizo StopIteration:
-            ashiria TypeError("reduce() of empty sequence with no initial value") kutoka Tupu
+            ashiria TypeError("reduce() of empty sequence ukijumuisha no initial value") kutoka Tupu
     isipokua:
         value = initial
 
@@ -267,7 +267,7 @@ tatizo ImportError:
 
 # Purely functional, no descriptor behaviour
 kundi partial:
-    """New function with partial application of the given arguments
+    """New function ukijumuisha partial application of the given arguments
     na keywords.
     """
 
@@ -321,7 +321,7 @@ kundi partial:
         args = tuple(args) # just kwenye case it's a subclass
         ikiwa kwds ni Tupu:
             kwds = {}
-        elikiwa type(kwds) ni sio dict: # XXX does it need to be *exactly* dict?
+        lasivyo type(kwds) ni sio dict: # XXX does it need to be *exactly* dict?
             kwds = dict(kwds)
         ikiwa namespace ni Tupu:
             namespace = {}
@@ -338,7 +338,7 @@ tatizo ImportError:
 
 # Descriptor version
 kundi partialmethod(object):
-    """Method descriptor with partial application of the given arguments
+    """Method descriptor ukijumuisha partial application of the given arguments
     na keywords.
 
     Supports wrapping existing descriptors na handles non-descriptor
@@ -348,10 +348,10 @@ kundi partialmethod(object):
     eleza __init__(*args, **keywords):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor '__init__' of partialmethod "
                             "needs an argument")
-        elikiwa 'func' kwenye keywords:
+        lasivyo 'func' kwenye keywords:
             func = keywords.pop('func')
             self, *args = args
             agiza warnings
@@ -479,7 +479,7 @@ eleza _make_key(args, kwds, typed,
         key += tuple(type(v) kila v kwenye args)
         ikiwa kwds:
             key += tuple(type(v) kila v kwenye kwds.values())
-    elikiwa len(key) == 1 na type(key[0]) kwenye fasttypes:
+    lasivyo len(key) == 1 na type(key[0]) kwenye fasttypes:
         rudisha key[0]
     rudisha _HashedSeq(key)
 
@@ -496,8 +496,8 @@ eleza lru_cache(maxsize=128, typed=Uongo):
     Arguments to the cached function must be hashable.
 
     View the cache statistics named tuple (hits, misses, maxsize, currsize)
-    with f.cache_info().  Clear the cache na statistics with f.cache_clear().
-    Access the underlying function with f.__wrapped__.
+    ukijumuisha f.cache_info().  Clear the cache na statistics ukijumuisha f.cache_clear().
+    Access the underlying function ukijumuisha f.__wrapped__.
 
     See:  http://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
 
@@ -512,12 +512,12 @@ eleza lru_cache(maxsize=128, typed=Uongo):
         # Negative maxsize ni treated kama 0
         ikiwa maxsize < 0:
             maxsize = 0
-    elikiwa callable(maxsize) na isinstance(typed, bool):
+    lasivyo callable(maxsize) na isinstance(typed, bool):
         # The user_function was pitaed kwenye directly via the maxsize argument
         user_function, maxsize = maxsize, 128
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
         rudisha update_wrapper(wrapper, user_function)
-    elikiwa maxsize ni sio Tupu:
+    lasivyo maxsize ni sio Tupu:
         ashiria TypeError(
             'Expected first argument to be an integer, a callable, ama Tupu')
 
@@ -551,7 +551,7 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             result = user_function(*args, **kwds)
             rudisha result
 
-    elikiwa maxsize ni Tupu:
+    lasivyo maxsize ni Tupu:
 
         eleza wrapper(*args, **kwds):
             # Simple caching without ordering ama size limit
@@ -572,7 +572,7 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             # Size limited caching that tracks accesses by recency
             nonlocal root, hits, misses, full
             key = make_key(args, kwds, typed)
-            with lock:
+            ukijumuisha lock:
                 link = cache_get(key)
                 ikiwa link ni sio Tupu:
                     # Move the link to the front of the circular queue
@@ -587,14 +587,14 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     rudisha result
                 misses += 1
             result = user_function(*args, **kwds)
-            with lock:
+            ukijumuisha lock:
                 ikiwa key kwenye cache:
                     # Getting here means that this same key was added to the
                     # cache wakati the lock was released.  Since the link
                     # update ni already done, we need only rudisha the
                     # computed result na update the count of misses.
                     pita
-                elikiwa full:
+                lasivyo full:
                     # Use the old root to store the new key na result.
                     oldroot = root
                     oldroot[KEY] = key
@@ -627,13 +627,13 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
     eleza cache_info():
         """Report cache statistics"""
-        with lock:
+        ukijumuisha lock:
             rudisha _CacheInfo(hits, misses, maxsize, cache_len())
 
     eleza cache_clear():
         """Clear the cache na cache statistics"""
         nonlocal hits, misses, full
-        with lock:
+        ukijumuisha lock:
             cache.clear()
             root[:] = [root, root, Tupu, Tupu]
             hits = misses = 0
@@ -703,7 +703,7 @@ eleza _c3_mro(cls, abcs=Tupu):
             koma   # Bases up to the last explicit ABC are considered first.
     isipokua:
         boundary = 0
-    abcs = list(abcs) ikiwa abcs else []
+    abcs = list(abcs) ikiwa abcs isipokua []
     explicit_bases = list(cls.__bases__[:boundary])
     abstract_bases = []
     other_bases = list(cls.__bases__[boundary:])
@@ -728,7 +728,7 @@ eleza _c3_mro(cls, abcs=Tupu):
 eleza _compose_mro(cls, types):
     """Calculates the method resolution order kila a given kundi *cls*.
 
-    Includes relevant abstract base classes (with their respective bases) kutoka
+    Includes relevant abstract base classes (ukijumuisha their respective bases) kutoka
     the *types* iterable. Uses a modified C3 linearization algorithm.
 
     """
@@ -758,7 +758,7 @@ eleza _compose_mro(cls, types):
         ikiwa sio found:
             mro.append(typ)
             endelea
-        # Favor subclasses with the biggest number of useful bases
+        # Favor subclasses ukijumuisha the biggest number of useful bases
         found.sort(key=len, reverse=Kweli)
         kila sub kwenye found:
             kila subcls kwenye sub:
@@ -937,7 +937,7 @@ kundi cached_property:
     eleza __set_name__(self, owner, name):
         ikiwa self.attrname ni Tupu:
             self.attrname = name
-        elikiwa name != self.attrname:
+        lasivyo name != self.attrname:
             ashiria TypeError(
                 "Cannot assign the same cached_property to two different names "
                 f"({self.attrname!r} na {name!r})."
@@ -959,7 +959,7 @@ kundi cached_property:
             ashiria TypeError(msg) kutoka Tupu
         val = cache.get(self.attrname, _NOT_FOUND)
         ikiwa val ni _NOT_FOUND:
-            with self.lock:
+            ukijumuisha self.lock:
                 # check ikiwa another thread filled cache wakati we awaited lock
                 val = cache.get(self.attrname, _NOT_FOUND)
                 ikiwa val ni _NOT_FOUND:

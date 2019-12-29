@@ -69,7 +69,7 @@ kundi Test_Csv(unittest.TestCase):
         self._test_default_attrs(csv.writer, StringIO())
 
     eleza _test_kw_attrs(self, ctor, *args):
-        # Now try with alternate options
+        # Now try ukijumuisha alternate options
         kwargs = dict(delimiter=':', doublequote=Uongo, escapechar='\\',
                       lineterminator='\r', quotechar='*',
                       quoting=csv.QUOTE_NONE, skipinitialspace=Kweli,
@@ -91,7 +91,7 @@ kundi Test_Csv(unittest.TestCase):
         self._test_kw_attrs(csv.writer, StringIO())
 
     eleza _test_dialect_attrs(self, ctor, *args):
-        # Now try with dialect-derived options
+        # Now try ukijumuisha dialect-derived options
         kundi dialect:
             delimiter='-'
             doublequote=Uongo
@@ -120,7 +120,7 @@ kundi Test_Csv(unittest.TestCase):
 
 
     eleza _write_test(self, fields, expect, **kwargs):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, **kwargs)
             writer.writerow(fields)
             fileobj.seek(0)
@@ -128,9 +128,9 @@ kundi Test_Csv(unittest.TestCase):
                              expect + writer.dialect.lineterminator)
 
     eleza _write_error_test(self, exc, fields, **kwargs):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, **kwargs)
-            with self.assertRaises(exc):
+            ukijumuisha self.assertRaises(exc):
                 writer.writerow(fields)
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), '')
@@ -204,7 +204,7 @@ kundi Test_Csv(unittest.TestCase):
         writer = csv.writer(BrokenFile())
         self.assertRaises(OSError, writer.writerows, [['a']])
 
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             self.assertRaises(TypeError, writer.writerows, Tupu)
             writer.writerows([['a', 'b'], ['c', 'd']])
@@ -212,19 +212,19 @@ kundi Test_Csv(unittest.TestCase):
             self.assertEqual(fileobj.read(), "a,b\r\nc,d\r\n")
 
     eleza test_writerows_with_none(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             writer.writerows([['a', Tupu], [Tupu, 'd']])
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), "a,\r\n,d\r\n")
 
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             writer.writerows([[Tupu], ['a']])
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), '""\r\na\r\n')
 
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             writer.writerows([['a'], [Tupu]])
             fileobj.seek(0)
@@ -235,7 +235,7 @@ kundi Test_Csv(unittest.TestCase):
         agiza _testcapi
 
         c = _testcapi.unicode_legacy_string('a')
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             writer.writerows([[c]])
             fileobj.seek(0)
@@ -332,7 +332,7 @@ kundi Test_Csv(unittest.TestCase):
         self.assertEqual(r.line_num, 3)
 
     eleza test_roundtrip_quoteed_newlines(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj)
             self.assertRaises(TypeError, writer.writerows, Tupu)
             rows = [['a\nb','b'],['c','x\r\nd']]
@@ -342,7 +342,7 @@ kundi Test_Csv(unittest.TestCase):
                 self.assertEqual(row, rows[i])
 
     eleza test_roundtrip_escaped_unquoted_newlines(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj,quoting=csv.QUOTE_NONE,escapechar="\\")
             rows = [['a\nb','b'],['c','x\r\nd']]
             writer.writerows(rows)
@@ -398,7 +398,7 @@ kundi TestDialectRegistry(unittest.TestCase):
             quoting = csv.QUOTE_NONE
             escapechar = "\\"
 
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("abc def\nc1ccccc1 benzene\n")
             fileobj.seek(0)
             reader = csv.reader(fileobj, dialect=space())
@@ -407,7 +407,7 @@ kundi TestDialectRegistry(unittest.TestCase):
 
     eleza compare_dialect_123(self, expected, *writeargs, **kwwriteargs):
 
-        with TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
 
             writer = csv.writer(fileobj, *writeargs, **kwwriteargs)
             writer.writerow([1,2,3])
@@ -459,7 +459,7 @@ kundi TestDialectRegistry(unittest.TestCase):
 
 kundi TestCsvBase(unittest.TestCase):
     eleza readerAssertEqual(self, input, expected_result):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             fileobj.write(input)
             fileobj.seek(0)
             reader = csv.reader(fileobj, dialect = self.dialect)
@@ -467,7 +467,7 @@ kundi TestCsvBase(unittest.TestCase):
             self.assertEqual(fields, expected_result)
 
     eleza writerAssertEqual(self, input, expected_result):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, dialect = self.dialect)
             writer.writerows(input)
             fileobj.seek(0)
@@ -609,13 +609,13 @@ kundi TestDictFields(unittest.TestCase):
     ### "long" means the row ni longer than the number of fieldnames
     ### "short" means there are fewer elements kwenye the row than fieldnames
     eleza test_writeheader_rudisha_value(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             writeheader_rudisha_value = writer.writeheader()
             self.assertEqual(writeheader_rudisha_value, 10)
 
     eleza test_write_simple_dict(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             writer.writeheader()
             fileobj.seek(0)
@@ -640,10 +640,10 @@ kundi TestDictFields(unittest.TestCase):
         self.assertRaises(TypeError, csv.DictWriter, fileobj)
 
     eleza test_write_fields_not_in_fieldnames(self):
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             # Of special note ni the non-string key (issue 19449)
-            with self.assertRaises(ValueError) kama cx:
+            ukijumuisha self.assertRaises(ValueError) kama cx:
                 writer.writerow({"f4": 10, "f2": "spam", 1: "abc"})
             exception = str(cx.exception)
             self.assertIn("fieldnames", exception)
@@ -670,7 +670,7 @@ kundi TestDictFields(unittest.TestCase):
         self.assertEqual(fileobj.getvalue(), "1,2\r\n")
 
     eleza test_read_dict_fields(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("1,2,abc\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj,
@@ -678,7 +678,7 @@ kundi TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": '1', "f2": '2', "f3": 'abc'})
 
     eleza test_read_dict_no_fieldnames(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj)
@@ -688,7 +688,7 @@ kundi TestDictFields(unittest.TestCase):
     # Two test cases to make sure existing ways of implicitly setting
     # fieldnames endelea to work.  Both arise kutoka discussion kwenye issue3436.
     eleza test_read_dict_fieldnames_kutoka_file(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj,
@@ -698,7 +698,7 @@ kundi TestDictFields(unittest.TestCase):
 
     eleza test_read_dict_fieldnames_chain(self):
         agiza itertools
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj)
@@ -708,7 +708,7 @@ kundi TestDictFields(unittest.TestCase):
                 self.assertEqual(row, {"f1": '1', "f2": '2', "f3": 'abc'})
 
     eleza test_read_long(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj,
@@ -717,7 +717,7 @@ kundi TestDictFields(unittest.TestCase):
                                              Tupu: ["abc", "4", "5", "6"]})
 
     eleza test_read_long_with_rest(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj,
@@ -726,7 +726,7 @@ kundi TestDictFields(unittest.TestCase):
                                              "_rest": ["abc", "4", "5", "6"]})
 
     eleza test_read_long_with_rest_no_fieldnames(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("f1,f2\r\n1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj, restkey="_rest")
@@ -735,7 +735,7 @@ kundi TestDictFields(unittest.TestCase):
                                              "_rest": ["abc", "4", "5", "6"]})
 
     eleza test_read_short(self):
-        with TemporaryFile("w+") kama fileobj:
+        ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n1,2,abc\r\n")
             fileobj.seek(0)
             reader = csv.DictReader(fileobj,
@@ -784,7 +784,7 @@ kundi TestArrayWrites(unittest.TestCase):
         contents = [(20-i) kila i kwenye range(20)]
         a = array.array('i', contents)
 
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, dialect="excel")
             writer.writerow(a)
             expected = ",".join([str(i) kila i kwenye a])+"\r\n"
@@ -795,7 +795,7 @@ kundi TestArrayWrites(unittest.TestCase):
         agiza array
         contents = [(20-i)*0.1 kila i kwenye range(20)]
         a = array.array('d', contents)
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, dialect="excel")
             writer.writerow(a)
             expected = ",".join([str(i) kila i kwenye a])+"\r\n"
@@ -806,7 +806,7 @@ kundi TestArrayWrites(unittest.TestCase):
         agiza array
         contents = [(20-i)*0.1 kila i kwenye range(20)]
         a = array.array('f', contents)
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, dialect="excel")
             writer.writerow(a)
             expected = ",".join([str(i) kila i kwenye a])+"\r\n"
@@ -817,7 +817,7 @@ kundi TestArrayWrites(unittest.TestCase):
         agiza array, string
         a = array.array('u', string.ascii_letters)
 
-        with TemporaryFile("w+", newline='') kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='') kama fileobj:
             writer = csv.writer(fileobj, dialect="excel")
             writer.writerow(a)
             expected = ",".join(a)+"\r\n"
@@ -848,13 +848,13 @@ kundi TestDialectValidity(unittest.TestCase):
         self.assertKweli(d.doublequote)
 
         mydialect.quotechar = "''"
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"quotechar" must be a 1-character string')
 
         mydialect.quotechar = 4
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"quotechar" must be string, sio int')
@@ -871,25 +871,25 @@ kundi TestDialectValidity(unittest.TestCase):
         self.assertEqual(d.delimiter, ";")
 
         mydialect.delimiter = ":::"
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"delimiter" must be a 1-character string')
 
         mydialect.delimiter = ""
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"delimiter" must be a 1-character string')
 
         mydialect.delimiter = b","
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"delimiter" must be string, sio bytes')
 
         mydialect.delimiter = 4
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"delimiter" must be string, sio int')
@@ -910,7 +910,7 @@ kundi TestDialectValidity(unittest.TestCase):
         self.assertEqual(d.lineterminator, ":::")
 
         mydialect.lineterminator = 4
-        with self.assertRaises(csv.Error) kama cm:
+        ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
                          '"lineterminator" must be a string')
@@ -923,7 +923,7 @@ kundi TestDialectValidity(unittest.TestCase):
             d = mydialect()
 
         kila field_name kwenye ("delimiter", "escapechar", "quotechar"):
-            with self.subTest(field_name=field_name):
+            ukijumuisha self.subTest(field_name=field_name):
                 self.assertRaises(csv.Error, create_invalid, field_name, "")
                 self.assertRaises(csv.Error, create_invalid, field_name, "abc")
                 self.assertRaises(csv.Error, create_invalid, field_name, b'x')
@@ -993,7 +993,7 @@ Stonecutters Seafood na Chop House+ Lemont+ IL+ 12/19/02+ Week Back
     eleza test_guess_quote_and_delimiter(self):
         sniffer = csv.Sniffer()
         kila header kwenye (";'123;4';", "'123;4';", ";'123;4'", "'123;4'"):
-            with self.subTest(header):
+            ukijumuisha self.subTest(header):
                 dialect = sniffer.sniff(header, ",;")
                 self.assertEqual(dialect.delimiter, ';')
                 self.assertEqual(dialect.quotechar, "'")
@@ -1131,7 +1131,7 @@ kundi TestUnicode(unittest.TestCase):
              "François Pinard"]
 
     eleza test_unicode_read(self):
-        with TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
             fileobj.write(",".join(self.names) + "\r\n")
             fileobj.seek(0)
             reader = csv.reader(fileobj)
@@ -1139,7 +1139,7 @@ kundi TestUnicode(unittest.TestCase):
 
 
     eleza test_unicode_write(self):
-        with TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
+        ukijumuisha TemporaryFile("w+", newline='', encoding="utf-8") kama fileobj:
             writer = csv.writer(fileobj)
             writer.writerow(self.names)
             expected = ",".join(self.names)+"\r\n"
@@ -1151,7 +1151,7 @@ kundi KeyOrderingTest(unittest.TestCase):
     eleza test_ordering_for_the_dict_reader_and_writer(self):
         resultset = set()
         kila keys kwenye permutations("abcde"):
-            with TemporaryFile('w+', newline='', encoding="utf-8") kama fileobject:
+            ukijumuisha TemporaryFile('w+', newline='', encoding="utf-8") kama fileobject:
                 dw = csv.DictWriter(fileobject, keys)
                 dw.writeheader()
                 fileobject.seek(0)

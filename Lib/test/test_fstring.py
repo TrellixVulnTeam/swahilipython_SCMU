@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# There are tests here with unicode string literals and
+# There are tests here ukijumuisha unicode string literals and
 # identifiers. There's a code kwenye ast.c that was added because of a
-# failure with a non-ascii-only expression.  So, I have tests for
+# failure ukijumuisha a non-ascii-only expression.  So, I have tests for
 # that.  There are workarounds that would let me run tests kila that
 # code without unicode identifiers na strings, but just using them
 # directly seems like the easiest na therefore safest thing to do.
@@ -15,8 +15,8 @@ agiza unittest
 a_global = 'global variable'
 
 # You could argue that I'm too strict kwenye looking kila specific error
-#  values with assertRaisesRegex, but without it it's way too easy to
-#  make a syntax error kwenye the test strings. Especially with all of the
+#  values ukijumuisha assertRaisesRegex, but without it it's way too easy to
+#  make a syntax error kwenye the test strings. Especially ukijumuisha all of the
 #  triple quotes, raw strings, backslashes, etc. I think it's a
 #  worthwakati tradeoff. When I switched to this method, I found many
 #  examples where I wasn't testing what I thought I was.
@@ -24,8 +24,8 @@ a_global = 'global variable'
 kundi TestCase(unittest.TestCase):
     eleza assertAllRaise(self, exception_type, regex, error_strings):
         kila str kwenye error_strings:
-            with self.subTest(str=str):
-                with self.assertRaisesRegex(exception_type, regex):
+            ukijumuisha self.subTest(str=str):
+                ukijumuisha self.assertRaisesRegex(exception_type, regex):
                     eval(str)
 
     eleza test__format__lookup(self):
@@ -338,7 +338,7 @@ non-agizaant content
         self.assertIsTupu(g.__doc__)
 
     eleza test_literal_eval(self):
-        with self.assertRaisesRegex(ValueError, 'malformed node ama string'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'malformed node ama string'):
             ast.literal_eval("f'x'")
 
     eleza test_ast_compile_time_concat(self):
@@ -476,7 +476,7 @@ non-agizaant content
                              ])
 
     eleza test_many_expressions(self):
-        # Create a string with many expressions kwenye it. Note that
+        # Create a string ukijumuisha many expressions kwenye it. Note that
         #  because we have a space kwenye here kama a literal, we're actually
         #  going to use twice kama many ast nodes: one kila each literal
         #  plus one kila each expression.
@@ -649,7 +649,7 @@ non-agizaant content
         self.assertEqual(f'2\x203', '2 3')
         self.assertEqual(f'\x203', ' 3')
 
-        with self.assertWarns(DeprecationWarning):  # invalid escape sequence
+        ukijumuisha self.assertWarns(DeprecationWarning):  # invalid escape sequence
             value = eval(r"f'\{6*7}'")
         self.assertEqual(value, '\\42')
         self.assertEqual(f'\\{6*7}', '\\42')
@@ -785,7 +785,7 @@ non-agizaant content
         self.assertEqual(f'v:{value}', 'v:123')
 
     eleza test_missing_variable(self):
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             f'v:{value}'
 
     eleza test_missing_format_spec(self):
@@ -1082,18 +1082,18 @@ non-agizaant content
         x = 9
         self.assertEqual(f'{3*x+15=}', '3*x+15=42')
 
-        # There ni code kwenye ast.c that deals with non-ascii expression values.  So,
+        # There ni code kwenye ast.c that deals ukijumuisha non-ascii expression values.  So,
         # use a unicode identifier to trigger that.
         tenπ = 31.4
         self.assertEqual(f'{tenπ=:.2f}', 'tenπ=31.40')
 
-        # Also test with Unicode kwenye non-identifiers.
+        # Also test ukijumuisha Unicode kwenye non-identifiers.
         self.assertEqual(f'{"Σ"=}', '"Σ"=\'Σ\'')
 
         # Make sure nested fstrings still work.
         self.assertEqual(f'{f"{3.1415=:.1f}":*^20}', '*****3.1415=3.1*****')
 
-        # Make sure text before na after an expression with = works
+        # Make sure text before na after an expression ukijumuisha = works
         # correctly.
         pi = 'π'
         self.assertEqual(f'alpha α {pi=} ω omega', "alpha α pi='π' ω omega")
@@ -1117,7 +1117,7 @@ non-agizaant content
         self.assertEqual(f'{"="}', '=')
 
         x = 20
-        # This isn't an assignment expression, it's 'x', with a format
+        # This isn't an assignment expression, it's 'x', ukijumuisha a format
         # spec of '=10'.  See test_walrus: you need to use parens.
         self.assertEqual(f'{x:=10}', '        20')
 
@@ -1170,7 +1170,7 @@ non-agizaant content
 
     eleza test_walrus(self):
         x = 20
-        # This isn't an assignment expression, it's 'x', with a format
+        # This isn't an assignment expression, it's 'x', ukijumuisha a format
         # spec of '=10'.
         self.assertEqual(f'{x:=10}', '        20')
 

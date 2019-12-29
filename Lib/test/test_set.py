@@ -896,9 +896,9 @@ kundi TestBasicOps:
                              "%s != %s" % (self.set, copy))
 
     eleza test_issue_37219(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             set().difference(123)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             set().difference_update(123)
 
 #------------------------------------------------------------------------------
@@ -1044,7 +1044,7 @@ kundi TestSetOfSets(unittest.TestCase):
         outer = set([inner])
         element = outer.pop()
         self.assertEqual(type(element), frozenset)
-        outer.add(inner)        # Rebuild set of sets with .add method
+        outer.add(inner)        # Rebuild set of sets ukijumuisha .add method
         outer.remove(inner)
         self.assertEqual(outer, set())   # Verify that remove worked
         outer.discard(inner)    # Absence of KeyError indicates working fine
@@ -1649,7 +1649,7 @@ kundi I:
         rudisha v
 
 kundi Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined ukijumuisha a generator'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -1819,7 +1819,7 @@ eleza cube(n):
 
 eleza linegraph(G):
     """Graph, the vertices of which are edges of G,
-    with two vertices being adjacent iff the corresponding
+    ukijumuisha two vertices being adjacent iff the corresponding
     edges share a vertex."""
     L = {}
     kila x kwenye G:

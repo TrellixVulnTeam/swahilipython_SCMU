@@ -181,7 +181,7 @@ eleza start_debugger(rpchandler, gui_adap_oid):
 
     Start the subprocess side of the split debugger na set up that side of the
     RPC link by instantiating the GUIProxy, Idb debugger, na IdbAdapter
-    objects na linking them together.  Register the IdbAdapter with the
+    objects na linking them together.  Register the IdbAdapter ukijumuisha the
     RPCServer to handle RPC requests kutoka the split debugger GUI via the
     IdbProxy.
 
@@ -350,7 +350,7 @@ eleza start_remote_debugger(rpcclt, pyshell):
     up the Idle side of the split debugger by instantiating the IdbProxy,
     debugger GUI, na debugger GUIAdapter objects na linking them together.
 
-    Register the GUIAdapter with the RPCClient to handle debugger GUI
+    Register the GUIAdapter ukijumuisha the RPCClient to handle debugger GUI
     interaction requests coming kutoka the subprocess debugger via the GUIProxy.
 
     The IdbAdapter will pita execution na environment requests coming kutoka the
@@ -385,7 +385,7 @@ eleza close_subprocess_debugger(rpcclt):
 eleza restart_subprocess_debugger(rpcclt):
     idb_adap_oid_ret = rpcclt.remotecall("exec", "start_the_debugger",\
                                          (gui_adap_oid,), {})
-    assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted with different oid'
+    assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted ukijumuisha different oid'
 
 
 ikiwa __name__ == "__main__":

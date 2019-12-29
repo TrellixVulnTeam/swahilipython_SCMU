@@ -86,8 +86,8 @@ eleza info_komapoints():
             info = 'BpNum Temp Enb Hits Ignore Where\n'
             header_added = Kweli
 
-        disp = 'yes ' ikiwa bp.temporary else 'no  '
-        enab = 'yes' ikiwa bp.enabled else 'no '
+        disp = 'yes ' ikiwa bp.temporary isipokua 'no  '
+        enab = 'yes' ikiwa bp.enabled isipokua 'no '
         info += ('%-5d %s %s %-4d %-6d at %s:%d' %
                     (bp.number, disp, enab, bp.hits, bp.ignore,
                      os.path.basename(bp.file), bp.line))
@@ -168,7 +168,7 @@ kundi Tracer(Bdb):
         self.expect_set = expect_set
         self.dry_run = dry_run
         self.header = ('Dry-run results kila %s:' % test_case if
-                       test_case ni sio Tupu else Tupu)
+                       test_case ni sio Tupu isipokua Tupu)
         self.init_test()
 
     eleza init_test(self):
@@ -198,7 +198,7 @@ kundi Tracer(Bdb):
 
     eleza user_call(self, frame, argument_list):
         # Adopt the same behavior kama pdb and, kama a side effect, skip also the
-        # first 'call' event when the Tracer ni started with Tracer.runcall()
+        # first 'call' event when the Tracer ni started ukijumuisha Tracer.runcall()
         # which may be possibly considered kama a bug.
         ikiwa sio self.stop_here(frame):
             rudisha
@@ -248,7 +248,7 @@ kundi Tracer(Bdb):
         self.set_tuple = self.set_list.pop(0)
 
     eleza process_event(self, event, frame, *args):
-        # Call get_stack() to enable walking the stack with set_up() and
+        # Call get_stack() to enable walking the stack ukijumuisha set_up() and
         # set_down().
         tb = Tupu
         ikiwa event == 'exception':
@@ -274,7 +274,7 @@ kundi Tracer(Bdb):
 
         ikiwa event kwenye ('call', 'rudisha'):
             self.check_expect_max_size(3)
-        elikiwa len(self.expect) > 3:
+        lasivyo len(self.expect) > 3:
             ikiwa event == 'line':
                 bps, temporaries = self.expect[3]
                 bpnums = sorted(bps.keys())
@@ -291,7 +291,7 @@ kundi Tracer(Bdb):
                 self.check_equal(sorted(temporaries), self.komapoint_hits[1],
                     'Wrong temporary komapoints')
 
-            elikiwa event == 'exception':
+            lasivyo event == 'exception':
                 ikiwa sio isinstance(self.exc_info[1], self.expect[3]):
                     self.ashiria_not_expected(
                         "Wrong exception at expect_set item %d, got '%s'" %
@@ -322,12 +322,12 @@ kundi Tracer(Bdb):
         fname = self.canonic(self.frame.f_code.co_filename)
         lineno = self.frame.f_lineno
         rudisha ((lineno - self.frame.f_code.co_firstlineno + 1)
-            ikiwa fname == self.canonic(__file__) else lineno)
+            ikiwa fname == self.canonic(__file__) isipokua lineno)
 
     eleza lno_rel2abs(self, fname, lineno):
         rudisha (self.frame.f_code.co_firstlineno + lineno - 1
             ikiwa (lineno na self.canonic(fname) == self.canonic(__file__))
-            else lineno)
+            isipokua lineno)
 
     eleza get_state(self):
         lineno = self.lno_abs2rel()
@@ -342,7 +342,7 @@ kundi Tracer(Bdb):
             bps += '}'
             bps = '(' + bps + ', ' + str(self.komapoint_hits[1]) + ')'
             state += ', ' + bps
-        elikiwa self.event == 'exception':
+        lasivyo self.event == 'exception':
             state += ', ' + self.exc_info[0].__name__
         state += '), '
         rudisha state.ljust(32) + str(self.set_tuple) + ','
@@ -361,17 +361,17 @@ kundi Tracer(Bdb):
 
     eleza next_set_method(self):
         set_type = self.set_tuple[0]
-        args = self.set_tuple[1] ikiwa len(self.set_tuple) == 2 else Tupu
+        args = self.set_tuple[1] ikiwa len(self.set_tuple) == 2 isipokua Tupu
         set_method = getattr(self, 'set_' + set_type)
 
         # The following set methods give back control to the tracer.
         ikiwa set_type kwenye ('step', 'endelea', 'quit'):
             set_method()
             rudisha
-        elikiwa set_type kwenye ('next', 'rudisha'):
+        lasivyo set_type kwenye ('next', 'rudisha'):
             set_method(self.frame)
             rudisha
-        elikiwa set_type == 'until':
+        lasivyo set_type == 'until':
             lineno = Tupu
             ikiwa args:
                 lineno = self.lno_rel2abs(self.frame.f_code.co_filename,
@@ -389,9 +389,9 @@ kundi Tracer(Bdb):
                 args = [fname, lineno]
                 args.extend(remain)
                 set_method(*args)
-            elikiwa set_type kwenye ('ignore', 'enable', 'disable'):
+            lasivyo set_type kwenye ('ignore', 'enable', 'disable'):
                 set_method(*args)
-            elikiwa set_type kwenye ('up', 'down'):
+            lasivyo set_type kwenye ('up', 'down'):
                 set_method()
 
             # Process the next expect_set item.
@@ -410,7 +410,7 @@ kundi Tracer(Bdb):
                                  self.set_tuple)
 
 kundi TracerRun():
-    """Provide a context kila running a Tracer instance with a test case."""
+    """Provide a context kila running a Tracer instance ukijumuisha a test case."""
 
     eleza __init__(self, test_case, skip=Tupu):
         self.test_case = test_case
@@ -447,7 +447,7 @@ kundi TracerRun():
                 isipokua:
                     self.test_case.fail(err_msg)
             isipokua:
-                assert Uongo, 'BdbNotExpectedError with empty args'
+                assert Uongo, 'BdbNotExpectedError ukijumuisha empty args'
 
         ikiwa not_empty:
             ikiwa self.dry_run:
@@ -460,7 +460,7 @@ eleza run_test(modules, set_list, skip=Tupu):
 
     'modules':  A dictionary mapping module names to their source code kama a
                 string. The dictionary MUST include one module named
-                'test_module' with a main() function.
+                'test_module' ukijumuisha a main() function.
     'set_list': A list of set_type tuples to be run on the module.
 
     For example, running the following script outputs the following results:
@@ -525,18 +525,18 @@ eleza run_test(modules, set_list, skip=Tupu):
     test.dry_run = Kweli
     test.id = lambda : Tupu
     test.expect_set = list(gen(repeat(()), iter(sl)))
-    with create_modules(modules):
-        with TracerRun(test, skip=skip) kama tracer:
+    ukijumuisha create_modules(modules):
+        ukijumuisha TracerRun(test, skip=skip) kama tracer:
             tracer.runcall(tfunc_agiza)
 
 @contextmanager
 eleza create_modules(modules):
-    with test.support.temp_cwd():
+    ukijumuisha test.support.temp_cwd():
         sys.path.append(os.getcwd())
         jaribu:
             kila m kwenye modules:
                 fname = m + '.py'
-                with open(fname, 'w') kama f:
+                ukijumuisha open(fname, 'w') kama f:
                     f.write(textwrap.dedent(modules[m]))
                 linecache.checkcache(fname)
             importlib.invalidate_caches()
@@ -591,12 +591,12 @@ kundi StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('step', ),
             ('line', 2, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_step_next_on_last_statement(self):
         kila set_type kwenye ('step', 'next'):
-            with self.subTest(set_type=set_type):
+            ukijumuisha self.subTest(set_type=set_type):
                 self.expect_set = [
                     ('line', 2, 'tfunc_main'),               ('step', ),
                     ('line', 3, 'tfunc_main'),               ('step', ),
@@ -605,7 +605,7 @@ kundi StateTestCase(BaseTestCase):
                     ('line', 3, 'tfunc_first', ({1:1}, [])), (set_type, ),
                     ('line', 4, 'tfunc_first'),              ('quit', ),
                 ]
-                with TracerRun(self) kama tracer:
+                ukijumuisha TracerRun(self) kama tracer:
                     tracer.runcall(tfunc_main)
 
     eleza test_next(self):
@@ -616,7 +616,7 @@ kundi StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_second'), ('step', ),
             ('line', 2, 'tfunc_second'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_next_over_agiza(self):
@@ -625,12 +625,12 @@ kundi StateTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'), ('next', ),
                 ('line', 3, 'tfunc_agiza'), ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_next_on_plain_statement(self):
@@ -642,7 +642,7 @@ kundi StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('next', ),
             ('line', 2, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_next_in_caller_frame(self):
@@ -655,7 +655,7 @@ kundi StateTestCase(BaseTestCase):
             ('Tupu', 3, 'tfunc_main'),  ('next', ),
             ('line', 4, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_rudisha(self):
@@ -667,7 +667,7 @@ kundi StateTestCase(BaseTestCase):
             ('rudisha', 4, 'tfunc_first'), ('step', ),
             ('line', 4, 'tfunc_main'),    ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_rudisha_in_caller_frame(self):
@@ -678,7 +678,7 @@ kundi StateTestCase(BaseTestCase):
             ('Tupu', 3, 'tfunc_main'),   ('rudisha', ),
             ('rudisha', 7, 'tfunc_main'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_until(self):
@@ -689,7 +689,7 @@ kundi StateTestCase(BaseTestCase):
             ('line', 2, 'tfunc_first'), ('until', (4, )),
             ('line', 4, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_until_with_too_large_count(self):
@@ -699,7 +699,7 @@ kundi StateTestCase(BaseTestCase):
             ('line', 2, 'tfunc_first', ({1:1}, [])), ('until', (9999, )),
             ('rudisha', 4, 'tfunc_first'),            ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_until_in_caller_frame(self):
@@ -710,7 +710,7 @@ kundi StateTestCase(BaseTestCase):
             ('Tupu', 3, 'tfunc_main'),  ('until', (6, )),
             ('line', 6, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
     eleza test_skip(self):
@@ -721,17 +721,17 @@ kundi StateTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'), ('step', ),
                 ('line', 3, 'tfunc_agiza'), ('quit', ),
             ]
             skip = ('importlib*', 'zipagiza', TEST_MODULE)
-            with TracerRun(self, skip=skip) kama tracer:
+            ukijumuisha TracerRun(self, skip=skip) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_skip_with_no_name_module(self):
-        # some frames have `globals` with no `__name__`
+        # some frames have `globals` ukijumuisha no `__name__`
         # kila instance the second frame kwenye this traceback
         # exec(compile('ashiria ValueError()', '', 'exec'), {})
         bdb = Bdb(skip=['anything*'])
@@ -742,7 +742,7 @@ kundi StateTestCase(BaseTestCase):
         self.expect_set = [
             ('line', 2, 'tfunc_main'), ('down', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_main)
 
     eleza test_up(self):
@@ -752,7 +752,7 @@ kundi StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('up', ),
             ('Tupu', 3, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.runcall(tfunc_main)
 
 kundi BreakpointTestCase(BaseTestCase):
@@ -762,7 +762,7 @@ kundi BreakpointTestCase(BaseTestCase):
         self.expect_set = [
             ('line', 2, 'tfunc_agiza'), ('koma', ('/non/existent/module.py', 1))
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_agiza)
 
     eleza test_bp_after_last_statement(self):
@@ -771,11 +771,11 @@ kundi BreakpointTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'), ('koma', (TEST_MODULE_FNAME, 4))
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 self.assertRaises(BdbError, tracer.runcall, tfunc_agiza)
 
     eleza test_temporary_bp(self):
@@ -788,7 +788,7 @@ kundi BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME, Kweli),
@@ -798,7 +798,7 @@ kundi BreakpointTestCase(BaseTestCase):
                 ('line', 3, 'func', ({1:1}, [1])), ('endelea', ),
                 ('line', 3, 'func', ({2:1}, [2])), ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_disabled_temporary_bp(self):
@@ -811,7 +811,7 @@ kundi BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME),
@@ -826,7 +826,7 @@ kundi BreakpointTestCase(BaseTestCase):
                 ('Tupu', 3, 'func'),               ('endelea', ),
                 ('line', 3, 'func', ({1:2}, [])),  ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_bp_condition(self):
@@ -839,14 +839,14 @@ kundi BreakpointTestCase(BaseTestCase):
                     func(i)
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME, Uongo, 'a == 2'),
                 ('Tupu', 2, 'tfunc_agiza'),       ('endelea', ),
                 ('line', 3, 'func', ({1:3}, [])),  ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_bp_exception_on_condition_evaluation(self):
@@ -858,14 +858,14 @@ kundi BreakpointTestCase(BaseTestCase):
                 func(0)
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME, Uongo, '1 / 0'),
                 ('Tupu', 2, 'tfunc_agiza'),       ('endelea', ),
                 ('line', 3, 'func', ({1:1}, [])),  ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_bp_ignore_count(self):
@@ -878,7 +878,7 @@ kundi BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME),
@@ -886,7 +886,7 @@ kundi BreakpointTestCase(BaseTestCase):
                 ('Tupu', 2, 'tfunc_agiza'),      ('endelea', ),
                 ('line', 3, 'func', ({1:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_ignore_count_on_disabled_bp(self):
@@ -899,7 +899,7 @@ kundi BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', TEST_MODULE_FNAME),
@@ -913,7 +913,7 @@ kundi BreakpointTestCase(BaseTestCase):
                 ('line', 3, 'func', ({2:2}, [])), ('endelea', ),
                 ('line', 3, 'func', ({1:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_clear_two_bp_on_same_line(self):
@@ -927,7 +927,7 @@ kundi BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),      ('koma', (TEST_MODULE_FNAME, 3)),
                 ('Tupu', 2, 'tfunc_agiza'),      ('koma', (TEST_MODULE_FNAME, 3)),
@@ -938,14 +938,14 @@ kundi BreakpointTestCase(BaseTestCase):
                 ('Tupu', 4, 'func'),              ('endelea', ),
                 ('line', 4, 'func', ({3:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_clear_at_no_bp(self):
         self.expect_set = [
             ('line', 2, 'tfunc_agiza'), ('clear', (__file__, 1))
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_agiza)
 
 kundi RunTestCase(BaseTestCase):
@@ -960,7 +960,7 @@ kundi RunTestCase(BaseTestCase):
             ('line', 2, '<module>'),   ('step', ),
             ('rudisha', 2, '<module>'), ('quit', ),
         ]
-        with TracerRun(self) kama tracer:
+        ukijumuisha TracerRun(self) kama tracer:
             tracer.run(compile(textwrap.dedent(code), '<string>', 'exec'))
 
     eleza test_runeval_step(self):
@@ -970,7 +970,7 @@ kundi RunTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 1, '<module>'),   ('step', ),
                 ('call', 2, 'main'),       ('step', ),
@@ -979,7 +979,7 @@ kundi RunTestCase(BaseTestCase):
                 ('rudisha', 1, '<module>'), ('quit', ),
             ]
             agiza test_module_for_bdb
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runeval('test_module_for_bdb.main()', globals(), locals())
 
 kundi IssuesTestCase(BaseTestCase):
@@ -1003,7 +1003,7 @@ kundi IssuesTestCase(BaseTestCase):
             TEST_MODULE: code_1,
             'test_module_for_bdb_2': code_2,
         }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('func', 'test_module_for_bdb_2.py'),
@@ -1012,7 +1012,7 @@ kundi IssuesTestCase(BaseTestCase):
                 ('rudisha', 3, 'func'),            ('step', ),
                 ('line', 5, 'main'),              ('quit', ),
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_next_until_rudisha_in_generator(self):
@@ -1034,8 +1034,8 @@ kundi IssuesTestCase(BaseTestCase):
         """
         modules = { TEST_MODULE: code }
         kila set_type kwenye ('next', 'until', 'rudisha'):
-            with self.subTest(set_type=set_type):
-                with create_modules(modules):
+            ukijumuisha self.subTest(set_type=set_type):
+                ukijumuisha create_modules(modules):
                     self.expect_set = [
                         ('line', 2, 'tfunc_agiza'),
                             koma_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1053,7 +1053,7 @@ kundi IssuesTestCase(BaseTestCase):
                         self.expect_set.extend(
                             [('line', 4, 'test_gen'), ('quit', ),]
                         )
-                    with TracerRun(self) kama tracer:
+                    ukijumuisha TracerRun(self) kama tracer:
                         tracer.runcall(tfunc_agiza)
 
     eleza test_next_command_in_generator_for_loop(self):
@@ -1071,7 +1071,7 @@ kundi IssuesTestCase(BaseTestCase):
                 lno = 11
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1084,7 +1084,7 @@ kundi IssuesTestCase(BaseTestCase):
                 ('line', 11, 'main'),                    ('quit', ),
 
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_next_command_in_generator_with_subiterator(self):
@@ -1104,7 +1104,7 @@ kundi IssuesTestCase(BaseTestCase):
                 lno = 13
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1115,7 +1115,7 @@ kundi IssuesTestCase(BaseTestCase):
                 ('line', 13, 'main'),                     ('quit', ),
 
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
     eleza test_rudisha_command_in_generator_with_subiterator(self):
@@ -1135,7 +1135,7 @@ kundi IssuesTestCase(BaseTestCase):
                 lno = 13
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        ukijumuisha create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_agiza'),
                     koma_in_func('test_subgen', TEST_MODULE_FNAME),
@@ -1146,7 +1146,7 @@ kundi IssuesTestCase(BaseTestCase):
                 ('line', 13, 'main'),                         ('quit', ),
 
             ]
-            with TracerRun(self) kama tracer:
+            ukijumuisha TracerRun(self) kama tracer:
                 tracer.runcall(tfunc_agiza)
 
 eleza test_main():

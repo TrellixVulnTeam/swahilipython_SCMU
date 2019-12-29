@@ -111,7 +111,7 @@ eleza xml_bytes(doc, encoding, decl_encoding=...):
 eleza make_xml_file(doc, encoding, decl_encoding=...):
     ikiwa decl_encoding ni ...:
         decl_encoding = encoding
-    with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') kama f:
+    ukijumuisha open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') kama f:
         f.write(xml_str(doc, decl_encoding))
 
 
@@ -133,53 +133,53 @@ kundi ParseTest(unittest.TestCase):
         kila encoding kwenye encodings:
             self.check_parse(StringIO(xml_str(self.data, encoding)))
             make_xml_file(self.data, encoding)
-            with open(TESTFN, 'r', encoding=encoding) kama f:
+            ukijumuisha open(TESTFN, 'r', encoding=encoding) kama f:
                 self.check_parse(f)
             self.check_parse(StringIO(self.data))
             make_xml_file(self.data, encoding, Tupu)
-            with open(TESTFN, 'r', encoding=encoding) kama f:
+            ukijumuisha open(TESTFN, 'r', encoding=encoding) kama f:
                 self.check_parse(f)
 
     eleza test_parse_bytes(self):
-        # UTF-8 ni default encoding, US-ASCII ni compatible with UTF-8,
+        # UTF-8 ni default encoding, US-ASCII ni compatible ukijumuisha UTF-8,
         # UTF-16 ni autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         kila encoding kwenye encodings:
             self.check_parse(BytesIO(xml_bytes(self.data, encoding)))
             make_xml_file(self.data, encoding)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') kama f:
+            ukijumuisha open(TESTFN, 'rb') kama f:
                 self.check_parse(f)
             self.check_parse(BytesIO(xml_bytes(self.data, encoding, Tupu)))
             make_xml_file(self.data, encoding, Tupu)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') kama f:
+            ukijumuisha open(TESTFN, 'rb') kama f:
                 self.check_parse(f)
-        # accept UTF-8 with BOM
+        # accept UTF-8 ukijumuisha BOM
         self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', 'utf-8')))
         make_xml_file(self.data, 'utf-8-sig', 'utf-8')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             self.check_parse(f)
         self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', Tupu)))
         make_xml_file(self.data, 'utf-8-sig', Tupu)
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             self.check_parse(f)
-        # accept data with declared encoding
+        # accept data ukijumuisha declared encoding
         self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1')))
         make_xml_file(self.data, 'iso-8859-1')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             self.check_parse(f)
         # fail on non-UTF-8 incompatible data without declared encoding
-        with self.assertRaises(SAXException):
+        ukijumuisha self.assertRaises(SAXException):
             self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1', Tupu)))
         make_xml_file(self.data, 'iso-8859-1', Tupu)
-        with self.assertRaises(SAXException):
+        ukijumuisha self.assertRaises(SAXException):
             self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') kama f:
-            with self.assertRaises(SAXException):
+        ukijumuisha open(TESTFN, 'rb') kama f:
+            ukijumuisha self.assertRaises(SAXException):
                 self.check_parse(f)
 
     eleza test_parse_path_object(self):
@@ -187,9 +187,9 @@ kundi ParseTest(unittest.TestCase):
         self.check_parse(FakePath(TESTFN))
 
     eleza test_parse_InputSource(self):
-        # accept data without declared but with explicitly specified encoding
+        # accept data without declared but ukijumuisha explicitly specified encoding
         make_xml_file(self.data, 'iso-8859-1', Tupu)
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             input = InputSource()
             input.setByteStream(f)
             input.setEncoding('iso-8859-1')
@@ -204,9 +204,9 @@ kundi ParseTest(unittest.TestCase):
             fileobj = builtin_open(*args)
             rudisha fileobj
 
-        with mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
+        ukijumuisha mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
             make_xml_file(self.data, 'iso-8859-1', Tupu)
-            with self.assertRaises(SAXException):
+            ukijumuisha self.assertRaises(SAXException):
                 self.check_parse(TESTFN)
             self.assertKweli(fileobj.closed)
 
@@ -224,19 +224,19 @@ kundi ParseTest(unittest.TestCase):
         self.check_parseString(self.data)
 
     eleza test_parseString_bytes(self):
-        # UTF-8 ni default encoding, US-ASCII ni compatible with UTF-8,
+        # UTF-8 ni default encoding, US-ASCII ni compatible ukijumuisha UTF-8,
         # UTF-16 ni autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         kila encoding kwenye encodings:
             self.check_parseString(xml_bytes(self.data, encoding))
             self.check_parseString(xml_bytes(self.data, encoding, Tupu))
-        # accept UTF-8 with BOM
+        # accept UTF-8 ukijumuisha BOM
         self.check_parseString(xml_bytes(self.data, 'utf-8-sig', 'utf-8'))
         self.check_parseString(xml_bytes(self.data, 'utf-8-sig', Tupu))
-        # accept data with declared encoding
+        # accept data ukijumuisha declared encoding
         self.check_parseString(xml_bytes(self.data, 'iso-8859-1'))
         # fail on non-UTF-8 incompatible data without declared encoding
-        with self.assertRaises(SAXException):
+        ukijumuisha self.assertRaises(SAXException):
             self.check_parseString(xml_bytes(self.data, 'iso-8859-1', Tupu))
 
 kundi MakeParserTest(unittest.TestCase):
@@ -277,7 +277,7 @@ kundi MakeParserTest(unittest.TestCase):
         make_parser(iter([]))
 
     eleza test_make_parser5(self):
-        # Testing that make_parser can handle iterables with more than
+        # Testing that make_parser can handle iterables ukijumuisha more than
         # one item.
         make_parser(['module1', 'module2'])
         make_parser(('module1', 'module2'))
@@ -348,7 +348,7 @@ kundi PrepareInputSourceTest(unittest.TestCase):
 
     eleza setUp(self):
         self.file = support.TESTFN
-        with open(self.file, "w") kama tmp:
+        ukijumuisha open(self.file, "w") kama tmp:
             tmp.write("This was read kutoka a file.")
 
     eleza tearDown(self):
@@ -367,7 +367,7 @@ kundi PrepareInputSourceTest(unittest.TestCase):
 
 
     eleza test_character_stream(self):
-        # If the source ni an InputSource with a character stream, use it.
+        # If the source ni an InputSource ukijumuisha a character stream, use it.
         src = InputSource(self.file)
         src.setCharacterStream(self.make_character_stream())
         prep = prepare_input_source(src)
@@ -834,7 +834,7 @@ kundi StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
         eleza getvalue():
             # Windows will sio let use reopen without first closing
             writer.close()
-            with open(writer.name, 'rb') kama f:
+            ukijumuisha open(writer.name, 'rb') kama f:
                 rudisha f.read()
         writer.getvalue = getvalue
         rudisha writer
@@ -868,7 +868,7 @@ kundi XMLFilterBaseTest(unittest.TestCase):
 #
 # ===========================================================================
 
-with open(TEST_XMLFILE_OUT, 'rb') kama f:
+ukijumuisha open(TEST_XMLFILE_OUT, 'rb') kama f:
     xml_test_out = f.read()
 
 kundi ExpatReaderTest(XmlTestBase):
@@ -881,7 +881,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') kama f:
+        ukijumuisha open(TEST_XMLFILE, 'rb') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -892,7 +892,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
+        ukijumuisha open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -919,7 +919,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(fname, 'rb') kama f:
+        ukijumuisha open(fname, 'rb') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -930,8 +930,8 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') kama f:
-            with open(f.fileno(), 'rb', closefd=Uongo) kama f2:
+        ukijumuisha open(TEST_XMLFILE, 'rb') kama f:
+            ukijumuisha open(f.fileno(), 'rb', closefd=Uongo) kama f2:
                 parser.parse(f2)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -984,7 +984,7 @@ kundi ExpatReaderTest(XmlTestBase):
         resolver = self.TestEntityRecorder()
         parser.setEntityResolver(resolver)
 
-        with self.assertRaises(URLError):
+        ukijumuisha self.assertRaises(URLError):
             parser.feed(
                 '<!DOCTYPE external SYSTEM "unsupported://non-existing">\n'
             )
@@ -1152,7 +1152,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rb') kama f:
+        ukijumuisha open(TEST_XMLFILE, 'rb') kama f:
             inpsrc.setByteStream(f)
             parser.parse(inpsrc)
 
@@ -1165,7 +1165,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
+        ukijumuisha open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
             inpsrc.setCharacterStream(f)
             parser.parse(inpsrc)
 

@@ -20,7 +20,7 @@ kundi TestFrozen(unittest.TestCase):
         name = '__hello__'
         ikiwa name kwenye sys.modules:
             toa sys.modules[name]
-        with captured_stdout() kama out:
+        ukijumuisha captured_stdout() kama out:
             agiza __hello__
         self.assertEqual(out.getvalue(), 'Hello world!\n')
 

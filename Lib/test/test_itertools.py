@@ -129,7 +129,7 @@ kundi TestBasicOps(unittest.TestCase):
             self.assertEqual(
                 list(accumulate(map(typ, range(10)))),
                 list(map(typ, [0, 1, 3, 6, 10, 15, 21, 28, 36, 45])))
-        self.assertEqual(list(accumulate('abc')), ['a', 'ab', 'abc'])   # works with non-numeric
+        self.assertEqual(list(accumulate('abc')), ['a', 'ab', 'abc'])   # works ukijumuisha non-numeric
         self.assertEqual(list(accumulate([])), [])                  # empty iterable
         self.assertEqual(list(accumulate([7])), [7])                # iterable of length one
         self.assertRaises(TypeError, accumulate, range(10), 5, 6)   # too many args
@@ -144,7 +144,7 @@ kundi TestBasicOps(unittest.TestCase):
                          [2, 8, 9, 9, 9, 9, 9, 9, 9, 9])
         self.assertEqual(list(accumulate(s, operator.mul)),
                          [2, 16, 144, 720, 5040, 0, 0, 0, 0, 0])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             list(accumulate(s, chr))                                # unary-operation
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, accumulate(range(10)))           # test pickling
@@ -152,7 +152,7 @@ kundi TestBasicOps(unittest.TestCase):
         self.assertEqual(list(accumulate([10, 5, 1], initial=Tupu)), [10, 15, 16])
         self.assertEqual(list(accumulate([10, 5, 1], initial=100)), [100, 110, 115, 116])
         self.assertEqual(list(accumulate([], initial=100)), [100])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             list(accumulate([10, 20], 100))
 
     eleza test_chain(self):
@@ -266,7 +266,7 @@ kundi TestBasicOps(unittest.TestCase):
             values = [5*x-12 kila x kwenye range(n)]
             kila r kwenye range(n+2):
                 result = list(combinations(values, r))
-                self.assertEqual(len(result), 0 ikiwa r>n else fact(n) / fact(r) / fact(n-r)) # right number of combs
+                self.assertEqual(len(result), 0 ikiwa r>n isipokua fact(n) / fact(r) / fact(n-r)) # right number of combs
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 kila c kwenye result:
@@ -285,7 +285,7 @@ kundi TestBasicOps(unittest.TestCase):
 
     @support.bigaddrspacetest
     eleza test_combinations_overflow(self):
-        with self.assertRaises((OverflowError, MemoryError)):
+        ukijumuisha self.assertRaises((OverflowError, MemoryError)):
             combinations("AA", 2**29)
 
         # Test implementation detail:  tuple re-use
@@ -338,7 +338,7 @@ kundi TestBasicOps(unittest.TestCase):
 
         eleza numcombs(n, r):
             ikiwa sio n:
-                rudisha 0 ikiwa r else 1
+                rudisha 0 ikiwa r isipokua 1
             rudisha fact(n+r-1) / fact(r)/ fact(n-1)
 
         kila n kwenye range(7):
@@ -372,7 +372,7 @@ kundi TestBasicOps(unittest.TestCase):
 
     @support.bigaddrspacetest
     eleza test_combinations_with_replacement_overflow(self):
-        with self.assertRaises((OverflowError, MemoryError)):
+        ukijumuisha self.assertRaises((OverflowError, MemoryError)):
             combinations_with_replacement("AA", 2**30)
 
         # Test implementation detail:  tuple re-use
@@ -396,7 +396,7 @@ kundi TestBasicOps(unittest.TestCase):
             'Pure python version shown kwenye the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n ikiwa r ni Tupu else r
+            r = n ikiwa r ni Tupu isipokua r
             ikiwa r > n:
                 rudisha
             indices = list(range(n))
@@ -420,7 +420,7 @@ kundi TestBasicOps(unittest.TestCase):
             'Pure python version shown kwenye the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n ikiwa r ni Tupu else r
+            r = n ikiwa r ni Tupu isipokua r
             kila indices kwenye product(range(n), repeat=r):
                 ikiwa len(set(indices)) == r:
                     tuma tuple(pool[i] kila i kwenye indices)
@@ -429,7 +429,7 @@ kundi TestBasicOps(unittest.TestCase):
             values = [5*x-12 kila x kwenye range(n)]
             kila r kwenye range(n+2):
                 result = list(permutations(values, r))
-                self.assertEqual(len(result), 0 ikiwa r>n else fact(n) / fact(n-r))      # right number of perms
+                self.assertEqual(len(result), 0 ikiwa r>n isipokua fact(n) / fact(n-r))      # right number of perms
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 kila p kwenye result:
@@ -447,7 +447,7 @@ kundi TestBasicOps(unittest.TestCase):
 
     @support.bigaddrspacetest
     eleza test_permutations_overflow(self):
-        with self.assertRaises((OverflowError, MemoryError)):
+        ukijumuisha self.assertRaises((OverflowError, MemoryError)):
             permutations("A", 2**30)
 
     @support.impl_detail("tuple reuse ni specific to CPython")
@@ -469,9 +469,9 @@ kundi TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n else (not r))
-                self.assertEqual(len(perm), 0 ikiwa r>n else fact(n) / fact(n-r))
-                self.assertEqual(len(comb), 0 ikiwa r>n else fact(n) / fact(r) / fact(n-r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n isipokua (not r))
+                self.assertEqual(len(perm), 0 ikiwa r>n isipokua fact(n) / fact(n-r))
+                self.assertEqual(len(comb), 0 ikiwa r>n isipokua fact(n) / fact(r) / fact(n-r))
 
                 # Check lexicographic order without repeated tuples
                 self.assertEqual(prod, sorted(set(prod)))
@@ -481,7 +481,7 @@ kundi TestBasicOps(unittest.TestCase):
 
                 # Check interrelationships
                 self.assertEqual(cwr, [t kila t kwenye prod ikiwa sorted(t)==list(t)]) # cwr: prods which are sorted
-                self.assertEqual(perm, [t kila t kwenye prod ikiwa len(set(t))==r])    # perm: prods with no dups
+                self.assertEqual(perm, [t kila t kwenye prod ikiwa len(set(t))==r])    # perm: prods ukijumuisha no dups
                 self.assertEqual(comb, [t kila t kwenye perm ikiwa sorted(t)==list(t)]) # comb: perms that are sorted
                 self.assertEqual(comb, [t kila t kwenye cwr ikiwa len(set(t))==r])      # comb: cwrs without dups
                 self.assertEqual(comb, list(filter(set(cwr).__contains__, perm)))     # comb: perm that ni a cwr
@@ -651,7 +651,7 @@ kundi TestBasicOps(unittest.TestCase):
             self.pickletest(proto, cycle('abc'))
 
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            # test with partial consumed input iterable
+            # test ukijumuisha partial consumed input iterable
             it = iter('abcde')
             c = cycle(it)
             _ = [next(c) kila i kwenye range(2)]      # consume 2 of 5 inputs
@@ -659,7 +659,7 @@ kundi TestBasicOps(unittest.TestCase):
             d = pickle.loads(p)                  # rebuild the cycle object
             self.assertEqual(take(20, d), list('cdeabcdeabcdeabcdeab'))
 
-            # test with completely consumed input iterable
+            # test ukijumuisha completely consumed input iterable
             it = iter('abcde')
             c = cycle(it)
             _ = [next(c) kila i kwenye range(7)]      # consume 7 of 5 inputs
@@ -678,26 +678,26 @@ kundi TestBasicOps(unittest.TestCase):
         c.__setstate__((list('abc'), 0))
         self.assertEqual(take(20, c), list('defgabcdefgabcdefgab'))
 
-        # Mode 1 ni inefficient.  It starts with a cycle object built
+        # Mode 1 ni inefficient.  It starts ukijumuisha a cycle object built
         # kutoka an iterator over the remaining elements kwenye a partial
-        # cycle na then pitaes kwenye state with all of the previously
+        # cycle na then pitaes kwenye state ukijumuisha all of the previously
         # seen values (this overlaps values included kwenye the iterator).
         c = cycle('defg')
         c.__setstate__((list('abcdefg'), 1))
         self.assertEqual(take(20, c), list('defgabcdefgabcdefgab'))
 
         # The first argument to setstate needs to be a tuple
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             cycle('defg').__setstate__([list('abcdefg'), 0])
 
         # The first argument kwenye the setstate tuple must be a list
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             c = cycle('defg')
             c.__setstate__((tuple('defg'), 0))
         take(20, c)
 
         # The second argument kwenye the setstate tuple must be an int
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             cycle('defg').__setstate__((list('abcdefg'), 'x'))
 
         self.assertRaises(TypeError, cycle('').__setstate__, ())
@@ -924,11 +924,11 @@ kundi TestBasicOps(unittest.TestCase):
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500)],
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500), range(0)],
             ]:
-            target = [tuple([arg[i] ikiwa i < len(arg) else Tupu kila arg kwenye args])
+            target = [tuple([arg[i] ikiwa i < len(arg) isipokua Tupu kila arg kwenye args])
                       kila i kwenye range(max(map(len, args)))]
             self.assertEqual(list(zip_longest(*args)), target)
             self.assertEqual(list(zip_longest(*args, **{})), target)
-            target = [tuple((e ni Tupu na 'X' ama e) kila e kwenye t) kila t kwenye target]   # Replace Tupu fills with 'X'
+            target = [tuple((e ni Tupu na 'X' ama e) kila e kwenye t) kila t kwenye target]   # Replace Tupu fills ukijumuisha 'X'
             self.assertEqual(list(zip_longest(*args, **dict(fillvalue='X'))), target)
 
         self.assertEqual(take(3,zip_longest('abcdef', count())), list(zip('abcdef', range(3)))) # take 3 kutoka infinite input
@@ -979,7 +979,7 @@ kundi TestBasicOps(unittest.TestCase):
             eleza __iter__(self):
                 ashiria exception
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             zip_longest(BadIterable())
 
         self.assertIs(cm.exception, exception)
@@ -1002,13 +1002,13 @@ kundi TestBasicOps(unittest.TestCase):
                     ashiria self.e
 
         # Formerly this code kwenye would fail kwenye debug mode
-        # with Undetected Error na Stop Iteration
+        # ukijumuisha Undetected Error na Stop Iteration
         r1 = Repeater(1, 3, StopIteration)
         r2 = Repeater(2, 4, StopIteration)
         eleza run(r1, r2):
             result = []
             kila i, j kwenye zip_longest(r1, r2, fillvalue=0):
-                with support.captured_output('stdout'):
+                ukijumuisha support.captured_output('stdout'):
                     andika((i, j))
                 result.append((i, j))
             rudisha result
@@ -1029,9 +1029,9 @@ kundi TestBasicOps(unittest.TestCase):
             ([], [()]),                     # zero iterables
             (['ab'], [('a',), ('b',)]),     # one iterable
             ([range(2), range(3)], [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]),     # two iterables
-            ([range(0), range(2), range(3)], []),           # first iterable with zero length
-            ([range(2), range(0), range(3)], []),           # middle iterable with zero length
-            ([range(2), range(3), range(0)], []),           # last iterable with zero length
+            ([range(0), range(2), range(3)], []),           # first iterable ukijumuisha zero length
+            ([range(2), range(0), range(3)], []),           # middle iterable ukijumuisha zero length
+            ([range(2), range(3), range(0)], []),           # last iterable ukijumuisha zero length
             ]:
             self.assertEqual(list(product(*args)), result)
             kila r kwenye range(4):
@@ -1084,7 +1084,7 @@ kundi TestBasicOps(unittest.TestCase):
 
     @support.bigaddrspacetest
     eleza test_product_overflow(self):
-        with self.assertRaises((OverflowError, MemoryError)):
+        ukijumuisha self.assertRaises((OverflowError, MemoryError)):
             product(*(['ab']*2**5), repeat=2**25)
 
     @support.impl_detail("tuple reuse ni specific to CPython")
@@ -1098,9 +1098,9 @@ kundi TestBasicOps(unittest.TestCase):
             ([], [()]),                     # zero iterables
             (['ab'], [('a',), ('b',)]),     # one iterable
             ([range(2), range(3)], [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]),     # two iterables
-            ([range(0), range(2), range(3)], []),           # first iterable with zero length
-            ([range(2), range(0), range(3)], []),           # middle iterable with zero length
-            ([range(2), range(3), range(0)], []),           # last iterable with zero length
+            ([range(0), range(2), range(3)], []),           # first iterable ukijumuisha zero length
+            ([range(2), range(0), range(3)], []),           # middle iterable ukijumuisha zero length
+            ([range(2), range(3), range(0)], []),           # last iterable ukijumuisha zero length
             ]:
             self.assertEqual(list(copy.copy(product(*args))), result)
             self.assertEqual(list(copy.deepcopy(product(*args))), result)
@@ -1207,7 +1207,7 @@ kundi TestBasicOps(unittest.TestCase):
             self.pickletest(proto, c)
 
     eleza test_islice(self):
-        kila args kwenye [          # islice(args) should agree with range(args)
+        kila args kwenye [          # islice(args) should agree ukijumuisha range(args)
                 (10, 20, 3),
                 (10, 3, 20),
                 (10, 20),
@@ -1263,7 +1263,7 @@ kundi TestBasicOps(unittest.TestCase):
         self.assertEqual(next(c), 3)
 
         # check copy, deepcopy, pickle
-        kila args kwenye [          # islice(args) should agree with range(args)
+        kila args kwenye [          # islice(args) should agree ukijumuisha range(args)
                 (10, 20, 3),
                 (10, 3, 20),
                 (10, 20),
@@ -1507,7 +1507,7 @@ kundi TestBasicOps(unittest.TestCase):
                     rudisha next(b)
 
         a, b = tee(I())
-        with self.assertRaisesRegex(RuntimeError, "tee"):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, "tee"):
             next(a)
 
     eleza test_tee_concurrent(self):
@@ -1525,7 +1525,7 @@ kundi TestBasicOps(unittest.TestCase):
         thread.start()
         jaribu:
             start.wait()
-            with self.assertRaisesRegex(RuntimeError, "tee"):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, "tee"):
                 next(b)
         mwishowe:
             finish.set()
@@ -1833,7 +1833,7 @@ kundi I:
         rudisha v
 
 kundi Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined ukijumuisha a generator'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -2114,10 +2114,10 @@ kundi RegressionTests(unittest.TestCase):
     @support.skip_if_pgo_task
     eleza test_long_chain_of_empty_iterables(self):
         # Make sure itertools.chain doesn't run into recursion limits when
-        # dealing with long chains of empty iterables. Even with a high
+        # dealing ukijumuisha long chains of empty iterables. Even ukijumuisha a high
         # number this would probably only fail kwenye Py_DEBUG mode.
         it = chain.kutoka_iterable(() kila unused kwenye range(10000000))
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             next(it)
 
     eleza test_issue30347_1(self):
@@ -2237,7 +2237,7 @@ Samuele
 3 ['g']
 
 # Find runs of consecutive numbers using groupby.  The key to the solution
-# ni differencing with a range so that consecutive numbers all appear in
+# ni differencing ukijumuisha a range so that consecutive numbers all appear in
 # same group.
 >>> data = [ 1,  4,5,6, 10, 15,16,17,18, 22, 25,26,27,28]
 >>> kila k, g kwenye groupby(enumerate(data), lambda t:t[0]-t[1]):
@@ -2305,7 +2305,7 @@ Samuele
 ...     rudisha list(chain.kutoka_iterable(listOfLists))
 
 >>> eleza repeatfunc(func, times=Tupu, *args):
-...     "Repeat calls to func with specified arguments."
+...     "Repeat calls to func ukijumuisha specified arguments."
 ...     "   Example:  repeatfunc(random.random)"
 ...     ikiwa times ni Tupu:
 ...         rudisha starmap(func, repeat(args))
@@ -2378,7 +2378,7 @@ Samuele
 ...
 ...     '''
 ...     # first_true([a,b,c], x) --> a ama b ama c ama x
-...     # first_true([a,b], x, f) --> a ikiwa f(a) else b ikiwa f(b) else x
+...     # first_true([a,b], x, f) --> a ikiwa f(a) isipokua b ikiwa f(b) isipokua x
 ...     rudisha next(filter(pred, iterable), default)
 
 >>> eleza nth_combination(iterable, r, index):

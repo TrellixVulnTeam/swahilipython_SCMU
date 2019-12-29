@@ -12,7 +12,7 @@ kundi RelativeImports:
     A simple example ni to agiza another module within the same package
     [module kutoka module]::
 
-      # From pkg.mod1 with pkg.mod2 being a module.
+      # From pkg.mod1 ukijumuisha pkg.mod2 being a module.
       kutoka . agiza mod2
 
     This also works kila getting an attribute kutoka a module that ni specified
@@ -64,12 +64,12 @@ kundi RelativeImports:
                 uncache_names.append(name)
             isipokua:
                 uncache_names.append(name[:-len('.__init__')])
-        with util.mock_spec(*create) kama importer:
-            with util.import_state(meta_path=[importer]):
-                with warnings.catch_warnings():
+        ukijumuisha util.mock_spec(*create) kama importer:
+            ukijumuisha util.import_state(meta_path=[importer]):
+                ukijumuisha warnings.catch_warnings():
                     warnings.simplefilter("ignore")
                     kila global_ kwenye globals_:
-                        with util.uncache(*uncache_names):
+                        ukijumuisha util.uncache(*uncache_names):
                             callback(global_)
 
 
@@ -156,7 +156,7 @@ kundi RelativeImports:
                     {'__name__': 'pkg', '__path__': ['blah']})
         eleza callback(global_):
             self.__import__('pkg')
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.__import__('', global_, kutokalist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
@@ -167,14 +167,14 @@ kundi RelativeImports:
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.module'}
         eleza callback(global_):
             self.__import__('pkg')
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.__import__('', global_, kutokalist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
 
     eleza test_empty_name_w_level_0(self):
         # [empty name]
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.__import__('')
 
     eleza test_import_kutoka_different_package(self):
@@ -207,18 +207,18 @@ kundi RelativeImports:
 
     eleza test_relative_import_no_globals(self):
         # No globals kila a relative agiza ni an error.
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 self.__import__('sys', level=1)
 
     eleza test_relative_import_no_package(self):
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             self.__import__('a', {'__package__': '', '__spec__': Tupu},
                             level=1)
 
     eleza test_relative_import_no_package_exists_absolute(self):
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             self.__import__('sys', {'__package__': '', '__spec__': Tupu},
                             level=1)
 

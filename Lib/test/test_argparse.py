@@ -44,7 +44,7 @@ kundi TempDirMixin(object):
 
     eleza create_readonly_file(self, filename):
         file_path = os.path.join(self.temp_dir, filename)
-        with open(file_path, 'w') kama file:
+        ukijumuisha open(file_path, 'w') kama file:
             file.write(filename)
         os.chmod(file_path, stat.S_IREAD)
 
@@ -222,7 +222,7 @@ kundi ParserTesterMetaclass(type):
                 parser = self._get_parser(tester)
                 kila args_str kwenye tester.failures:
                     args = args_str.split()
-                    with tester.assertRaises(ArgumentParserError, msg=args):
+                    ukijumuisha tester.assertRaises(ArgumentParserError, msg=args):
                         parser.parse_args(args)
 
             eleza test_successes(self, tester):
@@ -247,7 +247,7 @@ ParserTestCase = ParserTesterMetaclass('ParserTestCase', bases, {})
 # ===============
 
 kundi TestOptionalsSingleDash(ParserTestCase):
-    """Test an Optional with a single-dash option string"""
+    """Test an Optional ukijumuisha a single-dash option string"""
 
     argument_signatures = [Sig('-x')]
     failures = ['-x', 'a', '--foo', '-x --foo', '-x -y']
@@ -261,7 +261,7 @@ kundi TestOptionalsSingleDash(ParserTestCase):
 
 
 kundi TestOptionalsSingleDashCombined(ParserTestCase):
-    """Test an Optional with a single-dash option string"""
+    """Test an Optional ukijumuisha a single-dash option string"""
 
     argument_signatures = [
         Sig('-x', action='store_true'),
@@ -287,7 +287,7 @@ kundi TestOptionalsSingleDashCombined(ParserTestCase):
 
 
 kundi TestOptionalsSingleDashLong(ParserTestCase):
-    """Test an Optional with a multi-character single-dash option string"""
+    """Test an Optional ukijumuisha a multi-character single-dash option string"""
 
     argument_signatures = [Sig('-foo')]
     failures = ['-foo', 'a', '--foo', '-foo --foo', '-foo -y', '-fooa']
@@ -333,7 +333,7 @@ kundi TestOptionalsSingleDashAmbiguous(ParserTestCase):
 
 
 kundi TestOptionalsNumeric(ParserTestCase):
-    """Test an Optional with a short opt string"""
+    """Test an Optional ukijumuisha a short opt string"""
 
     argument_signatures = [Sig('-1', dest='one')]
     failures = ['-1', 'a', '-1 --foo', '-1 -y', '-1 -1', '-1 -2']
@@ -346,7 +346,7 @@ kundi TestOptionalsNumeric(ParserTestCase):
 
 
 kundi TestOptionalsDoubleDash(ParserTestCase):
-    """Test an Optional with a double-dash option string"""
+    """Test an Optional ukijumuisha a double-dash option string"""
 
     argument_signatures = [Sig('--foo')]
     failures = ['--foo', '-f', '-f a', 'a', '--foo -x', '--foo --bar']
@@ -360,7 +360,7 @@ kundi TestOptionalsDoubleDash(ParserTestCase):
 
 
 kundi TestOptionalsDoubleDashPartialMatch(ParserTestCase):
-    """Tests partial matching with a double-dash option string"""
+    """Tests partial matching ukijumuisha a double-dash option string"""
 
     argument_signatures = [
         Sig('--badger', action='store_true'),
@@ -397,7 +397,7 @@ kundi TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
 
 
 kundi TestOptionalsSingleDoubleDash(ParserTestCase):
-    """Test an Optional with single- na double-dash option strings"""
+    """Test an Optional ukijumuisha single- na double-dash option strings"""
 
     argument_signatures = [
         Sig('-f', action='store_true'),
@@ -416,7 +416,7 @@ kundi TestOptionalsSingleDoubleDash(ParserTestCase):
 
 
 kundi TestOptionalsAlternatePrefixChars(ParserTestCase):
-    """Test an Optional with option strings with custom prefixes"""
+    """Test an Optional ukijumuisha option strings ukijumuisha custom prefixes"""
 
     parser_signature = Sig(prefix_chars='+:/', add_help=Uongo)
     argument_signatures = [
@@ -458,7 +458,7 @@ kundi TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
 
 
 kundi TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
-    """Verify that Optionals must be called with their defined prefixes"""
+    """Verify that Optionals must be called ukijumuisha their defined prefixes"""
 
     parser_signature = Sig(prefix_chars='+-', add_help=Uongo)
     argument_signatures = [
@@ -885,7 +885,7 @@ kundi TestPositionalsNargsOptional(ParserTestCase):
 
 
 kundi TestPositionalsNargsOptionalDefault(ParserTestCase):
-    """Tests an Optional Positional with a default value"""
+    """Tests an Optional Positional ukijumuisha a default value"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42)]
     failures = ['-x', 'a b']
@@ -896,7 +896,7 @@ kundi TestPositionalsNargsOptionalDefault(ParserTestCase):
 
 
 kundi TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
-    """Tests an Optional Positional with a default value
+    """Tests an Optional Positional ukijumuisha a default value
     that needs to be converted to the appropriate type.
     """
 
@@ -921,7 +921,7 @@ kundi TestPositionalsNargsTupuTupu(ParserTestCase):
 
 
 kundi TestPositionalsNargsTupu1(ParserTestCase):
-    """Test a Positional with no nargs followed by one with 1"""
+    """Test a Positional ukijumuisha no nargs followed by one ukijumuisha 1"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs=1)]
     failures = ['', '--foo', 'a', 'a b c']
@@ -931,7 +931,7 @@ kundi TestPositionalsNargsTupu1(ParserTestCase):
 
 
 kundi TestPositionalsNargs2Tupu(ParserTestCase):
-    """Test a Positional with 2 nargs followed by one with none"""
+    """Test a Positional ukijumuisha 2 nargs followed by one ukijumuisha none"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar')]
     failures = ['', '--foo', 'a', 'a b', 'a b c d']
@@ -941,7 +941,7 @@ kundi TestPositionalsNargs2Tupu(ParserTestCase):
 
 
 kundi TestPositionalsNargsTupuZeroOrMore(ParserTestCase):
-    """Test a Positional with no nargs followed by one with unlimited"""
+    """Test a Positional ukijumuisha no nargs followed by one ukijumuisha unlimited"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='*')]
     failures = ['', '--foo']
@@ -953,7 +953,7 @@ kundi TestPositionalsNargsTupuZeroOrMore(ParserTestCase):
 
 
 kundi TestPositionalsNargsTupuOneOrMore(ParserTestCase):
-    """Test a Positional with no nargs followed by one with one ama more"""
+    """Test a Positional ukijumuisha no nargs followed by one ukijumuisha one ama more"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='+')]
     failures = ['', '--foo', 'a']
@@ -964,7 +964,7 @@ kundi TestPositionalsNargsTupuOneOrMore(ParserTestCase):
 
 
 kundi TestPositionalsNargsTupuOptional(ParserTestCase):
-    """Test a Positional with no nargs followed by one with an Optional"""
+    """Test a Positional ukijumuisha no nargs followed by one ukijumuisha an Optional"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='?')]
     failures = ['', '--foo', 'a b c']
@@ -975,7 +975,7 @@ kundi TestPositionalsNargsTupuOptional(ParserTestCase):
 
 
 kundi TestPositionalsNargsZeroOrMoreTupu(ParserTestCase):
-    """Test a Positional with unlimited nargs followed by one with none"""
+    """Test a Positional ukijumuisha unlimited nargs followed by one ukijumuisha none"""
 
     argument_signatures = [Sig('foo', nargs='*'), Sig('bar')]
     failures = ['', '--foo']
@@ -987,7 +987,7 @@ kundi TestPositionalsNargsZeroOrMoreTupu(ParserTestCase):
 
 
 kundi TestPositionalsNargsOneOrMoreTupu(ParserTestCase):
-    """Test a Positional with one ama more nargs followed by one with none"""
+    """Test a Positional ukijumuisha one ama more nargs followed by one ukijumuisha none"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar')]
     failures = ['', '--foo', 'a']
@@ -998,7 +998,7 @@ kundi TestPositionalsNargsOneOrMoreTupu(ParserTestCase):
 
 
 kundi TestPositionalsNargsOptionalTupu(ParserTestCase):
-    """Test a Positional with an Optional nargs followed by one with none"""
+    """Test a Positional ukijumuisha an Optional nargs followed by one ukijumuisha none"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42), Sig('bar')]
     failures = ['', '--foo', 'a b c']
@@ -1009,7 +1009,7 @@ kundi TestPositionalsNargsOptionalTupu(ParserTestCase):
 
 
 kundi TestPositionalsNargs2ZeroOrMore(ParserTestCase):
-    """Test a Positional with 2 nargs followed by one with unlimited"""
+    """Test a Positional ukijumuisha 2 nargs followed by one ukijumuisha unlimited"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='*')]
     failures = ['', '--foo', 'a']
@@ -1020,7 +1020,7 @@ kundi TestPositionalsNargs2ZeroOrMore(ParserTestCase):
 
 
 kundi TestPositionalsNargs2OneOrMore(ParserTestCase):
-    """Test a Positional with 2 nargs followed by one with one ama more"""
+    """Test a Positional ukijumuisha 2 nargs followed by one ukijumuisha one ama more"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='+')]
     failures = ['', '--foo', 'a', 'a b']
@@ -1030,7 +1030,7 @@ kundi TestPositionalsNargs2OneOrMore(ParserTestCase):
 
 
 kundi TestPositionalsNargs2Optional(ParserTestCase):
-    """Test a Positional with 2 nargs followed by one optional"""
+    """Test a Positional ukijumuisha 2 nargs followed by one optional"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='?')]
     failures = ['', '--foo', 'a', 'a b c d']
@@ -1041,7 +1041,7 @@ kundi TestPositionalsNargs2Optional(ParserTestCase):
 
 
 kundi TestPositionalsNargsZeroOrMore1(ParserTestCase):
-    """Test a Positional with unlimited nargs followed by one with 1"""
+    """Test a Positional ukijumuisha unlimited nargs followed by one ukijumuisha 1"""
 
     argument_signatures = [Sig('foo', nargs='*'), Sig('bar', nargs=1)]
     failures = ['', '--foo', ]
@@ -1053,7 +1053,7 @@ kundi TestPositionalsNargsZeroOrMore1(ParserTestCase):
 
 
 kundi TestPositionalsNargsOneOrMore1(ParserTestCase):
-    """Test a Positional with one ama more nargs followed by one with 1"""
+    """Test a Positional ukijumuisha one ama more nargs followed by one ukijumuisha 1"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar', nargs=1)]
     failures = ['', '--foo', 'a']
@@ -1064,7 +1064,7 @@ kundi TestPositionalsNargsOneOrMore1(ParserTestCase):
 
 
 kundi TestPositionalsNargsOptional1(ParserTestCase):
-    """Test a Positional with an Optional nargs followed by one with 1"""
+    """Test a Positional ukijumuisha an Optional nargs followed by one ukijumuisha 1"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs=1)]
     failures = ['', '--foo', 'a b c']
@@ -1285,7 +1285,7 @@ kundi TestNargsZeroOrMore(ParserTestCase):
 
 
 kundi TestNargsRemainder(ParserTestCase):
-    """Tests specifying a positional with nargs=REMAINDER"""
+    """Tests specifying a positional ukijumuisha nargs=REMAINDER"""
 
     argument_signatures = [Sig('x'), Sig('y', nargs='...'), Sig('-z')]
     failures = ['', '-z', '-z Z']
@@ -1325,7 +1325,7 @@ kundi TestOptionLike(ParserTestCase):
 
 
 kundi TestDefaultSuppress(ParserTestCase):
-    """Test actions with suppressed defaults"""
+    """Test actions ukijumuisha suppressed defaults"""
 
     argument_signatures = [
         Sig('foo', nargs='?', default=argparse.SUPPRESS),
@@ -1344,7 +1344,7 @@ kundi TestDefaultSuppress(ParserTestCase):
 
 
 kundi TestParserDefaultSuppress(ParserTestCase):
-    """Test actions with a parser-level default of SUPPRESS"""
+    """Test actions ukijumuisha a parser-level default of SUPPRESS"""
 
     parser_signature = Sig(argument_default=argparse.SUPPRESS)
     argument_signatures = [
@@ -1364,7 +1364,7 @@ kundi TestParserDefaultSuppress(ParserTestCase):
 
 
 kundi TestParserDefault42(ParserTestCase):
-    """Test actions with a parser-level default of 42"""
+    """Test actions ukijumuisha a parser-level default of 42"""
 
     parser_signature = Sig(argument_default=42)
     argument_signatures = [
@@ -1397,7 +1397,7 @@ kundi TestArgumentsFromFile(TempDirMixin, ParserTestCase):
             ('invalid', '@no-such-path\n'),
         ]
         kila path, text kwenye file_texts:
-            with open(path, 'w') kama file:
+            ukijumuisha open(path, 'w') kama file:
                 file.write(text)
 
     parser_signature = Sig(kutokafile_prefix_chars='@')
@@ -1427,7 +1427,7 @@ kundi TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
             ('hello', 'hello world!\n'),
         ]
         kila path, text kwenye file_texts:
-            with open(path, 'w') kama file:
+            ukijumuisha open(path, 'w') kama file:
                 file.write(text)
 
     kundi FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
@@ -1509,7 +1509,7 @@ kundi TestFileTypeR(TempDirMixin, ParserTestCase):
     eleza setUp(self):
         super(TestFileTypeR, self).setUp()
         kila file_name kwenye ['foo', 'bar']:
-            with open(os.path.join(self.temp_dir, file_name), 'w') kama file:
+            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') kama file:
                 file.write(file_name)
         self.create_readonly_file('readonly')
 
@@ -1549,7 +1549,7 @@ kundi TestFileTypeRB(TempDirMixin, ParserTestCase):
     eleza setUp(self):
         super(TestFileTypeRB, self).setUp()
         kila file_name kwenye ['foo', 'bar']:
-            with open(os.path.join(self.temp_dir, file_name), 'w') kama file:
+            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') kama file:
                 file.write(file_name)
 
     argument_signatures = [
@@ -1631,7 +1631,7 @@ kundi TestFileTypeOpenArgs(TestCase):
             (FT('wb', encoding='big5'), ('wb', -1, 'big5', Tupu)),
             (FT('w', 0, 'l1', 'strict'), ('w', 0, 'l1', 'strict')),
         ]
-        with mock.patch('builtins.open') kama m:
+        ukijumuisha mock.patch('builtins.open') kama m:
             kila type, args kwenye cases:
                 type('foo')
                 m.assert_called_with('foo', *args)
@@ -1645,7 +1645,7 @@ kundi TestFileTypeMissingInitialization(TestCase):
 
     eleza test(self):
         parser = argparse.ArgumentParser()
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument('-x', type=argparse.FileType)
 
         self.assertEqual(
@@ -1752,7 +1752,7 @@ kundi TestActionUserDefined(ParserTestCase):
                 expected_ns = NS(spam=0.25)
                 ikiwa value kwenye [0.125, 0.625]:
                     expected_ns.badger = 2
-                elikiwa value kwenye [2.0]:
+                lasivyo value kwenye [2.0]:
                     expected_ns.badger = 84
                 isipokua:
                     ashiria AssertionError('value: %s' % value)
@@ -1776,9 +1776,9 @@ kundi TestActionUserDefined(ParserTestCase):
                 expected_ns = NS(badger=2)
                 ikiwa value kwenye [42, 84]:
                     expected_ns.spam = 0.25
-                elikiwa value kwenye [1]:
+                lasivyo value kwenye [1]:
                     expected_ns.spam = 0.625
-                elikiwa value kwenye [2]:
+                lasivyo value kwenye [2]:
                     expected_ns.spam = 0.125
                 isipokua:
                     ashiria AssertionError('value: %s' % value)
@@ -1843,7 +1843,7 @@ kundi TestAddSubparsers(TestCase):
 
     eleza _get_parser(self, subparser_help=Uongo, prefix_chars=Tupu,
                     aliases=Uongo):
-        # create a parser with a subparsers argument
+        # create a parser ukijumuisha a subparsers argument
         ikiwa prefix_chars:
             parser = ErrorRaisingArgumentParser(
                 prog='PROG', description='main description', prefix_chars=prefix_chars)
@@ -2119,7 +2119,7 @@ kundi TestAddSubparsers(TestCase):
             '''))
 
     eleza _test_subparser_help(self, args_str, expected_help):
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             self.parser.parse_args(args_str.split())
         self.assertEqual(expected_help, cm.exception.stdout)
 
@@ -2234,7 +2234,7 @@ kundi TestPositionalsGroups(TestCase):
 # ===================
 
 kundi TestParentParsers(TestCase):
-    """Tests that parsers can be created with parent parsers"""
+    """Tests that parsers can be created ukijumuisha parent parsers"""
 
     eleza assertArgumentParserError(self, *args, **kwargs):
         self.assertRaises(ArgumentParserError, *args, **kwargs)
@@ -2259,7 +2259,7 @@ kundi TestParentParsers(TestCase):
         self.z_parent = ErrorRaisingArgumentParser(add_help=Uongo)
         self.z_parent.add_argument('z')
 
-        # parents with mutually exclusive groups
+        # parents ukijumuisha mutually exclusive groups
         self.ab_mutex_parent = ErrorRaisingArgumentParser(add_help=Uongo)
         group = self.ab_mutex_parent.add_mutually_exclusive_group()
         group.add_argument('-a', action='store_true')
@@ -2376,7 +2376,7 @@ kundi TestParentParsers(TestCase):
 
             x:
               -y Y
-        '''.format(progname, ' ' ikiwa progname else '' )))
+        '''.format(progname, ' ' ikiwa progname isipokua '' )))
 
     eleza test_groups_parents(self):
         parent = ErrorRaisingArgumentParser(add_help=Uongo)
@@ -2406,7 +2406,7 @@ kundi TestParentParsers(TestCase):
 
               -w W
               -x X
-        '''.format(progname, ' ' ikiwa progname else '' )))
+        '''.format(progname, ' ' ikiwa progname isipokua '' )))
 
 # ==============================
 # Mutually exclusive group tests
@@ -3833,7 +3833,7 @@ kundi TestHelpVariableExpansionUsageSupplied(HelpTestCase):
 
 
 kundi TestHelpVariableExpansionNoArguments(HelpTestCase):
-    """Test that variables are expanded properly with no arguments"""
+    """Test that variables are expanded properly ukijumuisha no arguments"""
 
     parser_signature = Sig(prog='PROG', add_help=Uongo)
     argument_signatures = []
@@ -3954,7 +3954,7 @@ kundi TestHelpRequiredOptional(HelpTestCase):
 
 
 kundi TestHelpAlternatePrefixChars(HelpTestCase):
-    """Test that options display with different prefix characters"""
+    """Test that options display ukijumuisha different prefix characters"""
 
     parser_signature = Sig(prog='PROG', prefix_chars='^;', add_help=Uongo)
     argument_signatures = [
@@ -4372,14 +4372,14 @@ kundi TestInvalidArgumentConstructors(TestCase):
         self.assertValueError('foo', action='baz')
         self.assertValueError('--foo', action=('store', 'append'))
         parser = argparse.ArgumentParser()
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument("--foo", action="store-true")
         self.assertIn('unknown action', str(cm.exception))
 
     eleza test_multiple_dest(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(dest='foo')
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument('bar', dest='baz')
         self.assertIn('dest supplied twice kila positional argument',
                       str(cm.exception))
@@ -4392,7 +4392,7 @@ kundi TestInvalidArgumentConstructors(TestCase):
                 self.assertTypeError('-x', action=action, **attrs)
 
     eleza test_no_argument_no_const_actions(self):
-        # options with zero arguments
+        # options ukijumuisha zero arguments
         kila action kwenye ['store_true', 'store_false', 'count']:
 
             # const ni always disallowed
@@ -4408,7 +4408,7 @@ kundi TestInvalidArgumentConstructors(TestCase):
             self.assertValueError('-x', nargs=0, action=action)
             self.assertValueError('spam', nargs=0, action=action)
 
-            # const ni disallowed with non-optional arguments
+            # const ni disallowed ukijumuisha non-optional arguments
             kila nargs kwenye [1, '*', '+']:
                 self.assertValueError('-x', const='foo',
                                       nargs=nargs, action=action)
@@ -4540,7 +4540,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     """Test the help na version actions"""
 
     eleza assertPrintHelpExit(self, parser, args_str):
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(args_str.split())
         self.assertEqual(parser.format_help(), cm.exception.stdout)
 
@@ -4557,7 +4557,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     eleza test_version_format(self):
         parser = ErrorRaisingArgumentParser(prog='PPP')
         parser.add_argument('-v', '--version', action='version', version='%(prog)s 3.5')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['-v'])
         self.assertEqual('PPP 3.5\n', cm.exception.stdout)
 
@@ -4571,7 +4571,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     eleza test_version_action(self):
         parser = ErrorRaisingArgumentParser(prog='XXX')
         parser.add_argument('-V', action='version', version='%(prog)s 3.7')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['-V'])
         self.assertEqual('XXX 3.7\n', cm.exception.stdout)
 
@@ -4725,7 +4725,7 @@ kundi TestEncoding(TestCase):
     eleza _test_module_encoding(self, path):
         path, _ = os.path.splitext(path)
         path += ".py"
-        with open(path, 'r', encoding='utf-8') kama f:
+        ukijumuisha open(path, 'r', encoding='utf-8') kama f:
             f.read()
 
     eleza test_argparse_module_encoding(self):
@@ -4758,7 +4758,7 @@ kundi TestArgumentTypeError(TestCase):
 
         parser = ErrorRaisingArgumentParser(prog='PROG', add_help=Uongo)
         parser.add_argument('x', type=spam)
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['XXX'])
         self.assertEqual('usage: PROG x\nPROG: error: argument x: spam!\n',
                          cm.exception.stderr)
@@ -4775,19 +4775,19 @@ kundi TestMessageContentError(TestCase):
         parser.add_argument('-req_opt', type=int, required=Kweli)
         parser.add_argument('need_one', type=str, nargs='+')
 
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertRegex(msg, 'need_one')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['myXargument'])
         msg = str(cm.exception)
         self.assertNotIn(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertRegex(msg, 'need_one')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['myXargument', '-req_opt=1'])
         msg = str(cm.exception)
         self.assertNotIn(msg, 'req_pos')
@@ -4800,13 +4800,13 @@ kundi TestMessageContentError(TestCase):
         parser.add_argument('--req_opt', type=int, required=Kweli)
         parser.add_argument('--opt_opt', type=bool, nargs='?',
                             default=Kweli)
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertNotIn(msg, 'opt_opt')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args(['--req_opt=1'])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
@@ -4817,7 +4817,7 @@ kundi TestMessageContentError(TestCase):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos')
         parser.add_argument('optional_positional', nargs='?', default='eggs')
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
@@ -4970,9 +4970,9 @@ kundi TestIntermixedArgs(TestCase):
         parser.add_argument('x')
         parser.add_argument('y', nargs='...')
         argv = 'X A B -z Z'.split()
-        # intermixed fails with '...' (also 'A...')
+        # intermixed fails ukijumuisha '...' (also 'A...')
         # self.assertRaises(TypeError, parser.parse_intermixed_args, argv)
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             parser.parse_intermixed_args(argv)
         self.assertRegex(str(cm.exception), r'\.\.\.')
 
@@ -5006,13 +5006,13 @@ kundi TestIntermixedMessageContentError(TestCase):
         parser.add_argument('req_pos', type=str)
         parser.add_argument('-req_opt', type=int, required=Kweli)
 
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
 
-        with self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
             parser.parse_intermixed_args([])
         msg = str(cm.exception)
         self.assertNotRegex(msg, 'req_pos')
@@ -5032,7 +5032,7 @@ kundi TestAddArgumentMetavar(TestCase):
 
     eleza do_test_exception(self, nargs, metavar):
         parser = argparse.ArgumentParser()
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument("--foo", nargs=nargs, metavar=metavar)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_MESSAGE)
 
@@ -5199,13 +5199,13 @@ kundi TestInvalidNargs(TestCase):
 
     eleza do_test_range_exception(self, nargs):
         parser = argparse.ArgumentParser()
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_RANGE_MESSAGE)
 
     eleza do_test_invalid_exception(self, nargs):
         parser = argparse.ArgumentParser()
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_INVALID_MESSAGE)
 

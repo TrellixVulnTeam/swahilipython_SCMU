@@ -19,7 +19,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.skip_unless_symlink
     eleza test_architecture_via_symlink(self): # issue3762
-        with support.PythonSymlink() kama py:
+        ukijumuisha support.PythonSymlink() kama py:
             cmd = "-c", "agiza platform; andika(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -167,7 +167,7 @@ kundi PlatformTest(unittest.TestCase):
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
         jaribu:
-            with support.EnvironmentVarGuard() kama environ:
+            ukijumuisha support.EnvironmentVarGuard() kama environ:
                 ikiwa 'PROCESSOR_ARCHITEW6432' kwenye environ:
                     toa environ['PROCESSOR_ARCHITEW6432']
                 environ['PROCESSOR_ARCHITECTURE'] = 'foo'
@@ -246,7 +246,7 @@ kundi PlatformTest(unittest.TestCase):
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        elikiwa sys.platform == "win32" na sio os.path.exists(sys.executable):
+        lasivyo sys.platform == "win32" na sio os.path.exists(sys.executable):
             # App symlink appears to sio exist, but we want the
             # real executable here anyway
             agiza _winapi
@@ -258,7 +258,7 @@ kundi PlatformTest(unittest.TestCase):
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
 
-        with mock.patch('os.confstr', create=Kweli, rudisha_value='mock 1.0'):
+        ukijumuisha mock.patch('os.confstr', create=Kweli, rudisha_value='mock 1.0'):
             # test os.confstr() code path
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
@@ -270,7 +270,7 @@ kundi PlatformTest(unittest.TestCase):
                 (b'libc_pthread.so.1.2.5', ('libc', '1.2.5_pthread')),
                 (b'', ('', '')),
             ):
-                with open(filename, 'wb') kama fp:
+                ukijumuisha open(filename, 'wb') kama fp:
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
@@ -281,7 +281,7 @@ kundi PlatformTest(unittest.TestCase):
         # binary containing multiple versions: get the most recent,
         # make sure that 1.9 ni seen kama older than 1.23.4
         chunksize = 16384
-        with open(filename, 'wb') kama f:
+        ukijumuisha open(filename, 'wb') kama f:
             # test match at chunk boundary
             f.write(b'x'*(chunksize - 10))
             f.write(b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0')
@@ -334,7 +334,7 @@ kundi PlatformTest(unittest.TestCase):
                   'root:xnu-4570.71.2~1/RELEASE_X86_64'),
                  'x86_64', 'i386')
         arch = ('64bit', '')
-        with mock.patch.object(platform, 'uname', rudisha_value=uname), \
+        ukijumuisha mock.patch.object(platform, 'uname', rudisha_value=uname), \
              mock.patch.object(platform, 'architecture', rudisha_value=arch):
             kila mac_ver, expected_terse, expected kwenye [
                 # darwin: mac_ver() rudishas empty strings
@@ -346,7 +346,7 @@ kundi PlatformTest(unittest.TestCase):
                  'macOS-10.13.6',
                  'macOS-10.13.6-x86_64-i386-64bit'),
             ]:
-                with mock.patch.object(platform, 'mac_ver',
+                ukijumuisha mock.patch.object(platform, 'mac_ver',
                                        rudisha_value=mac_ver):
                     self.clear_caches()
                     self.assertEqual(platform.platform(terse=1), expected_terse)

@@ -27,7 +27,7 @@ kundi SentinelTest(unittest.TestCase):
 
     eleza testPickle(self):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL+1):
-            with self.subTest(protocol=proto):
+            ukijumuisha self.subTest(protocol=proto):
                 pickled = pickle.dumps(sentinel.whatever, proto)
                 unpickled = pickle.loads(pickled)
                 self.assertIs(unpickled, sentinel.whatever)

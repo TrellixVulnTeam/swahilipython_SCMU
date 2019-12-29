@@ -137,20 +137,20 @@ kundi UnicodeNamesTest(unittest.TestCase):
             self.assertNotEqual(name, alias)
             self.assertEqual(unicodedata.lookup(alias),
                              unicodedata.lookup(name))
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(alias)
 
     eleza test_aliases_names_in_pua_range(self):
         # We are storing aliases kwenye the PUA 15, but their names shouldn't leak
         kila cp kwenye range(0xf0000, 0xf0100):
-            with self.assertRaises(ValueError) kama cm:
+            ukijumuisha self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
     eleza test_named_sequences_names_in_pua_range(self):
         # We are storing named seq kwenye the PUA 15, but their names shouldn't leak
         kila cp kwenye range(0xf0100, 0xf0fff):
-            with self.assertRaises(ValueError) kama cm:
+            ukijumuisha self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
@@ -165,9 +165,9 @@ kundi UnicodeNamesTest(unittest.TestCase):
         ]
         kila seqname, codepoints kwenye sequences:
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
-            with self.assertRaises(SyntaxError):
+            ukijumuisha self.assertRaises(SyntaxError):
                 self.checkletter(seqname, Tupu)
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
     eleza test_named_sequences_full(self):
@@ -187,9 +187,9 @@ kundi UnicodeNamesTest(unittest.TestCase):
             seqname, codepoints = line.split(';')
             codepoints = ''.join(chr(int(cp, 16)) kila cp kwenye codepoints.split())
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
-            with self.assertRaises(SyntaxError):
+            ukijumuisha self.assertRaises(SyntaxError):
                 self.checkletter(seqname, Tupu)
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
     eleza test_errors(self):

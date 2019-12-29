@@ -32,7 +32,7 @@ kundi WidgetRedirector:
         tk: widget.tk, a convenience attribute, probably sio needed.
         orig: new name of the original tcl command.
 
-        Since renaming to orig fails with TclError when orig already
+        Since renaming to orig fails ukijumuisha TclError when orig already
         exists, only one WidgetDirector can exist kila a given widget.
         '''
         self._operations = {}
@@ -136,8 +136,8 @@ kundi OriginalCommand:
         '''
         self.redir = redir
         self.operation = operation
-        self.tk = redir.tk  # redundant with self.redir
-        self.orig = redir.orig  # redundant with self.redir
+        self.tk = redir.tk  # redundant ukijumuisha self.redir
+        self.orig = redir.orig  # redundant ukijumuisha self.redir
         # These two could be deleted after checking recipient code.
         self.tk_call = redir.tk.call
         self.orig_and_operation = (redir.orig, operation)

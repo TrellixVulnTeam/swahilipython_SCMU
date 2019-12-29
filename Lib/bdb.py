@@ -29,7 +29,7 @@ kundi Bdb:
     """
 
     eleza __init__(self, skip=Tupu):
-        self.skip = set(skip) ikiwa skip else Tupu
+        self.skip = set(skip) ikiwa skip isipokua Tupu
         self.komas = {}
         self.fncache = {}
         self.frame_rudishaing = Tupu
@@ -165,9 +165,9 @@ kundi Bdb:
         Return self.trace_dispatch to endelea tracing kwenye this scope.
         """
         ikiwa self.stop_here(frame):
-            # When stepping with next/until/rudisha kwenye a generator frame, skip
-            # the internal StopIteration exception (with no traceback)
-            # triggered by a subiterator run with the 'tuma kutoka' statement.
+            # When stepping ukijumuisha next/until/rudisha kwenye a generator frame, skip
+            # the internal StopIteration exception (ukijumuisha no traceback)
+            # triggered by a subiterator run ukijumuisha the 'tuma kutoka' statement.
             ikiwa sio (frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS
                     na arg[0] ni StopIteration na arg[2] ni Tupu):
                 self.user_exception(frame, arg)
@@ -176,7 +176,7 @@ kundi Bdb:
         # has set stopframe kwenye a generator by issuing a rudisha command, ama a
         # next/until command at the last statement kwenye the generator before the
         # exception.
-        elikiwa (self.stopframe na frame ni sio self.stopframe
+        lasivyo (self.stopframe na frame ni sio self.stopframe
                 na self.stopframe.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS
                 na arg[0] kwenye (StopIteration, GeneratorExit)):
             self.user_exception(frame, arg)
@@ -224,7 +224,7 @@ kundi Bdb:
         lineno = frame.f_lineno
         ikiwa lineno haiko kwenye self.komas[filename]:
             # The line itself has no komapoint, but maybe the line ni the
-            # first line of a function with komapoint set by function name.
+            # first line of a function ukijumuisha komapoint set by function name.
             lineno = frame.f_code.co_firstlineno
             ikiwa lineno haiko kwenye self.komas[filename]:
                 rudisha Uongo
@@ -288,7 +288,7 @@ kundi Bdb:
     # to affect the stepping state.
 
     eleza set_until(self, frame, lineno=Tupu):
-        """Stop when the line with the lineno greater than the current one is
+        """Stop when the line ukijumuisha the lineno greater than the current one is
         reached ama when rudishaing kutoka current frame."""
         # the name "until" ni borrowed kutoka gdb
         ikiwa lineno ni Tupu:
@@ -491,7 +491,7 @@ kundi Bdb:
             Breakpoint.bplist[filename, lineno] ama []
 
     eleza get_file_komas(self, filename):
-        """Return all lines with komapoints kila filename.
+        """Return all lines ukijumuisha komapoints kila filename.
 
         If no komapoints are set, rudisha an empty list.
         """
@@ -511,7 +511,7 @@ kundi Bdb:
     eleza get_stack(self, f, t):
         """Return a list of (frame, lineno) kwenye a stack trace na a size.
 
-        List starts with original calling frame, ikiwa there ni one.
+        List starts ukijumuisha original calling frame, ikiwa there ni one.
         Size may be number of frames above ama below f.
         """
         stack = []
@@ -532,7 +532,7 @@ kundi Bdb:
         rudisha stack, i
 
     eleza format_stack_entry(self, frame_lineno, lprefix=': '):
-        """Return a string with information about a stack entry.
+        """Return a string ukijumuisha information about a stack entry.
 
         The stack entry frame_lineno ni a (frame, lineno) tuple.  The
         rudisha string contains the canonical filename, the function name
@@ -625,10 +625,10 @@ kundi Bdb:
         """
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor 'runcall' of 'Bdb' object "
                             "needs an argument")
-        elikiwa 'func' kwenye kwds:
+        lasivyo 'func' kwenye kwds:
             func = kwds.pop('func')
             self, *args = args
             agiza warnings
@@ -653,7 +653,7 @@ kundi Bdb:
 
 
 eleza set_trace():
-    """Start debugging with a Bdb instance kutoka the caller's frame."""
+    """Start debugging ukijumuisha a Bdb instance kutoka the caller's frame."""
     Bdb().set_trace()
 
 
@@ -737,7 +737,7 @@ kundi Breakpoint:
         andika(self.bpformat(), file=out)
 
     eleza bpformat(self):
-        """Return a string with information about the komapoint.
+        """Return a string ukijumuisha information about the komapoint.
 
         The information includes the komapoint number, temporary
         status, file:line position, koma condition, number of times to
@@ -784,7 +784,7 @@ eleza checkfuncname(b, frame):
     ikiwa sio b.funcname:
         # Breakpoint was set via line number.
         ikiwa b.line != frame.f_lineno:
-            # Breakpoint was set at a line with a eleza statement na the function
+            # Breakpoint was set at a line ukijumuisha a eleza statement na the function
             # defined ni called: don't koma.
             rudisha Uongo
         rudisha Kweli
@@ -824,7 +824,7 @@ eleza effective(file, line, frame):
         # Count every hit when bp ni enabled
         b.hits += 1
         ikiwa sio b.cond:
-            # If unconditional, na ignoring go on to next, else koma
+            # If unconditional, na ignoring go on to next, isipokua koma
             ikiwa b.ignore > 0:
                 b.ignore -= 1
                 endelea

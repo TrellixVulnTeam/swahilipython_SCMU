@@ -1,4 +1,4 @@
-# Tests some corner cases with isinstance() na issubclass().  While these
+# Tests some corner cases ukijumuisha isinstance() na issubclass().  While these
 # tests use new style classes na properties, they actually do whitebox
 # testing of error conditions uncovered when using extension types.
 
@@ -230,7 +230,7 @@ kundi TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(Uongo, issubclass(AbstractChild, Child))
 
     eleza test_subclass_tuple(self):
-        # test with a tuple kama the second argument classes
+        # test ukijumuisha a tuple kama the second argument classes
         self.assertEqual(Kweli, issubclass(Child, (Child,)))
         self.assertEqual(Kweli, issubclass(Child, (Super,)))
         self.assertEqual(Uongo, issubclass(Super, (Child,)))
@@ -252,7 +252,7 @@ kundi TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertRaises(RecursionError, blowstack, isinstance, '', str)
 
 eleza blowstack(fxn, arg, compare_to):
-    # Make sure that calling isinstance with a deeply nested tuple kila its
+    # Make sure that calling isinstance ukijumuisha a deeply nested tuple kila its
     # argument will ashiria RecursionError eventually.
     tuple_arg = (compare_to,)
     kila cnt kwenye range(sys.getrecursionlimit()+5):

@@ -13,9 +13,9 @@ file_line_pats = [
     # order of patterns matters
     r'file "([^"]*)", line (\d+)',
     r'([^\s]+)\((\d+)\)',
-    r'^(\s*\S.*?):\s*(\d+):',  # Win filename, maybe starting with spaces
+    r'^(\s*\S.*?):\s*(\d+):',  # Win filename, maybe starting ukijumuisha spaces
     r'([^\s]+):\s*(\d+):',     # filename ama path, ltrim
-    r'^\s*(\S.*?):\s*(\d+):',  # Win abs path with embedded spaces, ltrim
+    r'^\s*(\S.*?):\s*(\d+):',  # Win abs path ukijumuisha embedded spaces, ltrim
 ]
 
 file_line_progs = Tupu
@@ -91,13 +91,13 @@ kundi OutputWindow(EditorWindow):
 
     eleza maybesave(self):
         "Customize EditorWindow to sio display save file messagebox."
-        rudisha 'yes' ikiwa self.get_saved() else 'no'
+        rudisha 'yes' ikiwa self.get_saved() isipokua 'no'
 
     # Act kama output file
     eleza write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
-        The text ni inserted at the given index with the provided
+        The text ni inserted at the given index ukijumuisha the provided
         tags.  The text widget ni then scrolled to make it visible
         na updated to display it, giving the effect of seeing each
         line kama it ni added.

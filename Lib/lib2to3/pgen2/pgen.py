@@ -169,7 +169,7 @@ kundi ParserGenerator(object):
     eleza make_dfa(self, start, finish):
         # To turn an NFA into a DFA, we define the states of the DFA
         # to correspond to *sets* of states of the NFA.  Then do some
-        # state reduction.  Let's represent sets kama dicts with 1 for
+        # state reduction.  Let's represent sets kama dicts ukijumuisha 1 for
         # values.
         assert isinstance(start, NFAState)
         assert isinstance(finish, NFAState)
@@ -300,7 +300,7 @@ kundi ParserGenerator(object):
             a, z = self.parse_rhs()
             self.expect(token.OP, ")")
             rudisha a, z
-        elikiwa self.type kwenye (token.NAME, token.STRING):
+        lasivyo self.type kwenye (token.NAME, token.STRING):
             a = NFAState()
             z = NFAState()
             a.addarc(z, self.value)
@@ -371,7 +371,7 @@ kundi DFAState(object):
         ikiwa self.isfinal != other.isfinal:
             rudisha Uongo
         # Can't just rudisha self.arcs == other.arcs, because that
-        # would invoke this method recursively, with cycles...
+        # would invoke this method recursively, ukijumuisha cycles...
         ikiwa len(self.arcs) != len(other.arcs):
             rudisha Uongo
         kila label, next kwenye self.arcs.items():

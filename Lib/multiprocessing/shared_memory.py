@@ -50,7 +50,7 @@ kundi SharedMemory:
     shared memory block.
 
     Every shared memory block ni assigned a unique name.  This enables
-    one process to create a shared memory block with a particular name
+    one process to create a shared memory block ukijumuisha a particular name
     so that a different process can attach to that same shared memory
     block using that same name.
 
@@ -68,7 +68,7 @@ kundi SharedMemory:
     _buf = Tupu
     _flags = os.O_RDWR
     _mode = 0o600
-    _prepend_leading_slash = Kweli ikiwa _USE_POSIX else Uongo
+    _prepend_leading_slash = Kweli ikiwa _USE_POSIX isipokua Uongo
 
     eleza __init__(self, name=Tupu, create=Uongo, size=0):
         ikiwa sio size >= 0:
@@ -96,7 +96,7 @@ kundi SharedMemory:
                     self._name = name
                     koma
             isipokua:
-                name = "/" + name ikiwa self._prepend_leading_slash else name
+                name = "/" + name ikiwa self._prepend_leading_slash isipokua name
                 self._fd = _posixshmem.shm_open(
                     name,
                     self._flags,
@@ -122,8 +122,8 @@ kundi SharedMemory:
 
             ikiwa create:
                 wakati Kweli:
-                    temp_name = _make_filename() ikiwa name ni Tupu else name
-                    # Create na reserve shared memory block with this name
+                    temp_name = _make_filename() ikiwa name ni Tupu isipokua name
+                    # Create na reserve shared memory block ukijumuisha this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
                         _winapi.INVALID_HANDLE_VALUE,
@@ -269,14 +269,14 @@ kundi ShareableList:
 
     @staticmethod
     eleza _extract_recreation_code(value):
-        """Used kwenye concert with _back_transforms_mapping to convert values
+        """Used kwenye concert ukijumuisha _back_transforms_mapping to convert values
         into the appropriate Python objects when retrieving them kutoka
         the list kama well kama when storing them."""
         ikiwa sio isinstance(value, (str, bytes, Tupu.__class__)):
             rudisha 0
-        elikiwa isinstance(value, str):
+        lasivyo isinstance(value, str):
             rudisha 1
-        elikiwa isinstance(value, bytes):
+        lasivyo isinstance(value, bytes):
             rudisha 2
         isipokua:
             rudisha 3  # TupuType
@@ -286,7 +286,7 @@ kundi ShareableList:
             _formats = [
                 self._types_mapping[type(item)]
                     ikiwa sio isinstance(item, (str, bytes))
-                    else self._types_mapping[type(item)] % (
+                    isipokua self._types_mapping[type(item)] % (
                         self._alignment * (len(item) // self._alignment + 1),
                     )
                 kila item kwenye sequence
@@ -294,7 +294,7 @@ kundi ShareableList:
             self._list_len = len(_formats)
             assert sum(len(fmt) <= 8 kila fmt kwenye _formats) == self._list_len
             self._allocated_bytes = tuple(
-                    self._alignment ikiwa fmt[-1] != "s" else int(fmt[:-1])
+                    self._alignment ikiwa fmt[-1] != "s" isipokua int(fmt[:-1])
                     kila fmt kwenye _formats
             )
             _recreation_codes = [
@@ -328,7 +328,7 @@ kundi ShareableList:
                 "".join(_formats),
                 self.shm.buf,
                 self._offset_data_start,
-                *(v.encode(_enc) ikiwa isinstance(v, str) else v kila v kwenye sequence)
+                *(v.encode(_enc) ikiwa isinstance(v, str) isipokua v kila v kwenye sequence)
             )
             struct.pack_into(
                 self._format_packing_metainfo,
@@ -353,7 +353,7 @@ kundi ShareableList:
 
     eleza _get_packing_format(self, position):
         "Gets the packing format kila a single value stored kwenye the list."
-        position = position ikiwa position >= 0 else position + self._list_len
+        position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
             ashiria IndexError("Requested position out of range.")
 
@@ -370,7 +370,7 @@ kundi ShareableList:
     eleza _get_back_transform(self, position):
         "Gets the back transformation function kila a single value."
 
-        position = position ikiwa position >= 0 else position + self._list_len
+        position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
             ashiria IndexError("Requested position out of range.")
 
@@ -387,7 +387,7 @@ kundi ShareableList:
         """Sets the packing format na back transformation code kila a
         single value kwenye the list at the specified position."""
 
-        position = position ikiwa position >= 0 else position + self._list_len
+        position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
             ashiria IndexError("Requested position out of range.")
 
@@ -448,7 +448,7 @@ kundi ShareableList:
             new_format,
             value
         )
-        value = value.encode(_encoding) ikiwa isinstance(value, str) else value
+        value = value.encode(_encoding) ikiwa isinstance(value, str) isipokua value
         struct.pack_into(new_format, self.shm.buf, offset, value)
 
     eleza __reduce__(self):

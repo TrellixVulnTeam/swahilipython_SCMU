@@ -86,12 +86,12 @@ kundi Grammar(object):
 
     eleza dump(self, filename):
         """Dump the grammar tables to a pickle file."""
-        with open(filename, "wb") kama f:
+        ukijumuisha open(filename, "wb") kama f:
             pickle.dump(self.__dict__, f, pickle.HIGHEST_PROTOCOL)
 
     eleza load(self, filename):
         """Load the grammar tables kutoka a pickle file."""
-        with open(filename, "rb") kama f:
+        ukijumuisha open(filename, "rb") kama f:
             d = pickle.load(f)
         self.__dict__.update(d)
 

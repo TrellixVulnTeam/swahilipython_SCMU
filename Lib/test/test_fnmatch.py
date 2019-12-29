@@ -38,7 +38,7 @@ kundi FnmatchTestCase(unittest.TestCase):
         check('a', r'[!\]')
         check('\\', r'[!\]', Uongo)
 
-        # test that filenames with newlines kwenye them are handled correctly.
+        # test that filenames ukijumuisha newlines kwenye them are handled correctly.
         # http://bugs.python.org/issue6665
         check('foo\nbar', 'foo*')
         check('foo\nbar\n', 'foo*')
@@ -85,7 +85,7 @@ kundi FnmatchTestCase(unittest.TestCase):
         check('usr\\bin', 'usr\\bin')
 
     eleza test_warnings(self):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', Warning)
             check = self.check_match
             check('[', '[[]')
@@ -124,16 +124,16 @@ kundi FilterTestCase(unittest.TestCase):
     eleza test_case(self):
         ignorecase = os.path.normcase('P') == os.path.normcase('p')
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.p*'),
-                         ['Test.py', 'Test.PL'] ikiwa ignorecase else ['Test.py'])
+                         ['Test.py', 'Test.PL'] ikiwa ignorecase isipokua ['Test.py'])
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.P*'),
-                         ['Test.py', 'Test.PL'] ikiwa ignorecase else ['Test.PL'])
+                         ['Test.py', 'Test.PL'] ikiwa ignorecase isipokua ['Test.PL'])
 
     eleza test_sep(self):
         normsep = os.path.normcase('\\') == os.path.normcase('/')
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr/*'),
-                         ['usr/bin', 'usr\\lib'] ikiwa normsep else ['usr/bin'])
+                         ['usr/bin', 'usr\\lib'] ikiwa normsep isipokua ['usr/bin'])
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr\\*'),
-                         ['usr/bin', 'usr\\lib'] ikiwa normsep else ['usr\\lib'])
+                         ['usr/bin', 'usr\\lib'] ikiwa normsep isipokua ['usr\\lib'])
 
 
 ikiwa __name__ == "__main__":

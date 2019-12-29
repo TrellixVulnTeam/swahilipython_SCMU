@@ -165,7 +165,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         ikiwa self._pending_removals:
             self._commit_removals()
         new = WeakValueDictionary()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila key, wr kwenye self.data.items():
                 o = wr()
                 ikiwa o ni sio Tupu:
@@ -179,7 +179,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         ikiwa self._pending_removals:
             self._commit_removals()
         new = self.__class__()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila key, wr kwenye self.data.items():
                 o = wr()
                 ikiwa o ni sio Tupu:
@@ -204,7 +204,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
     eleza items(self):
         ikiwa self._pending_removals:
             self._commit_removals()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila k, wr kwenye self.data.items():
                 v = wr()
                 ikiwa v ni sio Tupu:
@@ -213,7 +213,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
     eleza keys(self):
         ikiwa self._pending_removals:
             self._commit_removals()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila k, wr kwenye self.data.items():
                 ikiwa wr() ni sio Tupu:
                     tuma k
@@ -232,13 +232,13 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         """
         ikiwa self._pending_removals:
             self._commit_removals()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             tuma kutoka self.data.values()
 
     eleza values(self):
         ikiwa self._pending_removals:
             self._commit_removals()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila wr kwenye self.data.values():
                 obj = wr()
                 ikiwa obj ni sio Tupu:
@@ -334,9 +334,9 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
 
     Entries kwenye the dictionary will be discarded when there ni no
     longer a strong reference to the key. This can be used to
-    associate additional data with an object owned by other parts of
+    associate additional data ukijumuisha an object owned by other parts of
     an application without adding attributes to those objects. This
-    can be especially useful with objects that override attribute
+    can be especially useful ukijumuisha objects that override attribute
     accesses.
     """
 
@@ -397,7 +397,7 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
 
     eleza copy(self):
         new = WeakKeyDictionary()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila key, value kwenye self.data.items():
                 o = key()
                 ikiwa o ni sio Tupu:
@@ -409,7 +409,7 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     eleza __deepcopy__(self, memo):
         kutoka copy agiza deepcopy
         new = self.__class__()
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila key, value kwenye self.data.items():
                 o = key()
                 ikiwa o ni sio Tupu:
@@ -427,14 +427,14 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
         rudisha wr kwenye self.data
 
     eleza items(self):
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila wr, value kwenye self.data.items():
                 key = wr()
                 ikiwa key ni sio Tupu:
                     tuma key, value
 
     eleza keys(self):
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila wr kwenye self.data:
                 obj = wr()
                 ikiwa obj ni sio Tupu:
@@ -443,7 +443,7 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     __iter__ = keys
 
     eleza values(self):
-        with _IterationGuard(self):
+        ukijumuisha _IterationGuard(self):
             kila wr, value kwenye self.data.items():
                 ikiwa wr() ni sio Tupu:
                     tuma value
@@ -517,7 +517,7 @@ kundi finalize:
     eleza __init__(*args, **kwargs):
         ikiwa len(args) >= 3:
             self, obj, func, *args = args
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor '__init__' of 'finalize' object "
                             "needs an argument")
         isipokua:

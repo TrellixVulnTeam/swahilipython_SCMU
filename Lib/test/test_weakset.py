@@ -340,7 +340,7 @@ kundi TestWeakSet(unittest.TestCase):
 
     eleza test_weak_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key ni implicitly removed
-        # Create new items to be sure no-one else holds a reference
+        # Create new items to be sure no-one isipokua holds a reference
         items = [ustr(c) kila c kwenye ('a', 'b', 'c')]
         s = WeakSet(items)
         it = iter(s)
@@ -375,19 +375,19 @@ kundi TestWeakSet(unittest.TestCase):
             mwishowe:
                 it = Tupu           # should commit all removals
 
-        with testcontext() kama u:
+        ukijumuisha testcontext() kama u:
             self.assertNotIn(u, s)
-        with testcontext() kama u:
+        ukijumuisha testcontext() kama u:
             self.assertRaises(KeyError, s.remove, u)
         self.assertNotIn(u, s)
-        with testcontext() kama u:
+        ukijumuisha testcontext() kama u:
             s.add(u)
         self.assertIn(u, s)
         t = s.copy()
-        with testcontext() kama u:
+        ukijumuisha testcontext() kama u:
             s.update(t)
         self.assertEqual(len(s), len(t))
-        with testcontext() kama u:
+        ukijumuisha testcontext() kama u:
             s.clear()
         self.assertEqual(len(s), 0)
 

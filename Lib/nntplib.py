@@ -116,7 +116,7 @@ kundi NNTPPermanentError(NNTPError):
     pita
 
 kundi NNTPProtocolError(NNTPError):
-    """Response does sio begin with [1-5]"""
+    """Response does sio begin ukijumuisha [1-5]"""
     pita
 
 kundi NNTPDataError(NNTPError):
@@ -132,7 +132,7 @@ NNTP_SSL_PORT = 563
 _LONGRESP = {
     '100',   # HELP
     '101',   # CAPABILITIES
-    '211',   # LISTGROUP   (also sio multi-line with GROUP)
+    '211',   # LISTGROUP   (also sio multi-line ukijumuisha GROUP)
     '215',   # LIST
     '220',   # ARTICLE
     '221',   # HEAD, XHDR
@@ -192,7 +192,7 @@ eleza _parse_overview_fmt(lines):
             name, _, suffix = line.partition(':')
         name = name.lower()
         name = _OVERVIEW_FMT_ALTERNATIVES.get(name, name)
-        # Should we do something with the suffix?
+        # Should we do something ukijumuisha the suffix?
         fmt.append(name)
     defaults = _DEFAULT_OVERVIEW_FMT
     ikiwa len(fmt) < len(defaults):
@@ -225,7 +225,7 @@ eleza _parse_overview(lines, fmt, data_process_func=Tupu):
                 ikiwa token na token[:len(h)].lower() != h:
                     ashiria NNTPDataError("OVER/XOVER response doesn't include "
                                         "names of additional headers")
-                token = token[len(h):] ikiwa token else Tupu
+                token = token[len(h):] ikiwa token isipokua Tupu
             fields[fmt[i]] = token
         overview.append((article_number, fields))
     rudisha overview
@@ -248,7 +248,7 @@ eleza _parse_datetime(date_str, time_str=Tupu):
     # there are no dates before 1970 on Usenet.
     ikiwa year < 70:
         year += 2000
-    elikiwa year < 100:
+    lasivyo year < 100:
         year += 1900
     rudisha datetime.datetime(year, month, day, hours, minutes, seconds)
 
@@ -337,7 +337,7 @@ kundi _NNTPBase:
         # 'MODE READER' ni sometimes necessary to enable 'reader' mode.
         # However, the order kwenye which 'MODE READER' na 'AUTHINFO' need to
         # arrive differs between some NNTP servers. If _setreadermode() fails
-        # with an authorization failed error, it will set this to Kweli;
+        # ukijumuisha an authorization failed error, it will set this to Kweli;
         # the login() routine will interpret that kama a request to try again
         # after performing its normal function.
         # Enable only ikiwa we're sio already kwenye READER mode anyway.
@@ -440,7 +440,7 @@ kundi _NNTPBase:
         ikiwa strip_crlf:
             ikiwa line[-2:] == _CRLF:
                 line = line[:-2]
-            elikiwa line[-1:] kwenye _CRLF:
+            lasivyo line[-1:] kwenye _CRLF:
                 line = line[:-1]
         rudisha line
 
@@ -471,7 +471,7 @@ kundi _NNTPBase:
 
         openedFile = Tupu
         jaribu:
-            # If a string was pitaed then open a file with that name
+            # If a string was pitaed then open a file ukijumuisha that name
             ikiwa isinstance(file, (str, bytes)):
                 openedFile = file = open(file, "wb")
 
@@ -530,7 +530,7 @@ kundi _NNTPBase:
 
     eleza _getoverviewfmt(self):
         """Internal: get the overview format. Queries the server ikiwa not
-        already done, else rudishas the cached value."""
+        already done, isipokua rudishas the cached value."""
         jaribu:
             rudisha self._cachedoverviewfmt
         tatizo AttributeError:
@@ -616,7 +616,7 @@ kundi _NNTPBase:
         resp, lines = self._longcmdstring('LIST NEWSGROUPS ' + group_pattern)
         ikiwa sio resp.startswith('215'):
             # Now the deprecated XGTITLE.  This either ashirias an error
-            # ama succeeds with the same output structure kama LIST
+            # ama succeeds ukijumuisha the same output structure kama LIST
             # NEWSGROUPS.
             resp, lines = self._longcmdstring('XGTITLE ' + group_pattern)
         groups = {}
@@ -790,7 +790,7 @@ kundi _NNTPBase:
         resp, lines = self._longcmdstring('XHDR {0} {1}'.format(hdr, str), file)
         eleza remove_number(line):
             m = pat.match(line)
-            rudisha m.group(1, 2) ikiwa m else line
+            rudisha m.group(1, 2) ikiwa m isipokua line
         rudisha resp, [remove_number(line) kila line kwenye lines]
 
     eleza xover(self, start, end, *, file=Tupu):
@@ -824,11 +824,11 @@ kundi _NNTPBase:
 
         NOTE: the "message id" form isn't supported by XOVER
         """
-        cmd = 'OVER' ikiwa 'OVER' kwenye self._caps else 'XOVER'
+        cmd = 'OVER' ikiwa 'OVER' kwenye self._caps isipokua 'XOVER'
         ikiwa isinstance(message_spec, (tuple, list)):
             start, end = message_spec
             cmd += ' {0}-{1}'.format(start, end ama '')
-        elikiwa message_spec ni sio Tupu:
+        lasivyo message_spec ni sio Tupu:
             cmd = cmd + ' ' + message_spec
         resp, lines = self._longcmdstring(cmd, file)
         fmt = self._getoverviewfmt()
@@ -1027,7 +1027,7 @@ kundi NNTP(_NNTPBase):
         - host: hostname to connect to
         - port: port to connect to (default the standard NNTP port)
         - user: username to authenticate with
-        - pitaword: pitaword to use with username
+        - pitaword: pitaword to use ukijumuisha username
         - readermode: ikiwa true, send 'mode reader' command after
                       connecting.
         - usenetrc: allow loading username na pitaword kutoka ~/.netrc file

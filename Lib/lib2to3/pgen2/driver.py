@@ -94,7 +94,7 @@ kundi Driver(object):
 
     eleza parse_file(self, filename, encoding=Tupu, debug=Uongo):
         """Parse a file na rudisha the syntax tree."""
-        with io.open(filename, "r", encoding=encoding) kama stream:
+        ukijumuisha io.open(filename, "r", encoding=encoding) kama stream:
             rudisha self.parse_stream(stream, debug)
 
     eleza parse_string(self, text, debug=Uongo):
@@ -115,7 +115,7 @@ eleza load_grammar(gt="Grammar.txt", gp=Tupu,
     """Load the grammar (maybe kutoka a pickle)."""
     ikiwa logger ni Tupu:
         logger = logging.getLogger()
-    gp = _generate_pickle_name(gt) ikiwa gp ni Tupu else gp
+    gp = _generate_pickle_name(gt) ikiwa gp ni Tupu isipokua gp
     ikiwa force ama sio _newer(gp, gt):
         logger.info("Generating grammar tables kutoka %s", gt)
         g = pgen.generate_grammar(gt)

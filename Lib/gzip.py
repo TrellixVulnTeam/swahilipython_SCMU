@@ -3,7 +3,7 @@
 The user of the file doesn't have to worry about the compression,
 but random access ni sio allowed."""
 
-# based on Andrew Kuchling's minigzip.py distributed with the zlib module
+# based on Andrew Kuchling's minigzip.py distributed ukijumuisha the zlib module
 
 agiza struct, sys, time, os
 agiza zlib
@@ -38,7 +38,7 @@ eleza open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_BEST,
     na newline arguments must sio be provided.
 
     For text mode, a GzipFile object ni created, na wrapped kwenye an
-    io.TextIOWrapper instance with the specified encoding, error handling
+    io.TextIOWrapper instance ukijumuisha the specified encoding, error handling
     behavior, na line ending(s).
 
     """
@@ -56,7 +56,7 @@ eleza open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_BEST,
     gz_mode = mode.replace("t", "")
     ikiwa isinstance(filename, (str, bytes, os.PathLike)):
         binary_file = GzipFile(filename, gz_mode, compresslevel)
-    elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
+    lasivyo hasattr(filename, "read") ama hasattr(filename, "write"):
         binary_file = GzipFile(Tupu, gz_mode, compresslevel, filename)
     isipokua:
         ashiria TypeError("filename must be a str ama bytes object, ama a file")
@@ -126,7 +126,7 @@ kundi GzipFile(_compression.BaseStream):
 
     """
 
-    # Overridden with internal file object to be closed, ikiwa only a filename
+    # Overridden ukijumuisha internal file object to be closed, ikiwa only a filename
     # ni pitaed in
     myfileobj = Tupu
 
@@ -186,7 +186,7 @@ kundi GzipFile(_compression.BaseStream):
             self._buffer = io.BufferedReader(raw)
             self.name = filename
 
-        elikiwa mode.startswith(('w', 'a', 'x')):
+        lasivyo mode.startswith(('w', 'a', 'x')):
             self.mode = WRITE
             self._init_write(filename)
             self.compress = zlib.compressobj(compresslevel,
@@ -320,7 +320,7 @@ kundi GzipFile(_compression.BaseStream):
                 write32u(fileobj, self.crc)
                 # self.size may exceed 2 GiB, ama even 4 GiB
                 write32u(fileobj, self.size & 0xffffffff)
-            elikiwa self.mode == READ:
+            lasivyo self.mode == READ:
                 self._buffer.close()
         mwishowe:
             myfileobj = self.myfileobj
@@ -373,7 +373,7 @@ kundi GzipFile(_compression.BaseStream):
             kila i kwenye range(count // 1024):
                 self.write(chunk)
             self.write(b'\0' * (count % 1024))
-        elikiwa self.mode == READ:
+        lasivyo self.mode == READ:
             self._check_not_closed()
             rudisha self._buffer.seek(offset, whence)
 
@@ -481,7 +481,7 @@ kundi _GzipReader(_compression.DecompressReader):
             uncompress = self._decompressor.decompress(buf, size)
             ikiwa self._decompressor.unconsumed_tail != b"":
                 self._fp.prepend(self._decompressor.unconsumed_tail)
-            elikiwa self._decompressor.unused_data != b"":
+            lasivyo self._decompressor.unused_data != b"":
                 # Prepend the already read bytes to the fileobj so they can
                 # be seen by _read_eof() na _read_gzip_header()
                 self._fp.prepend(self._decompressor.unused_data)
@@ -509,10 +509,10 @@ kundi _GzipReader(_compression.DecompressReader):
         ikiwa crc32 != self._crc:
             ashiria BadGzipFile("CRC check failed %s != %s" % (hex(crc32),
                                                              hex(self._crc)))
-        elikiwa isize != (self._stream_size & 0xffffffff):
+        lasivyo isize != (self._stream_size & 0xffffffff):
             ashiria BadGzipFile("Incorrect length of data produced")
 
-        # Gzip files can be padded with zeroes na still have archives.
+        # Gzip files can be padded ukijumuisha zeroes na still have archives.
         # Consume all zero bytes na set the file position to the first
         # non-zero byte. See http://www.gzip.org/#faq8
         c = b"\x00"
@@ -530,7 +530,7 @@ eleza compress(data, compresslevel=_COMPRESS_LEVEL_BEST, *, mtime=Tupu):
     Optional argument ni the compression level, kwenye range of 0-9.
     """
     buf = io.BytesIO()
-    with GzipFile(fileobj=buf, mode='wb', compresslevel=compresslevel, mtime=mtime) kama f:
+    ukijumuisha GzipFile(fileobj=buf, mode='wb', compresslevel=compresslevel, mtime=mtime) kama f:
         f.write(data)
     rudisha buf.getvalue()
 
@@ -538,7 +538,7 @@ eleza decompress(data):
     """Decompress a gzip compressed string kwenye one shot.
     Return the decompressed string.
     """
-    with GzipFile(fileobj=io.BytesIO(data)) kama f:
+    ukijumuisha GzipFile(fileobj=io.BytesIO(data)) kama f:
         rudisha f.read()
 
 
@@ -559,7 +559,7 @@ eleza main():
     compresslevel = _COMPRESS_LEVEL_TRADEOFF
     ikiwa args.fast:
         compresslevel = _COMPRESS_LEVEL_FAST
-    elikiwa args.best:
+    lasivyo args.best:
         compresslevel = _COMPRESS_LEVEL_BEST
 
     kila arg kwenye args.args:

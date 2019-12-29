@@ -1,9 +1,9 @@
 """
 These tests are meant to exercise that requests to create objects bigger
-than what the address space allows are properly met with an OverflowError
+than what the address space allows are properly met ukijumuisha an OverflowError
 (rather than crash weirdly).
 
-Primarily, this means 32-bit builds with at least 2 GiB of available memory.
+Primarily, this means 32-bit builds ukijumuisha at least 2 GiB of available memory.
 You need to pita the -M option to regrtest (e.g. "-M 2.1G") kila tests to
 be enabled.
 """
@@ -34,11 +34,11 @@ kundi BytesTest(unittest.TestCase):
         jaribu:
             x = b"x" * (MAX_Py_ssize_t - 128)
 
-            with self.assertRaises(OverflowError) kama cm:
+            ukijumuisha self.assertRaises(OverflowError) kama cm:
                 # this statement used a fast path kwenye ceval.c
                 x = x + b"x" * 128
 
-            with self.assertRaises(OverflowError) kama cm:
+            ukijumuisha self.assertRaises(OverflowError) kama cm:
                 # this statement used a fast path kwenye ceval.c
                 x +=  b"x" * 128
         mwishowe:
@@ -55,7 +55,7 @@ kundi BytesTest(unittest.TestCase):
 
 kundi StrTest(unittest.TestCase):
 
-    unicodesize = 2 ikiwa sys.maxunicode < 65536 else 4
+    unicodesize = 2 ikiwa sys.maxunicode < 65536 isipokua 4
 
     @bigaddrspacetest
     eleza test_concat(self):
@@ -73,11 +73,11 @@ kundi StrTest(unittest.TestCase):
         jaribu:
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
 
-            with self.assertRaises(MemoryError) kama cm:
+            ukijumuisha self.assertRaises(MemoryError) kama cm:
                 # this statement uses a fast path kwenye ceval.c
                 x = x + x
 
-            with self.assertRaises(MemoryError) kama cm:
+            ukijumuisha self.assertRaises(MemoryError) kama cm:
                 # this statement uses a fast path kwenye ceval.c
                 x +=  x
         mwishowe:

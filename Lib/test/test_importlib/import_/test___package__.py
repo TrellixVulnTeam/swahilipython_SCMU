@@ -35,8 +35,8 @@ kundi Using__package__:
     """
 
     eleza import_module(self, globals_):
-        with self.mock_modules('pkg.__init__', 'pkg.fake') kama importer:
-            with util.import_state(meta_path=[importer]):
+        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.fake') kama importer:
+            ukijumuisha util.import_state(meta_path=[importer]):
                 self.__import__('pkg.fake')
                 module = self.__import__('',
                                          globals=globals_,
@@ -50,19 +50,19 @@ kundi Using__package__:
 
     eleza test_using___name__(self):
         # [__name__]
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
             module = self.import_module({'__name__': 'pkg.fake',
                                          '__path__': []})
         self.assertEqual(module.__name__, 'pkg')
 
     eleza test_warn_when_using___name__(self):
-        with self.assertWarns(ImportWarning):
+        ukijumuisha self.assertWarns(ImportWarning):
             self.import_module({'__name__': 'pkg.fake', '__path__': []})
 
     eleza test_Tupu_as___package__(self):
         # [Tupu]
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
             module = self.import_module({
                 '__name__': 'pkg.fake', '__path__': [], '__package__': Tupu })
@@ -75,18 +75,18 @@ kundi Using__package__:
 
     eleza test_warn_when_package_and_spec_disagree(self):
         # Raise an ImportWarning ikiwa __package__ != __spec__.parent.
-        with self.assertWarns(ImportWarning):
+        ukijumuisha self.assertWarns(ImportWarning):
             self.import_module({'__package__': 'pkg.fake',
                                 '__spec__': FakeSpec('pkg.fakefake')})
 
     eleza test_bad__package__(self):
         globals = {'__package__': '<not real>'}
-        with self.assertRaises(ModuleNotFoundError):
+        ukijumuisha self.assertRaises(ModuleNotFoundError):
             self.__import__('', globals, {}, ['relimport'], 1)
 
     eleza test_bunk__package__(self):
         globals = {'__package__': 42}
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.__import__('', globals, {}, ['relimport'], 1)
 
 
@@ -116,7 +116,7 @@ kundi Using__package__PEP451(Using__package__):
 kundi Setting__package__:
 
     """Because __package__ ni a new feature, it ni sio always set by a loader.
-    Import will set it kama needed to help with the transition to relying on
+    Import will set it kama needed to help ukijumuisha the transition to relying on
     __package__.
 
     For a top-level module, __package__ ni set to Tupu [top-level]. For a
@@ -129,24 +129,24 @@ kundi Setting__package__:
 
     # [top-level]
     eleza test_top_level(self):
-        with self.mock_modules('top_level') kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha self.mock_modules('top_level') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['top_level'].__package__
                 module = self.__import__('top_level')
                 self.assertEqual(module.__package__, '')
 
     # [package]
     eleza test_package(self):
-        with self.mock_modules('pkg.__init__') kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha self.mock_modules('pkg.__init__') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['pkg'].__package__
                 module = self.__import__('pkg')
                 self.assertEqual(module.__package__, 'pkg')
 
     # [submodule]
     eleza test_submodule(self):
-        with self.mock_modules('pkg.__init__', 'pkg.mod') kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.mod') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['pkg.mod'].__package__
                 pkg = self.__import__('pkg.mod')
                 module = getattr(pkg, 'mod')

@@ -38,15 +38,15 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
         """
         Args:
             fixers: A list of fixers to agiza.
-            options: A dict with RefactoringTool configuration.
+            options: A dict ukijumuisha RefactoringTool configuration.
             explicit: A list of fixers to run even ikiwa they are explicit.
             nobackups: If true no backup '.bak' files will be created kila those
                 files that are being refactored.
             show_diffs: Should diffs of the refactoring be printed to stdout?
             input_base_dir: The base directory kila all input files.  This class
                 will strip this path prefix off of filenames before substituting
-                it with output_dir.  Only meaningful ikiwa output_dir ni supplied.
-                All files processed by refactor() must start with this path.
+                it ukijumuisha output_dir.  Only meaningful ikiwa output_dir ni supplied.
+                All files processed by refactor() must start ukijumuisha this path.
             output_dir: If supplied, all converted files will be written into
                 this directory tree instead of input_base_dir.
             append_suffix: If supplied, all files output by this tool will have
@@ -73,7 +73,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                 filename = os.path.join(self._output_dir,
                                         filename[len(self._input_base_dir):])
             isipokua:
-                ashiria ValueError('filename %s does sio start with the '
+                ashiria ValueError('filename %s does sio start ukijumuisha the '
                                  'input_base_dir %s' % (
                                          filename, self._input_base_dir))
         ikiwa self._append_suffix:
@@ -114,7 +114,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                 diff_lines = diff_texts(old, new, filename)
                 jaribu:
                     ikiwa self.output_lock ni sio Tupu:
-                        with self.output_lock:
+                        ukijumuisha self.output_lock:
                             kila line kwenye diff_lines:
                                 andika(line)
                             sys.stdout.flush()
@@ -167,7 +167,7 @@ eleza main(fixer_pkg, args=Tupu):
                       "instead of overwriting the input files.  Requires -n.")
     parser.add_option("-W", "--write-unchanged-files", action="store_true",
                       help="Also write files even ikiwa no changes were required"
-                      " (useful with --output-dir); implies -w.")
+                      " (useful ukijumuisha --output-dir); implies -w.")
     parser.add_option("--add-suffix", action="store", type="str", default="",
                       help="Append this string to all output filenames."
                       " Requires -n ikiwa non-empty.  "
@@ -212,7 +212,7 @@ eleza main(fixer_pkg, args=Tupu):
         flags["print_function"] = Kweli
 
     # Set up logging handler
-    level = logging.DEBUG ikiwa options.verbose else logging.INFO
+    level = logging.DEBUG ikiwa options.verbose isipokua logging.INFO
     logging.basicConfig(format='%(name)s: %(message)s', level=level)
     logger = logging.getLogger('lib2to3.main')
 
@@ -227,7 +227,7 @@ eleza main(fixer_pkg, args=Tupu):
                 all_present = Kweli
             isipokua:
                 explicit.add(fixer_pkg + ".fix_" + fix)
-        requested = avail_fixes.union(explicit) ikiwa all_present else explicit
+        requested = avail_fixes.union(explicit) ikiwa all_present isipokua explicit
     isipokua:
         requested = avail_fixes.union(explicit)
     fixer_names = requested.difference(unwanted_fixes)

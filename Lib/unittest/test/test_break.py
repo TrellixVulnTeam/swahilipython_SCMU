@@ -146,7 +146,7 @@ kundi TestBreak(unittest.TestCase):
             self.fail("replaced but delegated handler doesn't ashiria interrupt")
 
     eleza testRunner(self):
-        # Creating a TextTestRunner with the appropriate argument should
+        # Creating a TextTestRunner ukijumuisha the appropriate argument should
         # register the TextTestResult it creates
         runner = unittest.TextTestRunner(stream=io.StringIO())
 

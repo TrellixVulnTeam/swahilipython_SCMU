@@ -60,7 +60,7 @@ kundi TestMain(unittest.TestCase):
         self.py3_dest_dir = os.path.join(self.temp_dir, "python3_project")
         os.mkdir(self.py2_src_dir)
         os.mkdir(self.py3_dest_dir)
-        # Turn it into a package with a few files.
+        # Turn it into a package ukijumuisha a few files.
         self.setup_files = []
         open(os.path.join(self.py2_src_dir, "__init__.py"), "w").close()
         self.setup_files.append("__init__.py")
@@ -68,12 +68,12 @@ kundi TestMain(unittest.TestCase):
         self.setup_files.append(os.path.basename(PY2_TEST_MODULE))
         self.trivial_py2_file = os.path.join(self.py2_src_dir, "trivial.py")
         self.init_py2_file = os.path.join(self.py2_src_dir, "__init__.py")
-        with open(self.trivial_py2_file, "w") kama trivial:
+        ukijumuisha open(self.trivial_py2_file, "w") kama trivial:
             trivial.write("print 'I need a simple conversion.'")
         self.setup_files.append("trivial.py")
 
     eleza test_filename_changing_on_output_single_dir(self):
-        """2to3 a single directory with a new output dir na suffix."""
+        """2to3 a single directory ukijumuisha a new output dir na suffix."""
         self.setup_test_source_trees()
         out = io.StringIO()
         err = io.StringIO()
@@ -102,7 +102,7 @@ kundi TestMain(unittest.TestCase):
                 stderr, r"No changes to .*/trivial\.py".replace("/", sep))
 
     eleza test_filename_changing_on_output_two_files(self):
-        """2to3 two files kwenye one directory with a new output dir."""
+        """2to3 two files kwenye one directory ukijumuisha a new output dir."""
         self.setup_test_source_trees()
         err = io.StringIO()
         py2_files = [self.trivial_py2_file, self.init_py2_file]
@@ -119,7 +119,7 @@ kundi TestMain(unittest.TestCase):
         self.assertEqual(expected_files, set(os.listdir(self.py3_dest_dir)))
 
     eleza test_filename_changing_on_output_single_file(self):
-        """2to3 a single file with a new output dir."""
+        """2to3 a single file ukijumuisha a new output dir."""
         self.setup_test_source_trees()
         err = io.StringIO()
         ret = self.run_2to3_capture(

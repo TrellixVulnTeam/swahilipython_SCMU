@@ -145,7 +145,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_utf8(self, arg):
         self.push('+OK I know RFC6856'
                   ikiwa self.enable_UTF8
-                  else '-ERR What ni UTF8?!')
+                  isipokua '-ERR What ni UTF8?!')
 
     ikiwa SUPPORTS_SSL:
 
@@ -174,10 +174,10 @@ kundi DummyPOP3Handler(asynchat.async_chat):
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     rudisha
-                elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
+                lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
-                elikiwa ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
+                lasivyo ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" kwenye err.args[1]):
                     rudisha self.handle_close()
                 ashiria
@@ -224,7 +224,7 @@ kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.__flag.set()
         jaribu:
             wakati self.active na asyncore.socket_map:
-                with self.active_lock:
+                ukijumuisha self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
         mwishowe:
             asyncore.close_all(ignore_all=Kweli)
@@ -315,12 +315,12 @@ kundi TestPOP3Class(TestCase):
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_REDOS(self):
-        # Replace welcome with very long evil welcome.
+        # Replace welcome ukijumuisha very long evil welcome.
         # NB The upper bound on welcome length ni currently 2048.
         # At this length, evil input makes each apop call take
         # on the order of milliseconds instead of microseconds.
         evil_welcome = b'+OK' + (b'<' * 1000000)
-        with test_support.swap_attr(self.client, 'welcome', evil_welcome):
+        ukijumuisha test_support.swap_attr(self.client, 'welcome', evil_welcome):
             # The evil welcome ni invalid, so apop should throw.
             self.assertRaises(poplib.error_proto, self.client.apop, 'a', 'kb')
 
@@ -374,7 +374,7 @@ kundi TestPOP3Class(TestCase):
         ctx.load_verify_locations(CAFILE)
         self.assertEqual(ctx.verify_mode, ssl.CERT_REQUIRED)
         self.assertEqual(ctx.check_hostname, Kweli)
-        with self.assertRaises(ssl.CertificateError):
+        ukijumuisha self.assertRaises(ssl.CertificateError):
             resp = self.client.stls(context=ctx)
         self.client = poplib.POP3("localhost", self.server.port, timeout=3)
         resp = self.client.stls(context=ctx)

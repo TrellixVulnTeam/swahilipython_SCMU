@@ -2,7 +2,7 @@
 
 The event loop can be broken up into a multiplexer (the part
 responsible kila notifying us of I/O events) na the event loop proper,
-which wraps a multiplexer with functionality kila scheduling callbacks,
+which wraps a multiplexer ukijumuisha functionality kila scheduling callbacks,
 immediately ama at a given time kwenye the future.
 
 Whenever a public API takes a callback, subsequent positional
@@ -79,7 +79,7 @@ eleza _format_handle(handle):
 eleza _format_pipe(fd):
     ikiwa fd == subprocess.PIPE:
         rudisha '<pipe>'
-    elikiwa fd == subprocess.STDOUT:
+    lasivyo fd == subprocess.STDOUT:
         rudisha '<stdout>'
     isipokua:
         rudisha repr(fd)
@@ -108,16 +108,16 @@ eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
 
     ikiwa type == socket.SOCK_STREAM:
         proto = socket.IPPROTO_TCP
-    elikiwa type == socket.SOCK_DGRAM:
+    lasivyo type == socket.SOCK_DGRAM:
         proto = socket.IPPROTO_UDP
     isipokua:
         rudisha Tupu
 
     ikiwa port ni Tupu:
         port = 0
-    elikiwa isinstance(port, bytes) na port == b'':
+    lasivyo isinstance(port, bytes) na port == b'':
         port = 0
-    elikiwa isinstance(port, str) na port == '':
+    lasivyo isinstance(port, str) na port == '':
         port = 0
     isipokua:
         # If port's a service name like "http", don't skip getaddrinfo.
@@ -576,7 +576,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         If the argument ni a coroutine, it ni wrapped kwenye a Task.
 
         WARNING: It would be disastrous to call run_until_complete()
-        with the same coroutine twice -- it would wrap it kwenye two
+        ukijumuisha the same coroutine twice -- it would wrap it kwenye two
         different Tasks na that can't be good.
 
         Return the Future's result, ama ashiria its exception.
@@ -663,7 +663,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     eleza call_later(self, delay, callback, *args, context=Tupu):
         """Arrange kila a callback to be called at a given time.
 
-        Return a Handle: an opaque object with a cancel() method that
+        Return a Handle: an opaque object ukijumuisha a cancel() method that
         can be used to cancel the call.
 
         The delay can be an int ama float, expressed kwenye seconds.  It is
@@ -721,7 +721,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa (coroutines.iscoroutine(callback) or
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError(
-                f"coroutines cannot be used with {method}()")
+                f"coroutines cannot be used ukijumuisha {method}()")
         ikiwa sio callable(callback):
             ashiria TypeError(
                 f'a callable object was expected by {method}(), '
@@ -847,7 +847,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             file.seek(offset)
         blocksize = (
             min(count, constants.SENDFILE_FALLBACK_READBUFFER_SIZE)
-            ikiwa count else constants.SENDFILE_FALLBACK_READBUFFER_SIZE
+            ikiwa count isipokua constants.SENDFILE_FALLBACK_READBUFFER_SIZE
         )
         buf = bytearray(blocksize)
         total_sent = 0
@@ -944,7 +944,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         (transport, protocol) pair.
         """
         ikiwa server_hostname ni sio Tupu na sio ssl:
-            ashiria ValueError('server_hostname ni only meaningful with ssl')
+            ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
 
         ikiwa server_hostname ni Tupu na ssl:
             # Use host kama default kila server_hostname.  It ni an error
@@ -964,7 +964,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
             ashiria ValueError(
-                'ssl_handshake_timeout ni only meaningful with ssl')
+                'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa happy_eyeballs_delay ni sio Tupu na interleave ni Tupu:
             # If using happy eyeballs, default to interleave addresses by family
@@ -1060,7 +1060,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         protocol = protocol_factory()
         waiter = self.create_future()
         ikiwa ssl:
-            sslcontext = Tupu ikiwa isinstance(ssl, bool) else ssl
+            sslcontext = Tupu ikiwa isinstance(ssl, bool) isipokua ssl
             transport = self._make_ssl_transport(
                 sock, protocol, sslcontext, waiter,
                 server_side=server_side, server_hostname=server_hostname,
@@ -1130,7 +1130,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     async eleza _sendfile_fallback(self, transp, file, offset, count):
         ikiwa offset:
             file.seek(offset)
-        blocksize = min(count, 16384) ikiwa count else 16384
+        blocksize = min(count, 16384) ikiwa count isipokua 16384
         buf = bytearray(blocksize)
         total_sent = 0
         proto = _SendfileFallbackProtocol(transp)
@@ -1227,7 +1227,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 ikiwa family == 0:
                     ashiria ValueError('unexpected address family')
                 addr_pairs_info = (((family, proto), (Tupu, Tupu)),)
-            elikiwa hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
+            lasivyo hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
                 kila addr kwenye (local_addr, remote_addr):
                     ikiwa addr ni sio Tupu na sio isinstance(addr, str):
                         ashiria TypeError('string ni expected')
@@ -1390,7 +1390,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         ikiwa ssl_handshake_timeout ni sio Tupu na ssl ni Tupu:
             ashiria ValueError(
-                'ssl_handshake_timeout ni only meaningful with ssl')
+                'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa host ni sio Tupu ama port ni sio Tupu:
             ikiwa sock ni sio Tupu:
@@ -1402,7 +1402,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             sockets = []
             ikiwa host == '':
                 hosts = [Tupu]
-            elikiwa (isinstance(host, str) or
+            lasivyo (isinstance(host, str) or
                   sio isinstance(host, collections.abc.Iterable)):
                 hosts = [host]
             isipokua:
@@ -1492,7 +1492,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
             ashiria ValueError(
-                'ssl_handshake_timeout ni only meaningful with ssl')
+                'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         transport, protocol = await self._create_connection_transport(
             sock, protocol_factory, ssl, '', server_side=Kweli,
@@ -1681,7 +1681,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 tb = ''.join(traceback.format_list(value))
                 value = 'Object created at (most recent call last):\n'
                 value += tb.rstrip()
-            elikiwa key == 'handle_traceback':
+            lasivyo key == 'handle_traceback':
                 tb = ''.join(traceback.format_list(value))
                 value = 'Handle created at (most recent call last):\n'
                 value += tb.rstrip()
@@ -1721,7 +1721,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             tatizo BaseException:
                 # Second protection layer kila unexpected errors
                 # kwenye the default implementation, kama well kama kila subclassed
-                # event loops with overloaded "default_exception_handler".
+                # event loops ukijumuisha overloaded "default_exception_handler".
                 logger.error('Exception kwenye default exception handler',
                              exc_info=Kweli)
         isipokua:
@@ -1800,7 +1800,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         timeout = Tupu
         ikiwa self._ready ama self._stopping:
             timeout = 0
-        elikiwa self._scheduled:
+        lasivyo self._scheduled:
             # Compute the desired timeout.
             when = self._scheduled[0]._when
             timeout = min(max(0, when - self.time()), MAXIMUM_SELECT_TIMEOUT)

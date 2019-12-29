@@ -21,7 +21,7 @@ kundi PopenTest(unittest.TestCase):
     eleza _do_test_commandline(self, cmdline, expected):
         cmd = '%s -c "agiza sys; andika(sys.argv)" %s'
         cmd = cmd % (python, cmdline)
-        with os.popen(cmd) kama p:
+        ukijumuisha os.popen(cmd) kama p:
             data = p.read()
         got = eval(data)[1:] # strip off argv[0]
         self.assertEqual(got, expected)
@@ -50,15 +50,15 @@ kundi PopenTest(unittest.TestCase):
             self.assertEqual(os.popen("exit 42").close(), 42 << 8)
 
     eleza test_contextmanager(self):
-        with os.popen("echo hello") kama f:
+        ukijumuisha os.popen("echo hello") kama f:
             self.assertEqual(f.read(), "hello\n")
 
     eleza test_iterating(self):
-        with os.popen("echo hello") kama f:
+        ukijumuisha os.popen("echo hello") kama f:
             self.assertEqual(list(f), ["hello\n"])
 
     eleza test_keywords(self):
-        with os.popen(cmd="exit 0", mode="w", buffering=-1):
+        ukijumuisha os.popen(cmd="exit 0", mode="w", buffering=-1):
             pita
 
 ikiwa __name__ == "__main__":

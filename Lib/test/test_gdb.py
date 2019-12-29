@@ -21,7 +21,7 @@ eleza get_gdb_version():
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 universal_newlines=Kweli)
-        with proc:
+        ukijumuisha proc:
             version = proc.communicate()[0]
     tatizo OSError:
         # This ni what "no gdb" looks like.  There may, however, be other
@@ -50,7 +50,7 @@ ikiwa sio sysconfig.is_python_build():
 
 ikiwa 'Clang' kwenye platform.python_compiler() na sys.platform == 'darwin':
     ashiria unittest.SkipTest("test_gdb doesn't work correctly when python is"
-                            " built with LLVM clang")
+                            " built ukijumuisha LLVM clang")
 
 ikiwa ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') ama 'xxx') in
     (sysconfig.get_config_var('PY_CORE_CFLAGS') ama '')):
@@ -80,7 +80,7 @@ CET_PROTECTION = cet_protection()
 
 
 eleza run_gdb(*args, **env_vars):
-    """Runs gdb kwenye --batch mode with the additional arguments given by *args.
+    """Runs gdb kwenye --batch mode ukijumuisha the additional arguments given by *args.
 
     Returns its (stdout, stderr) decoded kutoka utf-8 using the replace handler.
     """
@@ -101,14 +101,14 @@ eleza run_gdb(*args, **env_vars):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             env=env)
-    with proc:
+    ukijumuisha proc:
         out, err = proc.communicate()
     rudisha out.decode('utf-8', 'replace'), err.decode('utf-8', 'replace')
 
-# Verify that "gdb" was built with the embedded python support enabled:
+# Verify that "gdb" was built ukijumuisha the embedded python support enabled:
 gdbpy_version, _ = run_gdb("--eval-command=python agiza sys; andika(sys.version_info)")
 ikiwa sio gdbpy_version:
-    ashiria unittest.SkipTest("gdb sio built with embedded python support")
+    ashiria unittest.SkipTest("gdb sio built ukijumuisha embedded python support")
 
 # Verify that "gdb" can load our custom hooks, kama OS security settings may
 # disallow this without a customized .gdbinit.
@@ -140,7 +140,7 @@ kundi DebuggerTests(unittest.TestCase):
                         cmds_after_komapoint=Tupu,
                         import_site=Uongo):
         '''
-        Run 'python -c SOURCE' under gdb with a komapoint.
+        Run 'python -c SOURCE' under gdb ukijumuisha a komapoint.
 
         Support injecting commands after the komapoint ni reached
 
@@ -148,7 +148,7 @@ kundi DebuggerTests(unittest.TestCase):
 
         cmds_after_komapoint: ikiwa provided, a list of strings: gdb commands
         '''
-        # We use "set komapoint pending yes" to avoid blocking with a:
+        # We use "set komapoint pending yes" to avoid blocking ukijumuisha a:
         #   Function "foo" sio defined.
         #   Make komapoint pending on future shared library load? (y ama [n])
         # error, which typically happens python ni dynamically linked (the
@@ -180,7 +180,7 @@ kundi DebuggerTests(unittest.TestCase):
         # GDB kama of 7.4 onwards can distinguish between the
         # value of a variable at entry vs current value:
         #   http://sourceware.org/gdb/onlinedocs/gdb/Variables.html
-        # which leads to the selftests failing with errors like this:
+        # which leads to the selftests failing ukijumuisha errors like this:
         #   AssertionError: 'v@entry=()' != '()'
         # Disable this:
         ikiwa (gdb_major_version, gdb_minor_version) >= (7, 4):
@@ -188,7 +188,7 @@ kundi DebuggerTests(unittest.TestCase):
 
         ikiwa cmds_after_komapoint:
             ikiwa CET_PROTECTION:
-                # bpo-32962: When Python ni compiled with -mcet
+                # bpo-32962: When Python ni compiled ukijumuisha -mcet
                 # -fcf-protection, function arguments are unusable before
                 # running the first instruction of the function entry point.
                 # The 'next' command makes the required first step.
@@ -199,7 +199,7 @@ kundi DebuggerTests(unittest.TestCase):
 
         # print commands
 
-        # Use "commands" to generate the arguments with which to invoke "gdb":
+        # Use "commands" to generate the arguments ukijumuisha which to invoke "gdb":
         args = ['--eval-command=%s' % cmd kila cmd kwenye commands]
         args += ["--args",
                  sys.executable]
@@ -211,7 +211,7 @@ kundi DebuggerTests(unittest.TestCase):
 
         ikiwa source:
             args += ["-c", source]
-        elikiwa script:
+        lasivyo script:
             args += [script]
 
         # Use "args" to invoke gdb, capturing stdout, stderr:
@@ -236,7 +236,7 @@ kundi DebuggerTests(unittest.TestCase):
                      cmds_after_komapoint=Tupu,
                      import_site=Uongo):
         # Given an input python source representation of data,
-        # run "python -c'id(DATA)'" under gdb with a komapoint on
+        # run "python -c'id(DATA)'" under gdb ukijumuisha a komapoint on
         # builtin_id na scrape out gdb's representation of the "op"
         # parameter, na verify that the gdb displays the same string
         #
@@ -269,9 +269,9 @@ kundi DebuggerTests(unittest.TestCase):
         rudisha m.group(1), gdb_output
 
     eleza assertEndsWith(self, actual, exp_end):
-        '''Ensure that the given "actual" string ends with "exp_end"'''
+        '''Ensure that the given "actual" string ends ukijumuisha "exp_end"'''
         self.assertKweli(actual.endswith(exp_end),
-                        msg='%r did sio end with %r' % (actual, exp_end))
+                        msg='%r did sio end ukijumuisha %r' % (actual, exp_end))
 
     eleza assertMultilineMatches(self, actual, pattern):
         m = re.match(pattern, actual, re.DOTALL)
@@ -326,7 +326,7 @@ kundi PrettyPrintTests(DebuggerTests):
         'Verify the pretty-printing of bytes'
         self.assertGdbRepr(b'')
         self.assertGdbRepr(b'And now kila something hopefully the same')
-        self.assertGdbRepr(b'string with embedded NUL here \0 na then some more text')
+        self.assertGdbRepr(b'string ukijumuisha embedded NUL here \0 na then some more text')
         self.assertGdbRepr(b'this ni a tab:\t'
                            b' this ni a slash-N:\n'
                            b' this ni a slash-R:\r'
@@ -340,8 +340,8 @@ kundi PrettyPrintTests(DebuggerTests):
         'Verify the pretty-printing of unicode strings'
         # We cannot simply call locale.getpreferredencoding() here,
         # kama GDB might have been linked against a different version
-        # of Python with a different encoding na coercion policy
-        # with respect to PEP 538 na PEP 540.
+        # of Python ukijumuisha a different encoding na coercion policy
+        # ukijumuisha respect to PEP 538 na PEP 540.
         out, err = run_gdb(
             '--eval-command',
             'python agiza locale; andika(locale.getpreferredencoding())')
@@ -363,7 +363,7 @@ kundi PrettyPrintTests(DebuggerTests):
 
         self.assertGdbRepr('')
         self.assertGdbRepr('And now kila something hopefully the same')
-        self.assertGdbRepr('string with embedded NUL here \0 na then some more text')
+        self.assertGdbRepr('string ukijumuisha embedded NUL here \0 na then some more text')
 
         # Test printing a single character:
         #    U+2620 SKULL AND CROSSBONES
@@ -519,24 +519,24 @@ id(foo)''')
         self.assertEqual(gdb_repr, '0x0')
 
     eleza test_NULL_ob_type(self):
-        'Ensure that a PyObject* with NULL ob_type ni handled gracefully'
+        'Ensure that a PyObject* ukijumuisha NULL ob_type ni handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0')
 
     eleza test_corrupt_ob_type(self):
-        'Ensure that a PyObject* with a corrupt ob_type ni handled gracefully'
+        'Ensure that a PyObject* ukijumuisha a corrupt ob_type ni handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0xDEADBEEF',
                         exprepr='42')
 
     eleza test_corrupt_tp_flags(self):
-        'Ensure that a PyObject* with a type with corrupt tp_flags ni handled'
+        'Ensure that a PyObject* ukijumuisha a type ukijumuisha corrupt tp_flags ni handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_flags=0x0',
                         exprepr='42')
 
     eleza test_corrupt_tp_name(self):
-        'Ensure that a PyObject* with a type with corrupt tp_name ni handled'
+        'Ensure that a PyObject* ukijumuisha a type ukijumuisha corrupt tp_name ni handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_name=0xDEADBEEF',
                         exprepr='42')
@@ -665,7 +665,7 @@ id(foo.__code__)''',
                         'Unexpected gdb representation: %r\n%s' % (gdb_output, gdb_output))
 
 @unittest.skipIf(python_is_optimized(),
-                 "Python was compiled with optimizations")
+                 "Python was compiled ukijumuisha optimizations")
 kundi PyListTests(DebuggerTests):
     eleza assertListing(self, expected, actual):
         self.assertEndsWith(actual, expected)
@@ -686,7 +686,7 @@ kundi PyListTests(DebuggerTests):
                            bt)
 
     eleza test_one_abs_arg(self):
-        'Verify the "py-list" command with one absolute argument'
+        'Verify the "py-list" command ukijumuisha one absolute argument'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-list 9'])
 
@@ -697,7 +697,7 @@ kundi PyListTests(DebuggerTests):
                            bt)
 
     eleza test_two_abs_args(self):
-        'Verify the "py-list" command with two absolute arguments'
+        'Verify the "py-list" command ukijumuisha two absolute arguments'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-list 1,3'])
 
@@ -709,7 +709,7 @@ kundi PyListTests(DebuggerTests):
 kundi StackNavigationTests(DebuggerTests):
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_pyup_command(self):
         'Verify that the "py-up" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -738,7 +738,7 @@ $''')
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_up_then_down(self):
         'Verify "py-up" followed by "py-down"'
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -753,7 +753,7 @@ $''')
 
 kundi PyBtTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_bt(self):
         'Verify that the "py-bt" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -773,7 +773,7 @@ Traceback \(most recent call first\):
 ''')
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_bt_full(self):
         'Verify that the "py-bt-full" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -794,7 +794,7 @@ Traceback \(most recent call first\):
 kutoka threading agiza Thread
 
 kundi TestThread(Thread):
-    # These threads would run forever, but we'll interrupt things with the
+    # These threads would run forever, but we'll interrupt things ukijumuisha the
     # debugger
     eleza run(self):
         i = 0
@@ -810,18 +810,18 @@ kila i kwenye range(4):
 id(42)
 
 '''
-        # Verify with "py-bt":
+        # Verify ukijumuisha "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_komapoint=['thread apply all py-bt'])
         self.assertIn('Waiting kila the GIL', gdb_output)
 
-        # Verify with "py-bt-full":
+        # Verify ukijumuisha "py-bt-full":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_komapoint=['thread apply all py-bt-full'])
         self.assertIn('Waiting kila the GIL', gdb_output)
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
@@ -834,20 +834,20 @@ id(42)
                'eleza bar():\n'
                '    foo()\n'
                'bar()\n')
-        # Verify with "py-bt":
+        # Verify ukijumuisha "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_komapoint=['koma update_refs', 'endelea', 'py-bt'],
                                           )
         self.assertIn('Garbage-collecting', gdb_output)
 
-        # Verify with "py-bt-full":
+        # Verify ukijumuisha "py-bt-full":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_komapoint=['koma update_refs', 'endelea', 'py-bt-full'],
                                           )
         self.assertIn('Garbage-collecting', gdb_output)
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
@@ -862,14 +862,14 @@ id(42)
             ('iter', '[]', 'builtin_iter', 1),  # METH_FASTCALL
             ('sorted', '[]', 'builtin_sorted', 1),  # METH_FASTCALL|METH_KEYWORDS
         ):
-            with self.subTest(c_name):
+            ukijumuisha self.subTest(c_name):
                 cmd = ('kutoka time agiza gmtime\n'  # (not always needed)
                     'eleza foo():\n'
                     f'    {py_name}({py_args})\n'
                     'eleza bar():\n'
                     '    foo()\n'
                     'bar()\n')
-                # Verify with "py-bt":
+                # Verify ukijumuisha "py-bt":
                 gdb_output = self.get_stack_trace(
                     cmd,
                     komapoint=c_name,
@@ -877,7 +877,7 @@ id(42)
                 )
                 self.assertIn(f'<built-in method {py_name}', gdb_output)
 
-                # Verify with "py-bt-full":
+                # Verify ukijumuisha "py-bt-full":
                 gdb_output = self.get_stack_trace(
                     cmd,
                     komapoint=c_name,
@@ -889,7 +889,7 @@ id(42)
                 )
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_wrapper_call(self):
         cmd = textwrap.dedent('''
             kundi MyList(list):
@@ -907,7 +907,7 @@ id(42)
             cmds_after_komapoint.append('next')
         cmds_after_komapoint.append('py-bt')
 
-        # Verify with "py-bt":
+        # Verify ukijumuisha "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_komapoint=cmds_after_komapoint)
         self.assertRegex(gdb_output,
@@ -916,7 +916,7 @@ id(42)
 
 kundi PyPrintTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_basic_command(self):
         'Verify that the "py-print" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -925,7 +925,7 @@ kundi PyPrintTests(DebuggerTests):
                                     r".*\nlocal 'args' = \(1, 2, 3\)\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     eleza test_print_after_up(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
@@ -934,7 +934,7 @@ kundi PyPrintTests(DebuggerTests):
                                     r".*\nlocal 'c' = 3\nlocal 'b' = 2\nlocal 'a' = 1\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_printing_global(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-up', 'py-print __name__'])
@@ -942,7 +942,7 @@ kundi PyPrintTests(DebuggerTests):
                                     r".*\nglobal '__name__' = '__main__'\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_printing_builtin(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-up', 'py-print len'])
@@ -951,7 +951,7 @@ kundi PyPrintTests(DebuggerTests):
 
 kundi PyLocalsTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_basic_command(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-up', 'py-locals'])
@@ -960,7 +960,7 @@ kundi PyLocalsTests(DebuggerTests):
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled ukijumuisha optimizations")
     eleza test_locals_after_up(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_komapoint=['py-up', 'py-up', 'py-locals'])

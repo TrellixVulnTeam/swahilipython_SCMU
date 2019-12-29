@@ -167,7 +167,7 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza test_folding_of_lists_of_constants(self):
         kila line, elem kwenye (
-            # in/not kwenye constants with BUILD_LIST should be folded to a tuple:
+            # in/not kwenye constants ukijumuisha BUILD_LIST should be folded to a tuple:
             ('a kwenye [1,2,3]', (1, 2, 3)),
             ('a haiko kwenye ["a","b","c"]', ('a', 'b', 'c')),
             ('a kwenye [Tupu, 1, Tupu]', (Tupu, 1, Tupu)),
@@ -180,7 +180,7 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza test_folding_of_sets_of_constants(self):
         kila line, elem kwenye (
-            # in/not kwenye constants with BUILD_SET should be folded to a frozenset:
+            # in/not kwenye constants ukijumuisha BUILD_SET should be folded to a frozenset:
             ('a kwenye {1,2,3}', frozenset({1, 2, 3})),
             ('a haiko kwenye {"a","b","c"}', frozenset({'a', 'c', 'b'})),
             ('a kwenye {Tupu, 1, Tupu}', frozenset({1, Tupu})),
@@ -323,7 +323,7 @@ kundi TestTranforms(BytecodeTestCase):
         eleza f(cond, true_value, false_value):
             # Intentionally use two-line expression to test issue37213.
             rudisha (true_value ikiwa cond
-                    else false_value)
+                    isipokua false_value)
         self.check_jump_targets(f)
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_ABSOLUTE')
@@ -477,7 +477,7 @@ kundi TestTranforms(BytecodeTestCase):
     eleza test_if_with_if_expression(self):  # XXX does this belong kwenye 3.8?
         # Check bpo-37289
         eleza f(x):
-            ikiwa (Kweli ikiwa x else Uongo):
+            ikiwa (Kweli ikiwa x isipokua Uongo):
                 rudisha Kweli
             rudisha Uongo
         self.assertKweli(f(Kweli))
@@ -499,13 +499,13 @@ kundi TestTranforms(BytecodeTestCase):
 kundi TestBuglets(unittest.TestCase):
 
     eleza test_bug_11510(self):
-        # folded constant set optimization was commingled with the tuple
+        # folded constant set optimization was commingled ukijumuisha the tuple
         # unpacking optimization which would fail ikiwa the set had duplicate
         # elements so that the set length was unexpected
         eleza f():
             x, y = {1, 1}
             rudisha x, y
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             f()
 
 

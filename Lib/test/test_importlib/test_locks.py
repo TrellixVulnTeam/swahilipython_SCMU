@@ -19,7 +19,7 @@ kundi ModuleLockAsRLockTests:
     test_try_acquire = Tupu
     test_try_acquire_contended = Tupu
     # `with` unsupported
-    test_with = Tupu
+    test_ukijumuisha = Tupu
     # acquire(timeout=...) unsupported
     test_timeout = Tupu
     # _release_save() unsupported

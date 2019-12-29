@@ -8,101 +8,101 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
     eleza test_named_expression_invalid_01(self):
         code = """x := 0"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_02(self):
         code = """x = y := 0"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_03(self):
         code = """y := f(x)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_04(self):
         code = """y0 = y1 := f(x)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_06(self):
         code = """((a, b) := (1, 2))"""
 
-        with self.assertRaisesRegex(SyntaxError, "cannot use named assignment with tuple"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "cannot use named assignment ukijumuisha tuple"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_07(self):
         code = """eleza spam(a = b := 42): pita"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_08(self):
         code = """eleza spam(a: b := 42 = 5): pita"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_09(self):
         code = """spam(a=b := 'c')"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_10(self):
         code = """spam(x = y := f(x))"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_11(self):
         code = """spam(a=1, b := 2)"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        ukijumuisha self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_12(self):
         code = """spam(a=1, (b := 2))"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        ukijumuisha self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_13(self):
         code = """spam(a=1, (b := 2))"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        ukijumuisha self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_14(self):
         code = """(x := lambda: y := 1)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_15(self):
         code = """(lambda: x := 1)"""
 
-        with self.assertRaisesRegex(SyntaxError,
-            "cannot use named assignment with lambda"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError,
+            "cannot use named assignment ukijumuisha lambda"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_16(self):
         code = "[i + 1 kila i kwenye i := [1,2]]"
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_17(self):
         code = "[i := 0, j := 1 kila i, j kwenye [(1, 2), (3, 4)]]"
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_in_class_body(self):
@@ -110,7 +110,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             [(42, 1 + ((( j := i )))) kila i kwenye range(5)]
         """
 
-        with self.assertRaisesRegex(SyntaxError,
+        ukijumuisha self.assertRaisesRegex(SyntaxError,
             "assignment expression within a comprehension cannot be used kwenye a kundi body"):
             exec(code, {}, {})
 
@@ -127,8 +127,8 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
         ]
         kila case, target, code kwenye cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            ukijumuisha self.subTest(case=case):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {})
 
     eleza test_named_expression_invalid_rebinding_comprehension_inner_loop(self):
@@ -138,12 +138,12 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
         ]
         kila case, target, code kwenye cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            ukijumuisha self.subTest(case=case):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     eleza test_named_expression_invalid_comprehension_iterable_expression(self):
@@ -160,12 +160,12 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
         ]
         msg = "assignment expression cannot be used kwenye a comprehension iterable expression"
         kila case, code kwenye cases:
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            ukijumuisha self.subTest(case=case):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
 
@@ -280,7 +280,7 @@ kundi NamedExpressionScopeTest(unittest.TestCase):
     (a := 5)
 andika(a)"""
 
-        with self.assertRaisesRegex(NameError, "name 'a' ni sio defined"):
+        ukijumuisha self.assertRaisesRegex(NameError, "name 'a' ni sio defined"):
             exec(code, {}, {})
 
     eleza test_named_expression_scope_02(self):
@@ -445,7 +445,7 @@ spam()"""
 
     eleza test_named_expression_variable_reuse_in_comprehensions(self):
         # The compiler ni expected to ashiria syntax error kila comprehension
-        # iteration variables, but should be fine with rebinding of other
+        # iteration variables, but should be fine ukijumuisha rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 
         # The cases are all defined to produce the same expected result
@@ -465,7 +465,7 @@ spam()"""
             ("Nested nonlocal", f"result, x = (lambda x=1: ({nested_ref}, x))()"),
         ]
         kila case, code kwenye cases:
-            with self.subTest(case=case):
+            ukijumuisha self.subTest(case=case):
                 ns = {}
                 exec(code, ns)
                 self.assertEqual(ns["x"], 2)

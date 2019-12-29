@@ -55,7 +55,7 @@ kundi _OverlappedFuture(futures.Future):
     eleza _repr_info(self):
         info = super()._repr_info()
         ikiwa self._ov ni sio Tupu:
-            state = 'pending' ikiwa self._ov.pending else 'completed'
+            state = 'pending' ikiwa self._ov.pending isipokua 'completed'
             info.insert(1, f'overlapped=<{state}, {self._ov.address:#x}>')
         rudisha info
 
@@ -114,7 +114,7 @@ kundi _BaseWaitHandleFuture(futures.Future):
         info = super()._repr_info()
         info.append(f'handle={self._handle:#x}')
         ikiwa self._handle ni sio Tupu:
-            state = 'signaled' ikiwa self._poll() else 'waiting'
+            state = 'signaled' ikiwa self._poll() isipokua 'waiting'
             info.append(state)
         ikiwa self._wait_handle ni sio Tupu:
             info.append(f'wait_handle={self._wait_handle:#x}')
@@ -257,7 +257,7 @@ kundi PipeServer(object):
         # Create new instance na rudisha previous one.  This ensures
         # that (until the server ni closed) there ni always at least
         # one pipe handle kila address.  Therefore ikiwa a client attempt
-        # to connect it will sio fail with FileNotFoundError.
+        # to connect it will sio fail ukijumuisha FileNotFoundError.
         tmp, self._pipe = self._pipe, self._server_pipe_handle(Uongo)
         rudisha tmp
 
@@ -365,7 +365,7 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         'pipe': pipe,
                     })
                     pipe.close()
-                elikiwa self._debug:
+                lasivyo self._debug:
                     logger.warning("Accept pipe failed on pipe %r",
                                    pipe, exc_info=Kweli)
             tatizo exceptions.CancelledError:
@@ -627,7 +627,7 @@ kundi IocpProactor:
         connected = ov.ConnectNamedPipe(pipe.fileno())
 
         ikiwa connected:
-            # ConnectNamePipe() failed with ERROR_PIPE_CONNECTED which means
+            # ConnectNamePipe() failed ukijumuisha ERROR_PIPE_CONNECTED which means
             # that the pipe ni connected. There ni no need to wait kila the
             # completion of the connection.
             rudisha self._result(pipe)
@@ -651,7 +651,7 @@ kundi IocpProactor:
                 ikiwa exc.winerror != _overlapped.ERROR_PIPE_BUSY:
                     ashiria
 
-            # ConnectPipe() failed with ERROR_PIPE_BUSY: retry later
+            # ConnectPipe() failed ukijumuisha ERROR_PIPE_BUSY: retry later
             delay = min(delay * 2, CONNECT_PIPE_MAX_DELAY)
             await tasks.sleep(delay)
 
@@ -696,7 +696,7 @@ kundi IocpProactor:
 
         eleza finish_wait_for_handle(trans, key, ov):
             # Note that this second wait means that we should only use
-            # this with handles types where a successful wait has no
+            # this ukijumuisha handles types where a successful wait has no
             # effect.  So events ama processes are all right, but locks
             # ama semaphores are not.  Also note ikiwa the handle is
             # signalled na then quickly reset, then we may rudisha
@@ -719,7 +719,7 @@ kundi IocpProactor:
     eleza _register(self, ov, obj, callback):
         self._check_closed()
 
-        # Return a future which will be set with the result of the
+        # Return a future which will be set ukijumuisha the result of the
         # operation when it completes.  The future's value ni actually
         # the value rudishaed by callback().
         f = _OverlappedFuture(ov, loop=self._loop)
@@ -766,7 +766,7 @@ kundi IocpProactor:
     eleza _poll(self, timeout=Tupu):
         ikiwa timeout ni Tupu:
             ms = INFINITE
-        elikiwa timeout < 0:
+        lasivyo timeout < 0:
             ashiria ValueError("negative timeout")
         isipokua:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
@@ -803,7 +803,7 @@ kundi IocpProactor:
                 f.cancel()
             # Don't call the callback ikiwa _register() already read the result or
             # ikiwa the overlapped has been cancelled
-            elikiwa sio f.done():
+            lasivyo sio f.done():
                 jaribu:
                     value = callback(transferred, key, ov)
                 tatizo OSError kama e:
@@ -832,9 +832,9 @@ kundi IocpProactor:
         # Cancel remaining registered operations.
         kila address, (fut, ov, obj, callback) kwenye list(self._cache.items()):
             ikiwa fut.cancelled():
-                # Nothing to do with cancelled futures
+                # Nothing to do ukijumuisha cancelled futures
                 pita
-            elikiwa isinstance(fut, _WaitCancelFuture):
+            lasivyo isinstance(fut, _WaitCancelFuture):
                 # _WaitCancelFuture must sio be cancelled
                 pita
             isipokua:
@@ -851,7 +851,7 @@ kundi IocpProactor:
                             context['source_traceback'] = fut._source_traceback
                         self._loop.call_exception_handler(context)
 
-        # Wait until all cancelled overlapped complete: don't exit with running
+        # Wait until all cancelled overlapped complete: don't exit ukijumuisha running
         # overlapped to prevent a crash. Display progress every second ikiwa the
         # loop ni still running.
         msg_update = 1.0

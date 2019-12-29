@@ -41,7 +41,7 @@ kundi ForkServer(object):
 
     eleza _stop(self):
         # Method used by unit tests to stop the server
-        with self._lock:
+        ukijumuisha self._lock:
             self._stop_unlocked()
 
     eleza _stop_unlocked(self):
@@ -83,7 +83,7 @@ kundi ForkServer(object):
         self.ensure_running()
         ikiwa len(fds) + 4 >= MAXFDS_TO_SEND:
             ashiria ValueError('too many fds')
-        with socket.socket(socket.AF_UNIX) kama client:
+        ukijumuisha socket.socket(socket.AF_UNIX) kama client:
             client.connect(self._forkserver_address)
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
@@ -108,7 +108,7 @@ kundi ForkServer(object):
         process will just reuse the forkserver started by its parent, so
         ensure_running() will do nothing.
         '''
-        with self._lock:
+        ukijumuisha self._lock:
             resource_tracker.ensure_running()
             ikiwa self._forkserver_pid ni sio Tupu:
                 # forkserver was launched before, ni it still running?
@@ -132,7 +132,7 @@ kundi ForkServer(object):
             isipokua:
                 data = {}
 
-            with socket.socket(socket.AF_UNIX) kama listener:
+            ukijumuisha socket.socket(socket.AF_UNIX) kama listener:
                 address = connection.arbitrary_address('AF_UNIX')
                 listener.bind(address)
                 os.chmod(address, 0o600)
@@ -202,7 +202,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
     # map child pids to client fds
     pid_to_fd = {}
 
-    with socket.socket(socket.AF_UNIX, fileno=listener_fd) kama listener, \
+    ukijumuisha socket.socket(socket.AF_UNIX, fileno=listener_fd) kama listener, \
          selectors.DefaultSelector() kama selector:
         _forkserver._forkserver_address = listener.getsockname()
 
@@ -257,7 +257,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
 
                 ikiwa listener kwenye rfds:
                     # Incoming fork request
-                    with listener.accept()[0] kama s:
+                    ukijumuisha listener.accept()[0] kama s:
                         # Receive fds kutoka client
                         fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
                         ikiwa len(fds) > MAXFDS_TO_SEND:

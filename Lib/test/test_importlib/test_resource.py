@@ -99,7 +99,7 @@ kundi ResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
     eleza test_unrelated_contents(self):
         # https://gitlab.com/python-devs/importlib_resources/issues/44
         #
-        # Here we have a zip file with two unrelated subpackages.  The bug
+        # Here we have a zip file ukijumuisha two unrelated subpackages.  The bug
         # reports that getting the contents of a resource rudishas unrelated
         # files.
         self.assertEqual(

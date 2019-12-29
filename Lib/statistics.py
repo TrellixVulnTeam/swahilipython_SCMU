@@ -20,7 +20,7 @@ median_high         High median of data.
 median_grouped      Median, ama 50th percentile, of grouped data.
 mode                Mode (most common value) of data.
 multimode           List of modes (most common values of data).
-quantiles           Divide data into intervals with equal probability.
+quantiles           Divide data into intervals ukijumuisha equal probability.
 ==================  ==================================================
 
 Calculate the arithmetic mean ("the average") of data:
@@ -124,7 +124,7 @@ eleza _sum(data, start=0):
     """_sum(data [, start]) -> (type, sum, count)
 
     Return a high-precision sum of the given numeric data kama a fraction,
-    together with the type to be converted to na the count of items.
+    together ukijumuisha the type to be converted to na the count of items.
 
     If optional argument ``start`` ni given, it ni added to the total.
     If ``data`` ni empty, ``start`` (defaulting to 0) ni rudishaed.
@@ -373,7 +373,7 @@ eleza harmonic_mean(data):
     ama ratios, kila example speeds. Example:
 
     Suppose an investor purchases an equal value of shares kwenye each of
-    three companies, with P/E (price/earning) ratios of 2.5, 3 na 10.
+    three companies, ukijumuisha P/E (price/earning) ratios of 2.5, 3 na 10.
     What ni the average P/E ratio kila the investor's portfolio?
 
     >>> harmonic_mean([2.5, 3, 10])  # For an equal investment portfolio.
@@ -394,7 +394,7 @@ eleza harmonic_mean(data):
     n = len(data)
     ikiwa n < 1:
         ashiria StatisticsError('harmonic_mean requires at least one data point')
-    elikiwa n == 1:
+    lasivyo n == 1:
         x = data[0]
         ikiwa isinstance(x, (numbers.Real, Decimal)):
             ikiwa x < 0:
@@ -506,7 +506,7 @@ eleza median_grouped(data, interval=1):
     n = len(data)
     ikiwa n == 0:
         ashiria StatisticsError("no median kila empty data")
-    elikiwa n == 1:
+    lasivyo n == 1:
         rudisha data[0]
     # Find the value at the midpoint. Remember this corresponds to the
     # centre of the kundi interval.
@@ -520,7 +520,7 @@ eleza median_grouped(data, interval=1):
         # Mixed type. For now we just coerce to float.
         L = float(x) - float(interval)/2
 
-    # Uses bisection search to search kila x kwenye data with log(n) time complexity
+    # Uses bisection search to search kila x kwenye data ukijumuisha log(n) time complexity
     # Find the position of leftmost occurrence of x kwenye data
     l1 = _find_lteq(data, x)
     # Find the position of rightmost occurrence of x kwenye data[l1...len(data)]
@@ -540,12 +540,12 @@ eleza mode(data):
         >>> mode([1, 1, 2, 3, 3, 3, 3, 4])
         3
 
-    This also works with nominal (non-numeric) data:
+    This also works ukijumuisha nominal (non-numeric) data:
 
         >>> mode(["red", "blue", "blue", "red", "green", "red", "red"])
         'red'
 
-    If there are multiple modes with same frequency, rudisha the first one
+    If there are multiple modes ukijumuisha same frequency, rudisha the first one
     encountered:
 
         >>> mode(['red', 'red', 'green', 'blue', 'blue'])
@@ -597,11 +597,11 @@ eleza multimode(data):
 # For sample data where there ni a positive probability kila values
 # beyond the range of the data, the R6 exclusive method ni a
 # reasonable choice.  Consider a random sample of nine values kutoka a
-# population with a uniform distribution kutoka 0.0 to 100.0.  The
+# population ukijumuisha a uniform distribution kutoka 0.0 to 100.0.  The
 # distribution of the third ranked sample point ni described by
 # betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, and
-# mean=0.300.  Only the latter (which corresponds with R6) gives the
-# desired cut point with 30% of the population falling below that
+# mean=0.300.  Only the latter (which corresponds ukijumuisha R6) gives the
+# desired cut point ukijumuisha 30% of the population falling below that
 # value, making it comparable to a result kutoka an inv_cdf() function.
 # The R6 exclusive method ni also idempotent.
 
@@ -618,7 +618,7 @@ eleza multimode(data):
 # external packages can be used kila anything more advanced.
 
 eleza quantiles(data, *, n=4, method='exclusive'):
-    """Divide *data* into *n* continuous intervals with equal probability.
+    """Divide *data* into *n* continuous intervals ukijumuisha equal probability.
 
     Returns a list of (n - 1) cut points separating the intervals.
 
@@ -653,7 +653,7 @@ eleza quantiles(data, *, n=4, method='exclusive'):
         result = []
         kila i kwenye range(1, n):
             j = i * m // n                               # rescale i to m/n
-            j = 1 ikiwa j < 1 else ld-1 ikiwa j > ld-1 else j  # clamp to 1 .. ld-1
+            j = 1 ikiwa j < 1 isipokua ld-1 ikiwa j > ld-1 isipokua j  # clamp to 1 .. ld-1
             delta = i*m - j*n                            # exact integer math
             interpolated = (data[j-1] * (n - delta) + data[j] * delta) / n
             result.append(interpolated)
@@ -668,7 +668,7 @@ eleza quantiles(data, *, n=4, method='exclusive'):
 #     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
 #
 # Under no circumstances use the so-called "computational formula for
-# variance", kama that ni only suitable kila hand calculations with a small
+# variance", kama that ni only suitable kila hand calculations ukijumuisha a small
 # amount of low-precision data. It has terrible numeric properties.
 #
 # See a comparison of three computational methods here:
@@ -679,7 +679,7 @@ eleza _ss(data, c=Tupu):
 
     If ``c`` ni Tupu, the mean ni calculated kwenye one pita, na the deviations
     kutoka the mean are calculated kwenye a second pita. Otherwise, deviations are
-    calculated kutoka ``c`` kama given. Use the second case with care, kama it can
+    calculated kutoka ``c`` kama given. Use the second case ukijumuisha care, kama it can
     lead to garbage results.
     """
     ikiwa c ni Tupu:
@@ -697,7 +697,7 @@ eleza _ss(data, c=Tupu):
 eleza variance(data, xbar=Tupu):
     """Return the sample variance of data.
 
-    data should be an iterable of Real-valued numbers, with at least two
+    data should be an iterable of Real-valued numbers, ukijumuisha at least two
     values. The optional argument xbar, ikiwa given, should be the mean of
     the data. If it ni missing ama Tupu, the mean ni automatically calculated.
 
@@ -744,7 +744,7 @@ eleza variance(data, xbar=Tupu):
 eleza pvariance(data, mu=Tupu):
     """Return the population variance of ``data``.
 
-    data should be a sequence ama iterator of Real-valued numbers, with at least one
+    data should be a sequence ama iterator of Real-valued numbers, ukijumuisha at least one
     value. The optional argument mu, ikiwa given, should be the mean of
     the data. If it ni missing ama Tupu, the mean ni automatically calculated.
 
@@ -848,7 +848,7 @@ eleza _normal_dist_inv_cdf(p, mu, sigma):
                      1.0)
         x = num / den
         rudisha mu + (x * sigma)
-    r = p ikiwa q <= 0.0 else 1.0 - p
+    r = p ikiwa q <= 0.0 isipokua 1.0 - p
     r = sqrt(-log(r))
     ikiwa r <= 5.0:
         r = r - 1.6
@@ -921,7 +921,7 @@ kundi NormalDist:
 
     eleza samples(self, n, *, seed=Tupu):
         "Generate *n* samples kila a given mean na standard deviation."
-        gauss = random.gauss ikiwa seed ni Tupu else random.Random(seed).gauss
+        gauss = random.gauss ikiwa seed ni Tupu isipokua random.Random(seed).gauss
         mu, sigma = self._mu, self._sigma
         rudisha [gauss(mu, sigma) kila i kwenye range(n)]
 
@@ -955,7 +955,7 @@ kundi NormalDist:
         rudisha _normal_dist_inv_cdf(p, self._mu, self._sigma)
 
     eleza quantiles(self, n=4):
-        """Divide into *n* continuous intervals with equal probability.
+        """Divide into *n* continuous intervals ukijumuisha equal probability.
 
         Returns a list of (n - 1) cut points separating the intervals.
 
@@ -1060,7 +1060,7 @@ kundi NormalDist:
         """Multiply both mu na sigma by a constant.
 
         Used kila rescaling, perhaps to change measurement units.
-        Sigma ni scaled with the absolute value of the constant.
+        Sigma ni scaled ukijumuisha the absolute value of the constant.
         """
         rudisha NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
 
@@ -1068,7 +1068,7 @@ kundi NormalDist:
         """Divide both mu na sigma by a constant.
 
         Used kila rescaling, perhaps to change measurement units.
-        Sigma ni scaled with the absolute value of the constant.
+        Sigma ni scaled ukijumuisha the absolute value of the constant.
         """
         rudisha NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
 
@@ -1130,19 +1130,19 @@ ikiwa __name__ == '__main__':
     G2 = g2.samples(n)
 
     kila func kwenye (add, sub):
-        andika(f'\nTest {func.__name__} with another NormalDist:')
+        andika(f'\nTest {func.__name__} ukijumuisha another NormalDist:')
         andika(func(g1, g2))
         andika(NormalDist.kutoka_samples(map(func, G1, G2)))
 
     const = 11
     kila func kwenye (add, sub, mul, truediv):
-        andika(f'\nTest {func.__name__} with a constant:')
+        andika(f'\nTest {func.__name__} ukijumuisha a constant:')
         andika(func(g1, const))
         andika(NormalDist.kutoka_samples(map(func, G1, repeat(const))))
 
     const = 19
     kila func kwenye (add, sub, mul):
-        andika(f'\nTest constant with {func.__name__}:')
+        andika(f'\nTest constant ukijumuisha {func.__name__}:')
         andika(func(const, g1))
         andika(NormalDist.kutoka_samples(map(func, repeat(const), G1)))
 

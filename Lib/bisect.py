@@ -67,7 +67,7 @@ eleza bisect_left(a, x, lo=0, hi=Tupu):
         isipokua: hi = mid
     rudisha lo
 
-# Overwrite above definitions with a fast C implementation
+# Overwrite above definitions ukijumuisha a fast C implementation
 jaribu:
     kutoka _bisect agiza *
 tatizo ImportError:

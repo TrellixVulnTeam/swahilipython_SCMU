@@ -13,13 +13,13 @@ and:
 Approach:
 
 First, check ikiwa the source consists entirely of blank lines and
-comments; ikiwa so, replace it with 'pita', because the built-in
+comments; ikiwa so, replace it ukijumuisha 'pita', because the built-in
 parser doesn't always do the right thing kila these.
 
-Compile three times: kama is, with \n, na with \n\n appended.  If it
-compiles kama is, it's complete.  If it compiles with one \n appended,
+Compile three times: kama is, ukijumuisha \n, na ukijumuisha \n\n appended.  If it
+compiles kama is, it's complete.  If it compiles ukijumuisha one \n appended,
 we expect more.  If it doesn't compile either way, we compare the
-error we get when compiling with \n ama \n\n appended.  If the errors
+error we get when compiling ukijumuisha \n ama \n\n appended.  If the errors
 are the same, the code ni broken.  But ikiwa the errors are different, we
 expect more.  Not intuitive; sio even guaranteed to hold kwenye future
 releases; but this matches the compiler's behavior kutoka Python 1.4
@@ -27,7 +27,7 @@ through 2.2, at least.
 
 Caveat:
 
-It ni possible (but sio likely) that the parser stops parsing with a
+It ni possible (but sio likely) that the parser stops parsing ukijumuisha a
 successful outcome before reaching the end of the source; kwenye this
 case, trailing symbols may be ignored instead of causing an error.
 For example, a backslash followed by two newlines may be followed by
@@ -46,14 +46,14 @@ CommandCompiler():
     signature to compile_command; the difference ni that ikiwa the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' na compiles all subsequent program texts
-    with the statement kwenye force.
+    ukijumuisha the statement kwenye force.
 
 The module also provides another class:
 
 Compile():
 
     Instances of this kundi act like the built-in function compile,
-    but with 'memory' kwenye the sense described above.
+    but ukijumuisha 'memory' kwenye the sense described above.
 """
 
 agiza __future__
@@ -73,7 +73,7 @@ eleza _maybe_compile(compiler, source, filename, symbol):
             koma               # Leave it alone
     isipokua:
         ikiwa symbol != "eval":
-            source = "pita"     # Replace it with a 'pita' statement
+            source = "pita"     # Replace it ukijumuisha a 'pita' statement
 
     err = err1 = err2 = Tupu
     code = code1 = code2 = Tupu
@@ -125,7 +125,7 @@ kundi Compile:
     """Instances of this kundi behave much like the built-in compile
     function, but ikiwa one ni used to compile text containing a future
     statement, it "remembers" na compiles all subsequent program texts
-    with the statement kwenye force."""
+    ukijumuisha the statement kwenye force."""
     eleza __init__(self):
         self.flags = PyCF_DONT_IMPLY_DEDENT
 
@@ -141,7 +141,7 @@ kundi CommandCompiler:
     signature to compile_command; the difference ni that ikiwa the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' na compiles all subsequent program texts
-    with the statement kwenye force."""
+    ukijumuisha the statement kwenye force."""
 
     eleza __init__(self,):
         self.compiler = Compile()

@@ -129,7 +129,7 @@ kundi PosixTester(unittest.TestCase):
         self.assertRaises(TypeError, posix.initgroups, 3, "foo")
         self.assertRaises(TypeError, posix.initgroups, "foo", 3, object())
 
-        # If a non-privileged user invokes it, it should fail with OSError
+        # If a non-privileged user invokes it, it should fail ukijumuisha OSError
         # EPERM.
         ikiwa os.getuid() != 0:
             jaribu:
@@ -173,7 +173,7 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(posix, 'truncate'), "test needs posix.truncate()")
     eleza test_truncate(self):
-        with open(support.TESTFN, 'w') kama fp:
+        ukijumuisha open(support.TESTFN, 'w') kama fp:
             fp.write('test')
             fp.flush()
         posix.truncate(support.TESTFN, 0)
@@ -207,24 +207,24 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'fork'), "test needs os.fork()")
     eleza test_register_at_fork(self):
-        with self.assertRaises(TypeError, msg="Positional args sio allowed"):
+        ukijumuisha self.assertRaises(TypeError, msg="Positional args sio allowed"):
             os.register_at_fork(lambda: Tupu)
-        with self.assertRaises(TypeError, msg="Args must be callable"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(before=2)
-        with self.assertRaises(TypeError, msg="Args must be callable"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(after_in_child="three")
-        with self.assertRaises(TypeError, msg="Args must be callable"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(after_in_parent=b"Five")
-        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must sio be Tupu"):
             os.register_at_fork(before=Tupu)
-        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must sio be Tupu"):
             os.register_at_fork(after_in_child=Tupu)
-        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+        ukijumuisha self.assertRaises(TypeError, msg="Args must sio be Tupu"):
             os.register_at_fork(after_in_parent=Tupu)
-        with self.assertRaises(TypeError, msg="Invalid arg was allowed"):
+        ukijumuisha self.assertRaises(TypeError, msg="Invalid arg was allowed"):
             # Ensure a combination of valid na invalid ni an error.
             os.register_at_fork(before=Tupu, after_in_parent=lambda: 3)
-        with self.assertRaises(TypeError, msg="Invalid arg was allowed"):
+        ukijumuisha self.assertRaises(TypeError, msg="Invalid arg was allowed"):
             # Ensure a combination of valid na invalid ni an error.
             os.register_at_fork(before=lambda: Tupu, after_in_child='')
         # We test actual registrations kwenye their own process so kama sio to
@@ -252,7 +252,7 @@ kundi PosixTester(unittest.TestCase):
             isipokua:
                 jaribu:
                     os.close(w)
-                    with open(r, "rb") kama f:
+                    ukijumuisha open(r, "rb") kama f:
                         data = f.read()
                         assert len(data) == 6, data
                         # Check before-fork callbacks
@@ -329,7 +329,7 @@ kundi PosixTester(unittest.TestCase):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
         jaribu:
             buf = [bytearray(2**16)] * 2**15
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 os.preadv(fd, buf, 0)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
             self.assertEqual(bytes(buf[0]), b'\0'* 2**16)
@@ -381,7 +381,7 @@ kundi PosixTester(unittest.TestCase):
     eleza test_pwritev_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
         jaribu:
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 os.pwritev(fd, [b"x" * 2**16] * 2**15, 0)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
         mwishowe:
@@ -493,7 +493,7 @@ kundi PosixTester(unittest.TestCase):
     eleza test_writev_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
         jaribu:
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 os.writev(fd, [b"x" * 2**16] * 2**15)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
         mwishowe:
@@ -527,7 +527,7 @@ kundi PosixTester(unittest.TestCase):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
         jaribu:
             buf = [bytearray(2**16)] * 2**15
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 os.readv(fd, buf)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
             self.assertEqual(bytes(buf[0]), b'\0'* 2**16)
@@ -733,7 +733,7 @@ kundi PosixTester(unittest.TestCase):
             check_stat(big_value, big_value)
             chown_func(first_param, uid, gid)
             check_stat(uid, gid)
-        elikiwa platform.system() kwenye ('HP-UX', 'SunOS'):
+        lasivyo platform.system() kwenye ('HP-UX', 'SunOS'):
             # HP-UX na Solaris can allow a non-root user to chown() to root
             # (issue #5113)
             ashiria unittest.SkipTest("Skipping because of non-standard chown() "
@@ -799,13 +799,13 @@ kundi PosixTester(unittest.TestCase):
         self.assertIn(support.TESTFN, posix.listdir())
 
     eleza test_listdir_bytes(self):
-        # When listdir ni called with a bytes object,
+        # When listdir ni called ukijumuisha a bytes object,
         # the rudishaed strings are of type bytes.
         self.assertIn(os.fsencode(support.TESTFN), posix.listdir(b'.'))
 
     eleza test_listdir_bytes_like(self):
         kila cls kwenye bytearray, memoryview:
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 names = posix.listdir(cls(b'.'))
             self.assertIn(os.fsencode(support.TESTFN), names)
             kila name kwenye names:
@@ -853,7 +853,7 @@ kundi PosixTester(unittest.TestCase):
         self.assertRaises(TypeError, os.pipe2, 'DEADBEEF')
         self.assertRaises(TypeError, os.pipe2, 0, 0)
 
-        # try calling with flags = 0, like os.pipe()
+        # try calling ukijumuisha flags = 0, like os.pipe()
         r, w = os.pipe2(0)
         os.close(r)
         os.close(w)
@@ -971,17 +971,17 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "putenv"), "requires os.putenv()")
     eleza test_putenv(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv('FRUIT\0VEGETABLE', 'cabbage')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv(b'FRUIT\0VEGETABLE', b'cabbage')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv('FRUIT', 'orange\0VEGETABLE=cabbage')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv(b'FRUIT', b'orange\0VEGETABLE=cabbage')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv('FRUIT=ORANGE', 'lemon')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.putenv(b'FRUIT=ORANGE', b'lemon')
 
     @unittest.skipUnless(hasattr(posix, 'getcwd'), 'test needs posix.getcwd()')
@@ -1031,7 +1031,7 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'getegid'), "test needs os.getegid()")
     eleza test_getgroups(self):
-        with os.popen('id -G 2>/dev/null') kama idg:
+        ukijumuisha os.popen('id -G 2>/dev/null') kama idg:
             groups = idg.read().strip()
             ret = idg.close()
 
@@ -1093,7 +1093,7 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(os.stat kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.stat()")
     eleza test_stat_dir_fd(self):
         support.unlink(support.TESTFN)
-        with open(support.TESTFN, 'w') kama outfile:
+        ukijumuisha open(support.TESTFN, 'w') kama outfile:
             outfile.write("testline\n")
 
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
@@ -1189,7 +1189,7 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(os.open kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.open()")
     eleza test_open_dir_fd(self):
         support.unlink(support.TESTFN)
-        with open(support.TESTFN, 'w') kama outfile:
+        ukijumuisha open(support.TESTFN, 'w') kama outfile:
             outfile.write("testline\n")
         a = posix.open(posix.getcwd(), posix.O_RDONLY)
         b = posix.open(support.TESTFN, posix.O_RDONLY, dir_fd=a)
@@ -1310,7 +1310,7 @@ kundi PosixTester(unittest.TestCase):
         self.assertIsInstance(param.sched_priority, int)
 
         # POSIX states that calling sched_setparam() ama sched_setscheduler() on
-        # a process with a scheduling policy other than SCHED_FIFO ama SCHED_RR
+        # a process ukijumuisha a scheduling policy other than SCHED_FIFO ama SCHED_RR
         # ni implementation-defined: NetBSD na FreeBSD can rudisha EINVAL.
         ikiwa sio sys.platform.startswith(('freebsd', 'netbsd')):
             jaribu:
@@ -1338,7 +1338,7 @@ kundi PosixTester(unittest.TestCase):
             interval = posix.sched_rr_get_interval(0)
         tatizo OSError kama e:
             # This likely means that sched_rr_get_interval ni only valid for
-            # processes with the SCHED_RR scheduler kwenye effect.
+            # processes ukijumuisha the SCHED_RR scheduler kwenye effect.
             ikiwa e.errno != errno.EINVAL:
                 ashiria
             self.skipTest("only works on SCHED_RR processes")
@@ -1388,7 +1388,7 @@ kundi PosixTester(unittest.TestCase):
         # behaviour:
         # os.SEEK_DATA = current position
         # os.SEEK_HOLE = end of file position
-        with open(support.TESTFN, 'r+b') kama fp:
+        ukijumuisha open(support.TESTFN, 'r+b') kama fp:
             fp.write(b"hello")
             fp.flush()
             size = fp.tell()
@@ -1431,7 +1431,7 @@ kundi PosixTester(unittest.TestCase):
         support.unlink(fn)
         fd = Tupu
         jaribu:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # ashirias
         mwishowe:
             ikiwa fd ni sio Tupu:
@@ -1449,7 +1449,7 @@ kundi PosixTester(unittest.TestCase):
         support.unlink(fn)
         fd = Tupu
         jaribu:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # ashirias
         mwishowe:
             ikiwa fd ni sio Tupu:
@@ -1474,7 +1474,7 @@ kundi PosixGroupsTester(unittest.TestCase):
     eleza tearDown(self):
         ikiwa hasattr(posix, 'setgroups'):
             posix.setgroups(self.saved_groups)
-        elikiwa hasattr(posix, 'initgroups'):
+        lasivyo hasattr(posix, 'initgroups'):
             name = pwd.getpwuid(posix.getuid()).pw_name
             posix.initgroups(name, self.saved_groups[0])
 
@@ -1497,7 +1497,7 @@ kundi PosixGroupsTester(unittest.TestCase):
 
 
 kundi _PosixSpawnMixin:
-    # Program which does nothing na exits with status 0 (success)
+    # Program which does nothing na exits ukijumuisha status 0 (success)
     NOOP_PROGRAM = (sys.executable, '-I', '-S', '-c', 'pita')
     spawn_func = Tupu
 
@@ -1514,13 +1514,13 @@ kundi _PosixSpawnMixin:
         self.addCleanup(support.unlink, pidfile)
         script = f"""ikiwa 1:
             agiza os
-            with open({pidfile!r}, "w") kama pidfile:
+            ukijumuisha open({pidfile!r}, "w") kama pidfile:
                 pidfile.write(str(os.getpid()))
             """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args, os.environ)
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(pidfile) kama f:
+        ukijumuisha open(pidfile) kama f:
             self.assertEqual(f.read(), str(pid))
 
     eleza test_no_such_executable(self):
@@ -1543,14 +1543,14 @@ kundi _PosixSpawnMixin:
         self.addCleanup(support.unlink, envfile)
         script = f"""ikiwa 1:
             agiza os
-            with open({envfile!r}, "w") kama envfile:
+            ukijumuisha open({envfile!r}, "w") kama envfile:
                 envfile.write(os.environ['foo'])
         """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args,
                               {**os.environ, 'foo': 'bar'})
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(envfile) kama f:
+        ukijumuisha open(envfile) kama f:
             self.assertEqual(f.read(), 'bar')
 
     eleza test_none_file_actions(self):
@@ -1590,7 +1590,7 @@ kundi _PosixSpawnMixin:
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
     eleza test_resetids_wrong_type(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, resetids=Tupu)
@@ -1605,7 +1605,7 @@ kundi _PosixSpawnMixin:
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
     eleza test_setpgroup_wrong_type(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setpgroup="023")
@@ -1626,15 +1626,15 @@ kundi _PosixSpawnMixin:
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
     eleza test_setsigmask_wrong_type(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=34)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=["j"])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=[signal.NSIG,
@@ -1693,15 +1693,15 @@ kundi _PosixSpawnMixin:
         self.assertEqual(os.WTERMSIG(status), signal.SIGUSR1)
 
     eleza test_setsigdef_wrong_type(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=34)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=["j"])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.spawn_func(sys.executable,
                             [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=[signal.NSIG, signal.NSIG+1])
@@ -1760,28 +1760,28 @@ kundi _PosixSpawnMixin:
 
     eleza test_bad_file_actions(self):
         args = self.NOOP_PROGRAM
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[Tupu])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[()])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(Tupu,)])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(12345,)])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(os.POSIX_SPAWN_CLOSE,)])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(os.POSIX_SPAWN_CLOSE, 1, 2)])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(os.POSIX_SPAWN_CLOSE, Tupu)])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(os.POSIX_SPAWN_OPEN,
                                            3, __file__ + '\0',
@@ -1803,7 +1803,7 @@ kundi _PosixSpawnMixin:
         pid = self.spawn_func(args[0], args, os.environ,
                               file_actions=file_actions)
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(outfile) kama f:
+        ukijumuisha open(outfile) kama f:
             self.assertEqual(f.read(), 'hello')
 
     eleza test_close_file(self):
@@ -1814,14 +1814,14 @@ kundi _PosixSpawnMixin:
             jaribu:
                 os.fstat(0)
             tatizo OSError kama e:
-                with open({closefile!r}, 'w') kama closefile:
+                ukijumuisha open({closefile!r}, 'w') kama closefile:
                     closefile.write('is closed %d' % e.errno)
             """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args, os.environ,
                               file_actions=[(os.POSIX_SPAWN_CLOSE, 0)])
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(closefile) kama f:
+        ukijumuisha open(closefile) kama f:
             self.assertEqual(f.read(), 'is closed %d' % errno.EBADF)
 
     eleza test_dup2(self):
@@ -1831,7 +1831,7 @@ kundi _PosixSpawnMixin:
             agiza sys
             sys.stdout.write("hello")
             """
-        with open(dupfile, "wb") kama childfile:
+        ukijumuisha open(dupfile, "wb") kama childfile:
             file_actions = [
                 (os.POSIX_SPAWN_DUP2, childfile.fileno(), 1),
             ]
@@ -1839,7 +1839,7 @@ kundi _PosixSpawnMixin:
             pid = self.spawn_func(args[0], args, os.environ,
                                   file_actions=file_actions)
             self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(dupfile) kama f:
+        ukijumuisha open(dupfile) kama f:
             self.assertEqual(f.read(), 'hello')
 
 
@@ -1879,7 +1879,7 @@ kundi TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
                 ashiria Exception(f"status {status} != 0")
         """ % (spawn_args,))
 
-        # Use a subprocess to test os.posix_spawnp() with a modified PATH
+        # Use a subprocess to test os.posix_spawnp() ukijumuisha a modified PATH
         # environment variable: posix_spawnp() uses the current environment
         # to locate the program, sio its environment argument.
         args = ('-c', code)

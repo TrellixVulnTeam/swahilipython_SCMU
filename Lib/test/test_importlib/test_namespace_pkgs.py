@@ -10,7 +10,7 @@ kutoka test.test_importlib agiza util
 #
 # need to test when nested, so that the top-level path isn't sys.path
 # need to test dynamic path detection, both at top-level na nested
-# with dynamic path, check when a loader ni rudishaed on path reload (that is,
+# ukijumuisha dynamic path, check when a loader ni rudishaed on path reload (that is,
 #  trying to switch kutoka a namespace package to a regular package)
 
 
@@ -39,7 +39,7 @@ eleza namespace_tree_context(**kwargs):
     Save agiza state na sys.modules cache na restore it on exit.
     Typical usage:
 
-    >>> with namespace_tree_context(path=['/tmp/xxyy/portion1',
+    >>> ukijumuisha namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
     ...     pita
     """
@@ -47,7 +47,7 @@ eleza namespace_tree_context(**kwargs):
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
-    with import_context, sys_modules_context():
+    ukijumuisha import_context, sys_modules_context():
         tuma
 
 kundi NamespacePackageTest(unittest.TestCase):
@@ -77,7 +77,7 @@ kundi SingleNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     eleza test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
     eleza test_module_repr(self):
@@ -93,7 +93,7 @@ kundi DynamicPathNamespacePackage(NamespacePackageTest):
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
         # Now modify sys.path
@@ -155,7 +155,7 @@ kundi SingleZipNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     eleza test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
 
@@ -179,7 +179,7 @@ kundi SingleNestedZipNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     eleza test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
 
@@ -201,7 +201,7 @@ kundi LegacySupport(NamespacePackageTest):
 
     eleza test_non_namespace_package_takes_precedence(self):
         agiza foo.one
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
         self.assertIn('__init__', foo.__file__)
         self.assertNotIn('namespace', str(foo.__loader__).lower())
@@ -221,7 +221,7 @@ kundi DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.one.attr, 'parent child one')
         self.assertEqual(parent.child.two.attr, 'parent child two')
 
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza parent.child.three
 
         self.assertEqual(len(parent.__path__), 2)
@@ -238,7 +238,7 @@ kundi DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.one.attr, 'parent child one')
         self.assertEqual(parent.child.two.attr, 'parent child two')
 
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza parent.child.three
 
         # now add project3
@@ -297,15 +297,15 @@ kundi ReloadTests(NamespacePackageTest):
 
     eleza test_cant_import_other(self):
         agiza foo
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
         foo = importlib.reload(foo)
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
     eleza test_dynamic_path(self):
         agiza foo.one
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             agiza foo.two
 
         # Now modify sys.path na reload.

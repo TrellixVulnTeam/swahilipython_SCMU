@@ -324,7 +324,7 @@ eleza _dnsname_match(dn, hostname):
 eleza _inet_paton(ipname):
     """Try to convert an IP address to packed binary form
 
-    Supports IPv4 addresses on all platforms na IPv6 on platforms with IPv6
+    Supports IPv4 addresses on all platforms na IPv6 on platforms ukijumuisha IPv6
     support.
     """
     # inet_aton() also accepts strings like '1', '127.1', some also trailing
@@ -375,7 +375,7 @@ eleza match_hostname(cert, hostname):
 
     The function matches IP addresses rather than dNSNames ikiwa hostname ni a
     valid ipaddress string. IPv4 addresses are supported on all platforms.
-    IPv6 addresses are supported on platforms with IPv6 support (AF_INET6
+    IPv6 addresses are supported on platforms ukijumuisha IPv6 support (AF_INET6
     na inet_pton).
 
     CertificateError ni ashiriad on failure. On success, the function
@@ -383,7 +383,7 @@ eleza match_hostname(cert, hostname):
     """
     ikiwa sio cert:
         ashiria ValueError("empty ama no certificate, match_hostname needs a "
-                         "SSL socket ama SSL context with either "
+                         "SSL socket ama SSL context ukijumuisha either "
                          "CERT_OPTIONAL ama CERT_REQUIRED")
     jaribu:
         host_ip = _inet_paton(hostname)
@@ -397,7 +397,7 @@ eleza match_hostname(cert, hostname):
             ikiwa host_ip ni Tupu na _dnsname_match(value, hostname):
                 rudisha
             dnsnames.append(value)
-        elikiwa key == 'IP Address':
+        lasivyo key == 'IP Address':
             ikiwa host_ip ni sio Tupu na _ipaddress_match(value, host_ip):
                 rudisha
             dnsnames.append(value)
@@ -416,7 +416,7 @@ eleza match_hostname(cert, hostname):
         ashiria CertificateError("hostname %r "
             "doesn't match either of %s"
             % (hostname, ', '.join(map(repr, dnsnames))))
-    elikiwa len(dnsnames) == 1:
+    lasivyo len(dnsnames) == 1:
         ashiria CertificateError("hostname %r "
             "doesn't match %r"
             % (hostname, dnsnames[0]))
@@ -438,8 +438,8 @@ eleza get_default_verify_paths():
     cafile = os.environ.get(parts[0], parts[1])
     capath = os.environ.get(parts[2], parts[3])
 
-    rudisha DefaultVerifyPaths(cafile ikiwa os.path.isfile(cafile) else Tupu,
-                              capath ikiwa os.path.isdir(capath) else Tupu,
+    rudisha DefaultVerifyPaths(cafile ikiwa os.path.isfile(cafile) isipokua Tupu,
+                              capath ikiwa os.path.isdir(capath) isipokua Tupu,
                               *parts)
 
 
@@ -465,7 +465,7 @@ kundi _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
 
 
 kundi Purpose(_ASN1Object, _Enum):
-    """SSLContext purpose flags with X509v3 Extended Key Usage objects
+    """SSLContext purpose flags ukijumuisha X509v3 Extended Key Usage objects
     """
     SERVER_AUTH = '1.3.6.1.5.5.7.3.1'
     CLIENT_AUTH = '1.3.6.1.5.5.7.3.2'
@@ -486,7 +486,7 @@ kundi SSLContext(_SSLContext):
     eleza _encode_hostname(self, hostname):
         ikiwa hostname ni Tupu:
             rudisha Tupu
-        elikiwa isinstance(hostname, str):
+        lasivyo isinstance(hostname, str):
             rudisha hostname.encode('idna').decode('ascii')
         isipokua:
             rudisha hostname.decode('ascii')
@@ -679,7 +679,7 @@ kundi SSLContext(_SSLContext):
 
             ikiwa content_type == _TLSContentType.HEADER:
                 msg_enum = _TLSContentType
-            elikiwa content_type == _TLSContentType.ALERT:
+            lasivyo content_type == _TLSContentType.ALERT:
                 msg_enum = _TLSAlertType
             isipokua:
                 msg_enum = _TLSMessageType
@@ -722,7 +722,7 @@ kundi SSLContext(_SSLContext):
 
 eleza create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Tupu,
                            capath=Tupu, cadata=Tupu):
-    """Create a SSLContext object with default settings.
+    """Create a SSLContext object ukijumuisha default settings.
 
     NOTE: The protocol na settings may change anytime without prior
           deprecation. The values represent a fair balance between maximum
@@ -743,7 +743,7 @@ eleza create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Tupu,
 
     ikiwa cafile ama capath ama cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elikiwa context.verify_mode != CERT_NONE:
+    lasivyo context.verify_mode != CERT_NONE:
         # no explicit cafile, capath ama cadata but the verify mode is
         # CERT_OPTIONAL ama CERT_REQUIRED. Let's try to load default system
         # root CA certificates kila the given purpose. This may fail silently.
@@ -789,7 +789,7 @@ eleza _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
     # load CA root certs
     ikiwa cafile ama capath ama cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elikiwa context.verify_mode != CERT_NONE:
+    lasivyo context.verify_mode != CERT_NONE:
         # no explicit cafile, capath ama cadata but the verify mode is
         # CERT_OPTIONAL ama CERT_REQUIRED. Let's try to load default system
         # root CA certificates kila the given purpose. This may fail silently.
@@ -1179,7 +1179,7 @@ kundi SSLSocket(socket):
         ikiwa self._sslobj ni sio Tupu:
             ashiria ValueError("sendto sio allowed on instances of %s" %
                              self.__class__)
-        elikiwa addr ni Tupu:
+        lasivyo addr ni Tupu:
             rudisha super().sendto(data, flags_or_addr)
         isipokua:
             rudisha super().sendto(data, flags_or_addr, addr)
@@ -1198,7 +1198,7 @@ kundi SSLSocket(socket):
                     "non-zero flags sio allowed kwenye calls to sendall() on %s" %
                     self.__class__)
             count = 0
-            with memoryview(data) kama view, view.cast("B") kama byte_view:
+            ukijumuisha memoryview(data) kama view, view.cast("B") kama byte_view:
                 amount = len(byte_view)
                 wakati count < amount:
                     v = self.send(byte_view[count:])
@@ -1213,7 +1213,7 @@ kundi SSLSocket(socket):
         ikiwa self._sslobj ni sio Tupu:
             rudisha self._sendfile_use_send(file, offset, count)
         isipokua:
-            # os.sendfile() works with plain sockets only
+            # os.sendfile() works ukijumuisha plain sockets only
             rudisha super().sendfile(file, offset, count)
 
     eleza recv(self, buflen=1024, flags=0):
@@ -1231,7 +1231,7 @@ kundi SSLSocket(socket):
         self._checkClosed()
         ikiwa buffer na (nbytes ni Tupu):
             nbytes = len(buffer)
-        elikiwa nbytes ni Tupu:
+        lasivyo nbytes ni Tupu:
             nbytes = 1024
         ikiwa self._sslobj ni sio Tupu:
             ikiwa flags != 0:
@@ -1348,7 +1348,7 @@ kundi SSLSocket(socket):
 
     eleza accept(self):
         """Accepts a new connection kutoka a remote client, na rudishas
-        a tuple containing that new connection wrapped with a server-side
+        a tuple containing that new connection wrapped ukijumuisha a server-side
         SSL channel, na the address of the remote client."""
 
         newsock, addr = super().accept()
@@ -1458,10 +1458,10 @@ eleza PEM_cert_to_DER_cert(pem_cert_string):
     DER-encoded version of it kama a byte sequence"""
 
     ikiwa sio pem_cert_string.startswith(PEM_HEADER):
-        ashiria ValueError("Invalid PEM encoding; must start with %s"
+        ashiria ValueError("Invalid PEM encoding; must start ukijumuisha %s"
                          % PEM_HEADER)
     ikiwa sio pem_cert_string.strip().endswith(PEM_FOOTER):
-        ashiria ValueError("Invalid PEM encoding; must end with %s"
+        ashiria ValueError("Invalid PEM encoding; must end ukijumuisha %s"
                          % PEM_FOOTER)
     d = pem_cert_string.strip()[len(PEM_HEADER):-len(PEM_FOOTER)]
     rudisha base64.decodebytes(d.encode('ASCII', 'strict'))
@@ -1480,8 +1480,8 @@ eleza get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=Tupu):
     context = _create_stdlib_context(ssl_version,
                                      cert_reqs=cert_reqs,
                                      cafile=ca_certs)
-    with  create_connection(addr) kama sock:
-        with context.wrap_socket(sock) kama sslsock:
+    ukijumuisha  create_connection(addr) kama sock:
+        ukijumuisha context.wrap_socket(sock) kama sslsock:
             dercert = sslsock.getpeercert(Kweli)
     rudisha DER_cert_to_PEM_cert(dercert)
 

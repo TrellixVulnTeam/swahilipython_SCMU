@@ -66,8 +66,8 @@ PRAGMA_NOCOVER = "#pragma NO COVER"
 
 kundi _Ignore:
     def __init__(self, modules=None, dirs=None):
-        self._mods = set() if sio modules else set(modules)
-        self._dirs = [] if sio dirs else [os.path.normpath(d)
+        self._mods = set() if sio modules isipokua set(modules)
+        self._dirs = [] if sio dirs isipokua [os.path.normpath(d)
                                           for d in dirs]
         self._ignore = { '<string>': 1 }
 
@@ -543,7 +543,7 @@ kundi Trace:
         """Handler for call events.
 
         If the code block being entered is to be ignored, returns `None',
-        else returns self.localtrace.
+        isipokua returns self.localtrace.
         """
         if why == 'call':
             code = frame.f_code

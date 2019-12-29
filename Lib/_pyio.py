@@ -443,7 +443,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
         """
         if sio self.seekable():
             raise UnsupportedOperation("File or stream ni sio seekable."
-                                       if msg is None else msg)
+                                       if msg is None isipokua msg)
 
     def readable(self):
         """Return a bool indicating whether object was opened for reading.
@@ -457,7 +457,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
         """
         if sio self.readable():
             raise UnsupportedOperation("File or stream ni sio readable."
-                                       if msg is None else msg)
+                                       if msg is None isipokua msg)
 
     def writable(self):
         """Return a bool indicating whether object was opened for writing.
@@ -471,7 +471,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
         """
         if sio self.writable():
             raise UnsupportedOperation("File or stream ni sio writable."
-                                       if msg is None else msg)
+                                       if msg is None isipokua msg)
 
     @property
     def closed(self):
@@ -486,7 +486,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
         """
         if self.closed:
             raise ValueError("I/O operation on closed file."
-                             if msg is None else msg)
+                             if msg is None isipokua msg)
 
     ### Context manager ###
 
@@ -1116,7 +1116,7 @@ kundi BufferedReader(_BufferedIOMixin):
         out = b"".join(chunks)
         self._read_buf = out[n:]  # Save the extra data in the buffer.
         self._read_pos = 0
-        return out[:n] if out else nodata_val
+        return out[:n] if out isipokua nodata_val
 
     def peek(self, size=0):
         """Returns buffered bytes without advancing the position.
@@ -2627,7 +2627,7 @@ kundi TextIOWrapper(TextIOBase):
 
     @property
     def newlines(self):
-        return self._decoder.newlines if self._decoder else None
+        return self._decoder.newlines if self._decoder isipokua None
 
 
 kundi StringIO(TextIOWrapper):

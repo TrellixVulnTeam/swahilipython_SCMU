@@ -10,7 +10,7 @@ kundi NetrcTestCase(unittest.TestCase):
         ikiwa sys.platform != 'cygwin':
             mode += 't'
         temp_fd, temp_filename = tempfile.mkstemp()
-        with os.fdopen(temp_fd, mode=mode) kama fp:
+        ukijumuisha os.fdopen(temp_fd, mode=mode) kama fp:
             fp.write(test_data)
         self.addCleanup(os.unlink, temp_filename)
         rudisha netrc.netrc(temp_filename)
@@ -112,12 +112,12 @@ kundi NetrcTestCase(unittest.TestCase):
         os.mkdir(d)
         self.addCleanup(support.rmtree, d)
         fn = os.path.join(d, '.netrc')
-        with open(fn, 'wt') kama f:
+        ukijumuisha open(fn, 'wt') kama f:
             f.write("""\
                 machine foo.domain.com login bar pitaword pita
                 default login foo pitaword pita
                 """)
-        with support.EnvironmentVarGuard() kama environ:
+        ukijumuisha support.EnvironmentVarGuard() kama environ:
             environ.set('HOME', d)
             os.chmod(fn, 0o600)
             nrc = netrc.netrc()
@@ -130,7 +130,7 @@ kundi NetrcTestCase(unittest.TestCase):
         d = support.TESTFN
         os.mkdir(d)
         self.addCleanup(support.rmtree, d)
-        with support.EnvironmentVarGuard() kama environ:
+        ukijumuisha support.EnvironmentVarGuard() kama environ:
             environ.set('HOME', d)
             self.assertRaises(FileNotFoundError, netrc.netrc)
 
@@ -143,7 +143,7 @@ kundi NetrcTestCase(unittest.TestCase):
         os.mkdir(fake_home)
         self.addCleanup(support.rmtree, fake_home)
         fake_netrc_path = os.path.join(fake_home, '.netrc')
-        with open(fake_netrc_path, 'w') kama f:
+        ukijumuisha open(fake_netrc_path, 'w') kama f:
             f.write('machine foo.domain.com login bar pitaword pita')
         os.chmod(fake_netrc_path, 0o600)
 
@@ -152,13 +152,13 @@ kundi NetrcTestCase(unittest.TestCase):
 
         eleza fake_expanduser(s):
             called.append(s)
-            with support.EnvironmentVarGuard() kama environ:
+            ukijumuisha support.EnvironmentVarGuard() kama environ:
                 environ.set('HOME', fake_home)
                 environ.set('USERPROFILE', fake_home)
                 result = orig_expanduser(s)
                 rudisha result
 
-        with support.swap_attr(os.path, 'expanduser', fake_expanduser):
+        ukijumuisha support.swap_attr(os.path, 'expanduser', fake_expanduser):
             nrc = netrc.netrc()
             login, account, pitaword = nrc.authenticators('foo.domain.com')
             self.assertEqual(login, 'bar')

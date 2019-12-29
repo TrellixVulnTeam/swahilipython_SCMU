@@ -12,11 +12,11 @@ kundi MyFilter(Delegator):
         Delegator.__init__(self, Tupu)
 
     eleza insert(self, *args):
-        self.insert_called_with = args
+        self.insert_called_ukijumuisha = args
         self.delegate.insert(*args)
 
     eleza delete(self, *args):
-        self.delete_called_with = args
+        self.delete_called_ukijumuisha = args
         self.delegate.delete(*args)
 
     eleza uppercase_insert(self, index, chars, tags=Tupu):

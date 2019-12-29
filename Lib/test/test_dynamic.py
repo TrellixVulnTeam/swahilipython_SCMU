@@ -32,7 +32,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_item(globals(), "len", lambda x: 7):
+        ukijumuisha swap_item(globals(), "len", lambda x: 7):
             self.assertEqual(foo(), 7)
 
     eleza test_modify_builtins(self):
@@ -42,7 +42,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_attr(builtins, "len", lambda x: 7):
+        ukijumuisha swap_attr(builtins, "len", lambda x: 7):
             self.assertEqual(foo(), 7)
 
     eleza test_modify_builtins_while_generator_active(self):
@@ -55,13 +55,13 @@ kundi RebindBuiltinsTests(unittest.TestCase):
 
         g = foo()
         self.assertEqual(next(g), 3)
-        with swap_attr(builtins, "len", lambda x: 7):
+        ukijumuisha swap_attr(builtins, "len", lambda x: 7):
             self.assertEqual(next(g), 7)
 
     eleza test_modify_builtins_kutoka_leaf_function(self):
         # Verify that modifications made by leaf functions percolate up the
         # callstack.
-        with swap_attr(builtins, "len", len):
+        ukijumuisha swap_attr(builtins, "len", len):
             eleza bar():
                 builtins.len = lambda x: 4
 
@@ -114,7 +114,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
 
         g = foo()
         self.assertEqual(next(g), 3)
-        with swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
+        ukijumuisha swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
             self.assertEqual(next(g), 3)
 
     eleza test_cannot_replace_builtins_dict_between_calls(self):
@@ -123,7 +123,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
+        ukijumuisha swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
             self.assertEqual(foo(), 3)
 
     eleza test_eval_gives_lambda_custom_globals(self):

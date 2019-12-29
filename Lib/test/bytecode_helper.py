@@ -35,7 +35,7 @@ kundi BytecodeTestCase(unittest.TestCase):
                 disassembly = self.get_disassembly_as_string(x)
                 ikiwa argval ni _UNSPECIFIED:
                     msg = '%s occurs kwenye bytecode:\n%s' % (opname, disassembly)
-                elikiwa instr.argval == argval:
+                lasivyo instr.argval == argval:
                     msg = '(%s,%r) occurs kwenye bytecode:\n%s'
                     msg = msg % (opname, argval, disassembly)
                 self.fail(msg)

@@ -46,10 +46,10 @@ _WINDOWS = os.name == 'nt'
 posix = nt = Tupu
 ikiwa os.name == 'posix':
     agiza posix
-elikiwa _WINDOWS:
+lasivyo _WINDOWS:
     agiza nt
 
-COPY_BUFSIZE = 1024 * 1024 ikiwa _WINDOWS else 64 * 1024
+COPY_BUFSIZE = 1024 * 1024 ikiwa _WINDOWS isipokua 64 * 1024
 _USE_CP_SENDFILE = hasattr(os, "sendfile") na sys.platform.startswith("linux")
 _HAS_FCOPYFILE = posix na hasattr(posix, "_fcopyfile")  # macOS
 
@@ -80,7 +80,7 @@ kundi ReadError(OSError):
     """Raised when an archive cannot be read"""
 
 kundi RegistryError(Exception):
-    """Raised when a registry operation with the archiving
+    """Raised when a registry operation ukijumuisha the archiving
     na unpacking registries fails"""
 
 kundi _GiveupOnFastCopy(Exception):
@@ -180,13 +180,13 @@ eleza _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
     # Localize variable access to minimize overhead.
     fsrc_readinto = fsrc.readinto
     fdst_write = fdst.write
-    with memoryview(bytearray(length)) kama mv:
+    ukijumuisha memoryview(bytearray(length)) kama mv:
         wakati Kweli:
             n = fsrc_readinto(mv)
             ikiwa sio n:
                 koma
-            elikiwa n < length:
-                with mv[:n] kama smv:
+            lasivyo n < length:
+                ukijumuisha mv[:n] kama smv:
                     fdst.write(smv)
             isipokua:
                 fdst_write(mv)
@@ -223,10 +223,10 @@ eleza _samefile(src, dst):
             os.path.normcase(os.path.abspath(dst)))
 
 eleza _stat(fn):
-    rudisha fn.stat() ikiwa isinstance(fn, os.DirEntry) else os.stat(fn)
+    rudisha fn.stat() ikiwa isinstance(fn, os.DirEntry) isipokua os.stat(fn)
 
 eleza _islink(fn):
-    rudisha fn.is_symlink() ikiwa isinstance(fn, os.DirEntry) else os.path.islink(fn)
+    rudisha fn.is_symlink() ikiwa isinstance(fn, os.DirEntry) isipokua os.path.islink(fn)
 
 eleza copyfile(src, dst, *, follow_symlinks=Kweli):
     """Copy data kutoka src to dst kwenye the most efficient way possible.
@@ -248,7 +248,7 @@ eleza copyfile(src, dst, *, follow_symlinks=Kweli):
         isipokua:
             # XXX What about other special files? (sockets, devices...)
             ikiwa stat.S_ISFIFO(st.st_mode):
-                fn = fn.path ikiwa isinstance(fn, os.DirEntry) else fn
+                fn = fn.path ikiwa isinstance(fn, os.DirEntry) isipokua fn
                 ashiria SpecialFileError("`%s` ni a named pipe" % fn)
             ikiwa _WINDOWS na i == 0:
                 file_size = st.st_size
@@ -256,7 +256,7 @@ eleza copyfile(src, dst, *, follow_symlinks=Kweli):
     ikiwa sio follow_symlinks na _islink(src):
         os.symlink(os.readlink(src), dst)
     isipokua:
-        with open(src, 'rb') kama fsrc, open(dst, 'wb') kama fdst:
+        ukijumuisha open(src, 'rb') kama fsrc, open(dst, 'wb') kama fdst:
             # macOS
             ikiwa _HAS_FCOPYFILE:
                 jaribu:
@@ -265,7 +265,7 @@ eleza copyfile(src, dst, *, follow_symlinks=Kweli):
                 tatizo _GiveupOnFastCopy:
                     pita
             # Linux
-            elikiwa _USE_CP_SENDFILE:
+            lasivyo _USE_CP_SENDFILE:
                 jaribu:
                     _fastcopy_sendfile(fsrc, fdst)
                     rudisha dst
@@ -273,7 +273,7 @@ eleza copyfile(src, dst, *, follow_symlinks=Kweli):
                     pita
             # Windows, see:
             # https://github.com/python/cpython/pull/7160#discussion_r195405230
-            elikiwa _WINDOWS na file_size > 0:
+            lasivyo _WINDOWS na file_size > 0:
                 _copyfileobj_readinto(fsrc, fdst, min(file_size, COPY_BUFSIZE))
                 rudisha dst
 
@@ -366,7 +366,7 @@ eleza copystat(src, dst, *, follow_symlinks=Kweli):
     lookup("utime")(dst, ns=(st.st_atime_ns, st.st_mtime_ns),
         follow_symlinks=follow)
     # We must copy extended attributes before the file ni (potentially)
-    # chmod()'ed read-only, otherwise setxattr() will error with -EACCES.
+    # chmod()'ed read-only, otherwise setxattr() will error ukijumuisha -EACCES.
     _copyxattr(src, dst, follow_symlinks=follow)
     jaribu:
         lookup("chmod")(dst, mode, follow_symlinks=follow)
@@ -413,7 +413,7 @@ eleza copy(src, dst, *, follow_symlinks=Kweli):
 eleza copy2(src, dst, *, follow_symlinks=Kweli):
     """Copy data na metadata. Return the file's destination.
 
-    Metadata ni copied with copystat(). Please see the copystat function
+    Metadata ni copied ukijumuisha copystat(). Please see the copystat function
     kila more information.
 
     The destination may be a directory.
@@ -455,7 +455,7 @@ eleza _copytree(entries, src, dst, symlinks, ignore, copy_function,
             endelea
         srcname = os.path.join(src, srcentry.name)
         dstname = os.path.join(dst, srcentry.name)
-        srcobj = srcentry ikiwa use_srcentry else srcname
+        srcobj = srcentry ikiwa use_srcentry isipokua srcname
         jaribu:
             is_symlink = srcentry.is_symlink()
             ikiwa is_symlink na os.name == 'nt':
@@ -468,7 +468,7 @@ eleza _copytree(entries, src, dst, symlinks, ignore, copy_function,
                 linkto = os.readlink(srcname)
                 ikiwa symlinks:
                     # We can't just leave it to `copy_function` because legacy
-                    # code with a custom `copy_function` may rely on copytree
+                    # code ukijumuisha a custom `copy_function` may rely on copytree
                     # doing the right thing.
                     os.symlink(linkto, dstname)
                     copystat(srcobj, dstname, follow_symlinks=not symlinks)
@@ -482,14 +482,14 @@ eleza _copytree(entries, src, dst, symlinks, ignore, copy_function,
                                  copy_function, dirs_exist_ok=dirs_exist_ok)
                     isipokua:
                         copy_function(srcobj, dstname)
-            elikiwa srcentry.is_dir():
+            lasivyo srcentry.is_dir():
                 copytree(srcobj, dstname, symlinks, ignore, copy_function,
                          dirs_exist_ok=dirs_exist_ok)
             isipokua:
                 # Will ashiria a SpecialFileError kila unsupported file types
                 copy_function(srcobj, dstname)
         # catch the Error kutoka the recursive copytree so that we can
-        # endelea with other files
+        # endelea ukijumuisha other files
         tatizo Error kama err:
             errors.extend(err.args[0])
         tatizo OSError kama why:
@@ -511,7 +511,7 @@ eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
     dirs_exist_ok dictates whether to ashiria an exception kwenye case dst ama any
     missing parent directory already exists.
 
-    If exception(s) occur, an Error ni ashiriad with a list of reasons.
+    If exception(s) occur, an Error ni ashiriad ukijumuisha a list of reasons.
 
     If the optional symlinks flag ni true, symbolic links kwenye the
     source tree result kwenye symbolic links kwenye the destination tree; if
@@ -525,7 +525,7 @@ eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
     platforms that don't support os.symlink.
 
     The optional ignore argument ni a callable. If given, it
-    ni called with the `src` parameter, which ni the directory
+    ni called ukijumuisha the `src` parameter, which ni the directory
     being visited by copytree(), na `names` which ni the list of
     `src` contents, kama rudishaed by os.listdir():
 
@@ -537,13 +537,13 @@ eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
     sio be copied.
 
     The optional copy_function argument ni a callable that will be used
-    to copy each file. It will be called with the source path na the
+    to copy each file. It will be called ukijumuisha the source path na the
     destination path kama arguments. By default, copy2() ni used, but any
     function that supports the same signature (like copy()) can be used.
 
     """
     sys.audit("shutil.copytree", src, dst)
-    with os.scandir(src) kama entries:
+    ukijumuisha os.scandir(src) kama entries:
         rudisha _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
                          ignore=ignore, copy_function=copy_function,
                          ignore_dangling_symlinks=ignore_dangling_symlinks,
@@ -583,7 +583,7 @@ isipokua:
 # version vulnerable to race conditions
 eleza _rmtree_unsafe(path, onerror):
     jaribu:
-        with os.scandir(path) kama scandir_it:
+        ukijumuisha os.scandir(path) kama scandir_it:
             entries = list(scandir_it)
     tatizo OSError:
         onerror(os.scandir, path, sys.exc_info())
@@ -594,7 +594,7 @@ eleza _rmtree_unsafe(path, onerror):
             jaribu:
                 ikiwa entry.is_symlink():
                     # This can only happen ikiwa someone replaces
-                    # a directory with a symlink after the call to
+                    # a directory ukijumuisha a symlink after the call to
                     # os.scandir ama entry.is_dir above.
                     ashiria OSError("Cannot call rmtree on a symbolic link")
             tatizo OSError:
@@ -614,7 +614,7 @@ eleza _rmtree_unsafe(path, onerror):
 # Version using fd-based APIs to protect against races
 eleza _rmtree_safe_fd(topfd, path, onerror):
     jaribu:
-        with os.scandir(topfd) kama scandir_it:
+        ukijumuisha os.scandir(topfd) kama scandir_it:
             entries = list(scandir_it)
     tatizo OSError kama err:
         err.filename = path
@@ -650,7 +650,7 @@ eleza _rmtree_safe_fd(topfd, path, onerror):
                     isipokua:
                         jaribu:
                             # This can only happen ikiwa someone replaces
-                            # a directory with a symlink after the call to
+                            # a directory ukijumuisha a symlink after the call to
                             # os.scandir ama stat.S_ISDIR above.
                             ashiria OSError("Cannot call rmtree on a symbolic "
                                           "link")
@@ -673,7 +673,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
     """Recursively delete a directory tree.
 
     If ignore_errors ni set, errors are ignored; otherwise, ikiwa onerror
-    ni set, it ni called to handle the error with arguments (func,
+    ni set, it ni called to handle the error ukijumuisha arguments (func,
     path, exc_info) where func ni platform na implementation dependent;
     path ni the argument to that function that caused it to fail; and
     exc_info ni a tuple rudishaed by sys.exc_info().  If ignore_errors
@@ -684,7 +684,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
     ikiwa ignore_errors:
         eleza onerror(*args):
             pita
-    elikiwa onerror ni Tupu:
+    lasivyo onerror ni Tupu:
         eleza onerror(*args):
             ashiria
     ikiwa _use_fd_functions:
@@ -783,7 +783,7 @@ eleza move(src, dst, copy_function=copy2):
             linkto = os.readlink(src)
             os.symlink(linkto, real_dst)
             os.unlink(src)
-        elikiwa os.path.isdir(src):
+        lasivyo os.path.isdir(src):
             ikiwa _destinsrc(src, dst):
                 ashiria Error("Cannot move a directory '%s' into itself"
                             " '%s'." % (src, dst))
@@ -846,11 +846,11 @@ eleza _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     """
     ikiwa compress ni Tupu:
         tar_compression = ''
-    elikiwa _ZLIB_SUPPORTED na compress == 'gzip':
+    lasivyo _ZLIB_SUPPORTED na compress == 'gzip':
         tar_compression = 'gz'
-    elikiwa _BZ2_SUPPORTED na compress == 'bzip2':
+    lasivyo _BZ2_SUPPORTED na compress == 'bzip2':
         tar_compression = 'bz2'
-    elikiwa _LZMA_SUPPORTED na compress == 'xz':
+    lasivyo _LZMA_SUPPORTED na compress == 'xz':
         tar_compression = 'xz'
     isipokua:
         ashiria ValueError("bad value kila 'compress', ama compression format sio "
@@ -858,7 +858,7 @@ eleza _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     agiza tarfile  # late agiza kila komaing circular dependency
 
-    compress_ext = '.' + tar_compression ikiwa compress else ''
+    compress_ext = '.' + tar_compression ikiwa compress isipokua ''
     archive_name = base_name + '.tar' + compress_ext
     archive_dir = os.path.dirname(archive_name)
 
@@ -915,7 +915,7 @@ eleza _make_zipfile(base_name, base_dir, verbose=0, dry_run=0, logger=Tupu):
                     zip_filename, base_dir)
 
     ikiwa sio dry_run:
-        with zipfile.ZipFile(zip_filename, "w",
+        ukijumuisha zipfile.ZipFile(zip_filename, "w",
                              compression=zipfile.ZIP_DEFLATED) kama zf:
             path = os.path.normpath(base_dir)
             ikiwa path != os.curdir:
@@ -1118,7 +1118,7 @@ eleza _unpack_zipfile(filename, extract_dir):
         kila info kwenye zip.infolist():
             name = info.filename
 
-            # don't extract absolute paths ama ones with .. kwenye them
+            # don't extract absolute paths ama ones ukijumuisha .. kwenye them
             ikiwa name.startswith('/') ama '..' kwenye name:
                 endelea
 
@@ -1228,7 +1228,7 @@ ikiwa hasattr(os, 'statvfs'):
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned value ni a named tuple with attributes 'total', 'used' and
+        Returned value ni a named tuple ukijumuisha attributes 'total', 'used' and
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         st = os.statvfs(path)
@@ -1237,7 +1237,7 @@ ikiwa hasattr(os, 'statvfs'):
         used = (st.f_blocks - st.f_bfree) * st.f_frsize
         rudisha _ntuple_diskusage(total, used, free)
 
-elikiwa _WINDOWS:
+lasivyo _WINDOWS:
 
     __all__.append('disk_usage')
     _ntuple_diskusage = collections.namedtuple('usage', 'total used free')
@@ -1245,7 +1245,7 @@ elikiwa _WINDOWS:
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned values ni a named tuple with attributes 'total', 'used' and
+        Returned values ni a named tuple ukijumuisha attributes 'total', 'used' and
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         total, free = nt._getdiskusage(path)
@@ -1270,14 +1270,14 @@ eleza chown(path, user=Tupu, group=Tupu):
     ikiwa user ni Tupu:
         _user = -1
     # user can either be an int (the uid) ama a string (the system username)
-    elikiwa isinstance(user, str):
+    lasivyo isinstance(user, str):
         _user = _get_uid(user)
         ikiwa _user ni Tupu:
             ashiria LookupError("no such user: {!r}".format(user))
 
     ikiwa group ni Tupu:
         _group = -1
-    elikiwa sio isinstance(group, int):
+    lasivyo sio isinstance(group, int):
         _group = _get_gid(group)
         ikiwa _group ni Tupu:
             ashiria LookupError("no such group: {!r}".format(group))
@@ -1330,7 +1330,7 @@ eleza get_terminal_size(fallback=(80, 24)):
     rudisha os.terminal_size((columns, lines))
 
 
-# Check that a given file can be accessed with the correct mode.
+# Check that a given file can be accessed ukijumuisha the correct mode.
 # Additionally check that `file` ni sio a directory, kama on Windows
 # directories pita the os.access check.
 eleza _access_check(fn, mode):
@@ -1344,11 +1344,11 @@ eleza which(cmd, mode=os.F_OK | os.X_OK, path=Tupu):
     file.
 
     `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
-    of os.environ.get("PATH"), ama can be overridden with a custom search
+    of os.environ.get("PATH"), ama can be overridden ukijumuisha a custom search
     path.
 
     """
-    # If we're given a path with a directory part, look it up directly rather
+    # If we're given a path ukijumuisha a directory part, look it up directly rather
     # than referring to PATH directories. This includes checking relative to the
     # current directory, e.g. ./script
     ikiwa os.path.dirname(cmd):

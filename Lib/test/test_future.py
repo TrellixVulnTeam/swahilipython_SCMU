@@ -21,63 +21,63 @@ kundi FutureTest(unittest.TestCase):
         self.assertEqual(err.offset, offset)
 
     eleza test_future1(self):
-        with support.CleanImport('future_test1'):
+        ukijumuisha support.CleanImport('future_test1'):
             kutoka test agiza future_test1
             self.assertEqual(future_test1.result, 6)
 
     eleza test_future2(self):
-        with support.CleanImport('future_test2'):
+        ukijumuisha support.CleanImport('future_test2'):
             kutoka test agiza future_test2
             self.assertEqual(future_test2.result, 6)
 
     eleza test_future3(self):
-        with support.CleanImport('test_future3'):
+        ukijumuisha support.CleanImport('test_future3'):
             kutoka test agiza test_future3
 
     eleza test_badfuture3(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future3
         self.check_syntax_error(cm.exception, "badsyntax_future3", 3)
 
     eleza test_badfuture4(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future4
         self.check_syntax_error(cm.exception, "badsyntax_future4", 3)
 
     eleza test_badfuture5(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future5
         self.check_syntax_error(cm.exception, "badsyntax_future5", 4)
 
     eleza test_badfuture6(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future6
         self.check_syntax_error(cm.exception, "badsyntax_future6", 3)
 
     eleza test_badfuture7(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future7
         self.check_syntax_error(cm.exception, "badsyntax_future7", 3, 53)
 
     eleza test_badfuture8(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future8
         self.check_syntax_error(cm.exception, "badsyntax_future8", 3)
 
     eleza test_badfuture9(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future9
         self.check_syntax_error(cm.exception, "badsyntax_future9", 3)
 
     eleza test_badfuture10(self):
-        with self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) kama cm:
             kutoka test agiza badsyntax_future10
         self.check_syntax_error(cm.exception, "badsyntax_future10", 3)
 
     eleza test_parserhack(self):
         # test that the parser.c::future_hack function works kama expected
         # Note: although this test must pita, it's sio testing the original
-        #       bug kama of 2.6 since the with statement ni sio optional and
+        #       bug kama of 2.6 since the ukijumuisha statement ni sio optional and
         #       the parser hack disabled. If a new keyword ni introduced in
         #       2.6, change this to refer to the new future agiza.
         jaribu:
@@ -95,7 +95,7 @@ kundi FutureTest(unittest.TestCase):
             self.fail("syntax error didn't occur")
 
     eleza test_multiple_features(self):
-        with support.CleanImport("test.test_future5"):
+        ukijumuisha support.CleanImport("test.test_future5"):
             kutoka test agiza test_future5
 
     eleza test_unicode_literals_exec(self):
@@ -133,7 +133,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
     ):
         actual = self.getActual(annotation)
         ikiwa expected ni Tupu:
-            expected = annotation ikiwa sio is_tuple else annotation[1:-1]
+            expected = annotation ikiwa sio is_tuple isipokua annotation[1:-1]
         ikiwa drop_parens:
             self.assertNotEqual(actual, expected)
             actual = actual.replace("(", "").replace(")", "")
@@ -196,15 +196,15 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq('lambda x=1, y=2, z=3, /, w=4, *, l, l2, **kwargs: x + y + z + w + l + l2')
         eq('lambda x, /, y=1, *, z: x + y + z')
         eq('lambda x: lambda y: x + y')
-        eq('1 ikiwa Kweli else 2')
-        eq('str ama Tupu ikiwa int ama Kweli else str ama bytes ama Tupu')
-        eq('str ama Tupu ikiwa (1 ikiwa Kweli else 2) else str ama bytes ama Tupu')
-        eq("0 ikiwa sio x else 1 ikiwa x > 0 else -1")
-        eq("(1 ikiwa x > 0 else -1) ikiwa x else 0")
+        eq('1 ikiwa Kweli isipokua 2')
+        eq('str ama Tupu ikiwa int ama Kweli isipokua str ama bytes ama Tupu')
+        eq('str ama Tupu ikiwa (1 ikiwa Kweli isipokua 2) isipokua str ama bytes ama Tupu')
+        eq("0 ikiwa sio x isipokua 1 ikiwa x > 0 isipokua -1")
+        eq("(1 ikiwa x > 0 isipokua -1) ikiwa x isipokua 0")
         eq("{'2.7': dead, '3.7': long_live ama die_hard}")
         eq("{'2.7': dead, '3.7': long_live ama die_hard, **{'3.6': verygood}}")
         eq("{**a, **b, **c}")
-        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' ikiwa gilectomy else '3.10'}")
+        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' ikiwa gilectomy isipokua '3.10'}")
         eq("{*a, *b, *c}")
         eq("({'a': 'b'}, Kweli ama Uongo, +value, 'string', b'bytes') ama Tupu")
         eq("()")
@@ -259,14 +259,14 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[()]")
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x kila x kwenye a)]")
-        eq('str ama Tupu ikiwa sys.version_info[0] > (3,) else str ama bytes ama Tupu')
+        eq('str ama Tupu ikiwa sys.version_info[0] > (3,) isipokua str ama bytes ama Tupu')
         eq("f'f-string without formatted values ni just a string'")
         eq("f'{{NOT a formatted value}}'")
-        eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
+        eq("f'some f-string ukijumuisha {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
         eq("f'space between opening braces: { {a kila a kwenye (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
-        eq("f'{(Tupu ikiwa a else lambda x: x)}'")
+        eq("f'{(Tupu ikiwa a isipokua lambda x: x)}'")
         eq("f'{x}'")
         eq("f'{x!r}'")
         eq("f'{x!a}'")
@@ -274,8 +274,8 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq('(tuma)')
         eq('(tuma a + b)')
         eq('await some.complicated[0].call(with_args=Kweli ama 1 ni sio 1)')
-        eq('[x kila x kwenye (a ikiwa b else c)]')
-        eq('[x kila x kwenye a ikiwa (b ikiwa c else d)]')
+        eq('[x kila x kwenye (a ikiwa b isipokua c)]')
+        eq('[x kila x kwenye a ikiwa (b ikiwa c isipokua d)]')
         eq('f(x kila x kwenye a)')
         eq('f(1, (x kila x kwenye a))')
         eq('f((x kila x kwenye a), 2)')
@@ -285,7 +285,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq("f'{(x:=10):=10}'")
 
     eleza test_fstring_debug_annotations(self):
-        # f-strings with '=' don't round trip very well, so set the expected
+        # f-strings ukijumuisha '=' don't round trip very well, so set the expected
         # result explicitely.
         self.assertAnnotationEqual("f'{x=!r}'", expected="f'x={x!r}'")
         self.assertAnnotationEqual("f'{x=:}'", expected="f'x={x:}'")

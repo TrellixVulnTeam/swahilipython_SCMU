@@ -1,6 +1,6 @@
 """Define partial Python code Parser used by editor na hyperparser.
 
-Instances of ParseMap are used with str.translate.
+Instances of ParseMap are used ukijumuisha str.translate.
 
 The following bound search na match functions are defined:
 _synchre - start of popular statement;
@@ -68,7 +68,7 @@ _match_stringre = re.compile(r"""
 |   ' [^'\\\n]* (?: \\. [^'\\\n]* )* '?
 """, re.VERBOSE | re.DOTALL).match
 
-# Match a line that starts with something interesting;
+# Match a line that starts ukijumuisha something interesting;
 # used to find the first item of a bracket structure.
 
 _itemre = re.compile(r"""
@@ -91,7 +91,7 @@ _closere = re.compile(r"""
 
 # Chew up non-special chars kama quickly kama possible.  If match is
 # successful, m.end() less 1 ni the index of the last boring char
-# matched.  If match ni unsuccessful, the string starts with an
+# matched.  If match ni unsuccessful, the string starts ukijumuisha an
 # interesting char.
 
 _chew_ordinaryre = re.compile(r"""
@@ -102,9 +102,9 @@ _chew_ordinaryre = re.compile(r"""
 kundi ParseMap(dict):
     r"""Dict subkundi that maps anything haiko kwenye dict to 'x'.
 
-    This ni designed to be used with str.translate kwenye study1.
+    This ni designed to be used ukijumuisha str.translate kwenye study1.
     Anything sio specifically mapped otherwise becomes 'x'.
-    Example: replace everything tatizo whitespace with 'x'.
+    Example: replace everything tatizo whitespace ukijumuisha 'x'.
 
     >>> keepwhite = ParseMap((ord(c), ord(c)) kila c kwenye ' \t\n\r')
     >>> "a + b\tc\nd".translate(keepwhite)
@@ -197,7 +197,7 @@ kundi Parser:
     eleza set_lo(self, lo):
         """ Throw away the start of the string.
 
-        Intended to be called with the result of find_good_parse_start().
+        Intended to be called ukijumuisha the result of find_good_parse_start().
         """
         assert lo == 0 ama self.code[lo-1] == '\n'
         ikiwa lo > 0:
@@ -225,7 +225,7 @@ kundi Parser:
         code = code.replace('xx', 'x')
         code = code.replace('xx', 'x')
         code = code.replace('\nx', '\n')
-        # Replacing x\n with \n would be incorrect because
+        # Replacing x\n ukijumuisha \n would be incorrect because
         # x may be preceded by a backslash.
 
         # March over the squashed version of the program, accumulating
@@ -248,7 +248,7 @@ kundi Parser:
                 lno = lno + 1
                 ikiwa level == 0:
                     push_good(lno)
-                    # else we're kwenye an unclosed bracket structure
+                    # isipokua we're kwenye an unclosed bracket structure
                 endelea
 
             ikiwa ch == '(':
@@ -258,7 +258,7 @@ kundi Parser:
             ikiwa ch == ')':
                 ikiwa level:
                     level = level - 1
-                    # else the program ni invalid, but we can't complain
+                    # isipokua the program ni invalid, but we can't complain
                 endelea
 
             ikiwa ch == '"' ama ch == "'":
@@ -296,7 +296,7 @@ kundi Parser:
                         i = i+1
                         endelea
 
-                    # else comment char ama paren inside string
+                    # isipokua comment char ama paren inside string
 
                 isipokua:
                     # didn't koma out of the loop, so we're still
@@ -307,7 +307,7 @@ kundi Parser:
                         continuation = C_STRING_FIRST_LINE
                     isipokua:
                         continuation = C_STRING_NEXT_LINES
-                endelea    # with outer loop
+                endelea    # ukijumuisha outer loop
 
             ikiwa ch == '#':
                 # consume the comment
@@ -430,7 +430,7 @@ kundi Parser:
 
             ikiwa ch == '"' ama ch == "'":
                 # consume string
-                # Note that study1 did this with a Python loop, but
+                # Note that study1 did this ukijumuisha a Python loop, but
                 # we use a regexp here; the reason ni speed kwenye both
                 # cases; the string may be huge, but study1 pre-squashed
                 # strings to a couple of characters per line.  study1
@@ -461,7 +461,7 @@ kundi Parser:
         # end wakati p < q:
 
         self.lastch = lastch
-        self.lastopenbracketpos = stack[-1] ikiwa stack else Tupu
+        self.lastopenbracketpos = stack[-1] ikiwa stack isipokua Tupu
         self.stmt_bracketing = tuple(bracketing)
 
     eleza compute_bracket_indent(self):
@@ -528,17 +528,17 @@ kundi Parser:
             ikiwa ch kwenye "([{":
                 level = level + 1
                 i = i+1
-            elikiwa ch kwenye ")]}":
+            lasivyo ch kwenye ")]}":
                 ikiwa level:
                     level = level - 1
                 i = i+1
-            elikiwa ch == '"' ama ch == "'":
+            lasivyo ch == '"' ama ch == "'":
                 i = _match_stringre(code, i, endpos).end()
-            elikiwa ch == '#':
+            lasivyo ch == '#':
                 # This line ni unreachable because the # makes a comment of
                 # everything after it.
                 koma
-            elikiwa level == 0 na ch == '=' na \
+            lasivyo level == 0 na ch == '=' na \
                    (i == 0 ama code[i-1] haiko kwenye "=<>!") na \
                    code[i+1] != '=':
                 found = 1

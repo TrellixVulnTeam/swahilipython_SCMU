@@ -35,7 +35,7 @@ kundi IterFunc:
         rudisha v
 
 kundi IterGen:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined ukijumuisha a generator'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -205,7 +205,7 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(u[-100:100:-1], self.type2test([]))
         self.assertEqual(u[-100:100:2], self.type2test([0, 2, 4]))
 
-        # Test extreme cases with long ints
+        # Test extreme cases ukijumuisha long ints
         a = self.type2test([0,1,2,3,4])
         self.assertEqual(a[ -pow(2,128): 3 ], self.type2test([0,1,2]))
         self.assertEqual(a[ 3: pow(2,145) ], self.type2test([3,4]))

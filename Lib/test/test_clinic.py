@@ -350,7 +350,7 @@ os.access
     something_isipokua: str""")
         self.assertEqual(s, """Error on line 0:
 Can't have a parameter without a default ('something_else')
-after a parameter with a default!
+after a parameter ukijumuisha a default!
 """)
 
     eleza disabled_test_converter_arguments(self):
@@ -546,8 +546,8 @@ imaginary([[y1, y2,] x1, x2,] ch, [attr1, attr2, attr3, [attr4, attr5,
                 """.strip())
 
     eleza parse_function_should_fail(self, s):
-        with support.captured_stdout() kama stdout:
-            with self.assertRaises(SystemExit):
+        ukijumuisha support.captured_stdout() kama stdout:
+            ukijumuisha self.assertRaises(SystemExit):
                 self.parse_function(s)
         rudisha stdout.getvalue()
 
@@ -791,8 +791,8 @@ Not at column 0!
         self.assertEqual(repr(clinic.NULL), '<Null>')
 
         # test that fail fails
-        with support.captured_stdout() kama stdout:
-            with self.assertRaises(SystemExit):
+        ukijumuisha support.captured_stdout() kama stdout:
+            ukijumuisha self.assertRaises(SystemExit):
                 clinic.fail('The igloos are melting!', filename='clown.txt', line_number=69)
         self.assertEqual(stdout.getvalue(), 'Error kwenye file "clown.txt" on line 69:\nThe igloos are melting!\n')
 
@@ -802,14 +802,14 @@ kundi ClinicExternalTest(TestCase):
 
     eleza test_external(self):
         source = support.findfile('clinic.test')
-        with open(source, 'r', encoding='utf-8') kama f:
+        ukijumuisha open(source, 'r', encoding='utf-8') kama f:
             original = f.read()
-        with support.temp_dir() kama testdir:
+        ukijumuisha support.temp_dir() kama testdir:
             testfile = os.path.join(testdir, 'clinic.test.c')
-            with open(testfile, 'w', encoding='utf-8') kama f:
+            ukijumuisha open(testfile, 'w', encoding='utf-8') kama f:
                 f.write(original)
             clinic.parse_file(testfile, force=Kweli)
-            with open(testfile, 'r', encoding='utf-8') kama f:
+            ukijumuisha open(testfile, 'r', encoding='utf-8') kama f:
                 result = f.read()
             self.assertEqual(result, original)
 

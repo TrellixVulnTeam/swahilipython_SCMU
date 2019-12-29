@@ -20,7 +20,7 @@ kundi BaseLocalizedTest(unittest.TestCase):
                 # haven't had time yet to verify ikiwa tests work on OSX 10.5
                 # (10.4 ni known to be bad)
                 ashiria unittest.SkipTest("Locale support on MacOSX ni minimal")
-        elikiwa sys.platform.startswith("win"):
+        lasivyo sys.platform.startswith("win"):
             tlocs = ("En", "English")
         isipokua:
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1",
@@ -45,7 +45,7 @@ kundi BaseLocalizedTest(unittest.TestCase):
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
         ikiwa verbose:
-            andika("testing with %r..." % self.enUS_locale, end=' ', flush=Kweli)
+            andika("testing ukijumuisha %r..." % self.enUS_locale, end=' ', flush=Kweli)
 
 
 kundi BaseCookedTest(unittest.TestCase):
@@ -109,7 +109,7 @@ kundi EnUSCookedTest(BaseCookedTest):
 
 
 kundi FrFRCookedTest(BaseCookedTest):
-    # A cooked "fr_FR" locale with a space character kama decimal separator
+    # A cooked "fr_FR" locale ukijumuisha a space character kama decimal separator
     # na a non-ASCII currency symbol.
 
     cooked_values = {
@@ -144,7 +144,7 @@ kundi BaseFormattingTest(object):
             func(format, value, **format_opts), out)
 
     eleza _test_format(self, format, value, out, **format_opts):
-        with check_warnings(('', DeprecationWarning)):
+        ukijumuisha check_warnings(('', DeprecationWarning)):
             self._test_formatfunc(format, value, out,
                 func=locale.format, **format_opts)
 
@@ -200,7 +200,7 @@ kundi EnUSNumberFormatting(BaseFormattingTest):
         self._test_format("%-10.f", 4200, grouping=0, out='4200'.ljust(10))
 
     eleza test_format_deprecation(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             locale.format("%-10.f", 4200, grouping=Kweli)
 
     eleza test_complex_formatting(self):
@@ -233,7 +233,7 @@ kundi TestFormatPatternArg(unittest.TestCase):
     # Test handling of pattern argument of format
 
     eleza test_onlyOnePattern(self):
-        with check_warnings(('', DeprecationWarning)):
+        ukijumuisha check_warnings(('', DeprecationWarning)):
             # Issue 2522: accept exactly one % pattern, na no extra chars.
             self.assertRaises(ValueError, locale.format, "%f\n", 'foo')
             self.assertRaises(ValueError, locale.format, "%f\r", 'foo')
@@ -263,7 +263,7 @@ kundi TestLocaleFormatString(unittest.TestCase):
 
 
 kundi TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
-    # Test number formatting with a real English locale.
+    # Test number formatting ukijumuisha a real English locale.
 
     locale_type = locale.LC_NUMERIC
 
@@ -273,7 +273,7 @@ kundi TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
 
 
 kundi TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
-    # Test number formatting with a cooked "en_US" locale.
+    # Test number formatting ukijumuisha a cooked "en_US" locale.
 
     eleza setUp(self):
         EnUSCookedTest.setUp(self)
@@ -287,7 +287,7 @@ kundi TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
 
 
 kundi TestCNumberFormatting(CCookedTest, BaseFormattingTest):
-    # Test number formatting with a cooked "C" locale.
+    # Test number formatting ukijumuisha a cooked "C" locale.
 
     eleza test_grouping(self):
         self._test_format("%.2f", 12345.67, grouping=Kweli, out='12345.67')
@@ -297,7 +297,7 @@ kundi TestCNumberFormatting(CCookedTest, BaseFormattingTest):
 
 
 kundi TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
-    # Test number formatting with a cooked "fr_FR" locale.
+    # Test number formatting ukijumuisha a cooked "fr_FR" locale.
 
     eleza test_decimal_point(self):
         self._test_format("%.2f", 12345.67, out='12345,67')
@@ -357,7 +357,7 @@ kundi TestCollation(unittest.TestCase):
 
 
 kundi TestEnUSCollation(BaseLocalizedTest, TestCollation):
-    # Test string collation functions with a real English locale
+    # Test string collation functions ukijumuisha a real English locale
 
     locale_type = locale.LC_ALL
 
@@ -387,7 +387,7 @@ kundi NormalizeTest(unittest.TestCase):
 
     eleza test_locale_alias(self):
         kila localename, alias kwenye locale.locale_alias.items():
-            with self.subTest(locale=(localename, alias)):
+            ukijumuisha self.subTest(locale=(localename, alias)):
                 self.check(localename, alias)
 
     eleza test_empty(self):
@@ -563,16 +563,16 @@ kundi TestMiscellaneous(unittest.TestCase):
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         ikiwa verbose:
-            andika('testing with %a' % (loc,), end=' ', flush=Kweli)
+            andika('testing ukijumuisha %a' % (loc,), end=' ', flush=Kweli)
         locale.setlocale(locale.LC_CTYPE, loc)
         self.assertEqual(loc, locale.getlocale(locale.LC_CTYPE))
 
     eleza test_invalid_locale_format_in_localetuple(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             locale.setlocale(locale.LC_ALL, b'fi_FI')
 
     eleza test_invalid_iterable_in_localetuple(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             locale.setlocale(locale.LC_ALL, (b'not', b'valid'))
 
 

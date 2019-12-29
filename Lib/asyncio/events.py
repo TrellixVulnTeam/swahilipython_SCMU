@@ -111,7 +111,7 @@ kundi TimerHandle(Handle):
 
     eleza _repr_info(self):
         info = super()._repr_info()
-        pos = 2 ikiwa self._cancelled else 1
+        pos = 2 ikiwa self._cancelled isipokua 1
         info.insert(pos, f'when={self._when}')
         rudisha info
 
@@ -144,7 +144,7 @@ kundi TimerHandle(Handle):
 
     eleza __ne__(self, other):
         equal = self.__eq__(other)
-        rudisha NotImplemented ikiwa equal ni NotImplemented else sio equal
+        rudisha NotImplemented ikiwa equal ni NotImplemented isipokua sio equal
 
     eleza cancel(self):
         ikiwa sio self._cancelled:
@@ -275,7 +275,7 @@ kundi AbstractEventLoop:
     eleza create_task(self, coro, *, name=Tupu):
         ashiria NotImplementedError
 
-    # Methods kila interacting with threads.
+    # Methods kila interacting ukijumuisha threads.
 
     eleza call_soon_threadsafe(self, callback, *args):
         ashiria NotImplementedError
@@ -455,7 +455,7 @@ kundi AbstractEventLoop:
     async eleza connect_read_pipe(self, protocol_factory, pipe):
         """Register read pipe kwenye event loop. Set the pipe to non-blocking mode.
 
-        protocol_factory should instantiate object with Protocol interface.
+        protocol_factory should instantiate object ukijumuisha Protocol interface.
         pipe ni a file-like object.
         Return pair (transport, protocol), where transport supports the
         ReadTransport interface."""
@@ -468,7 +468,7 @@ kundi AbstractEventLoop:
     async eleza connect_write_pipe(self, protocol_factory, pipe):
         """Register write pipe kwenye event loop.
 
-        protocol_factory should instantiate object with BaseProtocol interface.
+        protocol_factory should instantiate object ukijumuisha BaseProtocol interface.
         Pipe ni file-like object already switched to nonblocking.
         Return pair (transport, protocol), where transport support
         WriteTransport interface."""
@@ -710,7 +710,7 @@ eleza _set_running_loop(loop):
 
 eleza _init_event_loop_policy():
     global _event_loop_policy
-    with _lock:
+    ukijumuisha _lock:
         ikiwa _event_loop_policy ni Tupu:  # pragma: no branch
             kutoka . agiza DefaultEventLoopPolicy
             _event_loop_policy = DefaultEventLoopPolicy()
@@ -735,7 +735,7 @@ eleza set_event_loop_policy(policy):
 eleza get_event_loop():
     """Return an asyncio event loop.
 
-    When called kutoka a coroutine ama a callback (e.g. scheduled with call_soon
+    When called kutoka a coroutine ama a callback (e.g. scheduled ukijumuisha call_soon
     ama similar API), this function will always rudisha the running event loop.
 
     If there ni no running event loop set, the function will rudisha

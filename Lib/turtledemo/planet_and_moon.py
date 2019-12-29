@@ -13,7 +13,7 @@ Planet has a circular orbit, moon a stable
 orbit around the planet.
 
 You can hold the movement temporarily by
-pressing the left mouse button with the
+pressing the left mouse button ukijumuisha the
 mouse over the scrollbar of the canvas.
 
 """

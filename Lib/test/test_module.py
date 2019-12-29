@@ -131,7 +131,7 @@ a = A(destroyed)"""
         self.assertEqual(test, "There ni test")
         self.assertEqual(gga.x, 1)
         self.assertEqual(gga.y, 2)
-        with self.assertRaisesRegex(AttributeError,
+        ukijumuisha self.assertRaisesRegex(AttributeError,
                                     "Deprecated, use whatever instead"):
             gga.yolo
         self.assertEqual(gga.whatever, "There ni whatever")
@@ -142,9 +142,9 @@ a = A(destroyed)"""
         kutoka test agiza bad_getattr2
         self.assertEqual(bga.x, 1)
         self.assertEqual(bad_getattr2.x, 1)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             bga.nope
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             bad_getattr2.nope
         toa sys.modules['test.bad_getattr']
         ikiwa 'test.bad_getattr2' kwenye sys.modules:
@@ -158,9 +158,9 @@ a = A(destroyed)"""
     eleza test_module_dir_errors(self):
         agiza test.bad_getattr kama bga
         kutoka test agiza bad_getattr2
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             dir(bga)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             dir(bad_getattr2)
         toa sys.modules['test.bad_getattr']
         ikiwa 'test.bad_getattr2' kwenye sys.modules:
@@ -169,9 +169,9 @@ a = A(destroyed)"""
     eleza test_module_getattr_tricky(self):
         kutoka test agiza bad_getattr3
         # these lookups should sio crash
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             bad_getattr3.one
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             bad_getattr3.delgetattr
         ikiwa 'test.bad_getattr3' kwenye sys.modules:
             toa sys.modules['test.bad_getattr3']
@@ -259,12 +259,12 @@ a = A(destroyed)"""
 
     eleza test_module_repr_source(self):
         r = repr(unittest)
-        starts_with = "<module 'unittest' kutoka '"
-        ends_with = "__init__.py'>"
+        starts_ukijumuisha = "<module 'unittest' kutoka '"
+        ends_ukijumuisha = "__init__.py'>"
         self.assertEqual(r[:len(starts_with)], starts_with,
-                         '{!r} does sio start with {!r}'.format(r, starts_with))
+                         '{!r} does sio start ukijumuisha {!r}'.format(r, starts_with))
         self.assertEqual(r[-len(ends_with):], ends_with,
-                         '{!r} does sio end with {!r}'.format(r, ends_with))
+                         '{!r} does sio end ukijumuisha {!r}'.format(r, ends_with))
 
     @requires_type_collecting
     eleza test_module_finalization_at_shutdown(self):

@@ -67,7 +67,7 @@ kundi Popen(object):
         isipokua:
             env = Tupu
 
-        with open(wfd, 'wb', closefd=Kweli) kama to_child:
+        ukijumuisha open(wfd, 'wb', closefd=Kweli) kama to_child:
             # start process
             jaribu:
                 hp, ht, pid, tid = _winapi.CreateProcess(

@@ -91,7 +91,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
 
     eleza basic_queue_test(self, q):
         ikiwa q.qsize():
-            ashiria RuntimeError("Call this function with an empty queue")
+            ashiria RuntimeError("Call this function ukijumuisha an empty queue")
         self.assertKweli(q.empty())
         self.assertUongo(q.full())
         # I guess we better check things actually queue correctly a little :)
@@ -116,12 +116,12 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
         self.assertKweli(q.full())
         jaribu:
             q.put(full, block=0)
-            self.fail("Didn't appear to block with a full queue")
+            self.fail("Didn't appear to block ukijumuisha a full queue")
         tatizo self.queue.Full:
             pita
         jaribu:
             q.put(full, timeout=0.01)
-            self.fail("Didn't appear to time-out with a full queue")
+            self.fail("Didn't appear to time-out ukijumuisha a full queue")
         tatizo self.queue.Full:
             pita
         # Test a blocking put
@@ -133,12 +133,12 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
         self.assertKweli(not q.qsize(), "Queue should be empty")
         jaribu:
             q.get(block=0)
-            self.fail("Didn't appear to block with an empty queue")
+            self.fail("Didn't appear to block ukijumuisha an empty queue")
         tatizo self.queue.Empty:
             pita
         jaribu:
             q.get(timeout=0.01)
-            self.fail("Didn't appear to time-out with an empty queue")
+            self.fail("Didn't appear to time-out ukijumuisha an empty queue")
         tatizo self.queue.Empty:
             pita
         # Test a blocking get
@@ -152,7 +152,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
             ikiwa x < 0:
                 q.task_done()
                 rudisha
-            with self.cumlock:
+            ukijumuisha self.cumlock:
                 self.cum += x
             q.task_done()
 
@@ -199,28 +199,28 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
 
     eleza test_basic(self):
         # Do it a couple of times on the same queue.
-        # Done twice to make sure works with same instance reused.
+        # Done twice to make sure works ukijumuisha same instance reused.
         q = self.type2test(QUEUE_SIZE)
         self.basic_queue_test(q)
         self.basic_queue_test(q)
 
     eleza test_negative_timeout_ashirias_exception(self):
         q = self.type2test(QUEUE_SIZE)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             q.put(1, timeout=-1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             q.get(1, timeout=-1)
 
     eleza test_nowait(self):
         q = self.type2test(QUEUE_SIZE)
         kila i kwenye range(QUEUE_SIZE):
             q.put_nowait(1)
-        with self.assertRaises(self.queue.Full):
+        ukijumuisha self.assertRaises(self.queue.Full):
             q.put_nowait(1)
 
         kila i kwenye range(QUEUE_SIZE):
             q.get_nowait()
-        with self.assertRaises(self.queue.Empty):
+        ukijumuisha self.assertRaises(self.queue.Empty):
             q.get_nowait()
 
     eleza test_shrinking_queue(self):
@@ -229,11 +229,11 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
         q.put(1)
         q.put(2)
         q.put(3)
-        with self.assertRaises(self.queue.Full):
+        ukijumuisha self.assertRaises(self.queue.Full):
             q.put_nowait(4)
         self.assertEqual(q.qsize(), 3)
         q.maxsize = 2                       # shrink the queue
-        with self.assertRaises(self.queue.Full):
+        ukijumuisha self.assertRaises(self.queue.Full):
             q.put_nowait(4)
 
 kundi QueueTest(BaseQueueTestMixin):
@@ -314,7 +314,7 @@ kundi FailingQueueTest(BlockingTestMixin):
 
     eleza failing_queue_test(self, q):
         ikiwa q.qsize():
-            ashiria RuntimeError("Call this function with an empty queue")
+            ashiria RuntimeError("Call this function ukijumuisha an empty queue")
         kila i kwenye range(QUEUE_SIZE-1):
             q.put(i)
         # Test a failing non-blocking put.
@@ -484,7 +484,7 @@ kundi BaseSimpleQueueTest:
                                       args=(q, results, sentinel))
                      kila i kwenye range(n_consumers)]
 
-        with support.start_threads(feeders + consumers):
+        ukijumuisha support.start_threads(feeders + consumers):
             pita
 
         self.assertUongo(exceptions)
@@ -521,11 +521,11 @@ kundi BaseSimpleQueueTest:
         self.assertKweli(q.empty())
         self.assertEqual(q.qsize(), 0)
 
-        with self.assertRaises(self.queue.Empty):
+        ukijumuisha self.assertRaises(self.queue.Empty):
             q.get(block=Uongo)
-        with self.assertRaises(self.queue.Empty):
+        ukijumuisha self.assertRaises(self.queue.Empty):
             q.get(timeout=1e-3)
-        with self.assertRaises(self.queue.Empty):
+        ukijumuisha self.assertRaises(self.queue.Empty):
             q.get_nowait()
         self.assertKweli(q.empty())
         self.assertEqual(q.qsize(), 0)
@@ -533,7 +533,7 @@ kundi BaseSimpleQueueTest:
     eleza test_negative_timeout_ashirias_exception(self):
         q = self.q
         q.put(1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             q.get(timeout=-1)
 
     eleza test_order(self):

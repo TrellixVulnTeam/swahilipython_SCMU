@@ -163,7 +163,7 @@ kundi ShlexTest(unittest.TestCase):
         rudisha ret
 
     eleza testSplitPosix(self):
-        """Test data splitting with posix parser"""
+        """Test data splitting ukijumuisha posix parser"""
         self.splitTest(self.posix_data, comments=Kweli)
 
     eleza testCompat(self):
@@ -236,7 +236,7 @@ kundi ShlexTest(unittest.TestCase):
                              "While splitting '%s' [ws=%s]" % (ss, ws))
 
     eleza testSyntaxSplitCustom(self):
-        """Test handling of syntax splitting with custom chars"""
+        """Test handling of syntax splitting ukijumuisha custom chars"""
         ss = "~/a&&b-c --color=auto||d *.py?"
         ref = ['~/a', '&', '&', 'b-c', '--color=auto', '||', 'd', '*.py?']
         s = shlex.shlex(ss, punctuation_chars="|")
@@ -249,7 +249,7 @@ kundi ShlexTest(unittest.TestCase):
         self.assertEqual(ref, result, "While splitting '%s' [ws=Kweli]" % ss)
 
     eleza testTokenTypes(self):
-        """Test that tokens are split with types kama expected."""
+        """Test that tokens are split ukijumuisha types kama expected."""
         kila source, expected kwenye (
                                 ('a && b || c',
                                  [('a', 'a'), ('&&', 'c'), ('b', 'a'),
@@ -275,7 +275,7 @@ kundi ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])
 
     eleza testPunctuationWithWhitespaceSplit(self):
-        """Test that with whitespace_split, behaviour ni kama expected"""
+        """Test that ukijumuisha whitespace_split, behaviour ni kama expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
         # whitespace_split ni Uongo, so splitting will be based on
         # punctuation_chars
@@ -341,14 +341,14 @@ kundi ShlexTest(unittest.TestCase):
             (['a', ' ', 'b'], "a ' ' b"),
             (['"a', 'b"'], '\'"a\' \'b"\''),
         ]:
-            with self.subTest(command=command):
+            ukijumuisha self.subTest(command=command):
                 joined = shlex.join(split_command)
                 self.assertEqual(joined, command)
 
     eleza testJoinRoundtrip(self):
         all_data = self.data + self.posix_data
         kila command, *split_command kwenye all_data:
-            with self.subTest(command=command):
+            ukijumuisha self.subTest(command=command):
                 joined = shlex.join(split_command)
                 resplit = shlex.split(joined)
                 self.assertEqual(split_command, resplit)
@@ -357,11 +357,11 @@ kundi ShlexTest(unittest.TestCase):
         punctuation_chars = "/|$%^"
         shlex_instance = shlex.shlex(punctuation_chars=punctuation_chars)
         self.assertEqual(shlex_instance.punctuation_chars, punctuation_chars)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             shlex_instance.punctuation_chars = Uongo
 
 
-# Allow this test to be used with old shlex.py
+# Allow this test to be used ukijumuisha old shlex.py
 ikiwa sio getattr(shlex, "split", Tupu):
     kila methname kwenye dir(ShlexTest):
         ikiwa methname.startswith("test") na methname != "testCompat":

@@ -277,7 +277,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 tuma "g2 more spam"
             mwishowe:
                 trace.append("Finishing g2")
-                ashiria ValueError("nybbles have exploded with delight")
+                ashiria ValueError("nybbles have exploded ukijumuisha delight")
         jaribu:
             g = g1()
             kila i kwenye range(2):
@@ -285,7 +285,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded %s" % (x,))
             g.close()
         tatizo ValueError kama e:
-            self.assertEqual(e.args[0], "nybbles have exploded with delight")
+            self.assertEqual(e.args[0], "nybbles have exploded ukijumuisha delight")
             self.assertIsInstance(e.__context__, GeneratorExit)
         isipokua:
             self.fail("subgenerator failed to ashiria ValueError")
@@ -471,7 +471,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 trace.append("finishing g")
         gi = g()
         next(gi)
-        with captured_stderr() kama output:
+        ukijumuisha captured_stderr() kama output:
             gi.close()
         self.assertEqual(output.getvalue(), '')
         self.assertEqual(trace,[
@@ -540,7 +540,7 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_broken_getattr_handling(self):
         """
-        Test subiterator with a broken getattr implementation
+        Test subiterator ukijumuisha a broken getattr implementation
         """
         kundi Broken:
             eleza __iter__(self):
@@ -553,17 +553,17 @@ kundi TestPEP380Operation(unittest.TestCase):
         eleza g():
             tuma kutoka Broken()
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.send(1)
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.throw(AttributeError)
 
-        with support.catch_unraisable_exception() kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.close()
@@ -669,7 +669,7 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_next_and_rudisha_with_value(self):
         """
-        Test next na rudisha with value
+        Test next na rudisha ukijumuisha value
         """
         trace = []
         eleza f(r):
@@ -711,7 +711,7 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_send_and_rudisha_with_value(self):
         """
-        Test send na rudisha with value
+        Test send na rudisha ukijumuisha value
         """
         trace = []
         eleza f(r):
@@ -882,7 +882,7 @@ kundi TestPEP380Operation(unittest.TestCase):
         self.assertRaises(StopIteration, next, g())
 
     eleza test_delegating_generators_claim_to_be_running(self):
-        # Check with basic iteration
+        # Check ukijumuisha basic iteration
         eleza one():
             tuma 0
             tuma kutoka two()
@@ -896,7 +896,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             tuma 2
         g1 = one()
         self.assertEqual(list(g1), [0, 1, 2, 3])
-        # Check with send
+        # Check ukijumuisha send
         g1 = one()
         res = [next(g1)]
         jaribu:
@@ -905,7 +905,7 @@ kundi TestPEP380Operation(unittest.TestCase):
         tatizo StopIteration:
             pita
         self.assertEqual(res, [0, 1, 2, 3])
-        # Check with throw
+        # Check ukijumuisha throw
         kundi MyErr(Exception):
             pita
         eleza one():
@@ -938,7 +938,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 res.append(g1.throw(MyErr))
         tatizo StopIteration:
             pita
-        # Check with close
+        # Check ukijumuisha close
         kundi MyIt(object):
             eleza __iter__(self):
                 rudisha self
@@ -1016,7 +1016,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             inner_gen = tuma
             tuma kutoka inner_gen
 
-        with disable_gc():
+        ukijumuisha disable_gc():
             inner_gen = inner()
             outer_gen = outer()
             outer_gen.send(Tupu)

@@ -109,12 +109,12 @@ kundi GlobTests(unittest.TestCase):
                                     self.norm('aab', 'F')])
 
     eleza test_glob_directory_with_trailing_slash(self):
-        # Patterns ending with a slash shouldn't match non-dirs
+        # Patterns ending ukijumuisha a slash shouldn't match non-dirs
         res = glob.glob(self.norm('Z*Z') + os.sep)
         self.assertEqual(res, [])
         res = glob.glob(self.norm('ZZZ') + os.sep)
         self.assertEqual(res, [])
-        # When there ni a wildcard pattern which ends with os.sep, glob()
+        # When there ni a wildcard pattern which ends ukijumuisha os.sep, glob()
         # doesn't blow up.
         res = glob.glob(self.norm('aa*') + os.sep)
         self.assertEqual(len(res), 2)
@@ -125,7 +125,7 @@ kundi GlobTests(unittest.TestCase):
                       ])
 
     eleza test_glob_bytes_directory_with_trailing_slash(self):
-        # Same kama test_glob_directory_with_trailing_slash, but with a
+        # Same kama test_glob_directory_with_trailing_slash, but ukijumuisha a
         # bytes argument.
         res = glob.glob(os.fsencode(self.norm('Z*Z') + os.sep))
         self.assertEqual(res, [])
@@ -243,7 +243,7 @@ kundi GlobTests(unittest.TestCase):
             ('a', 'bcd', 'EF'), ('a', 'bcd', 'efg')))
         eq(self.rglob('a', '**', 'bcd'), self.joins(('a', 'bcd')))
 
-        with change_cwd(self.tempdir):
+        ukijumuisha change_cwd(self.tempdir):
             join = os.path.join
             eq(glob.glob('**', recursive=Kweli), [join(*i) kila i kwenye full])
             eq(glob.glob(join('**', ''), recursive=Kweli),
@@ -289,7 +289,7 @@ kundi SymlinkLoopGlobTests(unittest.TestCase):
         tempdir = TESTFN + "_dir"
         os.makedirs(tempdir)
         self.addCleanup(shutil.rmtree, tempdir)
-        with change_cwd(tempdir):
+        ukijumuisha change_cwd(tempdir):
             os.makedirs('dir')
             create_empty_file(os.path.join('dir', 'file'))
             os.symlink(os.curdir, os.path.join('dir', 'link'))

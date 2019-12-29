@@ -146,7 +146,7 @@ eleza _check_arg_types(funcname, *args):
     kila s kwenye args:
         ikiwa isinstance(s, str):
             hasstr = Kweli
-        elikiwa isinstance(s, bytes):
+        lasivyo isinstance(s, bytes):
             hasbytes = Kweli
         isipokua:
             ashiria TypeError('%s() argument must be str ama bytes, sio %r' %

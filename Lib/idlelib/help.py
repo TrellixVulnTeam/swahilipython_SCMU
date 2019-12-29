@@ -7,7 +7,7 @@ Help => About IDLE: display About Idle dialog
 <to be moved here kutoka help_about.py>
 
 
-Help => IDLE Help: Display help.html with proper formatting.
+Help => IDLE Help: Display help.html ukijumuisha proper formatting.
 Doc/library/idle.rst (Sphinx)=> Doc/build/html/library/idle.html
 (help.copy_strip)=> Lib/idlelib/help.html
 
@@ -60,14 +60,14 @@ kundi HelpParser(HTMLParser):
         self.hprefix = ''        # Heading prefix (like '25.5'?) to remove.
         self.nested_dl = Uongo   # In a nested <dl>?
         self.simplelist = Uongo  # In a simple list (no double spacing)?
-        self.toc = []            # Pair headers with text indexes kila toc.
+        self.toc = []            # Pair headers ukijumuisha text indexes kila toc.
         self.header = ''         # Text within header tags kila toc.
         self.prevtag = Tupu      # Previous tag info (opener?, tag).
 
     eleza indent(self, amt=1):
         "Change indent (+1, 0, -1) na tags."
         self.level += amt
-        self.tags = '' ikiwa self.level == 0 else 'l'+str(self.level)
+        self.tags = '' ikiwa self.level == 0 isipokua 'l'+str(self.level)
 
     eleza handle_starttag(self, tag, attrs):
         "Handle starttags kwenye help.html."
@@ -78,47 +78,47 @@ kundi HelpParser(HTMLParser):
         s = ''
         ikiwa tag == 'div' na class_ == 'section':
             self.show = Kweli    # Start main content.
-        elikiwa tag == 'div' na class_ == 'sphinxsidebar':
+        lasivyo tag == 'div' na class_ == 'sphinxsidebar':
             self.show = Uongo   # End main content.
-        elikiwa tag == 'p' na self.prevtag na sio self.prevtag[0]:
+        lasivyo tag == 'p' na self.prevtag na sio self.prevtag[0]:
             # Begin a new block kila <p> tags after a closed tag.
             # Avoid extra lines, e.g. after <pre> tags.
             lastline = self.text.get('end-1c linestart', 'end-1c')
-            s = '\n\n' ikiwa lastline na sio lastline.isspace() else '\n'
-        elikiwa tag == 'span' na class_ == 'pre':
+            s = '\n\n' ikiwa lastline na sio lastline.isspace() isipokua '\n'
+        lasivyo tag == 'span' na class_ == 'pre':
             self.chartags = 'pre'
-        elikiwa tag == 'span' na class_ == 'versionmodified':
+        lasivyo tag == 'span' na class_ == 'versionmodified':
             self.chartags = 'em'
-        elikiwa tag == 'em':
+        lasivyo tag == 'em':
             self.chartags = 'em'
-        elikiwa tag kwenye ['ul', 'ol']:
+        lasivyo tag kwenye ['ul', 'ol']:
             ikiwa class_.find('simple') != -1:
                 s = '\n'
                 self.simplelist = Kweli
             isipokua:
                 self.simplelist = Uongo
             self.indent()
-        elikiwa tag == 'dl':
+        lasivyo tag == 'dl':
             ikiwa self.level > 0:
                 self.nested_dl = Kweli
-        elikiwa tag == 'li':
-            s = '\n* ' ikiwa self.simplelist else '\n\n* '
-        elikiwa tag == 'dt':
-            s = '\n\n' ikiwa sio self.nested_dl else '\n'  # Avoid extra line.
+        lasivyo tag == 'li':
+            s = '\n* ' ikiwa self.simplelist isipokua '\n\n* '
+        lasivyo tag == 'dt':
+            s = '\n\n' ikiwa sio self.nested_dl isipokua '\n'  # Avoid extra line.
             self.nested_dl = Uongo
-        elikiwa tag == 'dd':
+        lasivyo tag == 'dd':
             self.indent()
             s = '\n'
-        elikiwa tag == 'pre':
+        lasivyo tag == 'pre':
             self.pre = Kweli
             ikiwa self.show:
                 self.text.insert('end', '\n\n')
             self.tags = 'preblock'
-        elikiwa tag == 'a' na class_ == 'headerlink':
+        lasivyo tag == 'a' na class_ == 'headerlink':
             self.hdrlink = Kweli
-        elikiwa tag == 'h1':
+        lasivyo tag == 'h1':
             self.tags = tag
-        elikiwa tag kwenye ['h2', 'h3']:
+        lasivyo tag kwenye ['h2', 'h3']:
             ikiwa self.show:
                 self.header = ''
                 self.text.insert('end', '\n\n')
@@ -137,21 +137,21 @@ kundi HelpParser(HTMLParser):
                           '')
                 self.toc.append((indent+self.header, self.text.index('insert')))
             self.tags = ''
-        elikiwa tag kwenye ['span', 'em']:
+        lasivyo tag kwenye ['span', 'em']:
             self.chartags = ''
-        elikiwa tag == 'a':
+        lasivyo tag == 'a':
             self.hdrlink = Uongo
-        elikiwa tag == 'pre':
+        lasivyo tag == 'pre':
             self.pre = Uongo
             self.tags = ''
-        elikiwa tag kwenye ['ul', 'dd', 'ol']:
+        lasivyo tag kwenye ['ul', 'dd', 'ol']:
             self.indent(-1)
         self.prevtag = (Uongo, tag)
 
     eleza handle_data(self, data):
         "Handle date segments kwenye help.html."
         ikiwa self.show na sio self.hdrlink:
-            d = data ikiwa self.pre else data.replace('\n', ' ')
+            d = data ikiwa self.pre isipokua data.replace('\n', ' ')
             ikiwa self.tags == 'h1':
                 jaribu:
                     self.hprefix = d[0:d.index(' ')]
@@ -191,7 +191,7 @@ kundi HelpText(Text):
         self.tag_configure('l4', lmargin1=100, lmargin2=100)
 
         self.parser = HelpParser(self)
-        with open(filename, encoding='utf-8') kama f:
+        ukijumuisha open(filename, encoding='utf-8') kama f:
             contents = f.read()
         self.parser.feed(contents)
         self['state'] = 'disabled'
@@ -202,7 +202,7 @@ kundi HelpText(Text):
             ikiwa name.lower() kwenye (x.lower() kila x kwenye tkfont.names(root=self)):
                 font = tkfont.Font(name=name, exists=Kweli, root=self)
                 rudisha font.actual()['family']
-            elikiwa name.lower() kwenye (x.lower()
+            lasivyo name.lower() kwenye (x.lower()
                                   kila x kwenye tkfont.families(root=self)):
                 rudisha name
 
@@ -234,7 +234,7 @@ kundi HelpFrame(Frame):
 
 
 kundi HelpWindow(Toplevel):
-    "Display frame with rendered html."
+    "Display frame ukijumuisha rendered html."
     eleza __init__(self, parent, filename, title):
         Toplevel.__init__(self, parent)
         self.wm_title(title)
@@ -247,7 +247,7 @@ kundi HelpWindow(Toplevel):
 eleza copy_strip():
     """Copy idle.html to idlelib/help.html, stripping trailing whitespace.
 
-    Files with trailing whitespace cannot be pushed to the git cpython
+    Files ukijumuisha trailing whitespace cannot be pushed to the git cpython
     repository.  For 3.x (on Windows), help.html ni generated, after
     editing idle.rst on the master branch, with
       sphinx-build -bhtml . build/html
@@ -270,7 +270,7 @@ eleza copy_strip():
     src = join(abspath(dirname(dirname(dirname(__file__)))),
             'Doc', 'build', 'html', 'library', 'idle.html')
     dst = join(abspath(dirname(__file__)), 'help.html')
-    with open(src, 'rb') kama inn,\
+    ukijumuisha open(src, 'rb') kama inn,\
          open(dst, 'wb') kama out:
         kila line kwenye inn:
             out.write(line.rstrip() + b'\n')

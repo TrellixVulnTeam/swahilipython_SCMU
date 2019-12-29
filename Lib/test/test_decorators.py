@@ -134,7 +134,7 @@ kundi TestDecorators(unittest.TestCase):
 
         self.assertEqual(counts, dict(double=0))
 
-        # Only the first call with a given argument bumps the call count:
+        # Only the first call ukijumuisha a given argument bumps the call count:
         #
         self.assertEqual(double(2), 4)
         self.assertEqual(counts['double'], 1)
@@ -194,7 +194,7 @@ kundi TestDecorators(unittest.TestCase):
         # they are decorating.
         eleza callnum(num):
             """Decorator factory that rudishas a decorator that replaces the
-            pitaed-in function with one that rudishas the value of 'num'"""
+            pitaed-in function ukijumuisha one that rudishas the value of 'num'"""
             eleza deco(func):
                 rudisha lambda: num
             rudisha deco
@@ -234,7 +234,7 @@ kundi TestDecorators(unittest.TestCase):
             eleza __getattr__(self, fname):
                 ikiwa fname == 'make_decorator':
                     opname, res = ('evalname', make_decorator)
-                elikiwa fname == 'arg':
+                lasivyo fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
                 isipokua:
                     assert Uongo, "Unknown attrname %s" % fname

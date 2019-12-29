@@ -125,7 +125,7 @@ kundi TracebackCases(unittest.TestCase):
         eleza do_test(firstlines, message, charset, lineno):
             # Raise the message kwenye a subprocess, na catch the output
             jaribu:
-                with open(TESTFN, "w", encoding=charset) kama output:
+                ukijumuisha open(TESTFN, "w", encoding=charset) kama output:
                     output.write("""{0}ikiwa 1:
                         agiza traceback;
                         ashiria RuntimeError('{1}')
@@ -138,10 +138,10 @@ kundi TracebackCases(unittest.TestCase):
             mwishowe:
                 unlink(TESTFN)
 
-            # The source lines are encoded with the 'backslashreplace' handler
+            # The source lines are encoded ukijumuisha the 'backslashreplace' handler
             encoded_message = message.encode(output_encoding,
                                              'backslashreplace')
-            # na we just decoded them with the output_encoding.
+            # na we just decoded them ukijumuisha the output_encoding.
             message_ascii = encoded_message.decode(output_encoding)
 
             err_line = "ashiria RuntimeError('{0}')".format(message_ascii)
@@ -161,7 +161,7 @@ kundi TracebackCases(unittest.TestCase):
         kila charset kwenye ("ascii", "iso-8859-1", "utf-8", "GBK"):
             ikiwa charset == "ascii":
                 text = "foo"
-            elikiwa charset == "GBK":
+            lasivyo charset == "GBK":
                 text = "\u4E02\u5100"
             isipokua:
                 text = "h\xe9 ho"
@@ -235,11 +235,11 @@ kundi TracebackFormatTests(unittest.TestCase):
             traceback_andika(tb, file_)
             python_fmt  = file_.getvalue()
             # Call all _tb na _exc functions
-            with captured_output("stderr") kama tbstderr:
+            ukijumuisha captured_output("stderr") kama tbstderr:
                 traceback.print_tb(tb)
             tbfile = StringIO()
             traceback.print_tb(tb, file=tbfile)
-            with captured_output("stderr") kama excstderr:
+            ukijumuisha captured_output("stderr") kama excstderr:
                 traceback.print_exc()
             excfmt = traceback.format_exc()
             excfile = StringIO()
@@ -268,7 +268,7 @@ kundi TracebackFormatTests(unittest.TestCase):
         self.check_traceback_format()
 
     eleza test_traceback_format_with_cleared_frames(self):
-        # Check that traceback formatting also works with a clear()ed frame
+        # Check that traceback formatting also works ukijumuisha a clear()ed frame
         eleza cleanup_tb(tb):
             tb.tb_frame.clear()
         self.check_traceback_format(cleanup_tb)
@@ -276,7 +276,7 @@ kundi TracebackFormatTests(unittest.TestCase):
     eleza test_stack_format(self):
         # Verify _stack functions. Note we have to use _getframe(1) to
         # compare them without this frame appearing kwenye the output
-        with captured_output("stderr") kama ststderr:
+        ukijumuisha captured_output("stderr") kama ststderr:
             traceback.print_stack(sys._getframe(1))
         stfile = StringIO()
         traceback.print_stack(sys._getframe(1), file=stfile)
@@ -289,7 +289,7 @@ kundi TracebackFormatTests(unittest.TestCase):
     eleza test_print_stack(self):
         eleza prn():
             traceback.print_stack()
-        with captured_output("stderr") kama stderr:
+        ukijumuisha captured_output("stderr") kama stderr:
             prn()
         lineno = prn.__code__.co_firstlineno
         self.assertEqual(stderr.getvalue().splitlines()[-4:], [
@@ -310,7 +310,7 @@ kundi TracebackFormatTests(unittest.TestCase):
         eleza f():
             f()
 
-        with captured_output("stderr") kama stderr_f:
+        ukijumuisha captured_output("stderr") kama stderr_f:
             jaribu:
                 f()
             tatizo RecursionError kama exc:
@@ -330,7 +330,7 @@ kundi TracebackFormatTests(unittest.TestCase):
             f'  File "{__file__}", line {lineno_f+1}, kwenye f\n'
             '    f()\n'
             # XXX: The following line changes depending on whether the tests
-            # are run through the interactive interpreter ama with -m
+            # are run through the interactive interpreter ama ukijumuisha -m
             # It also varies depending on the platform (stack size)
             # Fortunately, we don't care about exactness here, so we use regex
             r'  \[Previous line repeated (\d+) more times\]' '\n'
@@ -357,7 +357,7 @@ kundi TracebackFormatTests(unittest.TestCase):
                 rudisha g(count-1)
             ashiria ValueError
 
-        with captured_output("stderr") kama stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g()
             tatizo ValueError kama exc:
@@ -393,7 +393,7 @@ kundi TracebackFormatTests(unittest.TestCase):
                 rudisha h(count-1)
             g()
 
-        with captured_output("stderr") kama stderr_h:
+        ukijumuisha captured_output("stderr") kama stderr_h:
             jaribu:
                 h()
             tatizo ValueError kama exc:
@@ -421,7 +421,7 @@ kundi TracebackFormatTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         # Check the boundary conditions. First, test just below the cutoff.
-        with captured_output("stderr") kama stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g(traceback._RECURSIVE_CUTOFF)
             tatizo ValueError kama exc:
@@ -449,7 +449,7 @@ kundi TracebackFormatTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         # Second, test just above the cutoff.
-        with captured_output("stderr") kama stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g(traceback._RECURSIVE_CUTOFF + 1)
             tatizo ValueError kama exc:
@@ -518,7 +518,7 @@ kundi TracebackFormatTests(unittest.TestCase):
             tatizo UnhashableException:
                 exc_type, exc_val, exc_tb = sys.exc_info()
 
-        with captured_output("stderr") kama stderr_f:
+        ukijumuisha captured_output("stderr") kama stderr_f:
             exception_andika(exc_val)
 
         tb = stderr_f.getvalue().strip().splitlines()
@@ -682,7 +682,7 @@ kundi BaseExceptionReportingTests:
 
 kundi PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
-    # This checks reporting through the 'traceback' module, with both
+    # This checks reporting through the 'traceback' module, ukijumuisha both
     # format_exception() na print_exception().
     #
 
@@ -690,7 +690,7 @@ kundi PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         e = self.get_exception(e)
         s = ''.join(
             traceback.format_exception(type(e), e, e.__traceback__))
-        with captured_output("stderr") kama sio:
+        ukijumuisha captured_output("stderr") kama sio:
             traceback.print_exception(type(e), e, e.__traceback__)
         self.assertEqual(sio.getvalue(), s)
         rudisha s
@@ -705,7 +705,7 @@ kundi CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     eleza get_report(self, e):
         kutoka _testcapi agiza exception_print
         e = self.get_exception(e)
-        with captured_output("stderr") kama s:
+        ukijumuisha captured_output("stderr") kama s:
             exception_andika(e)
         rudisha s.getvalue()
 
@@ -754,7 +754,7 @@ kundi LimitTests(unittest.TestCase):
             self.assertEqual(actual[ignore+1:], expected[ignore+1:])
             self.assertEqual(len(actual), len(expected))
 
-        with support.swap_attr(sys, 'tracebacklimit', 1000):
+        ukijumuisha support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
             self.assertGreater(len(nolim), 5)
             self.assertEqual(extract(limit=2), nolim[-2:])
@@ -781,7 +781,7 @@ kundi LimitTests(unittest.TestCase):
         eleza extract(**kwargs):
             rudisha traceback.extract_tb(tb, **kwargs)
 
-        with support.swap_attr(sys, 'tracebacklimit', 1000):
+        ukijumuisha support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
             self.assertEqual(len(nolim), 5+1)
             self.assertEqual(extract(limit=2), nolim[:2])
@@ -810,7 +810,7 @@ kundi LimitTests(unittest.TestCase):
         eleza extract(**kwargs):
             rudisha traceback.format_exception(exc_type, exc_value, tb, **kwargs)[1:-1]
 
-        with support.swap_attr(sys, 'tracebacklimit', 1000):
+        ukijumuisha support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
             self.assertEqual(len(nolim), 5+1)
             self.assertEqual(extract(limit=2), nolim[:2])

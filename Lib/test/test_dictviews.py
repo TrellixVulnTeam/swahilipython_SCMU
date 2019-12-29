@@ -248,7 +248,7 @@ kundi DictSetTest(unittest.TestCase):
         self.assertRaises(Exc, d.keys().__contains__, k2)
         self.assertRaises(Exc, d.items().__contains__, (k2, v1))
         self.assertRaises(Exc, d.items().__contains__, (k1, v2))
-        with self.assertRaises(Exc):
+        ukijumuisha self.assertRaises(Exc):
             v2 kwenye d.values()
 
     eleza test_pickle(self):

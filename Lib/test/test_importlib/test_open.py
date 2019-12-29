@@ -7,39 +7,39 @@ kutoka . agiza util
 
 kundi CommonBinaryTests(util.CommonResourceTests, unittest.TestCase):
     eleza execute(self, package, path):
-        with resources.open_binary(package, path):
+        ukijumuisha resources.open_binary(package, path):
             pita
 
 
 kundi CommonTextTests(util.CommonResourceTests, unittest.TestCase):
     eleza execute(self, package, path):
-        with resources.open_text(package, path):
+        ukijumuisha resources.open_text(package, path):
             pita
 
 
 kundi OpenTests:
     eleza test_open_binary(self):
-        with resources.open_binary(self.data, 'binary.file') kama fp:
+        ukijumuisha resources.open_binary(self.data, 'binary.file') kama fp:
             result = fp.read()
             self.assertEqual(result, b'\x00\x01\x02\x03')
 
     eleza test_open_text_default_encoding(self):
-        with resources.open_text(self.data, 'utf-8.file') kama fp:
+        ukijumuisha resources.open_text(self.data, 'utf-8.file') kama fp:
             result = fp.read()
             self.assertEqual(result, 'Hello, UTF-8 world!\n')
 
     eleza test_open_text_given_encoding(self):
-        with resources.open_text(
+        ukijumuisha resources.open_text(
                 self.data, 'utf-16.file', 'utf-16', 'strict') kama fp:
             result = fp.read()
         self.assertEqual(result, 'Hello, UTF-16 world!\n')
 
     eleza test_open_text_with_errors(self):
         # Raises UnicodeError without the 'errors' argument.
-        with resources.open_text(
+        ukijumuisha resources.open_text(
                 self.data, 'utf-16.file', 'utf-8', 'strict') kama fp:
             self.assertRaises(UnicodeError, fp.read)
-        with resources.open_text(
+        ukijumuisha resources.open_text(
                 self.data, 'utf-16.file', 'utf-8', 'ignore') kama fp:
             result = fp.read()
         self.assertEqual(

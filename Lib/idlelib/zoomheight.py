@@ -24,7 +24,7 @@ kundi ZoomHeight:
         ikiwa zoomed ni Tupu:
             self.top.bell()
         isipokua:
-            menu_status = 'Restore' ikiwa zoomed else 'Zoom'
+            menu_status = 'Restore' ikiwa zoomed isipokua 'Zoom'
             self.editwin.update_menu_label(menu='options', index='* Height',
                                            label=f'{menu_status} Height')
 
@@ -83,7 +83,7 @@ kundi ZoomHeight:
                 maxy = 0
             maxrooty = top.winfo_rooty()
 
-            # Get the "root y" coordinate kila non-maximized windows with their
+            # Get the "root y" coordinate kila non-maximized windows ukijumuisha their
             # y coordinate set to that of maximized windows.  This ni needed
             # to properly handle different title bar heights kila non-maximized
             # vs. maximized windows, kama seen e.g. kwenye Windows 10.

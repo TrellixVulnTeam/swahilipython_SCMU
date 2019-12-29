@@ -25,9 +25,9 @@ has the following attributes:
     children -- nested objects contained kwenye this object.
 The 'children' attribute ni a dictionary mapping names to objects.
 
-Instances of Function describe functions with the attributes kutoka _Object.
+Instances of Function describe functions ukijumuisha the attributes kutoka _Object.
 
-Instances of Class describe classes with the attributes kutoka _Object,
+Instances of Class describe classes ukijumuisha the attributes kutoka _Object,
 plus the following:
     super   -- list of super classes (Class instances ikiwa possible);
     methods -- mapping of method names to beginning line numbers.
@@ -73,7 +73,7 @@ kundi Class(_Object):
     "Information about a Python class."
     eleza __init__(self, module, name, super, file, lineno, parent=Tupu):
         _Object.__init__(self, module, name, file, lineno, parent)
-        self.super = [] ikiwa super ni Tupu else super
+        self.super = [] ikiwa super ni Tupu isipokua super
         self.methods = {}
 
     eleza _addmethod(self, name, lineno):
@@ -107,7 +107,7 @@ eleza readmodule(module, path=Tupu):
     rudisha res
 
 eleza readmodule_ex(module, path=Tupu):
-    """Return a dictionary with all functions na classes kwenye module.
+    """Return a dictionary ukijumuisha all functions na classes kwenye module.
 
     Search kila module kwenye PATH + sys.path.
     If possible, include imported superclasses.
@@ -121,7 +121,7 @@ eleza _readmodule(module, path, inpackage=Tupu):
     If inpackage ni given, it must be the dotted name of the package in
     which we are searching kila a submodule, na then PATH must be the
     package search path; otherwise, we are searching kila a top-level
-    module, na path ni combined with sys.path.
+    module, na path ni combined ukijumuisha sys.path.
     """
     # Compute the full module name (prepending inpackage ikiwa set).
     ikiwa inpackage ni sio Tupu:
@@ -203,14 +203,14 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                 # Close previous nested classes na defs.
                 wakati stack na stack[-1][1] >= thisindent:
                     toa stack[-1]
-            elikiwa token == 'def':
+            lasivyo token == 'def':
                 lineno, thisindent = start
                 # Close previous nested classes na defs.
                 wakati stack na stack[-1][1] >= thisindent:
                     toa stack[-1]
                 tokentype, func_name, start = next(g)[0:3]
                 ikiwa tokentype != NAME:
-                    endelea  # Skip eleza with syntax error.
+                    endelea  # Skip eleza ukijumuisha syntax error.
                 cur_func = Tupu
                 ikiwa stack:
                     cur_obj = stack[-1][0]
@@ -220,14 +220,14 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                     cur_func = Function(fullmodule, func_name, fname, lineno)
                     tree[func_name] = cur_func
                 stack.append((cur_func, thisindent))
-            elikiwa token == 'class':
+            lasivyo token == 'class':
                 lineno, thisindent = start
                 # Close previous nested classes na defs.
                 wakati stack na stack[-1][1] >= thisindent:
                     toa stack[-1]
                 tokentype, class_name, start = next(g)[0:3]
                 ikiwa tokentype != NAME:
-                    endelea # Skip kundi with syntax error.
+                    endelea # Skip kundi ukijumuisha syntax error.
                 # Parse what follows the kundi name.
                 tokentype, token, start = next(g)[0:3]
                 inherit = Tupu
@@ -257,14 +257,14 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                             super = []
                         ikiwa token == '(':
                             level += 1
-                        elikiwa token == ')':
+                        lasivyo token == ')':
                             level -= 1
                             ikiwa level == 0:
                                 koma
-                        elikiwa token == ',' na level == 1:
+                        lasivyo token == ',' na level == 1:
                             pita
                         # Only use NAME na OP (== dot) tokens kila type name.
-                        elikiwa tokentype kwenye (NAME, OP) na level == 1:
+                        lasivyo tokentype kwenye (NAME, OP) na level == 1:
                             super.append(token)
                         # Expressions kwenye the base list are sio supported.
                     inherit = names
@@ -277,7 +277,7 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                                       fname, lineno)
                     tree[class_name] = cur_class
                 stack.append((cur_class, thisindent))
-            elikiwa token == 'agiza' na start[1] == 0:
+            lasivyo token == 'agiza' na start[1] == 0:
                 modules = _getnamelist(g)
                 kila mod, _mod2 kwenye modules:
                     jaribu:
@@ -293,7 +293,7 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                         # If we can't find ama parse the imported module,
                         # too bad -- don't die here.
                         pita
-            elikiwa token == 'kutoka' na start[1] == 0:
+            lasivyo token == 'kutoka' na start[1] == 0:
                 mod, token = _getname(g)
                 ikiwa sio mod ama token != "agiza":
                     endelea
@@ -310,8 +310,8 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                 kila n, n2 kwenye names:
                     ikiwa n kwenye d:
                         tree[n2 ama n] = d[n]
-                    elikiwa n == '*':
-                        # Don't add names that start with _.
+                    lasivyo n == '*':
+                        # Don't add names that start ukijumuisha _.
                         kila n kwenye d:
                             ikiwa n[0] != '_':
                                 tree[n] = d[n]
@@ -397,7 +397,7 @@ eleza _main():
         ikiwa isinstance(obj, Class):
             andika("{}kundi {} {} {}"
                   .format(' ' * obj.indent, obj.name, obj.super, obj.lineno))
-        elikiwa isinstance(obj, Function):
+        lasivyo isinstance(obj, Function):
             andika("{}eleza {} {}".format(' ' * obj.indent, obj.name, obj.lineno))
 
 ikiwa __name__ == "__main__":

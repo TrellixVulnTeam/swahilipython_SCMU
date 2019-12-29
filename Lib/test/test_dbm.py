@@ -75,7 +75,7 @@ kundi AnyDBMTestCase:
     eleza test_anydbm_creation_n_file_exists_with_invalid_contents(self):
         # create an empty file
         test.support.create_empty_file(_fname)
-        with dbm.open(_fname, 'n') kama f:
+        ukijumuisha dbm.open(_fname, 'n') kama f:
             self.assertEqual(len(f), 0)
 
     eleza test_anydbm_modification(self):
@@ -96,7 +96,7 @@ kundi AnyDBMTestCase:
         self.assertEqual(f.get(b'a'), self._dict['a'])
         self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
         self.assertIsTupu(f.get(b'xxx'))
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             f[b'xxx']
         f.close()
 
@@ -145,8 +145,8 @@ kundi WhichDBTestCase(unittest.TestCase):
     eleza test_whichdb(self):
         kila module kwenye dbm_iterator():
             # Check whether whichdb correctly guesses module name
-            # kila databases opened with "module" module.
-            # Try with empty files first
+            # kila databases opened ukijumuisha "module" module.
+            # Try ukijumuisha empty files first
             name = module.__name__
             ikiwa name == 'dbm.dumb':
                 endelea   # whichdb can't support dbm.dumb
@@ -168,7 +168,7 @@ kundi WhichDBTestCase(unittest.TestCase):
     eleza test_whichdb_ndbm(self):
         # Issue 17198: check that ndbm which ni referenced kwenye whichdb ni defined
         db_file = '{}_ndbm.db'.format(_fname)
-        with open(db_file, 'w'):
+        ukijumuisha open(db_file, 'w'):
             self.addCleanup(test.support.unlink, db_file)
         self.assertIsTupu(self.dbm.whichdb(db_file[:-3]))
 

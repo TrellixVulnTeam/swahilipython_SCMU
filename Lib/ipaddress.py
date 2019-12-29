@@ -236,7 +236,7 @@ eleza summarize_address_range(first, last):
 
     ikiwa first.version == 4:
         ip = IPv4Network
-    elikiwa first.version == 6:
+    lasivyo first.version == 6:
         ip = IPv6Network
     isipokua:
         ashiria ValueError('unknown IP version')
@@ -287,7 +287,7 @@ eleza _collapse_addresses_internal(addresses):
         existing = subnets.get(supernet)
         ikiwa existing ni Tupu:
             subnets[supernet] = net
-        elikiwa existing != net:
+        lasivyo existing != net:
             # Merge consecutive subnets
             toa subnets[supernet]
             to_merge.append(supernet)
@@ -332,7 +332,7 @@ eleza collapse_addresses(addresses):
                 ashiria TypeError("%s na %s are sio of the same version" % (
                                  ip, ips[-1]))
             ips.append(ip)
-        elikiwa ip._prefixlen == ip._max_prefixlen:
+        lasivyo ip._prefixlen == ip._max_prefixlen:
             ikiwa ips na ips[-1]._version != ip._version:
                 ashiria TypeError("%s na %s are sio of the same version" % (
                                  ip, ips[-1]))
@@ -377,7 +377,7 @@ eleza get_mixed_type_key(obj):
     """
     ikiwa isinstance(obj, _BaseNetwork):
         rudisha obj._get_networks_key()
-    elikiwa isinstance(obj, _BaseAddress):
+    lasivyo isinstance(obj, _BaseAddress):
         rudisha obj._get_address_key()
     rudisha NotImplemented
 
@@ -691,10 +691,10 @@ kundi _BaseNetwork(_IPAddressBase):
         # always false ikiwa one ni v4 na the other ni v6.
         ikiwa self._version != other._version:
             rudisha Uongo
-        # dealing with another network.
+        # dealing ukijumuisha another network.
         ikiwa isinstance(other, _BaseNetwork):
             rudisha Uongo
-        # dealing with another address
+        # dealing ukijumuisha another address
         isipokua:
             # address
             rudisha other._ip & self.netmask._ip == self.network_address._ip
@@ -801,7 +801,7 @@ kundi _BaseNetwork(_IPAddressBase):
             ikiwa other.subnet_of(s1):
                 tuma s2
                 s1, s2 = s1.subnets()
-            elikiwa other.subnet_of(s2):
+            lasivyo other.subnet_of(s2):
                 tuma s1
                 s1, s2 = s2.subnets()
             isipokua:
@@ -811,7 +811,7 @@ kundi _BaseNetwork(_IPAddressBase):
                                      (s1, s2, other))
         ikiwa s1 == other:
             tuma s2
-        elikiwa s2 == other:
+        lasivyo s2 == other:
             tuma s1
         isipokua:
             # If we got here, there's a bug somewhere.
@@ -882,7 +882,7 @@ kundi _BaseNetwork(_IPAddressBase):
 
         In the case that self contains only one IP
         (self._prefixlen == 32 kila IPv4 ama self._prefixlen == 128
-        kila IPv6), tuma an iterator with just ourself.
+        kila IPv6), tuma an iterator ukijumuisha just ourself.
 
         Args:
             prefixlen_diff: An integer, the amount the prefix length
@@ -936,7 +936,7 @@ kundi _BaseNetwork(_IPAddressBase):
         Args:
             prefixlen_diff: An integer, the amount the prefix length of
               the network should be decreased by.  For example, given a
-              /24 network na a prefixlen_diff of 3, a supernet with a
+              /24 network na a prefixlen_diff of 3, a supernet ukijumuisha a
               /21 netmask ni rudishaed.
 
         Returns:
@@ -1352,7 +1352,7 @@ kundi IPv4Interface(IPv4Address):
         jaribu:
             rudisha self.network == other.network
         tatizo AttributeError:
-            # An interface with an associated network ni NOT the
+            # An interface ukijumuisha an associated network ni NOT the
             # same kama an unassociated address. That's why the hash
             # takes the extra info into account.
             rudisha Uongo
@@ -1422,12 +1422,12 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
               '192.0.2.1/255.255.255.255'
               '192.0.2.1/32'
               are also functionally equivalent. That ni to say, failing to
-              provide a subnetmask will create an object with a mask of /32.
+              provide a subnetmask will create an object ukijumuisha a mask of /32.
 
               If the mask (portion after the / kwenye the argument) ni given in
-              dotted quad form, it ni treated kama a netmask ikiwa it starts with a
+              dotted quad form, it ni treated kama a netmask ikiwa it starts ukijumuisha a
               non-zero field (e.g. /255.0.0.0 == /8) na kama a hostmask ikiwa it
-              starts with a zero field (e.g. 0.255.255.255 == /8), with the
+              starts ukijumuisha a zero field (e.g. 0.255.255.255 == /8), ukijumuisha the
               single exception of an all-zero mask which ni treated kama a
               netmask == /0. If no mask ni given, a default of /32 ni used.
 
@@ -1590,7 +1590,7 @@ kundi _BaseV6:
             msg = "At most %d colons permitted kwenye %r" % (_max_parts-1, ip_str)
             ashiria AddressValueError(msg)
 
-        # Disregarding the endpoints, find '::' with nothing kwenye between.
+        # Disregarding the endpoints, find '::' ukijumuisha nothing kwenye between.
         # This indicates that a run of zeroes has been skipped.
         skip_index = Tupu
         kila i kwenye range(1, len(parts) - 1):
@@ -1619,7 +1619,7 @@ kundi _BaseV6:
                     ashiria AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_skipped = cls._HEXTET_COUNT - (parts_hi + parts_lo)
             ikiwa parts_skipped < 1:
-                msg = "Expected at most %d other parts with '::' kwenye %r"
+                msg = "Expected at most %d other parts ukijumuisha '::' kwenye %r"
                 ashiria AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
         isipokua:
             # Otherwise, allocate the entire address to parts_hi.  The
@@ -1683,7 +1683,7 @@ kundi _BaseV6:
         """Compresses a list of hextets.
 
         Compresses a list of strings, replacing the longest continuous
-        sequence of "0" kwenye the list with "" na adding empty strings at
+        sequence of "0" kwenye the list ukijumuisha "" na adding empty strings at
         the beginning ama at the end of the string such that subsequently
         calling ":".join(hextets) will produce the compressed version of
         the IPv6 address.
@@ -1764,7 +1764,7 @@ kundi _BaseV6:
         """
         ikiwa isinstance(self, IPv6Network):
             ip_str = str(self.network_address)
-        elikiwa isinstance(self, IPv6Interface):
+        lasivyo isinstance(self, IPv6Interface):
             ip_str = str(self.ip)
         isipokua:
             ip_str = str(self)
@@ -1999,7 +1999,7 @@ kundi IPv6Interface(IPv6Address):
         jaribu:
             rudisha self.network == other.network
         tatizo AttributeError:
-            # An interface with an associated network ni NOT the
+            # An interface ukijumuisha an associated network ni NOT the
             # same kama an unassociated address. That's why the hash
             # takes the extra info into account.
             rudisha Uongo

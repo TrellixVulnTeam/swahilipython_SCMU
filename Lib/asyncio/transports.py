@@ -30,7 +30,7 @@ kundi BaseTransport:
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data ni flushed, the
         protocol's connection_lost() method will (eventually) called
-        with Tupu kama its argument.
+        ukijumuisha Tupu kama its argument.
         """
         ashiria NotImplementedError
 
@@ -134,7 +134,7 @@ kundi WriteTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Tupu kama its argument.
+        called ukijumuisha Tupu kama its argument.
         """
         ashiria NotImplementedError
 
@@ -183,7 +183,7 @@ kundi DatagramTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Tupu kama its argument.
+        called ukijumuisha Tupu kama its argument.
         """
         ashiria NotImplementedError
 
@@ -205,7 +205,7 @@ kundi SubprocessTransport(BaseTransport):
         ashiria NotImplementedError
 
     eleza get_pipe_transport(self, fd):
-        """Get transport kila pipe with number fd."""
+        """Get transport kila pipe ukijumuisha number fd."""
         ashiria NotImplementedError
 
     eleza send_signal(self, signal):

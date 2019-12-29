@@ -1,6 +1,6 @@
 """Remove __future__ agizas
 
-kutoka __future__ agiza foo ni replaced with an empty line.
+kutoka __future__ agiza foo ni replaced ukijumuisha an empty line.
 """
 # Author: Christian Heimes
 

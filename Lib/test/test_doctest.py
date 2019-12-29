@@ -283,7 +283,7 @@ eleza test_DocTest(): r"""
 Unit tests kila the `DocTest` class.
 
 DocTest ni a collection of examples, extracted kutoka a docstring, along
-with information about where the docstring comes kutoka (a name,
+ukijumuisha information about where the docstring comes kutoka (a name,
 filename, na line number).  The docstring ni parsed by the `DocTest`
 constructor:
 
@@ -452,7 +452,7 @@ leading path components.
     >>> (e.source, e.want, e.lineno)
     ('andika(sample_func(22))\n', '44\n', 3)
 
-By default, tests are created kila objects with no docstring:
+By default, tests are created kila objects ukijumuisha no docstring:
 
     >>> eleza no_docstring(v):
     ...     pita
@@ -460,7 +460,7 @@ By default, tests are created kila objects with no docstring:
     []
 
 However, the optional argument `exclude_empty` to the DocTestFinder
-constructor can be used to exclude tests kila objects with empty
+constructor can be used to exclude tests kila objects ukijumuisha empty
 docstrings:
 
     >>> eleza no_docstring(v):
@@ -469,7 +469,7 @@ docstrings:
     >>> excl_empty_finder.find(no_docstring)
     []
 
-If the function has a docstring with no examples, then a test with no
+If the function has a docstring ukijumuisha no examples, then a test ukijumuisha no
 examples ni rudishaed.  (This lets `DocTestRunner` collect statistics
 about which functions have no tests -- but ni that useful?  And should
 an empty test also be created when there's no docstring?)
@@ -580,7 +580,7 @@ will only be generated kila it once:
 
 Empty Tests
 ~~~~~~~~~~~
-By default, an object with no doctests doesn't create any tests:
+By default, an object ukijumuisha no doctests doesn't create any tests:
 
     >>> tests = doctest.DocTestFinder().find(SampleClass)
     >>> kila t kwenye tests:
@@ -595,8 +595,8 @@ By default, an object with no doctests doesn't create any tests:
      1  SampleClass.double
      1  SampleClass.get
 
-By default, that excluded objects with no doctests.  exclude_empty=Uongo
-tells it to include (empty) tests kila objects with no doctests.  This feature
+By default, that excluded objects ukijumuisha no doctests.  exclude_empty=Uongo
+tells it to include (empty) tests kila objects ukijumuisha no doctests.  This feature
 is really to support backward compatibility kwenye what doctest.master.summarize()
 displays.
 
@@ -661,7 +661,7 @@ plain ol' Python na ni guaranteed to be available.
 
     >>> agiza builtins
     >>> tests = doctest.DocTestFinder().find(builtins)
-    >>> 800 < len(tests) < 820 # approximate number of objects with docstrings
+    >>> 800 < len(tests) < 820 # approximate number of objects ukijumuisha docstrings
     Kweli
     >>> real_tests = [t kila t kwenye tests ikiwa len(t.examples) > 0]
     >>> len(real_tests) # objects that actually have doctests
@@ -692,7 +692,7 @@ kundi TestDocTestFinder(unittest.TestCase):
 
     eleza test_empty_namespace_package(self):
         pkg_name = 'doctest_empty_pkg'
-        with tempfile.TemporaryDirectory() kama parent_dir:
+        ukijumuisha tempfile.TemporaryDirectory() kama parent_dir:
             pkg_dir = os.path.join(parent_dir, pkg_name)
             os.mkdir(pkg_dir)
             sys.path.append(parent_dir)
@@ -746,7 +746,7 @@ The `get_examples` method rudishas just the examples:
     ('ikiwa 1:\n    andika(x)\n    andika(y)\n', '2\n3\n', 2)
     ('x+y\n', '5\n', 9)
 
-The `get_doctest` method creates a Test kutoka the examples, along with the
+The `get_doctest` method creates a Test kutoka the examples, along ukijumuisha the
 given arguments:
 
     >>> test = parser.get_doctest(s, {}, 'name', 'filename', lineno=5)
@@ -891,9 +891,9 @@ explicitly set, to ensure that the test behavior ni consistent.
     eleza exceptions(): r"""
 Tests of `DocTestRunner`'s exception handling.
 
-An expected exception ni specified with a traceback message.  The
+An expected exception ni specified ukijumuisha a traceback message.  The
 lines between the first line na the type/value may be omitted or
-replaced with any other string:
+replaced ukijumuisha any other string:
 
     >>> eleza f(x):
     ...     '''
@@ -945,7 +945,7 @@ Exception messages may contain newlines:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=1)
 
-If an exception ni expected, but an exception with the wrong type or
+If an exception ni expected, but an exception ukijumuisha the wrong type or
 message ni ashiriad, then it ni reported kama a failure:
 
     >>> eleza f(x):
@@ -1025,7 +1025,7 @@ Python 2.
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=2)
 
-However, with IGNORE_EXCEPTION_DETAIL, the module name of the exception
+However, ukijumuisha IGNORE_EXCEPTION_DETAIL, the module name of the exception
 (or its unexpected absence) will be ignored:
 
     >>> eleza f(x):
@@ -1371,7 +1371,7 @@ and actual outputs to be displayed using a unified diff:
     File ..., line 3, kwenye f
     Failed example:
         andika('\n'.join('abcdefg'))
-    Differences (unified diff with -expected +actual):
+    Differences (unified diff ukijumuisha -expected +actual):
         @@ -1,7 +1,7 @@
          a
         -B
@@ -1396,7 +1396,7 @@ and actual outputs to be displayed using a context diff:
     File ..., line 3, kwenye f
     Failed example:
         andika('\n'.join('abcdefg'))
-    Differences (context diff with expected followed by actual):
+    Differences (context diff ukijumuisha expected followed by actual):
         ***************
         *** 1,7 ****
           a
@@ -1434,7 +1434,7 @@ marking, kama well kama interline differences.
     File ..., line 3, kwenye f
     Failed example:
         andika("a b  c d e f g h i   j k l m")
-    Differences (ndiff with -expected +actual):
+    Differences (ndiff ukijumuisha -expected +actual):
         - a b c d e f g h i j k 1 m
         ?                       ^
         + a b  c d e f g h i   j k l m
@@ -1593,7 +1593,7 @@ Tests of `DocTestRunner`'s option directive mechanism.
 
 Option directives can be used to turn option flags on ama off kila a
 single example.  To turn an option on kila an example, follow that
-example with a comment of the form ``# doctest: +OPTION``:
+example ukijumuisha a comment of the form ``# doctest: +OPTION``:
 
     >>> eleza f(x): r'''
     ...     >>> andika(list(range(10)))      # should fail: no ellipsis
@@ -1615,7 +1615,7 @@ example with a comment of the form ``# doctest: +OPTION``:
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     TestResults(failed=1, attempted=2)
 
-To turn an option off kila an example, follow that example with a
+To turn an option off kila an example, follow that example ukijumuisha a
 comment of the form ``# doctest: -OPTION``:
 
     >>> eleza f(x): r'''
@@ -1749,7 +1749,7 @@ long kama a continuation prompt ni used:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=1)
 
-For examples with multi-line source, the option directive may appear
+For examples ukijumuisha multi-line source, the option directive may appear
 at the end of any line:
 
     >>> eleza f(x): r'''
@@ -1765,7 +1765,7 @@ at the end of any line:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=2)
 
-If more than one line of an example with multi-line source has an
+If more than one line of an example ukijumuisha multi-line source has an
 option directive, then they are combined:
 
     >>> eleza f(x): r'''
@@ -1801,14 +1801,14 @@ source:
     >>> s = '>>> # doctest: +ELLIPSIS'
     >>> test = doctest.DocTestParser().get_doctest(s, {}, 's', 's.py', 0)
     Traceback (most recent call last):
-    ValueError: line 0 of the doctest kila s has an option directive on a line with no example: '# doctest: +ELLIPSIS'
+    ValueError: line 0 of the doctest kila s has an option directive on a line ukijumuisha no example: '# doctest: +ELLIPSIS'
 """
 
 eleza test_testsource(): r"""
 Unit tests kila `testsource()`.
 
 The testsource() function takes a module na a name, finds the (first)
-test with that name kwenye that module, na converts it to a script. The
+test ukijumuisha that name kwenye that module, na converts it to a script. The
 example code ni converted to regular Python code.  The surrounding
 words na expected output are converted to comments:
 
@@ -1882,7 +1882,7 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
         retrieve the set_trace function kutoka the pdb module at the time
         you use it.  The doctest module changes sys.stdout so that it can
         capture program output.  It also temporarily replaces pdb.set_trace
-        with a version that restores stdout.  This ni necessary kila you to
+        ukijumuisha a version that restores stdout.  This ni necessary kila you to
         see debugger output.
 
           >>> doc = '''
@@ -2010,7 +2010,7 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
           """
 
     eleza test_pdb_set_trace_nested():
-        """This illustrates more-demanding use of set_trace with nested functions.
+        """This illustrates more-demanding use of set_trace ukijumuisha nested functions.
 
         >>> kundi C(object):
         ...     eleza calls_set_trace(self):
@@ -2468,7 +2468,7 @@ eleza test_unittest_reportflags():
              andika('a')
              andika()
              andika('b')
-      Differences (ndiff with -expected +actual):
+      Differences (ndiff ukijumuisha -expected +actual):
             a
           - <BLANKLINE>
           +\x20
@@ -2486,7 +2486,7 @@ eleza test_unittest_reportflags():
 eleza test_testfile(): r"""
 Tests kila the `testfile()` function.  This function runs all the
 doctest examples kwenye a given file.  In its simple invokation, it is
-called with the name of a file, which ni taken to be relative to the
+called ukijumuisha the name of a file, which ni taken to be relative to the
 calling module.  The rudisha value ni (#failures, #tests).
 
 We don't want `-v` kwenye sys.argv kila these tests.
@@ -2512,10 +2512,10 @@ We don't want `-v` kwenye sys.argv kila these tests.
     >>> doctest.master = Tupu  # Reset master.
 
 (Note: we'll be clearing doctest.master after each call to
-`doctest.testfile`, to suppress warnings about multiple tests with the
+`doctest.testfile`, to suppress warnings about multiple tests ukijumuisha the
 same name.)
 
-Globals may be specified with the `globs` na `extraglobs` parameters:
+Globals may be specified ukijumuisha the `globs` na `extraglobs` parameters:
 
     >>> globs = {'favorite_color': 'blue'}
     >>> doctest.testfile('test_doctest.txt', globs=globs)
@@ -2548,7 +2548,7 @@ optional `module_relative` parameter:
     TestResults(failed=0, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
 
-Verbosity can be increased with the optional `verbose` parameter:
+Verbosity can be increased ukijumuisha the optional `verbose` parameter:
 
     >>> doctest.testfile('test_doctest.txt', globs=globs, verbose=Kweli)
     Trying:
@@ -2574,7 +2574,7 @@ Verbosity can be increased with the optional `verbose` parameter:
     TestResults(failed=0, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
 
-The name of the test may be specified with the optional `name`
+The name of the test may be specified ukijumuisha the optional `name`
 parameter:
 
     >>> doctest.testfile('test_doctest.txt', name='newname')
@@ -2585,7 +2585,7 @@ parameter:
     TestResults(failed=1, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
 
-The summary report may be suppressed with the optional `report`
+The summary report may be suppressed ukijumuisha the optional `report`
 parameter:
 
     >>> doctest.testfile('test_doctest.txt', report=Uongo)
@@ -2670,7 +2670,7 @@ Windows line endings first:
 
     >>> agiza tempfile, os
     >>> fn = tempfile.mktemp()
-    >>> with open(fn, 'wb') kama f:
+    >>> ukijumuisha open(fn, 'wb') kama f:
     ...    f.write(b'Test:\r\n\r\n  >>> x = 1 + 1\r\n\r\nDone.\r\n')
     35
     >>> doctest.testfile(fn, module_relative=Uongo, verbose=Uongo)
@@ -2680,7 +2680,7 @@ Windows line endings first:
 And now *nix line endings:
 
     >>> fn = tempfile.mktemp()
-    >>> with open(fn, 'wb') kama f:
+    >>> ukijumuisha open(fn, 'wb') kama f:
     ...     f.write(b'Test:\n\n  >>> x = 1 + 1\n\nDone.\n')
     30
     >>> doctest.testfile(fn, module_relative=Uongo, verbose=Uongo)
@@ -2692,7 +2692,7 @@ And now *nix line endings:
 eleza test_testmod(): r"""
 Tests kila the testmod function.  More might be useful, but kila now we're just
 testing the case ashiriad by Issue 6195, where trying to doctest a C module would
-fail with a UnicodeDecodeError because doctest tried to read the "source" lines
+fail ukijumuisha a UnicodeDecodeError because doctest tried to read the "source" lines
 out of the binary module.
 
     >>> agiza unicodedata
@@ -2707,7 +2707,7 @@ tatizo UnicodeEncodeError:
     pita
 isipokua:
     eleza test_unicode(): """
-Check doctest with a non-ascii filename:
+Check doctest ukijumuisha a non-ascii filename:
 
     >>> doc = '''
     ... >>> ashiria Exception('clé')
@@ -2745,14 +2745,14 @@ output into something we can doctest against:
     >>> eleza normalize(s):
     ...     rudisha '\n'.join(s.decode().splitlines())
 
-With those preliminaries out of the way, we'll start with a file with two
+With those preliminaries out of the way, we'll start ukijumuisha a file ukijumuisha two
 simple tests na no errors.  We'll run both the unadorned doctest command, and
 the verbose version, na then check the output:
 
     >>> kutoka test.support agiza script_helper, temp_dir
-    >>> with temp_dir() kama tmpdir:
+    >>> ukijumuisha temp_dir() kama tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
-    ...     with open(fn, 'w') kama f:
+    ...     ukijumuisha open(fn, 'w') kama f:
     ...         _ = f.write('This ni a very simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
@@ -2791,8 +2791,8 @@ With the verbose flag, we should see the test output, but no error output:
     2 pitaed na 0 failed.
     Test pitaed.
 
-Now we'll write a couple files, one with three tests, the other a python module
-with two tests, both of the files having "errors" kwenye the tests that can be made
+Now we'll write a couple files, one ukijumuisha three tests, the other a python module
+ukijumuisha two tests, both of the files having "errors" kwenye the tests that can be made
 non-errors by applying the appropriate doctest options to the run (ELLIPSIS in
 the first file, NORMALIZE_WHITESPACE kwenye the second).  This combination will
 allow thoroughly testing the -f na -o flags, kama well kama the doctest command's
@@ -2801,9 +2801,9 @@ file ends kwenye '.py', its handling of python module files (as opposed to strai
 text files).
 
     >>> kutoka test.support agiza script_helper, temp_dir
-    >>> with temp_dir() kama tmpdir:
+    >>> ukijumuisha temp_dir() kama tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
-    ...     with open(fn, 'w') kama f:
+    ...     ukijumuisha open(fn, 'w') kama f:
     ...         _ = f.write('This ni another simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
@@ -2814,7 +2814,7 @@ text files).
     ...         _ = f.write('\n')
     ...         _ = f.write('And that ni it.\n')
     ...     fn2 = os.path.join(tmpdir, 'myfile2.py')
-    ...     with open(fn2, 'w') kama f:
+    ...     ukijumuisha open(fn2, 'w') kama f:
     ...         _ = f.write('eleza test_func():\n')
     ...         _ = f.write('   \"\"\"\n')
     ...         _ = f.write('   This ni simple python test function.\n')
@@ -2866,7 +2866,7 @@ not stderr:
     ***Test Failed*** 2 failures.
 
 With -o ELLIPSIS specified, the second run, against just the first file, should
-produce no errors, na with -o NORMALIZE_WHITESPACE also specified, neither
+produce no errors, na ukijumuisha -o NORMALIZE_WHITESPACE also specified, neither
 should the third, which ran against both files:
 
     >>> rc2, out2, err2
@@ -2892,7 +2892,7 @@ The fourth run uses FAIL_FAST, so we should see only one error:
        1 of   2 kwenye myfile.doc
     ***Test Failed*** 1 failures.
 
-The fifth test uses verbose with the two options, so we should get verbose
+The fifth test uses verbose ukijumuisha the two options, so we should get verbose
 success output kila the tests kwenye both files:
 
     >>> rc5, err5
@@ -2990,7 +2990,7 @@ eleza test_no_trailing_whitespace_stripping():
     File ..., line 3, kwenye f
     Failed example:
         andika('\n'.join(['a    ', 'b']))
-    Differences (ndiff with -expected +actual):
+    Differences (ndiff ukijumuisha -expected +actual):
         - a
         + a
           b

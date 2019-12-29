@@ -60,7 +60,7 @@ kundi NetworkedNNTPTestsMixin:
             self.assertEqual(str, type(groups[0].group))
 
     eleza test_unknown_command(self):
-        with self.assertRaises(nntplib.NNTPPermanentError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPPermanentError) kama cm:
             self.server._shortcmd("XYZZY")
         resp = cm.exception.response
         self.assertKweli(resp.startswith("500 "), resp)
@@ -246,7 +246,7 @@ kundi NetworkedNNTPTestsMixin:
         eleza wrap_meth(meth):
             @functools.wraps(meth)
             eleza wrapped(self):
-                with support.transient_internet(self.NNTP_HOST):
+                ukijumuisha support.transient_internet(self.NNTP_HOST):
                     meth(self)
             rudisha wrapped
         kila name kwenye dir(cls):
@@ -270,12 +270,12 @@ kundi NetworkedNNTPTestsMixin:
             rudisha Kweli
 
         jaribu:
-            with self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
+            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
                 self.assertKweli(is_connected())
                 self.assertKweli(server.help())
             self.assertUongo(is_connected())
 
-            with self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
+            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
                 server.quit()
             self.assertUongo(is_connected())
         tatizo SSLError kama ssl_err:
@@ -305,7 +305,7 @@ kundi NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
         support.requires("network")
-        with support.transient_internet(cls.NNTP_HOST):
+        ukijumuisha support.transient_internet(cls.NNTP_HOST):
             jaribu:
                 cls.server = cls.NNTP_CLASS(cls.NNTP_HOST, timeout=TIMEOUT,
                                             usenetrc=Uongo)
@@ -464,7 +464,7 @@ kundi NNTPv1Handler:
             ikiwa sio line:
                 rudisha
             ikiwa sio line.endswith("\r\n"):
-                ashiria ValueError("line doesn't end with \\r\\n: {!r}".format(line))
+                ashiria ValueError("line doesn't end ukijumuisha \\r\\n: {!r}".format(line))
             line = line[:-2]
             cmd, *tokens = line.split()
             #meth = getattr(self.handler, "handle_" + cmd.upper(), Tupu)
@@ -526,9 +526,9 @@ kundi NNTPv1Handler:
     eleza handle_STAT(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("412 No newsgroup selected")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("223 3000234 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("223 0 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -550,7 +550,7 @@ kundi NNTPv1Handler:
                 free.it.comp.lang.python.learner 0000000000 0000000001 y
                 tw.bbs.comp.lang.python 0000000304 0000000304 y
                 .""")
-        elikiwa action == "ACTIVE":
+        lasivyo action == "ACTIVE":
             ikiwa param == "*distutils*":
                 self.push_lit("""\
                     215 Newsgroups kwenye form "group high low flags"
@@ -561,7 +561,7 @@ kundi NNTPv1Handler:
                 self.push_lit("""\
                     215 Newsgroups kwenye form "group high low flags"
                     .""")
-        elikiwa action == "OVERVIEW.FMT":
+        lasivyo action == "OVERVIEW.FMT":
             self.push_lit("""\
                 215 Order of fields kwenye overview database.
                 Subject:
@@ -573,14 +573,14 @@ kundi NNTPv1Handler:
                 Lines:
                 Xref:full
                 .""")
-        elikiwa action == "NEWSGROUPS":
+        lasivyo action == "NEWSGROUPS":
             assert param ni sio Tupu
             ikiwa param == "comp.lang.python":
                 self.push_lit("""\
                     215 Descriptions kwenye form "group description".
                     comp.lang.python\tThe Python computer language.
                     .""")
-            elikiwa param == "comp.lang.python*":
+            lasivyo param == "comp.lang.python*":
                 self.push_lit("""\
                     215 Descriptions kwenye form "group description".
                     comp.lang.python.announce\tAnnouncements about the Python language. (Moderated)
@@ -604,7 +604,7 @@ kundi NNTPv1Handler:
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elikiwa (group == "comp.lang.python" na date_str == "100913"
+        lasivyo (group == "comp.lang.python" na date_str == "100913"
             na time_str == "082004"):
             # Date was pitaed kwenye RFC 977 format (NNTP "v1")
             self.push_lit("""\
@@ -612,7 +612,7 @@ kundi NNTPv1Handler:
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elikiwa (group == 'comp.lang.python' and
+        lasivyo (group == 'comp.lang.python' and
               date_str kwenye ('20100101', '100101') and
               time_str == '090000'):
             self.push_lit('too long line' * 3000 +
@@ -628,7 +628,7 @@ kundi NNTPv1Handler:
         ikiwa message_spec == "57-59":
             self.push_lit(
                 "224 Overview information kila 57-58 follows\n"
-                "57\tRe: ANN: New Plone book with strong Python (and Zope) themes throughout"
+                "57\tRe: ANN: New Plone book ukijumuisha strong Python (and Zope) themes throughout"
                     "\tDoug Hellmann <doug.hellmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>"
                     "\tSat, 19 Jun 2010 18:04:08 -0400"
                     "\t<4FD05F05-F98B-44DC-8111-C6009C925F0C@gmail.com>"
@@ -659,7 +659,7 @@ kundi NNTPv1Handler:
     eleza handle_POST(self, *, body=Tupu):
         ikiwa body ni Tupu:
             ikiwa self.allow_posting:
-                self.push_lit("340 Input article; end with <CR-LF>.<CR-LF>")
+                self.push_lit("340 Input article; end ukijumuisha <CR-LF>.<CR-LF>")
                 self.expect_body()
             isipokua:
                 self.push_lit("440 Posting sio permitted")
@@ -672,7 +672,7 @@ kundi NNTPv1Handler:
         ikiwa body ni Tupu:
             ikiwa (self.allow_posting and
                 message_id == "<i.am.an.article.you.will.want@example.com>"):
-                self.push_lit("335 Send it; end with <CR-LF>.<CR-LF>")
+                self.push_lit("335 Send it; end ukijumuisha <CR-LF>.<CR-LF>")
                 self.expect_body()
             isipokua:
                 self.push_lit("435 Article sio wanted")
@@ -698,9 +698,9 @@ kundi NNTPv1Handler:
     eleza handle_ARTICLE(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("220 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("220 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("220 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -711,9 +711,9 @@ kundi NNTPv1Handler:
     eleza handle_HEAD(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("221 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("221 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("221 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -724,9 +724,9 @@ kundi NNTPv1Handler:
     eleza handle_BODY(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("222 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("222 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("222 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -737,13 +737,13 @@ kundi NNTPv1Handler:
     eleza handle_AUTHINFO(self, cred_type, data):
         ikiwa self._logged_in:
             self.push_lit('502 Already Logged In')
-        elikiwa cred_type == 'user':
+        lasivyo cred_type == 'user':
             ikiwa self._user_sent:
                 self.push_lit('482 User Credential Already Sent')
             isipokua:
                 self.push_lit('381 Password Required')
                 self._user_sent = Kweli
-        elikiwa cred_type == 'pita':
+        lasivyo cred_type == 'pita':
             self.push_lit('281 Login Successful')
             self._logged_in = Kweli
         isipokua:
@@ -875,10 +875,10 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(resp, "223 0 <45223423@example.com>")
         self.assertEqual(art_num, 0)
         self.assertEqual(message_id, "<45223423@example.com>")
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.stat("<non.existent.id>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.stat()
         self.assertEqual(cm.exception.response, "412 No newsgroup selected")
 
@@ -921,7 +921,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(last, 1265)
         self.assertEqual(count, 486)
         self.assertEqual(group, "fr.comp.lang.python")
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.group("comp.lang.python.devel")
         exc = cm.exception
         self.assertKweli(exc.response.startswith("411 No such group"),
@@ -987,7 +987,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_data(lines)
         # Non-existent id
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.article("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1035,7 +1035,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_head(lines)
         # Non-existent id
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.head("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1082,7 +1082,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_body(lines)
         # Non-existent id
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.body("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1113,7 +1113,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(art_num, 57)
         self.assertEqual(over, {
             "kutoka": "Doug Hellmann <doug.hellmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>",
-            "subject": "Re: ANN: New Plone book with strong Python (and Zope) themes throughout",
+            "subject": "Re: ANN: New Plone book ukijumuisha strong Python (and Zope) themes throughout",
             "date": "Sat, 19 Jun 2010 18:04:08 -0400",
             "message-id": "<4FD05F05-F98B-44DC-8111-C6009C925F0C@gmail.com>",
             "references": "<hvalf7$ort$1@dough.gmane.org>",
@@ -1160,13 +1160,13 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(lines[0], b'From: "Demo User" <nobody@example.net>\r\n')
 
     eleza _check_post_ihave_sub(self, func, *args, file_factory):
-        # First the prepared post with CRLF endings
+        # First the prepared post ukijumuisha CRLF endings
         post = self.sample_post
         func_args = args + (file_factory(post),)
         self.handler.posted_body = Tupu
         resp = func(*func_args)
         self._check_posted_body()
-        # Then the same post with "normal" line endings - they should be
+        # Then the same post ukijumuisha "normal" line endings - they should be
         # converted by NNTP.post na NNTP.ihave.
         post = self.sample_post.replace(b"\r\n", b"\n")
         func_args = args + (file_factory(post),)
@@ -1199,7 +1199,7 @@ kundi NNTPv1v2TestsMixin:
     eleza test_post(self):
         self.check_post_ihave(self.server.post, "240 Article received OK")
         self.handler.allow_posting = Uongo
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.post(self.sample_post)
         self.assertEqual(cm.exception.response,
                          "440 Posting sio permitted")
@@ -1207,7 +1207,7 @@ kundi NNTPv1v2TestsMixin:
     eleza test_ihave(self):
         self.check_post_ihave(self.server.ihave, "235 Article transferred OK",
                               "<i.am.an.article.you.will.want@example.com>")
-        with self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.ihave("<another.message.id>", self.sample_post)
         self.assertEqual(cm.exception.response,
                          "435 Article sio wanted")
@@ -1232,7 +1232,7 @@ kundi NNTPv1Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
 
 
 kundi NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
-    """Tests an NNTP v2 server (with capabilities)."""
+    """Tests an NNTP v2 server (ukijumuisha capabilities)."""
 
     nntp_version = 2
     handler_kundi = NNTPv2Handler
@@ -1255,7 +1255,7 @@ kundi NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
 
 
 kundi CapsAfterLoginNNTPv2Tests(MockedNNTPTestsMixin, unittest.TestCase):
-    """Tests a probably NNTP v2 server with capabilities only after login."""
+    """Tests a probably NNTP v2 server ukijumuisha capabilities only after login."""
 
     nntp_version = 2
     handler_kundi = CapsAfterLoginNNTPv2Handler
@@ -1285,7 +1285,7 @@ kundi MiscTests(unittest.TestCase):
             self.assertEqual(nntplib.decode_header(a), b)
         gives("" , "")
         gives("a plain header", "a plain header")
-        gives(" with extra  spaces ", " with extra  spaces ")
+        gives(" ukijumuisha extra  spaces ", " ukijumuisha extra  spaces ")
         gives("=?ISO-8859-15?Q?D=E9buter_en_Python?=", "Débuter en Python")
         gives("=?utf-8?q?Re=3A_=5Bsqlite=5D_probl=C3=A8me_avec_ORDER_BY_sur_des_cha?="
               " =?utf-8?q?=C3=AEnes_de_caract=C3=A8res_accentu=C3=A9es?=",
@@ -1395,7 +1395,7 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_unparse_datetime(self):
         # Test non-legacy mode
-        # 1) with a datetime
+        # 1) ukijumuisha a datetime
         eleza gives(y, M, d, h, m, s, date_str, time_str):
             dt = datetime.datetime(y, M, d, h, m, s)
             self.assertEqual(nntplib._unparse_datetime(dt),
@@ -1405,7 +1405,7 @@ kundi MiscTests(unittest.TestCase):
         gives(1999, 6, 23, 13, 56, 24, "19990623", "135624")
         gives(2000, 6, 23, 13, 56, 24, "20000623", "135624")
         gives(2010, 6, 5, 1, 2, 3, "20100605", "010203")
-        # 2) with a date
+        # 2) ukijumuisha a date
         eleza gives(y, M, d, date_str, time_str):
             dt = datetime.date(y, M, d)
             self.assertEqual(nntplib._unparse_datetime(dt),
@@ -1418,7 +1418,7 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_unparse_datetime_legacy(self):
         # Test legacy mode (RFC 977)
-        # 1) with a datetime
+        # 1) ukijumuisha a datetime
         eleza gives(y, M, d, h, m, s, date_str, time_str):
             dt = datetime.datetime(y, M, d, h, m, s)
             self.assertEqual(nntplib._unparse_datetime(dt, Kweli),
@@ -1426,7 +1426,7 @@ kundi MiscTests(unittest.TestCase):
         gives(1999, 6, 23, 13, 56, 24, "990623", "135624")
         gives(2000, 6, 23, 13, 56, 24, "000623", "135624")
         gives(2010, 6, 5, 1, 2, 3, "100605", "010203")
-        # 2) with a date
+        # 2) ukijumuisha a date
         eleza gives(y, M, d, date_str, time_str):
             dt = datetime.date(y, M, d)
             self.assertEqual(nntplib._unparse_datetime(dt, Kweli),
@@ -1481,7 +1481,7 @@ kundi MockSocketTests(unittest.TestCase):
 
         socket_closed = Uongo
         files = []
-        with patch('nntplib.socket', mock_socket_module), \
+        ukijumuisha patch('nntplib.socket', mock_socket_module), \
              self.assertRaisesRegex(expected_error_type, expected_error_msg):
             self.nntp_class('dummy', user=login, pitaword=pitaword)
         self.assertKweli(socket_closed)
@@ -1557,9 +1557,9 @@ kundi LocalServerTests(unittest.TestCase):
 
     eleza run_server(self, sock):
         # Could be generalized to handle more commands kwenye separate methods
-        with sock:
+        ukijumuisha sock:
             [client, _] = sock.accept()
-        with contextlib.ExitStack() kama cleanup:
+        ukijumuisha contextlib.ExitStack() kama cleanup:
             cleanup.enter_context(client)
             reader = cleanup.enter_context(client.makefile('rb'))
             client.sendall(b'200 Server ready\r\n')
@@ -1572,7 +1572,7 @@ kundi LocalServerTests(unittest.TestCase):
                         b'STARTTLS\r\n'
                         b'.\r\n'
                     )
-                elikiwa cmd == b'STARTTLS\r\n':
+                lasivyo cmd == b'STARTTLS\r\n':
                     reader.close()
                     client.sendall(b'382 Begin TLS negotiation now\r\n')
                     context = ssl.SSLContext()
@@ -1581,7 +1581,7 @@ kundi LocalServerTests(unittest.TestCase):
                         client, server_side=Kweli)
                     cleanup.enter_context(client)
                     reader = cleanup.enter_context(client.makefile('rb'))
-                elikiwa cmd == b'QUIT\r\n':
+                lasivyo cmd == b'QUIT\r\n':
                     client.sendall(b'205 Bye!\r\n')
                     koma
                 isipokua:

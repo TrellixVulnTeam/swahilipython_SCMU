@@ -11,7 +11,7 @@ eleza quopri_encode(input, errors='strict'):
     assert errors == 'strict'
     f = BytesIO(input)
     g = BytesIO()
-    quopri.encode(f, g, quotetabs=True)
+    quopri.encode(f, g, quotetabs=Kweli)
     rudisha (g.getvalue(), len(input))
 
 eleza quopri_decode(input, errors='strict'):
@@ -28,11 +28,11 @@ kundi Codec(codecs.Codec):
         rudisha quopri_decode(input, errors)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha quopri_encode(input, self.errors)[0]
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha quopri_decode(input, self.errors)[0]
 
 kundi StreamWriter(Codec, codecs.StreamWriter):
@@ -52,5 +52,5 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )

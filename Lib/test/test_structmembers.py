@@ -116,27 +116,27 @@ kundi ReadWriteTests(unittest.TestCase):
 kundi TestWarnings(unittest.TestCase):
 
     eleza test_byte_max(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_BYTE = CHAR_MAX+1
 
     eleza test_byte_min(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_BYTE = CHAR_MIN-1
 
     eleza test_ubyte_max(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_UBYTE = UCHAR_MAX+1
 
     eleza test_short_max(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_SHORT = SHRT_MAX+1
 
     eleza test_short_min(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_SHORT = SHRT_MIN-1
 
     eleza test_ushort_max(self):
-        with support.check_warnings(('', RuntimeWarning)):
+        ukijumuisha support.check_warnings(('', RuntimeWarning)):
             ts.T_USHORT = USHRT_MAX+1
 
 

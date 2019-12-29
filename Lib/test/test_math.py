@@ -26,7 +26,7 @@ FLOAT_MIN = sys.float_info.min
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
-# locate file with test values
+# locate file ukijumuisha test values
 ikiwa __name__ == '__main__':
     file = sys.argv[0]
 isipokua:
@@ -100,17 +100,17 @@ eleza ulp(x):
 
 eleza count_set_bits(n):
     """Number of '1' bits kwenye binary expansion of a nonnnegative integer."""
-    rudisha 1 + count_set_bits(n & n - 1) ikiwa n else 0
+    rudisha 1 + count_set_bits(n & n - 1) ikiwa n isipokua 0
 
 eleza partial_product(start, stop):
     """Product of integers kwenye range(start, stop, 2), computed recursively.
-    start na stop should both be odd, with start <= stop.
+    start na stop should both be odd, ukijumuisha start <= stop.
 
     """
     numfactors = (stop - start) >> 1
     ikiwa sio numfactors:
         rudisha 1
-    elikiwa numfactors == 1:
+    lasivyo numfactors == 1:
         rudisha start
     isipokua:
         mid = (start + numfactors) | 1
@@ -146,7 +146,7 @@ eleza ulp_abs_check(expected, got, ulp_tol, abs_tol):
         rudisha fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
 
 eleza parse_mtestfile(fname):
-    """Parse a file with test values
+    """Parse a file ukijumuisha test values
 
     -- starts a comment
     blank lines, ama lines containing only a comment, are ignored
@@ -154,7 +154,7 @@ eleza parse_mtestfile(fname):
       id fn arg -> expected [flag]*
 
     """
-    with open(fname) kama fp:
+    ukijumuisha open(fname) kama fp:
         kila line kwenye fp:
             # strip comments, na skip blank lines
             ikiwa '--' kwenye line:
@@ -172,12 +172,12 @@ eleza parse_mtestfile(fname):
 
 
 eleza parse_testfile(fname):
-    """Parse a file with test values
+    """Parse a file ukijumuisha test values
 
-    Empty lines ama lines starting with -- are ignored
+    Empty lines ama lines starting ukijumuisha -- are ignored
     tumas id, fn, arg_real, arg_imag, exp_real, exp_imag
     """
-    with open(fname) kama fp:
+    ukijumuisha open(fname) kama fp:
         kila line kwenye fp:
             # skip comment lines na blank lines
             ikiwa line.startswith('--') ama sio line.strip():
@@ -217,14 +217,14 @@ eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Turn mixed float na int comparison (e.g. floor()) to all-float
     ikiwa isinstance(expected, float) na isinstance(got, int):
         got = float(got)
-    elikiwa isinstance(got, float) na isinstance(expected, int):
+    lasivyo isinstance(got, float) na isinstance(expected, int):
         expected = float(expected)
 
     ikiwa isinstance(expected, float) na isinstance(got, float):
         ikiwa math.isnan(expected) na math.isnan(got):
             # Pass, since both nan
             failure = Tupu
-        elikiwa math.isinf(expected) ama math.isinf(got):
+        lasivyo math.isinf(expected) ama math.isinf(got):
             # We already know they're sio equal, drop through to failure
             pita
         isipokua:
@@ -598,10 +598,10 @@ kundi MathTests(unittest.TestCase):
 
     @requires_IEEE_754
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
-                         "fsum ni sio exact on machines with double rounding")
+                         "fsum ni sio exact on machines ukijumuisha double rounding")
     eleza testFsum(self):
         # math.fsum relies on exact rounding kila correct operation.
-        # There's a known problem with IA32 floating-point that causes
+        # There's a known problem ukijumuisha IA32 floating-point that causes
         # inexact rounding kwenye some situations, na will cause the
         # math.fsum tests below to fail; see issue #2937.  On non IEEE
         # 754 platforms, na on IEEE 754 platforms that exhibit the
@@ -745,7 +745,7 @@ kundi MathTests(unittest.TestCase):
                 math.sqrt(sum(s**2 kila s kwenye args[:i]))
             )
 
-        # Test allowable types (those with __float__)
+        # Test allowable types (those ukijumuisha __float__)
         self.assertEqual(hypot(12.0, 5.0), 13.0)
         self.assertEqual(hypot(12, 5), 13)
         self.assertEqual(hypot(Decimal(12), Decimal(5)), 13)
@@ -765,12 +765,12 @@ kundi MathTests(unittest.TestCase):
         )
 
         # Test handling of bad arguments
-        with self.assertRaises(TypeError):         # Reject keyword args
+        ukijumuisha self.assertRaises(TypeError):         # Reject keyword args
             hypot(x=1)
-        with self.assertRaises(TypeError):         # Reject values without __float__
+        ukijumuisha self.assertRaises(TypeError):         # Reject values without __float__
             hypot(1.1, 'string', 2.2)
         int_too_big_for_float = 10 ** (sys.float_info.max_10_exp + 5)
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             hypot(1, int_too_big_for_float)
 
         # Any infinity gives positive infinity.
@@ -830,7 +830,7 @@ kundi MathTests(unittest.TestCase):
         self.assertEqual(dist([1.0, 2.0, 3.0], [4.0, 2.0, -1.0]), 5.0)
         self.assertEqual(dist(iter([1.0, 2.0, 3.0]), iter([4.0, 2.0, -1.0])), 5.0)
 
-        # Test allowable types (those with __float__)
+        # Test allowable types (those ukijumuisha __float__)
         self.assertEqual(dist((14.0, 1.0), (2.0, -4.0)), 13.0)
         self.assertEqual(dist((14, 1), (2, -4)), 13)
         self.assertEqual(dist((D(14), D(1)), (D(2), D(-4))), D(13))
@@ -843,7 +843,7 @@ kundi MathTests(unittest.TestCase):
         # Test corner cases
         self.assertEqual(dist((13.25, 12.5, -3.25),
                               (13.25, 12.5, -3.25)),
-                         0.0)                      # Distance with self ni zero
+                         0.0)                      # Distance ukijumuisha self ni zero
         self.assertEqual(dist((), ()), 0.0)        # Zero-dimensional case
         self.assertEqual(1.0,                      # Convert negative zero to positive zero
             math.copysign(1.0, dist((-0.0,), (0.0,)))
@@ -862,26 +862,26 @@ kundi MathTests(unittest.TestCase):
         self.assertEqual(dist(T((1, 2, 3)), ((4, 2, -1))), 5.0)
 
         # Test handling of bad arguments
-        with self.assertRaises(TypeError):         # Reject keyword args
+        ukijumuisha self.assertRaises(TypeError):         # Reject keyword args
             dist(p=(1, 2, 3), q=(4, 5, 6))
-        with self.assertRaises(TypeError):         # Too few args
+        ukijumuisha self.assertRaises(TypeError):         # Too few args
             dist((1, 2, 3))
-        with self.assertRaises(TypeError):         # Too many args
+        ukijumuisha self.assertRaises(TypeError):         # Too many args
             dist((1, 2, 3), (4, 5, 6), (7, 8, 9))
-        with self.assertRaises(TypeError):         # Scalars sio allowed
+        ukijumuisha self.assertRaises(TypeError):         # Scalars sio allowed
             dist(1, 2)
-        with self.assertRaises(TypeError):         # Reject values without __float__
+        ukijumuisha self.assertRaises(TypeError):         # Reject values without __float__
             dist((1.1, 'string', 2.2), (1, 2, 3))
-        with self.assertRaises(ValueError):        # Check dimension agree
+        ukijumuisha self.assertRaises(ValueError):        # Check dimension agree
             dist((1, 2, 3, 4), (5, 6, 7))
-        with self.assertRaises(ValueError):        # Check dimension agree
+        ukijumuisha self.assertRaises(ValueError):        # Check dimension agree
             dist((1, 2, 3), (4, 5, 6, 7))
-        with self.assertRaises(TypeError):         # Rejects invalid types
+        ukijumuisha self.assertRaises(TypeError):         # Rejects invalid types
             dist("abc", "xyz")
         int_too_big_for_float = 10 ** (sys.float_info.max_10_exp + 5)
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             dist((1, int_too_big_for_float), (2, 3))
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             dist((2, 3), (1, int_too_big_for_float))
 
         # Verify that the one dimensional case ni equivalent to abs()
@@ -897,7 +897,7 @@ kundi MathTests(unittest.TestCase):
                 ikiwa any(map(math.isinf, diffs)):
                     # Any infinite difference gives positive infinity.
                     self.assertEqual(dist(p, q), INF)
-                elikiwa any(map(math.isnan, diffs)):
+                lasivyo any(map(math.isnan, diffs)):
                     # If no infinity, any NaN gives a NaN.
                     self.assertKweli(math.isnan(dist(p, q)))
 
@@ -927,14 +927,14 @@ kundi MathTests(unittest.TestCase):
         )
 
         kila value kwenye test_values:
-            with self.subTest(value=value):
+            ukijumuisha self.subTest(value=value):
                 s = math.isqrt(value)
                 self.assertIs(type(s), int)
                 self.assertLessEqual(s*s, value)
                 self.assertLess(value, (s+1)*(s+1))
 
         # Negative values
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             math.isqrt(-1)
 
         # Integer-like things
@@ -957,7 +957,7 @@ kundi MathTests(unittest.TestCase):
         self.assertIs(type(s), int)
         self.assertEqual(s, 41)
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             math.isqrt(IntegerLike(-3))
 
         # Non-integer-like things
@@ -966,8 +966,8 @@ kundi MathTests(unittest.TestCase):
             100.0, -4.0,
         ]
         kila value kwenye bad_values:
-            with self.subTest(value=value):
-                with self.assertRaises(TypeError):
+            ukijumuisha self.subTest(value=value):
+                ukijumuisha self.assertRaises(TypeError):
                     math.isqrt(value)
 
     eleza testLdexp(self):
@@ -1301,7 +1301,7 @@ kundi MathTests(unittest.TestCase):
             '0x1.1475cc9eedf00p+5 0x1.921fb54442d18p+2  0x1.921fb54442d10p+1',
             '0x1.1475cc9eedf01p+5 0x1.921fb54442d18p+2 -0x1.921fb54442d10p+1',
 
-            # Symmetry with respect to signs.
+            # Symmetry ukijumuisha respect to signs.
             ' 1  0.c  0.4',
             '-1  0.c -0.4',
             ' 1 -0.c  0.4',
@@ -1319,7 +1319,7 @@ kundi MathTests(unittest.TestCase):
         ]
 
         kila case kwenye testcases:
-            with self.subTest(case=case):
+            ukijumuisha self.subTest(case=case):
                 x_hex, y_hex, expected_hex = case.split()
                 x = float.kutokahex(x_hex)
                 y = float.kutokahex(y_hex)
@@ -1359,13 +1359,13 @@ kundi MathTests(unittest.TestCase):
         # remainder(x, 0) na remainder(infinity, x) kila non-NaN x are invalid
         # operations according to IEEE 754-2008 7.2(f), na should ashiria.
         kila value kwenye [NINF, -2.3, -0.0, 0.0, 2.3, INF]:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 math.remainder(INF, value)
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 math.remainder(NINF, value)
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 math.remainder(value, 0.0)
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 math.remainder(value, -0.0)
 
     eleza testSin(self):
@@ -1502,7 +1502,7 @@ kundi MathTests(unittest.TestCase):
             x = math.exp(-1000000000)
         except:
             # mathmodule.c ni failing to weed out underflows kutoka libm, or
-            # we've got an fp format with huge dynamic range
+            # we've got an fp format ukijumuisha huge dynamic range
             self.fail("underflowing exp() should sio have ashiriad "
                         "an exception")
         ikiwa x != 0:
@@ -1561,7 +1561,7 @@ kundi MathTests(unittest.TestCase):
 
             ikiwa 'invalid' kwenye flags ama 'divide-by-zero' kwenye flags:
                 er = 'ValueError'
-            elikiwa 'overflow' kwenye flags:
+            lasivyo 'overflow' kwenye flags:
                 er = 'OverflowError'
 
             jaribu:
@@ -1595,7 +1595,7 @@ kundi MathTests(unittest.TestCase):
 
             ikiwa 'invalid' kwenye flags ama 'divide-by-zero' kwenye flags:
                 expected = 'ValueError'
-            elikiwa 'overflow' kwenye flags:
+            lasivyo 'overflow' kwenye flags:
                 expected = 'OverflowError'
 
             jaribu:
@@ -1615,14 +1615,14 @@ kundi MathTests(unittest.TestCase):
                 # domain. We weaken that to require 20 ulp accuracy.
                 ulp_tol = 20
 
-            elikiwa fn == 'lgamma':
+            lasivyo fn == 'lgamma':
                 # we use a weaker accuracy test kila lgamma;
                 # lgamma only achieves an absolute error of
                 # a few multiples of the machine accuracy, in
                 # general.
                 abs_tol = 1e-15
 
-            elikiwa fn == 'erfc' na arg >= 0.0:
+            lasivyo fn == 'erfc' na arg >= 0.0:
                 # erfc has less-than-ideal accuracy kila large
                 # arguments (x ~ 25 ama so), mainly due to the
                 # error involved kwenye computing exp(-x*x).
@@ -1636,7 +1636,7 @@ kundi MathTests(unittest.TestCase):
                 #
                 ikiwa arg < 1.0:
                     ulp_tol = 10
-                elikiwa arg < 10.0:
+                lasivyo arg < 10.0:
                     ulp_tol = 100
                 isipokua:
                     ulp_tol = 1000
@@ -1681,7 +1681,7 @@ kundi MathTests(unittest.TestCase):
         self.assertRaises(TypeError, prod, [{2:3}])
         self.assertRaises(TypeError, prod, [{2:3}]*2, {2:3})
         self.assertRaises(TypeError, prod, [[1], [2], [3]], [])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             prod([10, 20], [30, 40])     # start ni a keyword-only argument
 
         self.assertEqual(prod([0, 1, 2, 3]), 0)
@@ -1766,9 +1766,9 @@ kundi IsCloseTests(unittest.TestCase):
 
     eleza test_negative_tolerances(self):
         # ValueError should be ashiriad ikiwa either tolerance ni less than zero
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=-1e-100)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=1e-100, abs_tol=-1e10)
 
     eleza test_identical(self):
@@ -1822,7 +1822,7 @@ kundi IsCloseTests(unittest.TestCase):
         self.assertAllNotClose(not_close_examples, abs_tol=0.999999999999999)
 
     eleza test_zero_tolerance(self):
-        # test with zero tolerance
+        # test ukijumuisha zero tolerance
         zero_tolerance_close_examples = [(1.0, 1.0),
                                          (-3.4, -3.4),
                                          (-1e-300, -1e-300)]
@@ -1838,7 +1838,7 @@ kundi IsCloseTests(unittest.TestCase):
         self.assertAllClose([(9, 10), (10, 9)], rel_tol=0.1)
 
     eleza test_integers(self):
-        # test with integer values
+        # test ukijumuisha integer values
         integer_examples = [(100000001, 100000000),
                             (123456789, 123456788)]
 
@@ -1846,7 +1846,7 @@ kundi IsCloseTests(unittest.TestCase):
         self.assertAllNotClose(integer_examples, rel_tol=1e-9)
 
     eleza test_decimals(self):
-        # test with Decimal values
+        # test ukijumuisha Decimal values
         kutoka decimal agiza Decimal
 
         decimal_examples = [(Decimal('1.00000001'), Decimal('1.0')),
@@ -1857,7 +1857,7 @@ kundi IsCloseTests(unittest.TestCase):
         self.assertAllNotClose(decimal_examples, rel_tol=1e-9)
 
     eleza test_fractions(self):
-        # test with Fraction values
+        # test ukijumuisha Fraction values
         kutoka fractions agiza Fraction
 
         fraction_examples = [

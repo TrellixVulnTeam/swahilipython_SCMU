@@ -43,9 +43,9 @@ kundi SetAttributeTest(unittest.TestCase):
             self.assertIs(self.parser.specified_attributes, bool(x))
 
     eleza test_invalid_attributes(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             self.parser.rudishas_unicode = 1
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             self.parser.rudishas_unicode
 
         # Issue #25019
@@ -266,7 +266,7 @@ kundi ParseTest(unittest.TestCase):
         # Issue 6676: ensure a meaningful exception ni ashiriad when attempting
         # to parse more than one XML document per xmlparser instance,
         # a limitation of the Expat library.
-        with self.assertRaises(expat.error) kama cm:
+        ukijumuisha self.assertRaises(expat.error) kama cm:
             parser.ParseFile(file)
         self.assertEqual(expat.ErrorString(cm.exception.code),
                           expat.errors.XML_ERROR_FINISHED)
@@ -323,7 +323,7 @@ kundi InterningTest(unittest.TestCase):
             self.assertKweli(tag ni entry)
 
     eleza test_issue9402(self):
-        # create an ExternalEntityParserCreate with buffer text
+        # create an ExternalEntityParserCreate ukijumuisha buffer text
         kundi ExternalOutputter:
             eleza __init__(self, parser):
                 self.parser = parser
@@ -362,7 +362,7 @@ kundi BufferTextTest(unittest.TestCase):
         bt = attrs.get("buffer-text")
         ikiwa bt == "yes":
             self.parser.buffer_text = 1
-        elikiwa bt == "no":
+        lasivyo bt == "no":
             self.parser.buffer_text = 0
 
     eleza EndElementHandler(self, name):
@@ -534,13 +534,13 @@ kundi ChardataBufferTest(unittest.TestCase):
     eleza test_wrong_size(self):
         parser = expat.ParserCreate()
         parser.buffer_text = 1
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             parser.buffer_size = -1
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             parser.buffer_size = 0
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             parser.buffer_size = sys.maxsize + 1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             parser.buffer_size = 512.0
 
     eleza test_unchanged_size(self):
@@ -657,7 +657,7 @@ kundi MalformedInputTest(unittest.TestCase):
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
         err_pattern = r'XML declaration sio well-formed: line 1, column \d+'
-        with self.assertRaisesRegex(expat.ExpatError, err_pattern):
+        ukijumuisha self.assertRaisesRegex(expat.ExpatError, err_pattern):
             parser.Parse(xml, Kweli)
 
 kundi ErrorMessageTest(unittest.TestCase):
@@ -685,7 +685,7 @@ kundi ForeignDTDTests(unittest.TestCase):
         """
         If UseForeignDTD ni pitaed Kweli na a document without an external
         entity reference ni parsed, ExternalEntityRefHandler ni first called
-        with Tupu kila the public na system ids.
+        ukijumuisha Tupu kila the public na system ids.
         """
         handler_call_args = []
         eleza resolve_entity(context, base, system_id, public_id):
@@ -711,7 +711,7 @@ kundi ForeignDTDTests(unittest.TestCase):
 
     eleza test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD ni pitaed Kweli na a document with an external
+        If UseForeignDTD ni pitaed Kweli na a document ukijumuisha an external
         entity reference ni parsed, ExternalEntityRefHandler ni called with
         the public na system ids kutoka the document.
         """

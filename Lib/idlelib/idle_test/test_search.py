@@ -9,7 +9,7 @@ kutoka idlelib agiza searchengine
 
 # Does sio currently test the event handler wrappers.
 # A usage test should simulate clicks na check highlighting.
-# Tests need to be coordinated with SearchDialogBase tests
+# Tests need to be coordinated ukijumuisha SearchDialogBase tests
 # to avoid duplication.
 
 

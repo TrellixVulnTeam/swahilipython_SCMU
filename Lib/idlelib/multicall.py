@@ -25,7 +25,7 @@ Using these members ni absolutely portable.
 The order by which events are called ni defined by these rules:
 1. A more-specific event will be called before a less-specific event.
 2. A recently-binded event will be called before a previously-binded event,
-   unless this conflicts with the first rule.
+   unless this conflicts ukijumuisha the first rule.
 Each function will be called at most once kila each event.
 """
 agiza re
@@ -65,9 +65,9 @@ APPLICATION_GONE = "application has been destroyed"
 # A binder ni a kundi which binds functions to one type of event. It has two
 # methods: bind na unbind, which get a function na a parsed sequence, as
 # rudishaed by _parse_sequence(). There are two types of binders:
-# _SimpleBinder handles event types with no modifiers na no detail.
+# _SimpleBinder handles event types ukijumuisha no modifiers na no detail.
 # No Python functions are called when no events are binded.
-# _ComplexBinder handles event types with modifiers na a detail.
+# _ComplexBinder handles event types ukijumuisha modifiers na a detail.
 # A Python function ni called each time an event ni generated.
 
 kundi _SimpleBinder:
@@ -123,7 +123,7 @@ _state_names = [''.join(m[0]+'-'
 
 eleza expand_substates(states):
     '''For each item of states rudisha a list containing all combinations of
-    that item with individual bits reset, sorted by the number of set bits.
+    that item ukijumuisha individual bits reset, sorted by the number of set bits.
     '''
     eleza nbits(n):
         "number of bits set kwenye n base 2"
@@ -244,7 +244,7 @@ kundi _ComplexBinder:
                     ashiria
 
 # define the list of event types to be handled by MultiEvent. the order is
-# compatible with the definition of event type constants.
+# compatible ukijumuisha the definition of event type constants.
 _types = (
     ("KeyPress", "Key"), ("KeyRelease",), ("ButtonPress", "Button"),
     ("ButtonRelease",), ("Activate",), ("Circulate",), ("Colormap",),
@@ -296,7 +296,7 @@ eleza _parse_sequence(sequence):
 
         ikiwa sio words:
             detail = Tupu
-        elikiwa len(words) == 1 na type_re.match(words[0]):
+        lasivyo len(words) == 1 na type_re.match(words[0]):
             detail = words[0]
         isipokua:
             rudisha Tupu

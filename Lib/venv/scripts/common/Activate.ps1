@@ -34,7 +34,7 @@ Activates the Python virtual environment located kwenye the specified location.
 .Example
 Activate.ps1 -Prompt "MyPython"
 Activates the Python virtual environment that contains the Activate.ps1 script,
-and prefixes the current prompt with the specified string (surrounded in
+and prefixes the current prompt ukijumuisha the specified string (surrounded in
 parentheses) wakati the virtual environment ni active.
 
 
@@ -104,11 +104,11 @@ Get-PyVenvConfig parses the values kutoka the pyvenv.cfg file located kwenye the
 given folder, na rudishas them kwenye a map.
 
 For each line kwenye the pyvenv.cfg file, ikiwa that line can be parsed into exactly
-two strings separated by `=` (with any amount of whitespace surrounding the =)
+two strings separated by `=` (ukijumuisha any amount of whitespace surrounding the =)
 then it ni considered a `key = value` line. The left hand string ni the key,
 the right hand ni the value.
 
-If the value starts with a `'` ama a `"` then the first na last character is
+If the value starts ukijumuisha a `'` ama a `"` then the first na last character is
 stripped kutoka the value before being captured.
 
 .Parameter ConfigDir
@@ -165,7 +165,7 @@ Write-Verbose "VenvExecDir Name: '$($VenvExecDir.Name)"
 # VenvExecDir ikiwa specified on the command line.
 ikiwa ($VenvDir) {
     Write-Verbose "VenvDir given kama parameter, using '$VenvDir' to determine values"
-} else {
+} isipokua {
     Write-Verbose "VenvDir sio given kama a parameter, using parent directory name kama VenvDir."
     $VenvDir = $VenvExecDir.Parent.FullName.TrimEnd("\\/")
     $VenvDir = $VenvDir.Insert($VenvDir.Length, "/")
@@ -180,13 +180,13 @@ $pyvenvCfg = Get-PyVenvConfig -ConfigDir $VenvDir
 # just use the name of the virtual environment folder.
 ikiwa ($Prompt) {
     Write-Verbose "Prompt specified kama argument, using '$Prompt'"
-} else {
+} isipokua {
     Write-Verbose "Prompt sio specified kama argument to script, checking pyvenv.cfg value"
     ikiwa ($pyvenvCfg -and $pyvenvCfg['prompt']) {
         Write-Verbose "  Setting based on value kwenye pyvenv.cfg='$($pyvenvCfg['prompt'])'"
         $Prompt = $pyvenvCfg['prompt'];
     }
-    else {
+    isipokua {
         Write-Verbose "  Setting prompt based on parent's directory's name. (Is the directory name pitaed to venv module when creating the virutal environment)"
         Write-Verbose "  Got leaf-name of $VenvDir='$(Split-Path -Path $venvDir -Leaf)'"
         $Prompt = Split-Path -Path $venvDir -Leaf

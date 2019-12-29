@@ -68,8 +68,8 @@ kundi CMathTests(unittest.TestCase):
     eleza assertFloatIdentical(self, x, y):
         """Fail unless floats x na y are identical, kwenye the sense that:
         (1) both x na y are nans, or
-        (2) both x na y are infinities, with the same sign, or
-        (3) both x na y are zeros, with the same sign, or
+        (2) both x na y are infinities, ukijumuisha the same sign, or
+        (3) both x na y are zeros, ukijumuisha the same sign, or
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -78,11 +78,11 @@ kundi CMathTests(unittest.TestCase):
         ikiwa math.isnan(x) ama math.isnan(y):
             ikiwa math.isnan(x) na math.isnan(y):
                 rudisha
-        elikiwa x == y:
+        lasivyo x == y:
             ikiwa x != 0.0:
                 rudisha
             # both zero; check that signs match
-            elikiwa math.copysign(1.0, x) == math.copysign(1.0, y):
+            lasivyo math.copysign(1.0, x) == math.copysign(1.0, y):
                 rudisha
             isipokua:
                 msg += ': zeros have different signs'
@@ -167,7 +167,7 @@ kundi CMathTests(unittest.TestCase):
         self.assertEqual(cmath.nanj.real, 0.0)
         self.assertKweli(math.isnan(cmath.nanj.imag))
 
-        # Check consistency with reprs.
+        # Check consistency ukijumuisha reprs.
         self.assertEqual(repr(cmath.inf), "inf")
         self.assertEqual(repr(cmath.infj), "infj")
         self.assertEqual(repr(cmath.nan), "nan")
@@ -324,7 +324,7 @@ kundi CMathTests(unittest.TestCase):
                 self.rAssertAlmostEqual(float_fn(v), z.real)
                 self.assertEqual(0., z.imag)
 
-        # test two-argument version of log with various bases
+        # test two-argument version of log ukijumuisha various bases
         kila base kwenye [0.5, 2., 10.]:
             kila v kwenye positive:
                 z = cmath.log(v, base)
@@ -366,7 +366,7 @@ kundi CMathTests(unittest.TestCase):
 
             ikiwa fn == 'rect':
                 function = rect_complex
-            elikiwa fn == 'polar':
+            lasivyo fn == 'polar':
                 function = polar_complex
             isipokua:
                 function = getattr(cmath, fn)
@@ -599,13 +599,13 @@ kundi IsCloseTests(test_math.IsCloseTests):
     isclose = cmath.isclose
 
     eleza test_reject_complex_tolerances(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.isclose(1j, 1j, abs_tol=1j)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j, abs_tol=1j)
 
     eleza test_complex_values(self):

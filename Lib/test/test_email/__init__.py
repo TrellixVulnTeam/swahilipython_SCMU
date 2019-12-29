@@ -38,7 +38,7 @@ kundi TestEmailBase(unittest.TestCase):
     ndiffAssertEqual = unittest.TestCase.assertEqual
 
     eleza _msgobj(self, filename):
-        with openfile(filename) kama fp:
+        ukijumuisha openfile(filename) kama fp:
             rudisha email.message_kutoka_file(fp, policy=self.policy)
 
     eleza _str_msg(self, string, message=Tupu, policy=Tupu):

@@ -12,7 +12,7 @@ kutoka fractions agiza Fraction
 
 
 kundi TestBasicOps:
-    # Superkundi with tests common to all generators.
+    # Superkundi ukijumuisha tests common to all generators.
     # Subclasses must arrange kila self.gen to retrieve the Random instance
     # to be tested.
 
@@ -37,7 +37,7 @@ kundi TestBasicOps:
         self.assertEqual(randseq, self.randomlist(N))
 
     eleza test_seedargs(self):
-        # Seed value with a negative hash.
+        # Seed value ukijumuisha a negative hash.
         kundi MySeed(object):
             eleza __hash__(self):
                 rudisha -1729
@@ -102,7 +102,7 @@ kundi TestBasicOps:
 
     eleza test_choice(self):
         choice = self.gen.choice
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             choice([])
         self.assertEqual(choice([50]), 50)
         self.assertIn(choice([25, 75]), [25, 75])
@@ -169,26 +169,26 @@ kundi TestBasicOps:
             self.assertKweli(set(sample) <= set(data))
 
         # test argument handling
-        with self.assertRaises(TypeError):                               # missing arguments
+        ukijumuisha self.assertRaises(TypeError):                               # missing arguments
             choices(2)
 
         self.assertEqual(choices(data, k=0), [])                         # k == 0
         self.assertEqual(choices(data, k=-1), [])                        # negative k behaves like ``[0] * -1``
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, k=2.5)                                         # k ni a float
 
         self.assertKweli(set(choices(str_data, k=5)) <= set(str_data))    # population ni a string sequence
         self.assertKweli(set(choices(range_data, k=5)) <= set(range_data))  # population ni a range
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(set_data, k=2)                                       # population ni sio a sequence
 
         self.assertKweli(set(choices(data, Tupu, k=5)) <= set(data))      # weights ni Tupu
         self.assertKweli(set(choices(data, weights=Tupu, k=5)) <= set(data))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             choices(data, [1,2], k=5)                                    # len(weights) != len(population)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, 10, k=5)                                       # non-iterable weights
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, [Tupu]*4, k=5)                                 # non-numeric weights
         kila weights kwenye [
                 [15, 10, 25, 30],                                                 # integer weights
@@ -198,13 +198,13 @@ kundi TestBasicOps:
         ]:
             self.assertKweli(set(choices(data, weights, k=5)) <= set(data))
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             choices(data, cum_weights=[1,2], k=5)                        # len(weights) != len(population)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, cum_weights=10, k=5)                           # non-iterable cum_weights
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, cum_weights=[Tupu]*4, k=5)                     # non-numeric cum_weights
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             choices(data, range(4), cum_weights=range(4), k=5)           # both weights na cum_weights
         kila weights kwenye [
                 [15, 10, 25, 30],                                                 # integer cum_weights
@@ -219,12 +219,12 @@ kundi TestBasicOps:
         self.assertEqual(choices('abcd', [0, 0, 1, 0]), ['c'])
         self.assertEqual(choices('abcd', [0, 0, 0, 1]), ['d'])
 
-        # Test consistency with random.choice() kila empty population
-        with self.assertRaises(IndexError):
+        # Test consistency ukijumuisha random.choice() kila empty population
+        ukijumuisha self.assertRaises(IndexError):
             choices([], k=1)
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             choices([], weights=[], k=1)
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             choices([], cum_weights=[], k=5)
 
     eleza test_choices_subnormal(self):
@@ -268,12 +268,12 @@ kundi TestBasicOps:
                  ("randv2_64.pck", 866),
                  ("randv3.pck", 343)]
         kila file, value kwenye files:
-            with open(support.findfile(file),"rb") kama f:
+            ukijumuisha open(support.findfile(file),"rb") kama f:
                 r = pickle.load(f)
             self.assertEqual(int(r.random()*1000), value)
 
     eleza test_bug_9025(self):
-        # Had problem with an uneven distribution kwenye int(n*random())
+        # Had problem ukijumuisha an uneven distribution kwenye int(n*random())
         # Verify the fix by checking that distributions fall within expectations.
         n = 100000
         randrange = self.gen.randrange
@@ -489,9 +489,9 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # Last element s/b an int also
         self.assertRaises(TypeError, self.gen.setstate, (2, (0,)*624+('a',), Tupu))
         # Last element s/b between 0 na 624
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             self.gen.setstate((2, (1,)*624+(625,), Tupu))
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             self.gen.setstate((2, (1,)*624+(-1,), Tupu))
         # Failed calls to setstate() should sio have changed the state.
         bits100 = self.gen.getrandbits(100)
@@ -509,7 +509,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(TypeError, self.gen.setstate, (2, state, Tupu))
 
     eleza test_referenceImplementation(self):
-        # Compare the python implementation with results kutoka the original
+        # Compare the python implementation ukijumuisha results kutoka the original
         # code.  Create 2000 53-bit precision random floats.  Compare only
         # the last ten entries to show that the independent implementations
         # are tracking.  Here ni the main() function needed to create the
@@ -632,7 +632,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # kwenye test_genrandbits above.
         self.gen.seed(1234567)
         # If randrange uses getrandbits, it should pick getrandbits(100)
-        # when called with a 100-bits stop argument.
+        # when called ukijumuisha a 100-bits stop argument.
         self.assertEqual(self.gen.randrange(2**99),
                          97904845777343510404718956115)
 
@@ -661,7 +661,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # Random._randbelow() can only use random() when the built-in one
         # has been overridden but no new getrandbits() method was supplied.
         maxsize = 1<<random.BPF
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", UserWarning)
             # Population range too large (n >= maxsize)
             self.gen._randbelow_without_getrandbits(
@@ -670,7 +670,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.gen._randbelow_without_getrandbits(5640, maxsize=maxsize)
         # issue 33203: test that _randbelow ashirias ValueError on
         # n == 0 also kwenye its getrandbits-independent branch.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.gen._randbelow_without_getrandbits(0, maxsize=maxsize)
 
         # This might be going too far to test a single line, but because of our
@@ -690,7 +690,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         n = 42
         epsilon = 0.01
         limit = (maxsize - (maxsize % n)) / maxsize
-        with unittest.mock.patch.object(random.Random, 'random') kama random_mock:
+        ukijumuisha unittest.mock.patch.object(random.Random, 'random') kama random_mock:
             random_mock.side_effect = [limit + epsilon, limit - epsilon]
             self.gen._randbelow_without_getrandbits(n, maxsize=maxsize)
             self.assertEqual(random_mock.call_count, 2)
@@ -740,7 +740,7 @@ eleza gamma(z, sqrt2pi=(2.0*pi)**0.5):
     # Reflection to right half of complex plane
     ikiwa z < 0.5:
         rudisha pi / sin(pi*z) / gamma(1.0-z)
-    # Lanczos approximation with g=7
+    # Lanczos approximation ukijumuisha g=7
     az = z + (7.0 - 0.5)
     rudisha az ** (z-0.5) / exp(az) * sqrt2pi * fsum([
         0.9999999999995183,
@@ -909,7 +909,7 @@ kundi TestDistributions(unittest.TestCase):
         #     ikiwa p > 1.0: # <=== (C)
         #         ikiwa u1 <= x ** (alpha - 1.0): # <=== (D)
         #             koma
-        #     elikiwa u1 <= _exp(-x): # <=== (E)
+        #     lasivyo u1 <= _exp(-x): # <=== (E)
         #         koma
         # rudisha x * beta
         #
@@ -918,7 +918,7 @@ kundi TestDistributions(unittest.TestCase):
         # r1 = random() <= 1.0 / b
         #
         # We now get to the second if-else branch, na here, since p <= 1.0,
-        # (C) ni Uongo na we take the elikiwa branch, (E). For it to be Kweli,
+        # (C) ni Uongo na we take the lasivyo branch, (E). For it to be Kweli,
         # so that the koma ni executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
@@ -976,7 +976,7 @@ kundi TestRandomSubclassing(unittest.TestCase):
         Subclass(newarg=1)
 
     eleza test_subclasses_overriding_methods(self):
-        # Subclasses with an overridden random, but only the original
+        # Subclasses ukijumuisha an overridden random, but only the original
         # getrandbits method should sio rely on getrandbits kwenye kila randrange,
         # but should use a getrandbits-independent implementation instead.
 
@@ -1080,7 +1080,7 @@ kundi TestModule(unittest.TestCase):
             # child process
             jaribu:
                 val = random.getrandbits(128)
-                with open(w, "w") kama f:
+                ukijumuisha open(w, "w") kama f:
                     f.write(str(val))
             mwishowe:
                 os._exit(0)
@@ -1088,7 +1088,7 @@ kundi TestModule(unittest.TestCase):
             # parent process
             os.close(w)
             val = random.getrandbits(128)
-            with open(r, "r") kama f:
+            ukijumuisha open(r, "r") kama f:
                 child_val = eval(f.read())
             self.assertNotEqual(val, child_val)
 

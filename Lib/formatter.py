@@ -13,7 +13,7 @@ paragraph separation.
 
 Writer objects encapsulate device interfaces. Abstract devices, such as
 file formats, are supported kama well kama physical devices. The provided
-implementations all work with abstract devices. The interface makes
+implementations all work ukijumuisha abstract devices. The interface makes
 available mechanisms kila setting the properties which formatter objects
 manage na inserting data into the output.
 """
@@ -132,10 +132,10 @@ kundi AbstractFormatter:
         kila c kwenye format:
             ikiwa c == '1':
                 label = label + ('%d' % counter)
-            elikiwa c kwenye 'aA':
+            lasivyo c kwenye 'aA':
                 ikiwa counter > 0:
                     label = label + self.format_letter(c, counter)
-            elikiwa c kwenye 'iI':
+            lasivyo c kwenye 'iI':
                 ikiwa counter > 0:
                     label = label + self.format_roman(c, counter)
             isipokua:
@@ -162,7 +162,7 @@ kundi AbstractFormatter:
             counter, x = divmod(counter, 10)
             ikiwa x == 9:
                 label = ones[index] + ones[index+1] + label
-            elikiwa x == 4:
+            lasivyo x == 4:
                 label = ones[index] + fives[index] + label
             isipokua:
                 ikiwa x >= 5:
@@ -184,7 +184,7 @@ kundi AbstractFormatter:
         data = " ".join(data.split())
         ikiwa self.nospace na sio data:
             rudisha
-        elikiwa prespace ama self.softspace:
+        lasivyo prespace ama self.softspace:
             ikiwa sio data:
                 ikiwa sio self.nospace:
                     self.softspace = 1
@@ -432,7 +432,7 @@ eleza test(file = Tupu):
     f = AbstractFormatter(w)
     ikiwa file ni sio Tupu:
         fp = open(file)
-    elikiwa sys.argv[1:]:
+    lasivyo sys.argv[1:]:
         fp = open(sys.argv[1])
     isipokua:
         fp = sys.stdin

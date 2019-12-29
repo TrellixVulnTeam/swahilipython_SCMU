@@ -1,19 +1,19 @@
 """Lightweight XML support kila Python.
 
  XML ni an inherently hierarchical data format, na the most natural way to
- represent it ni with a tree.  This module has two classes kila this purpose:
+ represent it ni ukijumuisha a tree.  This module has two classes kila this purpose:
 
     1. ElementTree represents the whole XML document kama a tree and
 
     2. Element represents a single node kwenye this tree.
 
- Interactions with the whole document (reading na writing to/kutoka files) are
- usually done on the ElementTree level.  Interactions with a single XML element
+ Interactions ukijumuisha the whole document (reading na writing to/kutoka files) are
+ usually done on the ElementTree level.  Interactions ukijumuisha a single XML element
  na its sub-elements are done on the Element level.
 
  Element ni a flexible container object designed to store hierarchical data
  structures kwenye memory. It can be described kama a cross between a list na a
- dictionary.  Each Element has a number of properties associated with it:
+ dictionary.  Each Element has a number of properties associated ukijumuisha it:
 
     'tag' - a string containing the element's name.
 
@@ -49,7 +49,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# na will comply with the following terms na conditions:
+# na will comply ukijumuisha the following terms na conditions:
 #
 # Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
@@ -178,7 +178,7 @@ kundi Element:
         rudisha "<%s %r at %#x>" % (self.__class__.__name__, self.tag, id(self))
 
     eleza makeelement(self, tag, attrib):
-        """Create a new element with the same type.
+        """Create a new element ukijumuisha the same type.
 
         *tag* ni a string containing the element name.
         *attrib* ni a dictionary containing the element attributes.
@@ -191,7 +191,7 @@ kundi Element:
     eleza copy(self):
         """Return copy of current element.
 
-        This creates a shallow copy. Subelements will be shared with the
+        This creates a shallow copy. Subelements will be shared ukijumuisha the
         original tree.
 
         """
@@ -240,7 +240,7 @@ kundi Element:
     eleza extend(self, elements):
         """Append subelements kutoka a sequence.
 
-        *elements* ni a sequence with zero ama more elements.
+        *elements* ni a sequence ukijumuisha zero ama more elements.
 
         """
         kila element kwenye elements:
@@ -391,7 +391,7 @@ kundi Element:
         """Create tree iterator.
 
         The iterator loops over the element na all subelements kwenye document
-        order, rudishaing all elements with a matching tag.
+        order, rudishaing all elements ukijumuisha a matching tag.
 
         If the tree structure ni modified during iteration, new ama removed
         elements may ama may sio be included.  To get a stable set, use the
@@ -562,7 +562,7 @@ kundi ElementTree:
         """Replace root element of this tree.
 
         This will discard the current contents of the tree na replace it
-        with the given element.  Use with care!
+        ukijumuisha the given element.  Use ukijumuisha care!
 
         """
         # assert iselement(element)
@@ -591,7 +591,7 @@ kundi ElementTree:
                     # The default XMLParser, when it comes kutoka an accelerator,
                     # can define an internal _parse_whole API kila efficiency.
                     # It can be used to parse the whole source without feeding
-                    # it with chunks.
+                    # it ukijumuisha chunks.
                     self._root = parser._parse_whole(source)
                     rudisha self._root
             wakati Kweli:
@@ -610,7 +610,7 @@ kundi ElementTree:
 
         The iterator loops over all elements kwenye this tree, kwenye document order.
 
-        *tag* ni a string with the tag name to iterate over
+        *tag* ni a string ukijumuisha the tag name to iterate over
         (default ni to rudisha all elements).
 
         """
@@ -745,7 +745,7 @@ kundi ElementTree:
         """
         ikiwa sio method:
             method = "xml"
-        elikiwa method haiko kwenye _serialize:
+        lasivyo method haiko kwenye _serialize:
             ashiria ValueError("unknown method %r" % method)
         ikiwa sio encoding:
             ikiwa method == "c14n":
@@ -753,7 +753,7 @@ kundi ElementTree:
             isipokua:
                 encoding = "us-ascii"
         enc_lower = encoding.lower()
-        with _get_writer(file_or_filename, enc_lower) kama write:
+        ukijumuisha _get_writer(file_or_filename, enc_lower) kama write:
             ikiwa method == "xml" na (xml_declaration or
                     (xml_declaration ni Tupu and
                      enc_lower haiko kwenye ("utf-8", "us-ascii", "unicode"))):
@@ -791,7 +791,7 @@ eleza _get_writer(file_or_filename, encoding):
         isipokua:
             file = open(file_or_filename, "w", encoding=encoding,
                         errors="xmlcharrefreplace")
-        with file:
+        ukijumuisha file:
             tuma file.write
     isipokua:
         # file_or_filename ni a file-like object
@@ -800,11 +800,11 @@ eleza _get_writer(file_or_filename, encoding):
             # use a text writer kama is
             tuma write
         isipokua:
-            # wrap a binary writer with TextIOWrapper
-            with contextlib.ExitStack() kama stack:
+            # wrap a binary writer ukijumuisha TextIOWrapper
+            ukijumuisha contextlib.ExitStack() kama stack:
                 ikiwa isinstance(file_or_filename, io.BufferedIOBase):
                     file = file_or_filename
-                elikiwa isinstance(file_or_filename, io.RawIOBase):
+                lasivyo isinstance(file_or_filename, io.RawIOBase):
                     file = io.BufferedWriter(file_or_filename)
                     # Keep the original file open when the BufferedWriter is
                     # destroyed
@@ -862,7 +862,7 @@ eleza _namespaces(elem, default_namespace=Tupu):
                 ikiwa default_namespace:
                     # FIXME: can this be handled kwenye XML 1.0?
                     ashiria ValueError(
-                        "cannot use non-qualified names with "
+                        "cannot use non-qualified names ukijumuisha "
                         "default_namespace option"
                         )
                 qnames[qname] = qname
@@ -875,10 +875,10 @@ eleza _namespaces(elem, default_namespace=Tupu):
         ikiwa isinstance(tag, QName):
             ikiwa tag.text haiko kwenye qnames:
                 add_qname(tag.text)
-        elikiwa isinstance(tag, str):
+        lasivyo isinstance(tag, str):
             ikiwa tag haiko kwenye qnames:
                 add_qname(tag)
-        elikiwa tag ni sio Tupu na tag ni sio Comment na tag ni sio PI:
+        lasivyo tag ni sio Tupu na tag ni sio Comment na tag ni sio PI:
             _ashiria_serialization_error(tag)
         kila key, value kwenye elem.items():
             ikiwa isinstance(key, QName):
@@ -898,7 +898,7 @@ eleza _serialize_xml(write, elem, qnames, namespaces,
     text = elem.text
     ikiwa tag ni Comment:
         write("<!--%s-->" % text)
-    elikiwa tag ni ProcessingInstruction:
+    lasivyo tag ni ProcessingInstruction:
         write("<?%s?>" % text)
     isipokua:
         tag = qnames[tag]
@@ -955,7 +955,7 @@ eleza _serialize_html(write, elem, qnames, namespaces, **kwargs):
     text = elem.text
     ikiwa tag ni Comment:
         write("<!--%s-->" % _escape_cdata(text))
-    elikiwa tag ni ProcessingInstruction:
+    lasivyo tag ni ProcessingInstruction:
         write("<?%s?>" % _escape_cdata(text))
     isipokua:
         tag = qnames[tag]
@@ -1022,7 +1022,7 @@ eleza register_namespace(prefix, uri):
     given prefix ama the namespace URI will be removed.
 
     *prefix* ni the namespace prefix, *uri* ni a namespace uri. Tags and
-    attributes kwenye this namespace will be serialized with prefix ikiwa possible.
+    attributes kwenye this namespace will be serialized ukijumuisha prefix ikiwa possible.
 
     ValueError ni ashiriad ikiwa prefix ni reserved ama ni invalid.
 
@@ -1081,9 +1081,9 @@ eleza _escape_attrib(text):
             text = text.replace(">", "&gt;")
         ikiwa "\"" kwenye text:
             text = text.replace("\"", "&quot;")
-        # The following business with carriage rudishas ni to satisfy
+        # The following business ukijumuisha carriage rudishas ni to satisfy
         # Section 2.11 of the XML specification, stating that
-        # CR ama CR LN should be replaced with just LN
+        # CR ama CR LN should be replaced ukijumuisha just LN
         # http://www.w3.org/TR/REC-xml/#sec-line-ends
         ikiwa "\r\n" kwenye text:
             text = text.replace("\r\n", "\n")
@@ -1129,7 +1129,7 @@ eleza tostring(element, encoding=Tupu, method=Tupu, *,
     Returns an (optionally) encoded string containing the XML data.
 
     """
-    stream = io.StringIO() ikiwa encoding == 'unicode' else io.BytesIO()
+    stream = io.StringIO() ikiwa encoding == 'unicode' isipokua io.BytesIO()
     ElementTree(element).write(stream, encoding,
                                xml_declaration=xml_declaration,
                                default_namespace=default_namespace,
@@ -1436,7 +1436,7 @@ kundi TreeBuilder:
         self._last = elem = self._factory(tag, attrs)
         ikiwa self._elem:
             self._elem[-1].append(elem)
-        elikiwa self._root ni Tupu:
+        lasivyo self._root ni Tupu:
             self._root = elem
         self._elem.append(elem)
         self._tail = 0
@@ -1558,12 +1558,12 @@ kundi XMLParser:
                             start=self._start):
                     append((event, start(tag, attrib_in)))
                 parser.StartElementHandler = handler
-            elikiwa event_name == "end":
+            lasivyo event_name == "end":
                 eleza handler(tag, event=event_name, append=append,
                             end=self._end):
                     append((event, end(tag)))
                 parser.EndElementHandler = handler
-            elikiwa event_name == "start-ns":
+            lasivyo event_name == "start-ns":
                 # TreeBuilder does sio implement .start_ns()
                 ikiwa hasattr(self.target, "start_ns"):
                     eleza handler(prefix, uri, event=event_name, append=append,
@@ -1573,7 +1573,7 @@ kundi XMLParser:
                     eleza handler(prefix, uri, event=event_name, append=append):
                         append((event, (prefix ama '', uri ama '')))
                 parser.StartNamespaceDeclHandler = handler
-            elikiwa event_name == "end-ns":
+            lasivyo event_name == "end-ns":
                 # TreeBuilder does sio implement .end_ns()
                 ikiwa hasattr(self.target, "end_ns"):
                     eleza handler(prefix, event=event_name, append=append,
@@ -1583,11 +1583,11 @@ kundi XMLParser:
                     eleza handler(prefix, event=event_name, append=append):
                         append((event, Tupu))
                 parser.EndNamespaceDeclHandler = handler
-            elikiwa event_name == 'comment':
+            lasivyo event_name == 'comment':
                 eleza handler(text, event=event_name, append=append, self=self):
                     append((event, self.target.comment(text)))
                 parser.CommentHandler = handler
-            elikiwa event_name == 'pi':
+            lasivyo event_name == 'pi':
                 eleza handler(pi_target, data, event=event_name, append=append,
                             self=self):
                     append((event, self.target.pi(pi_target, data)))
@@ -1636,7 +1636,7 @@ kundi XMLParser:
     eleza _default(self, text):
         prefix = text[:1]
         ikiwa prefix == "&":
-            # deal with undefined entities
+            # deal ukijumuisha undefined entities
             jaribu:
                 data_handler = self.target.data
             tatizo AttributeError:
@@ -1654,9 +1654,9 @@ kundi XMLParser:
                 err.lineno = self.parser.ErrorLineNumber
                 err.offset = self.parser.ErrorColumnNumber
                 ashiria err
-        elikiwa prefix == "<" na text[:9] == "<!DOCTYPE":
+        lasivyo prefix == "<" na text[:9] == "<!DOCTYPE":
             self._doctype = [] # inside a doctype declaration
-        elikiwa self._doctype ni sio Tupu:
+        lasivyo self._doctype ni sio Tupu:
             # parse doctype contents
             ikiwa prefix == ">":
                 self._doctype = Tupu
@@ -1672,14 +1672,14 @@ kundi XMLParser:
                     name, type, pubid, system = self._doctype
                     ikiwa pubid:
                         pubid = pubid[1:-1]
-                elikiwa type == "SYSTEM" na n == 3:
+                lasivyo type == "SYSTEM" na n == 3:
                     name, type, system = self._doctype
                     pubid = Tupu
                 isipokua:
                     rudisha
                 ikiwa hasattr(self.target, "doctype"):
                     self.target.doctype(name, pubid, system[1:-1])
-                elikiwa hasattr(self, "doctype"):
+                lasivyo hasattr(self, "doctype"):
                     warnings.warn(
                         "The doctype() method of XMLParser ni ignored.  "
                         "Define doctype() method on the TreeBuilder target.",
@@ -1720,7 +1720,7 @@ eleza canonicalize(xml_data=Tupu, *, out=Tupu, kutoka_file=Tupu, **options):
 
     If *out* ni provided, it must be a file ama file-like object that receives
     the serialised canonical XML output (text, sio bytes) through its ``.write()``
-    method.  To write to a file, open it kwenye text mode with encoding "utf-8".
+    method.  To write to a file, open it kwenye text mode ukijumuisha encoding "utf-8".
     If *out* ni sio provided, this function rudishas the output kama text string.
 
     Either *xml_data* (an XML string) ama *kutoka_file* (a file path or
@@ -1739,10 +1739,10 @@ eleza canonicalize(xml_data=Tupu, *, out=Tupu, kutoka_file=Tupu, **options):
     ikiwa xml_data ni sio Tupu:
         parser.feed(xml_data)
         parser.close()
-    elikiwa kutoka_file ni sio Tupu:
+    lasivyo kutoka_file ni sio Tupu:
         parse(kutoka_file, parser=parser)
 
-    rudisha sio.getvalue() ikiwa sio ni sio Tupu else Tupu
+    rudisha sio.getvalue() ikiwa sio ni sio Tupu isipokua Tupu
 
 
 _looks_like_prefix_name = re.compile(r'^\w+:\w+$', re.UNICODE).match
@@ -1755,7 +1755,7 @@ kundi C14NWriterTarget:
     Serialises parse events to XML C14N 2.0.
 
     The *write* function ni used kila writing out the resulting data stream
-    kama text (not bytes).  To write to a file, open it kwenye text mode with encoding
+    kama text (not bytes).  To write to a file, open it kwenye text mode ukijumuisha encoding
     "utf-8" na pita its ``.write`` method.
 
     Configuration options:
@@ -1778,8 +1778,8 @@ kundi C14NWriterTarget:
         self._data = []
         self._with_comments = with_comments
         self._strip_text = strip_text
-        self._exclude_attrs = set(exclude_attrs) ikiwa exclude_attrs else Tupu
-        self._exclude_tags = set(exclude_tags) ikiwa exclude_tags else Tupu
+        self._exclude_attrs = set(exclude_attrs) ikiwa exclude_attrs isipokua Tupu
+        self._exclude_tags = set(exclude_tags) ikiwa exclude_tags isipokua Tupu
 
         self._rewrite_prefixes = rewrite_prefixes
         ikiwa qname_aware_tags:
@@ -1791,11 +1791,11 @@ kundi C14NWriterTarget:
         isipokua:
             self._find_qname_aware_attrs = Tupu
 
-        # Stack with globally na newly declared namespaces kama (uri, prefix) pairs.
+        # Stack ukijumuisha globally na newly declared namespaces kama (uri, prefix) pairs.
         self._declared_ns_stack = [[
             ("http://www.w3.org/XML/1998/namespace", "xml"),
         ]]
-        # Stack with user declared namespace prefixes kama (uri, prefix) pairs.
+        # Stack ukijumuisha user declared namespace prefixes kama (uri, prefix) pairs.
         self._ns_stack = []
         ikiwa sio rewrite_prefixes:
             self._ns_stack.append(list(_namespace_map.items()))
@@ -1821,14 +1821,14 @@ kundi C14NWriterTarget:
 
     eleza _qname(self, qname, uri=Tupu):
         ikiwa uri ni Tupu:
-            uri, tag = qname[1:].rsplit('}', 1) ikiwa qname[:1] == '{' else ('', qname)
+            uri, tag = qname[1:].rsplit('}', 1) ikiwa qname[:1] == '{' isipokua ('', qname)
         isipokua:
             tag = qname
 
         prefixes_seen = set()
         kila u, prefix kwenye self._iter_namespaces(self._declared_ns_stack):
             ikiwa u == uri na prefix haiko kwenye prefixes_seen:
-                rudisha f'{prefix}:{tag}' ikiwa prefix else tag, tag, uri
+                rudisha f'{prefix}:{tag}' ikiwa prefix isipokua tag, tag, uri
             prefixes_seen.add(prefix)
 
         # Not declared yet => add new declaration.
@@ -1847,7 +1847,7 @@ kundi C14NWriterTarget:
         kila u, prefix kwenye self._iter_namespaces(self._ns_stack):
             ikiwa u == uri:
                 self._declared_ns_stack[-1].append((uri, prefix))
-                rudisha f'{prefix}:{tag}' ikiwa prefix else tag, tag, uri
+                rudisha f'{prefix}:{tag}' ikiwa prefix isipokua tag, tag, uri
 
         ashiria ValueError(f'Namespace "{uri}" ni sio declared kwenye scope')
 
@@ -1862,7 +1862,7 @@ kundi C14NWriterTarget:
             data = data.strip()
         ikiwa self._pending_start ni sio Tupu:
             args, self._pending_start = self._pending_start, Tupu
-            qname_text = data ikiwa data na _looks_like_prefix_name(data) else Tupu
+            qname_text = data ikiwa data na _looks_like_prefix_name(data) isipokua Tupu
             self._start(*args, qname_text)
             ikiwa qname_text ni sio Tupu:
                 rudisha
@@ -1926,7 +1926,7 @@ kundi C14NWriterTarget:
         # Write namespace declarations kwenye prefix order ...
         ikiwa new_namespaces:
             attr_list = [
-                ('xmlns:' + prefix ikiwa prefix else 'xmlns', uri)
+                ('xmlns:' + prefix ikiwa prefix isipokua 'xmlns', uri)
                 kila uri, prefix kwenye new_namespaces
             ]
             attr_list.sort()
@@ -1941,13 +1941,13 @@ kundi C14NWriterTarget:
                     v = parsed_qnames[resolved_names[v]][0]
                 attr_qname, attr_name, uri = parsed_qnames[k]
                 # No prefix kila attributes kwenye default ('') namespace.
-                attr_list.append((attr_qname ikiwa uri else attr_name, v))
+                attr_list.append((attr_qname ikiwa uri isipokua attr_name, v))
 
         # Honour xml:space attributes.
         space_behaviour = attrs.get('{http://www.w3.org/XML/1998/namespace}space')
         self._preserve_space.append(
             space_behaviour == 'preserve' ikiwa space_behaviour
-            else self._preserve_space[-1])
+            isipokua self._preserve_space[-1])
 
         # Write the tag.
         write = self._write
@@ -1982,7 +1982,7 @@ kundi C14NWriterTarget:
             rudisha
         ikiwa self._root_done:
             self._write('\n')
-        elikiwa self._root_seen na self._data:
+        lasivyo self._root_seen na self._data:
             self._flush()
         self._write(f'<!--{_escape_cdata_c14n(text)}-->')
         ikiwa sio self._root_seen:
@@ -1993,10 +1993,10 @@ kundi C14NWriterTarget:
             rudisha
         ikiwa self._root_done:
             self._write('\n')
-        elikiwa self._root_seen na self._data:
+        lasivyo self._root_seen na self._data:
             self._flush()
         self._write(
-            f'<?{target} {_escape_cdata_c14n(data)}?>' ikiwa data else f'<?{target}?>')
+            f'<?{target} {_escape_cdata_c14n(data)}?>' ikiwa data isipokua f'<?{target}?>')
         ikiwa sio self._root_seen:
             self._write('\n')
 

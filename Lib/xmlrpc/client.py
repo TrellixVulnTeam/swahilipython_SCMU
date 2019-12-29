@@ -8,7 +8,7 @@
 # implement XML-RPC servers.
 #
 # Notes:
-# this version ni designed to work with Python 2.1 ama newer.
+# this version ni designed to work ukijumuisha Python 2.1 ama newer.
 #
 # History:
 # 1999-01-14 fl  Created
@@ -17,7 +17,7 @@
 # 1999-01-19 fl  Fixed array data element (kutoka Skip Montanaro)
 # 1999-01-21 fl  Fixed dateTime constructor, etc.
 # 1999-02-02 fl  Added fault handling, handle empty sequences, etc.
-# 1999-02-10 fl  Fixed problem with empty responses (kutoka Skip Montanaro)
+# 1999-02-10 fl  Fixed problem ukijumuisha empty responses (kutoka Skip Montanaro)
 # 1999-06-20 fl  Speed improvements, pluggable parsers/transports (0.9.8)
 # 2000-11-28 fl  Changed boolean to check the truth value of its argument
 # 2001-02-24 fl  Added encoding/Unicode/SafeTransport patches
@@ -28,7 +28,7 @@
 # 2001-08-20 fl  Base xmlrpclib.Error on built-in Exception (kutoka Paul Prescod)
 # 2001-09-03 fl  Allow Transport subkundi to override getparser
 # 2001-09-10 fl  Lazy agiza of urllib, cgi, xmllib (20x agiza speedup)
-# 2001-10-01 fl  Remove containers kutoka memo cache when done with them
+# 2001-10-01 fl  Remove containers kutoka memo cache when done ukijumuisha them
 # 2001-10-01 fl  Use faster escape method (80% dumps speedup)
 # 2001-10-02 fl  More dumps microtuning
 # 2001-10-04 fl  Make sure agiza expat gets a parser (kutoka Guido van Rossum)
@@ -39,7 +39,7 @@
 # 2002-04-07 fl  Added pythondoc comments
 # 2002-04-16 fl  Added __str__ methods to datetime/binary wrappers
 # 2002-05-15 fl  Added error constants (kutoka Andrew Kuchling)
-# 2002-06-27 fl  Merged with Python CVS version
+# 2002-06-27 fl  Merged ukijumuisha Python CVS version
 # 2002-10-22 fl  Added basic authentication (based on code kutoka Phillip Eby)
 # 2003-01-22 sm  Add support kila the bool type
 # 2003-02-27 gvr Remove apply calls
@@ -65,7 +65,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# na will comply with the following terms na conditions:
+# na will comply ukijumuisha the following terms na conditions:
 #
 # Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
@@ -267,7 +267,7 @@ _day0 = datetime(1, 1, 1)
 ikiwa _day0.strftime('%Y') == '0001':      # Mac OS X
     eleza _iso8601_format(value):
         rudisha value.strftime("%Y%m%dT%H:%M:%S")
-elikiwa _day0.strftime('%4Y') == '0001':   # Linux
+lasivyo _day0.strftime('%4Y') == '0001':   # Linux
     eleza _iso8601_format(value):
         rudisha value.strftime("%4Y%m%dT%H:%M:%S")
 isipokua:
@@ -303,13 +303,13 @@ kundi DateTime:
         ikiwa isinstance(other, DateTime):
             s = self.value
             o = other.value
-        elikiwa isinstance(other, datetime):
+        lasivyo isinstance(other, datetime):
             s = self.value
             o = _iso8601_format(other)
-        elikiwa isinstance(other, str):
+        lasivyo isinstance(other, str):
             s = self.value
             o = other
-        elikiwa hasattr(other, "timetuple"):
+        lasivyo hasattr(other, "timetuple"):
             s = self.timetuple()
             o = other.timetuple()
         isipokua:
@@ -721,7 +721,7 @@ kundi Unmarshaller:
     eleza end_boolean(self, data):
         ikiwa data == "0":
             self.append(Uongo)
-        elikiwa data == "1":
+        lasivyo data == "1":
             self.append(Kweli)
         isipokua:
             ashiria TypeError("bad boolean value")
@@ -793,7 +793,7 @@ kundi Unmarshaller:
     dispatch["dateTime.iso8601"] = end_dateTime
 
     eleza end_value(self, data):
-        # ikiwa we stumble upon a value element with no internal
+        # ikiwa we stumble upon a value element ukijumuisha no internal
         # elements, treat it kama a string element
         ikiwa self._value:
             self.end_string(data)
@@ -839,7 +839,7 @@ kundi MultiCallIterator:
         item = self.results[i]
         ikiwa type(item) == type({}):
             ashiria Fault(item['faultCode'], item['faultString'])
-        elikiwa type(item) == type([]):
+        lasivyo type(item) == type([]):
             rudisha item[0]
         isipokua:
             ashiria ValueError("unexpected type kwenye multicall result")
@@ -899,7 +899,7 @@ eleza getparser(use_datetime=Uongo, use_builtin_types=Uongo):
         ikiwa use_builtin_types:
             mkdatetime = _datetime_type
             mkbytes = base64.decodebytes
-        elikiwa use_datetime:
+        lasivyo use_datetime:
             mkdatetime = _datetime_type
             mkbytes = _binary
         isipokua:
@@ -923,7 +923,7 @@ eleza getparser(use_datetime=Uongo, use_builtin_types=Uongo):
 # @keyparam methodname If given, create a methodCall request for
 #     this method name.
 # @keyparam methodresponse If given, create a methodResponse packet.
-#     If used with a tuple, the tuple must be a singleton (that is,
+#     If used ukijumuisha a tuple, the tuple must be a singleton (that is,
 #     it must contain exactly one element).
 # @keyparam encoding The packet encoding.
 # @rudisha A string containing marshalled data.
@@ -941,7 +941,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
         methodname: the method name kila a methodCall packet
 
         methodresponse: true to create a methodResponse packet.
-        If this option ni used with a tuple, the tuple must be
+        If this option ni used ukijumuisha a tuple, the tuple must be
         a singleton (i.e. it can contain only one element).
 
         encoding: the packet encoding (default ni UTF-8)
@@ -954,7 +954,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
     assert isinstance(params, (tuple, Fault)), "argument must be tuple ama Fault instance"
     ikiwa isinstance(params, Fault):
         methodresponse = 1
-    elikiwa methodresponse na isinstance(params, tuple):
+    lasivyo methodresponse na isinstance(params, tuple):
         assert len(params) == 1, "response tuple must be a singleton"
 
     ikiwa sio encoding:
@@ -982,7 +982,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
             data,
             "</methodCall>\n"
             )
-    elikiwa methodresponse:
+    lasivyo methodresponse:
         # a method response, ama a fault structure
         data = (
             xmlheader,
@@ -1033,7 +1033,7 @@ eleza gzip_encode(data):
     ikiwa sio gzip:
         ashiria NotImplementedError
     f = BytesIO()
-    with gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) kama gzf:
+    ukijumuisha gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) kama gzf:
         gzf.write(data)
     rudisha f.getvalue()
 
@@ -1056,7 +1056,7 @@ eleza gzip_decode(data, max_decode=20971520):
     """
     ikiwa sio gzip:
         ashiria NotImplementedError
-    with gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) kama gzf:
+    ukijumuisha gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) kama gzf:
         jaribu:
             ikiwa max_decode < 0: # no limit
                 decoded = gzf.read()
@@ -1075,8 +1075,8 @@ eleza gzip_decode(data, max_decode=20971520):
 # @param response A stream supporting a read() method
 # @rudisha a file-like object that the decoded data can be read() kutoka
 
-kundi GzipDecodedResponse(gzip.GzipFile ikiwa gzip else object):
-    """a file-like object to decode a response encoded with the gzip
+kundi GzipDecodedResponse(gzip.GzipFile ikiwa gzip isipokua object):
+    """a file-like object to decode a response encoded ukijumuisha the gzip
     method, kama described kwenye RFC 1952.
     """
     eleza __init__(self, response):
@@ -1378,7 +1378,7 @@ kundi SafeTransport(Transport):
 #
 # @eleza ServerProxy(uri, **options)
 # @param uri The connection point on the server.
-# @keyparam transport A transport factory, compatible with the
+# @keyparam transport A transport factory, compatible ukijumuisha the
 #    standard transport class.
 # @keyparam encoding The default encoding used kila 8-bit strings
 #    (default ni UTF-8).
@@ -1469,16 +1469,16 @@ kundi ServerProxy:
         # magic method dispatcher
         rudisha _Method(self.__request, name)
 
-    # note: to call a remote object with a non-standard name, use
+    # note: to call a remote object ukijumuisha a non-standard name, use
     # result getattr(server, "strange-python-name")(args)
 
     eleza __call__(self, attr):
         """A workaround to get special attributes on the ServerProxy
-           without interfering with the magic __getattr__
+           without interfering ukijumuisha the magic __getattr__
         """
         ikiwa attr == "close":
             rudisha self.__close
-        elikiwa attr == "transport":
+        lasivyo attr == "transport":
             rudisha self.__transport
         ashiria AttributeError("Attribute %r sio found" % (attr,))
 

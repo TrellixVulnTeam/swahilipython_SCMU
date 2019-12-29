@@ -122,13 +122,13 @@ kundi Parser(object):
             dfa, state, node = self.stack[-1]
             states, first = dfa
             arcs = states[state]
-            # Look kila a state with this label
+            # Look kila a state ukijumuisha this label
             kila i, newstate kwenye arcs:
                 t, v = self.grammar.labels[i]
                 ikiwa ilabel == i:
                     # Look it up kwenye the list of labels
                     assert t < 256
-                    # Shift a token; we're done with it
+                    # Shift a token; we're done ukijumuisha it
                     self.shift(type, value, newstate, context)
                     # Pop wakati we are kwenye an accept-only state
                     state = newstate
@@ -139,9 +139,9 @@ kundi Parser(object):
                             rudisha Kweli
                         dfa, state, node = self.stack[-1]
                         states, first = dfa
-                    # Done with this token
+                    # Done ukijumuisha this token
                     rudisha Uongo
-                elikiwa t >= 256:
+                lasivyo t >= 256:
                     # See ikiwa it's a symbol na ikiwa we're kwenye its first set
                     itsdfa = self.grammar.dfas[t]
                     itsstates, itsfirst = itsdfa

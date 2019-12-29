@@ -32,9 +32,9 @@ eleza get_lockdata():
             pid_t = 'l'
         lockdata = struct.pack(off_t + off_t + pid_t + 'hh', 0, 0, 0,
                                fcntl.F_WRLCK, 0)
-    elikiwa sys.platform.startswith('gnukfreebsd'):
+    lasivyo sys.platform.startswith('gnukfreebsd'):
         lockdata = struct.pack('qqihhi', 0, 0, 0, fcntl.F_WRLCK, 0, 0)
-    elikiwa sys.platform kwenye ['hp-uxB', 'unixware7']:
+    lasivyo sys.platform kwenye ['hp-uxB', 'unixware7']:
         lockdata = struct.pack('hhlllii', fcntl.F_WRLCK, 0, 0, 0, 0, 0, 0)
     isipokua:
         lockdata = struct.pack('hh'+start_len+'hh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
@@ -66,10 +66,10 @@ kundi TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
         ikiwa verbose:
-            andika('Status kutoka fcntl with O_NONBLOCK: ', rv)
+            andika('Status kutoka fcntl ukijumuisha O_NONBLOCK: ', rv)
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETLKW, lockdata)
         ikiwa verbose:
-            andika('String kutoka fcntl with F_SETLKW: ', repr(rv))
+            andika('String kutoka fcntl ukijumuisha F_SETLKW: ', repr(rv))
         self.f.close()
 
     eleza test_fcntl_file_descriptor(self):
@@ -77,33 +77,33 @@ kundi TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         ikiwa verbose:
-            andika('Status kutoka fcntl with O_NONBLOCK: ', rv)
+            andika('Status kutoka fcntl ukijumuisha O_NONBLOCK: ', rv)
         rv = fcntl.fcntl(self.f, fcntl.F_SETLKW, lockdata)
         ikiwa verbose:
-            andika('String kutoka fcntl with F_SETLKW: ', repr(rv))
+            andika('String kutoka fcntl ukijumuisha F_SETLKW: ', repr(rv))
         self.f.close()
 
     eleza test_fcntl_bad_file(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             fcntl.fcntl(-1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             fcntl.fcntl(BadFile(-1), fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             fcntl.fcntl('spam', fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             fcntl.fcntl(BadFile('spam'), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @cpython_only
     eleza test_fcntl_bad_file_overflow(self):
         kutoka _testcapi agiza INT_MAX, INT_MIN
         # Issue 15989
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             fcntl.fcntl(INT_MAX + 1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             fcntl.fcntl(BadFile(INT_MAX + 1), fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             fcntl.fcntl(INT_MIN - 1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             fcntl.fcntl(BadFile(INT_MIN - 1), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @unittest.skipIf(

@@ -19,7 +19,7 @@ def dedent(bstr):
         raise ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     return b'\r\n'.join(
-        [x[stripamt:] if len(x)>=stripamt else b''
+        [x[stripamt:] if len(x)>=stripamt isipokua b''
             for x in lines])
 
 

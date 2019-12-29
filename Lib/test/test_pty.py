@@ -188,14 +188,14 @@ kundi PtyTest(unittest.TestCase):
 
             (pid, status) = os.waitpid(pid, 0)
             res = status >> 8
-            debug("Child (%d) exited with status %d (%d)." % (pid, res, status))
+            debug("Child (%d) exited ukijumuisha status %d (%d)." % (pid, res, status))
             ikiwa res == 1:
                 self.fail("Child ashiriad an unexpected exception kwenye os.setsid()")
-            elikiwa res == 2:
+            lasivyo res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
-            elikiwa res == 3:
+            lasivyo res == 3:
                 self.fail("Child spawned by pty.fork() did sio have a tty kama stdout")
-            elikiwa res != 4:
+            lasivyo res != 4:
                 self.fail("pty.fork() failed kila unknown reasons.")
 
             ##debug("Reading kutoka master_fd now that the child has exited")
@@ -272,7 +272,7 @@ kundi SmallPtyTests(unittest.TestCase):
         self.select_rfds_results.append([mock_stdin_fd, masters[0]])
         self.select_rfds_lengths.append(2)
 
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             pty._copy(masters[0])
 
         # Test that the right data went to the right places.
@@ -301,7 +301,7 @@ kundi SmallPtyTests(unittest.TestCase):
         # both encountered an EOF before the second select call.
         self.select_rfds_lengths.append(0)
 
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             pty._copy(masters[0])
 
 

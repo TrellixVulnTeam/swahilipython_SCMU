@@ -60,7 +60,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # "If tests ni given, it must be an iterable of individual test cases
     # ama other test suites that will be used to build the suite initially"
     #
-    # TestSuite should deal with empty tests iterables by allowing the
+    # TestSuite should deal ukijumuisha empty tests iterables by allowing the
     # creation of an empty suite
     eleza test_init__empty_tests(self):
         suite = unittest.TestSuite([])
@@ -187,7 +187,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(parent.countTestCases(), 4)
         self.assertEqual(child.countTestCases(), 2)
 
-    # "Run the tests associated with this suite, collecting the result into
+    # "Run the tests associated ukijumuisha this suite, collecting the result into
     # the test result object pitaed kama result."
     #
     # And ikiwa there are no tests? What then?
@@ -213,7 +213,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         isipokua:
             self.fail("Failed to ashiria TypeError")
 
-    # "Run the tests associated with this suite, collecting the result into
+    # "Run the tests associated ukijumuisha this suite, collecting the result into
     # the test result object pitaed kama result."
     eleza test_run(self):
         events = []

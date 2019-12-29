@@ -15,18 +15,18 @@ kundi Codec(codecs.Codec):
         rudisha codecs.charmap_decode(input,errors,decoding_table)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha codecs.charmap_encode(input,self.errors,encoding_table)[0]
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

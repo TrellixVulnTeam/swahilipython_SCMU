@@ -50,7 +50,7 @@ kundi Unorderable:
     eleza __repr__(self):
         rudisha str(id(self))
 
-# Class Orderable ni orderable with any type
+# Class Orderable ni orderable ukijumuisha any type
 kundi Orderable:
     eleza __init__(self, hash):
         self._hash = hash
@@ -82,7 +82,7 @@ kundi QueryTestCase(unittest.TestCase):
                                   stream=io.StringIO(), compact=Kweli)
         pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO())
         pp = pprint.PrettyPrinter(sort_dicts=Uongo)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), Kweli)
         self.assertRaises(ValueError, pprint.PrettyPrinter, indent=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=0)
@@ -161,7 +161,7 @@ kundi QueryTestCase(unittest.TestCase):
         # be testing an implementation quirk.  Starting kwenye Python 2.5, it's
         # sio true kila dicts:  pprint always sorts dicts by key now; before,
         # it sorted a dict display ikiwa na only ikiwa the display required
-        # multiple lines.  For that reason, dicts with more than one element
+        # multiple lines.  For that reason, dicts ukijumuisha more than one element
         # aren't tested here.
         kila simple kwenye (0, 0, 0+0j, 0.0, "", b"", bytearray(),
                        (), tuple2(), tuple3(),
@@ -347,10 +347,10 @@ mappingproxy(OrderedDict([('the', 0),
                           ('dog', 8)]))""")
 
     eleza test_subclassing(self):
-        o = {'names with spaces': 'should be presented using repr()',
+        o = {'names ukijumuisha spaces': 'should be presented using repr()',
              'others.should.not.be': 'like.this'}
         exp = """\
-{'names with spaces': 'should be presented using repr()',
+{'names ukijumuisha spaces': 'should be presented using repr()',
  others.should.not.be: like.this}"""
         self.assertEqual(DottedPrettyPrinter().pformat(o), exp)
 
@@ -644,7 +644,7 @@ frozenset2({0,
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
                          '{1: 0, ' + repr(Unorderable) +': 0}')
 
-        # Issue 14998: TypeError on tuples with TupuTypes kama dict keys.
+        # Issue 14998: TypeError on tuples ukijumuisha TupuTypes kama dict keys.
         keys = [(1,), (Tupu,)]
         self.assertEqual(pprint.pformat(dict.kutokakeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))

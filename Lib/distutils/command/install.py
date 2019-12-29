@@ -226,7 +226,7 @@ class install(Command):
         # This method (and its helpers, like 'finalize_unix()',
         # 'finalize_other()', and 'select_scheme()') is where the default
         # installation directories for modules, extension modules, and
-        # anything else we care to install from a Python module
+        # anything isipokua we care to install from a Python module
         # distribution.  Thus, this code makes a pretty important policy
         # statement about how third-party stuff is added to a Python
         # installation!  Note that the actual work of installation is done

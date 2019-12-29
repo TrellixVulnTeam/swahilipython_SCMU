@@ -1,12 +1,12 @@
 """Module/script to byte-compile all .py files to .pyc files.
 
-When called kama a script with arguments, this compiles the directories
+When called kama a script ukijumuisha arguments, this compiles the directories
 given kama arguments recursively; the -l option prevents it kutoka
 recursing into directories.
 
 Without arguments, ikiwa compiles all modules on sys.path, without
 recursing into subdirectories.  (Even though it should do so for
-packages -- kila now, you'll have to deal with packages separately.)
+packages -- kila now, you'll have to deal ukijumuisha packages separately.)
 
 See module py_compile kila details of the actual byte-compilation.
 """
@@ -42,7 +42,7 @@ eleza _walk_dir(dir, ddir=Tupu, maxlevels=10, quiet=0):
             dfile = Tupu
         ikiwa sio os.path.isdir(fullname):
             tuma fullname
-        elikiwa (maxlevels > 0 na name != os.curdir na name != os.pardir and
+        lasivyo (maxlevels > 0 na name != os.curdir na name != os.pardir and
               os.path.isdir(fullname) na sio os.path.islink(fullname)):
             tuma kutoka _walk_dir(fullname, ddir=dfile,
                                  maxlevels=maxlevels - 1, quiet=quiet)
@@ -59,8 +59,8 @@ eleza compile_dir(dir, maxlevels=10, ddir=Tupu, force=Uongo, rx=Tupu,
     ddir:      the directory that will be prepended to the path to the
                file kama it ni compiled into each byte-code file.
     force:     ikiwa Kweli, force compilation, even ikiwa timestamps are up-to-date
-    quiet:     full output with Uongo ama 0, errors only with 1,
-               no output with 2
+    quiet:     full output ukijumuisha Uongo ama 0, errors only ukijumuisha 1,
+               no output ukijumuisha 2
     legacy:    ikiwa Kweli, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  optimization level ama -1 kila level of the interpreter
     workers:   maximum number of parallel workers
@@ -82,7 +82,7 @@ eleza compile_dir(dir, maxlevels=10, ddir=Tupu, force=Uongo, rx=Tupu,
     ikiwa workers != 1 na ProcessPoolExecutor ni sio Tupu:
         # If workers == 0, let ProcessPoolExecutor choose
         workers = workers ama Tupu
-        with ProcessPoolExecutor(max_workers=workers) kama executor:
+        ukijumuisha ProcessPoolExecutor(max_workers=workers) kama executor:
             results = executor.map(partial(compile_file,
                                            ddir=ddir, force=force,
                                            rx=rx, quiet=quiet,
@@ -109,8 +109,8 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
     ddir:      ikiwa given, the directory name compiled kwenye to the
                byte-code file.
     force:     ikiwa Kweli, force compilation, even ikiwa timestamps are up-to-date
-    quiet:     full output with Uongo ama 0, errors only with 1,
-               no output with 2
+    quiet:     full output ukijumuisha Uongo ama 0, errors only ukijumuisha 1,
+               no output ukijumuisha 2
     legacy:    ikiwa Kweli, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  optimization level ama -1 kila level of the interpreter
     invalidation_mode: how the up-to-dateness of the pyc will be checked
@@ -132,7 +132,7 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
             cfile = fullname + 'c'
         isipokua:
             ikiwa optimize >= 0:
-                opt = optimize ikiwa optimize >= 1 else ''
+                opt = optimize ikiwa optimize >= 1 isipokua ''
                 cfile = importlib.util.cache_kutoka_source(
                                 fullname, optimization=opt)
             isipokua:
@@ -145,7 +145,7 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sll', importlib.util.MAGIC_NUMBER,
                                          0, mtime)
-                    with open(cfile, 'rb') kama chandle:
+                    ukijumuisha open(cfile, 'rb') kama chandle:
                         actual = chandle.read(12)
                     ikiwa expect == actual:
                         rudisha success
@@ -161,7 +161,7 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
                 success = Uongo
                 ikiwa quiet >= 2:
                     rudisha success
-                elikiwa quiet:
+                lasivyo quiet:
                     andika('*** Error compiling {!r}...'.format(fullname))
                 isipokua:
                     andika('*** ', end='')
@@ -174,7 +174,7 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
                 success = Uongo
                 ikiwa quiet >= 2:
                     rudisha success
-                elikiwa quiet:
+                lasivyo quiet:
                     andika('*** Error compiling {!r}...'.format(fullname))
                 isipokua:
                     andika('*** ', end='')
@@ -282,7 +282,7 @@ eleza main():
     # ikiwa flist ni provided then load it
     ikiwa args.flist:
         jaribu:
-            with (sys.stdin ikiwa args.flist=='-' else open(args.flist)) kama f:
+            ukijumuisha (sys.stdin ikiwa args.flist=='-' isipokua open(args.flist)) kama f:
                 kila line kwenye f:
                     compile_dests.append(line.strip())
         tatizo OSError:

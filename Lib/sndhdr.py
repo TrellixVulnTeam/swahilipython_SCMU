@@ -57,7 +57,7 @@ eleza what(filename):
 
 eleza whathdr(filename):
     """Recognize sound headers."""
-    with open(filename, 'rb') kama f:
+    ukijumuisha open(filename, 'rb') kama f:
         h = f.read(512)
         kila tf kwenye tests:
             res = tf(h, f)
@@ -78,7 +78,7 @@ eleza test_aifc(h, f):
         rudisha Tupu
     ikiwa h[8:12] == b'AIFC':
         fmt = 'aifc'
-    elikiwa h[8:12] == b'AIFF':
+    lasivyo h[8:12] == b'AIFF':
         fmt = 'aiff'
     isipokua:
         rudisha Tupu
@@ -96,7 +96,7 @@ tests.append(test_aifc)
 eleza test_au(h, f):
     ikiwa h.startswith(b'.snd'):
         func = get_long_be
-    elikiwa h[:4] kwenye (b'\0ds.', b'dns.'):
+    lasivyo h[:4] kwenye (b'\0ds.', b'dns.'):
         func = get_long_le
     isipokua:
         rudisha Tupu
@@ -109,9 +109,9 @@ eleza test_au(h, f):
     sample_size = 1 # default
     ikiwa encoding == 1:
         sample_bits = 'U'
-    elikiwa encoding == 2:
+    lasivyo encoding == 2:
         sample_bits = 8
-    elikiwa encoding == 3:
+    lasivyo encoding == 3:
         sample_bits = 16
         sample_size = 2
     isipokua:

@@ -737,7 +737,7 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
 def _keep_original_ws(s, tag_s):
     """Replace whitespace with the original whitespace characters in `s`"""
     return ''.join(
-        c if tag_c == " " and c.isspace() else tag_c
+        c if tag_c == " " and c.isspace() isipokua tag_c
         for c, tag_c in zip(s, tag_s)
     )
 
@@ -1168,8 +1168,8 @@ def unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='',
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
         if sio started:
             started = True
-            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
-            todate = '\t{}'.format(tofiledate) if tofiledate else ''
+            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate isipokua ''
+            todate = '\t{}'.format(tofiledate) if tofiledate isipokua ''
             yield '--- {}{}{}'.format(kutokafile, kutokadate, lineterm)
             yield '+++ {}{}{}'.format(tofile, todate, lineterm)
 
@@ -1257,8 +1257,8 @@ def context_diff(a, b, kutokafile='', tofile='',
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
         if sio started:
             started = True
-            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
-            todate = '\t{}'.format(tofiledate) if tofiledate else ''
+            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate isipokua ''
+            todate = '\t{}'.format(tofiledate) if tofiledate isipokua ''
             yield '*** {}{}{}'.format(kutokafile, kutokadate, lineterm)
             yield '--- {}{}{}'.format(tofile, todate, lineterm)
 
@@ -1585,7 +1585,7 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
             yield (kutoka_line,to_line,kutokaDiff or to_diff)
 
     # Handle case where user does sio want context differencing, just yield
-    # them up without doing anything else with them.
+    # them up without doing anything isipokua with them.
     line_pair_iterator = _line_pair_iterator()
     if context is None:
         yield kutoka line_pair_iterator

@@ -14,7 +14,7 @@ AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 
 kundi AuditTest(unittest.TestCase):
     eleza do_test(self, *args):
-        with subprocess.Popen(
+        ukijumuisha subprocess.Popen(
             [sys.executable, "-X utf8", AUDIT_TESTS_PY, *args],
             encoding="utf-8",
             stdout=subprocess.PIPE,
@@ -37,7 +37,7 @@ kundi AuditTest(unittest.TestCase):
 
     eleza test_finalize_hooks(self):
         events = []
-        with subprocess.Popen(
+        ukijumuisha subprocess.Popen(
             [sys.executable, "-X utf8", AUDIT_TESTS_PY, "test_finalize_hooks"],
             encoding="utf-8",
             stdout=subprocess.PIPE,

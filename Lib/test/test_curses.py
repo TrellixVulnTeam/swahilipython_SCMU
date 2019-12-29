@@ -89,7 +89,7 @@ kundi TestCurses(unittest.TestCase):
         kila meth kwenye [stdscr.addch, stdscr.addstr]:
             kila args kwenye [('a',), ('a', curses.A_BOLD),
                          (4,4, 'a'), (5,5, 'a', curses.A_BOLD)]:
-                with self.subTest(meth=meth.__qualname__, args=args):
+                ukijumuisha self.subTest(meth=meth.__qualname__, args=args):
                     meth(*args)
 
         kila meth kwenye [stdscr.clear, stdscr.clrtobot,
@@ -101,7 +101,7 @@ kundi TestCurses(unittest.TestCase):
                      win.noutrefresh, stdscr.redrawwin, stdscr.refresh,
                      stdscr.standout, stdscr.standend, stdscr.syncdown,
                      stdscr.syncup, stdscr.touchwin, stdscr.untouchwin]:
-            with self.subTest(meth=meth.__qualname__):
+            ukijumuisha self.subTest(meth=meth.__qualname__):
                 meth()
 
         stdscr.addnstr('1234', 3)
@@ -121,7 +121,7 @@ kundi TestCurses(unittest.TestCase):
                    69, 70, 71, 72)
         win.border('|', '!', '-', '_',
                    '+', '\\', '#', '/')
-        with self.assertRaises(TypeError,
+        ukijumuisha self.assertRaises(TypeError,
                                msg="Expected win.border() to ashiria TypeError"):
             win.border(65, 66, 67, 68,
                        69, [], 71, 72)
@@ -215,7 +215,7 @@ kundi TestCurses(unittest.TestCase):
         # reject embedded null bytes na characters
         stdscr = self.stdscr
         kila arg kwenye ['a', b'a']:
-            with self.subTest(arg=arg):
+            ukijumuisha self.subTest(arg=arg):
                 self.assertRaises(ValueError, stdscr.addstr, 'a\0')
                 self.assertRaises(ValueError, stdscr.addnstr, 'a\0', 1)
                 self.assertRaises(ValueError, stdscr.insstr, 'a\0')
@@ -232,7 +232,7 @@ kundi TestCurses(unittest.TestCase):
                      curses.noqiflush, curses.noraw,
                      curses.reset_prog_mode, curses.termattrs,
                      curses.termname, curses.erasechar]:
-            with self.subTest(func=func.__qualname__):
+            ukijumuisha self.subTest(func=func.__qualname__):
                 func()
         ikiwa hasattr(curses, 'filter'):
             curses.filter()
@@ -245,7 +245,7 @@ kundi TestCurses(unittest.TestCase):
         curses.delay_output(1)
         curses.echo() ; curses.echo(1)
 
-        with tempfile.TemporaryFile() kama f:
+        ukijumuisha tempfile.TemporaryFile() kama f:
             self.stdscr.putwin(f)
             f.seek(0)
             curses.getwin(f)
@@ -311,7 +311,7 @@ kundi TestCurses(unittest.TestCase):
         w = curses.newwin(10, 10)
         p = curses.panel.new_panel(w)
         # try to access userptr() before calling set_userptr() -- segfaults
-        with self.assertRaises(curses.panel.error,
+        ukijumuisha self.assertRaises(curses.panel.error,
                                msg='userptr should fail since sio set'):
             p.userptr()
 
@@ -381,7 +381,7 @@ kundi TestCurses(unittest.TestCase):
             jaribu:
                 curses.unget_wch(ch)
             tatizo Exception kama err:
-                self.fail("unget_wch(%a) failed with encoding %s: %s"
+                self.fail("unget_wch(%a) failed ukijumuisha encoding %s: %s"
                           % (ch, stdscr.encoding, err))
             read = stdscr.get_wch()
             self.assertEqual(read, ch)
@@ -400,10 +400,10 @@ kundi TestCurses(unittest.TestCase):
         agiza codecs
         encoding = stdscr.encoding
         codecs.lookup(encoding)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             stdscr.encoding = 10
         stdscr.encoding = encoding
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             toa stdscr.encoding
 
     eleza test_issue21088(self):
@@ -481,7 +481,7 @@ kundi TestAscii(unittest.TestCase):
 
     eleza test_ctypes(self):
         eleza check(func, expected):
-            with self.subTest(ch=c, func=func):
+            ukijumuisha self.subTest(ch=c, func=func):
                 self.assertEqual(func(i), expected)
                 self.assertEqual(func(c), expected)
 

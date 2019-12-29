@@ -23,7 +23,7 @@ kundi BufferSizeTest:
         # files, use binary mode.
         f = self.open(support.TESTFN, "wb")
         jaribu:
-            # write once with \n na once without
+            # write once ukijumuisha \n na once without
             f.write(s)
             f.write(b"\n")
             f.write(s)
@@ -42,8 +42,8 @@ kundi BufferSizeTest:
     eleza drive_one(self, pattern):
         kila length kwenye lengths:
             # Repeat string 'pattern' kama often kama needed to reach total length
-            # 'length'.  Then call try_one with that string, a string one larger
-            # than that, na a string one smaller than that.  Try this with all
+            # 'length'.  Then call try_one ukijumuisha that string, a string one larger
+            # than that, na a string one smaller than that.  Try this ukijumuisha all
             # small sizes na various powers of 2, so we exercise all likely
             # stdio buffer sizes, na "off by one" errors on both sides.
             q, r = divmod(length, len(pattern))
@@ -54,7 +54,7 @@ kundi BufferSizeTest:
             self.try_one(teststring[:-1])
 
     eleza test_primepat(self):
-        # A pattern with prime length, to avoid simple relationships with
+        # A pattern ukijumuisha prime length, to avoid simple relationships with
         # stdio buffer sizes.
         self.drive_one(b"1234567890\00\01\02\03\04\05\06")
 

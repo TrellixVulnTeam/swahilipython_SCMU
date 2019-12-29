@@ -67,7 +67,7 @@ kundi DateTimeTests(unittest.TestCase):
         self.assertEqual(parse_date("03-Feb-98"), (1998, 2, 3, 0, 0, 0.0))
 
     eleza test_http2time_formats(self):
-        # test http2time kila supported dates.  Test cases with 2 digit year
+        # test http2time kila supported dates.  Test cases ukijumuisha 2 digit year
         # will probably koma kwenye year 2044.
         tests = [
          'Thu, 03 Feb 1994 00:00:00 GMT',  # proposed new HTTP format
@@ -80,13 +80,13 @@ kundi DateTimeTests(unittest.TestCase):
          '03-Feb-1994 00:00 GMT',  # broken rfc850 (no weekday, no seconds)
          '03-Feb-1994 00:00',  # broken rfc850 (no weekday, no seconds, no tz)
          '02-Feb-1994 24:00',  # broken rfc850 (no weekday, no seconds,
-                               # no tz) using hour 24 with yesterday date
+                               # no tz) using hour 24 ukijumuisha yesterday date
 
          '03-Feb-94',  # old rfc850 HTTP format (no weekday, no time)
          '03-Feb-1994',  # broken rfc850 HTTP format (no weekday, no time)
          '03 Feb 1994',  # proposed new HTTP format (no weekday, no time)
 
-         # A few tests with extra space at various places
+         # A few tests ukijumuisha extra space at various places
          '  03   Feb   1994  0:00  ',
          '  03-Feb-1994  ',
         ]
@@ -131,11 +131,11 @@ kundi DateTimeTests(unittest.TestCase):
         self.assertEqual(parse_date("19940203T141529Z"),
                          (1994, 2, 3, 14, 15, 29))
 
-        # ISO 8601 with time behind UTC
+        # ISO 8601 ukijumuisha time behind UTC
         self.assertEqual(parse_date("1994-02-03 07:15:29 -0700"),
                          (1994, 2, 3, 14, 15, 29))
 
-        # ISO 8601 with time ahead of UTC
+        # ISO 8601 ukijumuisha time ahead of UTC
         self.assertEqual(parse_date("1994-02-03 19:45:29 +0530"),
                          (1994, 2, 3, 14, 15, 29))
 
@@ -151,7 +151,7 @@ kundi DateTimeTests(unittest.TestCase):
             '1994-02-02 24:00:00',       # using hour-24 yesterday date
             '19940203T000000Z',          # ISO 8601 compact format
 
-            # A few tests with extra space at various places
+            # A few tests ukijumuisha extra space at various places
             '  1994-02-03 ',
             '  1994-02-03T00:00:00  ',
         ]
@@ -205,7 +205,7 @@ kundi HeaderTests(unittest.TestCase):
     eleza test_parse_ns_headers_special_names(self):
         # names such kama 'expires' are sio special kwenye first name=value pair
         # of Set-Cookie: header
-        # Cookie with name 'expires'
+        # Cookie ukijumuisha name 'expires'
         hdr = 'expires=01 Jan 2040 22:23:32 GMT'
         expected = [[("expires", "01 Jan 2040 22:23:32 GMT"), ("version", "0")]]
         self.assertEqual(parse_ns_headers([hdr]), expected)
@@ -333,13 +333,13 @@ kundi FileCookieJarTests(unittest.TestCase):
             pita
 
         kila type_ kwenye (int, float, A):
-            with self.subTest(filename=type_):
-                with self.assertRaises(TypeError):
+            ukijumuisha self.subTest(filename=type_):
+                ukijumuisha self.assertRaises(TypeError):
                     instance = type_()
                     c = LWPCookieJar(filename=instance)
 
     eleza test_lwp_valueless_cookie(self):
-        # cookies with no value should be saved na loaded consistently
+        # cookies ukijumuisha no value should be saved na loaded consistently
         filename = test.support.TESTFN
         c = LWPCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
@@ -359,7 +359,7 @@ kundi FileCookieJarTests(unittest.TestCase):
         kila cookiejar_kundi kwenye LWPCookieJar, MozillaCookieJar:
             c = cookiejar_class()
             jaribu:
-                c.load(filename="kila this test to work, a file with this "
+                c.load(filename="kila this test to work, a file ukijumuisha this "
                                 "filename should sio exist")
             tatizo OSError kama exc:
                 # an OSError subkundi (likely FileNotFoundError), but not
@@ -370,7 +370,7 @@ kundi FileCookieJarTests(unittest.TestCase):
         # Invalid contents of cookies file (eg. bad magic string)
         # causes a LoadError.
         jaribu:
-            with open(filename, "w") kama f:
+            ukijumuisha open(filename, "w") kama f:
                 f.write("oops\n")
                 kila cookiejar_kundi kwenye LWPCookieJar, MozillaCookieJar:
                     c = cookiejar_class()
@@ -388,12 +388,12 @@ kundi CookieTests(unittest.TestCase):
     # Strictness switches
     # is_third_party()
     # unverifiability / third-party blocking
-    # Netscape cookies work the same kama RFC 2965 with regard to port.
-    # Set-Cookie with negative max age.
+    # Netscape cookies work the same kama RFC 2965 ukijumuisha regard to port.
+    # Set-Cookie ukijumuisha negative max age.
     # If turn RFC 2965 handling off, Set-Cookie2 cookies should sio clobber
     #  Set-Cookie cookies.
     # Cookie2 should be sent ikiwa *any* cookies are sio V1 (ie. V0 OR V2 etc.).
-    # Cookies (V1 na V0) with no expiry date should be set to be discarded.
+    # Cookies (V1 na V0) ukijumuisha no expiry date should be set to be discarded.
     # RFC 2965 Quoting:
     #  Should accept unquoted cookie-attribute values?  check errata draft.
     #   Which are required on the way kwenye na out?
@@ -429,7 +429,7 @@ kundi CookieTests(unittest.TestCase):
     eleza test_domain_rudisha_ok(self):
         # test optimization: .domain_rudisha_ok() should filter out most
         # domains kwenye the CookieJar before we try to access them (because that
-        # may require disk access -- kwenye particular, with MSIECookieJar)
+        # may require disk access -- kwenye particular, ukijumuisha MSIECookieJar)
         # This ni only a rough check kila performance reasons, so it's sio too
         # critical kama long kama it's sufficiently liberal.
         pol = DefaultCookiePolicy()
@@ -586,7 +586,7 @@ kundi CookieTests(unittest.TestCase):
         c = CookieJar()
         future = time2netscape(time.time()+3600)
 
-        with test.support.check_no_warnings(self):
+        ukijumuisha test.support.check_no_warnings(self):
             headers = [f"Set-Cookie: FOO=BAR; path=/; expires={future}"]
             req = urllib.request.Request("http://www.coyote.com/")
             res = FakeResponse(headers, "http://www.coyote.com/")
@@ -620,7 +620,7 @@ kundi CookieTests(unittest.TestCase):
         h = interact_netscape(c, "http://www.acme.com/")
         self.assertEqual(len(c), 1)
 
-        # test expiry at end of session kila cookies with no expires attribute
+        # test expiry at end of session kila cookies ukijumuisha no expires attribute
         interact_netscape(c, "http://www.rhubarb.net/", 'whum="fizz"')
         self.assertEqual(len(c), 2)
         c.clear_session_cookies()
@@ -714,7 +714,7 @@ kundi CookieTests(unittest.TestCase):
             self.assertEqual(escape_path(arg), result)
 
     eleza test_request_path(self):
-        # with parameters
+        # ukijumuisha parameters
         req = urllib.request.Request(
             "http://www.example.com/rheum/rhaponticum;"
             "foo=bar;sing=song?apples=pears&spam=eggs#ni")
@@ -881,7 +881,7 @@ kundi CookieTests(unittest.TestCase):
         # because .foo.net matches foo.net
         interact_netscape(c, "http://foo.net/foo/",
                           'spam1=eggs; domain=foo.net')
-        # even ikiwa starts with a dot -- kwenye NS rules, .foo.net matches foo.net!
+        # even ikiwa starts ukijumuisha a dot -- kwenye NS rules, .foo.net matches foo.net!
         interact_netscape(c, "http://foo.net/foo/bar/",
                           'spam2=eggs; domain=.foo.net')
         self.assertEqual(len(c), 3)
@@ -919,7 +919,7 @@ kundi CookieTests(unittest.TestCase):
         self.assertEqual(interact_2965(c, "http://www.foo.net/"), "")
 
         # unless domain ni given explicitly, because then it must be
-        # rewritten to start with a dot: foo.net --> .foo.net, which does
+        # rewritten to start ukijumuisha a dot: foo.net --> .foo.net, which does
         # sio domain-match foo.net
         interact_2965(c, "http://foo.net/foo",
                       'spam=eggs; domain=foo.net; path=/foo; Version="1"')
@@ -970,7 +970,7 @@ kundi CookieTests(unittest.TestCase):
         c.extract_cookies(res, req)
         self.assertEqual(len(c), 1)
 
-        # set a cookie with non-allowed domain...
+        # set a cookie ukijumuisha non-allowed domain...
         req = urllib.request.Request("http://www.coyote.com/")
         res = FakeResponse(headers, "http://www.coyote.com/")
         cookies = c.make_cookies(res, req)
@@ -1010,7 +1010,7 @@ kundi CookieTests(unittest.TestCase):
         c.extract_cookies(res, req)
         self.assertEqual(len(c), 1)
 
-        # set a cookie with blocked domain...
+        # set a cookie ukijumuisha blocked domain...
         req = urllib.request.Request("http://www.acme.com/")
         res = FakeResponse(headers, "http://www.acme.com/")
         cookies = c.make_cookies(res, req)
@@ -1149,7 +1149,7 @@ kundi CookieTests(unittest.TestCase):
         interact_2965(c, url, "spam=eggs; Version=1")
         h = interact_2965(c, url)
         self.assertNotIn("Domain", h,
-                     "absent domain rudishaed with domain present")
+                     "absent domain rudishaed ukijumuisha domain present")
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
@@ -1171,7 +1171,7 @@ kundi CookieTests(unittest.TestCase):
         url = "http://foo.bar.com/"
         interact_2965(c, url, "spam=eggs; Version=1")
         h = interact_2965(c, url)
-        self.assertNotIn("Path", h, "absent path rudishaed with path present")
+        self.assertNotIn("Path", h, "absent path rudishaed ukijumuisha path present")
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
@@ -1186,28 +1186,28 @@ kundi CookieTests(unittest.TestCase):
         url = "http://foo.bar.com/"
         interact_2965(c, url, "spam=eggs; Version=1")
         h = interact_2965(c, url)
-        self.assertNotIn("Port", h, "absent port rudishaed with port present")
+        self.assertNotIn("Port", h, "absent port rudishaed ukijumuisha port present")
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
         interact_2965(c, url, "spam=eggs; Version=1; Port")
         h = interact_2965(c, url)
         self.assertRegex(h, r"\$Port([^=]|$)",
-                         "port with no value sio rudishaed with no value")
+                         "port ukijumuisha no value sio rudishaed ukijumuisha no value")
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
         interact_2965(c, url, 'spam=eggs; Version=1; Port="80"')
         h = interact_2965(c, url)
         self.assertIn('$Port="80"', h,
-                      "port with single value sio rudishaed with single value")
+                      "port ukijumuisha single value sio rudishaed ukijumuisha single value")
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
         interact_2965(c, url, 'spam=eggs; Version=1; Port="80,8080"')
         h = interact_2965(c, url)
         self.assertIn('$Port="80,8080"', h,
-                      "port with multiple values sio rudishaed with multiple "
+                      "port ukijumuisha multiple values sio rudishaed ukijumuisha multiple "
                       "values")
 
     eleza test_no_rudisha_comment(self):
@@ -1292,7 +1292,7 @@ kundi CookieTests(unittest.TestCase):
 
         # none of these bad headers should cause an exception to be ashiriad
         kila headers kwenye [
-            ["Set-Cookie: "],  # actually, nothing wrong with this
+            ["Set-Cookie: "],  # actually, nothing wrong ukijumuisha this
             ["Set-Cookie2: "],  # ditto
             # missing domain value
             ["Set-Cookie2: a=foo; path=/; Version=1; domain"],
@@ -1306,7 +1306,7 @@ kundi CookieTests(unittest.TestCase):
             # these bad cookies shouldn't be set
             self.assertEqual(len(c), 0)
 
-        # cookie with invalid expires ni treated kama session cookie
+        # cookie ukijumuisha invalid expires ni treated kama session cookie
         headers = ["Set-Cookie: c=foo; expires=Foo Bar 12 33:22:11 2000"]
         c = cookiejar_kutoka_cookie_headers(headers)
         cookie = c._cookies["www.example.com"]["/"]["c"]
@@ -1314,7 +1314,7 @@ kundi CookieTests(unittest.TestCase):
 
 
 kundi LWPCookieTests(unittest.TestCase):
-    # Tests taken kutoka libwww-perl, with a few modifications na additions.
+    # Tests taken kutoka libwww-perl, ukijumuisha a few modifications na additions.
 
     eleza test_netscape_example_1(self):
         #-------------------------------------------------------------------
@@ -1460,7 +1460,7 @@ kundi LWPCookieTests(unittest.TestCase):
 
     eleza test_ietf_example_1(self):
         #-------------------------------------------------------------------
-        # Then we test with the examples kutoka draft-ietf-http-state-man-mec-03.txt
+        # Then we test ukijumuisha the examples kutoka draft-ietf-http-state-man-mec-03.txt
         #
         # 5.  EXAMPLES
 
@@ -1602,8 +1602,8 @@ kundi LWPCookieTests(unittest.TestCase):
         #         Part_Number="Riding_Rocket_0023"; $Path="/acme/ammo";
         #         Part_Number="Rocket_Launcher_0001"; $Path="/acme"
         #
-        # Note that the NAME=VALUE pair kila the cookie with the more specific Path
-        # attribute, /acme/ammo, comes before the one with the less specific Path
+        # Note that the NAME=VALUE pair kila the cookie ukijumuisha the more specific Path
+        # attribute, /acme/ammo, comes before the one ukijumuisha the less specific Path
         # attribute, /acme.  Further note that the same cookie name appears more
         # than once.
 
@@ -1832,7 +1832,7 @@ kundi LWPCookieTests(unittest.TestCase):
         #
         #       Set-Cookie: JSESSIONID=ABCDERANDOM123; Path=
         #
-        # ie. with Path set to nothing.
+        # ie. ukijumuisha Path set to nothing.
         # In this case, extract_cookies() must set cookie to / (root)
         c = CookieJar(DefaultCookiePolicy(rfc2965 = Kweli))
         headers = []

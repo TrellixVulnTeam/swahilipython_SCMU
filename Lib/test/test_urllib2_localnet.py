@@ -229,7 +229,7 @@ kundi BasicAuthHandler(http.server.BaseHTTPRequestHandler):
         ikiwa sio self.headers.get("Authorization", ""):
             self.do_AUTHHEAD()
             self.wfile.write(b"No Auth header received")
-        elikiwa self.headers.get(
+        lasivyo self.headers.get(
                 "Authorization", "") == "Basic " + self.ENCODED_AUTH:
             self.send_response(200)
             self.end_headers()
@@ -245,7 +245,7 @@ kundi BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 kundi FakeProxyHandler(http.server.BaseHTTPRequestHandler):
     """This ni a 'fake proxy' that makes it look like the entire
     internet has gone down due to a sudden zombie invasion.  It main
-    utility ni kwenye providing us with authentication support for
+    utility ni kwenye providing us ukijumuisha authentication support for
     testing.
     """
 
@@ -372,7 +372,7 @@ kundi ProxyAuthTests(unittest.TestCase):
         self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
-        with self.opener.open(self.URL) kama result:
+        ukijumuisha self.opener.open(self.URL) kama result:
             wakati result.read():
                 pita
 
@@ -388,7 +388,7 @@ kundi ProxyAuthTests(unittest.TestCase):
             # a URLError.
             pita
         isipokua:
-            with result:
+            ukijumuisha result:
                 wakati result.read():
                     pita
 
@@ -562,26 +562,26 @@ kundi TestUrlopen(unittest.TestCase):
 
     eleza test_https_with_cafile(self):
         handler = self.start_https_server(certfile=CERT_localhost)
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             # Good cert
             data = self.urlopen("https://localhost:%s/bizarre" % handler.port,
                                 cafile=CERT_localhost)
             self.assertEqual(data, b"we care a bit")
             # Bad cert
-            with self.assertRaises(urllib.error.URLError) kama cm:
+            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cafile=CERT_fakehostname)
             # Good cert, but mismatching hostname
             handler = self.start_https_server(certfile=CERT_fakehostname)
-            with self.assertRaises(urllib.error.URLError) kama cm:
+            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cafile=CERT_fakehostname)
 
     eleza test_https_with_cadefault(self):
         handler = self.start_https_server(certfile=CERT_localhost)
-        # Self-signed cert should fail verification with system certificate store
-        with support.check_warnings(('', DeprecationWarning)):
-            with self.assertRaises(urllib.error.URLError) kama cm:
+        # Self-signed cert should fail verification ukijumuisha system certificate store
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
+            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cadefault=Kweli)
 
@@ -605,13 +605,13 @@ kundi TestUrlopen(unittest.TestCase):
         handler = self.start_server()
         req = urllib.request.Request("http://localhost:%s/" % handler.port,
                                      headers={"Range": "bytes=20-39"})
-        with urllib.request.urlopen(req):
+        ukijumuisha urllib.request.urlopen(req):
             pita
         self.assertEqual(handler.headers_received["Range"], "bytes=20-39")
 
     eleza test_basic(self):
         handler = self.start_server()
-        with urllib.request.urlopen("http://localhost:%s" % handler.port) kama open_url:
+        ukijumuisha urllib.request.urlopen("http://localhost:%s" % handler.port) kama open_url:
             kila attr kwenye ("read", "close", "info", "geturl"):
                 self.assertKweli(hasattr(open_url, attr), "object rudishaed kutoka "
                              "urlopen lacks the %s attribute" % attr)
@@ -621,7 +621,7 @@ kundi TestUrlopen(unittest.TestCase):
         handler = self.start_server()
         open_url = urllib.request.urlopen(
             "http://localhost:%s" % handler.port)
-        with open_url:
+        ukijumuisha open_url:
             info_obj = open_url.info()
         self.assertIsInstance(info_obj, email.message.Message,
                               "object rudishaed by 'info' ni sio an "
@@ -632,7 +632,7 @@ kundi TestUrlopen(unittest.TestCase):
         # Make sure same URL kama opened ni rudishaed by geturl.
         handler = self.start_server()
         open_url = urllib.request.urlopen("http://localhost:%s" % handler.port)
-        with open_url:
+        ukijumuisha open_url:
             url = open_url.geturl()
         self.assertEqual(url, "http://localhost:%s" % handler.port)
 

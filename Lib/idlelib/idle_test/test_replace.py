@@ -53,7 +53,7 @@ kundi ReplaceDialogTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     eleza test_replace_simple(self):
-        # Test replace function with all options at default setting.
+        # Test replace function ukijumuisha all options at default setting.
         # Wrap around - Kweli
         # Regular Expression - Uongo
         # Match case - Uongo
@@ -97,7 +97,7 @@ kundi ReplaceDialogTest(unittest.TestCase):
         after_text = text.get('1.0', 'end')
         equal(before_text, after_text)
 
-        # test with wrap around selected na complete a cycle
+        # test ukijumuisha wrap around selected na complete a cycle
         text.mark_set('insert', '1.9')
         pv.set('i')
         rv.set('j')

@@ -20,19 +20,19 @@ tatizo (IndexError, ValueError):
 # tuple of (major, minor)
 WIN_VER = sys.getwindowsversion()[:2]
 # Some tests should only run on 64-bit architectures where WOW64 will be.
-WIN64_MACHINE = Kweli ikiwa machine() == "AMD64" else Uongo
+WIN64_MACHINE = Kweli ikiwa machine() == "AMD64" isipokua Uongo
 
-# Starting with Windows 7 na Windows Server 2008 R2, WOW64 no longer uses
+# Starting ukijumuisha Windows 7 na Windows Server 2008 R2, WOW64 no longer uses
 # registry reflection na formerly reflected keys are shared instead.
 # Windows 7 na Windows Server 2008 R2 are version 6.1. Due to this, some
 # tests are only valid up until 6.1
-HAS_REFLECTION = Kweli ikiwa WIN_VER < (6, 1) else Uongo
+HAS_REFLECTION = Kweli ikiwa WIN_VER < (6, 1) isipokua Uongo
 
 # Use a per-process key to prevent concurrent test runs (buildbot!) kutoka
 # stomping on each other.
 test_key_base = "Python Test Key [%d] - Delete Me" % (os.getpid(),)
 test_key_name = "SOFTWARE\\" + test_key_base
-# On OS'es that support reflection we should test with a reflected key
+# On OS'es that support reflection we should test ukijumuisha a reflected key
 test_reflect_key_name = "SOFTWARE\\Classes\\" + test_key_base
 
 test_data = [
@@ -122,7 +122,7 @@ kundi BaseWinregTests(unittest.TestCase):
 
         key = OpenKey(root_key, test_key_name)
         # Read the sub-keys
-        with OpenKey(key, subkeystr) kama sub_key:
+        ukijumuisha OpenKey(key, subkeystr) kama sub_key:
             # Check I can enumerate over the values.
             index = 0
             wakati 1:
@@ -190,11 +190,11 @@ kundi BaseWinregTests(unittest.TestCase):
         self._delete_test_data(root_key, subkeystr)
 
     eleza _test_named_args(self, key, sub_key):
-        with CreateKeyEx(key=key, sub_key=sub_key, reserved=0,
+        ukijumuisha CreateKeyEx(key=key, sub_key=sub_key, reserved=0,
                          access=KEY_ALL_ACCESS) kama ckey:
             self.assertKweli(ckey.handle != 0)
 
-        with OpenKeyEx(key=key, sub_key=sub_key, reserved=0,
+        ukijumuisha OpenKeyEx(key=key, sub_key=sub_key, reserved=0,
                        access=KEY_ALL_ACCESS) kama okey:
             self.assertKweli(okey.handle != 0)
 
@@ -206,7 +206,7 @@ kundi LocalWinregTests(BaseWinregTests):
         self._test_all(HKEY_CURRENT_USER, "日本-subkey")
 
     eleza test_registry_works_extended_functions(self):
-        # Substitute the regular CreateKey na OpenKey calls with their
+        # Substitute the regular CreateKey na OpenKey calls ukijumuisha their
         # extended counterparts.
         # Note: DeleteKeyEx ni sio used here because it ni platform dependent
         cke = lambda key, sub_key: CreateKeyEx(key, sub_key, 0, KEY_ALL_ACCESS)
@@ -242,7 +242,7 @@ kundi LocalWinregTests(BaseWinregTests):
     eleza test_context_manager(self):
         # ensure that the handle ni closed ikiwa an exception occurs
         jaribu:
-            with ConnectRegistry(Tupu, HKEY_LOCAL_MACHINE) kama h:
+            ukijumuisha ConnectRegistry(Tupu, HKEY_LOCAL_MACHINE) kama h:
                 self.assertNotEqual(h.handle, 0)
                 ashiria OSError
         tatizo OSError:
@@ -256,18 +256,18 @@ kundi LocalWinregTests(BaseWinregTests):
 
         kundi VeryActiveThread(threading.Thread):
             eleza run(self):
-                with CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
+                ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
                     use_short = Kweli
                     long_string = 'x'*2000
                     wakati sio done:
-                        s = 'x' ikiwa use_short else long_string
+                        s = 'x' ikiwa use_short isipokua long_string
                         use_short = sio use_short
                         SetValue(key, 'changing_value', REG_SZ, s)
 
         thread = VeryActiveThread()
         thread.start()
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER,
+            ukijumuisha CreateKey(HKEY_CURRENT_USER,
                            test_key_name+'\\changing_value') kama key:
                 kila _ kwenye range(1000):
                     num_subkeys, num_values, t = QueryInfoKey(key)
@@ -286,7 +286,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # available"
         name = 'x'*256
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
                 SetValue(key, name, REG_SZ, 'x')
                 num_subkeys, num_values, t = QueryInfoKey(key)
                 EnumKey(key, 0)
@@ -311,19 +311,19 @@ kundi LocalWinregTests(BaseWinregTests):
     @unittest.skipUnless(WIN_VER < (5, 2), "Requires Windows XP")
     eleza test_reflection_unsupported(self):
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
 
             key = OpenKey(HKEY_CURRENT_USER, test_key_name)
             self.assertNotEqual(key.handle, 0)
 
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 DisableReflectionKey(key)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 EnableReflectionKey(key)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 QueryReflectionKey(key)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 DeleteKeyEx(HKEY_CURRENT_USER, test_key_name)
         mwishowe:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
@@ -334,7 +334,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # thus raising OverflowError. The implementation now uses
         # PyLong_AsUnsignedLong to match DWORD's size.
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 SetValueEx(ck, "test_name", Tupu, REG_DWORD, 0x80000000)
         mwishowe:
@@ -346,7 +346,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # generated by PyLong_FromLong. The implementation now uses
         # PyLong_FromUnsignedLong to match DWORD's size.
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = 0x80000000
                 SetValueEx(ck, "test_name", Tupu, REG_DWORD, test_val)
@@ -359,7 +359,7 @@ kundi LocalWinregTests(BaseWinregTests):
     eleza test_setvalueex_crash_with_none_arg(self):
         # Test kila Issue #21151, segfault when Tupu ni pitaed to SetValueEx
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = Tupu
                 SetValueEx(ck, "test_name", 0, REG_BINARY, test_val)
@@ -372,9 +372,9 @@ kundi LocalWinregTests(BaseWinregTests):
     eleza test_read_string_containing_null(self):
         # Test kila issue 25778: REG_SZ should sio contain null characters
         jaribu:
-            with CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
-                test_val = "A string\x00 with a null"
+                test_val = "A string\x00 ukijumuisha a null"
                 SetValueEx(ck, "test_name", 0, REG_SZ, test_val)
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_SZ)
@@ -403,8 +403,8 @@ kundi Win64WinregTests(BaseWinregTests):
     @unittest.skipIf(win32_edition() kwenye ('WindowsCoreHeadless', 'IoTEdgeOS'), "APIs sio available on WindowsCoreHeadless")
     eleza test_reflection_functions(self):
         # Test that we can call the query, enable, na disable functions
-        # on a key which isn't on the reflection list with no consequences.
-        with OpenKey(HKEY_LOCAL_MACHINE, "Software") kama key:
+        # on a key which isn't on the reflection list ukijumuisha no consequences.
+        ukijumuisha OpenKey(HKEY_LOCAL_MACHINE, "Software") kama key:
             # HKLM\Software ni redirected but sio reflected kwenye all OSes
             self.assertKweli(QueryReflectionKey(key))
             self.assertIsTupu(EnableReflectionKey(key))
@@ -418,12 +418,12 @@ kundi Win64WinregTests(BaseWinregTests):
         # test the differences of 32 na 64-bit keys before na after the
         # reflection occurs (ie. when the created key ni closed).
         jaribu:
-            with CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+            ukijumuisha CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                              KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama created_key:
                 self.assertNotEqual(created_key.handle, 0)
 
                 # The key should now be available kwenye the 32-bit area
-                with OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+                ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                              KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama key:
                     self.assertNotEqual(key.handle, 0)
 
@@ -438,7 +438,7 @@ kundi Win64WinregTests(BaseWinregTests):
                 self.assertRaises(OSError, open_fail)
 
             # Now explicitly open the 64-bit version of the key
-            with OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+            ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                          KEY_ALL_ACCESS | KEY_WOW64_64KEY) kama key:
                 self.assertNotEqual(key.handle, 0)
                 # Make sure the original value we set ni there
@@ -448,7 +448,7 @@ kundi Win64WinregTests(BaseWinregTests):
 
             # Reflection uses a "last-writer wins policy, so the value we set
             # on the 64-bit key should be the same on 32-bit
-            with OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+            ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                          KEY_READ | KEY_WOW64_32KEY) kama key:
                 self.assertEqual("64KEY", QueryValue(key, ""))
         mwishowe:
@@ -459,7 +459,7 @@ kundi Win64WinregTests(BaseWinregTests):
     eleza test_disable_reflection(self):
         # Make use of a key which gets redirected na reflected
         jaribu:
-            with CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+            ukijumuisha CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                              KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama created_key:
                 # QueryReflectionKey rudishas whether ama sio the key ni disabled
                 disabled = QueryReflectionKey(created_key)
@@ -478,7 +478,7 @@ kundi Win64WinregTests(BaseWinregTests):
             self.assertRaises(OSError, open_fail)
 
             # Make sure the 32-bit key ni actually there
-            with OpenKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
+            ukijumuisha OpenKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                            KEY_READ | KEY_WOW64_32KEY) kama key:
                 self.assertNotEqual(key.handle, 0)
         mwishowe:
@@ -486,7 +486,7 @@ kundi Win64WinregTests(BaseWinregTests):
                         KEY_WOW64_32KEY, 0)
 
     eleza test_exception_numbers(self):
-        with self.assertRaises(FileNotFoundError) kama ctx:
+        ukijumuisha self.assertRaises(FileNotFoundError) kama ctx:
             QueryValue(HKEY_CLASSES_ROOT, 'some_value_that_does_not_exist')
 
 eleza test_main():

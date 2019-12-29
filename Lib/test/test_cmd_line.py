@@ -1,5 +1,5 @@
-# Tests invocation of the interpreter with various command line arguments
-# Most tests are executed with environment variables ignored
+# Tests invocation of the interpreter ukijumuisha various command line arguments
+# Most tests are executed ukijumuisha environment variables ignored
 # See test_cmd_line_script.py kila testing of script execution
 
 agiza os
@@ -18,7 +18,7 @@ kutoka test.support.script_helper agiza (
 Py_DEBUG = hasattr(sys, "gettotalrefcount")
 
 
-# XXX (ncoghlan): Move to script_helper na make consistent with run_python
+# XXX (ncoghlan): Move to script_helper na make consistent ukijumuisha run_python
 eleza _kill_python_and_exit_code(p):
     data = kill_python(p)
     returncode = p.wait()
@@ -174,7 +174,7 @@ kundi CmdLineTest(unittest.TestCase):
             # PyUnicode_AsUTF8String(). This ni the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command kutoka the command line:"
-        elikiwa p.returncode == 0:
+        lasivyo p.returncode == 0:
             # _Py_char2wchar() decoded b'\xff' kama '\xff' even ikiwa the locale is
             # C na the locale encoding ni ASCII. It occurs on FreeBSD, Solaris
             # na Mac OS X.
@@ -184,7 +184,7 @@ kundi CmdLineTest(unittest.TestCase):
         isipokua:
             ashiria AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
         ikiwa sio stdout.startswith(pattern):
-            ashiria AssertionError("%a doesn't start with %a" % (stdout, pattern))
+            ashiria AssertionError("%a doesn't start ukijumuisha %a" % (stdout, pattern))
 
     @unittest.skipUnless((sys.platform == 'darwin' or
                 support.is_android), 'test specific to Mac OS X na Android')
@@ -226,17 +226,17 @@ kundi CmdLineTest(unittest.TestCase):
             code = ("agiza os, sys; sys.%s.buffer.write(b'x'); os._exit(0)"
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
-            data = err ikiwa stream == 'stderr' else out
+            data = err ikiwa stream == 'stderr' isipokua out
             self.assertEqual(data, b'x', "binary %s sio unbuffered" % stream)
             # Text ni unbuffered
             code = ("agiza os, sys; sys.%s.write('x'); os._exit(0)"
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
-            data = err ikiwa stream == 'stderr' else out
+            data = err ikiwa stream == 'stderr' isipokua out
             self.assertEqual(data, b'x', "text %s sio unbuffered" % stream)
 
     eleza test_unbuffered_input(self):
-        # sys.stdin still works with '-u'
+        # sys.stdin still works ukijumuisha '-u'
         code = ("agiza sys; sys.stdout.write(sys.stdin.read(1))")
         p = spawn_python('-u', '-c', code)
         p.stdin.write(b'x')
@@ -296,12 +296,12 @@ kundi CmdLineTest(unittest.TestCase):
             self.assertIn(escaped, data)
 
     eleza check_input(self, code, expected):
-        with tempfile.NamedTemporaryFile("wb+") kama stdin:
+        ukijumuisha tempfile.NamedTemporaryFile("wb+") kama stdin:
             sep = os.linesep.encode('ASCII')
             stdin.write(sep.join((b'abc', b'def')))
             stdin.flush()
             stdin.seek(0)
-            with subprocess.Popen(
+            ukijumuisha subprocess.Popen(
                 (sys.executable, "-c", code),
                 stdin=stdin, stdout=subprocess.PIPE) kama proc:
                 stdout, stderr = proc.communicate()
@@ -338,7 +338,7 @@ kundi CmdLineTest(unittest.TestCase):
             self.assertEqual(b'3\n4', err)
 
     eleza test_unmached_quote(self):
-        # Issue #10206: python program starting with unmatched quote
+        # Issue #10206: python program starting ukijumuisha unmatched quote
         # spewed spaces to stdout
         rc, out, err = assert_python_failure('-c', "'")
         self.assertRegex(err.decode('ascii', 'ignore'), 'SyntaxError')
@@ -449,7 +449,7 @@ kundi CmdLineTest(unittest.TestCase):
         # the dict whereas the module was destroyed
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
-        with open(filename, "w") kama script:
+        ukijumuisha open(filename, "w") kama script:
             andika("agiza sys", file=script)
             andika("toa sys.modules['__main__']", file=script)
         assert_python_ok(filename)
@@ -483,12 +483,12 @@ kundi CmdLineTest(unittest.TestCase):
             # dummyvar to prevent extraneous -E
             dummyvar="")
         self.assertEqual(out.strip(), b'1 1 1')
-        with support.temp_cwd() kama tmpdir:
+        ukijumuisha support.temp_cwd() kama tmpdir:
             fake = os.path.join(tmpdir, "uuid.py")
             main = os.path.join(tmpdir, "main.py")
-            with open(fake, "w") kama f:
+            ukijumuisha open(fake, "w") kama f:
                 f.write("ashiria RuntimeError('isolated mode test')\n")
-            with open(main, "w") kama f:
+            ukijumuisha open(main, "w") kama f:
                 f.write("agiza uuid\n")
                 f.write("andika('ok')\n")
             self.assertRaises(subprocess.CalledProcessError,
@@ -519,13 +519,13 @@ kundi CmdLineTest(unittest.TestCase):
                     na sys.flags.dont_write_bytecode == {dont_write_bytecode}
                 ))"""
             )
-            with self.subTest(envar_value=value):
+            ukijumuisha self.subTest(envar_value=value):
                 assert_python_ok('-c', code, **env_vars)
 
     eleza test_set_pycache_prefix(self):
         # sys.pycache_prefix can be set kutoka either -X pycache_prefix or
-        # PYTHONPYCACHEPREFIX env var, with the former taking precedence.
-        NO_VALUE = object()  # `-X pycache_prefix` with no `=PATH`
+        # PYTHONPYCACHEPREFIX env var, ukijumuisha the former taking precedence.
+        NO_VALUE = object()  # `-X pycache_prefix` ukijumuisha no `=PATH`
         cases = [
             # (PYTHONPYCACHEPREFIX, -X pycache_prefix, sys.pycache_prefix)
             (Tupu, Tupu, Tupu),
@@ -536,16 +536,16 @@ kundi CmdLineTest(unittest.TestCase):
             ('foo', NO_VALUE, Tupu),
         ]
         kila envval, opt, expected kwenye cases:
-            exp_clause = "is Tupu" ikiwa expected ni Tupu else f'== "{expected}"'
+            exp_clause = "is Tupu" ikiwa expected ni Tupu isipokua f'== "{expected}"'
             code = f"agiza sys; sys.exit(not sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
-            env = {} ikiwa envval ni Tupu else {'PYTHONPYCACHEPREFIX': envval}
+            env = {} ikiwa envval ni Tupu isipokua {'PYTHONPYCACHEPREFIX': envval}
             ikiwa opt ni NO_VALUE:
                 args[:0] = ['-X', 'pycache_prefix']
-            elikiwa opt ni sio Tupu:
+            lasivyo opt ni sio Tupu:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
-            with self.subTest(envval=envval, opt=opt):
-                with support.temp_cwd():
+            ukijumuisha self.subTest(envval=envval, opt=opt):
+                ukijumuisha support.temp_cwd():
                     assert_python_ok(*args, **env)
 
     eleza run_xdev(self, *args, check_exitcode=Kweli, xdev=Kweli):
@@ -608,7 +608,7 @@ kundi CmdLineTest(unittest.TestCase):
             pita
         isipokua:
             code = "agiza _testcapi; andika(_testcapi.pymem_getallocatorsname())"
-            with support.SuppressCrashReport():
+            ukijumuisha support.SuppressCrashReport():
                 out = self.run_xdev("-c", code, check_exitcode=Uongo)
             ikiwa support.with_pymalloc():
                 alloc_name = "pymalloc_debug"
@@ -688,10 +688,10 @@ kundi CmdLineTest(unittest.TestCase):
         # Test the PYTHONMALLOC environment variable
         pymalloc = support.with_pymalloc()
         ikiwa pymalloc:
-            default_name = 'pymalloc_debug' ikiwa Py_DEBUG else 'pymalloc'
+            default_name = 'pymalloc_debug' ikiwa Py_DEBUG isipokua 'pymalloc'
             default_name_debug = 'pymalloc_debug'
         isipokua:
-            default_name = 'malloc_debug' ikiwa Py_DEBUG else 'malloc'
+            default_name = 'malloc_debug' ikiwa Py_DEBUG isipokua 'malloc'
             default_name_debug = 'malloc_debug'
 
         tests = [
@@ -707,7 +707,7 @@ kundi CmdLineTest(unittest.TestCase):
             ))
 
         kila env_var, name kwenye tests:
-            with self.subTest(env_var=env_var, name=name):
+            ukijumuisha self.subTest(env_var=env_var, name=name):
                 self.check_pythonmalloc(env_var, name)
 
     eleza test_pythondevmode_env(self):
@@ -745,7 +745,7 @@ kundi CmdLineTest(unittest.TestCase):
 kundi IgnoreEnvironmentTest(unittest.TestCase):
 
     eleza run_ignoring_vars(self, predicate, **env_vars):
-        # Runs a subprocess with -E set, even though we're pitaing
+        # Runs a subprocess ukijumuisha -E set, even though we're pitaing
         # specific environment variables
         # Logical inversion to match predicate check to a zero rudisha
         # code indicating success

@@ -83,7 +83,7 @@ kundi DeclTypesTests(unittest.TestCase):
     kundi Foo:
         eleza __init__(self, _val):
             ikiwa isinstance(_val, bytes):
-                # sqlite3 always calls __init__ with a bytes created kutoka a
+                # sqlite3 always calls __init__ ukijumuisha a bytes created kutoka a
                 # UTF-8 string when __conform__ was used to store the object.
                 _val = _val.decode('utf-8')
             self.val = _val
@@ -193,27 +193,27 @@ kundi DeclTypesTests(unittest.TestCase):
 
     eleza CheckErrorInConform(self):
         val = DeclTypesTests.BadConform(TypeError)
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(bad) values (?)", (val,))
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(bad) values (:val)", {"val": val})
 
         val = DeclTypesTests.BadConform(KeyboardInterrupt)
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             self.cur.execute("insert into test(bad) values (?)", (val,))
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             self.cur.execute("insert into test(bad) values (:val)", {"val": val})
 
     eleza CheckUnsupportedSeq(self):
         kundi Bar: pita
         val = Bar()
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (?)", (val,))
 
     eleza CheckUnsupportedDict(self):
         kundi Bar: pita
         val = Bar()
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (:val)", {"val": val})
 
     eleza CheckBlob(self):
@@ -314,23 +314,23 @@ kundi CommonTableExpressionTests(unittest.TestCase):
         self.con.close()
 
     eleza CheckCursorDescriptionCTESimple(self):
-        self.cur.execute("with one kama (select 1) select * kutoka one")
+        self.cur.execute("ukijumuisha one kama (select 1) select * kutoka one")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "1")
 
     eleza CheckCursorDescriptionCTESMultipleColumns(self):
         self.cur.execute("insert into test values(1)")
         self.cur.execute("insert into test values(2)")
-        self.cur.execute("with testCTE kama (select * kutoka test) select * kutoka testCTE")
+        self.cur.execute("ukijumuisha testCTE kama (select * kutoka test) select * kutoka testCTE")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
     eleza CheckCursorDescriptionCTE(self):
         self.cur.execute("insert into test values (1)")
-        self.cur.execute("with bar kama (select * kutoka test) select * kutoka test where x = 1")
+        self.cur.execute("ukijumuisha bar kama (select * kutoka test) select * kutoka test where x = 1")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
-        self.cur.execute("with bar kama (select * kutoka test) select * kutoka test where x = 2")
+        self.cur.execute("ukijumuisha bar kama (select * kutoka test) select * kutoka test where x = 2")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 

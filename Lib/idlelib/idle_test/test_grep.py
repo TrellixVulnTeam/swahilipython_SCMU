@@ -49,7 +49,7 @@ kundi FindfilesTest(unittest.TestCase):
         toa cls.realpath, cls.path
 
     eleza test_invaliddir(self):
-        with captured_stdout() kama s:
+        ukijumuisha captured_stdout() kama s:
             filelist = list(grep.findfiles('invaliddir', '*.*', Uongo))
         self.assertEqual(filelist, [])
         self.assertIn('invalid', s.getvalue())
@@ -116,13 +116,13 @@ kundi FindfilesTest(unittest.TestCase):
 
 
 kundi Grep_itTest(unittest.TestCase):
-    # Test captured reports with 0 na some hits.
+    # Test captured reports ukijumuisha 0 na some hits.
     # Should test file names, but Windows reports have mixed / na \ separators
     # kutoka incomplete replacement, so 'later'.
 
     eleza report(self, pat):
         _grep.engine._pat = pat
-        with captured_stdout() kama s:
+        ukijumuisha captured_stdout() kama s:
             _grep.grep_it(re.compile(pat), __file__)
         lines = s.getvalue().split('\n')
         lines.pop()  # remove bogus '' after last \n

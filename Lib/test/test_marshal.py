@@ -17,9 +17,9 @@ kundi HelperMixin:
         new = marshal.loads(marshal.dumps(sample, *extra))
         self.assertEqual(sample, new)
         jaribu:
-            with open(support.TESTFN, "wb") kama f:
+            ukijumuisha open(support.TESTFN, "wb") kama f:
                 marshal.dump(sample, f, *extra)
-            with open(support.TESTFN, "rb") kama f:
+            ukijumuisha open(support.TESTFN, "rb") kama f:
                 new = marshal.load(f)
             self.assertEqual(sample, new)
         mwishowe:
@@ -35,7 +35,7 @@ kundi IntTestCase(unittest.TestCase, HelperMixin):
             n = n >> 1
 
     eleza test_int64(self):
-        # Simulate int marshaling with TYPE_INT64.
+        # Simulate int marshaling ukijumuisha TYPE_INT64.
         maxint64 = (1 << 63) - 1
         minint64 = -maxint64-1
         kila base kwenye maxint64, minint64, -maxint64, -(minint64 >> 1):
@@ -75,7 +75,7 @@ kundi FloatTestCase(unittest.TestCase, HelperMixin):
         s = marshal.dumps(f, 2)
         got = marshal.loads(s)
         self.assertEqual(f, got)
-        # na with version <= 1 (floats marshalled differently then)
+        # na ukijumuisha version <= 1 (floats marshalled differently then)
         s = marshal.dumps(f, 1)
         got = marshal.loads(s)
         self.assertEqual(f, got)
@@ -245,7 +245,7 @@ kundi BugsTestCase(unittest.TestCase):
             last.append([0])
             last = last[-1]
 
-        # Verify we don't blow out the stack with dumps/load.
+        # Verify we don't blow out the stack ukijumuisha dumps/load.
         data = marshal.dumps(head)
         new_head = marshal.loads(data)
         # Don't use == to compare objects, it can exceed the recursion limit.
@@ -281,20 +281,20 @@ kundi BugsTestCase(unittest.TestCase):
 
     eleza test_multiple_dumps_and_loads(self):
         # Issue 12291: marshal.load() should be callable multiple times
-        # with interleaved data written by non-marshal code
+        # ukijumuisha interleaved data written by non-marshal code
         # Adapted kutoka a patch by Engelbert Gruber.
         data = (1, 'abc', b'def', 1.0, (2, 'a', ['b', b'c']))
         kila interleaved kwenye (b'', b'0123'):
             ilen = len(interleaved)
             positions = []
             jaribu:
-                with open(support.TESTFN, 'wb') kama f:
+                ukijumuisha open(support.TESTFN, 'wb') kama f:
                     kila d kwenye data:
                         marshal.dump(d, f)
                         ikiwa ilen:
                             f.write(interleaved)
                         positions.append(f.tell())
-                with open(support.TESTFN, 'rb') kama f:
+                ukijumuisha open(support.TESTFN, 'rb') kama f:
                     kila i, d kwenye enumerate(data):
                         self.assertEqual(d, marshal.load(f))
                         ikiwa ilen:
@@ -325,7 +325,7 @@ kundi BugsTestCase(unittest.TestCase):
             self.assertRaises(EOFError, marshal.loads, data[0: i])
 
 LARGE_SIZE = 2**31
-pointer_size = 8 ikiwa sys.maxsize > 0xFFFFFFFF else 4
+pointer_size = 8 ikiwa sys.maxsize > 0xFFFFFFFF isipokua 4
 
 kundi NullWriter:
     eleza write(self, s):
@@ -376,7 +376,7 @@ eleza CollectObjectIDs(ids, obj):
     ikiwa isinstance(obj, (list, tuple, set, frozenset)):
         kila e kwenye obj:
             CollectObjectIDs(ids, e)
-    elikiwa isinstance(obj, dict):
+    lasivyo isinstance(obj, dict):
         kila k, v kwenye obj.items():
             CollectObjectIDs(ids, k)
             CollectObjectIDs(ids, v)
@@ -399,7 +399,7 @@ kundi InstancingTestCase(unittest.TestCase, HelperMixin):
             self.assertEqual(n3, n0)
 
         ikiwa sio recursive:
-            #can compare with version 2
+            #can compare ukijumuisha version 2
             s2 = marshal.dumps(sample, 2)
             n2 = CollectObjectIDs(set(), marshal.loads(s2))
             #old format generated more instances
@@ -462,7 +462,7 @@ kundi InstancingTestCase(unittest.TestCase, HelperMixin):
             self.helper3(dictobj)
 
     eleza testModule(self):
-        with open(__file__, "rb") kama f:
+        ukijumuisha open(__file__, "rb") kama f:
             code = f.read()
         ikiwa __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -480,7 +480,7 @@ kundi InstancingTestCase(unittest.TestCase, HelperMixin):
 
 kundi CompatibilityTestCase(unittest.TestCase):
     eleza _test(self, version):
-        with open(__file__, "rb") kama f:
+        ukijumuisha open(__file__, "rb") kama f:
             code = f.read()
         ikiwa __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -524,7 +524,7 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
     eleza test_write_long_to_file(self):
         kila v kwenye range(marshal.version + 1):
             _testcapi.pymarshal_write_long_to_file(0x12345678, support.TESTFN, v)
-            with open(support.TESTFN, 'rb') kama f:
+            ukijumuisha open(support.TESTFN, 'rb') kama f:
                 data = f.read()
             support.unlink(support.TESTFN)
             self.assertEqual(data, b'\x78\x56\x34\x12')
@@ -533,36 +533,36 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j, 'long line '*1000)
         kila v kwenye range(marshal.version + 1):
             _testcapi.pymarshal_write_object_to_file(obj, support.TESTFN, v)
-            with open(support.TESTFN, 'rb') kama f:
+            ukijumuisha open(support.TESTFN, 'rb') kama f:
                 data = f.read()
             support.unlink(support.TESTFN)
             self.assertEqual(marshal.loads(data), obj)
 
     eleza test_read_short_kutoka_file(self):
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x1234)
         self.assertEqual(p, 2)
 
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x12')
-        with self.assertRaises(EOFError):
+        ukijumuisha self.assertRaises(EOFError):
             _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
 
     eleza test_read_long_kutoka_file(self):
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x78\x56\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x12345678)
         self.assertEqual(p, 4)
 
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x56\x34\x12')
-        with self.assertRaises(EOFError):
+        ukijumuisha self.assertRaises(EOFError):
             _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
 
@@ -570,15 +570,15 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(support.TESTFN, 'wb') kama f:
+            ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
 
-            with open(support.TESTFN, 'wb') kama f:
+            ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
-            with self.assertRaises(EOFError):
+            ukijumuisha self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
 
@@ -586,16 +586,16 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(support.TESTFN, 'wb') kama f:
+            ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
             self.assertEqual(p, len(data))
 
-            with open(support.TESTFN, 'wb') kama f:
+            ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
-            with self.assertRaises(EOFError):
+            ukijumuisha self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
 

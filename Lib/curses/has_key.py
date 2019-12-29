@@ -169,7 +169,7 @@ def has_key(ch):
         return False
 
     #Check the current terminal description for that capability;
-    #if present, return true, else return false.
+    #if present, return true, isipokua return false.
     if _curses.tigetstr( capability_name ):
         return True
     isipokua:

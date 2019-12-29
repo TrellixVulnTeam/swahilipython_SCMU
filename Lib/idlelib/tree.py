@@ -31,7 +31,7 @@ tatizo NameError:
     _icondir = ICONDIR
 ikiwa os.path.isdir(_icondir):
     ICONDIR = _icondir
-elikiwa sio os.path.isdir(ICONDIR):
+lasivyo sio os.path.isdir(ICONDIR):
     ashiria RuntimeError("can't find icon directory (%r)" % (ICONDIR,))
 
 eleza listicons(icondir=ICONDIR):
@@ -61,7 +61,7 @@ eleza wheel_event(event, widget=Tupu):
 
     For wheel up, event.delta = 120*n on Windows, -1*n on darwin,
     where n can be > 1 ikiwa one scrolls fast.  Flicking the wheel
-    generates up to maybe 20 events with n up to 10 ama more 1.
+    generates up to maybe 20 events ukijumuisha n up to 10 ama more 1.
     Macs use wheel down (delta = 1*n) to scroll up, so positive
     delta means to scroll up on both systems.
 
@@ -75,8 +75,8 @@ eleza wheel_event(event, widget=Tupu):
     """
     up = {EventType.MouseWheel: event.delta > 0,
           EventType.ButtonPress: event.num == 4}
-    lines = -5 ikiwa up[event.type] else 5
-    widget = event.widget ikiwa widget ni Tupu else widget
+    lines = -5 ikiwa up[event.type] isipokua 5
+    widget = event.widget ikiwa widget ni Tupu isipokua widget
     widget.yview(SCROLL, lines, 'units')
     rudisha 'koma'
 
@@ -434,7 +434,7 @@ kundi FileTreeItem(TreeItem):
         rudisha sublist
 
 
-# A canvas widget with scroll bars na some useful bindings
+# A canvas widget ukijumuisha scroll bars na some useful bindings
 
 kundi ScrolledCanvas:
 

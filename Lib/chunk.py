@@ -21,7 +21,7 @@ Usually an IFF-type file consists of one ama more chunks.  The proposed
 usage of the Chunk kundi defined here ni to instantiate an instance at
 the start of each chunk na read kutoka the instance until it reaches
 the end, after which a new instance can be instantiated.  At the end
-of the file, creating a new instance will fail with an EOFError
+of the file, creating a new instance will fail ukijumuisha an EOFError
 exception.
 
 Usage:
@@ -35,7 +35,7 @@ wakati Kweli:
         data = chunk.read(nbytes)
         ikiwa sio data:
             pita
-        # do something with data
+        # do something ukijumuisha data
 
 The interface ni file-like.  The implemented methods are:
 read, close, seek, tell, isatty.
@@ -107,7 +107,7 @@ kundi Chunk:
             ashiria OSError("cannot seek")
         ikiwa whence == 1:
             pos = pos + self.size_read
-        elikiwa whence == 2:
+        lasivyo whence == 2:
             pos = pos + self.chunksize
         ikiwa pos < 0 ama pos > self.chunksize:
             ashiria RuntimeError

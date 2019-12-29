@@ -32,7 +32,7 @@ kundi CompileallTestsBase:
         self.directory = tempfile.mkdtemp()
         self.source_path = os.path.join(self.directory, '_test.py')
         self.bc_path = importlib.util.cache_kutoka_source(self.source_path)
-        with open(self.source_path, 'w') kama file:
+        ukijumuisha open(self.source_path, 'w') kama file:
             file.write('x = 123\n')
         self.source_path2 = os.path.join(self.directory, '_test2.py')
         self.bc_path2 = importlib.util.cache_kutoka_source(self.source_path2)
@@ -47,11 +47,11 @@ kundi CompileallTestsBase:
 
     eleza add_bad_source_file(self):
         self.bad_source_path = os.path.join(self.directory, '_test_bad.py')
-        with open(self.bad_source_path, 'w') kama file:
+        ukijumuisha open(self.bad_source_path, 'w') kama file:
             file.write('x (\n')
 
     eleza timestamp_metadata(self):
-        with open(self.bc_path, 'rb') kama file:
+        ukijumuisha open(self.bc_path, 'rb') kama file:
             data = file.read(12)
         mtime = int(os.stat(self.source_path).st_mtime)
         compare = struct.pack('<4sll', importlib.util.MAGIC_NUMBER, 0, mtime)
@@ -64,9 +64,9 @@ kundi CompileallTestsBase:
             ashiria unittest.SkipTest('SOURCE_DATE_EPOCH ni set')
         py_compile.compile(self.source_path)
         self.assertEqual(*self.timestamp_metadata())
-        with open(self.bc_path, 'rb') kama file:
+        ukijumuisha open(self.bc_path, 'rb') kama file:
             bc = file.read()[len(metadata):]
-        with open(self.bc_path, 'wb') kama file:
+        ukijumuisha open(self.bc_path, 'wb') kama file:
             file.write(metadata)
             file.write(bc)
         self.assertNotEqual(*self.timestamp_metadata())
@@ -110,7 +110,7 @@ kundi CompileallTestsBase:
     eleza test_compile_file_pathlike(self):
         self.assertUongo(os.path.isfile(self.bc_path))
         # we should also test the output
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             self.assertKweli(compileall.compile_file(pathlib.Path(self.source_path)))
         self.assertRegex(stdout.getvalue(), r'Compiling ([^WindowsPath|PosixPath].*)')
         self.assertKweli(os.path.isfile(self.bc_path))
@@ -123,10 +123,10 @@ kundi CompileallTestsBase:
         self.assertKweli(os.path.isfile(self.bc_path))
 
     eleza test_compile_path(self):
-        with test.test_importlib.util.import_state(path=[self.directory]):
+        ukijumuisha test.test_importlib.util.import_state(path=[self.directory]):
             self.assertKweli(compileall.compile_path(quiet=2))
 
-        with test.test_importlib.util.import_state(path=[self.directory]):
+        ukijumuisha test.test_importlib.util.import_state(path=[self.directory]):
             self.add_bad_source_file()
             self.assertUongo(compileall.compile_path(skip_curdir=Uongo,
                                                      force=Kweli, quiet=2))
@@ -138,15 +138,15 @@ kundi CompileallTestsBase:
         data_file = os.path.join(data_dir, 'file')
         os.mkdir(data_dir)
         # touch data/file
-        with open(data_file, 'w'):
+        ukijumuisha open(data_file, 'w'):
             pita
         compileall.compile_file(data_file)
         self.assertUongo(os.path.exists(os.path.join(data_dir, '__pycache__')))
 
     eleza test_optimize(self):
-        # make sure compiling with different optimization settings than the
+        # make sure compiling ukijumuisha different optimization settings than the
         # interpreter's creates the correct file names
-        optimize, opt = (1, 1) ikiwa __debug__ else (0, '')
+        optimize, opt = (1, 1) ikiwa __debug__ isipokua (0, '')
         compileall.compile_dir(self.directory, quiet=Kweli, optimize=optimize)
         cached = importlib.util.cache_kutoka_source(self.source_path,
                                                   optimization=opt)
@@ -160,7 +160,7 @@ kundi CompileallTestsBase:
 
     eleza test_compile_dir_pathlike(self):
         self.assertUongo(os.path.isfile(self.bc_path))
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             compileall.compile_dir(pathlib.Path(self.directory))
         line = stdout.getvalue().splitlines()[0]
         self.assertRegex(line, r'Listing ([^WindowsPath|PosixPath].*)')
@@ -172,7 +172,7 @@ kundi CompileallTestsBase:
         self.assertKweli(pool_mock.called)
 
     eleza test_compile_workers_non_positive(self):
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     "workers must be greater ama equal to 0"):
             compileall.compile_dir(self.directory, workers=-1)
 
@@ -216,7 +216,7 @@ kundi EncodingTest(unittest.TestCase):
     eleza setUp(self):
         self.directory = tempfile.mkdtemp()
         self.source_path = os.path.join(self.directory, '_test.py')
-        with open(self.source_path, 'w', encoding='utf-8') kama file:
+        ukijumuisha open(self.source_path, 'w', encoding='utf-8') kama file:
             file.write('# -*- coding: utf-8 -*-\n')
             file.write('print u"\u20ac"\n')
 
@@ -245,7 +245,7 @@ kundi CommandLineTestsBase:
                 ikiwa sio directory.is_dir():
                     directory.mkdir()
                     directory_created = Kweli
-                with path.open('w') kama file:
+                ukijumuisha path.open('w') kama file:
                     file.write('# kila test_compileall')
             tatizo OSError:
                 sys_path_writable = Uongo
@@ -352,7 +352,7 @@ kundi CommandLineTestsBase:
         locals()['test_pep3147_paths_' + name] = f
 
     eleza test_legacy_paths(self):
-        # Ensure that with the proper switch, compileall leaves legacy
+        # Ensure that ukijumuisha the proper switch, compileall leaves legacy
         # pyc files, na no __pycache__ directory.
         self.assertRunOK('-b', '-q', self.pkgdir)
         # Verify the __pycache__ directory contents.
@@ -493,7 +493,7 @@ kundi CommandLineTestsBase:
         f2 = script_helper.make_script(self.pkgdir, 'f2', '')
         f3 = script_helper.make_script(self.pkgdir, 'f3', '')
         f4 = script_helper.make_script(self.pkgdir, 'f4', '')
-        with open(os.path.join(self.directory, 'l1'), 'w') kama l1:
+        ukijumuisha open(os.path.join(self.directory, 'l1'), 'w') kama l1:
             l1.write(os.path.join(self.pkgdir, 'f1.py')+os.linesep)
             l1.write(os.path.join(self.pkgdir, 'f2.py')+os.linesep)
         self.assertRunOK('-i', os.path.join(self.directory, 'l1'), f4)
@@ -507,7 +507,7 @@ kundi CommandLineTestsBase:
         f2 = script_helper.make_script(self.pkgdir, 'f2', '')
         f3 = script_helper.make_script(self.pkgdir, 'f3', '')
         f4 = script_helper.make_script(self.pkgdir, 'f4', '')
-        with open(os.path.join(self.directory, 'l1'), 'w') kama l1:
+        ukijumuisha open(os.path.join(self.directory, 'l1'), 'w') kama l1:
             l1.write(os.path.join(self.pkgdir, 'f2.py')+os.linesep)
         self.assertRunOK('-i', os.path.join(self.directory, 'l1'))
         self.assertNotCompiled(f1)
@@ -546,11 +546,11 @@ kundi CommandLineTestsBase:
         pyc = importlib.util.cache_kutoka_source(
             os.path.join(self.pkgdir, 'f1.py'))
         self.assertRunOK('--invalidation-mode=checked-hash', self.pkgdir)
-        with open(pyc, 'rb') kama fp:
+        ukijumuisha open(pyc, 'rb') kama fp:
             data = fp.read()
         self.assertEqual(int.kutoka_bytes(data[4:8], 'little'), 0b11)
         self.assertRunOK('--invalidation-mode=unchecked-hash', self.pkgdir)
-        with open(pyc, 'rb') kama fp:
+        ukijumuisha open(pyc, 'rb') kama fp:
             data = fp.read()
         self.assertEqual(int.kutoka_bytes(data[4:8], 'little'), 0b01)
 
@@ -571,7 +571,7 @@ kundi CommandLineTestsBase:
 
     @mock.patch('compileall.compile_dir')
     eleza test_workers_available_cores(self, compile_dir):
-        with mock.patch("sys.argv",
+        ukijumuisha mock.patch("sys.argv",
                         new=[sys.executable, self.directory, "-j0"]):
             compileall.main()
             self.assertKweli(compile_dir.called)

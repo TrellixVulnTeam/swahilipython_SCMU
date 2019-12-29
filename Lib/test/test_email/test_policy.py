@@ -333,7 +333,7 @@ class TestPolicyPropagation(unittest.TestCase):
     # the rest of the propagation tests.
 
     def _make_msg(self, source='Subject: test\n\n', policy=None):
-        self.policy = email.policy.default.clone() if policy is None else policy
+        self.policy = email.policy.default.clone() if policy is None isipokua policy
         return email.message_from_string(source, policy=self.policy)
 
     def test_parser_propagates_policy_to_message(self):

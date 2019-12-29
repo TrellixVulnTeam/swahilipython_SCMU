@@ -9,7 +9,7 @@ flour na known kama kolam on the thresholds of
 their homes.
 
 These can be described by Lindenmayer systems,
-which can easily be implemented with turtle
+which can easily be implemented ukijumuisha turtle
 graphics na Python.
 
 Two examples are shown here:

@@ -51,7 +51,7 @@ eleza get_cid():
     ikiwa fcntl ni Tupu:
         rudisha Tupu
     jaribu:
-        with open("/dev/vsock", "rb") kama f:
+        ukijumuisha open("/dev/vsock", "rb") kama f:
             r = fcntl.ioctl(f, socket.IOCTL_VM_SOCKETS_GET_LOCAL_CID, "    ")
     tatizo OSError:
         rudisha Tupu
@@ -161,10 +161,10 @@ kundi SocketUDPTest(unittest.TestCase):
         self.serv = Tupu
 
 kundi ThreadSafeCleanupTestCase(unittest.TestCase):
-    """Subkundi of unittest.TestCase with thread-safe cleanup methods.
+    """Subkundi of unittest.TestCase ukijumuisha thread-safe cleanup methods.
 
     This subkundi protects the addCleanup() na doCleanups() methods
-    with a recursive lock.
+    ukijumuisha a recursive lock.
     """
 
     eleza __init__(self, *args, **kwargs):
@@ -172,11 +172,11 @@ kundi ThreadSafeCleanupTestCase(unittest.TestCase):
         self._cleanup_lock = threading.RLock()
 
     eleza addCleanup(self, *args, **kwargs):
-        with self._cleanup_lock:
+        ukijumuisha self._cleanup_lock:
             rudisha super().addCleanup(*args, **kwargs)
 
     eleza doCleanups(self, *args, **kwargs):
-        with self._cleanup_lock:
+        ukijumuisha self._cleanup_lock:
             rudisha super().doCleanups(*args, **kwargs)
 
 kundi SocketCANTest(unittest.TestCase):
@@ -257,14 +257,14 @@ kundi ThreadableTest:
         kundi NewClass (OldClass, ThreadableTest):
             pita
 
-    This kundi defines two new fixture functions with obvious
+    This kundi defines two new fixture functions ukijumuisha obvious
     purposes kila overriding:
 
         clientSetUp ()
         clientTearDown ()
 
     Any new test functions within the kundi must then define
-    tests kwenye pairs, where the test name ni preceded with a
+    tests kwenye pairs, where the test name ni preceded ukijumuisha a
     '_' to indicate the client portion of the test. Ex:
 
         eleza testFoo(self):
@@ -593,7 +593,7 @@ kundi ThreadedSocketTestMixin(ThreadSafeCleanupTestCase, SocketTestBase,
 
 kundi ConnectedStreamTestMixin(SocketListeningTestMixin,
                                ThreadedSocketTestMixin):
-    """Mixin to allow client/server stream tests with connected client.
+    """Mixin to allow client/server stream tests ukijumuisha connected client.
 
     Server's socket representing connection to client ni self.cli_conn
     na client's connection to server ni self.serv_conn.  (Based on
@@ -696,7 +696,7 @@ kundi UDP6TestBase(Inet6TestBase):
         rudisha socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
 
 
-# Test-skipping decorators kila use with ThreadableTest.
+# Test-skipping decorators kila use ukijumuisha ThreadableTest.
 
 eleza skipWithClientIf(condition, reason):
     """Skip decorated test ikiwa condition ni true, add client_skip decorator.
@@ -718,7 +718,7 @@ eleza skipWithClientIf(condition, reason):
         ikiwa sio (isinstance(obj, type) ama hasattr(obj, "client_skip")):
             obj.client_skip = lambda f: f
         rudisha obj
-    rudisha skipdec ikiwa condition else noskipdec
+    rudisha skipdec ikiwa condition isipokua noskipdec
 
 
 eleza requireAttrs(obj, *attributes):
@@ -732,7 +732,7 @@ eleza requireAttrs(obj, *attributes):
 
 
 eleza requireSocket(*args):
-    """Skip decorated test ikiwa a socket cannot be created with given arguments.
+    """Skip decorated test ikiwa a socket cannot be created ukijumuisha given arguments.
 
     When an argument ni given kama a string, will use the value of that
     attribute of the socket module, ama skip the test ikiwa it doesn't
@@ -744,7 +744,7 @@ eleza requireSocket(*args):
     ikiwa missing:
         err = "don't have " + ", ".join(name kila name kwenye missing)
     isipokua:
-        callargs = [getattr(socket, obj) ikiwa isinstance(obj, str) else obj
+        callargs = [getattr(socket, obj) ikiwa isinstance(obj, str) isipokua obj
                     kila obj kwenye args]
         jaribu:
             s = socket.socket(*callargs)
@@ -773,7 +773,7 @@ kundi GeneralModuleTests(unittest.TestCase):
 
     eleza test_repr(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        with s:
+        ukijumuisha s:
             self.assertIn('fd=%i' % s.fileno(), repr(s))
             self.assertIn('family=%s' % socket.AF_INET, repr(s))
             self.assertIn('type=%s' % socket.SOCK_STREAM, repr(s))
@@ -799,7 +799,7 @@ kundi GeneralModuleTests(unittest.TestCase):
         self.assertEqual(repr(s), expected)
 
     eleza test_weakref(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama s:
             p = proxy(s)
             self.assertEqual(p.fileno(), s.fileno())
         s = Tupu
@@ -813,11 +813,11 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza testSocketError(self):
         # Testing socket module exceptions
         msg = "Error raising socket exception (%s)."
-        with self.assertRaises(OSError, msg=msg % 'OSError'):
+        ukijumuisha self.assertRaises(OSError, msg=msg % 'OSError'):
             ashiria OSError
-        with self.assertRaises(OSError, msg=msg % 'socket.herror'):
+        ukijumuisha self.assertRaises(OSError, msg=msg % 'socket.herror'):
             ashiria socket.herror
-        with self.assertRaises(OSError, msg=msg % 'socket.gaierror'):
+        ukijumuisha self.assertRaises(OSError, msg=msg % 'socket.gaierror'):
             ashiria socket.gaierror
 
     eleza testSendtoErrors(self):
@@ -827,40 +827,40 @@ kundi GeneralModuleTests(unittest.TestCase):
         s.bind(('', 0))
         sockname = s.getsockname()
         # 2 args
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto('\u2620', sockname)
         self.assertEqual(str(cm.exception),
                          "a bytes-like object ni required, sio 'str'")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(5j, sockname)
         self.assertEqual(str(cm.exception),
                          "a bytes-like object ni required, sio 'complex'")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo', Tupu)
         self.assertIn('not TupuType',str(cm.exception))
         # 3 args
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto('\u2620', 0, sockname)
         self.assertEqual(str(cm.exception),
                          "a bytes-like object ni required, sio 'str'")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(5j, 0, sockname)
         self.assertEqual(str(cm.exception),
                          "a bytes-like object ni required, sio 'complex'")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo', 0, Tupu)
         self.assertIn('not TupuType', str(cm.exception))
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo', 'bar', sockname)
         self.assertIn('an integer ni required', str(cm.exception))
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo', Tupu, Tupu)
         self.assertIn('an integer ni required', str(cm.exception))
         # wrong number of args
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo')
         self.assertIn('(1 given)', str(cm.exception))
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             s.sendto(b'foo', 0, sockname, 4)
         self.assertIn('(4 given)', str(cm.exception))
 
@@ -932,9 +932,9 @@ kundi GeneralModuleTests(unittest.TestCase):
         )
         kila addr kwenye ['0.1.1.~1', '1+.1.1.1', '::1q', '::1::2',
                      '1:1:1:1:1:1:1:1:1']:
-            with self.assertRaises(OSError, msg=addr):
+            ukijumuisha self.assertRaises(OSError, msg=addr):
                 socket.gethostbyname(addr)
-            with self.assertRaises(OSError, msg=explanation):
+            ukijumuisha self.assertRaises(OSError, msg=explanation):
                 socket.gethostbyaddr(addr)
 
     @unittest.skipUnless(hasattr(socket, 'sethostname'), "test needs socket.sethostname()")
@@ -951,7 +951,7 @@ kundi GeneralModuleTests(unittest.TestCase):
         jaribu:
             # running test kama root!
             self.assertEqual(socket.gethostname(), 'new')
-            # Should work with bytes objects too
+            # Should work ukijumuisha bytes objects too
             socket.sethostname(b'bar')
             self.assertEqual(socket.gethostname(), 'bar')
         mwishowe:
@@ -1064,7 +1064,7 @@ kundi GeneralModuleTests(unittest.TestCase):
                 pita
         isipokua:
             ashiria OSError
-        # Try same call with optional protocol omitted
+        # Try same call ukijumuisha optional protocol omitted
         # Issue #26936: Android getservbyname() was broken before API 23.
         ikiwa (not hasattr(sys, 'getandroidapilevel') or
                 sys.getandroidapilevel() >= 23):
@@ -1092,19 +1092,19 @@ kundi GeneralModuleTests(unittest.TestCase):
         # Testing default timeout
         # The default timeout should initially be Tupu
         self.assertEqual(socket.getdefaulttimeout(), Tupu)
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             self.assertEqual(s.gettimeout(), Tupu)
 
         # Set the default timeout to 10, na see ikiwa it propagates
-        with socket_setdefaulttimeout(10):
+        ukijumuisha socket_setdefaulttimeout(10):
             self.assertEqual(socket.getdefaulttimeout(), 10)
-            with socket.socket() kama sock:
+            ukijumuisha socket.socket() kama sock:
                 self.assertEqual(sock.gettimeout(), 10)
 
             # Reset the default timeout to Tupu, na see ikiwa it propagates
             socket.setdefaulttimeout(Tupu)
             self.assertEqual(socket.getdefaulttimeout(), Tupu)
-            with socket.socket() kama sock:
+            ukijumuisha socket.socket() kama sock:
                 self.assertEqual(sock.gettimeout(), Tupu)
 
         # Check that setting it to an invalid value ashirias ValueError
@@ -1315,8 +1315,8 @@ kundi GeneralModuleTests(unittest.TestCase):
         self.assertUongo(reuse == 0, "failed to set reuse mode")
 
     eleza testSendAfterClose(self):
-        # testing send() after close() with timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
+        # testing send() after close() ukijumuisha timeout
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
             sock.settimeout(1)
         self.assertRaises(OSError, sock.send, b"spam")
 
@@ -1335,7 +1335,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza testNewAttributes(self):
         # testing .family, .type na .protocol
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
             self.assertEqual(sock.family, socket.AF_INET)
             ikiwa hasattr(socket, 'SOCK_CLOEXEC'):
                 self.assertIn(sock.type,
@@ -1480,7 +1480,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza test_idna(self):
         # Check kila internet access before running test
         # (issue #12804, issue #25138).
-        with support.transient_internet('python.org'):
+        ukijumuisha support.transient_internet('python.org'):
             socket.gethostbyname('python.org')
 
         # these should all be successful
@@ -1497,7 +1497,7 @@ kundi GeneralModuleTests(unittest.TestCase):
         ikiwa sio hasattr(signal, 'alarm') ama sio hasattr(socket, 'socketpair'):
             self.skipTest("signal.alarm na socket.socketpair required kila this test")
         # Our signal handlers clobber the C errno by calling a math function
-        # with an invalid domain value.
+        # ukijumuisha an invalid domain value.
         eleza ok_handler(*args):
             self.assertRaises(ValueError, math.acosh, 0)
         eleza raising_handler(*args):
@@ -1509,7 +1509,7 @@ kundi GeneralModuleTests(unittest.TestCase):
             ikiwa with_timeout:
                 # Just above the one second minimum kila signal.alarm
                 c.settimeout(1.5)
-            with self.assertRaises(ZeroDivisionError):
+            ukijumuisha self.assertRaises(ZeroDivisionError):
                 signal.alarm(1)
                 c.sendall(b"x" * support.SOCK_MAX_SIZE)
             ikiwa with_timeout:
@@ -1532,7 +1532,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza test_dealloc_warn(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         r = repr(sock)
-        with self.assertWarns(ResourceWarning) kama cm:
+        ukijumuisha self.assertWarns(ResourceWarning) kama cm:
             sock = Tupu
             support.gc_collect()
         self.assertIn(r, str(cm.warning.args[0]))
@@ -1542,18 +1542,18 @@ kundi GeneralModuleTests(unittest.TestCase):
         r = repr(sock)
         sock = Tupu
         support.gc_collect()
-        with self.assertWarns(ResourceWarning):
+        ukijumuisha self.assertWarns(ResourceWarning):
             f = Tupu
             support.gc_collect()
 
     eleza test_name_closed_socketio(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama sock:
             fp = sock.makefile("rb")
             fp.close()
             self.assertEqual(repr(fp), "<_io.BufferedReader name=-1>")
 
     eleza test_unusable_closed_socketio(self):
-        with socket.socket() kama sock:
+        ukijumuisha socket.socket() kama sock:
             fp = sock.makefile("rb", buffering=0)
             self.assertKweli(fp.readable())
             self.assertUongo(fp.writable())
@@ -1568,34 +1568,34 @@ kundi GeneralModuleTests(unittest.TestCase):
         jaribu:
             sock.bind((HOST, 0))
             socket.close(sock.fileno())
-            with self.assertRaises(OSError):
+            ukijumuisha self.assertRaises(OSError):
                 sock.listen(1)
         mwishowe:
-            with self.assertRaises(OSError):
-                # sock.close() fails with EBADF
+            ukijumuisha self.assertRaises(OSError):
+                # sock.close() fails ukijumuisha EBADF
                 sock.close()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             socket.close(Tupu)
-        with self.assertRaises(OSError):
+        ukijumuisha self.assertRaises(OSError):
             socket.close(-1)
 
     eleza test_makefile_mode(self):
         kila mode kwenye 'r', 'rb', 'rw', 'w', 'wb':
-            with self.subTest(mode=mode):
-                with socket.socket() kama sock:
-                    with sock.makefile(mode) kama fp:
+            ukijumuisha self.subTest(mode=mode):
+                ukijumuisha socket.socket() kama sock:
+                    ukijumuisha sock.makefile(mode) kama fp:
                         self.assertEqual(fp.mode, mode)
 
     eleza test_makefile_invalid_mode(self):
         kila mode kwenye 'rt', 'x', '+', 'a':
-            with self.subTest(mode=mode):
-                with socket.socket() kama sock:
-                    with self.assertRaisesRegex(ValueError, 'invalid mode'):
+            ukijumuisha self.subTest(mode=mode):
+                ukijumuisha socket.socket() kama sock:
+                    ukijumuisha self.assertRaisesRegex(ValueError, 'invalid mode'):
                         sock.makefile(mode)
 
     eleza test_pickle(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 self.assertRaises(TypeError, pickle.dumps, sock, protocol)
         kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1606,11 +1606,11 @@ kundi GeneralModuleTests(unittest.TestCase):
 
     eleza test_listen_backlog(self):
         kila backlog kwenye 0, -1:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
+            ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
                 srv.bind((HOST, 0))
                 srv.listen(backlog)
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
             srv.bind((HOST, 0))
             srv.listen()
 
@@ -1618,7 +1618,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza test_listen_backlog_overflow(self):
         # Issue 15989
         agiza _testcapi
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama srv:
             srv.bind((HOST, 0))
             self.assertRaises(OverflowError, srv.listen, _testcapi.INT_MAX + 1)
 
@@ -1626,7 +1626,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza test_flowinfo(self):
         self.assertRaises(OverflowError, socket.getnameinfo,
                           (support.HOSTv6, 0, 0xffffffff), 0)
-        with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_INET6, socket.SOCK_STREAM) kama s:
             self.assertRaises(OverflowError, s.bind, (support.HOSTv6, 0, -10))
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test.')
@@ -1695,7 +1695,7 @@ kundi GeneralModuleTests(unittest.TestCase):
     eleza test_str_for_enums(self):
         # Make sure that the AF_* na SOCK_* constants have enum-like string
         # reprs.
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama s:
             self.assertEqual(str(s.family), 'AddressFamily.AF_INET')
             self.assertEqual(str(s.type), 'SocketKind.SOCK_STREAM')
 
@@ -1704,7 +1704,7 @@ kundi GeneralModuleTests(unittest.TestCase):
         SOCK_CLOEXEC = getattr(socket, 'SOCK_CLOEXEC', 0)
         sock_type = socket.SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC
 
-        with socket.socket(socket.AF_INET, sock_type) kama s:
+        ukijumuisha socket.socket(socket.AF_INET, sock_type) kama s:
             self.assertEqual(s.type, socket.SOCK_STREAM)
             s.settimeout(1)
             self.assertEqual(s.type, socket.SOCK_STREAM)
@@ -1716,7 +1716,7 @@ kundi GeneralModuleTests(unittest.TestCase):
             self.assertEqual(s.type, socket.SOCK_STREAM)
 
     eleza test_unknown_socket_family_repr(self):
-        # Test that when created with a family that's sio one of the known
+        # Test that when created ukijumuisha a family that's sio one of the known
         # AF_*/SOCK_* constants, socket.family just rudishas the number.
         #
         # To do this we fool socket.socket into believing it already has an
@@ -1732,7 +1732,7 @@ kundi GeneralModuleTests(unittest.TestCase):
             ikiwa name haiko kwenye {'SOCK_NONBLOCK', 'SOCK_CLOEXEC'}
         ) + 1
 
-        with socket.socket(
+        ukijumuisha socket.socket(
                 family=unknown_family, type=unknown_type, proto=23,
                 fileno=fd) kama s:
             self.assertEqual(s.family, unknown_family)
@@ -1748,14 +1748,14 @@ kundi GeneralModuleTests(unittest.TestCase):
 
             eleza fileno(self):
                 rudisha self.fd
-        with socket.socket() kama sock:
+        ukijumuisha socket.socket() kama sock:
             fd = os.open(os.curdir, os.O_RDONLY)
             os.close(fd)
-            with self.assertRaises(socket._GiveupOnSendfile):
+            ukijumuisha self.assertRaises(socket._GiveupOnSendfile):
                 sock._sendfile_use_sendfile(File(fd))
-            with self.assertRaises(OverflowError):
+            ukijumuisha self.assertRaises(OverflowError):
                 sock._sendfile_use_sendfile(File(2**1000))
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sock._sendfile_use_sendfile(File(Tupu))
 
     eleza _test_socket_fileno(self, s, family, stype):
@@ -1803,29 +1803,29 @@ kundi GeneralModuleTests(unittest.TestCase):
                                          socket.SOCK_STREAM)
 
     eleza test_socket_fileno_rejects_float(self):
-        with self.assertRaisesRegex(TypeError, "integer argument expected"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "integer argument expected"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=42.5)
 
     eleza test_socket_fileno_rejects_other_types(self):
-        with self.assertRaisesRegex(TypeError, "integer ni required"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "integer ni required"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno="foo")
 
     eleza test_socket_fileno_rejects_invalid_socket(self):
-        with self.assertRaisesRegex(ValueError, "negative file descriptor"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "negative file descriptor"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=-1)
 
     @unittest.skipIf(os.name == "nt", "Windows disallows -1 only")
     eleza test_socket_fileno_rejects_negative(self):
-        with self.assertRaisesRegex(ValueError, "negative file descriptor"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "negative file descriptor"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=-42)
 
     eleza test_socket_fileno_requires_valid_fd(self):
         WSAENOTSOCK = 10038
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             socket.socket(fileno=support.make_bad_fd())
         self.assertIn(cm.exception.errno, (errno.EBADF, WSAENOTSOCK))
 
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             socket.socket(
                 socket.AF_INET,
                 socket.SOCK_STREAM,
@@ -1833,11 +1833,11 @@ kundi GeneralModuleTests(unittest.TestCase):
         self.assertIn(cm.exception.errno, (errno.EBADF, WSAENOTSOCK))
 
     eleza test_socket_fileno_requires_socket_fd(self):
-        with tempfile.NamedTemporaryFile() kama afile:
-            with self.assertRaises(OSError):
+        ukijumuisha tempfile.NamedTemporaryFile() kama afile:
+            ukijumuisha self.assertRaises(OSError):
                 socket.socket(fileno=afile.fileno())
 
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 socket.socket(
                     socket.AF_INET,
                     socket.SOCK_STREAM,
@@ -1886,31 +1886,31 @@ kundi BasicCANTest(unittest.TestCase):
         socket.CAN_BCM_RX_RTR_FRAME
 
     eleza testCreateSocket(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             pita
 
     @unittest.skipUnless(hasattr(socket, "CAN_BCM"),
                          'socket.CAN_BCM required kila this test.')
     eleza testCreateBCMSocket(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_BCM) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_BCM) kama s:
             pita
 
     eleza testBindAny(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             address = ('', )
             s.bind(address)
             self.assertEqual(s.getsockname(), address)
 
     eleza testTooLongInterfaceName(self):
         # most systems limit IFNAMSIZ to 16, take 1024 to be sure
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             self.assertRaisesRegex(OSError, 'interface name too long',
                                    s.bind, ('x' * 1024,))
 
     @unittest.skipUnless(hasattr(socket, "CAN_RAW_LOOPBACK"),
                          'socket.CAN_RAW_LOOPBACK required kila this test.')
     eleza testLoopback(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             kila loopback kwenye (0, 1):
                 s.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_LOOPBACK,
                              loopback)
@@ -1922,7 +1922,7 @@ kundi BasicCANTest(unittest.TestCase):
     eleza testFilter(self):
         can_id, can_mask = 0x200, 0x700
         can_filter = struct.pack("=II", can_id, can_mask)
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             s.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_FILTER, can_filter)
             self.assertEqual(can_filter,
                     s.getsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_FILTER, 8))
@@ -2035,24 +2035,24 @@ kundi ISOTPTest(unittest.TestCase):
         socket.SOCK_DGRAM
 
     eleza testCreateSocket(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) kama s:
             pita
 
     @unittest.skipUnless(hasattr(socket, "CAN_ISOTP"),
                          'socket.CAN_ISOTP required kila this test.')
     eleza testCreateISOTPSocket(self):
-        with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
             pita
 
     eleza testTooLongInterfaceName(self):
         # most systems limit IFNAMSIZ to 16, take 1024 to be sure
-        with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
-            with self.assertRaisesRegex(OSError, 'interface name too long'):
+        ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
+            ukijumuisha self.assertRaisesRegex(OSError, 'interface name too long'):
                 s.bind(('x' * 1024, 1, 2))
 
     eleza testBind(self):
         jaribu:
-            with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
+            ukijumuisha socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) kama s:
                 addr = self.interface, 0x123, 0x456
                 s.bind(addr)
                 self.assertEqual(s.getsockname(), addr)
@@ -2072,12 +2072,12 @@ kundi BasicRDSTest(unittest.TestCase):
         socket.PF_RDS
 
     eleza testCreateSocket(self):
-        with socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) kama s:
+        ukijumuisha socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) kama s:
             pita
 
     eleza testSocketBufferSize(self):
         bufsize = 16384
-        with socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) kama s:
+        ukijumuisha socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) kama s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, bufsize)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, bufsize)
 
@@ -2153,24 +2153,24 @@ kundi BasicQIPCRTRTest(unittest.TestCase):
         socket.AF_QIPCRTR
 
     eleza testCreateSocket(self):
-        with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
             pita
 
     eleza testUnbound(self):
-        with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
             self.assertEqual(s.getsockname()[1], 0)
 
     eleza testBindSock(self):
-        with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
             support.bind_port(s, host=s.getsockname()[0])
             self.assertNotEqual(s.getsockname()[1], 0)
 
     eleza testInvalidBindSock(self):
-        with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
             self.assertRaises(OSError, support.bind_port, s, host=-2)
 
     eleza testAutoBindSock(self):
-        with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) kama s:
             s.connect((123, 123))
             self.assertNotEqual(s.getsockname()[1], 0)
 
@@ -2193,11 +2193,11 @@ kundi BasicVSOCKTest(unittest.TestCase):
         socket.IOCTL_VM_SOCKETS_GET_LOCAL_CID
 
     eleza testCreateSocket(self):
-        with socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) kama s:
             pita
 
     eleza testSocketBufferSize(self):
-        with socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) kama s:
             orig_max = s.getsockopt(socket.AF_VSOCK,
                                     socket.SO_VM_SOCKETS_BUFFER_MAX_SIZE)
             orig = s.getsockopt(socket.AF_VSOCK,
@@ -2265,7 +2265,7 @@ kundi BasicTCPTest(SocketConnectedTest):
         self.serv_conn.send(MSG)
 
     eleza testSendAll(self):
-        # Testing sendall() with a 2048 byte string over TCP
+        # Testing sendall() ukijumuisha a 2048 byte string over TCP
         msg = b''
         wakati 1:
             read = self.cli_conn.recv(1024)
@@ -2375,20 +2375,20 @@ kundi BasicUDPTest(ThreadedUDPSocketTest):
         self.cli.sendto(MSG, 0, (HOST, self.port))
 
 # Tests kila the sendmsg()/recvmsg() interface.  Where possible, the
-# same test code ni used with different families na types of socket
+# same test code ni used ukijumuisha different families na types of socket
 # (e.g. stream, datagram), na tests using recvmsg() are repeated
 # using recvmsg_into().
 #
 # The generic test classes such kama SendmsgTests and
 # RecvmsgGenericTests inherit kutoka SendrecvmsgBase na expect to be
-# supplied with sockets cli_sock na serv_sock representing the
+# supplied ukijumuisha sockets cli_sock na serv_sock representing the
 # client's na the server's end of the connection respectively, and
 # attributes cli_addr na serv_addr holding their (numeric where
 # appropriate) addresses.
 #
-# The final concrete test classes combine these with subclasses of
+# The final concrete test classes combine these ukijumuisha subclasses of
 # SocketTestBase which set up client na server sockets of a specific
-# type, na with subclasses of SendrecvmsgBase such as
+# type, na ukijumuisha subclasses of SendrecvmsgBase such as
 # SendrecvmsgDgramBase na SendrecvmsgConnectedBase which map these
 # sockets to cli_sock na serv_sock na override the methods and
 # attributes of SendrecvmsgBase to fill kwenye destination addresses if
@@ -2421,31 +2421,31 @@ kundi SendrecvmsgBase(ThreadSafeCleanupTestCase):
     sendmsg_to_server_defaults = ()
 
     eleza sendmsgToServer(self, *args):
-        # Call sendmsg() on self.cli_sock with the given arguments,
-        # filling kwenye any arguments which are sio supplied with the
+        # Call sendmsg() on self.cli_sock ukijumuisha the given arguments,
+        # filling kwenye any arguments which are sio supplied ukijumuisha the
         # corresponding items of self.sendmsg_to_server_defaults, if
         # any.
         rudisha self.cli_sock.sendmsg(
             *(args + self.sendmsg_to_server_defaults[len(args):]))
 
     eleza doRecvmsg(self, sock, bufsize, *args):
-        # Call recvmsg() on sock with given arguments na rudisha its
+        # Call recvmsg() on sock ukijumuisha given arguments na rudisha its
         # result.  Should be used kila tests which can use either
         # recvmsg() ama recvmsg_into() - RecvmsgIntoMixin overrides
-        # this method with one which emulates it using recvmsg_into(),
+        # this method ukijumuisha one which emulates it using recvmsg_into(),
         # thus allowing the same test to be used kila both methods.
         result = sock.recvmsg(bufsize, *args)
         self.registerRecvmsgResult(result)
         rudisha result
 
     eleza registerRecvmsgResult(self, result):
-        # Called by doRecvmsg() with the rudisha value of recvmsg() or
+        # Called by doRecvmsg() ukijumuisha the rudisha value of recvmsg() or
         # recvmsg_into().  Can be overridden to arrange cleanup based
         # on the rudishaed ancillary data, kila instance.
         pita
 
     eleza checkRecvmsgAddress(self, addr1, addr2):
-        # Called to compare the received address with the address of
+        # Called to compare the received address ukijumuisha the address of
         # the peer.
         self.assertEqual(addr1, addr2)
 
@@ -2499,7 +2499,7 @@ kundi SendrecvmsgBase(ThreadSafeCleanupTestCase):
         ikiwa eor:
             defaultset |= self.msg_flags_eor_indicator
             defaultunset |= self.msg_flags_non_eor_indicator
-        elikiwa eor ni sio Tupu:
+        lasivyo eor ni sio Tupu:
             defaultset |= self.msg_flags_non_eor_indicator
             defaultunset |= self.msg_flags_eor_indicator
 
@@ -2507,7 +2507,7 @@ kundi SendrecvmsgBase(ThreadSafeCleanupTestCase):
         defaultset &= ~checkunset
         defaultunset &= ~checkset
 
-        # Merge arguments with remaining defaults, na check kila conflicts
+        # Merge arguments ukijumuisha remaining defaults, na check kila conflicts
         checkset |= defaultset
         checkunset |= defaultunset
         inboth = checkset & checkunset & ~ignore
@@ -2515,7 +2515,7 @@ kundi SendrecvmsgBase(ThreadSafeCleanupTestCase):
             ashiria Exception("contradictory set, unset requirements kila flags "
                             "{0:#x}".format(inboth))
 
-        # Compare with given msg_flags value
+        # Compare ukijumuisha given msg_flags value
         mask = (checkset | checkunset) & ~ignore
         self.assertEqual(flags & mask, checkset & mask)
 
@@ -2602,7 +2602,7 @@ kundi SendmsgTests(SendrecvmsgServerTimeoutBase):
     # involve recvmsg() ama recvmsg_into().
 
     eleza testSendmsg(self):
-        # Send a simple message with sendmsg().
+        # Send a simple message ukijumuisha sendmsg().
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
     eleza _testSendmsg(self):
@@ -2702,7 +2702,7 @@ kundi SendmsgTests(SendrecvmsgServerTimeoutBase):
     eleza _testSendmsgExcessCmsgReject(self):
         ikiwa sio hasattr(socket, "CMSG_SPACE"):
             # Can only send one item
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 self.sendmsgToServer([MSG], [(0, 0, b""), (0, 0, b"")])
             self.assertIsTupu(cm.exception.errno)
         self.sendToServer(b"done")
@@ -2728,7 +2728,7 @@ kundi SendmsgStreamTests(SendmsgTests):
         self.assertEqual(self.sendmsgToServer([MSG], [], 0, Tupu), len(MSG))
 
     eleza testSendmsgTimeout(self):
-        # Check that timeout works with sendmsg().
+        # Check that timeout works ukijumuisha sendmsg().
         self.assertEqual(self.serv_sock.recv(512), b"a"*512)
         self.assertKweli(self.misc_event.wait(timeout=self.fail_timeout))
 
@@ -2766,11 +2766,11 @@ kundi SendmsgStreamTests(SendmsgTests):
     @testSendmsgDontWait.client_skip
     eleza _testSendmsgDontWait(self):
         jaribu:
-            with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 wakati Kweli:
                     self.sendmsgToServer([b"a"*512], [], socket.MSG_DONTWAIT)
             # bpo-33937: catch also ENOMEM, the test randomly fails on Travis CI
-            # with "OSError: [Errno 12] Cannot allocate memory"
+            # ukijumuisha "OSError: [Errno 12] Cannot allocate memory"
             self.assertIn(cm.exception.errno,
                           (errno.EAGAIN, errno.EWOULDBLOCK, errno.ENOMEM))
         mwishowe:
@@ -2799,7 +2799,7 @@ kundi RecvmsgGenericTests(SendrecvmsgBase):
     # recvmsg_into(), na can use any socket type.
 
     eleza testRecvmsg(self):
-        # Receive a simple message with recvmsg[_into]().
+        # Receive a simple message ukijumuisha recvmsg[_into]().
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock, len(MSG))
         self.assertEqual(msg, MSG)
         self.checkRecvmsgAddress(addr, self.cli_addr)
@@ -2810,7 +2810,7 @@ kundi RecvmsgGenericTests(SendrecvmsgBase):
         self.sendToServer(MSG)
 
     eleza testRecvmsgExplicitDefaults(self):
-        # Test recvmsg[_into]() with default arguments provided explicitly.
+        # Test recvmsg[_into]() ukijumuisha default arguments provided explicitly.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 0, 0)
         self.assertEqual(msg, MSG)
@@ -2894,7 +2894,7 @@ kundi RecvmsgGenericTests(SendrecvmsgBase):
         # Check that MSG_PEEK kwenye flags enables examination of pending
         # data without consuming it.
 
-        # Receive part of data with MSG_PEEK.
+        # Receive part of data ukijumuisha MSG_PEEK.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG) - 3, 0,
                                                    socket.MSG_PEEK)
@@ -2908,7 +2908,7 @@ kundi RecvmsgGenericTests(SendrecvmsgBase):
         self.checkFlags(flags, eor=Uongo,
                         ignore=getattr(socket, "MSG_TRUNC", 0))
 
-        # Receive all data with MSG_PEEK.
+        # Receive all data ukijumuisha MSG_PEEK.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 0,
                                                    socket.MSG_PEEK)
@@ -2930,7 +2930,7 @@ kundi RecvmsgGenericTests(SendrecvmsgBase):
 
     @requireAttrs(socket.socket, "sendmsg")
     eleza testRecvmsgFromSendmsg(self):
-        # Test receiving with recvmsg[_into]() when message ni sent
+        # Test receiving ukijumuisha recvmsg[_into]() when message ni sent
         # using sendmsg().
         self.serv_sock.settimeout(self.fail_timeout)
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock, len(MSG))
@@ -3091,7 +3091,7 @@ kundi RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
 kundi CmsgMacroTests(unittest.TestCase):
     # Test the functions CMSG_LEN() na CMSG_SPACE().  Tests
     # assumptions used by sendmsg() na recvmsg[_into](), which share
-    # code with these functions.
+    # code ukijumuisha these functions.
 
     # Match the definition kwenye socketmodule.c
     jaribu:
@@ -3103,7 +3103,7 @@ kundi CmsgMacroTests(unittest.TestCase):
 
     @requireAttrs(socket, "CMSG_LEN")
     eleza testCMSG_LEN(self):
-        # Test CMSG_LEN() with various valid na invalid values,
+        # Test CMSG_LEN() ukijumuisha various valid na invalid values,
         # checking the assumptions used by recvmsg() na sendmsg().
         toobig = self.socklen_t_limit - socket.CMSG_LEN(0) + 1
         values = list(range(257)) + list(range(toobig - 257, toobig))
@@ -3117,14 +3117,14 @@ kundi CmsgMacroTests(unittest.TestCase):
             self.assertLessEqual(ret, self.socklen_t_limit)
 
         self.assertRaises(OverflowError, socket.CMSG_LEN, -1)
-        # sendmsg() shares code with these functions, na requires
+        # sendmsg() shares code ukijumuisha these functions, na requires
         # that it reject values over the limit.
         self.assertRaises(OverflowError, socket.CMSG_LEN, toobig)
         self.assertRaises(OverflowError, socket.CMSG_LEN, sys.maxsize)
 
     @requireAttrs(socket, "CMSG_SPACE")
     eleza testCMSG_SPACE(self):
-        # Test CMSG_SPACE() with various valid na invalid values,
+        # Test CMSG_SPACE() ukijumuisha various valid na invalid values,
         # checking the assumptions used by sendmsg().
         toobig = self.socklen_t_limit - socket.CMSG_SPACE(1) + 1
         values = list(range(257)) + list(range(toobig - 257, toobig))
@@ -3141,7 +3141,7 @@ kundi CmsgMacroTests(unittest.TestCase):
             last = ret
 
         self.assertRaises(OverflowError, socket.CMSG_SPACE, -1)
-        # sendmsg() shares code with these functions, na requires
+        # sendmsg() shares code ukijumuisha these functions, na requires
         # that it reject values over the limit.
         self.assertRaises(OverflowError, socket.CMSG_SPACE, toobig)
         self.assertRaises(OverflowError, socket.CMSG_SPACE, sys.maxsize)
@@ -3151,7 +3151,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
     # Tests kila file descriptor pitaing on Unix-domain sockets.
 
     # Invalid file descriptor value that's unlikely to evaluate to a
-    # real FD even ikiwa one of its bytes ni replaced with a different
+    # real FD even ikiwa one of its bytes ni replaced ukijumuisha a different
     # value (which shouldn't actually happen).
     badfd = -0x5555
 
@@ -3191,7 +3191,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
 
     eleza createAndSendFDs(self, n):
         # Send n new file descriptors created by newFDs() to the
-        # server, with the constant MSG kama the non-ancillary data.
+        # server, ukijumuisha the constant MSG kama the non-ancillary data.
         self.assertEqual(
             self.sendmsgToServer([MSG],
                                  [(socket.SOL_SOCKET,
@@ -3200,7 +3200,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
             len(MSG))
 
     eleza checkRecvmsgFDs(self, numfds, result, maxcmsgs=1, ignoreflags=0):
-        # Check that constant MSG was received with numfds file
+        # Check that constant MSG was received ukijumuisha numfds file
         # descriptors kwenye a maximum of maxcmsgs control messages (which
         # must contain only complete integers).  By default, check
         # that MSG_CTRUNC ni unset, but ignore any flags in
@@ -3325,7 +3325,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
 
     eleza sendAncillaryIfPossible(self, msg, ancdata):
         # Try to send msg na ancdata to server, but ikiwa the system
-        # call fails, just send msg with no ancillary data.
+        # call fails, just send msg ukijumuisha no ancillary data.
         jaribu:
             nbytes = self.sendmsgToServer([msg], ancdata)
         tatizo OSError kama e:
@@ -3459,7 +3459,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
 
     eleza checkTruncatedArray(self, ancbuf, maxdata, mindata=0):
         # Check that file descriptor data ni truncated to between
-        # mindata na maxdata bytes when received with buffer size
+        # mindata na maxdata bytes when received ukijumuisha buffer size
         # ancbuf, na that any complete file descriptor numbers are
         # valid.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
@@ -3691,8 +3691,8 @@ kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
     eleza testOddCmsgSize(self):
-        # Try to send ancillary data with first item one byte too
-        # long.  Fall back to sending with correct size ikiwa this fails,
+        # Try to send ancillary data ukijumuisha first item one byte too
+        # long.  Fall back to sending ukijumuisha correct size ikiwa this fails,
         # na check that second item was handled correctly.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240,
                                           maxhop=self.hop_limit)
@@ -3729,7 +3729,7 @@ kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
                                   socket.IPV6_RECVHOPLIMIT, 1)
         self.misc_event.set()
-        args = () ikiwa ancbufsize ni Tupu else (ancbufsize,)
+        args = () ikiwa ancbufsize ni Tupu isipokua (ancbufsize,)
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), *args)
 
@@ -3800,7 +3800,7 @@ kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
     eleza testSingleCmsgTruncInData(self):
         # Test truncation of a control message inside its associated
-        # data.  The message may be rudishaed with its data truncated,
+        # data.  The message may be rudishaed ukijumuisha its data truncated,
         # ama sio rudishaed at all.
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
                                   socket.IPV6_RECVHOPLIMIT, 1)
@@ -3854,7 +3854,7 @@ kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], 255)
 
-    # Try the above test with various buffer sizes.
+    # Try the above test ukijumuisha various buffer sizes.
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
@@ -3967,7 +3967,7 @@ kundi SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
                               ThreadedSocketTestMixin, UDP6TestBase):
 
     eleza checkRecvmsgAddress(self, addr1, addr2):
-        # Called to compare the received address with the address of
+        # Called to compare the received address ukijumuisha the address of
         # the peer, ignoring scope ID
         self.assertEqual(addr1[:-1], addr2[:-1])
 
@@ -4099,7 +4099,7 @@ kundi RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
     pita
 
 
-# Test interrupting the interruptible send/receive methods with a
+# Test interrupting the interruptible send/receive methods ukijumuisha a
 # signal when a timeout ni set.  These tests avoid having multiple
 # threads alive during the test so that the OS cannot deliver the
 # signal to the wrong one.
@@ -4140,7 +4140,7 @@ kundi InterruptedTimeoutBase(unittest.TestCase):
 @unittest.skipUnless(hasattr(signal, "alarm") ama hasattr(signal, "setitimer"),
                      "Don't have signal.alarm ama signal.setitimer")
 kundi InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
-    # Test interrupting the recv*() methods with signals when a
+    # Test interrupting the recv*() methods ukijumuisha signals when a
     # timeout ni set.
 
     eleza setUp(self):
@@ -4152,7 +4152,7 @@ kundi InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
         # errno of EINTR when interrupted by a signal.
         jaribu:
             self.setAlarm(self.alarm_time)
-            with self.assertRaises(ZeroDivisionError) kama cm:
+            ukijumuisha self.assertRaises(ZeroDivisionError) kama cm:
                 func(*args, **kwargs)
         mwishowe:
             self.setAlarm(0)
@@ -4186,7 +4186,7 @@ kundi InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
 kundi InterruptedSendTimeoutTest(InterruptedTimeoutBase,
                                  ThreadSafeCleanupTestCase,
                                  SocketListeningTestMixin, TCPTestBase):
-    # Test interrupting the interruptible send*() methods with signals
+    # Test interrupting the interruptible send*() methods ukijumuisha signals
     # when a timeout ni set.
 
     eleza setUp(self):
@@ -4208,10 +4208,10 @@ kundi InterruptedSendTimeoutTest(InterruptedTimeoutBase,
 
     eleza checkInterruptedSend(self, func, *args, **kwargs):
         # Check that func(*args, **kwargs), run kwenye a loop, ashirias
-        # OSError with an errno of EINTR when interrupted by a
+        # OSError ukijumuisha an errno of EINTR when interrupted by a
         # signal.
         jaribu:
-            with self.assertRaises(ZeroDivisionError) kama cm:
+            ukijumuisha self.assertRaises(ZeroDivisionError) kama cm:
                 wakati Kweli:
                     self.setAlarm(self.alarm_time)
                     func(*args, **kwargs)
@@ -4358,7 +4358,7 @@ kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
                          'test needs socket.SOCK_NONBLOCK')
     @support.requires_linux_version(2, 6, 28)
     eleza testInitNonBlocking(self):
-        # create a socket with SOCK_NONBLOCK
+        # create a socket ukijumuisha SOCK_NONBLOCK
         self.serv.close()
         self.serv = socket.socket(socket.AF_INET,
                                   socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
@@ -4368,9 +4368,9 @@ kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
         pita
 
     eleza testInheritFlagsBlocking(self):
-        # bpo-7995: accept() on a listening socket with a timeout na the
+        # bpo-7995: accept() on a listening socket ukijumuisha a timeout na the
         # default timeout ni Tupu, the resulting socket must be blocking.
-        with socket_setdefaulttimeout(Tupu):
+        ukijumuisha socket_setdefaulttimeout(Tupu):
             self.serv.settimeout(10)
             conn, addr = self.serv.accept()
             self.addCleanup(conn.close)
@@ -4380,11 +4380,11 @@ kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.cli.connect((HOST, self.port))
 
     eleza testInheritFlagsTimeout(self):
-        # bpo-7995: accept() on a listening socket with a timeout na the
+        # bpo-7995: accept() on a listening socket ukijumuisha a timeout na the
         # default timeout ni Tupu, the resulting socket must inherit
         # the default timeout.
         default_timeout = 20.0
-        with socket_setdefaulttimeout(default_timeout):
+        ukijumuisha socket_setdefaulttimeout(default_timeout):
             self.serv.settimeout(10)
             conn, addr = self.serv.accept()
             self.addCleanup(conn.close)
@@ -4399,7 +4399,7 @@ kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
 
         # connect() didn't start: non-blocking accept() fails
         start_time = time.monotonic()
-        with self.assertRaises(BlockingIOError):
+        ukijumuisha self.assertRaises(BlockingIOError):
             conn, addr = self.serv.accept()
         dt = time.monotonic() - start_time
         self.assertLess(dt, 1.0)
@@ -4429,7 +4429,7 @@ kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
         conn.setblocking(0)
 
         # the server didn't send data yet: non-blocking recv() fails
-        with self.assertRaises(BlockingIOError):
+        ukijumuisha self.assertRaises(BlockingIOError):
             msg = conn.recv(len(MSG))
 
         self.event.set()
@@ -4518,7 +4518,7 @@ kundi FileObjectClassTestCase(SocketConnectedTest):
         # First read ashirias a timeout
         self.assertRaises(socket.timeout, self.read_file.read, 1)
         # Second read ni disallowed
-        with self.assertRaises(OSError) kama ctx:
+        ukijumuisha self.assertRaises(OSError) kama ctx:
             self.read_file.read(1)
         self.assertIn("cannot read kutoka timed out object", str(ctx.exception))
 
@@ -4618,7 +4618,7 @@ kundi FileObjectClassTestCase(SocketConnectedTest):
 
 kundi UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
-    """Repeat the tests kutoka FileObjectClassTestCase with bufsize==0.
+    """Repeat the tests kutoka FileObjectClassTestCase ukijumuisha bufsize==0.
 
     In this case (and kwenye this case only), it should be possible to
     create a file object, read a line kutoka it, create another file
@@ -4629,7 +4629,7 @@ kundi UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
     bufsize = 0 # Use unbuffered mode
 
     eleza testUnbufferedReadline(self):
-        # Read a line, create a new file object, read another line with it
+        # Read a line, create a new file object, read another line ukijumuisha it
         line = self.read_file.readline() # first line
         self.assertEqual(line, b"A. " + self.write_msg) # first line
         self.read_file = self.cli_conn.makefile('rb', 0)
@@ -4705,7 +4705,7 @@ kundi UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
     eleza _testWriteNonBlocking(self):
         self.serv_skipped = Tupu
         self.serv_conn.setblocking(Uongo)
-        # Try to saturate the socket buffer pipe with repeated large writes.
+        # Try to saturate the socket buffer pipe ukijumuisha repeated large writes.
         BIG = b"x" * support.SOCK_MAX_SIZE
         LIMIT = 10
         # The first write() succeeds since a chunk of data can be buffered
@@ -4797,7 +4797,7 @@ kundi NetworkConnectionNoServer(unittest.TestCase):
         port = support.find_unused_port()
         cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addCleanup(cli.close)
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             cli.connect((HOST, port))
         self.assertEqual(cm.exception.errno, errno.ECONNREFUSED)
 
@@ -4805,7 +4805,7 @@ kundi NetworkConnectionNoServer(unittest.TestCase):
         # Issue #9792: errors ashiriad by create_connection() should have
         # a proper errno attribute.
         port = support.find_unused_port()
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             socket.create_connection((HOST, port))
 
         # Issue #16257: create_connection() calls getaddrinfo() against
@@ -4828,7 +4828,7 @@ kundi NetworkConnectionNoServer(unittest.TestCase):
     eleza test_create_connection_timeout(self):
         # Issue #9792: create_connection() should sio recast timeout errors
         # kama generic socket errors.
-        with self.mocked_socket_module():
+        ukijumuisha self.mocked_socket_module():
             jaribu:
                 socket.create_connection((HOST, 1234))
             tatizo socket.timeout:
@@ -5037,7 +5037,7 @@ kundi TestExceptions(unittest.TestCase):
         sock0.close()
         self.addCleanup(sock.detach)
 
-        with self.assertRaises(OSError):
+        ukijumuisha self.assertRaises(OSError):
             sock.setblocking(Uongo)
 
 
@@ -5048,24 +5048,24 @@ kundi TestLinuxAbstractNamespace(unittest.TestCase):
 
     eleza testLinuxAbstractNamespace(self):
         address = b"\x00python-test-hello\x00\xff"
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s1:
+        ukijumuisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s1:
             s1.bind(address)
             s1.listen()
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s2:
+            ukijumuisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s2:
                 s2.connect(s1.getsockname())
-                with s1.accept()[0] kama s3:
+                ukijumuisha s1.accept()[0] kama s3:
                     self.assertEqual(s1.getsockname(), address)
                     self.assertEqual(s2.getpeername(), address)
 
     eleza testMaxName(self):
         address = b"\x00" + b"h" * (self.UNIX_PATH_MAX - 1)
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             s.bind(address)
             self.assertEqual(s.getsockname(), address)
 
     eleza testNameOverflow(self):
         address = "\x00" + "h" * self.UNIX_PATH_MAX
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             self.assertRaises(OSError, s.bind, address)
 
     eleza testStrName(self):
@@ -5079,7 +5079,7 @@ kundi TestLinuxAbstractNamespace(unittest.TestCase):
 
     eleza testBytearrayName(self):
         # Check that an abstract name can be pitaed kama a bytearray.
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             s.bind(bytearray(b"\x00python\x00test\x00"))
             self.assertEqual(s.getsockname(), b"\x00python\x00test\x00")
 
@@ -5134,7 +5134,7 @@ kundi TestUnixDomain(unittest.TestCase):
         self.assertEqual(self.sock.getsockname(), path)
 
     eleza testSurrogateescapeBind(self):
-        # Test binding to a valid non-ASCII pathname, with the
+        # Test binding to a valid non-ASCII pathname, ukijumuisha the
         # non-ASCII bytes supplied using surrogateescape encoding.
         path = os.path.abspath(support.TESTFN_UNICODE)
         b = self.encoded(path)
@@ -5254,7 +5254,7 @@ eleza isTipcAvailable():
         # It's ok ikiwa the file does sio exist, ni a directory ama ikiwa we
         # have sio the permission to read it.
         rudisha Uongo
-    with f:
+    ukijumuisha f:
         kila line kwenye f:
             ikiwa line.startswith("tipc "):
                 rudisha Kweli
@@ -5329,15 +5329,15 @@ kundi ContextManagersTest(ThreadedTCPSocketTest):
 
     eleza _testSocketClass(self):
         # base test
-        with socket.socket() kama sock:
+        ukijumuisha socket.socket() kama sock:
             self.assertUongo(sock._closed)
         self.assertKweli(sock._closed)
-        # close inside with block
-        with socket.socket() kama sock:
+        # close inside ukijumuisha block
+        ukijumuisha socket.socket() kama sock:
             sock.close()
         self.assertKweli(sock._closed)
-        # exception inside with block
-        with socket.socket() kama sock:
+        # exception inside ukijumuisha block
+        ukijumuisha socket.socket() kama sock:
             self.assertRaises(OSError, sock.sendall, b'foo')
         self.assertKweli(sock._closed)
 
@@ -5349,7 +5349,7 @@ kundi ContextManagersTest(ThreadedTCPSocketTest):
 
     eleza _testCreateConnectionBase(self):
         address = self.serv.getsockname()
-        with socket.create_connection(address) kama sock:
+        ukijumuisha socket.create_connection(address) kama sock:
             self.assertUongo(sock._closed)
             sock.sendall(b'foo')
             self.assertEqual(sock.recv(1024), b'foo')
@@ -5363,7 +5363,7 @@ kundi ContextManagersTest(ThreadedTCPSocketTest):
 
     eleza _testCreateConnectionClose(self):
         address = self.serv.getsockname()
-        with socket.create_connection(address) kama sock:
+        ukijumuisha socket.create_connection(address) kama sock:
             sock.close()
         self.assertKweli(sock._closed)
         self.assertRaises(OSError, sock.sendall, b'foo')
@@ -5374,27 +5374,27 @@ kundi InheritanceTest(unittest.TestCase):
                          "SOCK_CLOEXEC sio defined")
     @support.requires_linux_version(2, 6, 28)
     eleza test_SOCK_CLOEXEC(self):
-        with socket.socket(socket.AF_INET,
+        ukijumuisha socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM | socket.SOCK_CLOEXEC) kama s:
             self.assertEqual(s.type, socket.SOCK_STREAM)
             self.assertUongo(s.get_inheritable())
 
     eleza test_default_inheritable(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             self.assertEqual(sock.get_inheritable(), Uongo)
 
     eleza test_dup(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             newsock = sock.dup()
             sock.close()
-            with newsock:
+            ukijumuisha newsock:
                 self.assertEqual(newsock.get_inheritable(), Uongo)
 
     eleza test_set_inheritable(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             sock.set_inheritable(Kweli)
             self.assertEqual(sock.get_inheritable(), Kweli)
 
@@ -5404,7 +5404,7 @@ kundi InheritanceTest(unittest.TestCase):
     @unittest.skipIf(fcntl ni Tupu, "need fcntl")
     eleza test_get_inheritable_cloexec(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             fd = sock.fileno()
             self.assertEqual(sock.get_inheritable(), Uongo)
 
@@ -5418,7 +5418,7 @@ kundi InheritanceTest(unittest.TestCase):
     @unittest.skipIf(fcntl ni Tupu, "need fcntl")
     eleza test_set_inheritable_cloexec(self):
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             fd = sock.fileno()
             self.assertEqual(fcntl.fcntl(fd, fcntl.F_GETFD) & fcntl.FD_CLOEXEC,
                              fcntl.FD_CLOEXEC)
@@ -5453,7 +5453,7 @@ kundi NonblockConstantTest(unittest.TestCase):
                 # kutoka the standpoint of the Python API.  For Python socket
                 # object, "blocking" means that operations like 'sock.recv()'
                 # will block.  Internally, file descriptors for
-                # "blocking" Python sockets *with timeouts* are kwenye a
+                # "blocking" Python sockets *ukijumuisha timeouts* are kwenye a
                 # *non-blocking* mode, na 'sock.recv()' uses 'select()'
                 # na handles EWOULDBLOCK/EAGAIN to enforce the timeout.
                 self.assertKweli(s.getblocking())
@@ -5468,7 +5468,7 @@ kundi NonblockConstantTest(unittest.TestCase):
     eleza test_SOCK_NONBLOCK(self):
         # a lot of it seems silly na redundant, but I wanted to test that
         # changing back na forth worked ok
-        with socket.socket(socket.AF_INET,
+        ukijumuisha socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM | socket.SOCK_NONBLOCK) kama s:
             self.checkNonblock(s)
             s.setblocking(1)
@@ -5484,16 +5484,16 @@ kundi NonblockConstantTest(unittest.TestCase):
         # defaulttimeout
         t = socket.getdefaulttimeout()
         socket.setdefaulttimeout(0.0)
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             self.checkNonblock(s)
         socket.setdefaulttimeout(Tupu)
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             self.checkNonblock(s, Uongo)
         socket.setdefaulttimeout(2.0)
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             self.checkNonblock(s, timeout=2.0)
         socket.setdefaulttimeout(Tupu)
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             self.checkNonblock(s, Uongo)
         socket.setdefaulttimeout(t)
 
@@ -5623,10 +5623,10 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
 
         chunk = b"".join([random.choice(string.ascii_letters).encode()
                           kila i kwenye range(cls.BUFSIZE)])
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             kila csize kwenye chunks(cls.FILESIZE, cls.BUFSIZE):
                 f.write(chunk)
-        with open(support.TESTFN, 'rb') kama f:
+        ukijumuisha open(support.TESTFN, 'rb') kama f:
             cls.FILEDATA = f.read()
             assert len(cls.FILEDATA) == cls.FILESIZE
 
@@ -5660,7 +5660,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testRegularFile(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address) kama sock, file kama file:
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, self.FILESIZE)
@@ -5677,7 +5677,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testNonRegularFile(self):
         address = self.serv.getsockname()
         file = io.BytesIO(self.FILEDATA)
-        with socket.create_connection(address) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address) kama sock, file kama file:
             sent = sock.sendfile(file)
             self.assertEqual(sent, self.FILESIZE)
             self.assertEqual(file.tell(), self.FILESIZE)
@@ -5695,10 +5695,10 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testEmptyFileSend(self):
         address = self.serv.getsockname()
         filename = support.TESTFN + "2"
-        with open(filename, 'wb'):
+        ukijumuisha open(filename, 'wb'):
             self.addCleanup(support.unlink, filename)
         file = open(filename, 'rb')
-        with socket.create_connection(address) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address) kama sock, file kama file:
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, 0)
@@ -5714,7 +5714,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testOffset(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address) kama sock, file kama file:
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file, offset=5000)
             self.assertEqual(sent, self.FILESIZE - 5000)
@@ -5731,7 +5731,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testCount(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address, timeout=2) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address, timeout=2) kama sock, file kama file:
             count = 5000007
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file, count=count)
@@ -5750,7 +5750,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testCountSmall(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address, timeout=2) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address, timeout=2) kama sock, file kama file:
             count = 1
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file, count=count)
@@ -5769,7 +5769,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testCountWithOffset(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address, timeout=2) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address, timeout=2) kama sock, file kama file:
             count = 100007
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file, offset=2007, count=count)
@@ -5788,7 +5788,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testNonBlocking(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address) kama sock, file kama file:
             sock.setblocking(Uongo)
             meth = self.meth_kutoka_sock(sock)
             self.assertRaises(ValueError, meth, file)
@@ -5804,7 +5804,7 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     eleza _testWithTimeout(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
-        with socket.create_connection(address, timeout=2) kama sock, file kama file:
+        ukijumuisha socket.create_connection(address, timeout=2) kama sock, file kama file:
             meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, self.FILESIZE)
@@ -5819,8 +5819,8 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     eleza _testWithTimeoutTriggeredSend(self):
         address = self.serv.getsockname()
-        with open(support.TESTFN, 'rb') kama file:
-            with socket.create_connection(address) kama sock:
+        ukijumuisha open(support.TESTFN, 'rb') kama file:
+            ukijumuisha socket.create_connection(address) kama sock:
                 sock.settimeout(0.01)
                 meth = self.meth_kutoka_sock(sock)
                 self.assertRaises(socket.timeout, meth, file)
@@ -5835,18 +5835,18 @@ kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
         pita
 
     eleza test_errors(self):
-        with open(support.TESTFN, 'rb') kama file:
-            with socket.socket(type=socket.SOCK_DGRAM) kama s:
+        ukijumuisha open(support.TESTFN, 'rb') kama file:
+            ukijumuisha socket.socket(type=socket.SOCK_DGRAM) kama s:
                 meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(
                     ValueError, "SOCK_STREAM", meth, file)
-        with open(support.TESTFN, 'rt') kama file:
-            with socket.socket() kama s:
+        ukijumuisha open(support.TESTFN, 'rt') kama file:
+            ukijumuisha socket.socket() kama s:
                 meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(
                     ValueError, "binary mode", meth, file)
-        with open(support.TESTFN, 'rb') kama file:
-            with socket.socket() kama s:
+        ukijumuisha open(support.TESTFN, 'rb') kama file:
+            ukijumuisha socket.socket() kama s:
                 meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(TypeError, "positive integer",
                                        meth, file, count='2')
@@ -5882,20 +5882,20 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
         isipokua:
             rudisha sock
 
-    # bpo-31705: On kernel older than 4.5, sendto() failed with ENOKEY,
+    # bpo-31705: On kernel older than 4.5, sendto() failed ukijumuisha ENOKEY,
     # at least on ppc64le architecture
     @support.requires_linux_version(4, 5)
     eleza test_sha256(self):
         expected = bytes.kutokahex("ba7816bf8f01cfea414140de5dae2223b00361a396"
                                  "177a9cb410ff61f20015ad")
-        with self.create_alg('hash', 'sha256') kama algo:
+        ukijumuisha self.create_alg('hash', 'sha256') kama algo:
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendall(b"abc")
                 self.assertEqual(op.recv(512), expected)
 
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.send(b'a', socket.MSG_MORE)
                 op.send(b'b', socket.MSG_MORE)
                 op.send(b'c', socket.MSG_MORE)
@@ -5904,15 +5904,15 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
 
     eleza test_hmac_sha1(self):
         expected = bytes.kutokahex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79")
-        with self.create_alg('hash', 'hmac(sha1)') kama algo:
+        ukijumuisha self.create_alg('hash', 'hmac(sha1)') kama algo:
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, b"Jefe")
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendall(b"what do ya want kila nothing?")
                 self.assertEqual(op.recv(512), expected)
 
-    # Although it should work with 3.19 na newer the test blocks on
-    # Ubuntu 15.10 with Kernel 4.2.0-19.
+    # Although it should work ukijumuisha 3.19 na newer the test blocks on
+    # Ubuntu 15.10 ukijumuisha Kernel 4.2.0-19.
     @support.requires_linux_version(4, 3)
     eleza test_aes_cbc(self):
         key = bytes.kutokahex('06a9214036b8a15b512e03d534120006')
@@ -5920,17 +5920,17 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
         msg = b"Single block msg"
         ciphertext = bytes.kutokahex('e353779c1079aeb82708942dbe77181a')
         msglen = len(msg)
-        with self.create_alg('skcipher', 'cbc(aes)') kama algo:
+        ukijumuisha self.create_alg('skcipher', 'cbc(aes)') kama algo:
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, key)
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendmsg_afalg(op=socket.ALG_OP_ENCRYPT, iv=iv,
                                  flags=socket.MSG_MORE)
                 op.sendall(msg)
                 self.assertEqual(op.recv(msglen), ciphertext)
 
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendmsg_afalg([ciphertext],
                                  op=socket.ALG_OP_DECRYPT, iv=iv)
                 self.assertEqual(op.recv(msglen), msg)
@@ -5939,7 +5939,7 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
             multiplier = 1024
             longmsg = [msg] * multiplier
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendmsg_afalg(longmsg,
                                  op=socket.ALG_OP_ENCRYPT, iv=iv)
                 enc = op.recv(msglen * multiplier)
@@ -5947,7 +5947,7 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
             self.assertEqual(enc[:msglen], ciphertext)
 
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendmsg_afalg([enc],
                                  op=socket.ALG_OP_DECRYPT, iv=iv)
                 dec = op.recv(msglen * multiplier)
@@ -5966,14 +5966,14 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
         taglen = len(expected_tag)
         assoclen = len(assoc)
 
-        with self.create_alg('aead', 'gcm(aes)') kama algo:
+        ukijumuisha self.create_alg('aead', 'gcm(aes)') kama algo:
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, key)
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_AEAD_AUTHSIZE,
                             Tupu, taglen)
 
             # send assoc, plain na tag buffer kwenye separate steps
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 op.sendmsg_afalg(op=socket.ALG_OP_ENCRYPT, iv=iv,
                                  assoclen=assoclen, flags=socket.MSG_MORE)
                 op.sendall(assoc, socket.MSG_MORE)
@@ -5982,9 +5982,9 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
                 self.assertEqual(expected_ct, res[assoclen:-taglen])
                 self.assertEqual(expected_tag, res[-taglen:])
 
-            # now with msg
+            # now ukijumuisha msg
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 msg = assoc + plain
                 op.sendmsg_afalg([msg], op=socket.ALG_OP_ENCRYPT, iv=iv,
                                  assoclen=assoclen)
@@ -5995,7 +5995,7 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
             # create anc data manually
             pack_uint32 = struct.Struct('I').pack
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 msg = assoc + plain
                 op.sendmsg(
                     [msg],
@@ -6010,7 +6010,7 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
 
             # decrypt na verify
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 msg = assoc + expected_ct + expected_tag
                 op.sendmsg_afalg([msg], op=socket.ALG_OP_DECRYPT, iv=iv,
                                  assoclen=assoclen)
@@ -6020,30 +6020,30 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
     @support.requires_linux_version(4, 3)  # see test_aes_cbc
     eleza test_drbg_pr_sha256(self):
         # deterministic random bit generator, prediction resistance, sha256
-        with self.create_alg('rng', 'drbg_pr_sha256') kama algo:
+        ukijumuisha self.create_alg('rng', 'drbg_pr_sha256') kama algo:
             extra_seed = os.urandom(32)
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, extra_seed)
             op, _ = algo.accept()
-            with op:
+            ukijumuisha op:
                 rn = op.recv(32)
                 self.assertEqual(len(rn), 32)
 
     eleza test_sendmsg_afalg_args(self):
         sock = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
-        with sock:
-            with self.assertRaises(TypeError):
+        ukijumuisha sock:
+            ukijumuisha self.assertRaises(TypeError):
                 sock.sendmsg_afalg()
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sock.sendmsg_afalg(op=Tupu)
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sock.sendmsg_afalg(1)
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sock.sendmsg_afalg(op=socket.ALG_OP_ENCRYPT, assoclen=Tupu)
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sock.sendmsg_afalg(op=socket.ALG_OP_ENCRYPT, assoclen=-1)
 
     eleza test_length_restriction(self):
@@ -6052,15 +6052,15 @@ kundi LinuxKernelCryptoAPI(unittest.TestCase):
         self.addCleanup(sock.close)
 
         # salg_type[14]
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             sock.bind(("t" * 13, "name"))
-        with self.assertRaisesRegex(ValueError, "type too long"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "type too long"):
             sock.bind(("t" * 14, "name"))
 
         # salg_name[64]
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             sock.bind(("type", "n" * 63))
-        with self.assertRaisesRegex(ValueError, "name too long"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "name too long"):
             sock.bind(("type", "n" * 64))
 
 
@@ -6070,11 +6070,11 @@ kundi TestMSWindowsTCPFlags(unittest.TestCase):
                        # available since long time ago
                        'TCP_MAXSEG',
                        'TCP_NODELAY',
-                       # available starting with Windows 10 1607
+                       # available starting ukijumuisha Windows 10 1607
                        'TCP_FASTOPEN',
-                       # available starting with Windows 10 1703
+                       # available starting ukijumuisha Windows 10 1703
                        'TCP_KEEPCNT',
-                       # available starting with Windows 10 1709
+                       # available starting ukijumuisha Windows 10 1709
                        'TCP_KEEPIDLE',
                        'TCP_KEEPINTVL'
                        }
@@ -6091,33 +6091,33 @@ kundi CreateServerTest(unittest.TestCase):
 
     eleza test_address(self):
         port = support.find_unused_port()
-        with socket.create_server(("127.0.0.1", port)) kama sock:
+        ukijumuisha socket.create_server(("127.0.0.1", port)) kama sock:
             self.assertEqual(sock.getsockname()[0], "127.0.0.1")
             self.assertEqual(sock.getsockname()[1], port)
         ikiwa support.IPV6_ENABLED:
-            with socket.create_server(("::1", port),
+            ukijumuisha socket.create_server(("::1", port),
                                       family=socket.AF_INET6) kama sock:
                 self.assertEqual(sock.getsockname()[0], "::1")
                 self.assertEqual(sock.getsockname()[1], port)
 
     eleza test_family_and_type(self):
-        with socket.create_server(("127.0.0.1", 0)) kama sock:
+        ukijumuisha socket.create_server(("127.0.0.1", 0)) kama sock:
             self.assertEqual(sock.family, socket.AF_INET)
             self.assertEqual(sock.type, socket.SOCK_STREAM)
         ikiwa support.IPV6_ENABLED:
-            with socket.create_server(("::1", 0), family=socket.AF_INET6) kama s:
+            ukijumuisha socket.create_server(("::1", 0), family=socket.AF_INET6) kama s:
                 self.assertEqual(s.family, socket.AF_INET6)
                 self.assertEqual(sock.type, socket.SOCK_STREAM)
 
     eleza test_reuse_port(self):
         ikiwa sio hasattr(socket, "SO_REUSEPORT"):
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 socket.create_server(("localhost", 0), reuse_port=Kweli)
         isipokua:
-            with socket.create_server(("localhost", 0)) kama sock:
+            ukijumuisha socket.create_server(("localhost", 0)) kama sock:
                 opt = sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT)
                 self.assertEqual(opt, 0)
-            with socket.create_server(("localhost", 0), reuse_port=Kweli) kama sock:
+            ukijumuisha socket.create_server(("localhost", 0), reuse_port=Kweli) kama sock:
                 opt = sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT)
                 self.assertNotEqual(opt, 0)
 
@@ -6126,14 +6126,14 @@ kundi CreateServerTest(unittest.TestCase):
                      "IPV6_V6ONLY option sio supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test')
     eleza test_ipv6_only_default(self):
-        with socket.create_server(("::1", 0), family=socket.AF_INET6) kama sock:
+        ukijumuisha socket.create_server(("::1", 0), family=socket.AF_INET6) kama sock:
             assert sock.getsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY)
 
     @unittest.skipIf(not socket.has_dualstack_ipv6(),
                      "dualstack_ipv6 sio supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test')
     eleza test_dualstack_ipv6_family(self):
-        with socket.create_server(("::1", 0), family=socket.AF_INET6,
+        ukijumuisha socket.create_server(("::1", 0), family=socket.AF_INET6,
                                   dualstack_ipv6=Kweli) kama sock:
             self.assertEqual(sock.family, socket.AF_INET6)
 
@@ -6150,9 +6150,9 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
 
     eleza echo_server(self, sock):
         eleza run(sock):
-            with sock:
+            ukijumuisha sock:
                 conn, _ = sock.accept()
-                with conn:
+                ukijumuisha conn:
                     event.wait(self.timeout)
                     msg = conn.recv(1024)
                     ikiwa sio msg:
@@ -6166,7 +6166,7 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
         event.set()
 
     eleza echo_client(self, addr, family):
-        with socket.socket(family=family) kama sock:
+        ukijumuisha socket.socket(family=family) kama sock:
             sock.settimeout(self.timeout)
             sock.connect(addr)
             sock.sendall(b'foo')
@@ -6174,14 +6174,14 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
 
     eleza test_tcp4(self):
         port = support.find_unused_port()
-        with socket.create_server(("", port)) kama sock:
+        ukijumuisha socket.create_server(("", port)) kama sock:
             self.echo_server(sock)
             self.echo_client(("127.0.0.1", port), socket.AF_INET)
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test')
     eleza test_tcp6(self):
         port = support.find_unused_port()
-        with socket.create_server(("", port),
+        ukijumuisha socket.create_server(("", port),
                                   family=socket.AF_INET6) kama sock:
             self.echo_server(sock)
             self.echo_client(("::1", port), socket.AF_INET6)
@@ -6193,7 +6193,7 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test')
     eleza test_dual_stack_client_v4(self):
         port = support.find_unused_port()
-        with socket.create_server(("", port), family=socket.AF_INET6,
+        ukijumuisha socket.create_server(("", port), family=socket.AF_INET6,
                                   dualstack_ipv6=Kweli) kama sock:
             self.echo_server(sock)
             self.echo_client(("127.0.0.1", port), socket.AF_INET)
@@ -6203,7 +6203,7 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required kila this test')
     eleza test_dual_stack_client_v6(self):
         port = support.find_unused_port()
-        with socket.create_server(("", port), family=socket.AF_INET6,
+        ukijumuisha socket.create_server(("", port), family=socket.AF_INET6,
                                   dualstack_ipv6=Kweli) kama sock:
             self.echo_server(sock)
             self.echo_client(("::1", port), socket.AF_INET6)

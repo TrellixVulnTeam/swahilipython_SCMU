@@ -27,7 +27,7 @@ STACK_DEBUG = logging.DEBUG - 1  # heavy-duty debugging
 
 
 kundi Future:
-    """This kundi ni *almost* compatible with concurrent.futures.Future.
+    """This kundi ni *almost* compatible ukijumuisha concurrent.futures.Future.
 
     Differences:
 
@@ -36,10 +36,10 @@ kundi Future:
     - result() na exception() do sio take a timeout argument and
       ashiria an exception when the future isn't done yet.
 
-    - Callbacks registered with add_done_callback() are always called
+    - Callbacks registered ukijumuisha add_done_callback() are always called
       via the event loop's call_soon().
 
-    - This kundi ni sio compatible with the wait() na as_completed()
+    - This kundi ni sio compatible ukijumuisha the wait() na as_completed()
       methods kwenye the concurrent.futures package.
 
     (In Python 3.4 ama later we may be able to unify the implementations.)
@@ -193,9 +193,9 @@ kundi Future:
     eleza add_done_callback(self, fn, *, context=Tupu):
         """Add a callback to be run when the future becomes done.
 
-        The callback ni called with a single argument - the future object. If
+        The callback ni called ukijumuisha a single argument - the future object. If
         the future ni already done when this ni called, the callback is
-        scheduled with call_soon.
+        scheduled ukijumuisha call_soon.
         """
         ikiwa self._state != _PENDING:
             self._loop.call_soon(fn, self, context=context)
@@ -244,7 +244,7 @@ kundi Future:
         ikiwa isinstance(exception, type):
             exception = exception()
         ikiwa type(exception) ni StopIteration:
-            ashiria TypeError("StopIteration interacts badly with generators "
+            ashiria TypeError("StopIteration interacts badly ukijumuisha generators "
                             "and cannot be ashiriad into a Future")
         self._exception = exception
         self._state = _FINISHED
@@ -256,10 +256,10 @@ kundi Future:
             self._asyncio_future_blocking = Kweli
             tuma self  # This tells Task to wait kila completion.
         ikiwa sio self.done():
-            ashiria RuntimeError("await wasn't used with future")
+            ashiria RuntimeError("await wasn't used ukijumuisha future")
         rudisha self.result()  # May ashiria too.
 
-    __iter__ = __await__  # make compatible with 'tuma kutoka'.
+    __iter__ = __await__  # make compatible ukijumuisha 'tuma kutoka'.
 
 
 # Needed kila testing purposes.
@@ -289,9 +289,9 @@ eleza _convert_future_exc(exc):
     exc_kundi = type(exc)
     ikiwa exc_kundi ni concurrent.futures.CancelledError:
         rudisha exceptions.CancelledError(*exc.args)
-    elikiwa exc_kundi ni concurrent.futures.TimeoutError:
+    lasivyo exc_kundi ni concurrent.futures.TimeoutError:
         rudisha exceptions.TimeoutError(*exc.args)
-    elikiwa exc_kundi ni concurrent.futures.InvalidStateError:
+    lasivyo exc_kundi ni concurrent.futures.InvalidStateError:
         rudisha exceptions.InvalidStateError(*exc.args)
     isipokua:
         rudisha exc
@@ -337,7 +337,7 @@ eleza _chain_future(source, destination):
 
     The result (or exception) of source will be copied to destination.
     If destination ni cancelled, source gets cancelled too.
-    Compatible with both asyncio.Future na concurrent.futures.Future.
+    Compatible ukijumuisha both asyncio.Future na concurrent.futures.Future.
     """
     ikiwa sio isfuture(source) na sio isinstance(source,
                                                concurrent.futures.Future):
@@ -345,8 +345,8 @@ eleza _chain_future(source, destination):
     ikiwa sio isfuture(destination) na sio isinstance(destination,
                                                     concurrent.futures.Future):
         ashiria TypeError('A future ni required kila destination argument')
-    source_loop = _get_loop(source) ikiwa isfuture(source) else Tupu
-    dest_loop = _get_loop(destination) ikiwa isfuture(destination) else Tupu
+    source_loop = _get_loop(source) ikiwa isfuture(source) isipokua Tupu
+    dest_loop = _get_loop(destination) ikiwa isfuture(destination) isipokua Tupu
 
     eleza _set_state(future, other):
         ikiwa isfuture(future):

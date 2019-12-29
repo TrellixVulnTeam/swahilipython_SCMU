@@ -29,31 +29,31 @@ kundi MiscTests(unittest.TestCase):
         element = cET.Element('tag')
 
         element.tag = 'TAG'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.tag
         self.assertEqual(element.tag, 'TAG')
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.text
         self.assertIsTupu(element.text)
         element.text = 'TEXT'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.text
         self.assertEqual(element.text, 'TEXT')
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.tail
         self.assertIsTupu(element.tail)
         element.tail = 'TAIL'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.tail
         self.assertEqual(element.tail, 'TAIL')
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.attrib
         self.assertEqual(element.attrib, {})
         element.attrib = {'A': 'B', 'C': 'D'}
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa element.attrib
         self.assertEqual(element.attrib, {'A': 'B', 'C': 'D'})
 
@@ -67,7 +67,7 @@ kundi MiscTests(unittest.TestCase):
         support.gc_collect()
 
     eleza test_parser_ref_cycle(self):
-        # bpo-31499: xmlparser_dealloc() crashed with a segmentation fault when
+        # bpo-31499: xmlparser_dealloc() crashed ukijumuisha a segmentation fault when
         # xmlparser_gc_clear() was called previously by the garbage collector,
         # when the parser was part of a reference cycle.
 

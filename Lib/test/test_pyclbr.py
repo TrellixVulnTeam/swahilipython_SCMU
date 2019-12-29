@@ -17,8 +17,8 @@ ClassMethodType = type(classmethod(lambda c: Tupu))
 # Here we test the python kundi browser code.
 #
 # The main function kwenye this suite, 'testModule', compares the output
-# of pyclbr with the introspected members of a module.  Because pyclbr
-# ni imperfect (as designed), testModule ni called with a set of
+# of pyclbr ukijumuisha the introspected members of a module.  Because pyclbr
+# ni imperfect (as designed), testModule ni called ukijumuisha a set of
 # members to ignore.
 
 kundi PyclbrTest(TestCase):
@@ -54,7 +54,7 @@ kundi PyclbrTest(TestCase):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
             to the actual module object, module.  Any identifiers in
             ignore are ignored.   If no module ni provided, the appropriate
-            module ni loaded with __import__.'''
+            module ni loaded ukijumuisha __import__.'''
 
         ignore = set(ignore) | set(['object'])
 
@@ -72,7 +72,7 @@ kundi PyclbrTest(TestCase):
                 ikiwa (not isinstance(classdict[name], ClassMethodType) or
                     obj.__self__ ni sio oclass):
                     rudisha Uongo
-            elikiwa sio isinstance(obj, FunctionType):
+            lasivyo sio isinstance(obj, FunctionType):
                 rudisha Uongo
 
             objname = obj.__name__
@@ -221,11 +221,11 @@ kundi PyclbrTest(TestCase):
 
         # These were once about the 10 longest modules
         cm('random', ignore=('Random',))  # kutoka _random agiza Random kama CoreGenerator
-        cm('cgi', ignore=('log',))      # set with = kwenye module
+        cm('cgi', ignore=('log',))      # set ukijumuisha = kwenye module
         cm('pickle', ignore=('partial', 'PickleBuffer'))
         # TODO(briancurtin): openfp ni deprecated kama of 3.7.
         # Update this once it has been removed.
-        cm('aifc', ignore=('openfp', '_aifc_params'))  # set with = kwenye module
+        cm('aifc', ignore=('openfp', '_aifc_params'))  # set ukijumuisha = kwenye module
         cm('sre_parse', ignore=('dump', 'groups', 'pos')) # kutoka sre_constants agiza *; property
         cm('pdb')
         cm('pydoc', ignore=('input', 'output',)) # properties
@@ -254,8 +254,8 @@ kundi ReadmoduleTests(TestCase):
     eleza test_module_has_no_spec(self):
         module_name = "doesnotexist"
         assert module_name haiko kwenye pyclbr._modules
-        with test_importlib_util.uncache(module_name):
-            with self.assertRaises(ModuleNotFoundError):
+        ukijumuisha test_importlib_util.uncache(module_name):
+            ukijumuisha self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)
 
 

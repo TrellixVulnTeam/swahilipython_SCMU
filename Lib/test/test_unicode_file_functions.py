@@ -52,7 +52,7 @@ ikiwa sio os.path.supports_unicode_filenames:
         kila name kwenye filenames:
             name.encode(fsencoding)
     tatizo UnicodeEncodeError:
-        ashiria unittest.SkipTest("only NT+ na systems with "
+        ashiria unittest.SkipTest("only NT+ na systems ukijumuisha "
                                 "Unicode-friendly filesystem encoding")
 
 
@@ -70,7 +70,7 @@ kundi UnicodeFileTests(unittest.TestCase):
         files = set()
         kila name kwenye self.files:
             name = os.path.join(support.TESTFN, self.norm(name))
-            with open(name, 'wb') kama f:
+            ukijumuisha open(name, 'wb') kama f:
                 f.write((name+'\n').encode("utf-8"))
             os.stat(name)
             files.add(name)
@@ -84,12 +84,12 @@ kundi UnicodeFileTests(unittest.TestCase):
     eleza _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,
                        check_filename=Kweli):
-        with self.assertRaises(expected_exception) kama c:
+        ukijumuisha self.assertRaises(expected_exception) kama c:
             fn(filename)
         exc_filename = c.exception.filename
         ikiwa check_filename:
             self.assertEqual(exc_filename, filename, "Function '%s(%a) failed "
-                             "with bad filename kwenye the exception: %a" %
+                             "ukijumuisha bad filename kwenye the exception: %a" %
                              (fn.__name__, filename, exc_filename))
 
     eleza test_failures(self):
@@ -142,7 +142,7 @@ kundi UnicodeFileTests(unittest.TestCase):
     @unittest.skipIf(sys.platform == 'darwin', 'irrelevant test on Mac OS X')
     eleza test_listdir(self):
         sf0 = set(self.files)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             f1 = os.listdir(support.TESTFN.encode(sys.getfilesystemencoding()))
         f2 = os.listdir(support.TESTFN)
@@ -158,8 +158,8 @@ kundi UnicodeFileTests(unittest.TestCase):
     eleza test_directory(self):
         dirname = os.path.join(support.TESTFN, 'Gr\xfc\xdf-\u66e8\u66e9\u66eb')
         filename = '\xdf-\u66e8\u66e9\u66eb'
-        with support.temp_cwd(dirname):
-            with open(filename, 'wb') kama f:
+        ukijumuisha support.temp_cwd(dirname):
+            ukijumuisha open(filename, 'wb') kama f:
                 f.write((filename + '\n').encode("utf-8"))
             os.access(filename,os.R_OK)
             os.remove(filename)

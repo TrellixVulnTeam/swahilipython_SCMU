@@ -77,15 +77,15 @@ kundi BZ2File(_compression.BaseStream):
         ikiwa mode kwenye ("", "r", "rb"):
             mode = "rb"
             mode_code = _MODE_READ
-        elikiwa mode kwenye ("w", "wb"):
+        lasivyo mode kwenye ("w", "wb"):
             mode = "wb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        elikiwa mode kwenye ("x", "xb"):
+        lasivyo mode kwenye ("x", "xb"):
             mode = "xb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        elikiwa mode kwenye ("a", "ab"):
+        lasivyo mode kwenye ("a", "ab"):
             mode = "ab"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
@@ -96,7 +96,7 @@ kundi BZ2File(_compression.BaseStream):
             self._fp = _builtin_open(filename, mode)
             self._closefp = Kweli
             self._mode = mode_code
-        elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
+        lasivyo hasattr(filename, "read") ama hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         isipokua:
@@ -115,13 +115,13 @@ kundi BZ2File(_compression.BaseStream):
         May be called more than once without error. Once the file is
         closed, any other operation on it will ashiria a ValueError.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             ikiwa self._mode == _MODE_CLOSED:
                 rudisha
             jaribu:
                 ikiwa self._mode == _MODE_READ:
                     self._buffer.close()
-                elikiwa self._mode == _MODE_WRITE:
+                lasivyo self._mode == _MODE_WRITE:
                     self._fp.write(self._compressor.flush())
                     self._compressor = Tupu
             mwishowe:
@@ -164,7 +164,7 @@ kundi BZ2File(_compression.BaseStream):
         Always rudishas at least one byte of data, unless at EOF.
         The exact number of bytes rudishaed ni unspecified.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             # Relies on the undocumented fact that BufferedReader.peek()
             # always rudishas at least one byte (tatizo at EOF), independent
@@ -177,7 +177,7 @@ kundi BZ2File(_compression.BaseStream):
         If size ni negative ama omitted, read until EOF ni reached.
         Returns b'' ikiwa the file ni already at EOF.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             rudisha self._buffer.read(size)
 
@@ -188,7 +188,7 @@ kundi BZ2File(_compression.BaseStream):
 
         Returns b'' ikiwa the file ni at EOF.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             ikiwa size < 0:
                 size = io.DEFAULT_BUFFER_SIZE
@@ -199,7 +199,7 @@ kundi BZ2File(_compression.BaseStream):
 
         Returns the number of bytes read (0 kila EOF).
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             rudisha self._buffer.readinto(b)
 
@@ -214,7 +214,7 @@ kundi BZ2File(_compression.BaseStream):
             ikiwa sio hasattr(size, "__index__"):
                 ashiria TypeError("Integer argument expected")
             size = size.__index__()
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             rudisha self._buffer.readline(size)
 
@@ -229,7 +229,7 @@ kundi BZ2File(_compression.BaseStream):
             ikiwa sio hasattr(size, "__index__"):
                 ashiria TypeError("Integer argument expected")
             size = size.__index__()
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_read()
             rudisha self._buffer.readlines(size)
 
@@ -240,7 +240,7 @@ kundi BZ2File(_compression.BaseStream):
         always len(data). Note that due to buffering, the file on disk
         may sio reflect the data written until close() ni called.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_write()
             compressed = self._compressor.compress(data)
             self._fp.write(compressed)
@@ -255,7 +255,7 @@ kundi BZ2File(_compression.BaseStream):
 
         Line separators are sio added between the written byte strings.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             rudisha _compression.BaseStream.writelines(self, seq)
 
     eleza seek(self, offset, whence=io.SEEK_SET):
@@ -273,13 +273,13 @@ kundi BZ2File(_compression.BaseStream):
         Note that seeking ni emulated, so depending on the parameters,
         this operation may be extremely slow.
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_can_seek()
             rudisha self._buffer.seek(offset, whence)
 
     eleza tell(self):
         """Return the current file position."""
-        with self._lock:
+        ukijumuisha self._lock:
             self._check_not_closed()
             ikiwa self._mode == _MODE_READ:
                 rudisha self._buffer.tell()
@@ -303,7 +303,7 @@ eleza open(filename, mode="rb", compresslevel=9,
     the encoding, errors na newline arguments must sio be provided.
 
     For text mode, a BZ2File object ni created, na wrapped kwenye an
-    io.TextIOWrapper instance with the specified encoding, error
+    io.TextIOWrapper instance ukijumuisha the specified encoding, error
     handling behavior, na line ending(s).
 
     """

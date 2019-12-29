@@ -154,7 +154,7 @@ kundi TestList(TestInvariantWithoutMutations, unittest.TestCase):
         next(it)
         self.assertEqual(length_hint(it), n - 2)
         d.append(n)
-        self.assertEqual(length_hint(it), n - 1)  # grow with append
+        self.assertEqual(length_hint(it), n - 1)  # grow ukijumuisha append
         d[1:] = []
         self.assertEqual(length_hint(it), 0)
         self.assertEqual(list(it), [])

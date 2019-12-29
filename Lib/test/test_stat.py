@@ -111,7 +111,7 @@ kundi TestFilemode:
                 self.assertUongo(func(mode))
 
     eleza test_mode(self):
-        with open(TESTFN, 'w'):
+        ukijumuisha open(TESTFN, 'w'):
             pita
         ikiwa os.name == 'posix':
             os.chmod(TESTFN, 0o700)
@@ -195,7 +195,7 @@ kundi TestFilemode:
 
     @skip_unless_bind_unix_socket
     eleza test_socket(self):
-        with socket.socket(socket.AF_UNIX) kama s:
+        ukijumuisha socket.socket(socket.AF_UNIX) kama s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')

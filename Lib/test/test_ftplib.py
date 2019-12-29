@@ -58,7 +58,7 @@ kundi DummyDTPHandler(asynchat.async_chat):
     eleza handle_close(self):
         # XXX: this method can be called many times kwenye a row kila a single
         # connection, including kwenye clear-text (non-TLS) mode.
-        # (behaviour witnessed with test_data_connection)
+        # (behaviour witnessed ukijumuisha test_data_connection)
         ikiwa sio self.dtp_conn_closed:
             self.baseclass.push('226 transfer complete')
             self.close()
@@ -132,7 +132,7 @@ kundi DummyFTPHandler(asynchat.async_chat):
         self.push('200 active data connection established')
 
     eleza cmd_pasv(self, arg):
-        with socket.create_server((self.socket.getsockname()[0], 0)) kama sock:
+        ukijumuisha socket.create_server((self.socket.getsockname()[0], 0)) kama sock:
             sock.settimeout(TIMEOUT)
             ip, port = sock.getsockname()[:2]
             ip = ip.replace('.', ','); p1 = port / 256; p2 = port % 256
@@ -148,7 +148,7 @@ kundi DummyFTPHandler(asynchat.async_chat):
         self.push('200 active data connection established')
 
     eleza cmd_epsv(self, arg):
-        with socket.create_server((self.socket.getsockname()[0], 0),
+        ukijumuisha socket.create_server((self.socket.getsockname()[0], 0),
                                   family=socket.AF_INET6) kama sock:
             sock.settimeout(TIMEOUT)
             port = sock.getsockname()[1]
@@ -326,10 +326,10 @@ ikiwa ssl ni sio Tupu:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     rudisha
-                elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
+                lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
-                elikiwa "SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1]:
+                lasivyo "SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1]:
                     rudisha self.handle_close()
                 ashiria
             tatizo OSError kama err:
@@ -361,7 +361,7 @@ ikiwa ssl ni sio Tupu:
         eleza handle_read_event(self):
             ikiwa self._ssl_accepting:
                 self._do_ssl_handshake()
-            elikiwa self._ssl_closing:
+            lasivyo self._ssl_closing:
                 self._do_ssl_shutdown()
             isipokua:
                 super(SSLConnection, self).handle_read_event()
@@ -369,7 +369,7 @@ ikiwa ssl ni sio Tupu:
         eleza handle_write_event(self):
             ikiwa self._ssl_accepting:
                 self._do_ssl_handshake()
-            elikiwa self._ssl_closing:
+            lasivyo self._ssl_closing:
                 self._do_ssl_shutdown()
             isipokua:
                 super(SSLConnection, self).handle_write_event()
@@ -449,7 +449,7 @@ ikiwa ssl ni sio Tupu:
             ikiwa arg == 'C':
                 self.push('200 Protection set to Clear')
                 self.secure_data_channel = Uongo
-            elikiwa arg == 'P':
+            lasivyo arg == 'P':
                 self.push('200 Protection set to Private')
                 self.secure_data_channel = Kweli
             isipokua:
@@ -612,7 +612,7 @@ kundi TestFTPClass(TestCase):
 
         f = io.StringIO(RETR_DATA.replace('\r\n', '\n'))
         # storlines() expects a binary file, sio a text file
-        with support.check_warnings(('', BytesWarning), quiet=Kweli):
+        ukijumuisha support.check_warnings(('', BytesWarning), quiet=Kweli):
             self.assertRaises(TypeError, self.client.storlines, 'stor foo', f)
 
     eleza test_nlst(self):
@@ -642,10 +642,10 @@ kundi TestFTPClass(TestCase):
             self.server.handler_instance.next_data = data
 
         eleza test_entry(line, type=Tupu, perm=Tupu, unique=Tupu, name=Tupu):
-            type = 'type' ikiwa type ni Tupu else type
-            perm = 'perm' ikiwa perm ni Tupu else perm
-            unique = 'unique' ikiwa unique ni Tupu else unique
-            name = 'name' ikiwa name ni Tupu else name
+            type = 'type' ikiwa type ni Tupu isipokua type
+            perm = 'perm' ikiwa perm ni Tupu isipokua perm
+            unique = 'unique' ikiwa unique ni Tupu isipokua unique
+            name = 'name' ikiwa name ni Tupu isipokua name
             set_data(line)
             _name, facts = next(self.client.mlsd())
             self.assertEqual(_name, name)
@@ -683,7 +683,7 @@ kundi TestFTPClass(TestCase):
             self.fail("unexpected data %s" % x)
 
     eleza test_makeport(self):
-        with self.client.makeport():
+        ukijumuisha self.client.makeport():
             # IPv4 ni kwenye use, just make sure send_eprt has sio been used
             self.assertEqual(self.server.handler_instance.last_received_cmd,
                                 'port')
@@ -708,15 +708,15 @@ kundi TestFTPClass(TestCase):
             rudisha Kweli
 
         # base test
-        with ftplib.FTP(timeout=TIMEOUT) kama self.client:
+        ukijumuisha ftplib.FTP(timeout=TIMEOUT) kama self.client:
             self.client.connect(self.server.host, self.server.port)
             self.client.sendcmd('noop')
             self.assertKweli(is_client_connected())
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'quit')
         self.assertUongo(is_client_connected())
 
-        # QUIT sent inside the with block
-        with ftplib.FTP(timeout=TIMEOUT) kama self.client:
+        # QUIT sent inside the ukijumuisha block
+        ukijumuisha ftplib.FTP(timeout=TIMEOUT) kama self.client:
             self.client.connect(self.server.host, self.server.port)
             self.client.sendcmd('noop')
             self.client.quit()
@@ -726,7 +726,7 @@ kundi TestFTPClass(TestCase):
         # force a wrong response code to be sent on QUIT: error_perm
         # ni expected na the connection ni supposed to be closed
         jaribu:
-            with ftplib.FTP(timeout=TIMEOUT) kama self.client:
+            ukijumuisha ftplib.FTP(timeout=TIMEOUT) kama self.client:
                 self.client.connect(self.server.host, self.server.port)
                 self.client.sendcmd('noop')
                 self.server.handler_instance.next_response = '550 error on quit'
@@ -757,7 +757,7 @@ kundi TestFTPClass(TestCase):
         port = support.find_unused_port()
         self.client.source_address = (HOST, port)
         jaribu:
-            with self.client.transfercmd('list') kama sock:
+            ukijumuisha self.client.transfercmd('list') kama sock:
                 self.assertEqual(sock.getsockname()[1], port)
         tatizo OSError kama e:
             ikiwa e.errno == errno.EADDRINUSE:
@@ -811,7 +811,7 @@ kundi TestIPv6Environment(TestCase):
         self.assertEqual(self.client.af, socket.AF_INET6)
 
     eleza test_makeport(self):
-        with self.client.makeport():
+        ukijumuisha self.client.makeport():
             self.assertEqual(self.server.handler_instance.last_received_cmd,
                                 'eprt')
 
@@ -875,14 +875,14 @@ kundi TestTLS_FTPClass(TestCase):
 
     eleza test_data_connection(self):
         # clear text
-        with self.client.transfercmd('list') kama sock:
+        ukijumuisha self.client.transfercmd('list') kama sock:
             self.assertNotIsInstance(sock, ssl.SSLSocket)
             self.assertEqual(sock.recv(1024), LIST_DATA.encode('ascii'))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
         # secured, after PROT P
         self.client.prot_p()
-        with self.client.transfercmd('list') kama sock:
+        ukijumuisha self.client.transfercmd('list') kama sock:
             self.assertIsInstance(sock, ssl.SSLSocket)
             # consume kutoka SSL socket to finalize handshake na avoid
             # "SSLError [SSL] shutdown wakati kwenye init"
@@ -891,7 +891,7 @@ kundi TestTLS_FTPClass(TestCase):
 
         # PROT C ni issued, the connection must be kwenye cleartext again
         self.client.prot_c()
-        with self.client.transfercmd('list') kama sock:
+        ukijumuisha self.client.transfercmd('list') kama sock:
             self.assertNotIsInstance(sock, ssl.SSLSocket)
             self.assertEqual(sock.recv(1024), LIST_DATA.encode('ascii'))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
@@ -928,7 +928,7 @@ kundi TestTLS_FTPClass(TestCase):
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
 
         self.client.prot_p()
-        with self.client.transfercmd('list') kama sock:
+        ukijumuisha self.client.transfercmd('list') kama sock:
             self.assertIs(sock.context, ctx)
             self.assertIsInstance(sock, ssl.SSLSocket)
 
@@ -950,14 +950,14 @@ kundi TestTLS_FTPClass(TestCase):
 
         # 127.0.0.1 doesn't match SAN
         self.client.connect(self.server.host, self.server.port)
-        with self.assertRaises(ssl.CertificateError):
+        ukijumuisha self.assertRaises(ssl.CertificateError):
             self.client.auth()
         # exception quits connection
 
         self.client.connect(self.server.host, self.server.port)
         self.client.prot_p()
-        with self.assertRaises(ssl.CertificateError):
-            with self.client.transfercmd("list") kama sock:
+        ukijumuisha self.assertRaises(ssl.CertificateError):
+            ukijumuisha self.client.transfercmd("list") kama sock:
                 pita
         self.client.quit()
 
@@ -967,7 +967,7 @@ kundi TestTLS_FTPClass(TestCase):
 
         self.client.connect("localhost", self.server.port)
         self.client.prot_p()
-        with self.client.transfercmd("list") kama sock:
+        ukijumuisha self.client.transfercmd("list") kama sock:
             pita
 
 

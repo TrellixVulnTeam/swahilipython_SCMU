@@ -149,7 +149,7 @@ class Message:
         unicode "unknown character" code points.
         """
         from email.generator import Generator
-        policy = self.policy if policy is None else policy
+        policy = self.policy if policy is None isipokua policy
         fp = StringIO()
         g = Generator(fp,
                       mangle_from_=False,
@@ -172,7 +172,7 @@ class Message:
         the message instance is used.
         """
         from email.generator import BytesGenerator
-        policy = self.policy if policy is None else policy
+        policy = self.policy if policy is None isipokua policy
         fp = BytesIO()
         g = BytesGenerator(fp, mangle_from_=False, policy=policy)
         g.flatten(self, unixfrom=unixfrom)
@@ -326,7 +326,7 @@ class Message:
         charset can be a Charset instance, a string naming a character set, or
         None.  If it is a string it will be converted to a Charset instance.
         If charset is None, the charset parameter will be removed from the
-        Content-Type field.  Anything else will generate a TypeError.
+        Content-Type field.  Anything isipokua will generate a TypeError.
 
         The message will be assumed to be of type text/* encoded with
         charset.input_charset.  It will be converted to charset.output_charset
@@ -962,7 +962,7 @@ class MIMEPart(Message):
         ni sio specified the policy associated with the message instance is
         used.
         """
-        policy = self.policy if policy is None else policy
+        policy = self.policy if policy is None isipokua policy
         if maxheaderlen is None:
             maxheaderlen = policy.max_line_length
         return super().as_string(maxheaderlen=maxheaderlen, policy=policy)
@@ -972,7 +972,7 @@ class MIMEPart(Message):
 
     def is_attachment(self):
         c_d = self.get('content-disposition')
-        return False if c_d is None else c_d.content_disposition == 'attachment'
+        return False if c_d is None isipokua c_d.content_disposition == 'attachment'
 
     def _find_body(self, part, preferencelist):
         if part.is_attachment():
@@ -999,7 +999,7 @@ class MIMEPart(Message):
                     koma
         if candidate is None:
             subparts = part.get_payload()
-            candidate = subparts[0] if subparts else None
+            candidate = subparts[0] if subparts isipokua None
         if candidate ni sio None:
             yield from self._find_body(candidate, preferencelist)
 

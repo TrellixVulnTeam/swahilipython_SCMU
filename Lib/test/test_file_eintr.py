@@ -1,4 +1,4 @@
-# Written to test interrupted system calls interfering with our many buffered
+# Written to test interrupted system calls interfering ukijumuisha our many buffered
 # IO implementations.  http://bugs.python.org/issue12268
 #
 # It was suggested that this code could be merged into test_io na the tests
@@ -44,10 +44,10 @@ kundi TestFileIOSignalInterrupt:
 
     eleza fail_with_process_info(self, why, stdout=b'', stderr=b'',
                                communicate=Kweli):
-        """A common way to cleanup na fail with useful debug output.
+        """A common way to cleanup na fail ukijumuisha useful debug output.
 
         Kills the process ikiwa it ni still running, collects remaining output
-        na fails the test with an error message including the output.
+        na fails the test ukijumuisha an error message including the output.
 
         Args:
             why: Text to go after "Error kutoka IO process" kwenye the message.

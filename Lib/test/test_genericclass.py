@@ -91,26 +91,26 @@ kundi TestMROEntry(unittest.TestCase):
             eleza __mro_entries__(self, bases, something, other):
                 rudisha ()
         c = C_too_many()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi D(c): ...
         kundi C_too_few:
             eleza __mro_entries__(self):
                 rudisha ()
         d = C_too_few()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi D(d): ...
 
     eleza test_mro_entry_errors_2(self):
         kundi C_not_callable:
             __mro_entries__ = "Surprise!"
         c = C_not_callable()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi D(c): ...
         kundi C_not_tuple:
             eleza __mro_entries__(self):
                 rudisha object
         c = C_not_tuple()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi D(c): ...
 
     eleza test_mro_entry_metaclass(self):
@@ -141,7 +141,7 @@ kundi TestMROEntry(unittest.TestCase):
             eleza __mro_entries__(self, bases):
                 rudisha ()
         c = C()
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     "MRO entry resolution; "
                                     "use types.new_class()"):
             type('Bad', (c,), {})
@@ -204,10 +204,10 @@ kundi TestClassGetitem(unittest.TestCase):
 
     eleza test_class_getitem_with_builtins(self):
         kundi A(dict):
-            called_with = Tupu
+            called_ukijumuisha = Tupu
 
             eleza __class_getitem__(cls, item):
-                cls.called_with = item
+                cls.called_ukijumuisha = item
         kundi B(A):
             pita
         self.assertIs(B.called_with, Tupu)
@@ -218,28 +218,28 @@ kundi TestClassGetitem(unittest.TestCase):
         kundi C_too_few:
             eleza __class_getitem__(cls):
                 rudisha Tupu
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             C_too_few[int]
         kundi C_too_many:
             eleza __class_getitem__(cls, one, two):
                 rudisha Tupu
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             C_too_many[int]
 
     eleza test_class_getitem_errors_2(self):
         kundi C:
             eleza __class_getitem__(cls, item):
                 rudisha Tupu
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             C()[int]
         kundi E: ...
         e = E()
         e.__class_getitem__ = lambda cls, item: 'This will sio work'
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             e[int]
         kundi C_not_callable:
             __class_getitem__ = "Surprise!"
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             C_not_callable[int]
 
     eleza test_class_getitem_metaclass(self):

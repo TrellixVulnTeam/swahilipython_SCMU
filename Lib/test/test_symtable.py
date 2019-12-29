@@ -198,12 +198,12 @@ kundi SymtableTest(unittest.TestCase):
         checkfilename("eleza f(x): foo)(", 14)  # parse-time
         checkfilename("eleza f(x): global x", 11)  # symtable-build-time
         symtable.symtable("pita", b"spam", "exec")
-        with self.assertWarns(DeprecationWarning), \
+        ukijumuisha self.assertWarns(DeprecationWarning), \
              self.assertRaises(TypeError):
             symtable.symtable("pita", bytearray(b"spam"), "exec")
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             symtable.symtable("pita", memoryview(b"spam"), "exec")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             symtable.symtable("pita", list(b"spam"), "exec")
 
     eleza test_eval(self):

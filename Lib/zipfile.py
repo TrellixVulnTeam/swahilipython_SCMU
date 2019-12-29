@@ -367,7 +367,7 @@ kundi ZipInfo (object):
         if sys.platform == 'win32':
             self.create_system = 0          # System which created ZIP archive
         isipokua:
-            # Assume everything else is unix-y
+            # Assume everything isipokua is unix-y
             self.create_system = 3          # System which created ZIP archive
         self.create_version = DEFAULT_VERSION  # Version which created ZIP archive
         self.extract_version = DEFAULT_VERSION # Version needed to extract archive
@@ -1125,7 +1125,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
             # Write updated header info
             if self._zinfo.flag_bits & 0x08:
                 # Write CRC and file sizes after the file data
-                fmt = '<LLQQ' if self._zip64 else '<LLLL'
+                fmt = '<LLQQ' if self._zip64 isipokua '<LLLL'
                 self._fileobj.write(struct.pack(fmt, _DD_SIGNATURE, self._zinfo.CRC,
                     self._zinfo.compress_size, self._zinfo.file_size))
                 self._zipfile.start_dir = self._fileobj.tell()
@@ -1958,7 +1958,7 @@ kundi PyZipFile(ZipFile):
         pathname = os.fspath(pathname)
         if filterfunc and sio filterfunc(pathname):
             if self.debug:
-                label = 'path' if os.path.isdir(pathname) else 'file'
+                label = 'path' if os.path.isdir(pathname) isipokua 'file'
                 print('%s %r skipped by filterfunc' % (label, pathname))
             return
         dir, name = os.path.split(pathname)
@@ -2233,7 +2233,7 @@ kundi Path:
     __repr = "{self.__class__.__name__}({self.root.filename!r}, {self.at!r})"
 
     def __init__(self, root, at=""):
-        self.root = root if isinstance(root, ZipFile) else ZipFile(root)
+        self.root = root if isinstance(root, ZipFile) isipokua ZipFile(root)
         self.at = at
 
     @property
@@ -2283,7 +2283,7 @@ kundi Path:
         next = posixpath.join(self.at, add)
         next_dir = posixpath.join(self.at, add, "")
         names = self._names()
-        return self._next(next_dir if next haiko kwenye names and next_dir in names else next)
+        return self._next(next_dir if next haiko kwenye names and next_dir in names isipokua next)
 
     __truediv__ = joinpath
 

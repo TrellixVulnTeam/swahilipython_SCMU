@@ -85,7 +85,7 @@ kundi TestContains(unittest.TestCase):
             self.assertKweli(container == container)
 
     eleza test_block_fallback(self):
-        # blocking fallback with __contains__ = Tupu
+        # blocking fallback ukijumuisha __contains__ = Tupu
         kundi ByContains(object):
             eleza __contains__(self, other):
                 rudisha Uongo

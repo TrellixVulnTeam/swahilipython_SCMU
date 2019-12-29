@@ -106,7 +106,7 @@ kundi ColorDelegator(Delegator):
             self.allow_colorizing = Uongo
 
     eleza config_colors(self):
-        "Configure text widget tags with colors kutoka tagdefs."
+        "Configure text widget tags ukijumuisha colors kutoka tagdefs."
         kila tag, cnf kwenye self.tagdefs.items():
             self.tag_configure(tag, **cnf)
         self.tag_ashiria('sel')
@@ -304,7 +304,7 @@ eleza _color_delegator(parent):  # htest #
     top.geometry("700x250+%d+%d" % (x + 20, y + 175))
     source = (
         "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
-        "elikiwa Uongo: andika(0)\n"
+        "lasivyo Uongo: andika(0)\n"
         "isipokua: float(Tupu)\n"
         "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
         "if'': x or''  # valid string-keyword no-space combinations\n"

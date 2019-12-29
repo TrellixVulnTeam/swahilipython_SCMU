@@ -188,7 +188,7 @@ kundi ReplaceDialog(SearchDialogBase):
     eleza do_find(self, ok=Uongo):
         """Search kila na highlight next occurrence of pattern kwenye text.
 
-        No text replacement ni done with this option.
+        No text replacement ni done ukijumuisha this option.
         """
         ikiwa sio self.engine.getprog():
             rudisha Uongo
@@ -206,7 +206,7 @@ kundi ReplaceDialog(SearchDialogBase):
         rudisha Kweli
 
     eleza do_replace(self):
-        "Replace search pattern kwenye text with replacement value."
+        "Replace search pattern kwenye text ukijumuisha replacement value."
         prog = self.engine.getprog()
         ikiwa sio prog:
             rudisha Uongo

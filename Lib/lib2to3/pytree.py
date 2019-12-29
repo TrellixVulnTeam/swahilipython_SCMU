@@ -99,7 +99,7 @@ kundi Base(object):
         ashiria NotImplementedError
 
     eleza replace(self, new):
-        """Replace this node with a new one kwenye the parent."""
+        """Replace this node ukijumuisha a new one kwenye the parent."""
         assert self.parent ni sio Tupu, str(self)
         assert new ni sio Tupu
         ikiwa sio isinstance(new, list):
@@ -447,7 +447,7 @@ kundi BasePattern(object):
         """
         A subkundi can define this kama a hook kila optimizations.
 
-        Returns either self ama another node with the same effect.
+        Returns either self ama another node ukijumuisha the same effect.
         """
         rudisha self
 
@@ -458,7 +458,7 @@ kundi BasePattern(object):
         Returns Kweli ikiwa it matches, Uongo ikiwa not.
 
         If results ni sio Tupu, it must be a dict which will be
-        updated with the nodes matching named subpatterns.
+        updated ukijumuisha the nodes matching named subpatterns.
 
         Default implementation kila non-wildcard patterns.
         """
@@ -534,7 +534,7 @@ kundi LeafPattern(BasePattern):
         Returns Kweli ikiwa it matches, Uongo ikiwa not.
 
         If results ni sio Tupu, it must be a dict which will be
-        updated with the nodes matching named subpatterns.
+        updated ukijumuisha the nodes matching named subpatterns.
 
         When rudishaing Uongo, the results dict may still be updated.
         """
@@ -583,7 +583,7 @@ kundi NodePattern(BasePattern):
         Returns Kweli ikiwa it matches, Uongo ikiwa not.
 
         If results ni sio Tupu, it must be a dict which will be
-        updated with the nodes matching named subpatterns.
+        updated ukijumuisha the nodes matching named subpatterns.
 
         When rudishaing Uongo, the results dict may still be updated.
         """
@@ -636,7 +636,7 @@ kundi WildcardPattern(BasePattern):
                 min=1, max=maxint: .+
                 min=0, max=1: .?
                 min=1, max=1: .
-            If content ni sio Tupu, replace the dot with the parenthesized
+            If content ni sio Tupu, replace the dot ukijumuisha the parenthesized
             list of alternatives, e.g. (a b c | d e | f g h)*
         """
         assert 0 <= min <= max <= HUGE, (min, max)
@@ -704,7 +704,7 @@ kundi WildcardPattern(BasePattern):
                 ikiwa self.name:
                     r[self.name] = nodes[:count]
                 tuma count, r
-        elikiwa self.name == "bare_name":
+        lasivyo self.name == "bare_name":
             tuma self._bare_name_matches(nodes)
         isipokua:
             # The reason kila this ni that hitting the recursion limit usually

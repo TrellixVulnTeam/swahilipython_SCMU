@@ -156,7 +156,7 @@ eleza demo(fun=sun):
             sleep(2 - t)
 
 eleza main():
-    #title("Penrose-tiling with kites na darts.")
+    #title("Penrose-tiling ukijumuisha kites na darts.")
     mode("logo")
     bgcolor(0.3, 0.3, 0)
     demo(sun)

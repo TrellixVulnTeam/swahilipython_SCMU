@@ -89,7 +89,7 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
 
         cell_obj = types.CellType()
         msg = "shouldn't be able to read an empty cell"
-        with self.assertRaises(ValueError, msg=msg):
+        ukijumuisha self.assertRaises(ValueError, msg=msg):
             cell_obj.cell_contents
 
     eleza test_empty_cell(self):
@@ -117,9 +117,9 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
             pita
         isipokua:
             self.fail("shouldn't be able to read an empty cell")
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             f()
-        with self.assertRaises(UnboundLocalError):
+        ukijumuisha self.assertRaises(UnboundLocalError):
             andika(a)
 
     eleza test___name__(self):
@@ -178,14 +178,14 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         tatizo ValueError:
             pita
         isipokua:
-            self.fail("__code__ with different numbers of free vars should "
+            self.fail("__code__ ukijumuisha different numbers of free vars should "
                       "not be possible")
         jaribu:
             e.__code__ = d.__code__
         tatizo ValueError:
             pita
         isipokua:
-            self.fail("__code__ with different numbers of free vars should "
+            self.fail("__code__ ukijumuisha different numbers of free vars should "
                       "not be possible")
 
     eleza test_blank_func_defaults(self):

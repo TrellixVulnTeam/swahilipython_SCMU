@@ -28,7 +28,7 @@ kundi C1():
     eleza compare(self):
         ikiwa a > b:
             rudisha a
-        elikiwa a < b:
+        lasivyo a < b:
             rudisha b
         isipokua:
             rudisha Tupu
@@ -126,7 +126,7 @@ kundi CodeContextTest(unittest.TestCase):
     eleza test_del_with_timer(self):
         timer = self.cc.t1 = self.text.after(10000, lambda: Tupu)
         self.cc.__del__()
-        with self.assertRaises(TclError) kama cm:
+        ukijumuisha self.assertRaises(TclError) kama cm:
             self.root.tk.call('after', 'info', timer)
         self.assertIn("doesn't exist", str(cm.exception))
 
@@ -175,7 +175,7 @@ kundi CodeContextTest(unittest.TestCase):
         gc = self.cc.get_context
 
         # stopline must be greater than 0.
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             gc(1, stopline=0)
 
         eq(gc(3), ([(2, 0, 'kundi C1():', 'class')], 0))
@@ -196,27 +196,27 @@ kundi CodeContextTest(unittest.TestCase):
         eq(gc(11), ([(2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        elikiwa a < b:', 'elif')], 0))
+                     (10, 8, '        lasivyo a < b:', 'elif')], 0))
 
         # Set stop_line to sio go back to first line kwenye source code.
         # Return includes stop_line.
         eq(gc(11, stopline=2), ([(2, 0, 'kundi C1():', 'class'),
                                  (7, 4, '    eleza compare(self):', 'def'),
                                  (8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        elikiwa a < b:', 'elif')], 0))
+                                 (10, 8, '        lasivyo a < b:', 'elif')], 0))
         eq(gc(11, stopline=3), ([(7, 4, '    eleza compare(self):', 'def'),
                                  (8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        elikiwa a < b:', 'elif')], 4))
+                                 (10, 8, '        lasivyo a < b:', 'elif')], 4))
         eq(gc(11, stopline=8), ([(8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        elikiwa a < b:', 'elif')], 8))
+                                 (10, 8, '        lasivyo a < b:', 'elif')], 8))
 
         # Set stop_indent to test indent level to stop at.
         eq(gc(11, stopindent=4), ([(7, 4, '    eleza compare(self):', 'def'),
                                    (8, 8, '        ikiwa a > b:', 'if'),
-                                   (10, 8, '        elikiwa a < b:', 'elif')], 4))
+                                   (10, 8, '        lasivyo a < b:', 'elif')], 4))
         # Check that the 'if' ni included.
         eq(gc(11, stopindent=8), ([(8, 8, '        ikiwa a > b:', 'if'),
-                                   (10, 8, '        elikiwa a < b:', 'elif')], 8))
+                                   (10, 8, '        lasivyo a < b:', 'elif')], 8))
 
     eleza test_update_code_context(self):
         eq = self.assertEqual
@@ -268,12 +268,12 @@ kundi CodeContextTest(unittest.TestCase):
                      (2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        elikiwa a < b:', 'elif')])
+                     (10, 8, '        lasivyo a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
                                             '    eleza compare(self):\n'
                                             '        ikiwa a > b:\n'
-                                            '        elikiwa a < b:')
+                                            '        lasivyo a < b:')
 
         # No scroll.  No update, even though context_depth changed.
         cc.update_code_context()
@@ -282,12 +282,12 @@ kundi CodeContextTest(unittest.TestCase):
                      (2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        elikiwa a < b:', 'elif')])
+                     (10, 8, '        lasivyo a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
                                             '    eleza compare(self):\n'
                                             '        ikiwa a > b:\n'
-                                            '        elikiwa a < b:')
+                                            '        lasivyo a < b:')
 
         # Scroll up.
         cc.text.yview(5)
@@ -358,7 +358,7 @@ kundi CodeContextTest(unittest.TestCase):
             cc.toggle_code_context_event()
 
         self.font_override = test_font
-        # Nothing komas ama changes with inactive code context.
+        # Nothing komas ama changes ukijumuisha inactive code context.
         cc.update_font()
 
         # Activate code context, previous font change ni immediately effective.
@@ -386,18 +386,18 @@ kundi CodeContextTest(unittest.TestCase):
             cc.toggle_code_context_event()
 
         self.highlight_cfg = test_colors
-        # Nothing komas with inactive code context.
+        # Nothing komas ukijumuisha inactive code context.
         cc.update_highlight_colors()
 
         # Activate code context, previous colors change ni immediately effective.
         cc.toggle_code_context_event()
         assert_colors_are_equal(test_colors)
 
-        # Call colors update with no change to the configured colors.
+        # Call colors update ukijumuisha no change to the configured colors.
         cc.update_highlight_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update with code context active, change ni picked up.
+        # Call the colors update ukijumuisha code context active, change ni picked up.
         self.highlight_cfg = orig_colors
         cc.update_highlight_colors()
         assert_colors_are_equal(orig_colors)

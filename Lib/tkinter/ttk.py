@@ -29,7 +29,7 @@ import tkinter
 from tkinter agiza _flatten, _join, _stringify, _splitdict
 
 # Verify if Tk is new enough to sio need the Tile package
-_REQUIRE_TILE = True if tkinter.TkVersion < 8.5 else False
+_REQUIRE_TILE = True if tkinter.TkVersion < 8.5 isipokua False
 
 def _load_tile(master):
     if _REQUIRE_TILE:
@@ -183,7 +183,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
         elem, opts = layout_elem
         opts = opts or {}
         fopts = ' '.join(_format_optdict(opts, True, ("children",)))
-        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) if fopts else '')
+        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) if fopts isipokua '')
 
         if "children" in opts:
             script.append(head + " -children {")
@@ -232,7 +232,7 @@ def _script_from_settings(settings):
                 argc += 1
 
             elemargs = eopts[1:argc]
-            elemkw = eopts[argc] if argc < len(eopts) and eopts[argc] else {}
+            elemkw = eopts[argc] if argc < len(eopts) and eopts[argc] isipokua {}
             spec, opts = _format_elemcreate(etype, True, *elemargs, **elemkw)
 
             script.append("ttk::style element create %s %s %s %s" % (
@@ -392,7 +392,7 @@ class Style(object):
 
         Each key in kw is an option and each value should be a list or a
         tuple (usually) containing statespecs grouped in tuples, or list,
-        or something else of your preference. A statespec is compound of
+        or something isipokua of your preference. A statespec is compound of
         one or more states and then a value."""
         if query_opt ni sio None:
             return _list_from_statespec(self.tk.splitlist(
@@ -410,7 +410,7 @@ class Style(object):
         If state is specified it is expected to be a sequence of one
         or more states. If the default argument is set, it is used as
         a fallback value in case no specification for option is found."""
-        state = ' '.join(state) if state else ''
+        state = ' '.join(state) if state isipokua ''
 
         return self.tk.call(self._name, "lookup", style, '-%s' % option,
             state, default)
@@ -485,7 +485,7 @@ class Style(object):
         specified, the new theme will inherit styles, elements and
         layouts from the specified parent theme. If settings are present,
         they are expected to have the same syntax used for theme_settings."""
-        script = _script_from_settings(settings) if settings else ''
+        script = _script_from_settings(settings) if settings isipokua ''
 
         if parent:
             self.tk.call(self._name, "theme", "create", themename,
@@ -1534,11 +1534,11 @@ class LabeledScale(Frame):
         self.scale.bind('<<RangeChanged>>', self._adjust)
 
         # position scale and label according to the compound option
-        scale_side = 'bottom' if self._label_top else 'top'
-        label_side = 'top' if scale_side == 'bottom' else 'bottom'
+        scale_side = 'bottom' if self._label_top isipokua 'top'
+        label_side = 'top' if scale_side == 'bottom' isipokua 'bottom'
         self.scale.pack(side=scale_side, fill='x')
         tmp = Label(self).pack(side=label_side) # place holder
-        self.label.place(anchor='n' if label_side == 'top' else 's')
+        self.label.place(anchor='n' if label_side == 'top' isipokua 's')
 
         # update the label as scale or variable changes
         self.__tracecb = self._variable.trace_variable('w', self._adjust)

@@ -1,4 +1,4 @@
-# This file must be used with "source bin/activate.csh" *kutoka csh*.
+# This file must be used ukijumuisha "source bin/activate.csh" *kutoka csh*.
 # You cannot run it directly.
 # Created by Davide Di Blasi <davidedb@gmail.com>.
 # Ported to Python 3.3 venv by Andrew Svetlov <andrew.svetlov@gmail.com>

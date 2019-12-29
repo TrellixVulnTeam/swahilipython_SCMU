@@ -66,7 +66,7 @@ mwishowe:
         toa held__threading_local
     toa holding__threading_local
 
-    # Put back ``thread`` if we overwrote, else toa the entry we made
+    # Put back ``thread`` if we overwrote, isipokua toa the entry we made
     if holding_thread:
         sys_modules['_thread'] = held_thread
         toa held_thread

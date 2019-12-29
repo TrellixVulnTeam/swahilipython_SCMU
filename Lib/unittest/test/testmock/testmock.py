@@ -94,7 +94,7 @@ kundi MockTest(unittest.TestCase):
         eleza f(): pita
         mock = create_autospec(f)
         mock.mock.side_effect = TypeError()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             mock()
 
 
@@ -312,7 +312,7 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_calls_equal_with_any(self):
         # Check that equality na non-equality ni consistent even when
-        # comparing with mock.ANY
+        # comparing ukijumuisha mock.ANY
         mm = mock.MagicMock()
         self.assertKweli(mm == mm)
         self.assertUongo(mm != mm)
@@ -363,7 +363,7 @@ kundi MockTest(unittest.TestCase):
         self.assertRaises(AssertionError, mock.assert_called_with,
                           1, b=3, c=2)
         # Expected call doesn't match the spec's signature
-        with self.assertRaises(AssertionError) kama cm:
+        ukijumuisha self.assertRaises(AssertionError) kama cm:
             mock.assert_called_with(e=8)
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
@@ -390,9 +390,9 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_assert_called_exception_message(self):
         msg = "Expected '{0}' to have been called"
-        with self.assertRaisesRegex(AssertionError, msg.format('mock')):
+        ukijumuisha self.assertRaisesRegex(AssertionError, msg.format('mock')):
             Mock().assert_called()
-        with self.assertRaisesRegex(AssertionError, msg.format('test_name')):
+        ukijumuisha self.assertRaisesRegex(AssertionError, msg.format('test_name')):
             Mock(name="test_name").assert_called()
 
 
@@ -439,7 +439,7 @@ kundi MockTest(unittest.TestCase):
         self.assertRaises(AssertionError, mock.assert_called_once_with,
                           1, b=3, c=2)
         # Expected call doesn't match the spec's signature
-        with self.assertRaises(AssertionError) kama cm:
+        ukijumuisha self.assertRaises(AssertionError) kama cm:
             mock.assert_called_once_with(e=8)
         self.assertIsInstance(cm.exception.__cause__, TypeError)
         # Mock called more than once => always fails
@@ -932,8 +932,8 @@ kundi MockTest(unittest.TestCase):
 
 
     eleza assertRaisesWithMsg(self, exception, message, func, *args, **kwargs):
-        # needed because assertRaisesRegex doesn't work easily with newlines
-        with self.assertRaises(exception) kama context:
+        # needed because assertRaisesRegex doesn't work easily ukijumuisha newlines
+        ukijumuisha self.assertRaises(exception) kama context:
             func(*args, **kwargs)
         msg = str(context.exception)
         self.assertEqual(msg, message)
@@ -1417,13 +1417,13 @@ kundi MockTest(unittest.TestCase):
         mock.assert_has_calls(calls[:-1], any_order=Kweli)
         # Reversed order
         calls = list(reversed(calls))
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             mock.assert_has_calls(calls)
         mock.assert_has_calls(calls, any_order=Kweli)
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             mock.assert_has_calls(calls[1:])
         mock.assert_has_calls(calls[1:], any_order=Kweli)
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             mock.assert_has_calls(calls[:-1])
         mock.assert_has_calls(calls[:-1], any_order=Kweli)
 
@@ -1433,7 +1433,7 @@ kundi MockTest(unittest.TestCase):
         mock = Mock(spec=f)
         mock(1)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 AssertionError,
                 '^{}$'.format(
                     re.escape('Calls sio found.\n'
@@ -1443,7 +1443,7 @@ kundi MockTest(unittest.TestCase):
         self.assertIsTupu(cm.exception.__cause__)
 
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 AssertionError,
                 '^{}$'.format(
                     re.escape(
@@ -1494,7 +1494,7 @@ kundi MockTest(unittest.TestCase):
         self.assertRaises(AssertionError, mock.assert_any_call,
                           1, b=3, c=2)
         # Expected call doesn't match the spec's signature
-        with self.assertRaises(AssertionError) kama cm:
+        ukijumuisha self.assertRaises(AssertionError) kama cm:
             mock.assert_any_call(e=8)
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
@@ -1530,7 +1530,7 @@ kundi MockTest(unittest.TestCase):
             @staticmethod
             eleza static_method(): pita
         kila method kwenye ('class_method', 'static_method'):
-            with self.subTest(method=method):
+            ukijumuisha self.subTest(method=method):
                 mock_method = mock.create_autospec(getattr(TestClass, method))
                 mock_method()
                 mock_method.assert_called_once_with()
@@ -1539,10 +1539,10 @@ kundi MockTest(unittest.TestCase):
     #Issue21238
     eleza test_mock_unsafe(self):
         m = Mock()
-        msg = "Attributes cannot start with 'assert' ama 'assret'"
-        with self.assertRaisesRegex(AttributeError, msg):
+        msg = "Attributes cannot start ukijumuisha 'assert' ama 'assret'"
+        ukijumuisha self.assertRaisesRegex(AttributeError, msg):
             m.assert_foo_call()
-        with self.assertRaisesRegex(AttributeError, msg):
+        ukijumuisha self.assertRaisesRegex(AttributeError, msg):
             m.assret_foo_call()
         m = Mock(unsafe=Kweli)
         m.assert_foo_call()
@@ -1553,7 +1553,7 @@ kundi MockTest(unittest.TestCase):
         m = Mock()
         m.hello.assert_not_called()
         m.hello()
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             m.hello.assert_not_called()
 
     eleza test_assert_not_called_message(self):
@@ -1565,7 +1565,7 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_assert_called(self):
         m = Mock()
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             m.hello.assert_called()
         m.hello()
         m.hello.assert_called()
@@ -1575,13 +1575,13 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_assert_called_once(self):
         m = Mock()
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             m.hello.assert_called_once()
         m.hello()
         m.hello.assert_called_once()
 
         m.hello()
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             m.hello.assert_called_once()
 
     eleza test_assert_called_once_message(self):
@@ -1594,7 +1594,7 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_assert_called_once_message_not_called(self):
         m = Mock()
-        with self.assertRaises(AssertionError) kama e:
+        ukijumuisha self.assertRaises(AssertionError) kama e:
             m.assert_called_once()
         self.assertNotIn("Calls:", str(e.exception))
 
@@ -1720,7 +1720,7 @@ kundi MockTest(unittest.TestCase):
             self.assertEqual(mock.method_calls, [])
             self.assertEqual(mock.mock_calls, [])
 
-            # mock with an existing _new_parent but no name
+            # mock ukijumuisha an existing _new_parent but no name
             mock = Klass()
             mock.baz = MagicMock()()
             mock.baz()
@@ -1798,13 +1798,13 @@ kundi MockTest(unittest.TestCase):
         self.assertEqual(line2, '2nd line\n')
         self.assertEqual(lines[0], '3rd line')
         self.assertEqual(list(f1), [])
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             next(f1)
 
     eleza test_mock_open_write(self):
         # Test exception kwenye file writing write()
         mock_namedtemp = mock.mock_open(mock.MagicMock(name='JLV'))
-        with mock.patch('tempfile.NamedTemporaryFile', mock_namedtemp):
+        ukijumuisha mock.patch('tempfile.NamedTemporaryFile', mock_namedtemp):
             mock_filehandle = mock_namedtemp.rudisha_value
             mock_write = mock_filehandle.write
             mock_write.side_effect = OSError('Test 2 Error')
@@ -1897,7 +1897,7 @@ kundi MockTest(unittest.TestCase):
     eleza test_attach_mock_patch_autospec(self):
         parent = Mock()
 
-        with mock.patch(f'{__name__}.something', autospec=Kweli) kama mock_func:
+        ukijumuisha mock.patch(f'{__name__}.something', autospec=Kweli) kama mock_func:
             self.assertEqual(mock_func.mock._extract_mock_name(), 'something')
             parent.attach_mock(mock_func, 'child')
             parent.child(1)
@@ -1950,7 +1950,7 @@ kundi MockTest(unittest.TestCase):
         kila mock kwenye (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             toa mock.foo
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 toa mock.foo
 
 
@@ -1974,14 +1974,14 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_name_attribute_of_call(self):
         # bpo-35357: _Call should sio disclose any attributes whose names
-        # may clash with popular ones (such kama ".name")
+        # may clash ukijumuisha popular ones (such kama ".name")
         self.assertIsNotTupu(call.name)
         self.assertEqual(type(call.name), _Call)
         self.assertEqual(type(call.name().name), _Call)
 
     eleza test_parent_attribute_of_call(self):
         # bpo-35357: _Call should sio disclose any attributes whose names
-        # may clash with popular ones (such kama ".parent")
+        # may clash ukijumuisha popular ones (such kama ".parent")
         self.assertIsNotTupu(call.parent)
         self.assertEqual(type(call.parent), _Call)
         self.assertEqual(type(call.parent().parent), _Call)
@@ -2014,8 +2014,8 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_isinstance_under_settrace(self):
         # bpo-36593 : __class__ ni sio set kila a kundi that has __class__
-        # property defined when it's used with sys.settrace(trace) set.
-        # Delete the module to force reagiza with tracing function set
+        # property defined when it's used ukijumuisha sys.settrace(trace) set.
+        # Delete the module to force reagiza ukijumuisha tracing function set
         # restore the old reference later since there are other tests that are
         # dependent on unittest.mock.patch. In testpatch.PatchTest
         # test_patch_dict_test_prefix na test_patch_test_prefix sio restoring
@@ -2029,7 +2029,7 @@ kundi MockTest(unittest.TestCase):
         self.addCleanup(lambda patch: setattr(unittest.mock, 'patch', patch),
                         old_patch)
 
-        with patch.dict('sys.modules'):
+        ukijumuisha patch.dict('sys.modules'):
             toa sys.modules['unittest.mock']
 
             # This trace will stop coverage being measured ;-)

@@ -23,7 +23,7 @@ kundi DevPollTests(unittest.TestCase):
 
     eleza test_devpoll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe na test that poll works with them.
+        # Create a bunch of pipe na test that poll works ukijumuisha them.
 
         p = select.devpoll()
 
@@ -106,7 +106,7 @@ kundi DevPollTests(unittest.TestCase):
         # close() can be called more than once
         devpoll.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail ukijumuisha ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, devpoll.modify, fd, select.POLLIN)
         self.assertRaises(ValueError, devpoll.poll)
         self.assertRaises(ValueError, devpoll.register, fd, select.POLLIN)

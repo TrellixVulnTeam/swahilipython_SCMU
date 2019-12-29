@@ -2,7 +2,7 @@
 
 Coverage ni effectively 100%.  Tkinter dialog ni mocked, Mac-only line
 may be skipped, na dummy function kwenye bind test should sio be called.
-Not tested: exit with 'self.advanced ama self.keys_ok(keys)) ...' Uongo.
+Not tested: exit ukijumuisha 'self.advanced ama self.keys_ok(keys)) ...' Uongo.
 """
 
 kutoka idlelib agiza config_key
@@ -87,7 +87,7 @@ kundi ValidationTest(unittest.TestCase):
         kila mods, final, seq kwenye (([], 'F12', '<Key-F12>'),
                                  (['Control'], 'x', '<Control-Key-x>'),
                                  (['Control'], 'X', '<Control-Key-X>')):
-            with self.subTest(m=mods, f=final, s=seq):
+            ukijumuisha self.subTest(m=mods, f=final, s=seq):
                 self.dialog.list_keys_final.get.result = final
                 self.dialog.get_modifiers.result = mods
                 self.assertUongo(self.dialog.keys_ok(seq))
@@ -260,7 +260,7 @@ kundi CancelTest(unittest.TestCase):
     eleza test_cancel(self):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
         self.dialog.button_cancel.invoke()
-        with self.assertRaises(TclError):
+        ukijumuisha self.assertRaises(TclError):
             self.dialog.winfo_class()
         self.assertEqual(self.dialog.result, '')
 
@@ -272,7 +272,7 @@ kundi HelperTest(unittest.TestCase):
         tr = config_key.translate_key
         eq = self.assertEqual
 
-        # Letters rudisha unchanged with no 'Shift'.
+        # Letters rudisha unchanged ukijumuisha no 'Shift'.
         eq(tr('q', []), 'Key-q')
         eq(tr('q', ['Control', 'Alt']), 'Key-q')
 

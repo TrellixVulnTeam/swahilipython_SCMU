@@ -12,7 +12,7 @@ Handlers needed to open the requested URL.  For example, the
 HTTPHandler performs HTTP GET na POST requests na deals with
 non-error rudishas.  The HTTPRedirectHandler automatically deals with
 HTTP 301, 302, 303 na 307 redirect errors, na the HTTPDigestAuthHandler
-deals with digest authentication.
+deals ukijumuisha digest authentication.
 
 urlopen(url, data=Tupu) -- Basic usage ni the same kama original
 urllib.  pita the url na optionally data to post to an HTTP URL, and
@@ -32,7 +32,7 @@ install_opener -- Installs a new opener kama the default opener.
 objects of interest:
 
 OpenerDirector -- Sets up the User Agent kama the Python-urllib client na manages
-the Handler classes, wakati dealing with requests na responses.
+the Handler classes, wakati dealing ukijumuisha requests na responses.
 
 Request -- An object that encapsulates the state of a request.  The
 state can be kama simple kama the URL.  It can also include extra HTTP
@@ -212,10 +212,10 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
                                              capath=capath)
         https_handler = HTTPSHandler(context=context)
         opener = build_opener(https_handler)
-    elikiwa context:
+    lasivyo context:
         https_handler = HTTPSHandler(context=context)
         opener = build_opener(https_handler)
-    elikiwa _opener ni Tupu:
+    lasivyo _opener ni Tupu:
         _opener = opener = build_opener()
     isipokua:
         opener = _opener
@@ -244,7 +244,7 @@ eleza urlretrieve(url, filename=Tupu, reporthook=Tupu, data=Tupu):
     """
     url_type, path = _splittype(url)
 
-    with contextlib.closing(urlopen(url, data)) kama fp:
+    ukijumuisha contextlib.closing(urlopen(url, data)) kama fp:
         headers = fp.info()
 
         # Just rudisha the local path na the "headers" kila file://
@@ -260,7 +260,7 @@ eleza urlretrieve(url, filename=Tupu, reporthook=Tupu, data=Tupu):
             filename = tfp.name
             _url_tempfiles.append(filename)
 
-        with tfp:
+        ukijumuisha tfp:
             result = filename, headers
             bs = 1024*8
             size = -1
@@ -387,7 +387,7 @@ kundi Request:
 
     eleza get_method(self):
         """Return a string indicating the HTTP request method."""
-        default_method = "POST" ikiwa self.data ni sio Tupu else "GET"
+        default_method = "POST" ikiwa self.data ni sio Tupu isipokua "GET"
         rudisha getattr(self, 'method', default_method)
 
     eleza get_full_url(self):
@@ -465,13 +465,13 @@ kundi OpenerDirector:
                     pita
                 lookup = self.handle_error.get(protocol, {})
                 self.handle_error[protocol] = lookup
-            elikiwa condition == "open":
+            lasivyo condition == "open":
                 kind = protocol
                 lookup = self.handle_open
-            elikiwa condition == "response":
+            lasivyo condition == "response":
                 kind = protocol
                 lookup = self.process_response
-            elikiwa condition == "request":
+            lasivyo condition == "request":
                 kind = protocol
                 lookup = self.process_request
             isipokua:
@@ -493,7 +493,7 @@ kundi OpenerDirector:
         pita
 
     eleza _call_chain(self, chain, kind, meth_name, *args):
-        # Handlers ashiria an exception ikiwa no one else should try to handle
+        # Handlers ashiria an exception ikiwa no one isipokua should try to handle
         # the request, ama rudisha Tupu ikiwa they can't but another handler
         # could.  Otherwise, they rudisha the response.
         handlers = chain.get(kind, ())
@@ -594,7 +594,7 @@ eleza build_opener(*handlers):
             ikiwa isinstance(check, type):
                 ikiwa issubclass(check, klass):
                     skip.add(klass)
-            elikiwa isinstance(check, klass):
+            lasivyo isinstance(check, klass):
                 skip.add(klass)
     kila klass kwenye skip:
         default_classes.remove(klass)
@@ -663,7 +663,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         redirection response ni received.  If a redirection should
         take place, rudisha a new Request to allow http_error_30x to
         perform the redirect.  Otherwise, ashiria HTTPError ikiwa no-one
-        else should try to handle this url.  Return Tupu ikiwa you can't
+        isipokua should try to handle this url.  Return Tupu ikiwa you can't
         but another Handler might.
         """
         m = req.get_method()
@@ -677,9 +677,9 @@ kundi HTTPRedirectHandler(BaseHandler):
         # essentially all clients do redirect kwenye this case, so we do
         # the same.
 
-        # Be conciliant with URIs containing a space.  This ni mainly
-        # redundant with the more complete encoding done kwenye http_error_302(),
-        # but it ni kept kila compatibility with other callers.
+        # Be conciliant ukijumuisha URIs containing a space.  This ni mainly
+        # redundant ukijumuisha the more complete encoding done kwenye http_error_302(),
+        # but it ni kept kila compatibility ukijumuisha other callers.
         newurl = newurl.replace(' ', '%20')
 
         CONTENT_HEADERS = ("content-length", "content-type")
@@ -699,7 +699,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         # (so probably same goes kila URI).  Use first header.
         ikiwa "location" kwenye headers:
             newurl = headers["location"]
-        elikiwa "uri" kwenye headers:
+        lasivyo "uri" kwenye headers:
             newurl = headers["uri"]
         isipokua:
             rudisha
@@ -729,7 +729,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         newurl = urljoin(req.full_url, newurl)
 
         # XXX Probably want to forget about the state of the current
-        # request, although that might interact poorly with other
+        # request, although that might interact poorly ukijumuisha other
         # handlers that also use handler-specific request attributes
         new = self.redirect_request(req, fp, code, msg, headers, newurl)
         ikiwa new ni Tupu:
@@ -748,7 +748,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         visited[newurl] = visited.get(newurl, 0) + 1
 
         # Don't close the fp until we are sure that we won't use it
-        # with HTTPError.
+        # ukijumuisha HTTPError.
         fp.read()
         fp.close()
 
@@ -776,9 +776,9 @@ eleza _parse_proxy(proxy):
     isipokua:
         # URL
         ikiwa sio r_scheme.startswith("//"):
-            ashiria ValueError("proxy URL with no authority: %r" % proxy)
+            ashiria ValueError("proxy URL ukijumuisha no authority: %r" % proxy)
         # We have an authority, so kila RFC 3986-compliant URLs (by ss 3.
-        # na 3.3.), path ni empty ama starts with '/'
+        # na 3.3.), path ni empty ama starts ukijumuisha '/'
         end = r_scheme.find("/", 2)
         ikiwa end == -1:
             end = Tupu
@@ -941,7 +941,7 @@ kundi HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
 kundi AbstractBasicAuthHandler:
 
     # XXX this allows kila multiple auth-schemes, but will stupidly pick
-    # the last one with a realm specified.
+    # the last one ukijumuisha a realm specified.
 
     # allow kila double- na single-quoted realm values
     # (single quotes are a violation of the RFC, but appear kwenye the wild)
@@ -959,7 +959,7 @@ kundi AbstractBasicAuthHandler:
         self.add_pitaword = self.pitawd.add_pitaword
 
     eleza http_error_auth_reqed(self, authreq, host, req, headers):
-        # host may be an authority (without userinfo) ama a URL with an
+        # host may be an authority (without userinfo) ama a URL ukijumuisha an
         # authority
         # XXX could be multiple headers
         authreq = headers.get(authreq, Tupu)
@@ -1087,7 +1087,7 @@ kundi AbstractDigestAuthHandler:
             scheme = authreq.split()[0]
             ikiwa scheme.lower() == 'digest':
                 rudisha self.retry_http_digest_auth(req, authreq)
-            elikiwa scheme.lower() != 'basic':
+            lasivyo scheme.lower() != 'basic':
                 ashiria ValueError("AbstractDigestAuthHandler does sio support"
                                  " the following scheme: '%s'" % scheme)
 
@@ -1154,7 +1154,7 @@ kundi AbstractDigestAuthHandler:
             cnonce = self.get_cnonce(nonce)
             noncebit = "%s:%s:%s:%s:%s" % (nonce, ncvalue, cnonce, qop, H(A2))
             respdig = KD(H(A1), noncebit)
-        elikiwa qop ni Tupu:
+        lasivyo qop ni Tupu:
             respdig = KD(H(A1), "%s:%s" % (nonce, H(A2)))
         isipokua:
             # XXX handle auth-int.
@@ -1178,7 +1178,7 @@ kundi AbstractDigestAuthHandler:
         # lambdas assume digest modules are imported at the top level
         ikiwa algorithm == 'MD5':
             H = lambda x: hashlib.md5(x.encode("ascii")).hexdigest()
-        elikiwa algorithm == 'SHA':
+        lasivyo algorithm == 'SHA':
             H = lambda x: hashlib.sha1(x.encode("ascii")).hexdigest()
         # XXX MD5-sess
         isipokua:
@@ -1294,7 +1294,7 @@ kundi AbstractHTTPHandler(BaseHandler):
         # persistent connections?
 
         # We want to make an HTTP/1.1 request, but the addinfourl
-        # kundi isn't prepared to deal with a persistent connection.
+        # kundi isn't prepared to deal ukijumuisha a persistent connection.
         # It will try to read all remaining data kutoka the socket,
         # which will block wakati the server waits kila the next request.
         # So make sure the connection gets closed after the (only)
@@ -1332,7 +1332,7 @@ kundi AbstractHTTPHandler(BaseHandler):
 
         r.url = req.get_full_url()
         # This line replaces the .msg attribute of the HTTPResponse
-        # with .headers, because urllib clients expect the response to
+        # ukijumuisha .headers, because urllib clients expect the response to
         # have the reason kwenye .msg.  It would be good to mark this
         # attribute ni deprecated na get then to use info() or
         # .headers.
@@ -1419,7 +1419,7 @@ eleza parse_http_list(s):
             ikiwa cur == '\\':
                 escape = Kweli
                 endelea
-            elikiwa cur == '"':
+            lasivyo cur == '"':
                 quote = Uongo
             part += cur
             endelea
@@ -1863,7 +1863,7 @@ kundi URLopener:
             host, selector = url
             # check whether the proxy contains authorization information
             proxy_pitawd, host = _splituser(host)
-            # now we proceed with the url we want to obtain
+            # now we proceed ukijumuisha the url we want to obtain
             urltype, rest = _splittype(selector)
             url = rest
             user_pitawd = Tupu
@@ -1917,7 +1917,7 @@ kundi URLopener:
         jaribu:
             response = http_conn.getresponse()
         tatizo http.client.BadStatusLine:
-            # something went wrong with the HTTP status line
+            # something went wrong ukijumuisha the HTTP status line
             ashiria URLError("http protocol error: bad status line")
 
         # According to RFC 2616, "2xx" code indicates that the client's
@@ -2001,8 +2001,8 @@ kundi URLopener:
             urlfile = file
             ikiwa file[:1] == '/':
                 urlfile = 'file://' + file
-            elikiwa file[:2] == './':
-                ashiria ValueError("local file url may start with / ama file:. Unknown url of type: %s" % url)
+            lasivyo file[:2] == './':
+                ashiria ValueError("local file url may start ukijumuisha / ama file:. Unknown url of type: %s" % url)
             rudisha addinfourl(open(localname, 'rb'), headers, urlfile)
         ashiria URLError('local file error: sio on local host')
 
@@ -2107,7 +2107,7 @@ kundi URLopener:
 
 
 kundi FancyURLopener(URLopener):
-    """Derived kundi with handlers kila errors we can handle (perhaps)."""
+    """Derived kundi ukijumuisha handlers kila errors we can handle (perhaps)."""
 
     eleza __init__(self, *args, **kwargs):
         URLopener.__init__(self, *args, **kwargs)
@@ -2140,13 +2140,13 @@ kundi FancyURLopener(URLopener):
     eleza redirect_internal(self, url, fp, errcode, errmsg, headers, data):
         ikiwa 'location' kwenye headers:
             newurl = headers['location']
-        elikiwa 'uri' kwenye headers:
+        lasivyo 'uri' kwenye headers:
             newurl = headers['uri']
         isipokua:
             rudisha
         fp.close()
 
-        # In case the server sent a relative URL, join with original:
+        # In case the server sent a relative URL, join ukijumuisha original:
         newurl = urljoin(self.type + ":" + url, newurl)
 
         urlparts = urlparse(newurl)
@@ -2154,7 +2154,7 @@ kundi FancyURLopener(URLopener):
         # For security reasons, we don't allow redirection to anything other
         # than http, https na ftp.
 
-        # We are using newer HTTPError with older redirect_internal method
+        # We are using newer HTTPError ukijumuisha older redirect_internal method
         # This older method will get deprecated kwenye 3.3
 
         ikiwa urlparts.scheme haiko kwenye ('http', 'https', 'ftp', ''):
@@ -2504,7 +2504,7 @@ eleza proxy_bypita_environment(host, proxies=Tupu):
         rudisha 1
     # strip port off host
     hostonly, port = _splitport(host)
-    # check ikiwa the host ends with any of the DNS suffixes
+    # check ikiwa the host ends ukijumuisha any of the DNS suffixes
     no_proxy_list = [proxy.strip() kila proxy kwenye no_proxy.split(',')]
     kila name kwenye no_proxy_list:
         ikiwa name:
@@ -2574,7 +2574,7 @@ eleza _proxy_bypita_macosx_sysconf(host, proxy_settings):
             ikiwa (hostIP >> mask) == (base >> mask):
                 rudisha Kweli
 
-        elikiwa fnmatch(host, value):
+        lasivyo fnmatch(host, value):
             rudisha Kweli
 
     rudisha Uongo
@@ -2614,7 +2614,7 @@ ikiwa sys.platform == 'darwin':
         rudisha getproxies_environment() ama getproxies_macosx_sysconf()
 
 
-elikiwa os.name == 'nt':
+lasivyo os.name == 'nt':
     eleza getproxies_registry():
         """Return a dictionary of scheme -> proxy server URL mappings.
 

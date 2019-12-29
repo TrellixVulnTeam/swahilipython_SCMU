@@ -32,7 +32,7 @@ kundi InitTktypeTest(unittest.TestCase):
     eleza test_init_sets_tktype(self):
         "Test that _init_tk_type sets _tk_type according to platform."
         kila platform, types kwenye ('darwin', alltypes), ('other', nontypes):
-            with self.subTest(platform=platform):
+            ukijumuisha self.subTest(platform=platform):
                 macosx.platform = platform
                 macosx._tk_type == Tupu
                 macosx._init_tk_type()
@@ -52,7 +52,7 @@ kundi IsTypeTkTest(unittest.TestCase):
         "Test that each isTypeTk calls _init_tk_type when _tk_type ni Tupu."
         macosx._tk_type = Tupu
         kila func, whentrue kwenye self.isfuncs:
-            with self.subTest(func=func):
+            ukijumuisha self.subTest(func=func):
                 func()
                 self.assertKweli(mockinit.called)
                 mockinit.reset_mock()
@@ -61,9 +61,9 @@ kundi IsTypeTkTest(unittest.TestCase):
         "Test that each isTypeTk rudisha correct bool."
         kila func, whentrue kwenye self.isfuncs:
             kila tktype kwenye alltypes:
-                with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
+                ukijumuisha self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
-                    (self.assertKweli ikiwa tktype kwenye whentrue else self.assertUongo)\
+                    (self.assertKweli ikiwa tktype kwenye whentrue isipokua self.assertUongo)\
                                      (func())
 
 
@@ -88,11 +88,11 @@ kundi SetupTest(unittest.TestCase):
 
     @mock.patch('idlelib.macosx.overrideRootMenu')  #27312
     eleza test_setupapp(self, overrideRootMenu):
-        "Call setupApp with each possible graphics type."
+        "Call setupApp ukijumuisha each possible graphics type."
         root = self.root
         flist = FileList(root)
         kila tktype kwenye alltypes:
-            with self.subTest(tktype=tktype):
+            ukijumuisha self.subTest(tktype=tktype):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)
                 ikiwa tktype kwenye ('carbon', 'cocoa'):

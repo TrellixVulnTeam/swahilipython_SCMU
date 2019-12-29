@@ -238,10 +238,10 @@ kundi TestSFpatches(unittest.TestCase):
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
         # temporarily uncomment next two lines to baseline this test
-        #with open('test_difflib_expect.html','w') kama fp:
+        #ukijumuisha open('test_difflib_expect.html','w') kama fp:
         #    fp.write(actual)
 
-        with open(findfile('test_difflib_expect.html')) kama fp:
+        ukijumuisha open(findfile('test_difflib_expect.html')) kama fp:
             self.assertEqual(actual, fp.read())
 
     eleza test_recursion_limit(self):
@@ -358,15 +358,15 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(unified, a, a))
         check(difflib.diff_bytes(unified, a, b))
 
-        # now with filenames (content na filenames are all bytes!)
+        # now ukijumuisha filenames (content na filenames are all bytes!)
         check(difflib.diff_bytes(unified, a, a, b'a', b'a'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b'))
 
-        # na with filenames na dates
+        # na ukijumuisha filenames na dates
         check(difflib.diff_bytes(unified, a, a, b'a', b'a', b'2005', b'2013'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b', b'2005', b'2013'))
 
-        # same all over again, with context diff
+        # same all over again, ukijumuisha context diff
         check(difflib.diff_bytes(context, a, a))
         check(difflib.diff_bytes(context, a, b))
         check(difflib.diff_bytes(context, a, a, b'a', b'a'))
@@ -407,7 +407,7 @@ kundi TestBytes(unittest.TestCase):
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, lineterm=b'')
         assertDiff(expect, actual)
 
-        # with dates (plain ASCII)
+        # ukijumuisha dates (plain ASCII)
         datea = b'2005-03-18'
         dateb = b'2005-03-19'
         check(difflib.diff_bytes(unified, a, b, fna, fnb, datea, dateb))
@@ -460,7 +460,7 @@ kundi TestBytes(unittest.TestCase):
             difflib.unified_diff, a, b, fna, fnb)
 
     eleza test_mixed_types_dates(self):
-        # type of dates must be consistent with type of contents
+        # type of dates must be consistent ukijumuisha type of contents
         a = [b'foo\n']
         b = [b'bar\n']
         datea = '1 fév'
@@ -476,7 +476,7 @@ kundi TestBytes(unittest.TestCase):
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
     eleza _assert_type_error(self, msg, generator, *args):
-        with self.assertRaises(TypeError) kama ctx:
+        ukijumuisha self.assertRaises(TypeError) kama ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 

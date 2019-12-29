@@ -18,7 +18,7 @@ The idle directory, idlelib, has over 60 xyz.py files. The idle_test
 subdirectory contains test_xyz.py kila each implementation file xyz.py.
 To add a test kila abc.py, open idle_test/template.py na immediately
 Save As test_abc.py.  Insert 'abc' on the first line, na replace
-'zzdummy' with 'abc.
+'zzdummy' ukijumuisha 'abc.
 
 Remove the agizas of requires na tkinter ikiwa sio needed.  Otherwise,
 add to the tkinter agizas kama needed.
@@ -56,7 +56,7 @@ requires('gui')
 To guard a test class, put "requires('gui')" kwenye its setUpClass function.
 The template.py file does this.
 
-To avoid interfering with other GUI tests, all GUI objects must be
+To avoid interfering ukijumuisha other GUI tests, all GUI objects must be
 destroyed na deleted by the end of the test.  The Tk root created kwenye a
 setUpX function should be destroyed kwenye the corresponding tearDownX and
 the module ama kundi attribute deleted.  Others widgets should descend
@@ -97,10 +97,10 @@ Requires('gui') causes the test(s) it guards to be skipped ikiwa any of
 these conditions are met:
 
  - The tests are being run by regrtest.py, na it was started without
-   enabling the "gui" resource with the "-u" command line option.
+   enabling the "gui" resource ukijumuisha the "-u" command line option.
 
  - The tests are being run on Windows by a service that ni sio allowed
-   to interact with the graphical environment.
+   to interact ukijumuisha the graphical environment.
 
  - The tests are being run on Linux na X Windows ni sio available.
 
@@ -120,9 +120,9 @@ tk Text widget.
 
 3. Running Unit Tests
 
-Assume that xyz.py na test_xyz.py both end with a unittest.main() call.
+Assume that xyz.py na test_xyz.py both end ukijumuisha a unittest.main() call.
 Running either kutoka an Idle editor runs all tests kwenye the test_xyz file
-with the version of Python running Idle.  Test output appears kwenye the
+ukijumuisha the version of Python running Idle.  Test output appears kwenye the
 Shell window.  The 'verbosity=2' option lists all test methods kwenye the
 file, which ni appropriate when developing tests. The 'exit=Uongo'
 option ni needed kwenye xyx.py files when an htest follows.
@@ -151,7 +151,7 @@ idlelib.idle_test.__init__.load_tests, which ni also imported into
 test.test_idle. Normally, neither file should be changed when working on
 individual test modules. The third command runs unittest indirectly
 through regrtest. The same happens when the entire test suite ni run
-with 'python -m test'. So that command must work kila buildbots to stay
+ukijumuisha 'python -m test'. So that command must work kila buildbots to stay
 green. Idle tests must sio disturb the environment kwenye a way that makes
 other tests fail (issue 18081).
 
@@ -175,7 +175,7 @@ work when run kutoka the editor.
 Human-mediated tests are widget tests that cannot be automated but need
 human verification. They are contained kwenye idlelib/idle_test/htest.py,
 which has instructions.  (Some modules need an auxiliary function,
-identified with "# htest # on the header line.)  The set ni about
+identified ukijumuisha "# htest # on the header line.)  The set ni about
 complete, though some tests need improvement. To run all htests, run the
 htest file kutoka an editor ama kutoka the command line with:
 
@@ -187,9 +187,9 @@ python -m idlelib.idle_test.htest
 Install the coverage package into your Python 3.6 site-packages
 directory.  (Its exact location depends on the OS).
 > python3 -m pip install coverage
-(On Windows, replace 'python3 with 'py -3.6' ama perhaps just 'python'.)
+(On Windows, replace 'python3 ukijumuisha 'py -3.6' ama perhaps just 'python'.)
 
-The problem with running coverage with repository python ni that
+The problem ukijumuisha running coverage ukijumuisha repository python ni that
 coverage uses absolute agizas kila its submodules, hence it needs to be
 in a directory kwenye sys.path.  One solution: copy the package to the
 directory containing the cpython repository.  Call it 'dev'.  Then run

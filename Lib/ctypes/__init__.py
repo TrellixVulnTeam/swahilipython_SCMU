@@ -278,7 +278,7 @@ def create_unicode_buffer(init, size=None):
                 # UTF-16 requires a surrogate pair (2 wchar_t) for non-BMP
                 # characters (outside [U+0000; U+FFFF] range). +1 for trailing
                 # NUL character.
-                size = sum(2 if ord(c) > 0xFFFF else 1 for c in init) + 1
+                size = sum(2 if ord(c) > 0xFFFF isipokua 1 for c in init) + 1
             isipokua:
                 # 32-bit wchar_t (1 wchar_t per Unicode character). +1 for
                 # trailing NUL character.

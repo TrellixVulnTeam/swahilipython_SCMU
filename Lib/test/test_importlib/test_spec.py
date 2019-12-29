@@ -51,7 +51,7 @@ kundi LegacyLoader(TestLoader):
 
     HAM = -1
 
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
 
         frozen_util = util['Frozen']
@@ -261,7 +261,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_load(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             installed = sys.modules[self.spec.name]
 
@@ -274,7 +274,7 @@ kundi ModuleSpecMethodsTests:
             eleza exec_module(self, module):
                 sys.modules[module.__name__] = replacement
         self.spec.loader = ReplacingLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             installed = sys.modules[self.spec.name]
 
@@ -286,8 +286,8 @@ kundi ModuleSpecMethodsTests:
             eleza exec_module(self, module):
                 ashiria RuntimeError
         self.spec.loader = FailedLoader()
-        with CleanImport(self.spec.name):
-            with self.assertRaises(RuntimeError):
+        ukijumuisha CleanImport(self.spec.name):
+            ukijumuisha self.assertRaises(RuntimeError):
                 loaded = self.bootstrap._load(self.spec)
             self.assertNotIn(self.spec.name, sys.modules)
 
@@ -297,21 +297,21 @@ kundi ModuleSpecMethodsTests:
                 toa sys.modules[module.__name__]
                 ashiria RuntimeError
         self.spec.loader = FailedLoader()
-        with CleanImport(self.spec.name):
-            with self.assertRaises(RuntimeError):
+        ukijumuisha CleanImport(self.spec.name):
+            ukijumuisha self.assertRaises(RuntimeError):
                 loaded = self.bootstrap._load(self.spec)
             self.assertNotIn(self.spec.name, sys.modules)
 
     eleza test_load_legacy(self):
         self.spec.loader = LegacyLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
 
         self.assertEqual(loaded.ham, -1)
 
     eleza test_load_legacy_attributes(self):
         self.spec.loader = LegacyLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
 
         self.assertIs(loaded.__loader__, self.spec.loader)
@@ -325,7 +325,7 @@ kundi ModuleSpecMethodsTests:
                 sys.modules[name] = module
                 rudisha module
         self.spec.loader = ImmutableLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
 
             self.assertIs(sys.modules[self.spec.name], module)
@@ -334,7 +334,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_reload(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             reloaded = self.bootstrap._exec(self.spec, loaded)
             installed = sys.modules[self.spec.name]
@@ -345,7 +345,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_reload_modified(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.eggs = 2
             reloaded = self.bootstrap._exec(self.spec, loaded)
@@ -355,7 +355,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_reload_extra_attributes(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.available = Uongo
             reloaded = self.bootstrap._exec(self.spec, loaded)
@@ -365,7 +365,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_reload_init_module_attrs(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.__name__ = 'ham'
             toa loaded.__loader__
@@ -383,7 +383,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_reload_legacy(self):
         self.spec.loader = LegacyLoader()
-        with CleanImport(self.spec.name):
+        ukijumuisha CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             reloaded = self.bootstrap._exec(self.spec, loaded)
             installed = sys.modules[self.spec.name]

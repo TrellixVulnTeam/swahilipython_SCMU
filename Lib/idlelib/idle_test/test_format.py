@@ -43,10 +43,10 @@ kundi Is_Get_Test(unittest.TestCase):
 kundi FindTest(unittest.TestCase):
     """Test the find_paragraph function kwenye paragraph module.
 
-    Using the runcase() function, find_paragraph() ni called with 'mark' set at
+    Using the runcase() function, find_paragraph() ni called ukijumuisha 'mark' set at
     multiple indexes before na inside the test paragraph.
 
-    It appears that code with the same indentation kama a quoted string ni grouped
+    It appears that code ukijumuisha the same indentation kama a quoted string ni grouped
     kama part of the same paragraph, which ni probably incorrect behavior.
     """
 
@@ -70,21 +70,21 @@ kundi FindTest(unittest.TestCase):
 
     eleza test_find_comment(self):
         comment = (
-            "# Comment block with no blank lines before\n"
+            "# Comment block ukijumuisha no blank lines before\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 3, ('1.0', '3.0', '#', comment[0:58]))
 
         comment = (
             "\n"
-            "# Comment block with whitespace line before na after\n"
+            "# Comment block ukijumuisha whitespace line before na after\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '#', comment[1:70]))
 
         comment = (
             "\n"
-            "    # Indented comment block with whitespace before na after\n"
+            "    # Indented comment block ukijumuisha whitespace before na after\n"
             "    # Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '    #', comment[1:82]))
@@ -97,7 +97,7 @@ kundi FindTest(unittest.TestCase):
 
         comment = (
             "\n"
-            "    # Single line comment with leading whitespace\n"
+            "    # Single line comment ukijumuisha leading whitespace\n"
             "\n")
         self.runcase(comment, 3, ('2.0', '3.0', '    #', comment[1:51]))
 
@@ -124,7 +124,7 @@ kundi FindTest(unittest.TestCase):
 
     eleza test_find_paragraph(self):
         teststring = (
-            '"""String with no blank lines before\n'
+            '"""String ukijumuisha no blank lines before\n'
             'String line\n'
             '"""\n'
             '\n')
@@ -132,7 +132,7 @@ kundi FindTest(unittest.TestCase):
 
         teststring = (
             "\n"
-            '"""String with whitespace line before na after\n'
+            '"""String ukijumuisha whitespace line before na after\n'
             'String line.\n'
             '"""\n'
             '\n')
@@ -140,7 +140,7 @@ kundi FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Indented string with whitespace before na after\n'
+            '    """Indented string ukijumuisha whitespace before na after\n'
             '    Comment string.\n'
             '    """\n'
             '\n')
@@ -154,7 +154,7 @@ kundi FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Single line string with leading whitespace."""\n'
+            '    """Single line string ukijumuisha leading whitespace."""\n'
             '\n')
         self.runcase(teststring, 3, ('2.0', '3.0', '    ', teststring[1:55]))
 
@@ -176,7 +176,7 @@ kundi ReformatFunctionTest(unittest.TestCase):
         Equal(reform(hw, 12), "O hello\nworld")
         Equal(reform(hw, 13), "O hello world")
 
-        # Test with leading newline
+        # Test ukijumuisha leading newline
         hw = "\nO hello world"
         Equal(reform(hw, 1), "\nO\nhello\nworld")
         Equal(reform(hw, 6), "\nO\nhello\nworld")
@@ -220,7 +220,7 @@ kundi FormatClassTest(unittest.TestCase):
 
 
 # For testing format_paragraph_event, Initialize FormatParagraph with
-# a mock Editor with .text na  .get_selection_indices.  The text must
+# a mock Editor ukijumuisha .text na  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
 # A real EditorWindow creates unneeded, time-consuming baggage and
@@ -246,7 +246,7 @@ kundi Editor:
 kundi FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
-    This ni done with FormatParagraph.format.paragraph_event,
+    This ni done ukijumuisha FormatParagraph.format.paragraph_event,
     which calls functions kwenye the module kama appropriate.
     """
     test_string = (
@@ -257,14 +257,14 @@ kundi FormatEventTest(unittest.TestCase):
         "    '''The first line ni under the max width.\n"
         "    The second line's length ni way over the max width. It goes "
         "on na on until it ni over 100 characters long.\n"
-        "    Same thing with the third line. It ni also way over the max "
+        "    Same thing ukijumuisha the third line. It ni also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "    '''\n")
     multiline_test_comment = (
         "# The first line ni under the max width.\n"
         "# The second line's length ni way over the max width. It goes on "
         "and on until it ni over 100 characters long.\n"
-        "# Same thing with the third line. It ni also way over the max "
+        "# Same thing ukijumuisha the third line. It ni also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "# The fourth line ni short like the first line.")
 
@@ -327,7 +327,7 @@ kundi FormatEventTest(unittest.TestCase):
         result = text.get('2.0', 'insert')
         expected = (
 "    The second line's length ni way over the max width. It goes on and\n"
-"    on until it ni over 100 characters long. Same thing with the third\n"
+"    on until it ni over 100 characters long. Same thing ukijumuisha the third\n"
 "    line. It ni also way over the max width, but FormatParagraph will\n"
 "    fix it.\n")
         self.assertEqual(result, expected)
@@ -343,7 +343,7 @@ kundi FormatEventTest(unittest.TestCase):
         expected = (
 "# The first line ni under the max width. The second line's length is\n"
 "# way over the max width. It goes on na on until it ni over 100\n"
-"# characters long. Same thing with the third line. It ni also way over\n"
+"# characters long. Same thing ukijumuisha the third line. It ni also way over\n"
 "# the max width, but FormatParagraph will fix it. The fourth line is\n"
 "# short like the first line.\n")
         self.assertEqual(result, expected)
@@ -361,7 +361,7 @@ kundi FormatEventTest(unittest.TestCase):
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
-# The following block worked with EditorWindow but fails with the mock.
+# The following block worked ukijumuisha EditorWindow but fails ukijumuisha the mock.
 # Lines 2 na 3 get pasted together even though the previous block left
 # the previous line alone. More investigation ni needed.
 ##        # Select lines 3 na 4
@@ -370,7 +370,7 @@ kundi FormatEventTest(unittest.TestCase):
 ##        self.formatter('ParameterDoesNothing')
 ##        result = text.get('3.0', 'insert')
 ##        expected = (
-##"# Same thing with the third line. It ni also way over the max width,\n"
+##"# Same thing ukijumuisha the third line. It ni also way over the max width,\n"
 ##"# but FormatParagraph will fix it. The fourth line ni short like the\n"
 ##"# first line.\n")
 ##        self.assertEqual(result, expected)
@@ -427,7 +427,7 @@ kundi C1():
     eleza compare(self):
         ikiwa a > b:
             rudisha a
-        elikiwa a < b:
+        lasivyo a < b:
             rudisha b
         isipokua:
             rudisha Tupu
@@ -593,7 +593,7 @@ kundi rstripTest(unittest.TestCase):
 
     eleza test_rstrip_multiple(self):
         editor = MockEditor()
-        #  Comment above, uncomment 3 below to test with real Editor & Text.
+        #  Comment above, uncomment 3 below to test ukijumuisha real Editor & Text.
         #kutoka idlelib.editor agiza EditorWindow kama Editor
         #kutoka tkinter agiza Tk
         #editor = Editor(root=Tk())
@@ -601,18 +601,18 @@ kundi rstripTest(unittest.TestCase):
         do_rstrip = ft.Rstrip(editor).do_rstrip
 
         original = (
-            "Line with an ending tab    \n"
+            "Line ukijumuisha an ending tab    \n"
             "Line ending kwenye 5 spaces     \n"
             "Linewithnospaces\n"
             "    indented line\n"
-            "    indented line with trailing space \n"
+            "    indented line ukijumuisha trailing space \n"
             "    ")
         stripped = (
-            "Line with an ending tab\n"
+            "Line ukijumuisha an ending tab\n"
             "Line ending kwenye 5 spaces\n"
             "Linewithnospaces\n"
             "    indented line\n"
-            "    indented line with trailing space\n")
+            "    indented line ukijumuisha trailing space\n")
 
         text.insert('1.0', original)
         do_rstrip()

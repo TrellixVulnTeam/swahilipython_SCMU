@@ -28,7 +28,7 @@ eleza _wrap_with_retry_thrice(func, exc):
     rudisha wrapped
 
 # bpo-35411: FTP tests of test_urllib2net randomly fail
-# with "425 Security: Bad IP connecting" on Travis CI
+# ukijumuisha "425 Security: Bad IP connecting" on Travis CI
 skip_ftp_test_on_travis = unittest.skipIf('TRAVIS' kwenye os.environ,
                                           'bpo-35411: skip FTP test '
                                           'on Travis CI')
@@ -61,7 +61,7 @@ kundi AuthTests(unittest.TestCase):
 #        tatizo urllib2.HTTPError, exc:
 #            self.assertEqual(exc.code, 401)
 #        isipokua:
-#            self.fail("urlopen() should have failed with 401")
+#            self.fail("urlopen() should have failed ukijumuisha 401")
 #
 #        # success
 #        auth_handler = urllib2.HTTPBasicAuthHandler()
@@ -85,7 +85,7 @@ kundi CloseSocketTest(unittest.TestCase):
         # calling .close() on urllib2's response objects should close the
         # underlying socket
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url):
+        ukijumuisha support.transient_internet(url):
             response = _urlopen_with_retry(url)
             sock = response.fp
             self.assertUongo(sock.closed)
@@ -129,13 +129,13 @@ kundi OtherNetworkTests(unittest.TestCase):
         self.assertRaises(ValueError, urllib.request.urlopen,'./relative_path/to/file')
 
     # XXX Following test depends on machine configurations that are internal
-    # to CNRI.  Need to set up a public server with the right authentication
+    # to CNRI.  Need to set up a public server ukijumuisha the right authentication
     # configuration kila test purposes.
 
 ##     eleza test_cnri(self):
 ##         ikiwa socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
-##         elikiwa socket.gethostname() == 'bitdiddle.concentric.net':
+##         lasivyo socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
 ##         isipokua:
 ##             localhost = Tupu
@@ -158,7 +158,7 @@ kundi OtherNetworkTests(unittest.TestCase):
 
     eleza test_urlwithfrag(self):
         urlwith_frag = "http://www.pythontest.net/index.html#frag"
-        with support.transient_internet(urlwith_frag):
+        ukijumuisha support.transient_internet(urlwith_frag):
             req = urllib.request.Request(urlwith_frag)
             res = urllib.request.urlopen(req)
             self.assertEqual(res.geturl(),
@@ -166,7 +166,7 @@ kundi OtherNetworkTests(unittest.TestCase):
 
     eleza test_redirect_url_withfrag(self):
         redirect_url_with_frag = "http://www.pythontest.net/redir/with_frag/"
-        with support.transient_internet(redirect_url_with_frag):
+        ukijumuisha support.transient_internet(redirect_url_with_frag):
             req = urllib.request.Request(redirect_url_with_frag)
             res = urllib.request.urlopen(req)
             self.assertEqual(res.geturl(),
@@ -174,7 +174,7 @@ kundi OtherNetworkTests(unittest.TestCase):
 
     eleza test_custom_headers(self):
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url):
+        ukijumuisha support.transient_internet(url):
             opener = urllib.request.build_opener()
             request = urllib.request.Request(url)
             self.assertUongo(request.header_items())
@@ -192,9 +192,9 @@ kundi OtherNetworkTests(unittest.TestCase):
 
         URL = 'http://www.imdb.com' # mangles Connection:close
 
-        with support.transient_internet(URL):
+        ukijumuisha support.transient_internet(URL):
             jaribu:
-                with urllib.request.urlopen(URL) kama res:
+                ukijumuisha urllib.request.urlopen(URL) kama res:
                     pita
             tatizo ValueError kama e:
                 self.fail("urlopen failed kila site sio sending \
@@ -216,13 +216,13 @@ kundi OtherNetworkTests(unittest.TestCase):
             urlopen = _wrap_with_retry_thrice(urlopen, urllib.error.URLError)
 
         kila url kwenye urls:
-            with self.subTest(url=url):
+            ukijumuisha self.subTest(url=url):
                 ikiwa isinstance(url, tuple):
                     url, req, expected_err = url
                 isipokua:
                     req = expected_err = Tupu
 
-                with support.transient_internet(url):
+                ukijumuisha support.transient_internet(url):
                     jaribu:
                         f = urlopen(url, req, TIMEOUT)
                     # urllib.error.URLError ni a subkundi of OSError
@@ -235,7 +235,7 @@ kundi OtherNetworkTests(unittest.TestCase):
                             ashiria
                     isipokua:
                         jaribu:
-                            with support.time_out, \
+                            ukijumuisha support.time_out, \
                                  support.socket_peer_reset, \
                                  support.ioerror_peer_reset:
                                 buf = f.read()
@@ -260,7 +260,7 @@ kundi TimeoutTest(unittest.TestCase):
     eleza test_http_basic(self):
         self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url, timeout=Tupu):
+        ukijumuisha support.transient_internet(url, timeout=Tupu):
             u = _urlopen_with_retry(url)
             self.addCleanup(u.close)
             self.assertIsTupu(u.fp.raw._sock.gettimeout())
@@ -268,7 +268,7 @@ kundi TimeoutTest(unittest.TestCase):
     eleza test_http_default_timeout(self):
         self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url):
+        ukijumuisha support.transient_internet(url):
             socket.setdefaulttimeout(60)
             jaribu:
                 u = _urlopen_with_retry(url)
@@ -280,7 +280,7 @@ kundi TimeoutTest(unittest.TestCase):
     eleza test_http_no_timeout(self):
         self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url):
+        ukijumuisha support.transient_internet(url):
             socket.setdefaulttimeout(60)
             jaribu:
                 u = _urlopen_with_retry(url, timeout=Tupu)
@@ -291,7 +291,7 @@ kundi TimeoutTest(unittest.TestCase):
 
     eleza test_http_timeout(self):
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url):
+        ukijumuisha support.transient_internet(url):
             u = _urlopen_with_retry(url, timeout=120)
             self.addCleanup(u.close)
             self.assertEqual(u.fp.raw._sock.gettimeout(), 120)
@@ -301,7 +301,7 @@ kundi TimeoutTest(unittest.TestCase):
     @skip_ftp_test_on_travis
     eleza test_ftp_basic(self):
         self.assertIsTupu(socket.getdefaulttimeout())
-        with support.transient_internet(self.FTP_HOST, timeout=Tupu):
+        ukijumuisha support.transient_internet(self.FTP_HOST, timeout=Tupu):
             u = _urlopen_with_retry(self.FTP_HOST)
             self.addCleanup(u.close)
             self.assertIsTupu(u.fp.fp.raw._sock.gettimeout())
@@ -309,7 +309,7 @@ kundi TimeoutTest(unittest.TestCase):
     @skip_ftp_test_on_travis
     eleza test_ftp_default_timeout(self):
         self.assertIsTupu(socket.getdefaulttimeout())
-        with support.transient_internet(self.FTP_HOST):
+        ukijumuisha support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
             jaribu:
                 u = _urlopen_with_retry(self.FTP_HOST)
@@ -321,7 +321,7 @@ kundi TimeoutTest(unittest.TestCase):
     @skip_ftp_test_on_travis
     eleza test_ftp_no_timeout(self):
         self.assertIsTupu(socket.getdefaulttimeout())
-        with support.transient_internet(self.FTP_HOST):
+        ukijumuisha support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
             jaribu:
                 u = _urlopen_with_retry(self.FTP_HOST, timeout=Tupu)
@@ -332,7 +332,7 @@ kundi TimeoutTest(unittest.TestCase):
 
     @skip_ftp_test_on_travis
     eleza test_ftp_timeout(self):
-        with support.transient_internet(self.FTP_HOST):
+        ukijumuisha support.transient_internet(self.FTP_HOST):
             u = _urlopen_with_retry(self.FTP_HOST, timeout=60)
             self.addCleanup(u.close)
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)

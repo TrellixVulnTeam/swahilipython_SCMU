@@ -87,7 +87,7 @@ eleza collect_in_thread(period=0.0001):
             time.sleep(period)
             gc.collect()
 
-    with support.disable_gc():
+    ukijumuisha support.disable_gc():
         t = threading.Thread(target=collect)
         t.start()
         jaribu:
@@ -392,7 +392,7 @@ kundi ReferencesTestCase(TestBase):
         self.assertEqual(bool(weakref.proxy(lyst)), bool(lyst))
 
     eleza test_proxy_iter(self):
-        # Test fails with a debug build of the interpreter
+        # Test fails ukijumuisha a debug build of the interpreter
         # (see bpo-38395).
 
         obj = Tupu
@@ -405,7 +405,7 @@ kundi ReferencesTestCase(TestBase):
 
         obj = MyObj()
         p = weakref.proxy(obj)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             # "blech" kwenye p calls MyObj.__iter__ through the proxy,
             # without keeping a reference to the real object, so it
             # can be killed kwenye the middle of the call
@@ -521,9 +521,9 @@ kundi ReferencesTestCase(TestBase):
 
         # Now when subtype_dealloc gets called on c2, it's sio enough just
         # that c2 ni immune kutoka gc wakati the weakref callbacks associated
-        # with c2 execute (there are none kwenye this 2nd half of the test, btw).
+        # ukijumuisha c2 execute (there are none kwenye this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
-        # so any gc triggered by weakref callbacks associated with anything
+        # so any gc triggered by weakref callbacks associated ukijumuisha anything
         # torn down by a base kundi dealloc can also trigger double
         # deallocation of c2.
         toa c2
@@ -657,8 +657,8 @@ kundi ReferencesTestCase(TestBase):
         # kutoka dead cycles.  For this to be attempted, the weakref and
         # its callback must also be part of the cyclic trash (else the
         # objects reachable via the callback couldn't be kwenye cyclic trash
-        # to begin with -- the callback would act like an external root).
-        # But gc clears trash weakrefs with callbacks early now, which
+        # to begin ukijumuisha -- the callback would act like an external root).
+        # But gc clears trash weakrefs ukijumuisha callbacks early now, which
         # disables the callbacks, so the callbacks shouldn't get called
         # at all (and so nothing actually gets resurrected).
 
@@ -902,7 +902,7 @@ kundi ReferencesTestCase(TestBase):
         x = Object(1)
         callback = lambda ref: Tupu
         ref1 = weakref.ref(x, callback)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             ref1.__callback__ = lambda ref: Tupu
 
     eleza test_callback_gcs(self):
@@ -1002,7 +1002,7 @@ kundi SubclassableWeakrefTestCase(TestBase):
 
         self.assertEqual(self.cbcalled, 0)
 
-        # Same test, with two weakrefs to the same object
+        # Same test, ukijumuisha two weakrefs to the same object
         # (since code paths are different)
         o = C()
         r1 = MyRef(o, callback)
@@ -1361,26 +1361,26 @@ kundi MappingTestCase(TestBase):
 
     eleza check_weak_destroy_and_mutate_while_iterating(self, dict, testcontext):
         # Check that we can explicitly mutate the weak dict without
-        # interfering with delayed removal.
+        # interfering ukijumuisha delayed removal.
         # `testcontext` should create an iterator, destroy one of the
         # weakref'ed objects na then rudisha a new key/value pair corresponding
         # to the destroyed object.
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             self.assertNotIn(k, dict)
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             self.assertRaises(KeyError, dict.__delitem__, k)
         self.assertNotIn(k, dict)
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             self.assertRaises(KeyError, dict.pop, k)
         self.assertNotIn(k, dict)
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             dict[k] = v
         self.assertEqual(dict[k], v)
         ddict = copy.copy(dict)
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             dict.update(ddict)
         self.assertEqual(dict, ddict)
-        with testcontext() kama (k, v):
+        ukijumuisha testcontext() kama (k, v):
             dict.clear()
         self.assertEqual(len(dict), 0)
 
@@ -1391,7 +1391,7 @@ kundi MappingTestCase(TestBase):
         # (each call to testcontext() should schedule one item kila removal
         #  kila this test to work properly)
         o = Object(123456)
-        with testcontext():
+        ukijumuisha testcontext():
             n = len(dict)
             # Since underlaying dict ni ordered, first item ni popped
             dict.pop(next(dict.keys()))
@@ -1399,20 +1399,20 @@ kundi MappingTestCase(TestBase):
             dict[o] = o
             self.assertEqual(len(dict), n)
         # last item kwenye objects ni removed kutoka dict kwenye context shutdown
-        with testcontext():
+        ukijumuisha testcontext():
             self.assertEqual(len(dict), n - 1)
             # Then, (o, o) ni popped
             dict.popitem()
             self.assertEqual(len(dict), n - 2)
-        with testcontext():
+        ukijumuisha testcontext():
             self.assertEqual(len(dict), n - 3)
             toa dict[next(dict.keys())]
             self.assertEqual(len(dict), n - 4)
-        with testcontext():
+        ukijumuisha testcontext():
             self.assertEqual(len(dict), n - 5)
             dict.popitem()
             self.assertEqual(len(dict), n - 6)
-        with testcontext():
+        ukijumuisha testcontext():
             dict.clear()
             self.assertEqual(len(dict), 0)
         self.assertEqual(len(dict), 0)
@@ -1698,7 +1698,7 @@ kundi MappingTestCase(TestBase):
 
     eleza test_threaded_weak_valued_setdefault(self):
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        ukijumuisha collect_in_thread():
             kila i kwenye range(100000):
                 x = d.setdefault(10, RefCycle())
                 self.assertIsNot(x, Tupu)  # we never put Tupu kwenye there!
@@ -1706,7 +1706,7 @@ kundi MappingTestCase(TestBase):
 
     eleza test_threaded_weak_valued_pop(self):
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        ukijumuisha collect_in_thread():
             kila i kwenye range(100000):
                 d[10] = RefCycle()
                 x = d.pop(10, 10)
@@ -1716,7 +1716,7 @@ kundi MappingTestCase(TestBase):
         # Issue #28427: old keys should sio remove new values kutoka
         # WeakValueDictionary when collecting kutoka another thread.
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        ukijumuisha collect_in_thread():
             kila i kwenye range(200000):
                 o = RefCycle()
                 d[10] = o
@@ -1760,7 +1760,7 @@ kundi MappingTestCase(TestBase):
         d = type_()
         keys = []
         values = []
-        # Initialize d with many entries
+        # Initialize d ukijumuisha many entries
         kila i kwenye range(70000):
             k, v = DummyKey(i), DummyValue(i)
             keys.append(k)
@@ -1892,14 +1892,14 @@ kundi FinalizeTestCase(unittest.TestCase):
         self.assertEqual(res, [((1, 2), {'func': 3, 'obj': 4})])
 
         res = []
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             f = weakref.finalize(a, func=fin, arg=1)
         self.assertEqual(f.peek(), (a, fin, (), {'arg': 1}))
         f()
         self.assertEqual(res, [((), {'arg': 1})])
 
         res = []
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             f = weakref.finalize(obj=a, func=fin, arg=1)
         self.assertEqual(f.peek(), (a, fin, (), {'arg': 1}))
         f()

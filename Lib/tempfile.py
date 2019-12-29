@@ -197,7 +197,7 @@ eleza _get_default_tempdir():
                 fd = _os.open(filename, _bin_openflags, 0o600)
                 jaribu:
                     jaribu:
-                        with _io.open(fd, 'wb', closefd=Uongo) kama fp:
+                        ukijumuisha _io.open(fd, 'wb', closefd=Uongo) kama fp:
                             fp.write(b'blat')
                     mwishowe:
                         _os.close(fd)
@@ -207,7 +207,7 @@ eleza _get_default_tempdir():
             tatizo FileExistsError:
                 pita
             tatizo PermissionError:
-                # This exception ni thrown when a directory with the chosen name
+                # This exception ni thrown when a directory ukijumuisha the chosen name
                 # already exists on windows.
                 ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
                     _os.access(dir, _os.W_OK)):
@@ -251,7 +251,7 @@ eleza _mkstemp_inner(dir, pre, suf, flags, output_type):
         tatizo FileExistsError:
             endelea    # try again
         tatizo PermissionError:
-            # This exception ni thrown when a directory with the chosen name
+            # This exception ni thrown when a directory ukijumuisha the chosen name
             # already exists on windows.
             ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
@@ -297,10 +297,10 @@ eleza mkstemp(suffix=Tupu, prefix=Tupu, dir=Tupu, text=Uongo):
     file.  The rudisha value ni a pair (fd, name) where fd ni the
     file descriptor rudishaed by os.open, na name ni the filename.
 
-    If 'suffix' ni sio Tupu, the file name will end with that suffix,
+    If 'suffix' ni sio Tupu, the file name will end ukijumuisha that suffix,
     otherwise there will be no suffix.
 
-    If 'prefix' ni sio Tupu, the file name will begin with that prefix,
+    If 'prefix' ni sio Tupu, the file name will begin ukijumuisha that prefix,
     otherwise a default prefix ni used.
 
     If 'dir' ni sio Tupu, the file will be created kwenye that directory,
@@ -319,7 +319,7 @@ eleza mkstemp(suffix=Tupu, prefix=Tupu, dir=Tupu, text=Uongo):
     file ni executable, the file ni executable by no one. The file
     descriptor ni sio inherited by children of this process.
 
-    Caller ni responsible kila deleting the file when done with it.
+    Caller ni responsible kila deleting the file when done ukijumuisha it.
     """
 
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
@@ -342,7 +342,7 @@ eleza mkdtemp(suffix=Tupu, prefix=Tupu, dir=Tupu):
     The directory ni readable, writable, na searchable only by the
     creating user.
 
-    Caller ni responsible kila deleting the directory when done with it.
+    Caller ni responsible kila deleting the directory when done ukijumuisha it.
     """
 
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
@@ -360,7 +360,7 @@ eleza mkdtemp(suffix=Tupu, prefix=Tupu, dir=Tupu):
         tatizo FileExistsError:
             endelea    # try again
         tatizo PermissionError:
-            # This exception ni thrown when a directory with the chosen name
+            # This exception ni thrown when a directory ukijumuisha the chosen name
             # already exists on windows.
             ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
@@ -382,7 +382,7 @@ eleza mktemp(suffix="", prefix=template, dir=Tupu):
 
     THIS FUNCTION IS UNSAFE AND SHOULD NOT BE USED.  The file name may
     refer to a file that did sio exist at some point, but by the time
-    you get around to creating it, someone else may have beaten you to
+    you get around to creating it, someone isipokua may have beaten you to
     the punch.
     """
 
@@ -419,7 +419,7 @@ kundi _TemporaryFileCloser:
 
     # NT provides delete-on-close kama a primitive, so we don't need
     # the wrapper to do anything special.  We still use it so that
-    # file.name ni useful (i.e. sio "(fdopen)") with NamedTemporaryFile.
+    # file.name ni useful (i.e. sio "(fdopen)") ukijumuisha NamedTemporaryFile.
     ikiwa _os.name != 'nt':
         # Cache the unlinker so we don't get spurious errors at
         # shutdown when the module-level "os" ni Tupu'd out.  Note
@@ -487,7 +487,7 @@ kundi _TemporaryFileWrapper:
         rudisha self
 
     # Need to trap __exit__ kama well to ensure the file gets
-    # deleted when used kwenye a with statement
+    # deleted when used kwenye a ukijumuisha statement
     eleza __exit__(self, exc, value, tb):
         result = self.file.__exit__(exc, value, tb)
         self.close()
@@ -524,7 +524,7 @@ eleza NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Tupu,
     'errors' -- the errors argument to io.open (default Tupu)
     The file ni created kama mkstemp() would do it.
 
-    Returns an object with a file-like interface; the name of the file
+    Returns an object ukijumuisha a file-like interface; the name of the file
     ni accessible kama its 'name' attribute.  The file will be automatically
     deleted when it ni closed unless the 'delete' argument ni set to Uongo.
     """
@@ -573,7 +573,7 @@ isipokua:
         'errors' -- the errors argument to io.open (default Tupu)
         The file ni created kama mkstemp() would do it.
 
-        Returns an object with a file-like interface.  The file has no
+        Returns an object ukijumuisha a file-like interface.  The file has no
         name, na will cease to exist when it ni closed.
         """
         global _O_TMPFILE_WORKS
@@ -588,7 +588,7 @@ isipokua:
             tatizo IsADirectoryError:
                 # Linux kernel older than 3.11 ignores the O_TMPFILE flag:
                 # O_TMPFILE ni read kama O_DIRECTORY. Trying to open a directory
-                # with O_RDWR|O_DIRECTORY fails with IsADirectoryError, a
+                # ukijumuisha O_RDWR|O_DIRECTORY fails ukijumuisha IsADirectoryError, a
                 # directory cannot be open to write. Set flag to Uongo to not
                 # try again.
                 _O_TMPFILE_WORKS = Uongo
@@ -597,8 +597,8 @@ isipokua:
                 # For example, OSError(95, 'Operation sio supported').
                 #
                 # On Linux kernel older than 3.11, trying to open a regular
-                # file (or a symbolic link to a regular file) with O_TMPFILE
-                # fails with NotADirectoryError, because O_TMPFILE ni read as
+                # file (or a symbolic link to a regular file) ukijumuisha O_TMPFILE
+                # fails ukijumuisha NotADirectoryError, because O_TMPFILE ni read as
                 # O_DIRECTORY.
                 pita
             isipokua:
@@ -669,7 +669,7 @@ kundi SpooledTemporaryFile:
     # Context management protocol
     eleza __enter__(self):
         ikiwa self._file.closed:
-            ashiria ValueError("Cannot enter context with closed file")
+            ashiria ValueError("Cannot enter context ukijumuisha closed file")
         rudisha self
 
     eleza __exit__(self, exc, value, tb):
@@ -767,7 +767,7 @@ kundi TemporaryDirectory(object):
     behavior kama mkdtemp but can be used kama a context manager.  For
     example:
 
-        with TemporaryDirectory() kama tmpdir:
+        ukijumuisha TemporaryDirectory() kama tmpdir:
             ...
 
     Upon exiting the context, the directory na everything contained
@@ -803,7 +803,7 @@ kundi TemporaryDirectory(object):
                         cls._rmtree(path)
                 tatizo FileNotFoundError:
                     pita
-            elikiwa issubclass(exc_info[0], FileNotFoundError):
+            lasivyo issubclass(exc_info[0], FileNotFoundError):
                 pita
             isipokua:
                 ashiria

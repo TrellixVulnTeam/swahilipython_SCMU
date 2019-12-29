@@ -60,7 +60,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
             info.append(f'pid={self._pid}')
         ikiwa self._returncode ni sio Tupu:
             info.append(f'returncode={self._returncode}')
-        elikiwa self._pid ni sio Tupu:
+        lasivyo self._pid ni sio Tupu:
             info.append('running')
         isipokua:
             info.append('not started')
@@ -208,7 +208,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
         assert returncode ni sio Tupu, returncode
         assert self._returncode ni Tupu, self._returncode
         ikiwa self._loop.get_debug():
-            logger.info('%r exited with rudisha code %r', self, returncode)
+            logger.info('%r exited ukijumuisha rudisha code %r', self, returncode)
         self._returncode = returncode
         ikiwa self._proc.returncode ni Tupu:
             # asyncio uses a child watcher: copy the status into the Popen

@@ -83,7 +83,7 @@ kundi BaseSelector(metaclass=ABCMeta):
     A selector supports registering file objects to be monitored kila specific
     I/O events.
 
-    A file object ni a file descriptor ama any object with a `fileno()` method.
+    A file object ni a file descriptor ama any object ukijumuisha a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
     kila example to store context information, a callback, etc.
 
@@ -259,7 +259,7 @@ kundi _BaseSelectorImpl(BaseSelector):
         ikiwa events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
-        elikiwa data != key.data:
+        lasivyo data != key.data:
             # Use a shortcut to update the data.
             key = key._replace(data=data)
             self._fd_to_key[key.fd] = key
@@ -317,7 +317,7 @@ kundi SelectSelector(_BaseSelectorImpl):
         _select = select.select
 
     eleza select(self, timeout=Tupu):
-        timeout = Tupu ikiwa timeout ni Tupu else max(timeout, 0)
+        timeout = Tupu ikiwa timeout ni Tupu isipokua max(timeout, 0)
         ready = []
         jaribu:
             r, w, _ = self._select(self._readers, self._writers, [], timeout)
@@ -404,7 +404,7 @@ kundi _PollLikeSelector(_BaseSelectorImpl):
         # epoll() has a different signature na handling of timeout parameter.
         ikiwa timeout ni Tupu:
             timeout = Tupu
-        elikiwa timeout <= 0:
+        lasivyo timeout <= 0:
             timeout = 0
         isipokua:
             # poll() has a resolution of 1 millisecond, round away kutoka
@@ -451,7 +451,7 @@ ikiwa hasattr(select, 'epoll'):
         eleza select(self, timeout=Tupu):
             ikiwa timeout ni Tupu:
                 timeout = -1
-            elikiwa timeout <= 0:
+            lasivyo timeout <= 0:
                 timeout = 0
             isipokua:
                 # epoll_wait() has a resolution of 1 millisecond, round away
@@ -551,7 +551,7 @@ ikiwa hasattr(select, 'kqueue'):
             rudisha key
 
         eleza select(self, timeout=Tupu):
-            timeout = Tupu ikiwa timeout ni Tupu else max(timeout, 0)
+            timeout = Tupu ikiwa timeout ni Tupu isipokua max(timeout, 0)
             max_ev = len(self._fd_to_key)
             ready = []
             jaribu:
@@ -582,11 +582,11 @@ ikiwa hasattr(select, 'kqueue'):
 # select() also can't accept a FD > FD_SETSIZE (usually around 1024)
 ikiwa 'KqueueSelector' kwenye globals():
     DefaultSelector = KqueueSelector
-elikiwa 'EpollSelector' kwenye globals():
+lasivyo 'EpollSelector' kwenye globals():
     DefaultSelector = EpollSelector
-elikiwa 'DevpollSelector' kwenye globals():
+lasivyo 'DevpollSelector' kwenye globals():
     DefaultSelector = DevpollSelector
-elikiwa 'PollSelector' kwenye globals():
+lasivyo 'PollSelector' kwenye globals():
     DefaultSelector = PollSelector
 isipokua:
     DefaultSelector = SelectSelector

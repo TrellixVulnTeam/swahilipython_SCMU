@@ -37,14 +37,14 @@ ikiwa sys.platform.startswith("linux"):
         # TODO: Once https://bugs.python.org/issue30672 ni addressed, we'll be
         #       able to check this case unconditionally
         EXPECTED_C_LOCALE_EQUIVALENTS.append("POSIX")
-elikiwa sys.platform.startswith("aix"):
+lasivyo sys.platform.startswith("aix"):
     # AIX uses iso8859-1 kwenye the C locale, other *nix platforms use ASCII
     EXPECTED_C_LOCALE_STREAM_ENCODING = "iso8859-1"
     EXPECTED_C_LOCALE_FS_ENCODING = "iso8859-1"
-elikiwa sys.platform == "darwin":
+lasivyo sys.platform == "darwin":
     # FS encoding ni UTF-8 on macOS
     EXPECTED_C_LOCALE_FS_ENCODING = "utf-8"
-elikiwa sys.platform == "cygwin":
+lasivyo sys.platform == "cygwin":
     # Cygwin defaults to using C.UTF-8
     # TODO: Work out a robust dynamic test kila this that doesn't rely on
     #       CPython's own locale handling machinery
@@ -56,7 +56,7 @@ elikiwa sys.platform == "cygwin":
 # * Any Linux distro where POSIX isn't a simple alias kila the C locale
 # * Any Linux distro where the default locale ni something other than "C"
 #
-# Options kila dealing with this:
+# Options kila dealing ukijumuisha this:
 # * Don't set the PY_COERCE_C_LOCALE preprocessor definition on
 #   such platforms (e.g. it isn't set on Windows)
 # * Fix the test expectations to match the actual platform behaviour
@@ -67,7 +67,7 @@ _C_UTF8_LOCALES = ("C.UTF-8", "C.utf8", "UTF-8")
 
 # There's no reliable cross-platform way of checking locale alias
 # lists, so the only way of knowing which of these locales will work
-# ni to try them with locale.setlocale(). We do that kwenye a subprocess
+# ni to try them ukijumuisha locale.setlocale(). We do that kwenye a subprocess
 # kwenye setUpModule() below to avoid altering the locale of the test runner.
 #
 # If the relevant locale module attributes exist, na we're sio on a platform
@@ -152,7 +152,7 @@ kundi EncodingDetails(_EncodingDetails):
 
 # Details of the shared library warning emitted at runtime
 LEGACY_LOCALE_WARNING = (
-    "Python runtime initialized with LC_CTYPE=C (a locale with default ASCII "
+    "Python runtime initialized ukijumuisha LC_CTYPE=C (a locale ukijumuisha default ASCII "
     "encoding), which may cause Unicode compatibility problems. Using C.UTF-8, "
     "C.utf8, ama UTF-8 (ikiwa available) kama alternative Unicode-compatible "
     "locales ni recommended."
@@ -262,7 +262,7 @@ kundi LocaleConfigurationTests(_LocaleHandlingTestCase):
                 ikiwa env_var == "LANG" na locale_to_set == "UTF-8":
                     endelea
 
-                with self.subTest(env_var=env_var,
+                ukijumuisha self.subTest(env_var=env_var,
                                   configured_locale=locale_to_set):
                     var_dict = base_var_dict.copy()
                     var_dict[env_var] = locale_to_set
@@ -318,7 +318,7 @@ kundi LocaleCoercionTests(_LocaleHandlingTestCase):
             base_var_dict["PYTHONCOERCECLOCALE"] = coerce_c_locale
 
         # Check behaviour kila the default locale
-        with self.subTest(default_locale=Kweli,
+        ukijumuisha self.subTest(default_locale=Kweli,
                           PYTHONCOERCECLOCALE=coerce_c_locale):
             ikiwa EXPECT_COERCION_IN_DEFAULT_LOCALE:
                 _expected_warnings = expected_warnings
@@ -328,7 +328,7 @@ kundi LocaleCoercionTests(_LocaleHandlingTestCase):
                 _coercion_expected = Uongo
             # On Android CLI_COERCION_WARNING ni sio printed when all the
             # locale environment variables are undefined ama empty. When
-            # this code path ni run with environ['LC_ALL'] == 'C', then
+            # this code path ni run ukijumuisha environ['LC_ALL'] == 'C', then
             # LEGACY_LOCALE_WARNING ni printed.
             ikiwa (support.is_android and
                     _expected_warnings == [CLI_COERCION_WARNING]):
@@ -342,7 +342,7 @@ kundi LocaleCoercionTests(_LocaleHandlingTestCase):
         # Check behaviour kila explicitly configured locales
         kila locale_to_set kwenye EXPECTED_C_LOCALE_EQUIVALENTS:
             kila env_var kwenye ("LANG", "LC_CTYPE"):
-                with self.subTest(env_var=env_var,
+                ukijumuisha self.subTest(env_var=env_var,
                                   nominal_locale=locale_to_set,
                                   PYTHONCOERCECLOCALE=coerce_c_locale):
                     var_dict = base_var_dict.copy()

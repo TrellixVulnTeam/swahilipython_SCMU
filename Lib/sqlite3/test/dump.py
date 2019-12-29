@@ -50,7 +50,7 @@ kundi DumpTests(unittest.TestCase):
             kila i kwenye range(len(expected_sqls))]
 
     eleza CheckUnorderableRow(self):
-        # iterdump() should be able to cope with unorderable row types (issue #15545)
+        # iterdump() should be able to cope ukijumuisha unorderable row types (issue #15545)
         kundi UnorderableRow:
             eleza __init__(self, cursor, row):
                 self.row = row

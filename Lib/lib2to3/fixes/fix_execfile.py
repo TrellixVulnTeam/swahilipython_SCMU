@@ -44,7 +44,7 @@ kundi FixExecfile(fixer_base.BaseFix):
         exec_str = String("'exec'", " ")
         compile_args = open_expr + [Comma(), filename_arg, Comma(), exec_str]
         compile_call = Call(Name("compile"), compile_args, "")
-        # Finally, replace the execfile call with an exec call.
+        # Finally, replace the execfile call ukijumuisha an exec call.
         args = [compile_call]
         ikiwa globals ni sio Tupu:
             args.extend([Comma(), globals.clone()])

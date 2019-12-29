@@ -22,7 +22,7 @@ kundi CalltipWindow(TooltipBase):
     eleza __init__(self, text_widget):
         """Create a call-tip; shown by showtip().
 
-        text_widget: a Text widget with code kila which call-tips are desired
+        text_widget: a Text widget ukijumuisha code kila which call-tips are desired
         """
         # Note: The Text widget will be accessible kama self.anchor_widget
         super(CalltipWindow, self).__init__(text_widget)

@@ -12,7 +12,7 @@ agiza warnings
 kundi ExecModuleTests(abc.LoaderTests):
 
     eleza exec_module(self, name):
-        with util.uncache(name), captured_stdout() kama stdout:
+        ukijumuisha util.uncache(name), captured_stdout() kama stdout:
             spec = self.machinery.ModuleSpec(
                     name, self.machinery.FrozenImporter, origin='frozen',
                     is_package=self.machinery.FrozenImporter.is_package(name))
@@ -48,7 +48,7 @@ kundi ExecModuleTests(abc.LoaderTests):
 
     eleza test_lacking_parent(self):
         name = '__phello__.spam'
-        with util.uncache('__phello__'):
+        ukijumuisha util.uncache('__phello__'):
             module, output = self.exec_module(name)
             check = {'__name__': name}
             kila attr, value kwenye check.items():
@@ -62,7 +62,7 @@ kundi ExecModuleTests(abc.LoaderTests):
     eleza test_module_repr(self):
         name = '__hello__'
         module, output = self.exec_module(name)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             repr_str = self.machinery.FrozenImporter.module_repr(module)
         self.assertEqual(repr_str,
@@ -79,7 +79,7 @@ kundi ExecModuleTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -92,8 +92,8 @@ kundi ExecModuleTests(abc.LoaderTests):
 kundi LoaderTests(abc.LoaderTests):
 
     eleza test_module(self):
-        with util.uncache('__hello__'), captured_stdout() kama stdout:
-            with warnings.catch_warnings():
+        ukijumuisha util.uncache('__hello__'), captured_stdout() kama stdout:
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__hello__')
             check = {'__name__': '__hello__',
@@ -106,8 +106,8 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_package(self):
-        with util.uncache('__phello__'),  captured_stdout() kama stdout:
-            with warnings.catch_warnings():
+        ukijumuisha util.uncache('__phello__'),  captured_stdout() kama stdout:
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__')
             check = {'__name__': '__phello__',
@@ -124,9 +124,9 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_lacking_parent(self):
-        with util.uncache('__phello__', '__phello__.spam'), \
+        ukijumuisha util.uncache('__phello__', '__phello__.spam'), \
              captured_stdout() kama stdout:
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__.spam')
             check = {'__name__': '__phello__.spam',
@@ -142,8 +142,8 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_module_reuse(self):
-        with util.uncache('__hello__'), captured_stdout() kama stdout:
-            with warnings.catch_warnings():
+        ukijumuisha util.uncache('__hello__'), captured_stdout() kama stdout:
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module1 = self.machinery.FrozenImporter.load_module('__hello__')
                 module2 = self.machinery.FrozenImporter.load_module('__hello__')
@@ -152,8 +152,8 @@ kundi LoaderTests(abc.LoaderTests):
                              'Hello world!\nHello world!\n')
 
     eleza test_module_repr(self):
-        with util.uncache('__hello__'), captured_stdout():
-            with warnings.catch_warnings():
+        ukijumuisha util.uncache('__hello__'), captured_stdout():
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__hello__')
                 repr_str = self.machinery.FrozenImporter.module_repr(module)
@@ -161,7 +161,7 @@ kundi LoaderTests(abc.LoaderTests):
                              "<module '__hello__' (frozen)>")
 
     eleza test_module_repr_indirect(self):
-        with util.uncache('__hello__'), captured_stdout():
+        ukijumuisha util.uncache('__hello__'), captured_stdout():
             module = self.machinery.FrozenImporter.load_module('__hello__')
         self.assertEqual(repr(module),
                          "<module '__hello__' (frozen)>")
@@ -171,7 +171,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.machinery.FrozenImporter.load_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -188,7 +188,7 @@ kundi InspectLoaderTests:
     eleza test_get_code(self):
         # Make sure that the code object ni good.
         name = '__hello__'
-        with captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() kama stdout:
             code = self.machinery.FrozenImporter.get_code(name)
             mod = types.ModuleType(name)
             exec(code, mod.__dict__)
@@ -212,7 +212,7 @@ kundi InspectLoaderTests:
         # Raise ImportError kila modules that are sio frozen.
         kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
-            with self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) kama cm:
                 method('importlib')
             self.assertEqual(cm.exception.name, 'importlib')
 

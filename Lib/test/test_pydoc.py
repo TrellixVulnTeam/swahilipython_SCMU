@@ -128,7 +128,7 @@ FILE
     %s
 """.strip()
 
-expected_text_data_docstrings = tuple('\n     |      ' + s ikiwa s else ''
+expected_text_data_docstrings = tuple('\n     |      ' + s ikiwa s isipokua ''
                                       kila s kwenye expected_data_docstrings)
 
 expected_html_pattern = """
@@ -263,7 +263,7 @@ No Python documentation found kila %r.
 Use help() to get the interactive help utility.
 Use help(str) kila help on the str class.'''.replace('\n', os.linesep)
 
-# output pattern kila module with bad agizas
+# output pattern kila module ukijumuisha bad agizas
 badimport_pattern = "problem kwenye %s - ModuleNotFoundError: No module named %r"
 
 expected_dynamicattribute_pattern = """
@@ -419,7 +419,7 @@ kundi PydocDocTest(unittest.TestCase):
     maxDiff = Tupu
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
@@ -433,7 +433,7 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertEqual(result, expected_html)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
@@ -446,7 +446,7 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertEqual(expected_text, result)
 
     eleza test_text_enum_member_with_value_zero(self):
-        # Test issue #20654 to ensure enum member with value 0 can be
+        # Test issue #20654 to ensure enum member ukijumuisha value 0 can be
         # displayed. It used to throw KeyError: 'zero'.
         agiza enum
         kundi BinaryInteger(enum.IntEnum):
@@ -492,7 +492,7 @@ kundi PydocDocTest(unittest.TestCase):
             "documentation kila missing module found")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     'Docstrings are omitted with -OO na above')
+                     'Docstrings are omitted ukijumuisha -OO na above')
     eleza test_not_ascii(self):
         result = run_pydoc('test.test_pydoc.nonascii', PYTHONIOENCODING='ascii')
         encoded = nonascii.__doc__.encode('ascii', 'backslashreplace')
@@ -505,7 +505,7 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     eleza test_stripid(self):
-        # test with strings, other implementations might have different repr()
+        # test ukijumuisha strings, other implementations might have different repr()
         stripid = pydoc.stripid
         # strip the id
         self.assertEqual(stripid('<function stripid at 0x88dcee4>'),
@@ -522,7 +522,7 @@ kundi PydocDocTest(unittest.TestCase):
 
         When running help() on a builtin kundi which has child classes, it
         should contain a "Built-in subclasses" section na only 4 classes
-        should be displayed with a hint on how many more subclasses are present.
+        should be displayed ukijumuisha a hint on how many more subclasses are present.
         For example:
 
         >>> help(object)
@@ -647,7 +647,7 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertNotIn('Built-in subclasses', text)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     'Docstrings are omitted with -O2 na above')
+                     'Docstrings are omitted ukijumuisha -O2 na above')
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
@@ -672,7 +672,7 @@ kundi PydocDocTest(unittest.TestCase):
 
         pydoc.getpager = getpager_new
         jaribu:
-            with captured_output('stdout') kama output, \
+            ukijumuisha captured_output('stdout') kama output, \
                  captured_output('stderr') kama err:
                 helper.help(module)
                 result = buf.getvalue().strip()
@@ -688,7 +688,7 @@ kundi PydocDocTest(unittest.TestCase):
 
     eleza test_namedtuple_fields(self):
         Person = namedtuple('Person', ['nickname', 'firstname'])
-        with captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() kama help_io:
             pydoc.help(Person)
         helptext = help_io.getvalue()
         self.assertIn("nickname", helptext)
@@ -698,7 +698,7 @@ kundi PydocDocTest(unittest.TestCase):
 
     eleza test_namedtuple_public_underscore(self):
         NT = namedtuple('NT', ['abc', 'def'], rename=Kweli)
-        with captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() kama help_io:
             pydoc.help(NT)
         helptext = help_io.getvalue()
         self.assertIn('_1', helptext)
@@ -708,7 +708,7 @@ kundi PydocDocTest(unittest.TestCase):
     eleza test_synopsis(self):
         self.addCleanup(unlink, TESTFN)
         kila encoding kwenye ('ISO-8859-1', 'UTF-8'):
-            with open(TESTFN, 'w', encoding=encoding) kama script:
+            ukijumuisha open(TESTFN, 'w', encoding=encoding) kama script:
                 ikiwa encoding != 'UTF-8':
                     andika('#coding: {}'.format(encoding), file=script)
                 andika('"""line 1: h\xe9', file=script)
@@ -717,7 +717,7 @@ kundi PydocDocTest(unittest.TestCase):
             self.assertEqual(synopsis, 'line 1: h\xe9')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     'Docstrings are omitted with -OO na above')
+                     'Docstrings are omitted ukijumuisha -OO na above')
     eleza test_synopsis_sourceless(self):
         expected = os.__doc__.splitlines()[0]
         filename = os.__cached__
@@ -726,10 +726,10 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertEqual(synopsis, expected)
 
     eleza test_synopsis_sourceless_empty_doc(self):
-        with test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() kama test_dir:
             init_path = os.path.join(test_dir, 'foomod42.py')
             cached_path = importlib.util.cache_kutoka_source(init_path)
-            with open(init_path, 'w') kama fobj:
+            ukijumuisha open(init_path, 'w') kama fobj:
                 fobj.write("foo = 1")
             py_compile.compile(init_path)
             synopsis = pydoc.synopsis(init_path, {})
@@ -743,11 +743,11 @@ kundi PydocDocTest(unittest.TestCase):
                          ('I Am A Doc', '\nHere ni my description'))
 
     eleza test_is_package_when_not_package(self):
-        with test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() kama test_dir:
             self.assertUongo(pydoc.ispackage(test_dir))
 
     eleza test_is_package_when_is_package(self):
-        with test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() kama test_dir:
             init_path = os.path.join(test_dir, '__init__.py')
             open(init_path, 'w').close()
             self.assertKweli(pydoc.ispackage(test_dir))
@@ -899,7 +899,7 @@ kundi PydocImportTest(PydocBaseTest):
 
         sourcefn = os.path.join(TESTFN, modname) + os.extsep + "py"
         kila agizastring, expectedinmsg kwenye testpairs:
-            with open(sourcefn, 'w') kama f:
+            ukijumuisha open(sourcefn, 'w') kama f:
                 f.write("agiza {}\n".format(agizastring))
             result = run_pydoc(modname, PYTHONPATH=TESTFN).decode("ascii")
             expected = badimport_pattern % (modname, expectedinmsg)
@@ -910,18 +910,18 @@ kundi PydocImportTest(PydocBaseTest):
         pkgdir = os.path.join(TESTFN, "syntaxerr")
         os.mkdir(pkgdir)
         badsyntax = os.path.join(pkgdir, "__init__") + os.extsep + "py"
-        with open(badsyntax, 'w') kama f:
+        ukijumuisha open(badsyntax, 'w') kama f:
             f.write("invalid python syntax = $1\n")
-        with self.restrict_walk_packages(path=[TESTFN]):
-            with captured_stdout() kama out:
-                with captured_stderr() kama err:
+        ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
+            ukijumuisha captured_stdout() kama out:
+                ukijumuisha captured_stderr() kama err:
                     pydoc.apropos('xyzzy')
             # No result, no error
             self.assertEqual(out.getvalue(), '')
             self.assertEqual(err.getvalue(), '')
             # The package name ni still matched
-            with captured_stdout() kama out:
-                with captured_stderr() kama err:
+            ukijumuisha captured_stdout() kama out:
+                ukijumuisha captured_stderr() kama err:
                     pydoc.apropos('syntaxerr')
             self.assertEqual(out.getvalue().strip(), 'syntaxerr')
             self.assertEqual(err.getvalue(), '')
@@ -933,9 +933,9 @@ kundi PydocImportTest(PydocBaseTest):
         self.addCleanup(os.rmdir, self.unreadable_dir)
         # Note, on Windows the directory appears to be still
         #   readable so this ni sio really testing the issue there
-        with self.restrict_walk_packages(path=[TESTFN]):
-            with captured_stdout() kama out:
-                with captured_stderr() kama err:
+        ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
+            ukijumuisha captured_stdout() kama out:
+                ukijumuisha captured_stderr() kama err:
                     pydoc.apropos('SOMEKEY')
         # No result, no error
         self.assertEqual(out.getvalue(), '')
@@ -946,30 +946,30 @@ kundi PydocImportTest(PydocBaseTest):
         os.mkdir(pkgdir)
         self.addCleanup(rmtree, pkgdir)
         init_path = os.path.join(pkgdir, '__init__.py')
-        with open(init_path, 'w') kama fobj:
+        ukijumuisha open(init_path, 'w') kama fobj:
             fobj.write("foo = 1")
         current_mode = stat.S_IMODE(os.stat(pkgdir).st_mode)
         jaribu:
             os.chmod(pkgdir, current_mode & ~stat.S_IEXEC)
-            with self.restrict_walk_packages(path=[TESTFN]), captured_stdout() kama stdout:
+            ukijumuisha self.restrict_walk_packages(path=[TESTFN]), captured_stdout() kama stdout:
                 pydoc.apropos('')
             self.assertIn('walkpkg', stdout.getvalue())
         mwishowe:
             os.chmod(pkgdir, current_mode)
 
     eleza test_url_search_package_error(self):
-        # URL handler search should cope with packages that ashiria exceptions
+        # URL handler search should cope ukijumuisha packages that ashiria exceptions
         pkgdir = os.path.join(TESTFN, "test_error_package")
         os.mkdir(pkgdir)
         init = os.path.join(pkgdir, "__init__.py")
-        with open(init, "wt", encoding="ascii") kama f:
+        ukijumuisha open(init, "wt", encoding="ascii") kama f:
             f.write("""ashiria ValueError("ouch")\n""")
-        with self.restrict_walk_packages(path=[TESTFN]):
+        ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
             # Package has to be agizaable kila the error to have any effect
             saved_paths = tuple(sys.path)
             sys.path.insert(0, TESTFN)
             jaribu:
-                with self.assertRaisesRegex(ValueError, "ouch"):
+                ukijumuisha self.assertRaisesRegex(ValueError, "ouch"):
                     agiza test_error_package  # Sanity check
 
                 text = self.call_url_handler("search?key=test_error_package",
@@ -1003,7 +1003,7 @@ kundi PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        with captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() kama help_io:
             helper('modules pydoc')
         result = help_io.getvalue()
 
@@ -1015,7 +1015,7 @@ kundi PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        with captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() kama help_io:
             helper('modules garbage')
         result = help_io.getvalue()
 
@@ -1363,7 +1363,7 @@ kundi PydocUrlHandlerTest(PydocBaseTest):
             ("getfile?key=foobar", "Pydoc: Error - getfile?key=foobar"),
             ]
 
-        with self.restrict_walk_packages():
+        ukijumuisha self.restrict_walk_packages():
             kila url, title kwenye requests:
                 self.call_url_handler(url, title)
 
@@ -1380,7 +1380,7 @@ kundi TestHelper(unittest.TestCase):
 
 kundi PydocWithMetaClasses(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     eleza test_DynamicClassAttribute(self):
@@ -1393,7 +1393,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
             @types.DynamicClassAttribute
             eleza ham(self):
                 rudisha 'eggs'
-        expected_text_data_docstrings = tuple('\n |      ' + s ikiwa s else ''
+        expected_text_data_docstrings = tuple('\n |      ' + s ikiwa s isipokua ''
                                       kila s kwenye expected_data_docstrings)
         output = StringIO()
         helper = pydoc.Helper(output=output)
@@ -1404,7 +1404,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
         self.assertEqual(expected_text, result)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     eleza test_virtualClassAttributeWithOneMeta(self):
@@ -1425,7 +1425,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
         self.assertEqual(expected_text, result)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     eleza test_virtualClassAttributeWithTwoMeta(self):
@@ -1471,7 +1471,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
         self.assertEqual(expected_text2, result2)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     eleza test_buggy_dir(self):
@@ -1490,7 +1490,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
     eleza test_resolve_false(self):
         # Issue #23008: pydoc enum.{,Int}Enum failed
         # because bool(enum.Enum) ni Uongo.
-        with captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() kama help_io:
             pydoc.help('enum.Enum')
         helptext = help_io.getvalue()
         self.assertIn('kundi Enum', helptext)
@@ -1549,7 +1549,7 @@ kundi TestInternalUtilities(unittest.TestCase):
     eleza test_sys_path_adjustment_when_curdir_already_included(self):
         clean_path = self._get_starting_path()
         kila spelling kwenye self.curdir_spellings:
-            with self.subTest(curdir_spelling=spelling):
+            ukijumuisha self.subTest(curdir_spelling=spelling):
                 # If curdir ni already present, no alterations are made at all
                 leading_curdir = [spelling] + clean_path
                 self.assertIsTupu(self._get_revised_path(leading_curdir))

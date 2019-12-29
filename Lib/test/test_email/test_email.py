@@ -4213,7 +4213,7 @@ class TestBase64(unittest.TestCase):
             lasivyo size <= 6 : bsize = 8
             lasivyo size <= 9 : bsize = 12
             lasivyo size <= 12: bsize = 16
-            else           : bsize = 20
+            isipokua           : bsize = 20
             eq(base64mime.header_length('x' * size), bsize)
 
     def test_decode(self):

@@ -57,7 +57,7 @@ kundi _WorkItem(object):
             result = self.fn(*self.args, **self.kwargs)
         tatizo BaseException kama exc:
             self.future.set_exception(exc)
-            # Break a reference cycle with the exception 'exc'
+            # Break a reference cycle ukijumuisha the exception 'exc'
             self = Tupu
         isipokua:
             self.future.set_result(result)
@@ -158,10 +158,10 @@ kundi ThreadPoolExecutor(_base.Executor):
     eleza submit(*args, **kwargs):
         ikiwa len(args) >= 2:
             self, fn, *args = args
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor 'submit' of 'ThreadPoolExecutor' object "
                             "needs an argument")
-        elikiwa 'fn' kwenye kwargs:
+        lasivyo 'fn' kwenye kwargs:
             fn = kwargs.pop('fn')
             self, *args = args
             agiza warnings
@@ -171,7 +171,7 @@ kundi ThreadPoolExecutor(_base.Executor):
             ashiria TypeError('submit expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
-        with self._shutdown_lock:
+        ukijumuisha self._shutdown_lock:
             ikiwa self._broken:
                 ashiria BrokenThreadPool(self._broken)
 
@@ -215,7 +215,7 @@ kundi ThreadPoolExecutor(_base.Executor):
             _threads_queues[t] = self._work_queue
 
     eleza _initializer_failed(self):
-        with self._shutdown_lock:
+        ukijumuisha self._shutdown_lock:
             self._broken = ('A thread initializer failed, the thread pool '
                             'is sio usable anymore')
             # Drain work queue na mark pending futures failed
@@ -228,7 +228,7 @@ kundi ThreadPoolExecutor(_base.Executor):
                     work_item.future.set_exception(BrokenThreadPool(self._broken))
 
     eleza shutdown(self, wait=Kweli):
-        with self._shutdown_lock:
+        ukijumuisha self._shutdown_lock:
             self._shutdown = Kweli
             self._work_queue.put(Tupu)
         ikiwa wait:

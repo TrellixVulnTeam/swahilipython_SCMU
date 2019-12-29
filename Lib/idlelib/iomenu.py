@@ -83,7 +83,7 @@ eleza coding_spec(data):
     # consider only the first two lines
     ikiwa '\n' kwenye lines:
         lst = lines.split('\n', 2)[:2]
-    elikiwa '\r' kwenye lines:
+    lasivyo '\r' kwenye lines:
         lst = lines.split('\r', 2)[:2]
     isipokua:
         lst = [lines]
@@ -213,7 +213,7 @@ kundi IOBinding:
         jaribu:
             # open the file kwenye binary mode so that we can handle
             # end-of-line convention ourselves.
-            with open(filename, 'rb') kama f:
+            ukijumuisha open(filename, 'rb') kama f:
                 two_lines = f.readline() + f.readline()
                 f.seek(0)
                 bytes = f.read()
@@ -328,7 +328,7 @@ kundi IOBinding:
             self.save(Tupu)
             ikiwa sio self.get_saved():
                 reply = "cancel"
-        elikiwa confirm ni Tupu:
+        lasivyo confirm ni Tupu:
             reply = "cancel"
         isipokua:
             reply = "no"
@@ -377,7 +377,7 @@ kundi IOBinding:
             text = text.replace("\n", self.eol_convention)
         chars = self.encode(text)
         jaribu:
-            with open(filename, "wb") kama f:
+            ukijumuisha open(filename, "wb") kama f:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
@@ -422,7 +422,7 @@ kundi IOBinding:
             "I/O Error",
             "%s.\nSaving kama UTF-8" % failed,
             parent = self.text)
-        # Fallback: save kama UTF-8, with BOM - ignoring the incorrect
+        # Fallback: save kama UTF-8, ukijumuisha BOM - ignoring the incorrect
         # declared encoding
         rudisha BOM_UTF8 + chars.encode("utf-8")
 
@@ -458,7 +458,7 @@ kundi IOBinding:
             command = idleConf.GetOption('main','General',
                                          'print-command-posix')
             command = command + " 2>&1"
-        elikiwa platform == 'nt': #win32 platform
+        lasivyo platform == 'nt': #win32 platform
             command = idleConf.GetOption('main','General','print-command-win')
         isipokua: #no printing kila this platform
             printPlatform = Uongo
@@ -490,7 +490,7 @@ kundi IOBinding:
         ("All files", "*"),
         )
 
-    defaultextension = '.py' ikiwa sys.platform == 'darwin' else ''
+    defaultextension = '.py' ikiwa sys.platform == 'darwin' isipokua ''
 
     eleza askopenfile(self):
         dir, base = self.defaultfilename("open")
@@ -503,7 +503,7 @@ kundi IOBinding:
     eleza defaultfilename(self, mode="open"):
         ikiwa self.filename:
             rudisha os.path.split(self.filename)
-        elikiwa self.dirname:
+        lasivyo self.dirname:
             rudisha self.dirname, ""
         isipokua:
             jaribu:

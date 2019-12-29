@@ -122,7 +122,7 @@ eleza shift_path_info(environ):
     rudisha name
 
 eleza setup_testing_defaults(environ):
-    """Update 'environ' with trivial defaults kila testing purposes
+    """Update 'environ' ukijumuisha trivial defaults kila testing purposes
 
     This adds various parameters required kila WSGI, including HTTP_HOST,
     SERVER_NAME, SERVER_PORT, REQUEST_METHOD, SCRIPT_NAME, PATH_INFO,
@@ -156,7 +156,7 @@ eleza setup_testing_defaults(environ):
 
     ikiwa environ['wsgi.url_scheme']=='http':
         environ.setdefault('SERVER_PORT', '80')
-    elikiwa environ['wsgi.url_scheme']=='https':
+    lasivyo environ['wsgi.url_scheme']=='https':
         environ.setdefault('SERVER_PORT', '443')
 
 

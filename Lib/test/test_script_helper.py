@@ -21,14 +21,14 @@ kundi TestScriptHelper(unittest.TestCase):
 
     eleza test_assert_python_ok_ashirias(self):
         # I didn't agiza the sys module so this child will fail.
-        with self.assertRaises(AssertionError) kama error_context:
+        ukijumuisha self.assertRaises(AssertionError) kama error_context:
             script_helper.assert_python_ok('-c', 'sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('command line:', error_msg)
         self.assertIn('sys.exit(0)', error_msg, msg='unexpected command line')
 
     eleza test_assert_python_failure_ashirias(self):
-        with self.assertRaises(AssertionError) kama error_context:
+        ukijumuisha self.assertRaises(AssertionError) kama error_context:
             script_helper.assert_python_failure('-c', 'agiza sys; sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('Process rudisha code ni 0\n', error_msg)
@@ -37,7 +37,7 @@ kundi TestScriptHelper(unittest.TestCase):
 
     @mock.patch('subprocess.Popen')
     eleza test_assert_python_isolated_when_env_not_required(self, mock_popen):
-        with mock.patch.object(script_helper,
+        ukijumuisha mock.patch.object(script_helper,
                                'interpreter_requires_environment',
                                rudisha_value=Uongo) kama mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
@@ -56,7 +56,7 @@ kundi TestScriptHelper(unittest.TestCase):
     @mock.patch('subprocess.Popen')
     eleza test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
         """Ensure that -I ni sio pitaed when the environment ni required."""
-        with mock.patch.object(script_helper,
+        ukijumuisha mock.patch.object(script_helper,
                                'interpreter_requires_environment',
                                rudisha_value=Kweli) kama mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
@@ -84,7 +84,7 @@ kundi TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     eleza test_interpreter_requires_environment_true(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        ukijumuisha mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Tupu)
             mock_check_call.side_effect = subprocess.CalledProcessError('', '')
             self.assertKweli(script_helper.interpreter_requires_environment())
@@ -93,7 +93,7 @@ kundi TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     eleza test_interpreter_requires_environment_false(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        ukijumuisha mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Tupu)
             # The mocked subprocess.check_call fakes a no-error process.
             script_helper.interpreter_requires_environment()
@@ -102,7 +102,7 @@ kundi TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     eleza test_interpreter_requires_environment_details(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        ukijumuisha mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Tupu)
             script_helper.interpreter_requires_environment()
             self.assertUongo(script_helper.interpreter_requires_environment())
@@ -114,7 +114,7 @@ kundi TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     eleza test_interpreter_requires_environment_with_pythonhome(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        ukijumuisha mock.patch.dict(os.environ):
             os.environ['PYTHONHOME'] = 'MockedHome'
             self.assertKweli(script_helper.interpreter_requires_environment())
             self.assertKweli(script_helper.interpreter_requires_environment())

@@ -22,7 +22,7 @@ kundi FinderTests:
     eleza test_failure(self):
         # Test Tupu rudishaed upon sio finding a suitable loader.
         module = '<test module>'
-        with util.import_state():
+        ukijumuisha util.import_state():
             self.assertIsTupu(self.find(module))
 
     eleza test_sys_path(self):
@@ -31,7 +31,7 @@ kundi FinderTests:
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer},
+        ukijumuisha util.import_state(path_importer_cache={path: importer},
                                path=[path]):
             found = self.find(module)
             self.check_found(found, importer)
@@ -42,7 +42,7 @@ kundi FinderTests:
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer}):
+        ukijumuisha util.import_state(path_importer_cache={path: importer}):
             found = self.find(module, [path])
             self.check_found(found, importer)
 
@@ -51,7 +51,7 @@ kundi FinderTests:
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer},
+        ukijumuisha util.import_state(path_importer_cache={path: importer},
                                path=[path]):
             self.assertIsTupu(self.find('module', []))
 
@@ -62,7 +62,7 @@ kundi FinderTests:
         path = '<test path>'
         importer = util.mock_spec(module)
         hook = util.mock_path_hook(path, importer=importer)
-        with util.import_state(path_hooks=[hook]):
+        ukijumuisha util.import_state(path_hooks=[hook]):
             found = self.find(module, [path])
             self.check_found(found, importer)
             self.assertIn(path, sys.path_importer_cache)
@@ -72,9 +72,9 @@ kundi FinderTests:
         # Test that ikiwa sys.path_hooks ni empty a warning ni ashiriad,
         # sys.path_importer_cache gets Tupu set, na PathFinder rudishas Tupu.
         path_entry = 'bogus_path'
-        with util.import_state(path_importer_cache={}, path_hooks=[],
+        ukijumuisha util.import_state(path_importer_cache={}, path_hooks=[],
                                path=[path_entry]):
-            with warnings.catch_warnings(record=Kweli) kama w:
+            ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
                 warnings.simplefilter('always')
                 self.assertIsTupu(self.find('os'))
                 self.assertIsTupu(sys.path_importer_cache[path_entry])
@@ -87,7 +87,7 @@ kundi FinderTests:
         module = '<test module>'
         importer = util.mock_spec(module)
         hook = util.mock_path_hook(os.getcwd(), importer=importer)
-        with util.import_state(path=[path], path_hooks=[hook]):
+        ukijumuisha util.import_state(path=[path], path_hooks=[hook]):
             found = self.find(module)
             self.check_found(found, importer)
             self.assertIn(os.getcwd(), sys.path_importer_cache)
@@ -105,7 +105,7 @@ kundi FinderTests:
         missing = object()
         email = sys.modules.pop('email', missing)
         jaribu:
-            with util.import_state(meta_path=sys.meta_path[:],
+            ukijumuisha util.import_state(meta_path=sys.meta_path[:],
                                    path=new_path,
                                    path_importer_cache=new_path_importer_cache,
                                    path_hooks=new_path_hooks):
@@ -122,12 +122,12 @@ kundi FinderTests:
         failing_finder = TestFinder()
         failing_finder.to_rudisha = Tupu
         path = 'testing path'
-        with util.import_state(path_importer_cache={path: failing_finder}):
+        ukijumuisha util.import_state(path_importer_cache={path: failing_finder}):
             self.assertIsTupu(
                     self.machinery.PathFinder.find_spec('whatever', [path]))
         success_finder = TestFinder()
         success_finder.to_rudisha = __loader__
-        with util.import_state(path_importer_cache={path: success_finder}):
+        ukijumuisha util.import_state(path_importer_cache={path: success_finder}):
             spec = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(spec.loader, __loader__)
 
@@ -138,12 +138,12 @@ kundi FinderTests:
             eleza find_loader(self, fullname):
                 rudisha self.loader, self.portions
         path = 'testing path'
-        with util.import_state(path_importer_cache={path: TestFinder()}):
+        ukijumuisha util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsTupu(
                     self.machinery.PathFinder.find_spec('whatever', [path]))
         success_finder = TestFinder()
         success_finder.loader = __loader__
-        with util.import_state(path_importer_cache={path: success_finder}):
+        ukijumuisha util.import_state(path_importer_cache={path: success_finder}):
             spec = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(spec.loader, __loader__)
 
@@ -153,12 +153,12 @@ kundi FinderTests:
             eleza find_spec(self, fullname, target=Tupu):
                 rudisha self.spec
         path = 'testing path'
-        with util.import_state(path_importer_cache={path: TestFinder()}):
+        ukijumuisha util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsTupu(
                     self.machinery.PathFinder.find_spec('whatever', [path]))
         success_finder = TestFinder()
         success_finder.spec = self.machinery.ModuleSpec('whatever', __loader__)
-        with util.import_state(path_importer_cache={path: success_finder}):
+        ukijumuisha util.import_state(path_importer_cache={path: success_finder}):
             got = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(got, success_finder.spec)
 
@@ -180,12 +180,12 @@ kundi FinderTests:
             os.rmdir(new_dir)
             ashiria
 
-        with util.import_state(path=['']):
+        ukijumuisha util.import_state(path=['']):
             # Do sio want FileNotFoundError ashiriad.
             self.assertIsTupu(self.machinery.PathFinder.find_spec('whatever'))
 
     eleza test_invalidate_caches_finders(self):
-        # Finders with an invalidate_caches() method have it called.
+        # Finders ukijumuisha an invalidate_caches() method have it called.
         kundi FakeFinder:
             eleza __init__(self):
                 self.called = Uongo
@@ -194,14 +194,14 @@ kundi FinderTests:
                 self.called = Kweli
 
         cache = {'leave_alone': object(), 'finder_to_invalidate': FakeFinder()}
-        with util.import_state(path_importer_cache=cache):
+        ukijumuisha util.import_state(path_importer_cache=cache):
             self.machinery.PathFinder.invalidate_caches()
         self.assertKweli(cache['finder_to_invalidate'].called)
 
     eleza test_invalidate_caches_clear_out_Tupu(self):
         # Clear out Tupu kwenye sys.path_importer_cache() when invalidating caches.
         cache = {'clear_out': Tupu}
-        with util.import_state(path_importer_cache=cache):
+        ukijumuisha util.import_state(path_importer_cache=cache):
             self.machinery.PathFinder.invalidate_caches()
         self.assertEqual(len(cache), 0)
 
@@ -233,7 +233,7 @@ kundi FindSpecTests(FinderTests):
 kundi PathEntryFinderTests:
 
     eleza test_finder_with_failing_find_spec(self):
-        # PathEntryFinder with find_module() defined should work.
+        # PathEntryFinder ukijumuisha find_module() defined should work.
         # Issue #20763.
         kundi Finder:
             path_location = 'test_finder_with_find_module'
@@ -246,12 +246,12 @@ kundi PathEntryFinderTests:
                 rudisha Tupu
 
 
-        with util.import_state(path=[Finder.path_location]+sys.path[:],
+        ukijumuisha util.import_state(path=[Finder.path_location]+sys.path[:],
                                path_hooks=[Finder]):
             self.machinery.PathFinder.find_spec('importlib')
 
     eleza test_finder_with_failing_find_module(self):
-        # PathEntryFinder with find_module() defined should work.
+        # PathEntryFinder ukijumuisha find_module() defined should work.
         # Issue #20763.
         kundi Finder:
             path_location = 'test_finder_with_find_module'
@@ -264,7 +264,7 @@ kundi PathEntryFinderTests:
                 rudisha Tupu
 
 
-        with util.import_state(path=[Finder.path_location]+sys.path[:],
+        ukijumuisha util.import_state(path=[Finder.path_location]+sys.path[:],
                                path_hooks=[Finder]):
             self.machinery.PathFinder.find_module('importlib')
 

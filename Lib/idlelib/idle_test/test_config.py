@@ -15,7 +15,7 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
-# Replace user parsers with empty parsers that cannot be saved
+# Replace user parsers ukijumuisha empty parsers that cannot be saved
 # due to getting '' kama the filename when created.
 
 idleConf = config.idleConf
@@ -55,7 +55,7 @@ kundi IdleConfParserTest(unittest.TestCase):
         parser.read_string(self.config)
         eq = self.assertEqual
 
-        # Test with type argument.
+        # Test ukijumuisha type argument.
         self.assertIs(parser.Get('one', 'one', type='bool'), Uongo)
         self.assertIs(parser.Get('one', 'two', type='bool'), Kweli)
         eq(parser.Get('one', 'three', type='int'), 10)
@@ -105,9 +105,9 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         parser.add_section('Foo')
         # Setting new option kwenye existing section should rudisha Kweli.
         self.assertKweli(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option with same value should rudisha Uongo.
+        # Setting existing option ukijumuisha same value should rudisha Uongo.
         self.assertUongo(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option with new value should rudisha Kweli.
+        # Setting exiting option ukijumuisha new value should rudisha Kweli.
         self.assertKweli(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
@@ -160,7 +160,7 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     eleza test_save(self):
-        with tempfile.TemporaryDirectory() kama tdir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
             parser.AddSection('Foo')
@@ -191,7 +191,7 @@ kundi IdleConfTest(unittest.TestCase):
             idle_dir = os.path.abspath(sys.path[0])
         kila ctype kwenye conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
-            with open(config_path, 'r') kama f:
+            ukijumuisha open(config_path, 'r') kama f:
                 cls.config_string[ctype] = f.read()
 
         cls.orig_warn = config._warn
@@ -224,21 +224,21 @@ kundi IdleConfTest(unittest.TestCase):
         conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', rudisha_value='/home/foo'):
-            with mock.patch('os.path.exists', rudisha_value=Kweli):
+        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='/home/foo'):
+            ukijumuisha mock.patch('os.path.exists', rudisha_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), '/home/foo/.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', rudisha_value='~'):
-            with mock.patch('os.getcwd', rudisha_value='/home/foo/cpython'):
-                with mock.patch('os.mkdir'):
+        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='~'):
+            ukijumuisha mock.patch('os.getcwd', rudisha_value='/home/foo/cpython'):
+                ukijumuisha mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
         # Check user dir sio exists na created failed should ashiria SystemExit
-        with mock.patch('os.path.join', rudisha_value='/path/not/exists'):
-            with self.assertRaises(SystemExit):
-                with self.assertRaises(FileNotFoundError):
+        ukijumuisha mock.patch('os.path.join', rudisha_value='/path/not/exists'):
+            ukijumuisha self.assertRaises(SystemExit):
+                ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
     @unittest.skipIf(not sys.platform.startswith('win'), 'this ni test kila Windows system')
@@ -247,21 +247,21 @@ kundi IdleConfTest(unittest.TestCase):
         conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', rudisha_value='C:\\foo'):
-            with mock.patch('os.path.exists', rudisha_value=Kweli):
+        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='C:\\foo'):
+            ukijumuisha mock.patch('os.path.exists', rudisha_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), 'C:\\foo\\.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', rudisha_value='~'):
-            with mock.patch('os.getcwd', rudisha_value='C:\\foo\\cpython'):
-                with mock.patch('os.mkdir'):
+        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='~'):
+            ukijumuisha mock.patch('os.getcwd', rudisha_value='C:\\foo\\cpython'):
+                ukijumuisha mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
         # Check user dir sio exists na created failed should ashiria SystemExit
-        with mock.patch('os.path.join', rudisha_value='/path/not/exists'):
-            with self.assertRaises(SystemExit):
-                with self.assertRaises(FileNotFoundError):
+        ukijumuisha mock.patch('os.path.join', rudisha_value='/path/not/exists'):
+            ukijumuisha self.assertRaises(SystemExit):
+                ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
     eleza test_create_config_handlers(self):
@@ -269,8 +269,8 @@ kundi IdleConfTest(unittest.TestCase):
 
         # Mock out idle_dir
         idle_dir = '/home/foo'
-        with mock.patch.dict({'__name__': '__foo__'}):
-            with mock.patch('os.path.dirname', rudisha_value=idle_dir):
+        ukijumuisha mock.patch.dict({'__name__': '__foo__'}):
+            ukijumuisha mock.patch('os.path.dirname', rudisha_value=idle_dir):
                 conf.CreateConfigHandlers()
 
         # Check keys are equal
@@ -315,7 +315,7 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_save_user_cfg_files(self):
         conf = self.mock_config()
 
-        with mock.patch('idlelib.config.IdleUserConfParser.Save') kama m:
+        ukijumuisha mock.patch('idlelib.config.IdleUserConfParser.Save') kama m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
@@ -325,7 +325,7 @@ kundi IdleConfTest(unittest.TestCase):
         eq = self.assertEqual
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
-        with mock.patch('idlelib.config._warn') kama _warn:
+        ukijumuisha mock.patch('idlelib.config._warn') kama _warn:
             eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
@@ -349,9 +349,9 @@ kundi IdleConfTest(unittest.TestCase):
             ['General', 'EditorWindow', 'PyShell', 'Indent', 'Theme',
              'Keys', 'History', 'HelpFiles'])
 
-        with self.assertRaises(config.InvalidConfigSet):
+        ukijumuisha self.assertRaises(config.InvalidConfigSet):
             conf.GetSectionList('foobar', 'main')
-        with self.assertRaises(config.InvalidConfigType):
+        ukijumuisha self.assertRaises(config.InvalidConfigType):
             conf.GetSectionList('default', 'notexists')
 
     eleza test_get_highlight(self):
@@ -368,7 +368,7 @@ kundi IdleConfTest(unittest.TestCase):
         # Test get user themes
         conf.SetOption('highlight', 'Foobar', 'normal-foreground', '#747474')
         conf.SetOption('highlight', 'Foobar', 'normal-background', '#171717')
-        with mock.patch('idlelib.config._warn'):
+        ukijumuisha mock.patch('idlelib.config._warn'):
             eq(conf.GetHighlight('Foobar', 'normal'), {'foreground': '#747474',
                                                        'background': '#171717'})
 
@@ -381,7 +381,7 @@ kundi IdleConfTest(unittest.TestCase):
             conf.GetThemeDict('default', 'IDLE Classic'),
             conf.GetThemeDict('user', 'IDLE Classic'))
 
-        with self.assertRaises(config.InvalidTheme):
+        ukijumuisha self.assertRaises(config.InvalidTheme):
             conf.GetThemeDict('bad', 'IDLE Classic')
 
     eleza test_get_current_theme_and_keys(self):
@@ -455,7 +455,7 @@ kundi IdleConfTest(unittest.TestCase):
            {'<<z-in>>': ['<Control-Shift-KeyRelease-Insert>']})
         userextn.remove_section('ZzDummy')
 # need option key test
-##        key = ['<Option-Key-2>'] ikiwa sys.platform == 'darwin' else ['<Alt-Key-2>']
+##        key = ['<Option-Key-2>'] ikiwa sys.platform == 'darwin' isipokua ['<Alt-Key-2>']
 ##        eq(conf.GetExtensionKeys('ZoomHeight'), {'<<zoom-height>>': key})
 
     eleza test_get_extension_bindings(self):
@@ -508,7 +508,7 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_get_keyset(self):
         conf = self.mock_config()
 
-        # Conflict with key set, should be disable to ''
+        # Conflict ukijumuisha key set, should be disable to ''
         conf.defaultCfg['extensions'].add_section('Foobar')
         conf.defaultCfg['extensions'].add_section('Foobar_cfgBindings')
         conf.defaultCfg['extensions'].set('Foobar', 'enable', 'Kweli')
@@ -529,10 +529,10 @@ kundi IdleConfTest(unittest.TestCase):
         # place to prevent prepare input data twice.
         conf = self.mock_config()
 
-        # Test default with no extra help source
+        # Test default ukijumuisha no extra help source
         self.assertEqual(conf.GetExtraHelpSourceList('default'), [])
         self.assertEqual(conf.GetExtraHelpSourceList('user'), [])
-        with self.assertRaises(config.InvalidConfigSet):
+        ukijumuisha self.assertRaises(config.InvalidConfigSet):
             self.assertEqual(conf.GetExtraHelpSourceList('bad'), [])
         self.assertCountEqual(
             conf.GetAllExtraHelpSourcesList(),
@@ -564,7 +564,7 @@ kundi IdleConfTest(unittest.TestCase):
         f = Font.actual(Font(name='TkFixedFont', exists=Kweli, root=root))
         self.assertEqual(
             conf.GetFont(root, 'main', 'EditorWindow'),
-            (f['family'], 10 ikiwa f['size'] <= 0 else f['size'], f['weight']))
+            (f['family'], 10 ikiwa f['size'] <= 0 isipokua f['size'], f['weight']))
 
         # Cleanup root
         root.destroy()
@@ -587,7 +587,7 @@ kundi IdleConfTest(unittest.TestCase):
 
 
 kundi CurrentColorKeysTest(unittest.TestCase):
-    """ Test colorkeys function with user config [Theme] na [Keys] patterns.
+    """ Test colorkeys function ukijumuisha user config [Theme] na [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
         Test all patterns written by IDLE na some errors
@@ -639,7 +639,7 @@ kundi CurrentColorKeysTest(unittest.TestCase):
             name = Custom Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
-        # Custom name ni valid with matching Section name.
+        # Custom name ni valid ukijumuisha matching Section name.
         userhigh.read_string('[Custom Dark]\na=b')
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
         # Name2 ni ignored.
@@ -687,7 +687,7 @@ kundi CurrentColorKeysTest(unittest.TestCase):
             name = Custom Keys
             ''')
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # Custom name ni valid with matching Section name.
+        # Custom name ni valid ukijumuisha matching Section name.
         userkeys.read_string('[Custom Keys]\na=b')
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
         # Name2 ni ignored.
@@ -772,7 +772,7 @@ kundi ChangesTest(unittest.TestCase):
         kila cfgtype, section kwenye (('main', 'Msec'), ('keys', 'Ksec')):
             testcfg[cfgtype].SetOption(section, 'name', 'value')
             changes.delete_section(cfgtype, section)
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 changes[cfgtype][section]  # Test section gone kutoka changes
                 testcfg[cfgtype][section]  # na kutoka mock userCfg.
         # TODO test kila save call.
@@ -788,14 +788,14 @@ kundi WarningTest(unittest.TestCase):
     eleza test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
-        with captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(config._warned, {('warning','key')})
         Equal(stderr.getvalue(), 'warning'+'\n')
-        with captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(stderr.getvalue(), '')
-        with captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warn2', 'yek')
         Equal(config._warned, {('warning','key'), ('warn2','yek')})
         Equal(stderr.getvalue(), 'warn2'+'\n')

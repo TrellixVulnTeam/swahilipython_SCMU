@@ -46,7 +46,7 @@ eleza uu_decode(input, errors='strict'):
             koma
 
     # Decode
-    wakati True:
+    wakati Kweli:
         s = readline()
         if sio s or s == b'end\n':
             koma
@@ -71,11 +71,11 @@ kundi Codec(codecs.Codec):
         rudisha uu_decode(input, errors)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha uu_encode(input, self.errors)[0]
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha uu_decode(input, self.errors)[0]
 
 kundi StreamWriter(Codec, codecs.StreamWriter):
@@ -95,5 +95,5 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamreader=StreamReader,
         streamwriter=StreamWriter,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )

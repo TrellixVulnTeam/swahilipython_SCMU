@@ -95,7 +95,7 @@ eleza standard_b64encode(s):
     rudisha b64encode(s)
 
 eleza standard_b64decode(s):
-    """Decode bytes encoded with the standard Base64 alphabet.
+    """Decode bytes encoded ukijumuisha the standard Base64 alphabet.
 
     Argument s ni a bytes-like object ama ASCII string to decode.  The result
     ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad ikiwa the input
@@ -153,7 +153,7 @@ eleza b32encode(s):
     ikiwa sio isinstance(s, bytes_types):
         s = memoryview(s).tobytes()
     leftover = len(s) % 5
-    # Pad the last quantum with zero bits ikiwa necessary
+    # Pad the last quantum ukijumuisha zero bits ikiwa necessary
     ikiwa leftover:
         s = s + b'\0' * (5 - leftover)  # Don't use += !
     encoded = bytearray()
@@ -169,11 +169,11 @@ eleza b32encode(s):
     # Adjust kila any leftover partial quanta
     ikiwa leftover == 1:
         encoded[-6:] = b'======'
-    elikiwa leftover == 2:
+    lasivyo leftover == 2:
         encoded[-4:] = b'===='
-    elikiwa leftover == 3:
+    lasivyo leftover == 3:
         encoded[-3:] = b'==='
-    elikiwa leftover == 4:
+    lasivyo leftover == 4:
         encoded[-1:] = b'='
     rudisha bytes(encoded)
 
@@ -314,7 +314,7 @@ eleza a85encode(b, *, foldspaces=Uongo, wrapcol=0, pad=Uongo, adobe=Uongo):
     pad controls whether the input ni padded to a multiple of 4 before
     encoding. Note that the btoa implementation always pads.
 
-    adobe controls whether the encoded byte sequence ni framed with <~ na ~>,
+    adobe controls whether the encoded byte sequence ni framed ukijumuisha <~ na ~>,
     which ni used by the Adobe implementation.
     """
     global _a85chars, _a85chars2
@@ -329,7 +329,7 @@ eleza a85encode(b, *, foldspaces=Uongo, wrapcol=0, pad=Uongo, adobe=Uongo):
     ikiwa adobe:
         result = _A85START + result
     ikiwa wrapcol:
-        wrapcol = max(2 ikiwa adobe else 1, wrapcol)
+        wrapcol = max(2 ikiwa adobe isipokua 1, wrapcol)
         chunks = [result[i: i + wrapcol]
                   kila i kwenye range(0, len(result), wrapcol)]
         ikiwa adobe:
@@ -349,7 +349,7 @@ eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
     sio supported by the "standard" Adobe encoding.
 
     adobe controls whether the input sequence ni kwenye Adobe Ascii85 format (i.e.
-    ni framed with <~ na ~>).
+    ni framed ukijumuisha <~ na ~>).
 
     ignorechars should be a byte string containing characters to ignore kutoka the
     input. This should only contain whitespace characters, na by default
@@ -362,7 +362,7 @@ eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
         ikiwa sio b.endswith(_A85END):
             ashiria ValueError(
                 "Ascii85 encoded byte sequences must end "
-                "with {!r}".format(_A85END)
+                "ukijumuisha {!r}".format(_A85END)
                 )
         ikiwa b.startswith(_A85START):
             b = b[2:-2]  # Strip off start/end markers
@@ -390,15 +390,15 @@ eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
                 tatizo struct.error:
                     ashiria ValueError('Ascii85 overflow') kutoka Tupu
                 curr_clear()
-        elikiwa x == b'z'[0]:
+        lasivyo x == b'z'[0]:
             ikiwa curr:
                 ashiria ValueError('z inside Ascii85 5-tuple')
             decoded_append(b'\0\0\0\0')
-        elikiwa foldspaces na x == b'y'[0]:
+        lasivyo foldspaces na x == b'y'[0]:
             ikiwa curr:
                 ashiria ValueError('y inside Ascii85 5-tuple')
             decoded_append(b'\x20\x20\x20\x20')
-        elikiwa x kwenye ignorechars:
+        lasivyo x kwenye ignorechars:
             # Skip whitespace
             endelea
         isipokua:
@@ -411,7 +411,7 @@ eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
         result = result[:-padding]
     rudisha result
 
-# The following code ni originally taken (with permission) kutoka Mercurial
+# The following code ni originally taken (ukijumuisha permission) kutoka Mercurial
 
 _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 b"abcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~")
@@ -422,7 +422,7 @@ _b85dec = Tupu
 eleza b85encode(b, pad=Uongo):
     """Encode bytes-like object b kwenye base85 format na rudisha a bytes object.
 
-    If pad ni true, the input ni padded with b'\\0' so its length ni a multiple of
+    If pad ni true, the input ni padded ukijumuisha b'\\0' so its length ni a multiple of
     4 bytes before encoding.
     """
     global _b85chars, _b85chars2
@@ -575,7 +575,7 @@ eleza main():
         ikiwa o == '-u': func = decode
         ikiwa o == '-t': test(); rudisha
     ikiwa args na args[0] != '-':
-        with open(args[0], 'rb') kama f:
+        ukijumuisha open(args[0], 'rb') kama f:
             func(f, sys.stdout.buffer)
     isipokua:
         func(sys.stdin.buffer, sys.stdout.buffer)

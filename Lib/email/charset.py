@@ -346,7 +346,7 @@ class Charset:
                 if sio lines and sio current_line:
                     lines.append(None)
                 isipokua:
-                    separator = (' ' if lines else '')
+                    separator = (' ' if lines isipokua '')
                     joined_line = EMPTYSTRING.join(current_line)
                     header_bytes = _encode(joined_line, codec)
                     lines.append(encoder(header_bytes))

@@ -28,13 +28,13 @@ kundi BaseRobotTest:
     eleza test_good_urls(self):
         kila url kwenye self.good:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            ukijumuisha self.subTest(url=url, agent=agent):
                 self.assertKweli(self.parser.can_fetch(agent, url))
 
     eleza test_bad_urls(self):
         kila url kwenye self.bad:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            ukijumuisha self.subTest(url=url, agent=agent):
                 self.assertUongo(self.parser.can_fetch(agent, url))
 
     eleza test_site_maps(self):
@@ -104,7 +104,7 @@ kundi BaseRequestRateTest(BaseRobotTest):
         parser = self.parser
         kila url kwenye self.good + self.bad:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            ukijumuisha self.subTest(url=url, agent=agent):
                 self.assertEqual(parser.crawl_delay(agent), self.crawl_delay)
 
                 parsed_request_rate = parser.request_rate(agent)
@@ -180,7 +180,7 @@ Crawl-delay: pears
 
 
 kundi AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
-    # also test that Allow na Diasallow works well with each other
+    # also test that Allow na Diasallow works well ukijumuisha each other
     robots_txt = """\
 User-agent: Googlebot
 Allow: /folder1/myfile.html
@@ -345,13 +345,13 @@ kundi NetworkTestCase(unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
         support.requires('network')
-        with support.transient_internet(cls.base_url):
+        ukijumuisha support.transient_internet(cls.base_url):
             cls.parser = urllib.robotparser.RobotFileParser(cls.robots_txt)
             cls.parser.read()
 
     eleza url(self, path):
         rudisha '{}{}{}'.format(
-            self.base_url, path, '/' ikiwa sio os.path.splitext(path)[1] else ''
+            self.base_url, path, '/' ikiwa sio os.path.splitext(path)[1] isipokua ''
         )
 
     eleza test_basic(self):

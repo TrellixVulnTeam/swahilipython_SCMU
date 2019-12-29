@@ -1889,8 +1889,8 @@ def testmod(m=None, name=None, globs=None, verbose=None,
     only failures if false; by default, it's true iff "-v" is in sys.argv.
 
     Optional keyword arg "report" prints a summary at the end when true,
-    else prints nothing at the end.  In verbose mode, the summary is
-    detailed, else very brief (in fact, empty if all tests passed).
+    isipokua prints nothing at the end.  In verbose mode, the summary is
+    detailed, isipokua very brief (in fact, empty if all tests passed).
 
     Optional keyword arg "optionflags" or's together module constants,
     and defaults to 0.  This is new in 2.3.  Possible values (see the
@@ -2002,8 +2002,8 @@ def testfile(filename, module_relative=True, name=None, package=None,
     only failures if false; by default, it's true iff "-v" is in sys.argv.
 
     Optional keyword arg "report" prints a summary at the end when true,
-    else prints nothing at the end.  In verbose mode, the summary is
-    detailed, else very brief (in fact, empty if all tests passed).
+    isipokua prints nothing at the end.  In verbose mode, the summary is
+    detailed, isipokua very brief (in fact, empty if all tests passed).
 
     Optional keyword arg "optionflags" or's together module constants,
     and defaults to 0.  Possible values (see the docs for details):

@@ -125,7 +125,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         # This may be called kutoka a different thread, possibly after
         # _close_self_pipe() has been called ama even wakati it is
         # running.  Guard kila self._csock being Tupu ama closed.  When
-        # a socket ni closed, send() ashirias OSError (with errno set to
+        # a socket ni closed, send() ashirias OSError (ukijumuisha errno set to
         # EBADF, but let's sio rely on the exact error code).
         csock = self._csock
         ikiwa csock ni sio Tupu:
@@ -440,7 +440,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         fd = sock.fileno()
         fut.add_done_callback(
             functools.partial(self._sock_write_done, fd))
-        # use a trick with a list kwenye closure to store a mutable state
+        # use a trick ukijumuisha a list kwenye closure to store a mutable state
         self.add_writer(fd, self._sock_sendall, fut, sock,
                         memoryview(data), [n])
         rudisha await fut
@@ -489,7 +489,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         jaribu:
             sock.connect(address)
         tatizo (BlockingIOError, InterruptedError):
-            # Issue #23618: When the C function connect() fails with EINTR, the
+            # Issue #23618: When the C function connect() fails ukijumuisha EINTR, the
             # connection runs kwenye background. We have to wait until the socket
             # becomes writable to be notified when the connection succeed or
             # fails.
@@ -632,7 +632,7 @@ kundi _SelectorTransport(transports._FlowControlMixin,
         info = [self.__class__.__name__]
         ikiwa self._sock ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         info.append(f'fd={self._sock_fd}')
         # test ikiwa the transport was closed
@@ -941,7 +941,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
                     self._empty_waiter.set_result(Tupu)
                 ikiwa self._closing:
                     self._call_connection_lost(Tupu)
-                elikiwa self._eof:
+                lasivyo self._eof:
                     self._sock.shutdown(socket.SHUT_WR)
 
     eleza write_eof(self):

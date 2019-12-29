@@ -1,7 +1,7 @@
 '''idlelib.idle_test ni a private implementation of test.test_idle,
 which tests the IDLE application kama part of the stdlib test suite.
-Run IDLE tests alone with "python -m test.test_idle".
-Starting with Python 3.6, IDLE requires tcl/tk 8.5 ama later.
+Run IDLE tests alone ukijumuisha "python -m test.test_idle".
+Starting ukijumuisha Python 3.6, IDLE requires tcl/tk 8.5 ama later.
 
 This package na its contained modules are subject to change and
 any direct use ni at your own risk.

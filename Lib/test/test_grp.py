@@ -71,7 +71,7 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
                 ikiwa chars[i] == 'z':
                     chars[i] = 'A'
                     koma
-                elikiwa chars[i] == 'Z':
+                lasivyo chars[i] == 'Z':
                     endelea
                 isipokua:
                     chars[i] = chr(ord(chars[i]) + 1)

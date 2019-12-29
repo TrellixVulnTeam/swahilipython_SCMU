@@ -3,7 +3,7 @@
 
     agizas kutoka itertools are fixed kwenye fix_itertools_agiza.py
 
-    If itertools ni imported kama something else (ie: agiza itertools kama it;
+    If itertools ni imported kama something isipokua (ie: agiza itertools kama it;
     it.izip(spam, eggs)) method calls will sio get fixed.
     """
 
@@ -34,8 +34,8 @@ kundi FixItertools(fixer_base.BaseFix):
             # Remove the 'itertools'
             prefix = it.prefix
             it.remove()
-            # Replace the node which contains ('.', 'function') with the
-            # function (to be consistent with the second part of the pattern)
+            # Replace the node which contains ('.', 'function') ukijumuisha the
+            # function (to be consistent ukijumuisha the second part of the pattern)
             dot.remove()
             func.parent.replace(func)
 

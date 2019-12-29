@@ -20,7 +20,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# na will comply with the following terms na conditions:
+# na will comply ukijumuisha the following terms na conditions:
 #
 # Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
@@ -76,12 +76,12 @@ kundi FatalIncludeError(SyntaxError):
 
 eleza default_loader(href, parse, encoding=Tupu):
     ikiwa parse == "xml":
-        with open(href, 'rb') kama file:
+        ukijumuisha open(href, 'rb') kama file:
             data = ElementTree.parse(file).getroot()
     isipokua:
         ikiwa sio encoding:
             encoding = 'UTF-8'
-        with open(href, 'r', encoding=encoding) kama file:
+        ukijumuisha open(href, 'r', encoding=encoding) kama file:
             data = file.read()
     rudisha data
 
@@ -117,7 +117,7 @@ eleza include(elem, loader=Tupu):
                 ikiwa e.tail:
                     node.tail = (node.tail ama "") + e.tail
                 elem[i] = node
-            elikiwa parse == "text":
+            lasivyo parse == "text":
                 text = loader(href, parse, e.get("encoding"))
                 ikiwa text ni Tupu:
                     ashiria FatalIncludeError(
@@ -134,7 +134,7 @@ eleza include(elem, loader=Tupu):
                 ashiria FatalIncludeError(
                     "unknown parse type kwenye xi:include tag (%r)" % parse
                 )
-        elikiwa e.tag == XINCLUDE_FALLBACK:
+        lasivyo e.tag == XINCLUDE_FALLBACK:
             ashiria FatalIncludeError(
                 "xi:fallback tag must be child of xi:include (%r)" % e.tag
                 )

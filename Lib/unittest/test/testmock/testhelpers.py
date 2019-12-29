@@ -491,9 +491,9 @@ kundi SpecSignatureTest(unittest.TestCase):
 
         mock = create_autospec(MyClass)
         mock.some_attr(1)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             mock.some_attr()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             mock.some_attr(1, 2)
 
 
@@ -510,21 +510,21 @@ kundi SpecSignatureTest(unittest.TestCase):
                 ashiria AttributeError(item)
 
         inst = CrazyClass()
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             inst.other
         self.assertEqual(inst.crazy(42), 42)
 
         mock = create_autospec(inst)
         mock.crazy(42)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             mock.crazy()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             mock.crazy(1, 2)
 
 
     eleza test_builtin_functions_types(self):
-        # we could replace builtin functions / methods with a function
-        # with *args / **kwargs signature. Using the builtin method type
+        # we could replace builtin functions / methods ukijumuisha a function
+        # ukijumuisha *args / **kwargs signature. Using the builtin method type
         # kama a spec seems to work fairly well though.
         kundi BuiltinSubclass(list):
             eleza bar(self, arg): pita
@@ -703,7 +703,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_builtins(self):
-        # used to fail with infinite recursion
+        # used to fail ukijumuisha infinite recursion
         create_autospec(1)
 
         create_autospec(int)
@@ -971,7 +971,7 @@ kundi SpecSignatureTest(unittest.TestCase):
         mock = create_autospec(f)
         mock(1)
         mock.assert_has_calls([call(1)])
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             mock.assert_has_calls([call(2)])
 
 
@@ -980,7 +980,7 @@ kundi SpecSignatureTest(unittest.TestCase):
         mock = create_autospec(f)
         mock(1)
         mock.assert_any_call(1)
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             mock.assert_any_call(2)
 
 

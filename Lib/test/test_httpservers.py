@@ -305,7 +305,7 @@ kundi RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        with support.captured_stderr() kama err:
+        ukijumuisha support.captured_stderr() kama err:
             self.con.request('GET', '/')
             self.con.getresponse()
 
@@ -316,7 +316,7 @@ kundi RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        with support.captured_stderr() kama err:
+        ukijumuisha support.captured_stderr() kama err:
             self.con.request('ERROR', '/')
             self.con.getresponse()
 
@@ -339,7 +339,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.tempdir_name = os.path.basename(self.tempdir)
         self.base_url = '/' + self.tempdir_name
         tempname = os.path.join(self.tempdir, 'test')
-        with open(tempname, 'wb') kama temp:
+        ukijumuisha open(tempname, 'wb') kama temp:
             temp.write(self.data)
             temp.flush()
         mtime = os.stat(tempname).st_mtime
@@ -394,7 +394,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
     eleza test_undecodable_filename(self):
         enc = sys.getfilesystemencoding()
         filename = os.fsdecode(support.TESTFN_UNDECODABLE) + '.txt'
-        with open(os.path.join(self.tempdir, filename), 'wb') kama f:
+        ukijumuisha open(os.path.join(self.tempdir, filename), 'wb') kama f:
             f.write(support.TESTFN_UNDECODABLE)
         response = self.request(self.base_url + '/')
         ikiwa sys.platform == 'darwin':
@@ -437,7 +437,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_FOUND)
 
         data = b"Dummy index file\r\n"
-        with open(os.path.join(self.tempdir_name, 'index.html'), 'wb') kama f:
+        ukijumuisha open(os.path.join(self.tempdir_name, 'index.html'), 'wb') kama f:
             f.write(data)
         response = self.request(self.base_url + '/')
         self.check_status_and_reason(response, HTTPStatus.OK, data)
@@ -462,7 +462,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
                          'application/octet-stream')
 
     eleza test_browser_cache(self):
-        """Check that when a request to /test ni sent with the request header
+        """Check that when a request to /test ni sent ukijumuisha the request header
         If-Modified-Since set to date of last modification, the server rudishas
         status code 304, sio 200
         """
@@ -480,7 +480,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
     eleza test_browser_cache_file_changed(self):
-        # with If-Modified-Since earlier than Last-Modified, must rudisha 200
+        # ukijumuisha If-Modified-Since earlier than Last-Modified, must rudisha 200
         dt = self.last_modif_datetime
         # build datetime object : 365 days before last modification
         old_dt = dt - datetime.timedelta(days=365)
@@ -627,27 +627,27 @@ kundi CGIHTTPServerTestCase(BaseTestCase):
             self.skipTest("Python executable path ni sio encodable to utf-8")
 
         self.nocgi_path = os.path.join(self.parent_dir, 'nocgi.py')
-        with open(self.nocgi_path, 'w') kama fp:
+        ukijumuisha open(self.nocgi_path, 'w') kama fp:
             fp.write(cgi_file1 % self.pythonexe)
         os.chmod(self.nocgi_path, 0o777)
 
         self.file1_path = os.path.join(self.cgi_dir, 'file1.py')
-        with open(self.file1_path, 'w', encoding='utf-8') kama file1:
+        ukijumuisha open(self.file1_path, 'w', encoding='utf-8') kama file1:
             file1.write(cgi_file1 % self.pythonexe)
         os.chmod(self.file1_path, 0o777)
 
         self.file2_path = os.path.join(self.cgi_dir, 'file2.py')
-        with open(self.file2_path, 'w', encoding='utf-8') kama file2:
+        ukijumuisha open(self.file2_path, 'w', encoding='utf-8') kama file2:
             file2.write(cgi_file2 % self.pythonexe)
         os.chmod(self.file2_path, 0o777)
 
         self.file3_path = os.path.join(self.cgi_child_dir, 'file3.py')
-        with open(self.file3_path, 'w', encoding='utf-8') kama file3:
+        ukijumuisha open(self.file3_path, 'w', encoding='utf-8') kama file3:
             file3.write(cgi_file1 % self.pythonexe)
         os.chmod(self.file3_path, 0o777)
 
         self.file4_path = os.path.join(self.cgi_dir, 'file4.py')
-        with open(self.file4_path, 'w', encoding='utf-8') kama file4:
+        ukijumuisha open(self.file4_path, 'w', encoding='utf-8') kama file4:
             file4.write(cgi_file4 % (self.pythonexe, 'QUERY_STRING'))
         os.chmod(self.file4_path, 0o777)
 
@@ -1087,7 +1087,7 @@ kundi SimpleHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertEqual(path, self.translated)
 
     eleza test_windows_colon(self):
-        with support.swap_attr(server.os, 'path', ntpath):
+        ukijumuisha support.swap_attr(server.os, 'path', ntpath):
             path = self.handler.translate_path('c:c:c:foo/filename')
             path = path.replace(ntpath.sep, os.sep)
             self.assertEqual(path, self.translated)

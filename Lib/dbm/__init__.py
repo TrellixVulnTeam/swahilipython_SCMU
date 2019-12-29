@@ -75,7 +75,7 @@ def open(file, flag='r', mode=0o666):
             raise ImportError("no dbm clone found; tried %s" % _names)
 
     # guess the type of an existing database, if sio creating a new one
-    result = whichdb(file) if 'n' haiko kwenye flag else None
+    result = whichdb(file) if 'n' haiko kwenye flag isipokua None
     if result is None:
         # db doesn't exist or 'n' flag was specified to create a new db
         if 'c' in flag or 'n' in flag:

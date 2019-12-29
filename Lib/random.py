@@ -136,12 +136,12 @@ kundi Random(_random.Random):
         """
 
         ikiwa version == 1 na isinstance(a, (str, bytes)):
-            a = a.decode('latin-1') ikiwa isinstance(a, bytes) else a
-            x = ord(a[0]) << 7 ikiwa a else 0
+            a = a.decode('latin-1') ikiwa isinstance(a, bytes) isipokua a
+            x = ord(a[0]) << 7 ikiwa a isipokua 0
             kila c kwenye map(ord, a):
                 x = ((1000003 * x) ^ c) & 0xFFFFFFFFFFFFFFFF
             x ^= len(a)
-            a = -2 ikiwa x == -1 else x
+            a = -2 ikiwa x == -1 isipokua x
 
         ikiwa version == 2 na isinstance(a, (str, bytes, bytearray)):
             ikiwa isinstance(a, str):
@@ -162,7 +162,7 @@ kundi Random(_random.Random):
         ikiwa version == 3:
             version, internalstate, self.gauss_next = state
             super().setstate(internalstate)
-        elikiwa version == 2:
+        lasivyo version == 2:
             version, internalstate, self.gauss_next = state
             # In version 2, the state was saved kama signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
@@ -174,7 +174,7 @@ kundi Random(_random.Random):
                 ashiria TypeError kutoka e
             super().setstate(internalstate)
         isipokua:
-            ashiria ValueError("state with version %s pitaed to "
+            ashiria ValueError("state ukijumuisha version %s pitaed to "
                              "Random.setstate() of version %s" %
                              (version, self.VERSION))
 
@@ -200,7 +200,7 @@ kundi Random(_random.Random):
     eleza randrange(self, start, stop=Tupu, step=1, _int=int):
         """Choose a random item kutoka range(start, stop[, step]).
 
-        This fixes the problem with randint() which includes the
+        This fixes the problem ukijumuisha randint() which includes the
         endpoint; kwenye Python this ni usually sio what you want.
 
         """
@@ -231,7 +231,7 @@ kundi Random(_random.Random):
             ashiria ValueError("non-integer step kila randrange()")
         ikiwa istep > 0:
             n = (width + istep - 1) // istep
-        elikiwa istep < 0:
+        lasivyo istep < 0:
             n = (width + istep + 1) // istep
         isipokua:
             ashiria ValueError("zero step kila randrange()")
@@ -302,13 +302,13 @@ kundi Random(_random.Random):
         ikiwa random ni Tupu:
             randbelow = self._randbelow
             kila i kwenye reversed(range(1, len(x))):
-                # pick an element kwenye x[:i+1] with which to exchange x[i]
+                # pick an element kwenye x[:i+1] ukijumuisha which to exchange x[i]
                 j = randbelow(i+1)
                 x[i], x[j] = x[j], x[i]
         isipokua:
             _int = int
             kila i kwenye reversed(range(1, len(x))):
-                # pick an element kwenye x[:i+1] with which to exchange x[i]
+                # pick an element kwenye x[:i+1] ukijumuisha which to exchange x[i]
                 j = _int(random() * (i+1))
                 x[i], x[j] = x[j], x[i]
 
@@ -384,10 +384,10 @@ kundi Random(_random.Random):
         rudisha result
 
     eleza choices(self, population, weights=Tupu, *, cum_weights=Tupu, k=1):
-        """Return a k sized list of population elements chosen with replacement.
+        """Return a k sized list of population elements chosen ukijumuisha replacement.
 
         If the relative weights ama cumulative weights are sio specified,
-        the selections are made with equal probability.
+        the selections are made ukijumuisha equal probability.
 
         """
         random = self.random
@@ -398,7 +398,7 @@ kundi Random(_random.Random):
                 n += 0.0    # convert to float kila a small speed improvement
                 rudisha [population[_int(random() * n)] kila i kwenye _repeat(Tupu, k)]
             cum_weights = list(_accumulate(weights))
-        elikiwa weights ni sio Tupu:
+        lasivyo weights ni sio Tupu:
             ashiria TypeError('Cannot specify both weights na cumulative weights')
         ikiwa len(cum_weights) != n:
             ashiria ValueError('The number of weights does sio match the population')
@@ -429,7 +429,7 @@ kundi Random(_random.Random):
         """
         u = self.random()
         jaribu:
-            c = 0.5 ikiwa mode ni Tupu else (mode - low) / (high - low)
+            c = 0.5 ikiwa mode ni Tupu isipokua (mode - low) / (high - low)
         tatizo ZeroDivisionError:
             rudisha low
         ikiwa u > c:
@@ -469,7 +469,7 @@ kundi Random(_random.Random):
         """Log normal distribution.
 
         If you take the natural logarithm of this distribution, you'll get a
-        normal distribution with mean mu na standard deviation sigma.
+        normal distribution ukijumuisha mean mu na standard deviation sigma.
         mu can have any value, na sigma must be greater than zero.
 
         """
@@ -568,7 +568,7 @@ kundi Random(_random.Random):
         ikiwa alpha > 1.0:
 
             # Uses R.C.H. Cheng, "The generation of Gamma
-            # variables with non-integral shape parameters",
+            # variables ukijumuisha non-integral shape parameters",
             # Applied Statistics, (1977), 26, No. 1, p71-74
 
             ainv = _sqrt(2.0 * alpha - 1.0)
@@ -587,7 +587,7 @@ kundi Random(_random.Random):
                 ikiwa r + SG_MAGICCONST - 4.5*z >= 0.0 ama r >= _log(z):
                     rudisha x * beta
 
-        elikiwa alpha == 1.0:
+        lasivyo alpha == 1.0:
             # expovariate(1/beta)
             rudisha -_log(1.0 - random()) * beta
 
@@ -607,7 +607,7 @@ kundi Random(_random.Random):
                 ikiwa p > 1.0:
                     ikiwa u1 <= x ** (alpha - 1.0):
                         koma
-                elikiwa u1 <= _exp(-x):
+                lasivyo u1 <= _exp(-x):
                     koma
             rudisha x * beta
 
@@ -629,7 +629,7 @@ kundi Random(_random.Random):
         #    cos(2*pi*x)*sqrt(-2*log(1-y))
         #    sin(2*pi*x)*sqrt(-2*log(1-y))
         #
-        # are two *independent* variables with normal distribution
+        # are two *independent* variables ukijumuisha normal distribution
         # (mu = 0, sigma = 1).
         # (Lambert Meertens)
         # (corrected version; bug discovered by Mike Miller, fixed by LM)
@@ -719,7 +719,7 @@ kundi SystemRandom(Random):
         rudisha (int.kutoka_bytes(_urandom(7), 'big') >> 3) * RECIP_BPF
 
     eleza getrandbits(self, k):
-        """getrandbits(k) -> x.  Generates an int with k random bits."""
+        """getrandbits(k) -> x.  Generates an int ukijumuisha k random bits."""
         ikiwa k <= 0:
             ashiria ValueError('number of bits must be greater than zero')
         numbytes = (k + 7) // 8                       # bits / 8 na rounded up

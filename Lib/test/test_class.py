@@ -476,7 +476,7 @@ kundi ClassTests(unittest.TestCase):
             self.assertRaises(TypeError, f, BadTypeClass())
 
     eleza testHashStuff(self):
-        # Test correct errors kutoka hash() on objects with comparisons but
+        # Test correct errors kutoka hash() on objects ukijumuisha comparisons but
         #  no __hash__
 
         kundi C0:
@@ -535,13 +535,13 @@ kundi ClassTests(unittest.TestCase):
             self.fail("attribute error kila I.__init__ got masked")
 
     eleza assertNotOrderable(self, a, b):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a < b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a > b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a <= b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a >= b
 
     eleza testHashComparisonOfMethods(self):
@@ -601,14 +601,14 @@ kundi ClassTests(unittest.TestCase):
         self.assertIsNot(name2, '__add__')
         self.assertIsNot(name2, name)
         type.__delattr__(A, name2)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             A() + 1
 
     eleza testSetattrNonStringName(self):
         kundi A:
             pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type.__setattr__(A, b'x', Tupu)
 
     eleza testConstructorErrorMessages(self):
@@ -620,22 +620,22 @@ kundi ClassTests(unittest.TestCase):
 
         error_msg = r'C.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             C(42)
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             C.__new__(C, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             C().__init__(42)
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             object.__new__(C, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             object.__init__(C(), 42)
 
-        # Class with both `__init__` & `__new__` method overridden
+        # Class ukijumuisha both `__init__` & `__new__` method overridden
         kundi D:
             eleza __new__(cls, *args, **kwargs):
                 super().__new__(cls, *args, **kwargs)
@@ -644,13 +644,13 @@ kundi ClassTests(unittest.TestCase):
 
         error_msg =  r'object.__new__\(\) takes exactly one argument \(the type to instantiate\)'
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             D(42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             D.__new__(D, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             object.__new__(D, 42)
 
         # Class that only overrides __init__
@@ -660,10 +660,10 @@ kundi ClassTests(unittest.TestCase):
 
         error_msg = r'object.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             E().__init__(42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, error_msg):
             object.__init__(E(), 42)
 
 ikiwa __name__ == '__main__':

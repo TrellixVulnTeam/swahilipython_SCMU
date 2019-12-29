@@ -71,11 +71,11 @@ eleza write_file(path, content, binary=Uongo):
     """
     ikiwa isinstance(path, tuple):
         path = os.path.join(*path)
-    with open(path, 'wb' ikiwa binary else 'w') kama fp:
+    ukijumuisha open(path, 'wb' ikiwa binary isipokua 'w') kama fp:
         fp.write(content)
 
 eleza write_test_file(path, size):
-    """Create a test file with an arbitrary size na random text content."""
+    """Create a test file ukijumuisha an arbitrary size na random text content."""
     eleza chunks(total, step):
         assert total >= step
         wakati total > step:
@@ -87,7 +87,7 @@ eleza write_test_file(path, size):
     bufsize = min(size, 8192)
     chunk = b"".join([random.choice(string.ascii_letters).encode()
                       kila i kwenye range(bufsize)])
-    with open(path, 'wb') kama f:
+    ukijumuisha open(path, 'wb') kama f:
         kila csize kwenye chunks(size, bufsize):
             f.write(chunk)
     assert os.path.getsize(path) == size
@@ -101,7 +101,7 @@ eleza read_file(path, binary=Uongo):
     """
     ikiwa isinstance(path, tuple):
         path = os.path.join(*path)
-    with open(path, 'rb' ikiwa binary else 'r') kama fp:
+    ukijumuisha open(path, 'rb' ikiwa binary isipokua 'r') kama fp:
         rudisha fp.read()
 
 eleza rlistdir(path):
@@ -123,12 +123,12 @@ eleza supports_file2file_sendfile():
     srcname = Tupu
     dstname = Tupu
     jaribu:
-        with tempfile.NamedTemporaryFile("wb", delete=Uongo) kama f:
+        ukijumuisha tempfile.NamedTemporaryFile("wb", delete=Uongo) kama f:
             srcname = f.name
             f.write(b"0123456789")
 
-        with open(srcname, "rb") kama src:
-            with tempfile.NamedTemporaryFile("wb", delete=Uongo) kama dst:
+        ukijumuisha open(srcname, "rb") kama src:
+            ukijumuisha tempfile.NamedTemporaryFile("wb", delete=Uongo) kama dst:
                 dstname = dst.name
                 infd = src.fileno()
                 outfd = dst.fileno()
@@ -283,7 +283,7 @@ kundi TestShutil(unittest.TestCase):
         tmpdir = self.mkdtemp()
         write_file((tmpdir, "tstfile"), "")
         filename = os.path.join(tmpdir, "tstfile")
-        with self.assertRaises(NotADirectoryError) kama cm:
+        ukijumuisha self.assertRaises(NotADirectoryError) kama cm:
             shutil.rmtree(filename)
         # The reason kila this rather odd construct ni that Windows sprinkles
         # a \*.* at the end of file names. But only sometimes on some buildbots
@@ -353,7 +353,7 @@ kundi TestShutil(unittest.TestCase):
         ikiwa self.errorState < 2:
             ikiwa func ni os.unlink:
                 self.assertEqual(arg, self.child_file_path)
-            elikiwa func ni os.rmdir:
+            lasivyo func ni os.rmdir:
                 self.assertEqual(arg, self.child_dir_path)
             isipokua:
                 self.assertIs(func, os.listdir)
@@ -777,7 +777,7 @@ kundi TestShutil(unittest.TestCase):
         actual = read_file((dst_dir, 'existing_dir', 'existing.txt'))
         self.assertEqual(actual, 'has been replaced')
 
-        with self.assertRaises(FileExistsError):
+        ukijumuisha self.assertRaises(FileExistsError):
             shutil.copytree(src_dir, dst_dir, dirs_exist_ok=Uongo)
 
     @support.skip_unless_symlink
@@ -860,7 +860,7 @@ kundi TestShutil(unittest.TestCase):
                         ikiwa (os.path.isdir(path) and
                             path.split()[-1] == 'subdir'):
                             res.append(name)
-                        elikiwa os.path.splitext(path)[-1] kwenye ('.py'):
+                        lasivyo os.path.splitext(path)[-1] kwenye ('.py'):
                             res.append(name)
                     rudisha res
 
@@ -914,7 +914,7 @@ kundi TestShutil(unittest.TestCase):
         self.addCleanup(shutil.rmtree, os.path.dirname(dst_dir))
 
         mock_patch.side_effect = PermissionError('ka-boom')
-        with self.assertRaises(shutil.Error):
+        ukijumuisha self.assertRaises(shutil.Error):
             shutil.copytree(src_dir, dst_dir)
 
     eleza test_copytree_custom_copy_function(self):
@@ -931,7 +931,7 @@ kundi TestShutil(unittest.TestCase):
         self.addCleanup(support.rmtree, src)
         dst = tempfile.mktemp()
         self.addCleanup(support.rmtree, dst)
-        with open(os.path.join(src, 'foo'), 'w') kama f:
+        ukijumuisha open(os.path.join(src, 'foo'), 'w') kama f:
             f.close()
         shutil.copytree(src, dst, copy_function=custom_cpfun)
         self.assertEqual(len(flag), 1)
@@ -943,14 +943,14 @@ kundi TestShutil(unittest.TestCase):
         src = os.path.join(TESTFN, 'cheese')
         dst = os.path.join(TESTFN, 'shop')
         jaribu:
-            with open(src, 'w') kama f:
+            ukijumuisha open(src, 'w') kama f:
                 f.write('cheddar')
             jaribu:
                 os.link(src, dst)
             tatizo PermissionError kama e:
                 self.skipTest('os.link(): %s' % e)
             self.assertRaises(shutil.SameFileError, shutil.copyfile, src, dst)
-            with open(src, 'r') kama f:
+            ukijumuisha open(src, 'r') kama f:
                 self.assertEqual(f.read(), 'cheddar')
             os.remove(dst)
         mwishowe:
@@ -963,14 +963,14 @@ kundi TestShutil(unittest.TestCase):
         src = os.path.join(TESTFN, 'cheese')
         dst = os.path.join(TESTFN, 'shop')
         jaribu:
-            with open(src, 'w') kama f:
+            ukijumuisha open(src, 'w') kama f:
                 f.write('cheddar')
-            # Using `src` here would mean we end up with a symlink pointing
+            # Using `src` here would mean we end up ukijumuisha a symlink pointing
             # to TESTFN/TESTFN/cheese, wakati it should point at
             # TESTFN/cheese.
             os.symlink('cheese', dst)
             self.assertRaises(shutil.SameFileError, shutil.copyfile, src, dst)
-            with open(src, 'r') kama f:
+            ukijumuisha open(src, 'r') kama f:
                 self.assertEqual(f.read(), 'cheddar')
             os.remove(dst)
         mwishowe:
@@ -1070,7 +1070,7 @@ kundi TestShutil(unittest.TestCase):
         write_file((src_dir, 'test_dir', 'test.txt'), '456')
         self.assertRaises(Error, shutil.copytree, src_dir, dst_dir)
 
-        # a dangling symlink ni ignored with the proper flag
+        # a dangling symlink ni ignored ukijumuisha the proper flag
         dst_dir = os.path.join(self.mkdtemp(), 'destination2')
         shutil.copytree(src_dir, dst_dir, ignore_dangling_symlinks=Kweli)
         self.assertNotIn('test.txt', os.listdir(dst_dir))
@@ -1085,7 +1085,7 @@ kundi TestShutil(unittest.TestCase):
         src_dir = self.mkdtemp()
         dst_dir = os.path.join(self.mkdtemp(), 'destination')
         os.mkdir(os.path.join(src_dir, 'real_dir'))
-        with open(os.path.join(src_dir, 'real_dir', 'test.txt'), 'w'):
+        ukijumuisha open(os.path.join(src_dir, 'real_dir', 'test.txt'), 'w'):
             pita
         os.symlink(os.path.join(src_dir, 'real_dir'),
                    os.path.join(src_dir, 'link_to_dir'),
@@ -1141,11 +1141,11 @@ kundi TestShutil(unittest.TestCase):
         tmpdir2 = self.mkdtemp()
         # force shutil to create the directory
         os.rmdir(tmpdir2)
-        # working with relative paths
+        # working ukijumuisha relative paths
         work_dir = os.path.dirname(tmpdir2)
         rel_base_name = os.path.join(os.path.basename(tmpdir2), 'archive')
 
-        with support.change_cwd(work_dir):
+        ukijumuisha support.change_cwd(work_dir):
             base_name = os.path.abspath(rel_base_name)
             tarball = make_archive(rel_base_name, 'gztar', root_dir, '.')
 
@@ -1153,24 +1153,24 @@ kundi TestShutil(unittest.TestCase):
         self.assertEqual(tarball, base_name + '.tar.gz')
         self.assertKweli(os.path.isfile(tarball))
         self.assertKweli(tarfile.is_tarfile(tarball))
-        with tarfile.open(tarball, 'r:gz') kama tf:
+        ukijumuisha tarfile.open(tarball, 'r:gz') kama tf:
             self.assertCountEqual(tf.getnames(),
                                   ['.', './sub', './sub2',
                                    './file1', './file2', './sub/file3'])
 
         # trying an uncompressed one
-        with support.change_cwd(work_dir):
+        ukijumuisha support.change_cwd(work_dir):
             tarball = make_archive(rel_base_name, 'tar', root_dir, '.')
         self.assertEqual(tarball, base_name + '.tar')
         self.assertKweli(os.path.isfile(tarball))
         self.assertKweli(tarfile.is_tarfile(tarball))
-        with tarfile.open(tarball, 'r') kama tf:
+        ukijumuisha tarfile.open(tarball, 'r') kama tf:
             self.assertCountEqual(tf.getnames(),
                                   ['.', './sub', './sub2',
                                   './file1', './file2', './sub/file3'])
 
     eleza _tarinfo(self, path):
-        with tarfile.open(path) kama tar:
+        ukijumuisha tarfile.open(path) kama tar:
             names = tar.getnames()
             names.sort()
             rudisha tuple(names)
@@ -1230,31 +1230,31 @@ kundi TestShutil(unittest.TestCase):
         tmpdir2 = self.mkdtemp()
         # force shutil to create the directory
         os.rmdir(tmpdir2)
-        # working with relative paths
+        # working ukijumuisha relative paths
         work_dir = os.path.dirname(tmpdir2)
         rel_base_name = os.path.join(os.path.basename(tmpdir2), 'archive')
 
-        with support.change_cwd(work_dir):
+        ukijumuisha support.change_cwd(work_dir):
             base_name = os.path.abspath(rel_base_name)
             res = make_archive(rel_base_name, 'zip', root_dir)
 
         self.assertEqual(res, base_name + '.zip')
         self.assertKweli(os.path.isfile(res))
         self.assertKweli(zipfile.is_zipfile(res))
-        with zipfile.ZipFile(res) kama zf:
+        ukijumuisha zipfile.ZipFile(res) kama zf:
             self.assertCountEqual(zf.namelist(),
                     ['dist/', 'dist/sub/', 'dist/sub2/',
                      'dist/file1', 'dist/file2', 'dist/sub/file3',
                      'outer'])
 
-        with support.change_cwd(work_dir):
+        ukijumuisha support.change_cwd(work_dir):
             base_name = os.path.abspath(rel_base_name)
             res = make_archive(rel_base_name, 'zip', root_dir, base_dir)
 
         self.assertEqual(res, base_name + '.zip')
         self.assertKweli(os.path.isfile(res))
         self.assertKweli(zipfile.is_zipfile(res))
-        with zipfile.ZipFile(res) kama zf:
+        ukijumuisha zipfile.ZipFile(res) kama zf:
             self.assertCountEqual(zf.namelist(),
                     ['dist/', 'dist/sub/', 'dist/sub2/',
                      'dist/file1', 'dist/file2', 'dist/sub/file3'])
@@ -1279,9 +1279,9 @@ kundi TestShutil(unittest.TestCase):
 
         self.assertKweli(os.path.isfile(archive2))
         # let's compare both ZIP files
-        with zipfile.ZipFile(archive) kama zf:
+        ukijumuisha zipfile.ZipFile(archive) kama zf:
             names = zf.namelist()
-        with zipfile.ZipFile(archive2) kama zf:
+        ukijumuisha zipfile.ZipFile(archive2) kama zf:
             names2 = zf.namelist()
         self.assertEqual(sorted(names), sorted(names2))
 
@@ -1299,7 +1299,7 @@ kundi TestShutil(unittest.TestCase):
 
         # now check the ZIP file using `unzip -t`
         zip_cmd = ['unzip', '-t', archive]
-        with support.change_cwd(root_dir):
+        ukijumuisha support.change_cwd(root_dir):
             jaribu:
                 subprocess.check_output(zip_cmd, stderr=subprocess.STDOUT)
             tatizo subprocess.CalledProcessError kama exc:
@@ -1316,7 +1316,7 @@ kundi TestShutil(unittest.TestCase):
 
     @support.requires_zlib
     eleza test_make_archive_owner_group(self):
-        # testing make_archive with owner na group, with various combinations
+        # testing make_archive ukijumuisha owner na group, ukijumuisha various combinations
         # this works even ikiwa there's sio gid/uid support
         ikiwa UID_GID_SUPPORT:
             group = grp.getgrgid(0)[0]
@@ -1349,7 +1349,7 @@ kundi TestShutil(unittest.TestCase):
         base_name = os.path.join(self.mkdtemp(), 'archive')
         group = grp.getgrgid(0)[0]
         owner = pwd.getpwuid(0)[0]
-        with support.change_cwd(root_dir):
+        ukijumuisha support.change_cwd(root_dir):
             archive_name = make_archive(base_name, 'gztar', root_dir, 'dist',
                                         owner=owner, group=group)
 
@@ -1383,7 +1383,7 @@ kundi TestShutil(unittest.TestCase):
     eleza test_make_tarfile_in_curdir(self):
         # Issue #21280
         root_dir = self.mkdtemp()
-        with support.change_cwd(root_dir):
+        ukijumuisha support.change_cwd(root_dir):
             self.assertEqual(make_archive('test', 'tar'), 'test.tar')
             self.assertKweli(os.path.isfile('test.tar'))
 
@@ -1391,7 +1391,7 @@ kundi TestShutil(unittest.TestCase):
     eleza test_make_zipfile_in_curdir(self):
         # Issue #21280
         root_dir = self.mkdtemp()
-        with support.change_cwd(root_dir):
+        ukijumuisha support.change_cwd(root_dir):
             self.assertEqual(make_archive('test', 'zip'), 'test.zip')
             self.assertKweli(os.path.isfile('test.zip'))
 
@@ -1429,7 +1429,7 @@ kundi TestShutil(unittest.TestCase):
         unpack_archive(converter(filename), converter(tmpdir2))
         self.assertEqual(rlistdir(tmpdir2), expected)
 
-        # na again, this time with the format specified
+        # na again, this time ukijumuisha the format specified
         tmpdir3 = self.mkdtemp()
         unpack_archive(converter(filename), converter(tmpdir3), format=format)
         self.assertEqual(rlistdir(tmpdir3), expected)
@@ -1507,19 +1507,19 @@ kundi TestShutil(unittest.TestCase):
         filename = tempfile.mktemp(dir=dirname)
         write_file(filename, 'testing chown function')
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             shutil.chown(filename)
 
-        with self.assertRaises(LookupError):
+        ukijumuisha self.assertRaises(LookupError):
             shutil.chown(filename, user='non-existing username')
 
-        with self.assertRaises(LookupError):
+        ukijumuisha self.assertRaises(LookupError):
             shutil.chown(filename, group='non-existing groupname')
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             shutil.chown(filename, b'spam')
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             shutil.chown(filename, 3.14)
 
         uid = os.getuid()
@@ -1632,22 +1632,22 @@ kundi TestWhich(unittest.TestCase):
         self.assertEqual(rv, self.temp_file.name)
 
     eleza test_relative_cmd(self):
-        # When given the relative path with a directory part to an executable
+        # When given the relative path ukijumuisha a directory part to an executable
         # that exists, it should be rudishaed.
         base_dir, tail_dir = os.path.split(self.dir)
         relpath = os.path.join(tail_dir, self.file)
-        with support.change_cwd(path=base_dir):
+        ukijumuisha support.change_cwd(path=base_dir):
             rv = shutil.which(relpath, path=self.temp_dir)
             self.assertEqual(rv, relpath)
         # But it shouldn't be searched kwenye PATH directories (issue #16957).
-        with support.change_cwd(path=self.dir):
+        ukijumuisha support.change_cwd(path=self.dir):
             rv = shutil.which(relpath, path=base_dir)
             self.assertIsTupu(rv)
 
     eleza test_cwd(self):
         # Issue #16957
         base_dir = os.path.dirname(self.dir)
-        with support.change_cwd(path=self.dir):
+        ukijumuisha support.change_cwd(path=self.dir):
             rv = shutil.which(self.file, path=base_dir)
             ikiwa sys.platform == "win32":
                 # Windows: current directory implicitly on PATH
@@ -1668,7 +1668,7 @@ kundi TestWhich(unittest.TestCase):
 
     eleza test_relative_path(self):
         base_dir, tail_dir = os.path.split(self.dir)
-        with support.change_cwd(path=base_dir):
+        ukijumuisha support.change_cwd(path=base_dir):
             rv = shutil.which(self.file, path=tail_dir)
             self.assertEqual(rv, os.path.join(tail_dir, self.file))
 
@@ -1681,21 +1681,21 @@ kundi TestWhich(unittest.TestCase):
                          "pathext check ni Windows-only")
     eleza test_pathext_checking(self):
         # Ask kila the file without the ".exe" extension, then ensure that
-        # it gets found properly with the extension.
+        # it gets found properly ukijumuisha the extension.
         rv = shutil.which(self.file[:-4], path=self.dir)
         self.assertEqual(rv, self.temp_file.name[:-4] + self.ext)
 
     eleza test_environ_path(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['PATH'] = self.env_path
             rv = shutil.which(self.file)
             self.assertEqual(rv, self.temp_file.name)
 
     eleza test_environ_path_empty(self):
         # PATH='': no match
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['PATH'] = ''
-            with unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
+            ukijumuisha unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
                                      create=Kweli), \
                  support.swap_attr(os, 'defpath', self.dir), \
                  support.change_cwd(self.dir):
@@ -1711,32 +1711,32 @@ kundi TestWhich(unittest.TestCase):
             expected_cwd = os.path.join(curdir, expected_cwd)
 
         # PATH=':': explicitly looks kwenye the current directory
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['PATH'] = os.pathsep
-            with unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
+            ukijumuisha unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
                                      create=Kweli), \
                  support.swap_attr(os, 'defpath', self.dir):
                 rv = shutil.which(self.file)
                 self.assertIsTupu(rv)
 
                 # look kwenye current directory
-                with support.change_cwd(self.dir):
+                ukijumuisha support.change_cwd(self.dir):
                     rv = shutil.which(self.file)
                     self.assertEqual(rv, expected_cwd)
 
     eleza test_environ_path_missing(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.pop('PATH', Tupu)
 
             # without confstr
-            with unittest.mock.patch('os.confstr', side_effect=ValueError, \
+            ukijumuisha unittest.mock.patch('os.confstr', side_effect=ValueError, \
                                      create=Kweli), \
                  support.swap_attr(os, 'defpath', self.dir):
                 rv = shutil.which(self.file)
             self.assertEqual(rv, self.temp_file.name)
 
-            # with confstr
-            with unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
+            # ukijumuisha confstr
+            ukijumuisha unittest.mock.patch('os.confstr', rudisha_value=self.dir, \
                                      create=Kweli), \
                  support.swap_attr(os, 'defpath', ''):
                 rv = shutil.which(self.file)
@@ -1744,14 +1744,14 @@ kundi TestWhich(unittest.TestCase):
 
     eleza test_empty_path(self):
         base_dir = os.path.dirname(self.dir)
-        with support.change_cwd(path=self.dir), \
+        ukijumuisha support.change_cwd(path=self.dir), \
              support.EnvironmentVarGuard() kama env:
             env['PATH'] = self.env_path
             rv = shutil.which(self.file, path='')
             self.assertIsTupu(rv)
 
     eleza test_empty_path_no_PATH(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.pop('PATH', Tupu)
             rv = shutil.which(self.file)
             self.assertIsTupu(rv)
@@ -1768,7 +1768,7 @@ kundi TestWhich(unittest.TestCase):
         program = os.path.basename(temp_filexyz.name)
         program = os.path.splitext(program)[0]
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['PATHEXT'] = ext
             rv = shutil.which(program, path=self.temp_dir)
             self.assertEqual(rv, temp_filexyz.name)
@@ -1792,7 +1792,7 @@ kundi TestMove(unittest.TestCase):
         self.dst_dir = tempfile.mkdtemp()
         self.src_file = os.path.join(self.src_dir, filename)
         self.dst_file = os.path.join(self.dst_dir, filename)
-        with open(self.src_file, "wb") kama f:
+        ukijumuisha open(self.src_file, "wb") kama f:
             f.write(b"spam")
 
     eleza tearDown(self):
@@ -1804,10 +1804,10 @@ kundi TestMove(unittest.TestCase):
                 pita
 
     eleza _check_move_file(self, src, dst, real_dst):
-        with open(src, "rb") kama f:
+        ukijumuisha open(src, "rb") kama f:
             contents = f.read()
         shutil.move(src, dst)
-        with open(real_dst, "rb") kama f:
+        ukijumuisha open(real_dst, "rb") kama f:
             self.assertEqual(contents, f.read())
         self.assertUongo(os.path.exists(src))
 
@@ -1871,8 +1871,8 @@ kundi TestMove(unittest.TestCase):
             os.path.join(self.dst_dir, os.path.basename(self.src_dir)))
 
     eleza test_existing_file_inside_dest_dir(self):
-        # A file with the same name inside the destination dir already exists.
-        with open(self.dst_file, "wb"):
+        # A file ukijumuisha the same name inside the destination dir already exists.
+        ukijumuisha open(self.dst_file, "wb"):
             pita
         self.assertRaises(shutil.Error, shutil.move, self.src_file, self.dst_dir)
 
@@ -1982,7 +1982,7 @@ kundi TestCopyFile(unittest.TestCase):
 
     kundi Faux(object):
         _entered = Uongo
-        _exited_with = Tupu
+        _exited_ukijumuisha = Tupu
         _ashiriad = Uongo
         eleza __init__(self, ashiria_in_exit=Uongo, suppress_at_exit=Kweli):
             self._ashiria_in_exit = ashiria_in_exit
@@ -1992,7 +1992,7 @@ kundi TestCopyFile(unittest.TestCase):
         eleza __enter__(self):
             self._entered = Kweli
         eleza __exit__(self, exc_type, exc_val, exc_tb):
-            self._exited_with = exc_type, exc_val, exc_tb
+            self._exited_ukijumuisha = exc_type, exc_val, exc_tb
             ikiwa self._ashiria_in_exit:
                 self._ashiriad = Kweli
                 ashiria OSError("Cannot close")
@@ -2117,28 +2117,28 @@ kundi TestCopyFileObj(unittest.TestCase):
 
     @contextlib.contextmanager
     eleza get_files(self):
-        with open(TESTFN, "rb") kama src:
-            with open(TESTFN2, "wb") kama dst:
+        ukijumuisha open(TESTFN, "rb") kama src:
+            ukijumuisha open(TESTFN2, "wb") kama dst:
                 tuma (src, dst)
 
     eleza assert_files_eq(self, src, dst):
-        with open(src, 'rb') kama fsrc:
-            with open(dst, 'rb') kama fdst:
+        ukijumuisha open(src, 'rb') kama fsrc:
+            ukijumuisha open(dst, 'rb') kama fdst:
                 self.assertEqual(fsrc.read(), fdst.read())
 
     eleza test_content(self):
-        with self.get_files() kama (src, dst):
+        ukijumuisha self.get_files() kama (src, dst):
             shutil.copyfileobj(src, dst)
         self.assert_files_eq(TESTFN, TESTFN2)
 
     eleza test_file_not_closed(self):
-        with self.get_files() kama (src, dst):
+        ukijumuisha self.get_files() kama (src, dst):
             shutil.copyfileobj(src, dst)
             assert sio src.closed
             assert sio dst.closed
 
     eleza test_file_offset(self):
-        with self.get_files() kama (src, dst):
+        ukijumuisha self.get_files() kama (src, dst):
             shutil.copyfileobj(src, dst)
             self.assertEqual(src.tell(), self.FILESIZE)
             self.assertEqual(dst.tell(), self.FILESIZE)
@@ -2146,7 +2146,7 @@ kundi TestCopyFileObj(unittest.TestCase):
     @unittest.skipIf(os.name != 'nt', "Windows only")
     eleza test_win_impl(self):
         # Make sure alternate Windows implementation ni called.
-        with unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
+        ukijumuisha unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
             shutil.copyfile(TESTFN, TESTFN2)
         assert m.called
 
@@ -2155,20 +2155,20 @@ kundi TestCopyFileObj(unittest.TestCase):
 
         # If file size < 1 MiB memoryview() length must be equal to
         # the actual file size.
-        with tempfile.NamedTemporaryFile(delete=Uongo) kama f:
+        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) kama f:
             f.write(b'foo')
         fname = f.name
         self.addCleanup(support.unlink, fname)
-        with unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
+        ukijumuisha unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
             shutil.copyfile(fname, TESTFN2)
         self.assertEqual(m.call_args[0][2], 3)
 
         # Empty files should sio rely on readinto() variant.
-        with tempfile.NamedTemporaryFile(delete=Uongo) kama f:
+        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) kama f:
             pita
         fname = f.name
         self.addCleanup(support.unlink, fname)
-        with unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
+        ukijumuisha unittest.mock.patch("shutil._copyfileobj_readinto") kama m:
             shutil.copyfile(fname, TESTFN2)
         assert sio m.called
         self.assert_files_eq(fname, TESTFN2)
@@ -2183,7 +2183,7 @@ kundi _ZeroCopyFileTest(object):
     @classmethod
     eleza setUpClass(cls):
         write_test_file(TESTFN, cls.FILESIZE)
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             cls.FILEDATA = f.read()
             assert len(cls.FILEDATA) == cls.FILESIZE
 
@@ -2196,8 +2196,8 @@ kundi _ZeroCopyFileTest(object):
 
     @contextlib.contextmanager
     eleza get_files(self):
-        with open(TESTFN, "rb") kama src:
-            with open(TESTFN2, "wb") kama dst:
+        ukijumuisha open(TESTFN, "rb") kama src:
+            ukijumuisha open(TESTFN2, "wb") kama dst:
                 tuma (src, dst)
 
     eleza zerocopy_fun(self, *args, **kwargs):
@@ -2212,26 +2212,26 @@ kundi _ZeroCopyFileTest(object):
     # ---
 
     eleza test_regular_copy(self):
-        with self.get_files() kama (src, dst):
+        ukijumuisha self.get_files() kama (src, dst):
             self.zerocopy_fun(src, dst)
         self.assertEqual(read_file(TESTFN2, binary=Kweli), self.FILEDATA)
         # Make sure the fallback function ni sio called.
-        with self.get_files() kama (src, dst):
-            with unittest.mock.patch('shutil.copyfileobj') kama m:
+        ukijumuisha self.get_files() kama (src, dst):
+            ukijumuisha unittest.mock.patch('shutil.copyfileobj') kama m:
                 shutil.copyfile(TESTFN, TESTFN2)
             assert sio m.called
 
     eleza test_same_file(self):
         self.addCleanup(self.reset)
-        with self.get_files() kama (src, dst):
-            with self.assertRaises(Exception):
+        ukijumuisha self.get_files() kama (src, dst):
+            ukijumuisha self.assertRaises(Exception):
                 self.zerocopy_fun(src, src)
         # Make sure src file ni sio corrupted.
         self.assertEqual(read_file(TESTFN, binary=Kweli), self.FILEDATA)
 
     eleza test_non_existent_src(self):
         name = tempfile.mktemp()
-        with self.assertRaises(FileNotFoundError) kama cm:
+        ukijumuisha self.assertRaises(FileNotFoundError) kama cm:
             shutil.copyfile(name, "new")
         self.assertEqual(cm.exception.filename, name)
 
@@ -2240,17 +2240,17 @@ kundi _ZeroCopyFileTest(object):
         dstname = TESTFN + 'dst'
         self.addCleanup(lambda: support.unlink(srcname))
         self.addCleanup(lambda: support.unlink(dstname))
-        with open(srcname, "wb"):
+        ukijumuisha open(srcname, "wb"):
             pita
 
-        with open(srcname, "rb") kama src:
-            with open(dstname, "wb") kama dst:
+        ukijumuisha open(srcname, "rb") kama src:
+            ukijumuisha open(dstname, "wb") kama dst:
                 self.zerocopy_fun(src, dst)
 
         self.assertEqual(read_file(dstname, binary=Kweli), b"")
 
     eleza test_unhandled_exception(self):
-        with unittest.mock.patch(self.PATCHPOINT,
+        ukijumuisha unittest.mock.patch(self.PATCHPOINT,
                                  side_effect=ZeroDivisionError):
             self.assertRaises(ZeroDivisionError,
                               shutil.copyfile, TESTFN, TESTFN2)
@@ -2259,18 +2259,18 @@ kundi _ZeroCopyFileTest(object):
         # Emulate a case where the first call to the zero-copy
         # function ashirias an exception kwenye which case the function is
         # supposed to give up immediately.
-        with unittest.mock.patch(self.PATCHPOINT,
+        ukijumuisha unittest.mock.patch(self.PATCHPOINT,
                                  side_effect=OSError(errno.EINVAL, "yo")):
-            with self.get_files() kama (src, dst):
-                with self.assertRaises(_GiveupOnFastCopy):
+            ukijumuisha self.get_files() kama (src, dst):
+                ukijumuisha self.assertRaises(_GiveupOnFastCopy):
                     self.zerocopy_fun(src, dst)
 
     eleza test_filesystem_full(self):
         # Emulate a case where filesystem ni full na sendfile() fails
         # on first call.
-        with unittest.mock.patch(self.PATCHPOINT,
+        ukijumuisha unittest.mock.patch(self.PATCHPOINT,
                                  side_effect=OSError(errno.ENOSPC, "yo")):
-            with self.get_files() kama (src, dst):
+            ukijumuisha self.get_files() kama (src, dst):
                 self.assertRaises(OSError, self.zerocopy_fun, src, dst)
 
 
@@ -2282,18 +2282,18 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         rudisha shutil._fastcopy_sendfile(fsrc, fdst)
 
     eleza test_non_regular_file_src(self):
-        with io.BytesIO(self.FILEDATA) kama src:
-            with open(TESTFN2, "wb") kama dst:
-                with self.assertRaises(_GiveupOnFastCopy):
+        ukijumuisha io.BytesIO(self.FILEDATA) kama src:
+            ukijumuisha open(TESTFN2, "wb") kama dst:
+                ukijumuisha self.assertRaises(_GiveupOnFastCopy):
                     self.zerocopy_fun(src, dst)
                 shutil.copyfileobj(src, dst)
 
         self.assertEqual(read_file(TESTFN2, binary=Kweli), self.FILEDATA)
 
     eleza test_non_regular_file_dst(self):
-        with open(TESTFN, "rb") kama src:
-            with io.BytesIO() kama dst:
-                with self.assertRaises(_GiveupOnFastCopy):
+        ukijumuisha open(TESTFN, "rb") kama src:
+            ukijumuisha io.BytesIO() kama dst:
+                ukijumuisha self.assertRaises(_GiveupOnFastCopy):
                     self.zerocopy_fun(src, dst)
                 shutil.copyfileobj(src, dst)
                 dst.seek(0)
@@ -2309,10 +2309,10 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
 
         flag = []
         orig_sendfile = os.sendfile
-        with unittest.mock.patch('os.sendfile', create=Kweli,
+        ukijumuisha unittest.mock.patch('os.sendfile', create=Kweli,
                                  side_effect=sendfile):
-            with self.get_files() kama (src, dst):
-                with self.assertRaises(OSError) kama cm:
+            ukijumuisha self.get_files() kama (src, dst):
+                ukijumuisha self.assertRaises(OSError) kama cm:
                     shutil._fastcopy_sendfile(src, dst)
         assert flag
         self.assertEqual(cm.exception.errno, errno.EBADF)
@@ -2321,8 +2321,8 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         # Emulate a case where src file size cannot be determined.
         # Internally bufsize will be set to a small value and
         # sendfile() will be called repeatedly.
-        with unittest.mock.patch('os.fstat', side_effect=OSError) kama m:
-            with self.get_files() kama (src, dst):
+        ukijumuisha unittest.mock.patch('os.fstat', side_effect=OSError) kama m:
+            ukijumuisha self.get_files() kama (src, dst):
                 shutil._fastcopy_sendfile(src, dst)
                 assert m.called
         self.assertEqual(read_file(TESTFN2, binary=Kweli), self.FILEDATA)
@@ -2334,8 +2334,8 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         # bigger wakati it ni being copied.
         mock = unittest.mock.Mock()
         mock.st_size = 65536 + 1
-        with unittest.mock.patch('os.fstat', rudisha_value=mock) kama m:
-            with self.get_files() kama (src, dst):
+        ukijumuisha unittest.mock.patch('os.fstat', rudisha_value=mock) kama m:
+            ukijumuisha self.get_files() kama (src, dst):
                 shutil._fastcopy_sendfile(src, dst)
                 assert m.called
         self.assertEqual(read_file(TESTFN2, binary=Kweli), self.FILEDATA)
@@ -2347,14 +2347,14 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         # performance.
         mock = unittest.mock.Mock()
         mock.st_size = self.FILESIZE + (100 * 1024 * 1024)
-        with unittest.mock.patch('os.fstat', rudisha_value=mock) kama m:
-            with self.get_files() kama (src, dst):
+        ukijumuisha unittest.mock.patch('os.fstat', rudisha_value=mock) kama m:
+            ukijumuisha self.get_files() kama (src, dst):
                 shutil._fastcopy_sendfile(src, dst)
                 assert m.called
         self.assertEqual(read_file(TESTFN2, binary=Kweli), self.FILEDATA)
 
     eleza test_blocksize_arg(self):
-        with unittest.mock.patch('os.sendfile',
+        ukijumuisha unittest.mock.patch('os.sendfile',
                                  side_effect=ZeroDivisionError) kama m:
             self.assertRaises(ZeroDivisionError,
                               shutil.copyfile, TESTFN, TESTFN2)
@@ -2362,7 +2362,7 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
             # Make sure file size na the block size arg pitaed to
             # sendfile() are the same.
             self.assertEqual(blocksize, os.path.getsize(TESTFN))
-            # ...unless we're dealing with a small file.
+            # ...unless we're dealing ukijumuisha a small file.
             support.unlink(TESTFN2)
             write_file(TESTFN2, b"hello", binary=Kweli)
             self.addCleanup(support.unlink, TESTFN2 + '3')
@@ -2377,16 +2377,16 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         # fast-copy attempt kutoka then on.
         assert shutil._USE_CP_SENDFILE
         jaribu:
-            with unittest.mock.patch(
+            ukijumuisha unittest.mock.patch(
                     self.PATCHPOINT,
                     side_effect=OSError(errno.ENOTSOCK, "yo")) kama m:
-                with self.get_files() kama (src, dst):
-                    with self.assertRaises(_GiveupOnFastCopy):
+                ukijumuisha self.get_files() kama (src, dst):
+                    ukijumuisha self.assertRaises(_GiveupOnFastCopy):
                         shutil._fastcopy_sendfile(src, dst)
                 assert m.called
             assert sio shutil._USE_CP_SENDFILE
 
-            with unittest.mock.patch(self.PATCHPOINT) kama m:
+            ukijumuisha unittest.mock.patch(self.PATCHPOINT) kama m:
                 shutil.copyfile(TESTFN, TESTFN2)
                 assert sio m.called
         mwishowe:
@@ -2415,20 +2415,20 @@ kundi TermsizeTests(unittest.TestCase):
     eleza test_os_environ_first(self):
         "Check ikiwa environment variables have precedence"
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['COLUMNS'] = '777'
             toa env['LINES']
             size = shutil.get_terminal_size()
         self.assertEqual(size.columns, 777)
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             toa env['COLUMNS']
             env['LINES'] = '888'
             size = shutil.get_terminal_size()
         self.assertEqual(size.lines, 888)
 
     eleza test_bad_environ(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['COLUMNS'] = 'xxx'
             env['LINES'] = 'yyy'
             size = shutil.get_terminal_size()
@@ -2442,7 +2442,7 @@ kundi TermsizeTests(unittest.TestCase):
         """Check ikiwa stty rudishas the same results ignoring env
 
         This test will fail ikiwa stdin na stdout are connected to
-        different terminals with different sizes. Nevertheless, such
+        different terminals ukijumuisha different sizes. Nevertheless, such
         situations should be pretty rare.
         """
         jaribu:
@@ -2452,7 +2452,7 @@ kundi TermsizeTests(unittest.TestCase):
             self.skipTest("stty invocation failed")
         expected = (int(size[1]), int(size[0])) # reversed order
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             toa env['LINES']
             toa env['COLUMNS']
             actual = shutil.get_terminal_size()
@@ -2460,19 +2460,19 @@ kundi TermsizeTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     eleza test_fallback(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             toa env['LINES']
             toa env['COLUMNS']
 
             # sys.__stdout__ has no fileno()
-            with support.swap_attr(sys, '__stdout__', Tupu):
+            ukijumuisha support.swap_attr(sys, '__stdout__', Tupu):
                 size = shutil.get_terminal_size(fallback=(10, 20))
             self.assertEqual(size.columns, 10)
             self.assertEqual(size.lines, 20)
 
             # sys.__stdout__ ni sio a terminal on Unix
             # ama fileno() haiko kwenye (0, 1, 2) on Windows
-            with open(os.devnull, 'w') kama f, \
+            ukijumuisha open(os.devnull, 'w') kama f, \
                  support.swap_attr(sys, '__stdout__', f):
                 size = shutil.get_terminal_size(fallback=(30, 40))
             self.assertEqual(size.columns, 30)

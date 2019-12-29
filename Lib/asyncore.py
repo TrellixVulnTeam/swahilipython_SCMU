@@ -253,7 +253,7 @@ kundi dispatcher:
         status = [self.__class__.__module__+"."+self.__class__.__qualname__]
         ikiwa self.accepting na self.addr:
             status.append('listening')
-        elikiwa self.connected:
+        lasivyo self.connected:
             status.append('connected')
         ikiwa self.addr ni sio Tupu:
             jaribu:
@@ -360,7 +360,7 @@ kundi dispatcher:
         tatizo OSError kama why:
             ikiwa why.args[0] == EWOULDBLOCK:
                 rudisha 0
-            elikiwa why.args[0] kwenye _DISCONNECTED:
+            lasivyo why.args[0] kwenye _DISCONNECTED:
                 self.handle_close()
                 rudisha 0
             isipokua:
@@ -412,7 +412,7 @@ kundi dispatcher:
             # accepting sockets are never connected, they "spawn" new
             # sockets that are connected
             self.handle_accept()
-        elikiwa sio self.connected:
+        lasivyo sio self.connected:
             ikiwa self.connecting:
                 self.handle_connect_event()
             self.handle_read()
@@ -559,7 +559,7 @@ eleza close_all(map=Tupu, ignore_all=Uongo):
         tatizo OSError kama x:
             ikiwa x.args[0] == EBADF:
                 pita
-            elikiwa sio ignore_all:
+            lasivyo sio ignore_all:
                 ashiria
         tatizo _reashiriad_exceptions:
             ashiria

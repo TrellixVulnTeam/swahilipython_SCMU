@@ -188,7 +188,7 @@ kundi FileInput:
                  mode="r", openhook=Tupu):
         ikiwa isinstance(files, str):
             files = (files,)
-        elikiwa isinstance(files, os.PathLike):
+        lasivyo isinstance(files, os.PathLike):
             files = (os.fspath(files), )
         isipokua:
             ikiwa files ni Tupu:
@@ -217,7 +217,7 @@ kundi FileInput:
             warnings.warn("'U' mode ni deprecated",
                           DeprecationWarning, 2)
         self._mode = mode
-        self._write_mode = mode.replace('r', 'w') ikiwa 'U' haiko kwenye mode else 'w'
+        self._write_mode = mode.replace('r', 'w') ikiwa 'U' haiko kwenye mode isipokua 'w'
         ikiwa openhook:
             ikiwa inplace:
                 ashiria ValueError("FileInput cannot use an opening hook kwenye inplace mode")
@@ -252,7 +252,7 @@ kundi FileInput:
             ikiwa sio self._file:
                 ashiria StopIteration
             self.nextfile()
-            # repeat with next file
+            # repeat ukijumuisha next file
 
     eleza __getitem__(self, i):
         agiza warnings
@@ -308,7 +308,7 @@ kundi FileInput:
             ikiwa sio self._file:
                 rudisha line
             self.nextfile()
-            # repeat with next file
+            # repeat ukijumuisha next file
 
     eleza _readline(self):
         ikiwa sio self._files:
@@ -397,7 +397,7 @@ eleza hook_compressed(filename, mode):
     ikiwa ext == '.gz':
         agiza gzip
         rudisha gzip.open(filename, mode)
-    elikiwa ext == '.bz2':
+    lasivyo ext == '.bz2':
         agiza bz2
         rudisha bz2.BZ2File(filename, mode)
     isipokua:

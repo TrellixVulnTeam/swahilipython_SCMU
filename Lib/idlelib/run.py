@@ -69,7 +69,7 @@ eleza idle_showwarning_subproc(
 _warnings_showwarning = Tupu
 
 eleza capture_warnings(capture):
-    "Replace warning.showwarning with idle_showwarning_subproc, ama reverse."
+    "Replace warning.showwarning ukijumuisha idle_showwarning_subproc, ama reverse."
 
     global _warnings_showwarning
     ikiwa capture:
@@ -101,7 +101,7 @@ interruptable = Uongo
 eleza main(del_exitfunc=Uongo):
     """Start the Python execution server kwenye a subprocess
 
-    In the Python subprocess, RPCServer ni instantiated with handlerclass
+    In the Python subprocess, RPCServer ni instantiated ukijumuisha handlerclass
     MyHandler, which inherits register/unregister methods kutoka RPCHandler via
     the mix-in kundi SocketIO.
 
@@ -227,7 +227,7 @@ eleza print_exception():
             print_exc(type(cause), cause, cause.__traceback__)
             andika("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        elikiwa (context ni sio Tupu and
+        lasivyo (context ni sio Tupu and
               sio exc.__suppress_context__ and
               id(context) haiko kwenye seen):
             print_exc(type(context), context, context.__traceback__)
@@ -284,7 +284,7 @@ eleza exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
     If config-main.cfg/.eleza 'General' 'delete-exitfunc' ni Kweli, then any
-    functions registered with atexit will be removed before exiting.
+    functions registered ukijumuisha atexit will be removed before exiting.
     (VPython support)
 
     """
@@ -308,7 +308,7 @@ eleza fix_scaling(root):
 
 
 eleza fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') ikiwa fun.__doc__ ni sio Tupu else ''
+    tem = (fun.__doc__ + '\n\n') ikiwa fun.__doc__ ni sio Tupu isipokua ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
@@ -448,7 +448,7 @@ kundi StdInputFile(StdioFile):
             ashiria ValueError("read kutoka closed file")
         ikiwa size ni Tupu:
             size = -1
-        elikiwa sio isinstance(size, int):
+        lasivyo sio isinstance(size, int):
             ashiria TypeError('must be int, sio ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
@@ -471,7 +471,7 @@ kundi StdInputFile(StdioFile):
             ashiria ValueError("read kutoka closed file")
         ikiwa size ni Tupu:
             size = -1
-        elikiwa sio isinstance(size, int):
+        lasivyo sio isinstance(size, int):
             ashiria TypeError('must be int, sio ' + type(size).__name__)
         line = self._line_buffer ama self.shell.readline()
         ikiwa size < 0:
@@ -549,7 +549,7 @@ kundi Executive(object):
             mwishowe:
                 interruptable = Uongo
         tatizo SystemExit kama e:
-            ikiwa e.args:  # SystemExit called with an argument.
+            ikiwa e.args:  # SystemExit called ukijumuisha an argument.
                 ob = e.args[0]
                 ikiwa sio isinstance(ob, (type(Tupu), int)):
                     andika('SystemExit: ' + str(ob), file=sys.stderr)

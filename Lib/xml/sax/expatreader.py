@@ -49,7 +49,7 @@ kundi _ClosedParser:
 # --- ExpatLocator
 
 kundi ExpatLocator(xmlreader.Locator):
-    """Locator kila use with the ExpatParser class.
+    """Locator kila use ukijumuisha the ExpatParser class.
 
     This uses a weak reference to the parser object to avoid creating
     a circular reference between the parser na the content handler.
@@ -130,12 +130,12 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     eleza getFeature(self, name):
         ikiwa name == feature_namespaces:
             rudisha self._namespaces
-        elikiwa name == feature_string_interning:
+        lasivyo name == feature_string_interning:
             rudisha self._interning ni sio Tupu
-        elikiwa name kwenye (feature_validation, feature_external_pes,
+        lasivyo name kwenye (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
             rudisha 0
-        elikiwa name == feature_external_ges:
+        lasivyo name == feature_external_ges:
             rudisha self._external_ges
         ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
 
@@ -145,23 +145,23 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         ikiwa name == feature_namespaces:
             self._namespaces = state
-        elikiwa name == feature_external_ges:
+        lasivyo name == feature_external_ges:
             self._external_ges = state
-        elikiwa name == feature_string_interning:
+        lasivyo name == feature_string_interning:
             ikiwa state:
                 ikiwa self._interning ni Tupu:
                     self._interning = {}
             isipokua:
                 self._interning = Tupu
-        elikiwa name == feature_validation:
+        lasivyo name == feature_validation:
             ikiwa state:
                 ashiria SAXNotSupportedException(
                     "expat does sio support validation")
-        elikiwa name == feature_external_pes:
+        lasivyo name == feature_external_pes:
             ikiwa state:
                 ashiria SAXNotSupportedException(
                     "expat does sio read external parameter entities")
-        elikiwa name == feature_namespace_prefixes:
+        lasivyo name == feature_namespace_prefixes:
             ikiwa state:
                 ashiria SAXNotSupportedException(
                     "expat does sio report namespace prefixes")
@@ -172,9 +172,9 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     eleza getProperty(self, name):
         ikiwa name == handler.property_lexical_handler:
             rudisha self._lex_handler_prop
-        elikiwa name == property_interning_dict:
+        lasivyo name == property_interning_dict:
             rudisha self._interning
-        elikiwa name == property_xml_string:
+        lasivyo name == property_xml_string:
             ikiwa self._parser:
                 ikiwa hasattr(self._parser, "GetInputContext"):
                     rudisha self._parser.GetInputContext()
@@ -192,9 +192,9 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._lex_handler_prop = value
             ikiwa self._parsing:
                 self._reset_lex_handler_prop()
-        elikiwa name == property_interning_dict:
+        lasivyo name == property_interning_dict:
             self._interning = value
-        elikiwa name == property_xml_string:
+        lasivyo name == property_xml_string:
             ashiria SAXNotSupportedException("Property '%s' cannot be set" %
                                            name)
         isipokua:
@@ -340,7 +340,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         ikiwa len(pair) == 1:
             # no namespace
             pair = (Tupu, name)
-        elikiwa len(pair) == 3:
+        lasivyo len(pair) == 3:
             pair = pair[0], pair[1]
         isipokua:
             # default namespace
@@ -355,7 +355,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 # no namespace
                 qname = aname
                 apair = (Tupu, aname)
-            elikiwa length == 3:
+            lasivyo length == 3:
                 qname = "%s:%s" % (parts[2], parts[1])
                 apair = parts[0], parts[1]
             isipokua:
@@ -373,7 +373,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         pair = name.split()
         ikiwa len(pair) == 1:
             pair = (Tupu, name)
-        elikiwa len(pair) == 3:
+        lasivyo len(pair) == 3:
             pair = pair[0], pair[1]
         isipokua:
             pair = tuple(pair)
@@ -427,7 +427,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     eleza skipped_entity_handler(self, name, is_pe):
         ikiwa is_pe:
-            # The SAX spec requires to report skipped PEs with a '%'
+            # The SAX spec requires to report skipped PEs ukijumuisha a '%'
             name = '%'+name
         self._cont_handler.skippedEntity(name)
 

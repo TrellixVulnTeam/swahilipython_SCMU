@@ -655,7 +655,7 @@ kundi Mapping(Collection):
         raise KeyError
 
     def get(self, key, default=None):
-        'D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.'
+        'D.get(k[,d]) -> D[k] if k in D, isipokua d.  d defaults to None.'
         jaribu:
             return self[key]
         tatizo KeyError:

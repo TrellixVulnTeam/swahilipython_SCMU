@@ -101,11 +101,11 @@ def decode_b(encoded):
     # First try encoding with validate=True, fixing the padding if needed.
     # This will succeed only if encoded includes no invalid characters.
     pad_err = len(encoded) % 4
-    missing_padding = b'==='[:4-pad_err] if pad_err else b''
+    missing_padding = b'==='[:4-pad_err] if pad_err isipokua b''
     jaribu:
         return (
             base64.b64decode(encoded + missing_padding, validate=True),
-            [errors.InvalidBase64PaddingDefect()] if pad_err else [],
+            [errors.InvalidBase64PaddingDefect()] if pad_err isipokua [],
         )
     tatizo binascii.Error:
         # Since we had correct padding, this is likely an invalid char error.
@@ -141,7 +141,7 @@ def encode_b(bstring):
 def len_b(bstring):
     groups_of_3, leftover = divmod(len(bstring), 3)
     # 4 bytes out for each 3 bytes (or nonzero fraction thereof) in.
-    return groups_of_3 * 4 + (4 if leftover else 0)
+    return groups_of_3 * 4 + (4 if leftover isipokua 0)
 
 
 _cte_decoders = {
@@ -226,7 +226,7 @@ def encode(string, charset='utf-8', encoding=None, lang=''):
         qlen = _cte_encode_length['q'](bstring)
         blen = _cte_encode_length['b'](bstring)
         # Bias toward q.  5 is arbitrary.
-        encoding = 'q' if qlen - blen < 5 else 'b'
+        encoding = 'q' if qlen - blen < 5 isipokua 'b'
     encoded = _cte_encoders[encoding](bstring)
     if lang:
         lang = '*' + lang

@@ -24,7 +24,7 @@ digest_size = Tupu
 
 
 kundi HMAC:
-    """RFC 2104 HMAC class.  Also complies with RFC 4231.
+    """RFC 2104 HMAC class.  Also complies ukijumuisha RFC 4231.
 
     This supports the API kila Cryptographic Hash Functions (PEP 247).
     """
@@ -50,7 +50,7 @@ kundi HMAC:
 
         ikiwa callable(digestmod):
             self.digest_cons = digestmod
-        elikiwa isinstance(digestmod, str):
+        lasivyo isinstance(digestmod, str):
             self.digest_cons = lambda d=b'': _hashlib.new(digestmod, d)
         isipokua:
             self.digest_cons = lambda d=b'': digestmod.new(d)
@@ -90,7 +90,7 @@ kundi HMAC:
         rudisha "hmac-" + self.inner.name
 
     eleza update(self, msg):
-        """Update this hashing object with the string msg.
+        """Update this hashing object ukijumuisha the string msg.
         """
         self.inner.update(msg)
 
@@ -110,7 +110,7 @@ kundi HMAC:
     eleza _current(self):
         """Return a hash object kila the current state.
 
-        To be used only internally with digest() na hexdigest().
+        To be used only internally ukijumuisha digest() na hexdigest().
         """
         h = self.outer.copy()
         h.update(self.inner.digest())
@@ -163,7 +163,7 @@ eleza digest(key, msg, digest):
 
     ikiwa callable(digest):
         digest_cons = digest
-    elikiwa isinstance(digest, str):
+    lasivyo isinstance(digest, str):
         digest_cons = lambda d=b'': _hashlib.new(digest, d)
     isipokua:
         digest_cons = lambda d=b'': digest.new(d)

@@ -1,4 +1,4 @@
-"""Fixer kila function definitions with tuple parameters.
+"""Fixer kila function definitions ukijumuisha tuple parameters.
 
 eleza func(((a, b), c), d):
     ...
@@ -77,7 +77,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
 
         ikiwa args.type == syms.tfpdef:
             handle_tuple(args)
-        elikiwa args.type == syms.typedargslist:
+        lasivyo args.type == syms.typedargslist:
             kila i, arg kwenye enumerate(args.children):
                 ikiwa arg.type == syms.tfpdef:
                     # Without add_prefix, the emitted code ni correct,
@@ -87,7 +87,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
         ikiwa sio new_lines:
             rudisha
 
-        # This isn't strictly necessary, but it plays nicely with other fixers.
+        # This isn't strictly necessary, but it plays nicely ukijumuisha other fixers.
         # TODO(cwinter) get rid of this when children becomes a smart list
         kila line kwenye new_lines:
             line.parent = suite[0]
@@ -96,7 +96,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
         after = start
         ikiwa start == 0:
             new_lines[0].prefix = " "
-        elikiwa is_docstring(suite[0].children[start]):
+        lasivyo is_docstring(suite[0].children[start]):
             new_lines[0].prefix = indent
             after = start + 1
 
@@ -112,7 +112,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
         body = results["body"]
         inner = simplify_args(results["inner"])
 
-        # Replace lambda ((((x)))): x  with lambda x: x
+        # Replace lambda ((((x)))): x  ukijumuisha lambda x: x
         ikiwa inner.type == token.NAME:
             inner = inner.clone()
             inner.prefix = " "
@@ -139,7 +139,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
 eleza simplify_args(node):
     ikiwa node.type kwenye (syms.vfplist, token.NAME):
         rudisha node
-    elikiwa node.type == syms.vfpdef:
+    lasivyo node.type == syms.vfpdef:
         # These look like vfpdef< '(' x ')' > where x ni NAME
         # ama another vfpeleza instance (leading to recursion).
         wakati node.type == syms.vfpdef:
@@ -150,7 +150,7 @@ eleza simplify_args(node):
 eleza find_params(node):
     ikiwa node.type == syms.vfpdef:
         rudisha find_params(node.children[1])
-    elikiwa node.type == token.NAME:
+    lasivyo node.type == token.NAME:
         rudisha node.value
     rudisha [find_params(c) kila c kwenye node.children ikiwa c.type != token.COMMA]
 

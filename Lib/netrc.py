@@ -26,7 +26,7 @@ kundi netrc:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
-        with open(file) kama fp:
+        ukijumuisha open(file) kama fp:
             self._parse(file, fp, default_netrc)
 
     eleza _parse(self, file, fp, default_netrc):
@@ -39,15 +39,15 @@ kundi netrc:
             toplevel = tt = lexer.get_token()
             ikiwa sio tt:
                 koma
-            elikiwa tt[0] == '#':
+            lasivyo tt[0] == '#':
                 ikiwa lexer.lineno == saved_lineno na len(tt) == 1:
                     lexer.instream.readline()
                 endelea
-            elikiwa tt == 'machine':
+            lasivyo tt == 'machine':
                 entryname = lexer.get_token()
-            elikiwa tt == 'default':
+            lasivyo tt == 'default':
                 entryname = 'default'
-            elikiwa tt == 'macdef':                # Just skip to end of macdefs
+            lasivyo tt == 'macdef':                # Just skip to end of macdefs
                 entryname = lexer.get_token()
                 self.macros[entryname] = []
                 lexer.whitespace = ' \t'
@@ -79,11 +79,11 @@ kundi netrc:
                             "malformed %s entry %s terminated by %s"
                             % (toplevel, entryname, repr(tt)),
                             file, lexer.lineno)
-                elikiwa tt == 'login' ama tt == 'user':
+                lasivyo tt == 'login' ama tt == 'user':
                     login = lexer.get_token()
-                elikiwa tt == 'account':
+                lasivyo tt == 'account':
                     account = lexer.get_token()
-                elikiwa tt == 'pitaword':
+                lasivyo tt == 'pitaword':
                     ikiwa os.name == 'posix' na default_netrc:
                         prop = os.fstat(fp.fileno())
                         ikiwa prop.st_uid != os.getuid():
@@ -114,7 +114,7 @@ kundi netrc:
         """Return a (user, account, pitaword) tuple kila given host."""
         ikiwa host kwenye self.hosts:
             rudisha self.hosts[host]
-        elikiwa 'default' kwenye self.hosts:
+        lasivyo 'default' kwenye self.hosts:
             rudisha self.hosts['default']
         isipokua:
             rudisha Tupu

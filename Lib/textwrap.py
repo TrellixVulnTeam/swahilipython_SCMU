@@ -476,7 +476,7 @@ def indent(text, prefix, predicate=None):
 
     def prefixed_lines():
         for line in text.splitlines(True):
-            yield (prefix + line if predicate(line) else line)
+            yield (prefix + line if predicate(line) isipokua line)
     return ''.join(prefixed_lines())
 
 

@@ -1,4 +1,4 @@
-# This file must be used with ". bin/activate.fish" *kutoka fish* (http://fishshell.org)
+# This file must be used ukijumuisha ". bin/activate.fish" *kutoka fish* (http://fishshell.org)
 # you cannot run it directly
 
 function deactivate  -d "Exit virtualenv na rudisha to normal shell environment"
@@ -46,7 +46,7 @@ ikiwa test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
     # save the current fish_prompt function kama the function _old_fish_prompt
     functions -c fish_prompt _old_fish_prompt
 
-    # with the original prompt function renamed, we can override with our own.
+    # ukijumuisha the original prompt function renamed, we can override ukijumuisha our own.
     function fish_prompt
         # Save the rudisha status of the last command
         set -l old_status $status

@@ -14,7 +14,7 @@ kundi TestDump:
 
     eleza test_dump_skipkeys(self):
         v = {b'invalid_key': Uongo, 'valid_key': Kweli}
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.json.dumps(v)
 
         s = self.json.dumps(v, skipkeys=Kweli)

@@ -21,7 +21,7 @@ kundi BaseFix(object):
     FixHasKey.
     """
 
-    PATTERN = Tupu  # Most subclasses should override with a string literal
+    PATTERN = Tupu  # Most subclasses should override ukijumuisha a string literal
     pattern = Tupu  # Compiled pattern, set by compile_pattern()
     pattern_tree = Tupu # Tree representation of the pattern
     options = Tupu  # Options object pitaed to initializer
@@ -35,9 +35,9 @@ kundi BaseFix(object):
     _accept_type = Tupu # [Advanced na sio public] This tells RefactoringTool
                         # which node type to accept when there's sio a pattern.
 
-    keep_line_order = Uongo # For the bottom matcher: match with the
+    keep_line_order = Uongo # For the bottom matcher: match ukijumuisha the
                             # original line order
-    BM_compatible = Uongo # Compatibility with the bottom matching
+    BM_compatible = Uongo # Compatibility ukijumuisha the bottom matching
                           # module; every fixer should set this
                           # manually
 
@@ -105,7 +105,7 @@ kundi BaseFix(object):
     eleza new_name(self, template="xxx_todo_changeme"):
         """Return a string suitable kila use kama an identifier
 
-        The new name ni guaranteed sio to conflict with other identifiers.
+        The new name ni guaranteed sio to conflict ukijumuisha other identifiers.
         """
         name = template
         wakati name kwenye self.used_names:

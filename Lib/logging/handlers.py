@@ -127,8 +127,8 @@ kundi RotatingFileHandler(BaseRotatingHandler):
 
         Rollover occurs whenever the current log file ni nearly maxBytes in
         length. If backupCount ni >= 1, the system will successively create
-        new files with the same pathname kama the base file, but with extensions
-        ".1", ".2" etc. appended to it. For example, with a backupCount of 5
+        new files ukijumuisha the same pathname kama the base file, but ukijumuisha extensions
+        ".1", ".2" etc. appended to it. For example, ukijumuisha a backupCount of 5
         na a base file name of "app.log", you would get "app.log",
         "app.log.1", "app.log.2", ... through to "app.log.5". The file being
         written to ni always "app.log" - when it gets filled up, it ni closed
@@ -218,19 +218,19 @@ kundi TimedRotatingFileHandler(BaseRotatingHandler):
             self.interval = 1 # one second
             self.suffix = "%Y-%m-%d_%H-%M-%S"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when == 'M':
+        lasivyo self.when == 'M':
             self.interval = 60 # one minute
             self.suffix = "%Y-%m-%d_%H-%M"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when == 'H':
+        lasivyo self.when == 'H':
             self.interval = 60 * 60 # one hour
             self.suffix = "%Y-%m-%d_%H"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}(\.\w+)?$"
-        elikiwa self.when == 'D' ama self.when == 'MIDNIGHT':
+        lasivyo self.when == 'D' ama self.when == 'MIDNIGHT':
             self.interval = 60 * 60 * 24 # one day
             self.suffix = "%Y-%m-%d"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when.startswith('W'):
+        lasivyo self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
             ikiwa len(self.when) != 2:
                 ashiria ValueError("You must specify a day kila weekly rollover kutoka 0 to 6 (0 ni Monday): %s" % self.when)
@@ -266,7 +266,7 @@ kundi TimedRotatingFileHandler(BaseRotatingHandler):
         # at the right time.  After that, the regular interval will take care of
         # the rest.  Note that this code doesn't care about leap seconds. :)
         ikiwa self.when == 'MIDNIGHT' ama self.when.startswith('W'):
-            # This could be done with less code, but I wanted it to be clear
+            # This could be done ukijumuisha less code, but I wanted it to be clear
             ikiwa self.utc:
                 t = time.gmtime(currentTime)
             isipokua:
@@ -367,7 +367,7 @@ kundi TimedRotatingFileHandler(BaseRotatingHandler):
         when the rollover happens.  However, you want the file to be named kila the
         start of the interval, sio the current time.  If there ni a backup count,
         then we have to get a list of matching filenames, sort them na remove
-        the one with the oldest suffix.
+        the one ukijumuisha the oldest suffix.
         """
         ikiwa self.stream:
             self.stream.close()
@@ -424,7 +424,7 @@ kundi WatchedFileHandler(logging.FileHandler):
 
     This handler ni sio appropriate kila use under Windows, because
     under Windows open files cannot be moved ama renamed - logging
-    opens the files with exclusive locks - na so there ni no need
+    opens the files ukijumuisha exclusive locks - na so there ni no need
     kila such a handler. Furthermore, ST_INO ni sio supported under
     Windows; stat always rudishas zero kila this value.
 
@@ -458,7 +458,7 @@ kundi WatchedFileHandler(logging.FileHandler):
             sres = os.stat(self.baseFilename)
         tatizo FileNotFoundError:
             sres = Tupu
-        # compare file system stat with that of our stream file handle
+        # compare file system stat ukijumuisha that of our stream file handle
         ikiwa sio sres ama sres[ST_DEV] != self.dev ama sres[ST_INO] != self.ino:
             ikiwa self.stream ni sio Tupu:
                 # we have an open file handle, clean it up
@@ -495,7 +495,7 @@ kundi SocketHandler(logging.Handler):
 
     eleza __init__(self, host, port):
         """
-        Initializes the handler with a specific host address na port.
+        Initializes the handler ukijumuisha a specific host address na port.
 
         When the attribute *closeOnError* ni set to Kweli - ikiwa a socket error
         occurs, the socket ni silently closed na then reopened on the next
@@ -584,7 +584,7 @@ kundi SocketHandler(logging.Handler):
 
     eleza makePickle(self, record):
         """
-        Pickles the record kwenye binary format with a length prefix, and
+        Pickles the record kwenye binary format ukijumuisha a length prefix, and
         rudishas it ready kila transmission across the socket.
         """
         ei = record.exc_info
@@ -598,7 +598,7 @@ kundi SocketHandler(logging.Handler):
         d['msg'] = record.getMessage()
         d['args'] = Tupu
         d['exc_info'] = Tupu
-        # Issue #25685: delete 'message' ikiwa present: redundant with 'msg'
+        # Issue #25685: delete 'message' ikiwa present: redundant ukijumuisha 'msg'
         d.pop('message', Tupu)
         s = pickle.dumps(d, 1)
         slen = struct.pack(">L", len(s))
@@ -623,8 +623,8 @@ kundi SocketHandler(logging.Handler):
         Emit a record.
 
         Pickles the record na writes it to the socket kwenye binary format.
-        If there ni an error with the socket, silently drop the packet.
-        If there was a problem with the socket, re-establishes the
+        If there ni an error ukijumuisha the socket, silently drop the packet.
+        If there was a problem ukijumuisha the socket, re-establishes the
         socket.
         """
         jaribu:
@@ -660,7 +660,7 @@ kundi DatagramHandler(SocketHandler):
     """
     eleza __init__(self, host, port):
         """
-        Initializes the handler with a specific host address na port.
+        Initializes the handler ukijumuisha a specific host address na port.
         """
         SocketHandler.__init__(self, host, port)
         self.closeOnError = Uongo
@@ -936,7 +936,7 @@ kundi SysLogHandler(logging.Handler):
                     self.socket.close()
                     self._connect_unixsocket(self.address)
                     self.socket.send(msg)
-            elikiwa self.socktype == socket.SOCK_DGRAM:
+            lasivyo self.socktype == socket.SOCK_DGRAM:
                 self.socket.sendto(msg, self.address)
             isipokua:
                 self.socket.sendall(msg)
@@ -952,15 +952,15 @@ kundi SMTPHandler(logging.Handler):
         """
         Initialize the handler.
 
-        Initialize the instance with the kutoka na to addresses na subject
+        Initialize the instance ukijumuisha the kutoka na to addresses na subject
         line of the email. To specify a non-standard SMTP port, use the
         (host, port) tuple format kila the mailhost argument. To specify
         authentication credentials, supply a (username, pitaword) tuple
         kila the credentials argument. To specify the use of a secure
         protocol (TLS), pita kwenye a tuple kila the secure argument. This will
         only be used when authentication credentials are supplied. The tuple
-        will be either an empty tuple, ama a single-value tuple with the name
-        of a keyfile, ama a 2-value tuple with the names of the keyfile and
+        will be either an empty tuple, ama a single-value tuple ukijumuisha the name
+        of a keyfile, ama a 2-value tuple ukijumuisha the names of the keyfile and
         certificate file. (This tuple ni pitaed to the `starttls` method).
         A timeout kwenye seconds can be specified kila the SMTP connection (the
         default ni one second).
@@ -1129,7 +1129,7 @@ kundi HTTPHandler(logging.Handler):
     eleza __init__(self, host, url, method="GET", secure=Uongo, credentials=Tupu,
                  context=Tupu):
         """
-        Initialize the instance with the host, the request URL, na the method
+        Initialize the instance ukijumuisha the host, the request URL, na the method
         ("GET" ama "POST")
         """
         logging.Handler.__init__(self)
@@ -1138,7 +1138,7 @@ kundi HTTPHandler(logging.Handler):
             ashiria ValueError("method must be GET ama POST")
         ikiwa sio secure na context ni sio Tupu:
             ashiria ValueError("context parameter only makes sense "
-                             "with secure=Kweli")
+                             "ukijumuisha secure=Kweli")
         self.host = host
         self.url = url
         self.method = method
@@ -1196,7 +1196,7 @@ kundi HTTPHandler(logging.Handler):
             h.endheaders()
             ikiwa self.method == "POST":
                 h.send(data.encode('utf-8'))
-            h.getresponse()    #can't do anything with the result
+            h.getresponse()    #can't do anything ukijumuisha the result
         tatizo Exception:
             self.handleError(record)
 
@@ -1208,7 +1208,7 @@ kundi BufferingHandler(logging.Handler):
     """
     eleza __init__(self, capacity):
         """
-        Initialize the handler with the buffer size.
+        Initialize the handler ukijumuisha the buffer size.
         """
         logging.Handler.__init__(self)
         self.capacity = capacity
@@ -1266,7 +1266,7 @@ kundi MemoryHandler(BufferingHandler):
     eleza __init__(self, capacity, flushLevel=logging.ERROR, target=Tupu,
                  flushOnClose=Kweli):
         """
-        Initialize the handler with the buffer size, the level at which
+        Initialize the handler ukijumuisha the buffer size, the level at which
         flushing should occur na an optional target.
 
         Note that without a target being set either here ama via setTarget(),
@@ -1333,12 +1333,12 @@ kundi MemoryHandler(BufferingHandler):
 kundi QueueHandler(logging.Handler):
     """
     This handler sends events to a queue. Typically, it would be used together
-    with a multiprocessing Queue to centralise logging to file kwenye one process
+    ukijumuisha a multiprocessing Queue to centralise logging to file kwenye one process
     (in a multi-process application), so kama to avoid file write contention
     between processes.
 
     This code ni new kwenye Python 3.2, but this kundi can be copy pasted into
-    user code kila use with earlier Python versions.
+    user code kila use ukijumuisha earlier Python versions.
     """
 
     eleza __init__(self, queue):
@@ -1409,7 +1409,7 @@ kundi QueueListener(object):
 
     eleza __init__(self, queue, *handlers, respect_handler_level=Uongo):
         """
-        Initialise an instance with the specified queue and
+        Initialise an instance ukijumuisha the specified queue and
         handlers.
         """
         self.queue = queue
@@ -1422,7 +1422,7 @@ kundi QueueListener(object):
         Dequeue a record na rudisha it, optionally blocking.
 
         The base implementation uses get. You may want to override this method
-        ikiwa you want to use timeouts ama work with custom queue implementations.
+        ikiwa you want to use timeouts ama work ukijumuisha custom queue implementations.
         """
         rudisha self.queue.get(block)
 
@@ -1466,7 +1466,7 @@ kundi QueueListener(object):
     eleza _monitor(self):
         """
         Monitor the queue kila records, na ask the handler
-        to deal with them.
+        to deal ukijumuisha them.
 
         This method runs on a separate, internal thread.
         The thread will terminate ikiwa it sees a sentinel object kwenye the queue.
@@ -1491,7 +1491,7 @@ kundi QueueListener(object):
         This ni used to enqueue the sentinel record.
 
         The base implementation uses put_nowait. You may want to override this
-        method ikiwa you want to use timeouts ama work with custom queue
+        method ikiwa you want to use timeouts ama work ukijumuisha custom queue
         implementations.
         """
         self.queue.put_nowait(self._sentinel)

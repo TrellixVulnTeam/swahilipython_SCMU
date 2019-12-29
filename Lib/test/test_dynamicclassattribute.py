@@ -118,13 +118,13 @@ kundi PropertyTests(unittest.TestCase):
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_property_decorator_subclass_doc(self):
         sub = SubClass()
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "SubClass.getter")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_property_decorator_baseclass_doc(self):
         base = BaseClass()
         self.assertEqual(base.__class__.__dict__['spam'].__doc__, "BaseClass.getter")
@@ -136,7 +136,7 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "spam spam spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_property_getter_doc_override(self):
         newgettersub = PropertySubNewGetter()
         self.assertEqual(newgettersub.spam, 5)
@@ -155,12 +155,12 @@ kundi PropertyTests(unittest.TestCase):
             self.assertIs(C.__dict__['foo'].__isabstractmethod__, bool(val))
 
         # check that the DynamicClassAttribute's __isabstractmethod__ descriptor does the
-        # right thing when presented with a value that fails truth testing:
+        # right thing when presented ukijumuisha a value that fails truth testing:
         kundi NotBool(object):
             eleza __bool__(self):
                 ashiria ValueError()
             __len__ = __bool__
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi C(object):
                 eleza foo(self):
                     pita
@@ -182,7 +182,7 @@ kundi PropertyTests(unittest.TestCase):
                 rudisha self._color
             eleza __init__(self):
                 self._color = 'cyan'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             Okay1.color
         self.assertEqual(Okay1().color, 'cyan')
         kundi Okay2(ClassWithAbstractVirtualProperty):
@@ -191,7 +191,7 @@ kundi PropertyTests(unittest.TestCase):
                 rudisha self._color
             eleza __init__(self):
                 self._color = 'magenta'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             Okay2.color
         self.assertEqual(Okay2().color, 'magenta')
 
@@ -222,7 +222,7 @@ kundi PropertySubclassTests(unittest.TestCase):
             ashiria Exception("AttributeError sio ashiriad")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_docstring_copy(self):
         kundi Foo(object):
             @PropertySub
@@ -234,7 +234,7 @@ kundi PropertySubclassTests(unittest.TestCase):
             "spam wrapped kwenye DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_property_setter_copies_getter_docstring(self):
         kundi Foo(object):
             eleza __init__(self): self._spam = 1
@@ -268,7 +268,7 @@ kundi PropertySubclassTests(unittest.TestCase):
             "spam wrapped kwenye DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_property_new_getter_new_docstring(self):
 
         kundi Foo(object):

@@ -75,7 +75,7 @@ kundi FixUrllib(FixImports):
 
     eleza transform_agiza(self, node, results):
         """Transform kila the basic agiza case. Replaces the old
-           agiza name with a comma separated list of its
+           agiza name ukijumuisha a comma separated list of its
            replacements.
         """
         import_mod = results.get("module")
@@ -91,14 +91,14 @@ kundi FixUrllib(FixImports):
 
     eleza transform_member(self, node, results):
         """Transform kila agizas of specific module elements. Replaces
-           the module to be imported kutoka with the appropriate new
+           the module to be imported kutoka ukijumuisha the appropriate new
            module.
         """
         mod_member = results.get("mod_member")
         pref = mod_member.prefix
         member = results.get("member")
 
-        # Simple case with only a single member being imported
+        # Simple case ukijumuisha only a single member being imported
         ikiwa member:
             # this may be a list of length one, ama just a node
             ikiwa isinstance(member, list):
@@ -185,12 +185,12 @@ kundi FixUrllib(FixImports):
     eleza transform(self, node, results):
         ikiwa results.get("module"):
             self.transform_agiza(node, results)
-        elikiwa results.get("mod_member"):
+        lasivyo results.get("mod_member"):
             self.transform_member(node, results)
-        elikiwa results.get("bare_with_attr"):
+        lasivyo results.get("bare_with_attr"):
             self.transform_dot(node, results)
         # Renaming na star agizas are sio supported kila these modules.
-        elikiwa results.get("module_star"):
+        lasivyo results.get("module_star"):
             self.cannot_convert(node, "Cannot handle star agizas.")
-        elikiwa results.get("module_as"):
+        lasivyo results.get("module_as"):
             self.cannot_convert(node, "This module ni now multiple modules")

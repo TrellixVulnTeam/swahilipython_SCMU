@@ -369,7 +369,7 @@ kundi Sniffer:
                                         data[0].count("%c " % d))
                     return (d, skipinitialspace)
 
-        # nothing else indicates a preference, pick the character that
+        # nothing isipokua indicates a preference, pick the character that
         # dominates(?)
         items = [(v,k) for (k,v) in delims.items()]
         items.sort()

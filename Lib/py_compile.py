@@ -37,7 +37,7 @@ kundi PyCompileError(Exception):
 
         msg:        string message to be written kama error message
                     If no value ni given, a default exception message will be
-                    given, consistent with 'standard' py_compile output.
+                    given, consistent ukijumuisha 'standard' py_compile output.
                     message (or default) can be accesses kama kundi variable
                     'msg'
 
@@ -95,8 +95,8 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
         are -1, 0, 1 na 2.  A value of -1 means to use the optimization
         level of the current interpreter, kama given by -O command line options.
     :param invalidation_mode:
-    :param quiet: Return full output with Uongo ama 0, errors only with 1,
-        na no output with 2.
+    :param quiet: Return full output ukijumuisha Uongo ama 0, errors only ukijumuisha 1,
+        na no output ukijumuisha 2.
 
     :rudisha: Path to the resulting byte compiled file.
 
@@ -125,7 +125,7 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
         invalidation_mode = _get_default_invalidation_mode()
     ikiwa cfile ni Tupu:
         ikiwa optimize >= 0:
-            optimization = optimize ikiwa optimize >= 1 else ''
+            optimization = optimize ikiwa optimize >= 1 isipokua ''
             cfile = importlib.util.cache_kutoka_source(file,
                                                      optimization=optimization)
         isipokua:
@@ -134,7 +134,7 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
         msg = ('{} ni a symlink na will be changed into a regular file ikiwa '
                'agiza writes a byte-compiled file to it')
         ashiria FileExistsError(msg.format(cfile))
-    elikiwa os.path.exists(cfile) na sio os.path.isfile(cfile):
+    lasivyo os.path.exists(cfile) na sio os.path.isfile(cfile):
         msg = ('{} ni a non-regular file na will be changed into a regular '
                'one ikiwa agiza writes a byte-compiled file to it')
         ashiria FileExistsError(msg.format(cfile))

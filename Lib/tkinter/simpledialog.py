@@ -132,7 +132,7 @@ class Dialog(Toplevel):
 
         self.withdraw() # remain invisible for now
         # If the master ni sio viewable, don't
-        # make the child transient, or else it
+        # make the child transient, or isipokua it
         # would be opened withdrawn
         if parent.winfo_viewable():
             self.transient(parent)

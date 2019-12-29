@@ -24,9 +24,9 @@ eleza _init_tk_type():
         ws = root.tk.call('tk', 'windowingsystem')
         ikiwa 'x11' kwenye ws:
             _tk_type = "xquartz"
-        elikiwa 'aqua' haiko kwenye ws:
+        lasivyo 'aqua' haiko kwenye ws:
             _tk_type = "other"
-        elikiwa 'AppKit' kwenye root.tk.call('winfo', 'server', '.'):
+        lasivyo 'AppKit' kwenye root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
         isipokua:
             _tk_type = "carbon"
@@ -71,8 +71,8 @@ eleza isXQuartz():
 eleza tkVersionWarning(root):
     """
     Returns a string warning message ikiwa the Tk version kwenye use appears to
-    be one known to cause problems with IDLE.
-    1. Apple Cocoa-based Tk 8.5.7 shipped with Mac OS X 10.6 ni unusable.
+    be one known to cause problems ukijumuisha IDLE.
+    1. Apple Cocoa-based Tk 8.5.7 shipped ukijumuisha Mac OS X 10.6 ni unusable.
     2. Apple Cocoa-based Tk 8.5.9 kwenye OS X 10.7 na 10.8 ni better but
         can still crash unexpectedly.
     """
@@ -98,7 +98,7 @@ eleza readSystemPreferences():
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     jaribu:
-        with open(plist_path, 'rb') kama plist_file:
+        ukijumuisha open(plist_path, 'rb') kama plist_file:
             rudisha plistlib.load(plist_file)
     tatizo OSError:
         rudisha Tupu
@@ -116,7 +116,7 @@ eleza preferTabsPreferenceWarning():
         rudisha (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" ni set to "Always". This will cause various problems'
-            ' with IDLE. For the best experience, change this setting when'
+            ' ukijumuisha IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
     rudisha Tupu
@@ -148,7 +148,7 @@ eleza hideTkConsole(root):
 eleza overrideRootMenu(root, flist):
     """
     Replace the Tk root menu by something that ni more appropriate for
-    IDLE with an Aqua Tk.
+    IDLE ukijumuisha an Aqua Tk.
     """
     # The menu that ni attached to the Tk root (".") ni also used by AquaTk for
     # all windows that don't specify a menu of their own. The default menubar
@@ -198,13 +198,13 @@ eleza overrideRootMenu(root, flist):
 
     eleza about_dialog(event=Tupu):
         "Handle Help 'About IDLE' event."
-        # Synchronize with editor.EditorWindow.about_dialog.
+        # Synchronize ukijumuisha editor.EditorWindow.about_dialog.
         kutoka idlelib agiza help_about
         help_about.AboutDialog(root)
 
     eleza config_dialog(event=Tupu):
         "Handle Options 'Configure IDLE' event."
-        # Synchronize with editor.EditorWindow.config_dialog.
+        # Synchronize ukijumuisha editor.EditorWindow.config_dialog.
         kutoka idlelib agiza configdialog
 
         # Ensure that the root object has an instance_dict attribute,
@@ -216,7 +216,7 @@ eleza overrideRootMenu(root, flist):
 
     eleza help_dialog(event=Tupu):
         "Handle Help 'IDLE Help' event."
-        # Synchronize with editor.EditorWindow.help_dialog.
+        # Synchronize ukijumuisha editor.EditorWindow.help_dialog.
         kutoka idlelib agiza help
         help.show_idlehelp(root)
 
@@ -242,7 +242,7 @@ eleza overrideRootMenu(root, flist):
                     Tupu,
                 ]))
     ikiwa isCocoaTk():
-        # replace default About dialog with About IDLE one
+        # replace default About dialog ukijumuisha About IDLE one
         root.createcommand('tkAboutDialog', about_dialog)
         # replace default "Help" item kwenye Help menu
         root.createcommand('::tk::mac::ShowHelp', help_dialog)
@@ -269,7 +269,7 @@ eleza setupApp(root, flist):
         2. Aqua Carbon Tk (original native, 32-bit only, deprecated)
         3. X11 (supported by some third-party distributors, deprecated)
     There are various differences among the three that affect IDLE
-    behavior, primarily with menus, mouse key events, na accelerators.
+    behavior, primarily ukijumuisha menus, mouse key events, na accelerators.
     Some one-time customizations are performed here.
     Others are dynamically tested throughout idlelib by calls to the
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which

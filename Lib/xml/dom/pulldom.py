@@ -59,7 +59,7 @@ kundi PullDOM(xml.sax.ContentHandler):
         uri, localname = name
         ikiwa uri:
             # When using namespaces, the reader may ama may not
-            # provide us with the original name. If not, create
+            # provide us ukijumuisha the original name. If not, create
             # *a* valid tagName kutoka the current context.
             ikiwa tagName ni Tupu:
                 prefix = self._current_context[uri]
@@ -88,7 +88,7 @@ kundi PullDOM(xml.sax.ContentHandler):
                     qname = 'xmlns:' + a_localname
                 attr = self.document.createAttributeNS(a_uri, qname)
                 node.setAttributeNodeNS(attr)
-            elikiwa a_uri:
+            lasivyo a_uri:
                 prefix = self._current_context[a_uri]
                 ikiwa prefix:
                     qname = prefix + ":" + a_localname
@@ -175,7 +175,7 @@ kundi PullDOM(xml.sax.ContentHandler):
                 _,target,data = e[0]
                 n = self.document.createProcessingInstruction(target, data)
                 e[0] = (PROCESSING_INSTRUCTION, n)
-            elikiwa e[0][0] == COMMENT:
+            lasivyo e[0][0] == COMMENT:
                 n = self.document.createComment(e[0][1])
                 e[0] = (COMMENT, n)
             isipokua:
@@ -249,7 +249,7 @@ kundi DOMEventStream:
                 parents[-1].appendChild(cur_node)
             ikiwa token == START_ELEMENT:
                 parents.append(cur_node)
-            elikiwa token == END_ELEMENT:
+            lasivyo token == END_ELEMENT:
                 toa parents[-1]
             event = self.getEvent()
 

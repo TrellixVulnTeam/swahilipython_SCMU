@@ -65,7 +65,7 @@ ikiwa 'posix' kwenye _names:
     __all__.extend(_get_exports_list(posix))
     toa posix
 
-elikiwa 'nt' kwenye _names:
+lasivyo 'nt' kwenye _names:
     name = 'nt'
     linesep = '\r\n'
     kutoka nt agiza *
@@ -149,7 +149,7 @@ ikiwa _exists("_have_functions"):
     # platforms.  This ni Very Helpful.
     #
     # However, sometimes platforms without a working lchmod() *do* have
-    # fchmodat().  (Examples: Linux kernel 3.2 with glibc 2.15,
+    # fchmodat().  (Examples: Linux kernel 3.2 ukijumuisha glibc 2.15,
     # OpenIndiana 3.x.)  And fchmodat() has a flag that theoretically makes
     # it behave like lchmod().  So kwenye theory it would be a suitable
     # replacement kila lchmod().  But when lchmod() doesn't work, fchmodat()'s
@@ -257,7 +257,7 @@ eleza renames(old, new):
     path segments of the old name will be pruned until either the
     whole path ni consumed ama a nonempty directory ni found.
 
-    Note: this function can fail with the new directory structure made
+    Note: this function can fail ukijumuisha the new directory structure made
     ikiwa you lack permissions needed to unlink the leaf directory or
     file.
 
@@ -286,8 +286,8 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
     dirpath ni a string, the path to the directory.  dirnames ni a list of
     the names of the subdirectories kwenye dirpath (excluding '.' na '..').
     filenames ni a list of the names of the non-directory files kwenye dirpath.
-    Note that the names kwenye the lists are just names, with no path components.
-    To get a full path (which begins with top) to a file ama directory in
+    Note that the names kwenye the lists are just names, ukijumuisha no path components.
+    To get a full path (which begins ukijumuisha top) to a file ama directory in
     dirpath, do os.path.join(dirpath, name).
 
     If optional arg 'topdown' ni true ama sio specified, the triple kila a
@@ -308,8 +308,8 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
 
     By default errors kutoka the os.scandir() call are ignored.  If
     optional arg 'onerror' ni specified, it should be a function; it
-    will be called with one argument, an OSError instance.  It can
-    report the error to endelea with the walk, ama ashiria the exception
+    will be called ukijumuisha one argument, an OSError instance.  It can
+    report the error to endelea ukijumuisha the walk, ama ashiria the exception
     to abort the walk.  Note that the filename ni available kama the
     filename attribute of the exception object.
 
@@ -353,7 +353,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
             onerror(error)
         rudisha
 
-    with scandir_it:
+    ukijumuisha scandir_it:
         wakati Kweli:
             jaribu:
                 jaribu:
@@ -476,7 +476,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
         scandir_it = scandir(topfd)
         dirs = []
         nondirs = []
-        entries = Tupu ikiwa topdown ama follow_symlinks else []
+        entries = Tupu ikiwa topdown ama follow_symlinks isipokua []
         kila entry kwenye scandir_it:
             name = entry.name
             ikiwa isbytes:
@@ -499,7 +499,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
         ikiwa topdown:
             tuma toppath, dirs, nondirs, topfd
 
-        kila name kwenye dirs ikiwa entries ni Tupu else zip(dirs, entries):
+        kila name kwenye dirs ikiwa entries ni Tupu isipokua zip(dirs, entries):
             jaribu:
                 ikiwa sio follow_symlinks:
                     ikiwa topdown:
@@ -529,14 +529,14 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
 eleza execl(file, *args):
     """execl(file, *args)
 
-    Execute the executable file with argument list args, replacing the
+    Execute the executable file ukijumuisha argument list args, replacing the
     current process. """
     execv(file, args)
 
 eleza execle(file, *args):
     """execle(file, *args, env)
 
-    Execute the executable file with argument list args and
+    Execute the executable file ukijumuisha argument list args and
     environment env, replacing the current process. """
     env = args[-1]
     execve(file, args[:-1], env)
@@ -545,14 +545,14 @@ eleza execlp(file, *args):
     """execlp(file, *args)
 
     Execute the executable file (which ni searched kila along $PATH)
-    with argument list args, replacing the current process. """
+    ukijumuisha argument list args, replacing the current process. """
     execvp(file, args)
 
 eleza execlpe(file, *args):
     """execlpe(file, *args, env)
 
     Execute the executable file (which ni searched kila along $PATH)
-    with argument list args na environment env, replacing the current
+    ukijumuisha argument list args na environment env, replacing the current
     process. """
     env = args[-1]
     execvpe(file, args[:-1], env)
@@ -561,7 +561,7 @@ eleza execvp(file, args):
     """execvp(file, args)
 
     Execute the executable file (which ni searched kila along $PATH)
-    with argument list args, replacing the current process.
+    ukijumuisha argument list args, replacing the current process.
     args may be a list ama tuple of strings. """
     _execvpe(file, args)
 
@@ -569,7 +569,7 @@ eleza execvpe(file, args, env):
     """execvpe(file, args, env)
 
     Execute the executable file (which ni searched kila along $PATH)
-    with argument list args na environment env, replacing the
+    ukijumuisha argument list args na environment env, replacing the
     current process.
     args may be a list ama tuple of strings. """
     _execvpe(file, args, env)
@@ -625,7 +625,7 @@ eleza get_exec_path(env=Tupu):
 
     # {b'PATH': ...}.get('PATH') na {'PATH': ...}.get(b'PATH') emit a
     # BytesWarning when using python -b ama python -bb: ignore the warning
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter("ignore", BytesWarning)
 
         jaribu:
@@ -669,7 +669,7 @@ kundi _Environ(MutableMapping):
         jaribu:
             value = self._data[self.encodekey(key)]
         tatizo KeyError:
-            # ashiria KeyError with the original key value
+            # ashiria KeyError ukijumuisha the original key value
             ashiria KeyError(key) kutoka Tupu
         rudisha self.decodevalue(value)
 
@@ -685,7 +685,7 @@ kundi _Environ(MutableMapping):
         jaribu:
             toa self._data[encodedkey]
         tatizo KeyError:
-            # ashiria KeyError with the original key value
+            # ashiria KeyError ukijumuisha the original key value
             ashiria KeyError(key) kutoka Tupu
 
     eleza __iter__(self):
@@ -797,7 +797,7 @@ eleza _fscodec():
 
     eleza fsencode(filename):
         """Encode filename (an os.PathLike, bytes, ama str) to the filesystem
-        encoding with 'surrogateescape' error handler, rudisha bytes unchanged.
+        encoding ukijumuisha 'surrogateescape' error handler, rudisha bytes unchanged.
         On Windows, use 'strict' error handler ikiwa the file system encoding is
         'mbcs' (which ni the default encoding).
         """
@@ -809,7 +809,7 @@ eleza _fscodec():
 
     eleza fsdecode(filename):
         """Decode filename (an os.PathLike, bytes, ama str) kutoka the filesystem
-        encoding with 'surrogateescape' error handler, rudisha str unchanged. On
+        encoding ukijumuisha 'surrogateescape' error handler, rudisha str unchanged. On
         Windows, use 'strict' error handler ikiwa the file system encoding is
         'mbcs' (which ni the default encoding).
         """
@@ -860,9 +860,9 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
                 wpid, sts = waitpid(pid, 0)
                 ikiwa WIFSTOPPED(sts):
                     endelea
-                elikiwa WIFSIGNALED(sts):
+                lasivyo WIFSIGNALED(sts):
                     rudisha -WTERMSIG(sts)
-                elikiwa WIFEXITED(sts):
+                lasivyo WIFEXITED(sts):
                     rudisha WEXITSTATUS(sts)
                 isipokua:
                     ashiria OSError("Not stopped, signaled ama exited???")
@@ -870,7 +870,7 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
     eleza spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
 
-Execute file with arguments kutoka args kwenye a subprocess.
+Execute file ukijumuisha arguments kutoka args kwenye a subprocess.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
 otherwise rudisha -SIG, where SIG ni the signal that killed it. """
@@ -879,7 +879,7 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
     eleza spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
 
-Execute file with arguments kutoka args kwenye a subprocess with the
+Execute file ukijumuisha arguments kutoka args kwenye a subprocess ukijumuisha the
 specified environment.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
@@ -891,7 +891,7 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
     eleza spawnvp(mode, file, args):
         """spawnvp(mode, file, args) -> integer
 
-Execute file (which ni looked kila along $PATH) with arguments kutoka
+Execute file (which ni looked kila along $PATH) ukijumuisha arguments kutoka
 args kwenye a subprocess.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
@@ -901,8 +901,8 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
     eleza spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
 
-Execute file (which ni looked kila along $PATH) with arguments kutoka
-args kwenye a subprocess with the supplied environment.
+Execute file (which ni looked kila along $PATH) ukijumuisha arguments kutoka
+args kwenye a subprocess ukijumuisha the supplied environment.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
 otherwise rudisha -SIG, where SIG ni the signal that killed it. """
@@ -919,7 +919,7 @@ ikiwa _exists("spawnv"):
     eleza spawnl(mode, file, *args):
         """spawnl(mode, file, *args) -> integer
 
-Execute file with arguments kutoka args kwenye a subprocess.
+Execute file ukijumuisha arguments kutoka args kwenye a subprocess.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
 otherwise rudisha -SIG, where SIG ni the signal that killed it. """
@@ -928,7 +928,7 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
     eleza spawnle(mode, file, *args):
         """spawnle(mode, file, *args, env) -> integer
 
-Execute file with arguments kutoka args kwenye a subprocess with the
+Execute file ukijumuisha arguments kutoka args kwenye a subprocess ukijumuisha the
 supplied environment.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
@@ -946,8 +946,8 @@ ikiwa _exists("spawnvp"):
     eleza spawnlp(mode, file, *args):
         """spawnlp(mode, file, *args) -> integer
 
-Execute file (which ni looked kila along $PATH) with arguments kutoka
-args kwenye a subprocess with the supplied environment.
+Execute file (which ni looked kila along $PATH) ukijumuisha arguments kutoka
+args kwenye a subprocess ukijumuisha the supplied environment.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
 otherwise rudisha -SIG, where SIG ni the signal that killed it. """
@@ -956,8 +956,8 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
     eleza spawnlpe(mode, file, *args):
         """spawnlpe(mode, file, *args, env) -> integer
 
-Execute file (which ni looked kila along $PATH) with arguments kutoka
-args kwenye a subprocess with the supplied environment.
+Execute file (which ni looked kila along $PATH) ukijumuisha arguments kutoka
+args kwenye a subprocess ukijumuisha the supplied environment.
 If mode == P_NOWAIT rudisha the pid of the process.
 If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
 otherwise rudisha -SIG, where SIG ni the signal that killed it. """
@@ -1099,7 +1099,7 @@ ikiwa name == 'nt':
         na also by ctypes.
 
         Remove the directory by calling close() on the rudishaed object or
-        using it kwenye a with statement.
+        using it kwenye a ukijumuisha statement.
         """
         agiza nt
         cookie = nt._add_dll_directory(path)

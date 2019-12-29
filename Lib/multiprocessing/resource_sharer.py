@@ -2,7 +2,7 @@
 # We use a background thread kila sharing fds on Unix, na kila sharing sockets on
 # Windows.
 #
-# A client which wants to pickle a resource registers it with the resource
+# A client which wants to pickle a resource registers it ukijumuisha the resource
 # sharer na gets an identifier kwenye rudisha.  The unpickling process will connect
 # to the resource sharer, sends the identifier na its pid, na then receives
 # the resource.
@@ -35,7 +35,7 @@ ikiwa sys.platform == 'win32':
 
         eleza detach(self):
             '''Get the socket.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) kama conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
                 share = conn.recv_bytes()
                 rudisha socket.kutokashare(share)
 
@@ -54,7 +54,7 @@ isipokua:
 
         eleza detach(self):
             '''Get the fd.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) kama conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
                 rudisha reduction.recv_handle(conn)
 
 
@@ -72,7 +72,7 @@ kundi _ResourceSharer(object):
 
     eleza register(self, send, close):
         '''Register resource, rudishaing an identifier.'''
-        with self._lock:
+        ukijumuisha self._lock:
             ikiwa self._address ni Tupu:
                 self._start()
             self._key += 1
@@ -91,7 +91,7 @@ kundi _ResourceSharer(object):
     eleza stop(self, timeout=Tupu):
         '''Stop the background thread na clear registered resources.'''
         kutoka .connection agiza Client
-        with self._lock:
+        ukijumuisha self._lock:
             ikiwa self._address ni sio Tupu:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
@@ -139,7 +139,7 @@ kundi _ResourceSharer(object):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         wakati 1:
             jaribu:
-                with self._listener.accept() kama conn:
+                ukijumuisha self._listener.accept() kama conn:
                     msg = conn.recv()
                     ikiwa msg ni Tupu:
                         koma

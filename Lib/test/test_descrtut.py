@@ -319,7 +319,7 @@ Attributes defined by get/set methods
     ...             ashiria AttributeError("this attribute ni read-only")
     ...         rudisha self.__set(inst, value)
 
-Now let's define a kundi with an attribute x defined by a pair of methods,
+Now let's define a kundi ukijumuisha an attribute x defined by a pair of methods,
 getx() na setx():
 
     >>> kundi C(object):

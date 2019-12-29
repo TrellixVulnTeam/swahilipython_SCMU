@@ -29,7 +29,7 @@ kundi TestModules(TestCase):
 
 eleza load_tests(loader, tests, ignore):
     # The 'merge' function has examples kwenye its docstring which we should test
-    # with 'doctest'.
+    # ukijumuisha 'doctest'.
     #
     # However, doctest can't easily find all docstrings kwenye the module (loading
     # it through import_fresh_module seems to confuse it), so we specifically
@@ -161,7 +161,7 @@ kundi TestHeap:
         self.assertEqual(self.module._heappop_max(h), 2)
 
     eleza test_heapsort(self):
-        # Exercise everything with repeated heapsort checks
+        # Exercise everything ukijumuisha repeated heapsort checks
         kila trial kwenye range(100):
             size = random.randrange(50)
             data = [random.randrange(25) kila i kwenye range(size)]
@@ -194,7 +194,7 @@ kundi TestHeap:
                 self.assertEqual(list(self.module.merge()), [])
 
     eleza test_empty_merges(self):
-        # Merging two empty lists (with ama without a key) should produce
+        # Merging two empty lists (ukijumuisha ama without a key) should produce
         # another empty list.
         self.assertEqual(list(self.module.merge([], [])), [])
         self.assertEqual(list(self.module.merge([], [], key=lambda: 6)), [])
@@ -205,7 +205,7 @@ kundi TestHeap:
             s = list(range(10))
             kila i kwenye range(20):
                 tuma s[i]       # IndexError when i > 10
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             list(self.module.merge(iterable(), iterable()))
 
     eleza test_merge_stability(self):
@@ -242,7 +242,7 @@ kundi TestHeap:
                                  sorted(data, key=f, reverse=Kweli)[:n])
 
     eleza test_comparison_operator(self):
-        # Issue 3051: Make sure heapq works with both __lt__
+        # Issue 3051: Make sure heapq works ukijumuisha both __lt__
         # For python 3.0, __le__ alone ni sio enough
         eleza hsort(data, comp):
             data = [comp(x) kila x kwenye data]
@@ -312,7 +312,7 @@ kundi I:
         rudisha v
 
 kundi Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined ukijumuisha a generator'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -422,14 +422,14 @@ kundi TestErrorHandling:
         heap = []
         heap.extend(SideEffectLT(i, heap) kila i kwenye range(200))
         # Python version ashirias IndexError, C version RuntimeError
-        with self.assertRaises((IndexError, RuntimeError)):
+        ukijumuisha self.assertRaises((IndexError, RuntimeError)):
             self.module.heappush(heap, SideEffectLT(5, heap))
 
     eleza test_heappop_mutating_heap(self):
         heap = []
         heap.extend(SideEffectLT(i, heap) kila i kwenye range(200))
         # Python version ashirias IndexError, C version RuntimeError
-        with self.assertRaises((IndexError, RuntimeError)):
+        ukijumuisha self.assertRaises((IndexError, RuntimeError)):
             self.module.heappop(heap)
 
 

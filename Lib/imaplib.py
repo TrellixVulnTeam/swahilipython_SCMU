@@ -114,8 +114,8 @@ Literal = re.compile(br'.*{(?P<size>\d+)}$', re.ASCII)
 MapCRLF = re.compile(br'\r\n|\r|\n')
 # We no longer exclude the ']' character kutoka the data portion of the response
 # code, even though it violates the RFC.  Popular IMAP servers such kama Gmail
-# allow flags with ']', na there are programs (including imaplib!) that can
-# produce them.  The problem with this ni ikiwa the 'text' portion of the response
+# allow flags ukijumuisha ']', na there are programs (including imaplib!) that can
+# produce them.  The problem ukijumuisha this ni ikiwa the 'text' portion of the response
 # includes a ']' we'll parse the response wrong (which ni the point of the RFC
 # restriction).  However, that seems less likely to be a problem kwenye practice
 # than being unable to correctly parse flags that include ']' chars, which
@@ -243,7 +243,7 @@ kundi IMAP4:
         self.welcome = self._get_response()
         ikiwa 'PREAUTH' kwenye self.untagged_responses:
             self.state = 'AUTH'
-        elikiwa 'OK' kwenye self.untagged_responses:
+        lasivyo 'OK' kwenye self.untagged_responses:
             self.state = 'NONAUTH'
         isipokua:
             ashiria self.error(self.welcome)
@@ -288,7 +288,7 @@ kundi IMAP4:
         # Default value of IMAP4.host ni '', but socket.getaddrinfo()
         # (which ni used by socket.create_connection()) expects Tupu
         # kama a default value kila host.
-        host = Tupu ikiwa sio self.host else self.host
+        host = Tupu ikiwa sio self.host isipokua self.host
         sys.audit("imaplib.open", self, self.host, self.port)
         rudisha socket.create_connection((host, self.port))
 
@@ -353,12 +353,12 @@ kundi IMAP4:
 
     eleza recent(self):
         """Return most recent 'RECENT' responses ikiwa any exist,
-        else prompt server kila an update using the 'NOOP' command.
+        isipokua prompt server kila an update using the 'NOOP' command.
 
         (typ, [data]) = <instance>.recent()
 
         'data' ni Tupu ikiwa no new messages,
-        else list of RECENT responses, most recent last.
+        isipokua list of RECENT responses, most recent last.
         """
         name = 'RECENT'
         typ, dat = self._untagged_response('OK', [Tupu], name)
@@ -615,10 +615,10 @@ kundi IMAP4:
 
 
     eleza _CRAM_MD5_AUTH(self, challenge):
-        """ Authobject to use with CRAM-MD5 authentication. """
+        """ Authobject to use ukijumuisha CRAM-MD5 authentication. """
         agiza hmac
         pwd = (self.pitaword.encode('utf-8') ikiwa isinstance(self.pitaword, str)
-                                             else self.pitaword)
+                                             isipokua self.pitaword)
         rudisha self.user + " " + hmac.HMAC(pwd, challenge, 'md5').hexdigest()
 
 
@@ -862,7 +862,7 @@ kundi IMAP4:
 
 
     eleza uid(self, command, *args):
-        """Execute "command arg ..." with messages identified by UID,
+        """Execute "command arg ..." ukijumuisha messages identified by UID,
                 rather than message number.
 
         (typ, [data]) = <instance>.uid(command, arg1, arg2, ...)
@@ -1096,7 +1096,7 @@ kundi IMAP4:
                         self._mesg('read literal size %s' % size)
                 data = self.read(size)
 
-                # Store response with literal kama tuple
+                # Store response ukijumuisha literal kama tuple
 
                 self._append_untagged(typ, (dat, data))
 
@@ -1132,7 +1132,7 @@ kundi IMAP4:
                 typ = 'BYE'
                 bye = self.untagged_responses.pop(typ, Tupu)
                 ikiwa bye ni sio Tupu:
-                    # Server replies to the "LOGOUT" command with "BYE"
+                    # Server replies to the "LOGOUT" command ukijumuisha "BYE"
                     rudisha (typ, bye)
 
             # If we've seen a BYE at this point, the socket will be
@@ -1334,7 +1334,7 @@ kundi IMAP4_stream(IMAP4):
         This connection will be used by the routines:
             read, readline, send, shutdown.
         """
-        self.host = Tupu        # For compatibility with parent class
+        self.host = Tupu        # For compatibility ukijumuisha parent class
         self.port = Tupu
         self.sock = Tupu
         self.file = Tupu
@@ -1490,7 +1490,7 @@ eleza Time2Internaldate(date_time):
     ikiwa isinstance(date_time, (int, float)):
         dt = datetime.kutokatimestamp(date_time,
                                     timezone.utc).astimezone()
-    elikiwa isinstance(date_time, tuple):
+    lasivyo isinstance(date_time, tuple):
         jaribu:
             gmtoff = date_time.tm_gmtoff
         tatizo AttributeError:
@@ -1503,11 +1503,11 @@ eleza Time2Internaldate(date_time):
                 gmtoff = -time.timezone
         delta = timedelta(seconds=gmtoff)
         dt = datetime(*date_time[:6], tzinfo=timezone(delta))
-    elikiwa isinstance(date_time, datetime):
+    lasivyo isinstance(date_time, datetime):
         ikiwa date_time.tzinfo ni Tupu:
             ashiria ValueError("date_time must be aware")
         dt = date_time
-    elikiwa isinstance(date_time, str) na (date_time[0],date_time[-1]) == ('"','"'):
+    lasivyo isinstance(date_time, str) na (date_time[0],date_time[-1]) == ('"','"'):
         rudisha date_time        # Assume kwenye correct format
     isipokua:
         ashiria ValueError("date_time sio of a known type")
@@ -1533,7 +1533,7 @@ ikiwa __name__ == '__main__':
     kila opt,val kwenye optlist:
         ikiwa opt == '-d':
             Debug = int(val)
-        elikiwa opt == '-s':
+        lasivyo opt == '-s':
             stream_command = val
             ikiwa sio args: args = (stream_command,)
 

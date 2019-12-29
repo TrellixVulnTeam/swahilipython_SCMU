@@ -23,26 +23,26 @@ kundi SimplePipeTests(unittest.TestCase):
             self.skipTest('tr ni sio available')
         t = pipes.Template()
         t.append(s_command, pipes.STDIN_STDOUT)
-        with t.open(TESTFN, 'w') kama f:
+        ukijumuisha t.open(TESTFN, 'w') kama f:
             f.write('hello world #1')
-        with open(TESTFN) kama f:
+        ukijumuisha open(TESTFN) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #1')
 
     eleza testSimplePipe2(self):
         ikiwa shutil.which('tr') ni Tupu:
             self.skipTest('tr ni sio available')
-        with open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN > $OUT', pipes.FILEIN_FILEOUT)
         t.copy(TESTFN, TESTFN2)
-        with open(TESTFN2) kama f:
+        ukijumuisha open(TESTFN2) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #2')
 
     eleza testSimplePipe3(self):
         ikiwa shutil.which('tr') ni Tupu:
             self.skipTest('tr ni sio available')
-        with open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN', pipes.FILEIN_STDOUT)
@@ -55,19 +55,19 @@ kundi SimplePipeTests(unittest.TestCase):
     eleza testEmptyPipeline1(self):
         # copy through empty pipe
         d = 'empty pipeline test COPY'
-        with open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write(d)
-        with open(TESTFN2, 'w') kama f:
+        ukijumuisha open(TESTFN2, 'w') kama f:
             f.write('')
         t=pipes.Template()
         t.copy(TESTFN, TESTFN2)
-        with open(TESTFN2) kama f:
+        ukijumuisha open(TESTFN2) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testEmptyPipeline2(self):
         # read through empty pipe
         d = 'empty pipeline test READ'
-        with open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write(d)
         t=pipes.Template()
         f = t.open(TESTFN, 'r')
@@ -80,9 +80,9 @@ kundi SimplePipeTests(unittest.TestCase):
         # write through empty pipe
         d = 'empty pipeline test WRITE'
         t = pipes.Template()
-        with t.open(TESTFN, 'w') kama f:
+        ukijumuisha t.open(TESTFN, 'w') kama f:
             f.write(d)
-        with open(TESTFN) kama f:
+        ukijumuisha open(TESTFN) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testRepr(self):
@@ -130,7 +130,7 @@ kundi SimplePipeTests(unittest.TestCase):
         t.append('boguscmd', pipes.SINK)
         self.assertRaises(ValueError, t.append, 'boguscmd', pipes.SINK)
 
-        # command needing file input but with no $IN
+        # command needing file input but ukijumuisha no $IN
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd $OUT',
                            pipes.FILEIN_FILEOUT)
@@ -138,7 +138,7 @@ kundi SimplePipeTests(unittest.TestCase):
         self.assertRaises(ValueError, t.append, 'boguscmd',
                            pipes.FILEIN_STDOUT)
 
-        # command needing file output but with no $OUT
+        # command needing file output but ukijumuisha no $OUT
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd $IN',
                            pipes.FILEIN_FILEOUT)
@@ -164,7 +164,7 @@ kundi SimplePipeTests(unittest.TestCase):
         t.prepend('boguscmd', pipes.SOURCE)
         self.assertRaises(ValueError, t.prepend, 'boguscmd', pipes.SOURCE)
 
-        # command needing file input but with no $IN
+        # command needing file input but ukijumuisha no $IN
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd $OUT',
                            pipes.FILEIN_FILEOUT)
@@ -172,7 +172,7 @@ kundi SimplePipeTests(unittest.TestCase):
         self.assertRaises(ValueError, t.prepend, 'boguscmd',
                            pipes.FILEIN_STDOUT)
 
-        # command needing file output but with no $OUT
+        # command needing file output but ukijumuisha no $OUT
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd $IN',
                            pipes.FILEIN_FILEOUT)

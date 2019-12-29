@@ -30,7 +30,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.errors = errors
         self.compressobj = zlib.compressobj()
 
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         if final:
             c = self.compressobj.compress(input)
             rudisha c + self.compressobj.flush()
@@ -46,7 +46,7 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         self.errors = errors
         self.decompressobj = zlib.decompressobj()
 
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         if final:
             c = self.decompressobj.decompress(input)
             rudisha c + self.decompressobj.flush()
@@ -73,5 +73,5 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamreader=StreamReader,
         streamwriter=StreamWriter,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )

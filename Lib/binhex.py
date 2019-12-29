@@ -52,7 +52,7 @@ kundi FInfo:
 
 eleza getfileinfo(name):
     finfo = FInfo()
-    with io.open(name, 'rb') kama fp:
+    ukijumuisha io.open(name, 'rb') kama fp:
         # Quick check kila textfile
         data = fp.read(512)
         ikiwa 0 haiko kwenye data:
@@ -145,7 +145,7 @@ kundi BinHex:
             ofp = io.open(ofname, 'wb')
             close_on_error = Kweli
         jaribu:
-            ofp.write(b'(This file must be converted with BinHex 4.0)\r\r:')
+            ofp.write(b'(This file must be converted ukijumuisha BinHex 4.0)\r\r:')
             hqxer = _Hqxcoderengine(ofp)
             self.ofp = _Rlecoderengine(hqxer)
             self.crc = 0
@@ -172,7 +172,7 @@ kundi BinHex:
             cr = cr.encode("latin-1")
         d2 = tp + cr
 
-        # Force all structs to be packed with big-endian
+        # Force all structs to be packed ukijumuisha big-endian
         d3 = struct.pack('>h', finfo.Flags)
         d4 = struct.pack('>ii', self.dlen, self.rlen)
         info = d + d2 + d3 + d4
@@ -235,7 +235,7 @@ eleza binhex(inp, out):
     finfo = getfileinfo(inp)
     ofp = BinHex(finfo, out)
 
-    with io.open(inp, 'rb') kama ifp:
+    ukijumuisha io.open(inp, 'rb') kama ifp:
         # XXXX Do textfile translation on non-mac systems
         wakati Kweli:
             d = ifp.read(128000)
@@ -319,7 +319,7 @@ kundi _Rledecoderengine:
 
         #
         # Obfuscated code ahead. We have to take care that we don't
-        # end up with an orphaned RUNCHAR later on. So, we keep a couple
+        # end up ukijumuisha an orphaned RUNCHAR later on. So, we keep a couple
         # of bytes kwenye the buffer, depending on what the end of
         # the buffer looks like:
         # '\220\0\220' - Keep 3 bytes: repeated \220 (escaped kama \220\0)
@@ -331,11 +331,11 @@ kundi _Rledecoderengine:
         mark = len(self.pre_buffer)
         ikiwa self.pre_buffer[-3:] == RUNCHAR + b'\0' + RUNCHAR:
             mark = mark - 3
-        elikiwa self.pre_buffer[-1:] == RUNCHAR:
+        lasivyo self.pre_buffer[-1:] == RUNCHAR:
             mark = mark - 2
-        elikiwa self.pre_buffer[-2:] == RUNCHAR + b'\0':
+        lasivyo self.pre_buffer[-2:] == RUNCHAR + b'\0':
             mark = mark - 2
-        elikiwa self.pre_buffer[-2:-1] == RUNCHAR:
+        lasivyo self.pre_buffer[-2:-1] == RUNCHAR:
             pita # Decode all
         isipokua:
             mark = mark - 1
@@ -359,7 +359,7 @@ kundi HexBin:
             ikiwa sio ch:
                 ashiria Error("No binhex data found")
             # Cater kila \r\n terminated lines (which show up kama \n\r, hence
-            # all lines start with \r)
+            # all lines start ukijumuisha \r)
             ikiwa ch == b'\r':
                 endelea
             ikiwa ch == b':':
@@ -458,7 +458,7 @@ eleza hexbin(inp, out):
     ikiwa sio out:
         out = ifp.FName
 
-    with io.open(out, 'wb') kama ofp:
+    ukijumuisha io.open(out, 'wb') kama ofp:
         # XXXX Do translation on non-mac systems
         wakati Kweli:
             d = ifp.read(128000)

@@ -80,7 +80,7 @@ eleza run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
     rudisha out.getvalue(), err.getvalue()
 
 eleza compare_generic_iter(make_it,match):
-    """Utility to compare a generic 2.1/2.2+ iterator with an iterable
+    """Utility to compare a generic 2.1/2.2+ iterator ukijumuisha an iterable
 
     If running under Python 2.2+, this tests the iterator using iter()/next(),
     kama well kama __getitem__.  'make_it' must be a function rudishaing a fresh
@@ -186,7 +186,7 @@ kundi IntegrationTests(TestCase):
         ]
 
         kila status, exc_message kwenye tests:
-            with self.subTest(status=status):
+            ukijumuisha self.subTest(status=status):
                 out, err = run_amock(create_bad_app(status))
                 self.assertKweli(out.endswith(
                     b"A server error occurred.  Please contact the administrator."
@@ -253,7 +253,7 @@ kundi IntegrationTests(TestCase):
     eleza test_interrupted_write(self):
         # BaseHandler._write() na _flush() have to write all data, even if
         # it takes multiple send() calls.  Test this by interrupting a send()
-        # call with a Unix signal.
+        # call ukijumuisha a Unix signal.
         pthread_kill = support.get_attribute(signal, "pthread_kill")
 
         eleza app(environ, start_response):
@@ -278,7 +278,7 @@ kundi IntegrationTests(TestCase):
         eleza run_client():
             http = HTTPConnection(*server.server_address)
             http.request("GET", "/")
-            with http.getresponse() kama response:
+            ukijumuisha http.getresponse() kama response:
                 response.read(100)
                 # The main thread should now be blocking kwenye a send() system
                 # call.  But kwenye theory, it could get interrupted by other
@@ -316,7 +316,7 @@ kundi UtilityTests(TestCase):
         util.setup_testing_defaults(env)
         ikiwa isinstance(value, StringIO):
             self.assertIsInstance(env[key], StringIO)
-        elikiwa isinstance(value,BytesIO):
+        lasivyo isinstance(value,BytesIO):
             self.assertIsInstance(env[key],BytesIO)
         isipokua:
             self.assertEqual(env[key], value)
@@ -359,7 +359,7 @@ kundi UtilityTests(TestCase):
 
     eleza test_filewrapper_getitem_deprecation(self):
         wrapper = util.FileWrapper(StringIO('foobar'), 3)
-        with self.assertWarnsRegex(DeprecationWarning,
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
             # This should have rudishaed 'bar'.
             self.assertEqual(wrapper[1], 'foo')
@@ -563,7 +563,7 @@ kundi HandlerTests(TestCase):
             'SERVER_NAME': 'test_server_name',
         }
 
-        with support.swap_attr(TestHandler, 'os_environ', os_environ):
+        ukijumuisha support.swap_attr(TestHandler, 'os_environ', os_environ):
             # override X na HOME variables
             handler = TestHandler(X="Y", HOME="/override/home")
             handler.setup_environ()
@@ -808,7 +808,7 @@ kundi HandlerTests(TestCase):
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
         h = SimpleHandler(BytesIO(), PartialWriter(), sys.stderr, environ)
         msg = "should sio do partial writes"
-        with self.assertWarnsRegex(DeprecationWarning, msg):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, msg):
             h.run(hello_app)
         self.assertEqual(b"HTTP/1.0 200 OK\r\n"
             b"Content-Type: text/plain\r\n"
@@ -825,7 +825,7 @@ kundi HandlerTests(TestCase):
             BrokenPipeError,
             ConnectionResetError,
         ):
-            with self.subTest(exception=exception):
+            ukijumuisha self.subTest(exception=exception):
                 kundi AbortingWriter:
                     eleza write(self, b):
                         ashiria exception

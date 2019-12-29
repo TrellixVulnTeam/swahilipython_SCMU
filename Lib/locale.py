@@ -196,7 +196,7 @@ eleza _format(percent, value, grouping=Uongo, monetary=Uongo, *additional):
         formatted = decimal_point.join(parts)
         ikiwa seps:
             formatted = _strip_padding(formatted, seps)
-    elikiwa percent[-1] kwenye 'diu':
+    lasivyo percent[-1] kwenye 'diu':
         seps = 0
         ikiwa grouping:
             formatted, seps = _group(formatted, monetary=monetary)
@@ -286,13 +286,13 @@ eleza currency(val, symbol=Kweli, grouping=Uongo, international=Uongo):
 
     ikiwa sign_pos == 0:
         s = '(' + s + ')'
-    elikiwa sign_pos == 1:
+    lasivyo sign_pos == 1:
         s = sign + s
-    elikiwa sign_pos == 2:
+    lasivyo sign_pos == 2:
         s = s + sign
-    elikiwa sign_pos == 3:
+    lasivyo sign_pos == 3:
         s = s.replace('<', sign)
-    elikiwa sign_pos == 4:
+    lasivyo sign_pos == 4:
         s = s.replace('>', sign)
     isipokua:
         # the default ikiwa nothing specified;
@@ -315,7 +315,7 @@ eleza delocalize(string):
     ikiwa ts:
         string = string.replace(ts, '')
 
-    #next, replace the decimal point with a dot
+    #next, replace the decimal point ukijumuisha a dot
     dd = conv['decimal_point']
     ikiwa dd:
         string = string.replace(dd, '.')
@@ -412,7 +412,7 @@ eleza normalize(localename):
         langname = code
         encoding = ''
 
-    # First lookup: fullname (possibly with encoding na modifier)
+    # First lookup: fullname (possibly ukijumuisha encoding na modifier)
     lang_enc = langname
     ikiwa encoding:
         norm_encoding = encoding.replace('-', '')
@@ -427,7 +427,7 @@ eleza normalize(localename):
     #andika('first lookup failed')
 
     ikiwa modifier:
-        # Second jaribu: fullname without modifier (possibly with encoding)
+        # Second jaribu: fullname without modifier (possibly ukijumuisha encoding)
         code = locale_alias.get(lang_enc, Tupu)
         ikiwa code ni sio Tupu:
             #andika('lookup without modifier succeeded')
@@ -438,7 +438,7 @@ eleza normalize(localename):
         #andika('second lookup failed')
 
     ikiwa encoding:
-        # Third jaribu: langname (without encoding, possibly with modifier)
+        # Third jaribu: langname (without encoding, possibly ukijumuisha modifier)
         lookup_name = langname
         ikiwa modifier:
             lookup_name += '@' + modifier
@@ -480,7 +480,7 @@ eleza _parse_localename(localename):
     """
     code = normalize(localename)
     ikiwa '@' kwenye code:
-        # Deal with locale modifiers
+        # Deal ukijumuisha locale modifiers
         code, modifier = code.split('@', 1)
         ikiwa modifier == 'euro' na '.' haiko kwenye code:
             # Assume Latin-9 kila @euro locales. This ni bogus,
@@ -490,9 +490,9 @@ eleza _parse_localename(localename):
 
     ikiwa '.' kwenye code:
         rudisha tuple(code.split('.')[:2])
-    elikiwa code == 'C':
+    lasivyo code == 'C':
         rudisha Tupu, Tupu
-    elikiwa code == 'UTF-8':
+    lasivyo code == 'UTF-8':
         # On macOS "LC_CTYPE=UTF-8" ni a valid locale setting
         # kila getting UTF-8 handling kila text.
         rudisha Tupu, 'UTF-8'
@@ -528,10 +528,10 @@ eleza getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         setlocale(LC_ALL, "") runs using the portable 'C' locale.
         Calling setlocale(LC_ALL, "") lets it use the default locale as
         defined by the LANG variable. Since we don't want to interfere
-        with the current locale setting we thus emulate the behavior
+        ukijumuisha the current locale setting we thus emulate the behavior
         kwenye the way described above.
 
-        To maintain compatibility with other platforms, sio only the
+        To maintain compatibility ukijumuisha other platforms, sio only the
         LANG variable ni tested, but a list of variables given as
         envvars parameter. The first found to be defined will be
         used. envvars defaults to the search path used kwenye GNU gettext;
@@ -669,7 +669,7 @@ isipokua:
 ### Database
 #
 # The following data was extracted kutoka the locale.alias file which
-# comes with X11 na then hand edited removing the explicit encoding
+# comes ukijumuisha X11 na then hand edited removing the explicit encoding
 # definitions na adding some more aliases. The file ni usually
 # available kama /usr/lib/X11/locale/locale.alias.
 #
@@ -849,10 +849,10 @@ kila k, v kwenye sorted(locale_encoding_alias.items()):
 #    updated 'sr_cs@latn' -> 'sr_RS.UTF-8@latin' to 'sr_CS.UTF-8@latin'
 #
 # SS 2014-10-01:
-# Updated alias mapping with glibc 2.19 supported locales.
+# Updated alias mapping ukijumuisha glibc 2.19 supported locales.
 #
 # SS 2018-05-05:
-# Updated alias mapping with glibc 2.27 supported locales.
+# Updated alias mapping ukijumuisha glibc 2.27 supported locales.
 #
 # These are the differences compared to the old mapping (Python 3.6.5
 # na older):

@@ -19,7 +19,7 @@ eleza global_pos_only_defaults(a=1, /, b=2):
 kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza assertRaisesSyntaxError(self, codestr, regex="invalid syntax"):
-        with self.assertRaisesRegex(SyntaxError, regex):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, regex):
             compile(codestr + "\n", "<test>", "single")
 
     eleza test_invalid_syntax_errors(self):
@@ -70,11 +70,11 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2, c=3)
 
         self.assertEqual(f(1, 2), 103)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2)
         self.assertEqual(f(1, c=2), 13)
 
@@ -83,11 +83,11 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2, c=3)
 
         self.assertEqual(f(1, 2), 103)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2)
         self.assertEqual(f(1, c=2), 13)
 
@@ -121,83 +121,83 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         eleza f(a, /):
             pita
         expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             f(a=1)
 
         eleza f(a, /, b):
             pita
         expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             f(a=1, b=2)
 
         eleza f(a, b, /):
             pita
         expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a, b'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             f(a=1, b=2)
 
     eleza test_positional_only_and_arg_invalid_calls(self):
         eleza f(a, b, /, c):
             pita
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', na 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', na 'c'"):
             f()
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 4 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
     eleza test_positional_only_and_optional_arg_invalid_calls(self):
         eleza f(a, b, /, c=3):
             pita
         f(1, 2)  # does sio ashiria
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             f()
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes kutoka 2 to 3 positional arguments but 4 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) takes kutoka 2 to 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
     eleza test_positional_only_and_kwonlyargs_invalid_calls(self):
         eleza f(a, b, /, c, *, d, e):
             pita
         f(1, 2, 3, d=1, e=2)  # does sio ashiria
-        with self.assertRaisesRegex(TypeError, r"missing 1 required keyword-only argument: 'd'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"missing 1 required keyword-only argument: 'd'"):
             f(1, 2, 3, e=2)
-        with self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' na 'e'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' na 'e'"):
             f(1, 2, 3)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', na 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', na 'c'"):
             f()
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 6 positional arguments "
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 6 positional arguments "
                                                r"\(and 2 keyword-only arguments\) were given"):
             f(1, 2, 3, 4, 5, 6, d=7, e=8)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got an unexpected keyword argument 'f'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got an unexpected keyword argument 'f'"):
             f(1, 2, 3, d=1, e=4, f=56)
 
     eleza test_positional_only_invalid_calls(self):
         eleza f(a, b, /):
             pita
         f(1, 2)  # does sio ashiria
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             f()
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes 2 positional arguments but 3 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) takes 2 positional arguments but 3 were given"):
             f(1, 2, 3)
 
     eleza test_positional_only_with_optional_invalid_calls(self):
         eleza f(a, b=2, /):
             pita
         f(1)  # does sio ashiria
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
             f()
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes kutoka 1 to 2 positional arguments but 3 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) takes kutoka 1 to 2 positional arguments but 3 were given"):
             f(1, 2, 3)
 
     eleza test_no_standard_args_usage(self):
@@ -205,7 +205,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
             pita
 
         f(1, 2, c=3)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f(1, b=2, c=3)
 
     eleza test_change_default_pos_only(self):
@@ -258,7 +258,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(Example.f(Example(), 1, 2), (1, 2))
         self.assertRaises(TypeError, Example.f, 1, 2)
         expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             Example().f(1, b=2)
 
     eleza test_mangling(self):
@@ -268,7 +268,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(X().f(), 42)
 
     eleza test_module_function(self):
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             global_pos_only_f()
 
 
@@ -279,9 +279,9 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
             rudisha g
 
         self.assertEqual(f(1,2)(3,4), 10)
-        with self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
             f(1,2)(3)
-        with self.assertRaisesRegex(TypeError, r"g\(\) takes 2 positional arguments but 3 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"g\(\) takes 2 positional arguments but 3 were given"):
             f(1,2)(3,4,5)
 
         eleza f(x,/,y):
@@ -297,9 +297,9 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
             rudisha g
 
         self.assertEqual(f(1,2)(3,4), 10)
-        with self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
             f(1,2)(3)
-        with self.assertRaisesRegex(TypeError, r"g\(\) takes 2 positional arguments but 3 were given"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"g\(\) takes 2 positional arguments but 3 were given"):
             f(1,2)(3,4,5)
 
     eleza test_same_keyword_as_positional_with_kwargs(self):
@@ -308,7 +308,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(42, something=42), (42, {'something': 42}))
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'something'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'something'"):
             f(something=42)
 
         self.assertEqual(f(42), (42, {}))
@@ -345,19 +345,19 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(unpickled_posonly(1,2), (1,2))
         expected = r"global_pos_only_f\(\) got some positional-only arguments "\
                    r"pitaed kama keyword arguments: 'a, b'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             unpickled_posonly(a=1,b=2)
 
         self.assertEqual(unpickled_optional(1,2), (1,2))
         expected = r"global_pos_only_and_normal\(\) got some positional-only arguments "\
                    r"pitaed kama keyword arguments: 'a'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             unpickled_optional(a=1,b=2)
 
         self.assertEqual(unpickled_defaults(), (1,2))
         expected = r"global_pos_only_defaults\(\) got some positional-only arguments "\
                    r"pitaed kama keyword arguments: 'a'"
-        with self.assertRaisesRegex(TypeError, expected):
+        ukijumuisha self.assertRaisesRegex(TypeError, expected):
             unpickled_defaults(a=1,b=2)
 
     eleza test_async(self):
@@ -365,7 +365,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         async eleza f(a=1, /, b=2):
             rudisha a, b
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
             f(a=1, b=2)
 
         eleza _check_call(*args, **kwargs):
@@ -386,7 +386,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         eleza f(a=1, /, b=2):
             tuma a, b
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
             f(a=1, b=2)
 
         gen = f(1, 2)

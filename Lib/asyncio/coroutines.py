@@ -20,7 +20,7 @@ eleza _is_debug_mode():
     # generator objects kwenye a CoroWrapper instance (defined below).  That
     # instance will log a message when the generator ni never iterated
     # over, which may happen when you forget to use "await" ama "tuma kutoka"
-    # with a coroutine call.
+    # ukijumuisha a coroutine call.
     # Note that the value of the _DEBUG flag ni taken
     # when the decorator ni used, so to be of any use it must be set
     # before you define your coroutines.  A downside of using this feature
@@ -113,7 +113,7 @@ eleza coroutine(func):
                   stacklevel=2)
     ikiwa inspect.iscoroutinefunction(func):
         # In Python 3.5 that's all we need to do kila coroutines
-        # defined with "async def".
+        # defined ukijumuisha "async def".
         rudisha func
 
     ikiwa inspect.isgeneratorfunction(func):
@@ -196,16 +196,16 @@ eleza _format_coroutine(coro):
     is_corowrapper = isinstance(coro, CoroWrapper)
 
     eleza get_name(coro):
-        # Coroutines compiled with Cython sometimes don't have
+        # Coroutines compiled ukijumuisha Cython sometimes don't have
         # proper __qualname__ ama __name__.  While that ni a bug
-        # kwenye Cython, asyncio shouldn't crash with an AttributeError
+        # kwenye Cython, asyncio shouldn't crash ukijumuisha an AttributeError
         # kwenye its __repr__ functions.
         ikiwa is_corowrapper:
             rudisha format_helpers._format_callback(coro.func, (), {})
 
         ikiwa hasattr(coro, '__qualname__') na coro.__qualname__:
             coro_name = coro.__qualname__
-        elikiwa hasattr(coro, '__name__') na coro.__name__:
+        lasivyo hasattr(coro, '__name__') na coro.__name__:
             coro_name = coro.__name__
         isipokua:
             # Stop masking Cython bugs, expose them kwenye a friendly way.
@@ -224,7 +224,7 @@ eleza _format_coroutine(coro):
     coro_code = Tupu
     ikiwa hasattr(coro, 'cr_code') na coro.cr_code:
         coro_code = coro.cr_code
-    elikiwa hasattr(coro, 'gi_code') na coro.gi_code:
+    lasivyo hasattr(coro, 'gi_code') na coro.gi_code:
         coro_code = coro.gi_code
 
     coro_name = get_name(coro)
@@ -239,7 +239,7 @@ eleza _format_coroutine(coro):
     coro_frame = Tupu
     ikiwa hasattr(coro, 'gi_frame') na coro.gi_frame:
         coro_frame = coro.gi_frame
-    elikiwa hasattr(coro, 'cr_frame') na coro.cr_frame:
+    lasivyo hasattr(coro, 'cr_frame') na coro.cr_frame:
         coro_frame = coro.cr_frame
 
     # If Cython's coroutine has a fake code object without proper
@@ -258,7 +258,7 @@ eleza _format_coroutine(coro):
         isipokua:
             coro_repr = f'{coro_name} running, defined at {filename}:{lineno}'
 
-    elikiwa coro_frame ni sio Tupu:
+    lasivyo coro_frame ni sio Tupu:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 

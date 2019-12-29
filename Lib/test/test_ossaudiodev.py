@@ -24,7 +24,7 @@ tatizo ImportError:
 
 
 eleza read_sound_file(path):
-    with open(path, 'rb') kama fp:
+    ukijumuisha open(path, 'rb') kama fp:
         au = sunau.open(fp)
         rate = au.getframerate()
         nchannels = au.getnchannels()
@@ -33,7 +33,7 @@ eleza read_sound_file(path):
         data = fp.read()
 
     ikiwa encoding != sunau.AUDIO_FILE_ENCODING_MULAW_8:
-        ashiria RuntimeError("Expect .au file with 8-bit mu-law samples")
+        ashiria RuntimeError("Expect .au file ukijumuisha 8-bit mu-law samples")
 
     # Convert the data to 16-bit signed.
     data = audioop.ulaw2lin(data, 2)
@@ -152,7 +152,7 @@ kundi OSSAudioDevTests(unittest.TestCase):
         jaribu:
             self.set_parameters(dsp)
 
-            # Disabled because it fails under Linux 2.6 with ALSA's OSS
+            # Disabled because it fails under Linux 2.6 ukijumuisha ALSA's OSS
             # emulation layer.
             #self.set_bad_parameters(dsp)
         mwishowe:
@@ -162,11 +162,11 @@ kundi OSSAudioDevTests(unittest.TestCase):
     eleza test_mixer_methods(self):
         # Issue #8139: ossaudiodev didn't initialize its types properly,
         # therefore some methods were unavailable.
-        with ossaudiodev.openmixer() kama mixer:
+        ukijumuisha ossaudiodev.openmixer() kama mixer:
             self.assertGreaterEqual(mixer.fileno(), 0)
 
     eleza test_with(self):
-        with ossaudiodev.open('w') kama dsp:
+        ukijumuisha ossaudiodev.open('w') kama dsp:
             pita
         self.assertKweli(dsp.closed)
 

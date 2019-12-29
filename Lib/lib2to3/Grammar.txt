@@ -85,7 +85,7 @@ suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 # Backward compatibility cruft to support:
 # [ x kila x kwenye lambda: Kweli, lambda: Uongo ikiwa x() ]
 # even wakati also allowing:
-# lambda x: 5 ikiwa x else 2
+# lambda x: 5 ikiwa x isipokua 2
 # (But sio a mix of the two)
 testlist_safe: old_test [(',' old_test)+ [',']]
 old_test: or_test | old_lambdef

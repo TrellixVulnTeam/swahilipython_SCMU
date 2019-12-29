@@ -9,7 +9,7 @@ The open file pointer must have methods read(), seek(), na close().
 When the setpos() na rewind() methods are sio used, the seek()
 method ni sio  necessary.
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
       getnchannels()  -- rudishas number of audio channels (1 for
                          mono, 2 kila stereo)
       getsampwidth()  -- rudishas sample width kwenye bytes
@@ -20,17 +20,17 @@ This rudishas an instance of a kundi with the following public methods:
                          compression type ('not compressed' linear samples)
       getparams()     -- rudishas a namedtuple consisting of all of the
                          above kwenye the above order
-      getmarkers()    -- rudishas Tupu (kila compatibility with the
+      getmarkers()    -- rudishas Tupu (kila compatibility ukijumuisha the
                          aifc module)
       getmark(id)     -- ashirias an error since the mark does not
-                         exist (kila compatibility with the aifc module)
+                         exist (kila compatibility ukijumuisha the aifc module)
       readframes(n)   -- rudishas at most n frames of audio
       rewind()        -- rewind to the beginning of the audio stream
       setpos(pos)     -- seek to the specified position
       tell()          -- rudisha the current position
       close()         -- close the instance (make it unusable)
 The position rudishaed by tell() na the position given to setpos()
-are compatible na have nothing to do with the actual position kwenye the
+are compatible na have nothing to do ukijumuisha the actual position kwenye the
 file.
 The close() method ni called automatically when the kundi instance
 is destroyed.
@@ -41,7 +41,7 @@ where file ni either the name of a file ama an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
       setnchannels(n) -- set the number of channels
       setsampwidth(n) -- set the sample width
       setframerate(n) -- set the frame rate
@@ -97,7 +97,7 @@ kundi Wave_read:
 
     These variables are available to the user though appropriate
     methods of this class:
-    _file -- the open file with methods read(), close(), na seek()
+    _file -- the open file ukijumuisha methods read(), close(), na seek()
               set through the __init__() method
     _nchannels -- the number of audio channels
               available through the getnchannels() method
@@ -128,7 +128,7 @@ kundi Wave_read:
         self._soundpos = 0
         self._file = Chunk(file, bigendian = 0)
         ikiwa self._file.getname() != b'RIFF':
-            ashiria Error('file does sio start with RIFF id')
+            ashiria Error('file does sio start ukijumuisha RIFF id')
         ikiwa self._file.read(4) != b'WAVE':
             ashiria Error('not a WAVE file')
         self._fmt_chunk_read = 0
@@ -143,7 +143,7 @@ kundi Wave_read:
             ikiwa chunkname == b'fmt ':
                 self._read_fmt_chunk(chunk)
                 self._fmt_chunk_read = 1
-            elikiwa chunkname == b'data':
+            lasivyo chunkname == b'data':
                 ikiwa sio self._fmt_chunk_read:
                     ashiria Error('data chunk before fmt chunk')
                 self._data_chunk = chunk
@@ -278,7 +278,7 @@ kundi Wave_write:
 
     These variables are user settable through appropriate methods
     of this class:
-    _file -- the open file with methods write(), close(), tell(), seek()
+    _file -- the open file ukijumuisha methods write(), close(), tell(), seek()
               set through the __init__() method
     _comptype -- the AIFF-C compression type ('NONE' kwenye AIFF)
               set through the setcomptype() ama setparams() method
@@ -508,7 +508,7 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Wave_read(f)
-    elikiwa mode kwenye ('w', 'wb'):
+    lasivyo mode kwenye ('w', 'wb'):
         rudisha Wave_write(f)
     isipokua:
         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")

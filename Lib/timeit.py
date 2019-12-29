@@ -102,7 +102,7 @@ kundi Timer:
         """Constructor.  See kundi doc string."""
         self.timer = timer
         local_ns = {}
-        global_ns = _globals() if globals is None else globals
+        global_ns = _globals() if globals is None isipokua globals
         init = ''
         if isinstance(setup, str):
             # Check that the code can be compiled outside a function
@@ -155,7 +155,7 @@ kundi Timer:
                                                None,
                                                self.src.split("\n"),
                                                dummy_src_name)
-        # else the source is already stored somewhere else
+        # isipokua the source is already stored somewhere else
 
         traceback.print_exc(file=file)
 
@@ -318,7 +318,7 @@ def main(args=None, *, _wrap_timer=None):
             def callback(number, time_taken):
                 msg = "{num} loop{s} -> {secs:.{prec}g} secs"
                 plural = (number != 1)
-                print(msg.format(num=number, s='s' if plural else '',
+                print(msg.format(num=number, s='s' if plural isipokua '',
                                   secs=time_taken, prec=precision))
         jaribu:
             number, _ = t.autorange(callback)
@@ -356,7 +356,7 @@ def main(args=None, *, _wrap_timer=None):
 
     best = min(timings)
     print("%d loop%s, best of %d: %s per loop"
-          % (number, 's' if number != 1 else '',
+          % (number, 's' if number != 1 isipokua '',
              repeat, format_time(best)))
 
     best = min(timings)

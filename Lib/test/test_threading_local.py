@@ -65,7 +65,7 @@ kundi BaseLocalTest:
             # Simply check that the variable ni correctly set
             self.assertEqual(local.x, i)
 
-        with support.start_threads(threading.Thread(target=f, args=(i,))
+        ukijumuisha support.start_threads(threading.Thread(target=f, args=(i,))
                                    kila i kwenye range(10)):
             pita
 
@@ -167,9 +167,9 @@ kundi BaseLocalTest:
         obj = cls()
         obj.x = 5
         self.assertEqual(obj.__dict__, {'x': 5})
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             obj.__dict__ = {}
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa obj.__dict__
 
     eleza test_dict_attribute(self):

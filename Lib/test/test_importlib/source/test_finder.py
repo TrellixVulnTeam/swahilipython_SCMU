@@ -17,10 +17,10 @@ agiza warnings
 kundi FinderTests(abc.FinderTests):
 
     """For a top-level module, it should just be found directly kwenye the
-    directory being searched. This ni true kila a directory with source
+    directory being searched. This ni true kila a directory ukijumuisha source
     [top-level source], bytecode [top-level bc], ama both [top-level both].
     There ni also the possibility that it ni a package [top-level package], in
-    which case there will be a directory with the module name na an
+    which case there will be a directory ukijumuisha the module name na an
     __init__.py file. If there ni a directory without an __init__.py an
     ImportWarning ni rudishaed [empty dir].
 
@@ -32,7 +32,7 @@ kundi FinderTests(abc.FinderTests):
     so that agizas of modules within the package can occur rather than trigger
     an agiza error.
 
-    When there ni a package na module with the same name, always pick the
+    When there ni a package na module ukijumuisha the same name, always pick the
     package over the module [package over module]. This ni so that agizas kutoka
     the package have the possibility of succeeding.
 
@@ -50,7 +50,7 @@ kundi FinderTests(abc.FinderTests):
         rudisha self._find(finder, module, loader_only=Kweli)
 
     eleza run_test(self, test, create=Tupu, *, compile_=Tupu, unlink=Tupu):
-        """Test the finding of 'test' with the creation of modules listed in
+        """Test the finding of 'test' ukijumuisha the creation of modules listed in
         'create'.
 
         Any names listed kwenye 'compile_' are byte-compiled. Modules
@@ -59,7 +59,7 @@ kundi FinderTests(abc.FinderTests):
         """
         ikiwa create ni Tupu:
             create = {test}
-        with util.create_modules(*create) kama mapping:
+        ukijumuisha util.create_modules(*create) kama mapping:
             ikiwa compile_:
                 kila name kwenye compile_:
                     py_compile.compile(mapping[name])
@@ -99,7 +99,7 @@ kundi FinderTests(abc.FinderTests):
 
     # [sub module]
     eleza test_module_in_package(self):
-        with util.create_modules('pkg.__init__', 'pkg.sub') kama mapping:
+        ukijumuisha util.create_modules('pkg.__init__', 'pkg.sub') kama mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertKweli(hasattr(loader, 'load_module'))
@@ -107,7 +107,7 @@ kundi FinderTests(abc.FinderTests):
     # [sub package]
     eleza test_package_in_package(self):
         context = util.create_modules('pkg.__init__', 'pkg.sub.__init__')
-        with context kama mapping:
+        ukijumuisha context kama mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertKweli(hasattr(loader, 'load_module'))
@@ -119,7 +119,7 @@ kundi FinderTests(abc.FinderTests):
         self.assertIn('__init__', loader.get_filename(name))
 
     eleza test_failure(self):
-        with util.create_modules('blah') kama mapping:
+        ukijumuisha util.create_modules('blah') kama mapping:
             nothing = self.import_(mapping['.root'], 'sdfsadsadf')
             self.assertIsTupu(nothing)
 
@@ -127,7 +127,7 @@ kundi FinderTests(abc.FinderTests):
         # The empty string kutoka sys.path means to search kwenye the cwd.
         finder = self.machinery.FileFinder('', (self.machinery.SourceFileLoader,
             self.machinery.SOURCE_SUFFIXES))
-        with open('mod.py', 'w') kama file:
+        ukijumuisha open('mod.py', 'w') kama file:
             file.write("# test file kila importlib")
         jaribu:
             loader = self._find(finder, 'mod', loader_only=Kweli)
@@ -146,7 +146,7 @@ kundi FinderTests(abc.FinderTests):
     # Regression test kila http://bugs.python.org/issue14846
     eleza test_dir_removal_handling(self):
         mod = 'mod'
-        with util.create_modules(mod) kama mapping:
+        ukijumuisha util.create_modules(mod) kama mapping:
             finder = self.get_finder(mapping['.root'])
             found = self._find(finder, 'mod', loader_only=Kweli)
             self.assertIsNotTupu(found)
@@ -162,7 +162,7 @@ kundi FinderTests(abc.FinderTests):
         eleza cleanup(tempdir):
             """Cleanup function kila the temporary directory.
 
-            Since we muck with the permissions, we want to set them back to
+            Since we muck ukijumuisha the permissions, we want to set them back to
             their original values to make sure the directory can be properly
             cleaned up.
 
@@ -181,7 +181,7 @@ kundi FinderTests(abc.FinderTests):
     eleza test_ignore_file(self):
         # If a directory got changed to a file kutoka underneath us, then don't
         # worry about looking kila submodules.
-        with tempfile.NamedTemporaryFile() kama file_obj:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file_obj:
             finder = self.get_finder(file_obj.name)
             found = self._find(finder, 'doesnotexist')
             self.assertEqual(found, self.NOT_FOUND)
@@ -193,7 +193,7 @@ kundi FinderTestsPEP451(FinderTests):
 
     eleza _find(self, finder, name, loader_only=Uongo):
         spec = finder.find_spec(name)
-        rudisha spec.loader ikiwa spec ni sio Tupu else spec
+        rudisha spec.loader ikiwa spec ni sio Tupu isipokua spec
 
 
 (Frozen_FinderTestsPEP451,
@@ -206,10 +206,10 @@ kundi FinderTestsPEP420(FinderTests):
     NOT_FOUND = (Tupu, [])
 
     eleza _find(self, finder, name, loader_only=Uongo):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             loader_portions = finder.find_loader(name)
-            rudisha loader_portions[0] ikiwa loader_only else loader_portions
+            rudisha loader_portions[0] ikiwa loader_only isipokua loader_portions
 
 
 (Frozen_FinderTestsPEP420,
@@ -222,7 +222,7 @@ kundi FinderTestsPEP302(FinderTests):
     NOT_FOUND = Tupu
 
     eleza _find(self, finder, name, loader_only=Uongo):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             rudisha finder.find_module(name)
 

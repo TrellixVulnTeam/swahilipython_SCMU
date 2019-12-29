@@ -15,8 +15,8 @@ __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
 kundi InteractiveInterpreter:
     """Base kundi kila InteractiveConsole.
 
-    This kundi deals with parsing na interpreter state (the user's
-    namespace); it doesn't deal with input buffering ama prompting or
+    This kundi deals ukijumuisha parsing na interpreter state (the user's
+    namespace); it doesn't deal ukijumuisha input buffering ama prompting or
     input file naming (the filename ni always pitaed kwenye explicitly).
 
     """
@@ -26,7 +26,7 @@ kundi InteractiveInterpreter:
 
         The optional 'locals' argument specifies the dictionary in
         which code will be executed; it defaults to a newly created
-        dictionary with key "__name__" set to "__console__" na key
+        dictionary ukijumuisha key "__name__" set to "__console__" na key
         "__doc__" set to Tupu.
 
         """
@@ -83,7 +83,7 @@ kundi InteractiveInterpreter:
 
         A note about KeyboardInterrupt: this exception may occur
         elsewhere kwenye this code, na may sio always be caught.  The
-        caller should be prepared to deal with it.
+        caller should be prepared to deal ukijumuisha it.
 
         """
         jaribu:
@@ -153,7 +153,7 @@ kundi InteractiveInterpreter:
         """Write a string.
 
         The base implementation writes to sys.stderr; a subkundi may
-        replace this with a different implementation.
+        replace this ukijumuisha a different implementation.
 
         """
         sys.stderr.write(data)
@@ -192,7 +192,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
         followed by the current kundi name kwenye parentheses (so kama not
-        to confuse this with the real interpreter -- since it's so
+        to confuse this ukijumuisha the real interpreter -- since it's so
         close!).
 
         The optional exitmsg argument specifies the exit message
@@ -214,7 +214,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
-        elikiwa banner:
+        lasivyo banner:
             self.write("%s\n" % str(banner))
         more = 0
         wakati 1:
@@ -236,7 +236,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
                 more = 0
         ikiwa exitmsg ni Tupu:
             self.write('now exiting %s...\n' % self.__class__.__name__)
-        elikiwa exitmsg != '':
+        lasivyo exitmsg != '':
             self.write('%s\n' % exitmsg)
 
     eleza push(self, line):
@@ -244,13 +244,13 @@ kundi InteractiveConsole(InteractiveInterpreter):
 
         The line should sio have a trailing newline; it may have
         internal newlines.  The line ni appended to a buffer na the
-        interpreter's runsource() method ni called with the
+        interpreter's runsource() method ni called ukijumuisha the
         concatenated contents of the buffer kama source.  If this
         indicates that the command was executed ama invalid, the buffer
         ni reset; otherwise, the command ni incomplete, na the buffer
         ni left kama it was after the line was appended.  The rudisha
         value ni 1 ikiwa more input ni required, 0 ikiwa the line was dealt
-        with kwenye some way (this ni the same kama runsource()).
+        ukijumuisha kwenye some way (this ni the same kama runsource()).
 
         """
         self.buffer.append(line)
@@ -267,7 +267,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
         When the user enters the EOF key sequence, EOFError ni ashiriad.
 
         The base implementation uses the built-in function
-        input(); a subkundi may replace this with a different
+        input(); a subkundi may replace this ukijumuisha a different
         implementation.
 
         """

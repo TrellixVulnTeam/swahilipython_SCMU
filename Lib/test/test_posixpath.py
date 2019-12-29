@@ -19,7 +19,7 @@ ABSTFN = abspath(support.TESTFN)
 
 eleza skip_if_ABSTFN_contains_backslash(test):
     """
-    On Windows, posixpath.abspath still rudishas paths with backslashes
+    On Windows, posixpath.abspath still rudishas paths ukijumuisha backslashes
     instead of posix forward slashes. If this ni the case, several tests
     fail, so skip them.
     """
@@ -155,7 +155,7 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertIs(posixpath.islink(support.TESTFN + "1"), Uongo)
         self.assertIs(posixpath.lexists(support.TESTFN + "2"), Uongo)
 
-        with open(support.TESTFN + "1", "wb") kama f:
+        ukijumuisha open(support.TESTFN + "1", "wb") kama f:
             f.write(b"foo")
         self.assertIs(posixpath.islink(support.TESTFN + "1"), Uongo)
 
@@ -245,7 +245,7 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertEqual(posixpath.expanduser(b"foo"), b"foo")
 
     eleza test_expanduser_home_envvar(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['HOME'] = '/home/victor'
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
@@ -254,7 +254,7 @@ kundi PosixPathTest(unittest.TestCase):
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
             kila home kwenye '/', '', '//', '///':
-                with self.subTest(home=home):
+                ukijumuisha self.subTest(home=home):
                     env['HOME'] = home
                     self.assertEqual(posixpath.expanduser("~"), "/")
                     self.assertEqual(posixpath.expanduser("~/"), "/")
@@ -281,12 +281,12 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertIsInstance(posixpath.expanduser(b"~root/"), bytes)
         self.assertIsInstance(posixpath.expanduser(b"~foo/"), bytes)
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             # expanduser should fall back to using the pitaword database
             toa env['HOME']
 
             home = pwd.getpwuid(os.getuid()).pw_dir
-            # $HOME can end with a trailing /, so strip it (see #17809)
+            # $HOME can end ukijumuisha a trailing /, so strip it (see #17809)
             home = home.rstrip("/") ama '/'
             self.assertEqual(posixpath.expanduser("~"), home)
 
@@ -294,7 +294,7 @@ kundi PosixPathTest(unittest.TestCase):
             # user (current identifier ama name kwenye the path) doesn't exist in
             # the pitaword database (pwd.getuid() ama pwd.getpwnam() fail),
             # expanduser() must rudisha the path unchanged.
-            with mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
+            ukijumuisha mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
                 kila path kwenye ('~', '~/.local', '~vstinner/'):
                     self.assertEqual(posixpath.expanduser(path), path)
@@ -392,7 +392,7 @@ kundi PosixPathTest(unittest.TestCase):
             self.assertEqual(realpath(ABSTFN+"c"), ABSTFN+"c")
 
             # Test using relative path kama well.
-            with support.change_cwd(dirname(ABSTFN)):
+            ukijumuisha support.change_cwd(dirname(ABSTFN)):
                 self.assertEqual(realpath(basename(ABSTFN)), ABSTFN)
         mwishowe:
             support.unlink(ABSTFN)
@@ -430,7 +430,7 @@ kundi PosixPathTest(unittest.TestCase):
             self.assertEqual(realpath(ABSTFN + '/%d' % depth), ABSTFN)
 
             # Test using relative path kama well.
-            with support.change_cwd(ABSTFN):
+            ukijumuisha support.change_cwd(ABSTFN):
                 self.assertEqual(realpath('%d' % depth), ABSTFN)
         mwishowe:
             kila i kwenye range(depth + 1):
@@ -443,14 +443,14 @@ kundi PosixPathTest(unittest.TestCase):
     eleza test_realpath_resolve_parents(self):
         # We also need to resolve any symlinks kwenye the parents of a relative
         # path pitaed to realpath. E.g.: current working directory is
-        # /usr/doc with 'doc' being a symlink to /usr/share/doc. We call
+        # /usr/doc ukijumuisha 'doc' being a symlink to /usr/share/doc. We call
         # realpath("a"). This should rudisha /usr/share/doc/a/.
         jaribu:
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/y")
             os.symlink(ABSTFN + "/y", ABSTFN + "/k")
 
-            with support.change_cwd(ABSTFN + "/k"):
+            ukijumuisha support.change_cwd(ABSTFN + "/k"):
                 self.assertEqual(realpath("a"), ABSTFN + "/y/a")
         mwishowe:
             support.unlink(ABSTFN + "/k")
@@ -477,7 +477,7 @@ kundi PosixPathTest(unittest.TestCase):
             # Absolute path.
             self.assertEqual(realpath(ABSTFN + "/link-y/.."), ABSTFN + "/k")
             # Relative path.
-            with support.change_cwd(dirname(ABSTFN)):
+            ukijumuisha support.change_cwd(dirname(ABSTFN)):
                 self.assertEqual(realpath(basename(ABSTFN) + "/link-y/.."),
                                  ABSTFN + "/k")
         mwishowe:
@@ -497,7 +497,7 @@ kundi PosixPathTest(unittest.TestCase):
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/k")
             os.symlink(ABSTFN, ABSTFN + "link")
-            with support.change_cwd(dirname(ABSTFN)):
+            ukijumuisha support.change_cwd(dirname(ABSTFN)):
                 base = basename(ABSTFN)
                 self.assertEqual(realpath(base + "link"), ABSTFN)
                 self.assertEqual(realpath(base + "link/k"), ABSTFN + "/k")
@@ -630,7 +630,7 @@ kundi PathLikeTests(unittest.TestCase):
         self.file_name = support.TESTFN.lower()
         self.file_path = FakePath(support.TESTFN)
         self.addCleanup(support.unlink, self.file_name)
-        with open(self.file_name, 'xb', 0) kama file:
+        ukijumuisha open(self.file_name, 'xb', 0) kama file:
             file.write(b"test_posixpath.PathLikeTests")
 
     eleza assertPathEqual(self, func):

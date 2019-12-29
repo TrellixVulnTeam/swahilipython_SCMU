@@ -30,7 +30,7 @@ benchmarks = [
     ('Python', 'Python'),               # Simple text literal
     ('.*Python', 'Python'),             # Bad text literal
     ('.*Python.*', 'Python'),           # Worse text literal
-    ('.*(Python)', 'Python'),           # Bad text literal with grouping
+    ('.*(Python)', 'Python'),           # Bad text literal ukijumuisha grouping
 
 ]
 
@@ -56,9 +56,9 @@ benchmarks = [
 tests = [
     # Test ?P< na ?P= extensions
     ('(?P<foo_123', '', SYNTAX_ERROR),      # Unterminated group identifier
-    ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins with a digit
-    ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins with an illegal char
-    ('(?P<foo!>a)', '', SYNTAX_ERROR),      # Begins with an illegal char
+    ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins ukijumuisha a digit
+    ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins ukijumuisha an illegal char
+    ('(?P<foo!>a)', '', SYNTAX_ERROR),      # Begins ukijumuisha an illegal char
 
     # Same tests, kila the ?P= form
     ('(?P<foo_123>a)(?P=foo_123', 'aa', SYNTAX_ERROR),
@@ -447,9 +447,9 @@ tests = [
 
     # lookbehind: split by : but sio ikiwa it ni escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
-    # escaping with \ kama we know it
+    # escaping ukijumuisha \ kama we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
-    # terminating with ' na escaping with ? kama kwenye edifact
+    # terminating ukijumuisha ' na escaping ukijumuisha ? kama kwenye edifact
     ("(?<!\\?)'(.*?)(?<!\\?)'", "a'bc?'de'f", SUCCEED, 'g1', "bc?'de" ),
 
     # Comments using the (?#...) syntax

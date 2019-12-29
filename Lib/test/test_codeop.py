@@ -33,7 +33,7 @@ kundi CodeopTests(unittest.TestCase):
                     exec(compile(str,"<input>","single"), r)
                 mwishowe:
                     sys.stdout = saved_stdout
-            elikiwa symbol == 'eval':
+            lasivyo symbol == 'eval':
                 ctx = {'a': 2}
                 d = { 'value': eval(code,ctx) }
                 r = { 'value': eval(str,ctx) }
@@ -219,8 +219,8 @@ kundi CodeopTests(unittest.TestCase):
         ai("(a,b")
         ai("(a,b,")
 
-        ai("ikiwa a:\n pita\nelikiwa b:")
-        ai("ikiwa a:\n pita\nelikiwa b:\n pita\nisipokua:")
+        ai("ikiwa a:\n pita\nlasivyo b:")
+        ai("ikiwa a:\n pita\nlasivyo b:\n pita\nisipokua:")
 
         ai("wakati a:")
         ai("wakati a:\n pita\nisipokua:")
@@ -233,8 +233,8 @@ kundi CodeopTests(unittest.TestCase):
         ai("jaribu:\n pita\nmwishowe:")
         ai("jaribu:\n pita\nexcept:\n pita\nmwishowe:")
 
-        ai("with a:")
-        ai("with a kama b:")
+        ai("ukijumuisha a:")
+        ai("ukijumuisha a kama b:")
 
         ai("kundi a:")
         ai("kundi a(")

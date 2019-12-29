@@ -205,7 +205,7 @@ kutoka __future__ agiza print_function"""
         rudisha test_file
 
     eleza read_file(self, test_file):
-        with open(test_file, "rb") kama fp:
+        ukijumuisha open(test_file, "rb") kama fp:
             rudisha fp.read()
 
     eleza refactor_file(self, test_file, fixers=_2TO3_FIXERS):

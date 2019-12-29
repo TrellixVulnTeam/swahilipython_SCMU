@@ -34,7 +34,7 @@ kundi TestGetLineIndent(unittest.TestCase):
     eleza test_empty_lines(self):
         kila tabwidth kwenye [1, 2, 4, 6, 8]:
             kila line kwenye ['', '\n']:
-                with self.subTest(line=line, tabwidth=tabwidth):
+                ukijumuisha self.subTest(line=line, tabwidth=tabwidth):
                     self.assertEqual(
                         editor.get_line_indent(line, tabwidth=tabwidth),
                         (0, 0),
@@ -59,7 +59,7 @@ kundi TestGetLineIndent(unittest.TestCase):
                  ('\nnewline test', (0, 0)))
 
         kila line, expected kwenye tests:
-            with self.subTest(line=line):
+            ukijumuisha self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=4),
                     expected,
@@ -84,7 +84,7 @@ kundi TestGetLineIndent(unittest.TestCase):
                  ('\nnewline test', (0, 0)))
 
         kila line, expected kwenye tests:
-            with self.subTest(line=line):
+            ukijumuisha self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=8),
                     expected,

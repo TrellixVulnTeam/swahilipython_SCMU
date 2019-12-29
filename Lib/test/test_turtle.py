@@ -51,7 +51,7 @@ kundi TurtleConfigTest(unittest.TestCase):
 
     eleza get_cfg_file(self, cfg_str):
         self.addCleanup(support.unlink, support.TESTFN)
-        with open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') kama f:
             f.write(cfg_str)
         rudisha support.TESTFN
 
@@ -104,7 +104,7 @@ kundi TurtleConfigTest(unittest.TestCase):
 
         cfg_name = self.get_cfg_file(invalid_test_config)
 
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             parsed_cfg = turtle.config_dict(cfg_name)
 
         err_msg = stdout.getvalue()
@@ -159,7 +159,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
     eleza test_pickling(self):
         vec = Vec2D(0.5, 2)
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 pickled = pickle.dumps(vec, protocol=proto)
                 unpickled = pickle.loads(pickled)
                 self.assertEqual(unpickled, vec)
@@ -167,7 +167,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
 
     eleza _assert_arithmetic_cases(self, test_cases, lambda_operator):
         kila test_case kwenye test_cases:
-            with self.subTest(case=test_case):
+            ukijumuisha self.subTest(case=test_case):
 
                 ((first, second), expected) = test_case
 
@@ -241,7 +241,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
         ]
 
         kila case kwenye cases:
-            with self.subTest(case=case):
+            ukijumuisha self.subTest(case=case):
                 (vec, rot), expected = case
                 vec = Vec2D(*vec)
                 got = vec.rotate(rot)

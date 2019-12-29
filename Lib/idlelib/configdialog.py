@@ -70,7 +70,7 @@ kundi ConfigDialog(Toplevel):
         self.configure(borderwidth=5)
         self.title(title ama 'IDLE Preferences')
         x = parent.winfo_rootx() + 20
-        y = parent.winfo_rooty() + (30 ikiwa sio _htest else 150)
+        y = parent.winfo_rooty() + (30 ikiwa sio _htest isipokua 150)
         self.geometry(f'+{x}+{y}')
         # Each theme element key ni its display name.
         # The first value of the tuple ni the sample area tag name.
@@ -227,7 +227,7 @@ kundi ConfigDialog(Toplevel):
         """Apply configuration changes to current windows.
 
         Dynamically update the current parent window instances
-        with some of the configuration changes.
+        ukijumuisha some of the configuration changes.
         """
         win_instances = self.parent.instance_dict.keys()
         kila instance kwenye win_instances:
@@ -254,7 +254,7 @@ kundi ConfigDialog(Toplevel):
 
         All values are treated kama text, na it ni up to the user to supply
         reasonable values. The only exception to this are the 'enable*' options,
-        which are boolean, na can be toggled with a Kweli/Uongo button.
+        which are boolean, na can be toggled ukijumuisha a Kweli/Uongo button.
 
         Methods:
             load_extensions:
@@ -269,7 +269,7 @@ kundi ConfigDialog(Toplevel):
         self.ext_userCfg = idleConf.userCfg['extensions']
         self.is_int = self.register(is_int)
         self.load_extensions()
-        # Create widgets - a listbox shows all available extensions, with the
+        # Create widgets - a listbox shows all available extensions, ukijumuisha the
         # controls kila the extension selected kwenye the listbox to the right.
         self.extension_names = StringVar(self)
         frame.rowconfigure(0, weight=1)
@@ -302,7 +302,7 @@ kundi ConfigDialog(Toplevel):
         rudisha frame
 
     eleza load_extensions(self):
-        "Fill self.extensions with data kutoka the default na user configs."
+        "Fill self.extensions ukijumuisha data kutoka the default na user configs."
         self.extensions = {}
         kila ext_name kwenye idleConf.GetExtensions(active_only=Uongo):
             # Former built-in extensions are already filtered out.
@@ -369,7 +369,7 @@ kundi ConfigDialog(Toplevel):
         entry_area = f.interior
         # Create an entry kila each configuration option.
         kila row, opt kwenye enumerate(self.extensions[ext_name]):
-            # Create a row with a label na entry/checkbutton.
+            # Create a row ukijumuisha a label na entry/checkbutton.
             label = Label(entry_area, text=opt['name'])
             label.grid(row=row, column=0, sticky=NW)
             var = opt['var']
@@ -377,13 +377,13 @@ kundi ConfigDialog(Toplevel):
                 Checkbutton(entry_area, variable=var,
                             onvalue='Kweli', offvalue='Uongo', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
-            elikiwa opt['type'] == 'int':
+            lasivyo opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
                       validatecommand=(self.is_int, '%P'), width=10
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
 
             isipokua:  # type == 'str'
-                # Limit size to fit non-expanding space with larger font.
+                # Limit size to fit non-expanding space ukijumuisha larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
         rudisha
@@ -430,11 +430,11 @@ kundi ConfigDialog(Toplevel):
 #         self.create_page_tab()
 #         self.load_tab_cfg()
 #     eleza create_page_tab(self):
-#         # Define tk vars na register var na callback with tracers.
+#         # Define tk vars na register var na callback ukijumuisha tracers.
 #         # Create subframes na widgets.
 #         # Pack widgets.
 #     eleza load_tab_cfg(self):
-#         # Initialize widgets with data kutoka idleConf.
+#         # Initialize widgets ukijumuisha data kutoka idleConf.
 #     eleza var_changed_var_name():
 #         # For each tk var that needs other than default callback.
 #     eleza other_methods():
@@ -505,7 +505,7 @@ kundi FontPage(Frame):
         font_sample na to highlight_sample on the highlight page.
 
         Tabs: Enable users to change spaces entered kila indent tabs.
-        Changing indent_scale value with the mouse sets Var space_num,
+        Changing indent_scale value ukijumuisha the mouse sets Var space_num,
         which invokes the default callback to add an entry to
         changes.  Load_tab_cfg initializes space_num to default.
 
@@ -594,7 +594,7 @@ kundi FontPage(Frame):
     eleza load_font_cfg(self):
         """Load current configuration settings kila the font options.
 
-        Retrieve current font with idleConf.GetFont na font families
+        Retrieve current font ukijumuisha idleConf.GetFont na font families
         kutoka tk. Setup fontlist na set font_name.  Setup sizelist,
         which sets font_size.  Set font_bold.  Call set_samples.
         """
@@ -648,18 +648,18 @@ kundi FontPage(Frame):
         Set font_name na example displays to selection.
         """
         font = self.fontlist.get(
-                ACTIVE ikiwa event.type.name == 'KeyRelease' else ANCHOR)
+                ACTIVE ikiwa event.type.name == 'KeyRelease' isipokua ANCHOR)
         self.font_name.set(font.lower())
 
     eleza set_samples(self, event=Tupu):
-        """Update update both screen samples with the font settings.
+        """Update update both screen samples ukijumuisha the font settings.
 
         Called on font initialization na change events.
         Accesses font_name, font_size, na font_bold Variables.
         Updates font_sample na highlight page highlight_sample.
         """
         font_name = self.font_name.get()
-        font_weight = tkFont.BOLD ikiwa self.font_bold.get() else tkFont.NORMAL
+        font_weight = tkFont.BOLD ikiwa self.font_bold.get() isipokua tkFont.NORMAL
         new_font = (font_name, self.font_size.get(), font_weight)
         self.font_sample['font'] = new_font
         self.highlight_sample['font'] = new_font
@@ -744,7 +744,7 @@ kundi HighPage(Frame):
         mock Python code) kwenye which ni embedded the defined tags na reflects
         the color attributes of the current theme na changes kila those tags.
         Mouse button 1 allows kila selection of a tag na updates
-        highlight_target with that tag value.
+        highlight_target ukijumuisha that tag value.
 
         Note: The font kwenye highlight_sample ni set through the config in
         the fonts tab.
@@ -782,7 +782,7 @@ kundi HighPage(Frame):
             on_new_color_set: Set new color na add option.
             paint_theme_sample: Recolor sample.
             get_new_theme_name: Get kutoka popup.
-            create_new: Combine theme with changes na save.
+            create_new: Combine theme ukijumuisha changes na save.
             save_as_new_theme: Save [button_save_custom].
             set_theme_type: Command kila [theme_source].
             delete_custom: Activate default [button_delete_custom].
@@ -955,7 +955,7 @@ kundi HighPage(Frame):
             builtinlist: List of default themes kutoka idleConf.
             customlist: List of custom themes kutoka idleConf.
             custom_theme_on: Disabled ikiwa there are no custom themes.
-            custom_theme: Message with additional information.
+            custom_theme: Message ukijumuisha additional information.
             targetlist: Create menu kutoka self.theme_elements.
 
         Methods:
@@ -999,7 +999,7 @@ kundi HighPage(Frame):
         """Process new builtin theme selection.
 
         Add the changed theme's name to the changed_items na recreate
-        the sample with the values kutoka the selected theme.
+        the sample ukijumuisha the values kutoka the selected theme.
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
@@ -1116,7 +1116,7 @@ kundi HighPage(Frame):
         "Display sample of new color selection on the dialog."
         new_color = self.color.get()
         self.style.configure('frame_color_set.TFrame', background=new_color)
-        plane = 'foreground' ikiwa self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' ikiwa self.fg_bg_toggle.get() isipokua 'background'
         sample_element = self.theme_elements[self.highlight_target.get()][0]
         self.highlight_sample.tag_config(sample_element, **{plane: new_color})
         theme = self.custom_name.get()
@@ -1143,10 +1143,10 @@ kundi HighPage(Frame):
             self.create_new(new_theme_name)
 
     eleza create_new(self, new_theme_name):
-        """Create a new custom theme with the given name.
+        """Create a new custom theme ukijumuisha the given name.
 
         Create the new theme based on the previously active theme
-        with the current changes applied.  Once it ni saved, then
+        ukijumuisha the current changes applied.  Once it ni saved, then
         activate the new theme.
 
         Attributes accessed:
@@ -1232,7 +1232,7 @@ kundi HighPage(Frame):
         """
         # Set the color sample area.
         tag = self.theme_elements[self.highlight_target.get()][0]
-        plane = 'foreground' ikiwa self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' ikiwa self.fg_bg_toggle.get() isipokua 'background'
         color = self.highlight_sample.tag_cget(tag, plane)
         self.style.configure('frame_color_set.TFrame', background=color)
 
@@ -1384,7 +1384,7 @@ kundi KeysPage(Frame):
         button_new_keys, na clicking button_new_keys calls function
         get_new_keys().  Function get_new_keys() gets the key mappings kutoka the
         current keyset kila the binding event item that was selected.  The
-        function then displays another dialog, GetKeysDialog, with the
+        function then displays another dialog, GetKeysDialog, ukijumuisha the
         selected binding event na current keys na allows new key sequences
         to be entered kila that binding event.  If the keys aren't
         changed, nothing happens.  If the keys are changed na the keyset
@@ -1394,8 +1394,8 @@ kundi KeysPage(Frame):
         a custom name ni entered kwenye the prompt ama ikiwa the current keyset was
         already custom (and thus didn't require a prompt), then
         idleConf.userCfg['keys'] ni updated kwenye function create_new_key_set()
-        with the change to the event binding.  The item listing kwenye bindingslist
-        ni updated with the new keys.  Var keybinding ni also set which invokes
+        ukijumuisha the change to the event binding.  The item listing kwenye bindingslist
+        ni updated ukijumuisha the new keys.  Var keybinding ni also set which invokes
         the callback function, var_changed_keybinding, to add the change to
         the 'keys' ama 'extensions' changes tracker based on the binding type.
 
@@ -1662,7 +1662,7 @@ kundi KeysPage(Frame):
         self.button_new_keys.state(('!disabled',))
 
     eleza create_new_key_set(self, new_key_set_name):
-        """Create a new custom key set with the given name.
+        """Create a new custom key set ukijumuisha the given name.
 
         Copy the bindings/keys kutoka the previously active keyset
         to the new keyset na activate the new custom keyset.
@@ -2140,7 +2140,7 @@ kundi GenPage(Frame):
     eleza helplist_item_edit(self):
         """Handle edit button kila the help list.
 
-        Query with existing help source information na update
+        Query ukijumuisha existing help source information na update
         config ikiwa the values are changed.
         """
         item_index = self.helplist.index(ANCHOR)
@@ -2204,7 +2204,7 @@ kundi VarTrace:
         Args:
             var: Tk variable instance.
             callback: Either function name to be used kama a callback
-                ama a tuple with IdleConf config-type, section, and
+                ama a tuple ukijumuisha IdleConf config-type, section, and
                 option names used kwenye the default callback.
 
         Return:
@@ -2259,7 +2259,7 @@ Tamil, na 10 kila East Asia.
 
 Hebrew na Arabic letters should display right to left, starting with
 alef, \u05d0 na \u0627.  Arabic digits display left to right.  The
-Devanagari na Tamil lines start with digits.  The East Asian lines
+Devanagari na Tamil lines start ukijumuisha digits.  The East Asian lines
 are Chinese digits, Chinese Hanzi, Korean Hangul, na Japanese
 Hiragana na Katakana.
 
@@ -2268,14 +2268,14 @@ You can edit the font sample. Changes remain until IDLE ni closed.
     'Highlights': '''
 Highlighting:
 The IDLE Dark color theme ni new kwenye October 2015.  It can only
-be used with older IDLE releases ikiwa it ni saved kama a custom
-theme, with a different name.
+be used ukijumuisha older IDLE releases ikiwa it ni saved kama a custom
+theme, ukijumuisha a different name.
 ''',
     'Keys': '''
 Keys:
 The IDLE Modern Unix key set ni new kwenye June 2016.  It can only
-be used with older IDLE releases ikiwa it ni saved kama a custom
-key set, with a different name.
+be used ukijumuisha older IDLE releases ikiwa it ni saved kama a custom
+key set, ukijumuisha a different name.
 ''',
      'General': '''
 General:
@@ -2285,7 +2285,7 @@ cursor movement, before popping up completion box.  Key char ni '.' after
 identifier ama a '/' (or '\\' on Windows) within a string.
 
 FormatParagraph: Max-width ni max chars kwenye lines after re-formatting.
-Use with paragraphs kwenye both strings na comment blocks.
+Use ukijumuisha paragraphs kwenye both strings na comment blocks.
 
 ParenMatch: Style indicates what ni highlighted when closer ni entered:
 'opener' - opener '({[' corresponding to closer; 'parens' - both chars;
@@ -2334,7 +2334,7 @@ kundi VerticalScrolledFrame(Frame):
         canvas.xview_moveto(0)
         canvas.yview_moveto(0)
 
-        # Create a frame inside the canvas which will be scrolled with it.
+        # Create a frame inside the canvas which will be scrolled ukijumuisha it.
         self.interior = interior = Frame(canvas)
         interior_id = canvas.create_window(0, 0, window=interior, anchor=NW)
 

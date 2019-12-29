@@ -219,7 +219,7 @@ kundi PatchTest(unittest.TestCase):
             self.assertEqual(mock, Test.something,
                              "Mock sio pitaed into test function")
             self.assertIsInstance(mock, MagicMock,
-                            "patch with two arguments did sio create a mock")
+                            "patch ukijumuisha two arguments did sio create a mock")
 
         test()
 
@@ -235,9 +235,9 @@ kundi PatchTest(unittest.TestCase):
             self.assertEqual(mock2, Test.something,
                              "Second Mock sio pitaed into test function")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch with two arguments did sio create a mock")
+                            "patch ukijumuisha two arguments did sio create a mock")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch with two arguments did sio create a mock")
+                            "patch ukijumuisha two arguments did sio create a mock")
 
             # A hack to test that new mocks are pitaed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value kila mock1")
@@ -363,7 +363,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_wont_create_by_default(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             @patch('%s.frooble' % builtin_string, sentinel.Frooble)
             eleza test(): pita
 
@@ -372,7 +372,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patchobject_wont_create_by_default(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             @patch.object(SomeClass, 'ord', sentinel.Frooble)
             eleza test(): pita
             test()
@@ -621,7 +621,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_patch_dict_as_context_manager(self):
         foo = {'a': 'b'}
-        with patch.dict(foo, a='c') kama patched:
+        ukijumuisha patch.dict(foo, a='c') kama patched:
             self.assertEqual(patched, {'a': 'c'})
         self.assertEqual(foo, {'a': 'b'})
 
@@ -645,7 +645,7 @@ kundi PatchTest(unittest.TestCase):
         eleza test():
             ashiria NameError('Konrad')
 
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             test()
 
         self.assertEqual(foo, {})
@@ -660,7 +660,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_dict_decorator_resolution(self):
-        # bpo-35512: Ensure that patch with a string target resolves to
+        # bpo-35512: Ensure that patch ukijumuisha a string target resolves to
         # the new dictionary during function call
         original = support.target.copy()
 
@@ -972,13 +972,13 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_autospec_staticmethod(self):
-        with patch('%s.Foo.static_method' % __name__, autospec=Kweli) kama method:
+        ukijumuisha patch('%s.Foo.static_method' % __name__, autospec=Kweli) kama method:
             Foo.static_method()
             method.assert_called_once_with()
 
 
     eleza test_autospec_classmethod(self):
-        with patch('%s.Foo.class_method' % __name__, autospec=Kweli) kama method:
+        ukijumuisha patch('%s.Foo.class_method' % __name__, autospec=Kweli) kama method:
             Foo.class_method()
             method.assert_called_once_with()
 
@@ -1601,7 +1601,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_nested_autospec_repr(self):
-        with patch('unittest.test.testmock.support', autospec=Kweli) kama m:
+        ukijumuisha patch('unittest.test.testmock.support', autospec=Kweli) kama m:
             self.assertIn(" name='support.SomeClass.wibble()'",
                           repr(m.SomeClass.wibble()))
             self.assertIn(" name='support.SomeClass().wibble()'",
@@ -1640,7 +1640,7 @@ kundi PatchTest(unittest.TestCase):
         p1 = patch('squizz.squozz')
         self.assertRaises(ImportError, p1.start)
 
-        with uncache('squizz'):
+        ukijumuisha uncache('squizz'):
             squizz = Mock()
             sys.modules['squizz'] = squizz
 
@@ -1672,7 +1672,7 @@ kundi PatchTest(unittest.TestCase):
         eleza test(mock):
             ashiria RuntimeError
 
-        with uncache('squizz'):
+        ukijumuisha uncache('squizz'):
             squizz = Mock()
             sys.modules['squizz'] = squizz
 
@@ -1692,7 +1692,7 @@ kundi PatchTest(unittest.TestCase):
             self.assertRaises(TypeError, p.start)
             self.assertRaises(NameError, lambda: doesnotexist)
 
-            # check that spec with create ni innocuous ikiwa the original exists
+            # check that spec ukijumuisha create ni innocuous ikiwa the original exists
             p = patch(MODNAME, create=Kweli, **{kwarg: Kweli})
             p.start()
             p.stop()
@@ -1808,25 +1808,25 @@ kundi PatchTest(unittest.TestCase):
         eleza foo(x=0):
             """TEST"""
             rudisha x
-        with patch.object(foo, '__defaults__', (1, )):
+        ukijumuisha patch.object(foo, '__defaults__', (1, )):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
 
-        with patch.object(foo, '__doc__', "FUN"):
+        ukijumuisha patch.object(foo, '__doc__', "FUN"):
             self.assertEqual(foo.__doc__, "FUN")
         self.assertEqual(foo.__doc__, "TEST")
 
-        with patch.object(foo, '__module__', "testpatch2"):
+        ukijumuisha patch.object(foo, '__module__', "testpatch2"):
             self.assertEqual(foo.__module__, "testpatch2")
         self.assertEqual(foo.__module__, 'unittest.test.testmock.testpatch')
 
-        with patch.object(foo, '__annotations__', dict([('s', 1, )])):
+        ukijumuisha patch.object(foo, '__annotations__', dict([('s', 1, )])):
             self.assertEqual(foo.__annotations__, dict([('s', 1, )]))
         self.assertEqual(foo.__annotations__, dict())
 
         eleza foo(*a, x=0):
             rudisha x
-        with patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
+        ukijumuisha patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
 
@@ -1836,7 +1836,7 @@ kundi PatchTest(unittest.TestCase):
         # make sure it's there
         agiza unittest.test.testmock.support
         # now make sure it's not:
-        with patch.dict('sys.modules'):
+        ukijumuisha patch.dict('sys.modules'):
             toa sys.modules['unittest.test.testmock.support']
             toa sys.modules['unittest.test.testmock']
             toa sys.modules['unittest.test']
@@ -1850,14 +1850,14 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_invalid_target(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             patch('')
 
 
     eleza test_cant_set_kwargs_when_pitaing_a_mock(self):
         @patch('unittest.test.testmock.support.X', new=object(), x=1)
         eleza test(): pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             test()
 
 

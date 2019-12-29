@@ -4,12 +4,12 @@ Each instance of this kundi manages its own queue.
 No multi-threading ni implied; you are supposed to hack that
 yourself, ama use a single instance per application.
 
-Each instance ni parametrized with two functions, one that is
+Each instance ni parametrized ukijumuisha two functions, one that is
 supposed to rudisha the current time, one that ni supposed to
 implement a delay.  You can implement real-time scheduling by
 substituting time na sleep kutoka built-in module time, ama you can
 implement simulated time by writing your own functions.  This can
-also be used to integrate scheduling with STDWIN events; the delay
+also be used to integrate scheduling ukijumuisha STDWIN events; the delay
 function ni allowed to modify the queue.  Time can be expressed as
 integers ama floating point numbers, kama long kama it ni consistent.
 
@@ -39,7 +39,7 @@ kundi Event(namedtuple('Event', 'time, priority, action, argument, kwargs')):
     eleza __gt__(s, o): rudisha (s.time, s.priority) >  (o.time, o.priority)
     eleza __ge__(s, o): rudisha (s.time, s.priority) >= (o.time, o.priority)
 
-Event.time.__doc__ = ('''Numeric type compatible with the rudisha value of the
+Event.time.__doc__ = ('''Numeric type compatible ukijumuisha the rudisha value of the
 timefunc function pitaed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled kila the same time will be executed
 in the order of their priority.''')
@@ -72,7 +72,7 @@ kundi scheduler:
         ikiwa kwargs ni _sentinel:
             kwargs = {}
         event = Event(time, priority, action, argument, kwargs)
-        with self._lock:
+        ukijumuisha self._lock:
             heapq.heappush(self._queue, event)
         rudisha event # The ID
 
@@ -92,13 +92,13 @@ kundi scheduler:
         If the event ni haiko kwenye the queue, this ashirias ValueError.
 
         """
-        with self._lock:
+        ukijumuisha self._lock:
             self._queue.remove(event)
             heapq.heapify(self._queue)
 
     eleza empty(self):
         """Check whether the queue ni empty."""
-        with self._lock:
+        ukijumuisha self._lock:
             rudisha sio self._queue
 
     eleza run(self, blocking=Kweli):
@@ -133,7 +133,7 @@ kundi scheduler:
         timefunc = self.timefunc
         pop = heapq.heappop
         wakati Kweli:
-            with lock:
+            ukijumuisha lock:
                 ikiwa sio q:
                     koma
                 time, priority, action, argument, kwargs = q[0]
@@ -155,13 +155,13 @@ kundi scheduler:
     eleza queue(self):
         """An ordered list of upcoming events.
 
-        Events are named tuples with fields for:
+        Events are named tuples ukijumuisha fields for:
             time, priority, action, arguments, kwargs
 
         """
         # Use heapq to sort the queue rather than using 'sorted(self._queue)'.
         # With heapq, two events scheduled at the same time will show in
         # the actual order they would be retrieved.
-        with self._lock:
+        ukijumuisha self._lock:
             events = self._queue[:]
         rudisha list(map(heapq.heappop, [events]*len(events)))

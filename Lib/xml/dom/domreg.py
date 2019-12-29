@@ -14,14 +14,14 @@ well_known_implementations = {
     }
 
 # DOM implementations sio officially registered should register
-# themselves with their
+# themselves ukijumuisha their
 
 registered = {}
 
 eleza registerDOMImplementation(name, factory):
     """registerDOMImplementation(name, factory)
 
-    Register the factory function with the name. The factory function
+    Register the factory function ukijumuisha the name. The factory function
     should rudisha an object which implements the DOMImplementation
     interface. The factory function can either rudisha the same object,
     ama a new one (e.g. ikiwa that implementation supports some
@@ -45,7 +45,7 @@ eleza getDOMImplementation(name=Tupu, features=()):
     DOMImplementation object ikiwa the agiza succeeds.
 
     If name ni sio given, consider the available implementations to
-    find one with the required feature set. If no implementation can
+    find one ukijumuisha the required feature set. If no implementation can
     be found, ashiria an ImportError. The features list must be a sequence
     of (feature, version) pairs which are pitaed to hasFeature."""
 
@@ -55,9 +55,9 @@ eleza getDOMImplementation(name=Tupu, features=()):
     ikiwa mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
         rudisha mod.getDOMImplementation()
-    elikiwa name:
+    lasivyo name:
         rudisha registered[name]()
-    elikiwa sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
+    lasivyo sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
         rudisha getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
     # User did sio specify a name, try implementations kwenye arbitrary

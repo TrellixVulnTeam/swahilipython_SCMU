@@ -28,7 +28,7 @@ eleza resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
     ikiwa sio name.startswith('.'):
         rudisha name
-    elikiwa sio package:
+    lasivyo sio package:
         ashiria ValueError(f'no package specified kila {repr(name)} '
                          '(required kila relative module names)')
     level = 0
@@ -45,7 +45,7 @@ eleza _find_spec_kutoka_path(name, path=Tupu):
     First, sys.modules ni checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ ni rudishaed. If that happens to be
     set to Tupu, then ValueError ni ashiriad. If the module ni sio in
-    sys.modules, then sys.meta_path ni searched kila a suitable spec with the
+    sys.modules, then sys.meta_path ni searched kila a suitable spec ukijumuisha the
     value of 'path' given to the finders. Tupu ni rudishaed ikiwa no spec could
     be found.
 
@@ -76,7 +76,7 @@ eleza find_spec(name, package=Tupu):
     First, sys.modules ni checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ ni rudishaed. If that happens to be
     set to Tupu, then ValueError ni ashiriad. If the module ni sio in
-    sys.modules, then sys.meta_path ni searched kila a suitable spec with the
+    sys.modules, then sys.meta_path ni searched kila a suitable spec ukijumuisha the
     value of 'path' given to the finders. Tupu ni rudishaed ikiwa no spec could
     be found.
 
@@ -84,10 +84,10 @@ eleza find_spec(name, package=Tupu):
     automatically imported.
 
     The name na package arguments work the same kama importlib.import_module().
-    In other words, relative module names (with leading dots) work.
+    In other words, relative module names (ukijumuisha leading dots) work.
 
     """
-    fullname = resolve_name(name, package) ikiwa name.startswith('.') else name
+    fullname = resolve_name(name, package) ikiwa name.startswith('.') isipokua name
     ikiwa fullname haiko kwenye sys.modules:
         parent_name = fullname.rpartition('.')[0]
         ikiwa parent_name:
@@ -199,7 +199,7 @@ eleza module_for_loader(fxn):
                   DeprecationWarning, stacklevel=2)
     @functools.wraps(fxn)
     eleza module_for_loader_wrapper(self, fullname, *args, **kwargs):
-        with _module_to_load(fullname) kama module:
+        ukijumuisha _module_to_load(fullname) kama module:
             module.__loader__ = self
             jaribu:
                 is_package = self.is_package(fullname)
@@ -240,7 +240,7 @@ kundi _LazyModule(types.ModuleType):
             # assigned object, making identity more agizaant than equality.
             ikiwa key haiko kwenye attrs_then:
                 attrs_updated[key] = value
-            elikiwa id(attrs_now[key]) != id(attrs_then[key]):
+            lasivyo id(attrs_now[key]) != id(attrs_then[key]):
                 attrs_updated[key] = value
         self.__spec__.loader.exec_module(self)
         # If exec_module() was used directly there ni no guarantee the module

@@ -1,6 +1,6 @@
 """
 Python unit testing framework, based on Erich Gamma's JUnit na Kent Beck's
-Smalltalk testing framework (used with permission).
+Smalltalk testing framework (used ukijumuisha permission).
 
 This module contains the core framework classes that form the basis of
 specific test cases na suites (TestCase, TestSuite etc.), na also a
@@ -12,7 +12,7 @@ Simple usage:
     agiza unittest
 
     kundi IntegerArithmeticTestCase(unittest.TestCase):
-        eleza testAdd(self):  # test method names begin with 'test'
+        eleza testAdd(self):  # test method names begin ukijumuisha 'test'
             self.assertEqual((1 + 2), 3)
             self.assertEqual(0 + 1, 1)
         eleza testMultiply(self):

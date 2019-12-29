@@ -7,7 +7,7 @@ __all__ = ["getcaps","findmatch"]
 
 
 eleza lineno_sort_key(entry):
-    # Sort kwenye ascending order, with unspecified entries at the end
+    # Sort kwenye ascending order, ukijumuisha unspecified entries at the end
     ikiwa 'lineno' kwenye enjaribu:
         rudisha 0, entry['lineno']
     isipokua:
@@ -23,7 +23,7 @@ eleza getcaps():
     to a list of dictionaries corresponding to mailcap entries.  The list
     collects all the entries kila that MIME type kutoka all available mailcap
     files.  Each dictionary contains key-value pairs kila that MIME type,
-    where the viewing command ni stored with the key "view".
+    where the viewing command ni stored ukijumuisha the key "view".
 
     """
     caps = {}
@@ -33,7 +33,7 @@ eleza getcaps():
             fp = open(mailcap, 'r')
         tatizo OSError:
             endelea
-        with fp:
+        ukijumuisha fp:
             morecaps, lineno = _readmailcapfile(fp, lineno)
         kila key, value kwenye morecaps.items():
             ikiwa sio key kwenye caps:
@@ -52,7 +52,7 @@ eleza listmailcapfiles():
         ikiwa 'HOME' kwenye os.environ:
             home = os.environ['HOME']
         isipokua:
-            # Don't bother with getpwuid()
+            # Don't bother ukijumuisha getpwuid()
             home = '.' # Last resort
         mailcaps = [home + '/.mailcap', '/etc/mailcap',
                 '/usr/etc/mailcap', '/usr/local/etc/mailcap']
@@ -75,7 +75,7 @@ eleza _readmailcapfile(fp, lineno):
     dictionaries; the list will contain more than one such dictionary
     ikiwa a given MIME type appears more than once kwenye the mailcap file.
     Each dictionary contains key-value pairs kila that MIME type, where
-    the viewing command ni stored with the key "view".
+    the viewing command ni stored ukijumuisha the key "view".
     """
     caps = {}
     wakati 1:
@@ -112,7 +112,7 @@ eleza _readmailcapfile(fp, lineno):
 eleza parseline(line):
     """Parse one entry kwenye a mailcap file na rudisha a dictionary.
 
-    The viewing command ni stored kama the value with the key "view",
+    The viewing command ni stored kama the value ukijumuisha the key "view",
     na the rest of the fields produce key-value pairs kwenye the dict.
     """
     fields = []
@@ -147,7 +147,7 @@ eleza parsefield(line, i, n):
         c = line[i]
         ikiwa c == ';':
             koma
-        elikiwa c == '\\':
+        lasivyo c == '\\':
             i = i+2
         isipokua:
             i = i+1
@@ -203,11 +203,11 @@ eleza subst(field, MIMEtype, filename, plist=[]):
             c = field[i]; i = i+1
             ikiwa c == '%':
                 res = res + c
-            elikiwa c == 's':
+            lasivyo c == 's':
                 res = res + filename
-            elikiwa c == 't':
+            lasivyo c == 't':
                 res = res + MIMEtype
-            elikiwa c == '{':
+            lasivyo c == '{':
                 start = i
                 wakati i < n na field[i] != '}':
                     i = i+1

@@ -60,7 +60,7 @@ The open file pointer must have methods read(), seek(), na close().
 In some types of audio files, ikiwa the setpos() method ni sio used,
 the seek() method ni sio necessary.
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
   getnchannels()  -- rudishas number of audio channels (1 for
              mono, 2 kila stereo)
   getsampwidth()  -- rudishas sample width kwenye bytes
@@ -73,7 +73,7 @@ This rudishas an instance of a kundi with the following public methods:
              above kwenye the above order
   getmarkers()    -- get the list of marks kwenye the audio file ama Tupu
              ikiwa there are no marks
-  getmark(id) -- get mark with the specified id (ashirias an error
+  getmark(id) -- get mark ukijumuisha the specified id (ashirias an error
              ikiwa the mark does sio exist)
   readframes(n)   -- rudishas at most n frames of audio
   rewind()    -- rewind to the beginning of the audio stream
@@ -92,7 +92,7 @@ where file ni either the name of a file ama an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
   aiff()      -- create an AIFF file (AIFF-C default)
   aifc()      -- create an AIFF-C file
   setnchannels(n) -- set the number of channels
@@ -107,7 +107,7 @@ This rudishas an instance of a kundi with the following public methods:
   setmark(id, pos, name)
           -- add specified mark to the list of marks
   tell()      -- rudisha current position kwenye output file (useful
-             kwenye combination with setmark())
+             kwenye combination ukijumuisha setmark())
   writeframesraw(data)
           -- write audio frames without pathing up the
              file header
@@ -128,7 +128,7 @@ close() after all frames have been written.
 The close() method ni called automatically when the kundi instance
 is destroyed.
 
-When a file ni opened with the extension '.aiff', an AIFF file is
+When a file ni opened ukijumuisha the extension '.aiff', an AIFF file is
 written, otherwise an AIFF-C file ni written.  This default can be
 changed by calling aiff() ama aifc() before the first writeframes or
 writeframesraw.
@@ -191,7 +191,7 @@ eleza _read_float(f): # 10 bytes
     lomant = _read_ulong(f) # 4 bytes
     ikiwa expon == himant == lomant == 0:
         f = 0.0
-    elikiwa expon == 0x7FFF:
+    lasivyo expon == 0x7FFF:
         f = _HUGE_VAL
     isipokua:
         expon = expon - 16383
@@ -272,7 +272,7 @@ kundi Aifc_read:
     #
     # These variables are available to the user though appropriate
     # methods of this class:
-    # _file -- the open file with methods read(), close(), na seek()
+    # _file -- the open file ukijumuisha methods read(), close(), na seek()
     #       set through the __init__() method
     # _nchannels -- the number of audio channels
     #       available through the getnchannels() method
@@ -313,11 +313,11 @@ kundi Aifc_read:
         self._file = file
         chunk = Chunk(file)
         ikiwa chunk.getname() != b'FORM':
-            ashiria Error('file does sio start with FORM id')
+            ashiria Error('file does sio start ukijumuisha FORM id')
         formdata = chunk.read(4)
         ikiwa formdata == b'AIFF':
             self._aifc = 0
-        elikiwa formdata == b'AIFC':
+        lasivyo formdata == b'AIFC':
             self._aifc = 1
         isipokua:
             ashiria Error('not an AIFF ama AIFF-C file')
@@ -333,13 +333,13 @@ kundi Aifc_read:
             ikiwa chunkname == b'COMM':
                 self._read_comm_chunk(chunk)
                 self._comm_chunk_read = 1
-            elikiwa chunkname == b'SSND':
+            lasivyo chunkname == b'SSND':
                 self._ssnd_chunk = chunk
                 dummy = chunk.read(8)
                 self._ssnd_seek_needed = 0
-            elikiwa chunkname == b'FVER':
+            lasivyo chunkname == b'FVER':
                 self._version = _read_ulong(chunk)
-            elikiwa chunkname == b'MARK':
+            lasivyo chunkname == b'MARK':
                 self._readmark(chunk)
             chunk.skip()
         ikiwa sio self._comm_chunk_read ama sio self._ssnd_chunk:
@@ -493,9 +493,9 @@ kundi Aifc_read:
             ikiwa self._comptype != b'NONE':
                 ikiwa self._comptype == b'G722':
                     self._convert = self._adpcm2lin
-                elikiwa self._comptype kwenye (b'ulaw', b'ULAW'):
+                lasivyo self._comptype kwenye (b'ulaw', b'ULAW'):
                     self._convert = self._ulaw2lin
-                elikiwa self._comptype kwenye (b'alaw', b'ALAW'):
+                lasivyo self._comptype kwenye (b'alaw', b'ALAW'):
                     self._convert = self._alaw2lin
                 isipokua:
                     ashiria Error('unsupported compression type')
@@ -507,7 +507,7 @@ kundi Aifc_read:
     eleza _readmark(self, chunk):
         nmarkers = _read_short(chunk)
         # Some files appear to contain invalid counts.
-        # Cope with this by testing kila EOF.
+        # Cope ukijumuisha this by testing kila EOF.
         jaribu:
             kila i kwenye range(nmarkers):
                 id = _read_short(chunk)
@@ -520,7 +520,7 @@ kundi Aifc_read:
                     self._markers.append((id, pos, name))
         tatizo EOFError:
             w = ('Warning: MARK chunk contains only %s marker%s instead of %s' %
-                 (len(self._markers), '' ikiwa len(self._markers) == 1 else 's',
+                 (len(self._markers), '' ikiwa len(self._markers) == 1 isipokua 's',
                   nmarkers))
             warnings.warn(w)
 
@@ -529,7 +529,7 @@ kundi Aifc_write:
     #
     # These variables are user settable through appropriate methods
     # of this class:
-    # _file -- the open file with methods write(), close(), tell(), seek()
+    # _file -- the open file ukijumuisha methods write(), close(), tell(), seek()
     #       set through the __init__() method
     # _comptype -- the AIFF-C compression type ('NONE' kwenye AIFF)
     #       set through the setcomptype() ama setparams() method
@@ -785,7 +785,7 @@ kundi Aifc_write:
                     self._sampwidth = 2
                 ikiwa self._sampwidth != 2:
                     ashiria Error('sample width must be 2 when compressing '
-                                'with ulaw/ULAW, alaw/ALAW ama G7.22 (ADPCM)')
+                                'ukijumuisha ulaw/ULAW, alaw/ALAW ama G7.22 (ADPCM)')
             ikiwa sio self._nchannels:
                 ashiria Error('# channels sio specified')
             ikiwa sio self._sampwidth:
@@ -797,9 +797,9 @@ kundi Aifc_write:
     eleza _init_compression(self):
         ikiwa self._comptype == b'G722':
             self._convert = self._lin2adpcm
-        elikiwa self._comptype kwenye (b'ulaw', b'ULAW'):
+        lasivyo self._comptype kwenye (b'ulaw', b'ULAW'):
             self._convert = self._lin2ulaw
-        elikiwa self._comptype kwenye (b'alaw', b'ALAW'):
+        lasivyo self._comptype kwenye (b'alaw', b'ALAW'):
             self._convert = self._lin2alaw
 
     eleza _write_header(self, initlength):
@@ -816,7 +816,7 @@ kundi Aifc_write:
                 self._datalength = self._datalength // 2
                 ikiwa self._datalength & 1:
                     self._datalength = self._datalength + 1
-            elikiwa self._comptype == b'G722':
+            lasivyo self._comptype == b'G722':
                 self._datalength = (self._datalength + 3) // 4
                 ikiwa self._datalength & 1:
                     self._datalength = self._datalength + 1
@@ -915,7 +915,7 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Aifc_read(f)
-    elikiwa mode kwenye ('w', 'wb'):
+    lasivyo mode kwenye ('w', 'wb'):
         rudisha Aifc_write(f)
     isipokua:
         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
@@ -930,7 +930,7 @@ ikiwa __name__ == '__main__':
     ikiwa sio sys.argv[1:]:
         sys.argv.append('/usr/demos/data/audio/bach.aiff')
     fn = sys.argv[1]
-    with open(fn, 'r') kama f:
+    ukijumuisha open(fn, 'r') kama f:
         andika("Reading", fn)
         andika("nchannels =", f.getnchannels())
         andika("nframes   =", f.getnframes())
@@ -941,7 +941,7 @@ ikiwa __name__ == '__main__':
         ikiwa sys.argv[2:]:
             gn = sys.argv[2]
             andika("Writing", gn)
-            with open(gn, 'w') kama g:
+            ukijumuisha open(gn, 'w') kama g:
                 g.setparams(f.getparams())
                 wakati 1:
                     data = f.readframes(1024)

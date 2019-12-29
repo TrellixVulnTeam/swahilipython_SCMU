@@ -111,7 +111,7 @@ kundi AugAssignTest(unittest.TestCase):
         self.assertEqual(x.val, 13)
 
         x = aug_test4(4)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             x += 10
 
 

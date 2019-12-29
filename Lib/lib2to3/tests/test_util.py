@@ -235,7 +235,7 @@ kundi Test_find_binding(support.TestCase):
 
     eleza test_kutoka_import_as_with_package(self):
         # Because it would take a lot of special-case code kwenye the fixers
-        # to deal with kutoka foo agiza bar kama baz, we'll simply always
+        # to deal ukijumuisha kutoka foo agiza bar kama baz, we'll simply always
         # fail ikiwa there ni an "kutoka ... agiza ... kama ..."
         self.assertUongo(self.find_binding("a", "kutoka x agiza b kama a", "x"))
         self.assertUongo(self.find_binding("a", "kutoka x agiza g kama a, d kama b", "x"))

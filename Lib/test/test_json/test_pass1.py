@@ -5,7 +5,7 @@ kutoka test.test_json agiza PyTest, CTest
 JSON = r'''
 [
     "JSON Test Pattern pita1",
-    {"object with 1 member":["array with 1 element"]},
+    {"object ukijumuisha 1 member":["array ukijumuisha 1 element"]},
     {},
     [],
     -42,
@@ -45,7 +45,7 @@ JSON = r'''
 ,
 
 4 , 5        ,          6           ,7        ],"compact":[1,2,3,4,5,6,7],
-        "jsontext": "{\"object with 1 member\":[\"array with 1 element\"]}",
+        "jsontext": "{\"object ukijumuisha 1 member\":[\"array ukijumuisha 1 element\"]}",
         "quotes": "&#34; \u0022 %22 0x22 034 &#x22;",
         "\/\\\"\uCAFE\uBABE\uAB98\uFCDE\ubcda\uef4A\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',./<>?"
 : "A key can be any string"

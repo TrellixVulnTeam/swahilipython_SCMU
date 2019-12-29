@@ -80,7 +80,7 @@ kundi TestPgen2Caching(support.TestCase):
             pgen2_driver.load_grammar(grammar_copy, save=Kweli, force=Kweli)
             self.assertKweli(os.path.exists(pickle_name))
 
-            # Generate a new pickle file kwenye a subprocess with a most likely
+            # Generate a new pickle file kwenye a subprocess ukijumuisha a most likely
             # different hash randomization seed.
             sub_env = dict(os.environ)
             sub_env['PYTHONHASHSEED'] = 'random'
@@ -92,7 +92,7 @@ pgen2_driver.load_grammar(%r, save=Kweli, force=Kweli)
                     env=sub_env)
             self.assertKweli(os.path.exists(pickle_sub_name))
 
-            with open(pickle_name, 'rb') kama pickle_f_1, \
+            ukijumuisha open(pickle_name, 'rb') kama pickle_f_1, \
                     open(pickle_sub_name, 'rb') kama pickle_f_2:
                 self.assertEqual(
                     pickle_f_1.read(), pickle_f_2.read(),
@@ -205,10 +205,10 @@ kundi TestAsyncAwait(GrammarTest):
 
     eleza test_async_for(self):
         self.validate("""async eleza foo():
-                             async with a: pita""")
+                             async ukijumuisha a: pita""")
 
         self.invalid_syntax("""eleza foo():
-                                   async with a: pita""")
+                                   async ukijumuisha a: pita""")
 
 
 kundi TestRaiseChanges(GrammarTest):
@@ -564,11 +564,11 @@ kundi TestParserIdempotency(support.TestCase):
 
     eleza test_all_project_files(self):
         kila filepath kwenye support.all_project_files():
-            with open(filepath, "rb") kama fp:
+            ukijumuisha open(filepath, "rb") kama fp:
                 encoding = tokenize.detect_encoding(fp.readline)[0]
             self.assertIsNotTupu(encoding,
                                  "can't detect encoding kila %s" % filepath)
-            with open(filepath, "r", encoding=encoding) kama fp:
+            ukijumuisha open(filepath, "r", encoding=encoding) kama fp:
                 source = fp.read()
             jaribu:
                 tree = driver.parse_string(source)

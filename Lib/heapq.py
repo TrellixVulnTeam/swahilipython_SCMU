@@ -59,7 +59,7 @@ over the two cells it tops, na we can trace the winner down the tree
 to see all opponents s/he had.  However, kwenye many computer applications
 of such tournaments, we do sio need to trace the history of a winner.
 To be more memory efficient, when a winner ni promoted, we try to
-replace it by something else at a lower level, na the rule becomes
+replace it by something isipokua at a lower level, na the rule becomes
 that a cell na the two cells it tops contain three different items,
 but the top cell "wins" over the two topped cells.
 
@@ -169,7 +169,7 @@ eleza heapify(x):
     """Transform list into a heap, in-place, kwenye O(len(x)) time."""
     n = len(x)
     # Transform bottom-up.  The largest index there's any point to looking at
-    # ni the largest with a child index in-range, so must have 2*i + 1 < n,
+    # ni the largest ukijumuisha a child index in-range, so must have 2*i + 1 < n,
     # ama i < (n-1)/2.  If n ni even = 2*j, this ni (2*j-1)/2 = j-1/2 so
     # j-1 ni the largest, which ni n//2 - 1.  If n ni odd = 2*j+1, this is
     # (2*j+1-1)/2 = j so j-1 ni the largest, na that's again n//2-1.
@@ -200,7 +200,7 @@ eleza _heapify_max(x):
         _siftup_max(x, i)
 
 # 'heap' ni a heap at all indices >= startpos, tatizo possibly kila pos.  pos
-# ni the index of a leaf with a possibly out-of-order value.  Restore the
+# ni the index of a leaf ukijumuisha a possibly out-of-order value.  Restore the
 # heap invariant.
 eleza _siftdown(heap, startpos, pos):
     newitem = heap[pos]
@@ -218,7 +218,7 @@ eleza _siftdown(heap, startpos, pos):
 
 # The child indices of heap index pos are already heaps, na we want to make
 # a heap at index pos too.  We do this by bubbling the smaller child of
-# pos up (and so on with that child's children, etc) until hitting a leaf,
+# pos up (and so on ukijumuisha that child's children, etc) until hitting a leaf,
 # then using _siftdown to move the oddball originally at index pos into place.
 #
 # We *could* koma out of the loop kama soon kama we find a pos where newitem <=
@@ -237,7 +237,7 @@ eleza _siftdown(heap, startpos, pos):
 #
 # On random arrays of length 1000, making this change cut the number of
 # comparisons made by heapify() a little, na those made by exhaustive
-# heappop() a lot, kwenye accord with theory.  Here are typical results kutoka 3
+# heappop() a lot, kwenye accord ukijumuisha theory.  Here are typical results kutoka 3
 # runs (3 just to demonstrate how small the variance is):
 #
 # Compares needed by heapify     Compares needed by 1000 heappops
@@ -469,7 +469,7 @@ eleza nsmallest(n, iterable, key=Tupu):
         it = iter(iterable)
         sentinel = object()
         result = min(it, default=sentinel, key=key)
-        rudisha [] ikiwa result ni sentinel else [result]
+        rudisha [] ikiwa result ni sentinel isipokua [result]
 
     # When n>=size, it's faster to use sorted()
     jaribu:
@@ -529,7 +529,7 @@ eleza nlargest(n, iterable, key=Tupu):
         it = iter(iterable)
         sentinel = object()
         result = max(it, default=sentinel, key=key)
-        rudisha [] ikiwa result ni sentinel else [result]
+        rudisha [] ikiwa result ni sentinel isipokua [result]
 
     # When n>=size, it's faster to use sorted()
     jaribu:

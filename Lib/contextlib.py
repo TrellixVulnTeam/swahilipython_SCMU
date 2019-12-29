@@ -689,7 +689,7 @@ kundi nullcontext(AbstractContextManager):
     Used as a stand-in for a normal context manager, when a particular
     block of code is only sometimes used with a normal context manager:
 
-    cm = optional_cm if condition else nullcontext()
+    cm = optional_cm if condition isipokua nullcontext()
     with cm:
         # Perform operation, using optional_cm if condition is True
     """

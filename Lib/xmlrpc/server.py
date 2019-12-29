@@ -11,7 +11,7 @@ environment using CGIXMLRPCRequestHandler.
 The Doc* classes can be used to create XML-RPC servers that
 serve pydoc-style documentation kwenye response to HTTP
 GET requests. This documentation ni dynamically generated
-based on the functions na methods registered with the
+based on the functions na methods registered ukijumuisha the
 server.
 
 A list of possible usage patterns follows:
@@ -43,7 +43,7 @@ server.register_introspection_functions()
 server.register_instance(MyFuncs())
 server.serve_forever()
 
-3. Install an instance with custom dispatch method:
+3. Install an instance ukijumuisha custom dispatch method:
 
 kundi Math:
     eleza _listMethods(self):
@@ -55,7 +55,7 @@ kundi Math:
         # to work
         ikiwa method == 'add':
             rudisha "add(2,3) => 5"
-        elikiwa method == 'pow':
+        lasivyo method == 'pow':
             rudisha "pow(x, y[, z]) => number"
         isipokua:
             # By convention, rudisha empty
@@ -64,7 +64,7 @@ kundi Math:
     eleza _dispatch(self, method, params):
         ikiwa method == 'pow':
             rudisha pow(*params)
-        elikiwa method == 'add':
+        lasivyo method == 'add':
             rudisha params[0] + params[1]
         isipokua:
             ashiria ValueError('bad method')
@@ -125,7 +125,7 @@ eleza resolve_dotted_attribute(obj, attr, allow_dotted_names=Kweli):
     """resolve_dotted_attribute(a, 'b.c.d') => a.b.c.d
 
     Resolves a dotted attribute name to an object.  Raises
-    an AttributeError ikiwa any attribute kwenye the chain starts with a '_'.
+    an AttributeError ikiwa any attribute kwenye the chain starts ukijumuisha a '_'.
 
     If the optional allow_dotted_names argument ni false, dots are not
     supported na this function operates similar to getattr(obj, attr).
@@ -176,13 +176,13 @@ kundi SimpleXMLRPCDispatcher:
         Only one instance can be installed at a time.
 
         If the registered instance has a _dispatch method then that
-        method will be called with the name of the XML-RPC method and
+        method will be called ukijumuisha the name of the XML-RPC method and
         its parameters kama a tuple
         e.g. instance._dispatch('add',(2,3))
 
         If the registered instance does sio have a _dispatch method
         then the instance will be searched to find a matching method
-        and, ikiwa found, will be called. Methods beginning with an '_'
+        and, ikiwa found, will be called. Methods beginning ukijumuisha an '_'
         are considered private na will sio be called by
         SimpleXMLRPCServer.
 
@@ -192,7 +192,7 @@ kundi SimpleXMLRPCDispatcher:
         If the optional allow_dotted_names argument ni true na the
         instance does sio have a _dispatch method, method names
         containing dots are supported na resolved, kama long kama none of
-        the name segments start with an '_'.
+        the name segments start ukijumuisha an '_'.
 
             *** SECURITY WARNING: ***
 
@@ -296,7 +296,7 @@ kundi SimpleXMLRPCDispatcher:
             # ikiwa the instance has a _dispatch method then we
             # don't have enough information to provide a list
             # of methods
-            elikiwa sio hasattr(self.instance, '_dispatch'):
+            lasivyo sio hasattr(self.instance, '_dispatch'):
                 methods |= set(list_public_methods(self.instance))
         rudisha sorted(methods)
 
@@ -321,13 +321,13 @@ kundi SimpleXMLRPCDispatcher:
         method = Tupu
         ikiwa method_name kwenye self.funcs:
             method = self.funcs[method_name]
-        elikiwa self.instance ni sio Tupu:
+        lasivyo self.instance ni sio Tupu:
             # Instance can implement _methodHelp to rudisha help kila a method
             ikiwa hasattr(self.instance, '_methodHelp'):
                 rudisha self.instance._methodHelp(method_name)
             # ikiwa the instance has a _dispatch method then we
             # don't have enough information to provide help
-            elikiwa sio hasattr(self.instance, '_dispatch'):
+            lasivyo sio hasattr(self.instance, '_dispatch'):
                 jaribu:
                     method = resolve_dotted_attribute(
                                 self.instance,
@@ -389,7 +389,7 @@ kundi SimpleXMLRPCDispatcher:
         ikiwa available.
 
         If the registered instance has a _dispatch method then that
-        method will be called with the name of the XML-RPC method and
+        method will be called ukijumuisha the name of the XML-RPC method and
         its parameters kama a tuple
         e.g. instance._dispatch('add',(2,3))
 
@@ -397,7 +397,7 @@ kundi SimpleXMLRPCDispatcher:
         then the instance will be searched to find a matching method
         and, ikiwa found, will be called.
 
-        Methods beginning with an '_' are considered private na will
+        Methods beginning ukijumuisha an '_' are considered private na will
         sio be called.
         """
 
@@ -463,7 +463,7 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             match = self.aepattern.match(e)
             ikiwa match:
                 v = match.group(3)
-                v = float(v) ikiwa v else 1.0
+                v = float(v) ikiwa v isipokua 1.0
                 r[match.group(1)] = v
         rudisha r
 
@@ -696,7 +696,7 @@ kundi CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
         """Handle a single XML-RPC request pitaed through a CGI post method.
 
         If no XML data ni given then it ni read kutoka stdin. The resulting
-        XML-RPC response ni printed to stdout along with the correct HTTP
+        XML-RPC response ni printed to stdout along ukijumuisha the correct HTTP
         headers.
         """
 
@@ -730,7 +730,7 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
 
         # XXX Note that this regular expression does sio allow kila the
         # hyperlinking of arbitrary strings being used kama method
-        # names. Only methods with names consisting of word characters
+        # names. Only methods ukijumuisha names consisting of word characters
         # na '.'s are hyperlinked.
         pattern = re.compile(r'\b((http|ftp)://\S+[\w/]|'
                                 r'RFC[- ]?(\d+)|'
@@ -746,15 +746,15 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
             ikiwa scheme:
                 url = escape(all).replace('"', '&quot;')
                 results.append('<a href="%s">%s</a>' % (url, url))
-            elikiwa rfc:
+            lasivyo rfc:
                 url = 'http://www.rfc-editor.org/rfc/rfc%d.txt' % int(rfc)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa pep:
+            lasivyo pep:
                 url = 'http://www.python.org/dev/peps/pep-%04d/' % int(pep)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa text[end:end+1] == '(':
+            lasivyo text[end:end+1] == '(':
                 results.append(self.namelink(name, methods, funcs, classes))
-            elikiwa selfdot:
+            lasivyo selfdot:
                 results.append('self.<strong>%s</strong>' % name)
             isipokua:
                 results.append(self.namelink(name, classes))
@@ -862,7 +862,7 @@ kundi XMLRPCDocGenerator:
         kila method_name kwenye self.system_listMethods():
             ikiwa method_name kwenye self.funcs:
                 method = self.funcs[method_name]
-            elikiwa self.instance ni sio Tupu:
+            lasivyo self.instance ni sio Tupu:
                 method_info = [Tupu, Tupu] # argspec, documentation
                 ikiwa hasattr(self.instance, '_get_method_argstring'):
                     method_info[0] = self.instance._get_method_argstring(method_name)
@@ -872,7 +872,7 @@ kundi XMLRPCDocGenerator:
                 method_info = tuple(method_info)
                 ikiwa method_info != (Tupu, Tupu):
                     method = method_info
-                elikiwa sio hasattr(self.instance, '_dispatch'):
+                lasivyo sio hasattr(self.instance, '_dispatch'):
                     jaribu:
                         method = resolve_dotted_attribute(
                                     self.instance,
@@ -979,7 +979,7 @@ ikiwa __name__ == '__main__':
             eleza getCurrentTime():
                 rudisha datetime.datetime.now()
 
-    with SimpleXMLRPCServer(("localhost", 8000)) kama server:
+    ukijumuisha SimpleXMLRPCServer(("localhost", 8000)) kama server:
         server.register_function(pow)
         server.register_function(lambda x,y: x+y, 'add')
         server.register_instance(ExampleService(), allow_dotted_names=Kweli)

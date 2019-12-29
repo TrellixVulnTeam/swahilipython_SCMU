@@ -14,15 +14,15 @@ skip_if_missing()
 
 parser_path = os.path.join(toolsdir, "parser")
 
-with test.support.DirsOnSysPath(parser_path):
+ukijumuisha test.support.DirsOnSysPath(parser_path):
     agiza unparse
 
 eleza read_pyfile(filename):
     """Read na rudisha the contents of a Python source file (as a
     string), taking into account the file encoding."""
-    with open(filename, "rb") kama pyfile:
+    ukijumuisha open(filename, "rb") kama pyfile:
         encoding = tokenize.detect_encoding(pyfile.readline)[0]
-    with open(filename, "r", encoding=encoding) kama pyfile:
+    ukijumuisha open(filename, "r", encoding=encoding) kama pyfile:
         source = pyfile.read()
     rudisha source
 
@@ -78,7 +78,7 @@ kundi Foo: pita
 elif1 = """\
 ikiwa cond1:
     suite1
-elikiwa cond2:
+lasivyo cond2:
     suite2
 isipokua:
     suite3
@@ -87,7 +87,7 @@ isipokua:
 elif2 = """\
 ikiwa cond1:
     suite1
-elikiwa cond2:
+lasivyo cond2:
     suite2
 """
 
@@ -105,17 +105,17 @@ mwishowe:
 """
 
 with_simple = """\
-with f():
+ukijumuisha f():
     suite1
 """
 
 with_as = """\
-with f() kama x:
+ukijumuisha f() kama x:
     suite1
 """
 
 with_two_items = """\
-with f() kama x, g() kama y:
+ukijumuisha f() kama x, g() kama y:
     suite1
 """
 
@@ -309,7 +309,7 @@ kundi DirectoryTestCase(ASTTestCase):
                     andika(f'Skipping {filename}: see issue 28002')
                 endelea
 
-            with self.subTest(filename=filename):
+            ukijumuisha self.subTest(filename=filename):
                 source = read_pyfile(filename)
                 self.check_roundtrip(source)
 

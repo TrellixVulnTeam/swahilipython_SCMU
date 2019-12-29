@@ -44,7 +44,7 @@ kundi Popen(object):
                 ikiwa sio wait([self.sentinel], timeout):
                     rudisha Tupu
             # This shouldn't block ikiwa wait() rudishaed successfully.
-            rudisha self.poll(os.WNOHANG ikiwa timeout == 0.0 else 0)
+            rudisha self.poll(os.WNOHANG ikiwa timeout == 0.0 isipokua 0)
         rudisha self.returncode
 
     eleza _send_signal(self, sig):

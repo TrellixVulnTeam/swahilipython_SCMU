@@ -65,7 +65,7 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
     eleza pipe_data_received(self, fd, data):
         ikiwa fd == 1:
             reader = self.stdout
-        elikiwa fd == 2:
+        lasivyo fd == 2:
             reader = self.stderr
         isipokua:
             reader = Tupu
@@ -85,7 +85,7 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
             rudisha
         ikiwa fd == 1:
             reader = self.stdout
-        elikiwa fd == 2:
+        lasivyo fd == 2:
             reader = self.stderr
         isipokua:
             reader = Tupu
@@ -171,11 +171,11 @@ kundi Process:
             assert fd == 1
             stream = self.stdout
         ikiwa self._loop.get_debug():
-            name = 'stdout' ikiwa fd == 1 else 'stderr'
+            name = 'stdout' ikiwa fd == 1 isipokua 'stderr'
             logger.debug('%r communicate: read %s', self, name)
         output = await stream.read()
         ikiwa self._loop.get_debug():
-            name = 'stdout' ikiwa fd == 1 else 'stderr'
+            name = 'stdout' ikiwa fd == 1 isipokua 'stderr'
             logger.debug('%r communicate: close %s', self, name)
         transport.close()
         rudisha output

@@ -124,7 +124,7 @@ eleza collect_sys(info_add):
             encoding = '%s/%s' % (encoding, errors)
         info_add('sys.%s.encoding' % name, encoding)
 
-    # Were we compiled --with-pydebug ama with #define Py_DEBUG?
+    # Were we compiled --with-pydebug ama ukijumuisha #define Py_DEBUG?
     Py_DEBUG = hasattr(sys, 'gettotalrefcount')
     ikiwa Py_DEBUG:
         text = 'Yes (sys.gettotalrefcount() present)'
@@ -214,7 +214,7 @@ eleza collect_os(info_add):
         jaribu:
             login = os.getlogin()
         tatizo OSError:
-            # getlogin() fails with "OSError: [Errno 25] Inappropriate ioctl
+            # getlogin() fails ukijumuisha "OSError: [Errno 25] Inappropriate ioctl
             # kila device" on Travis CI
             pita
         isipokua:
@@ -320,7 +320,7 @@ eleza collect_pwd(info_add):
         entry = Tupu
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry ikiwa entry ni sio Tupu else '<KeyError>')
+             entry ikiwa entry ni sio Tupu isipokua '<KeyError>')
 
     ikiwa entry ni Tupu:
         # there ni nothing interesting to read ikiwa the current user identifier
@@ -358,7 +358,7 @@ eleza collect_readline(info_add):
         doc = getattr(readline, '__doc__', '')
         ikiwa 'libedit readline' kwenye doc:
             info_add('readline.library', 'libedit readline')
-        elikiwa 'GNU readline' kwenye doc:
+        lasivyo 'GNU readline' kwenye doc:
             info_add('readline.library', 'GNU readline')
 
 
@@ -416,7 +416,7 @@ eleza collect_time(info_add):
                       'process_time', 'thread_time', 'time'):
             jaribu:
                 # prevent DeprecatingWarning on get_clock_info('clock')
-                with warnings.catch_warnings(record=Kweli):
+                ukijumuisha warnings.catch_warnings(record=Kweli):
                     clock_info = time.get_clock_info(clock)
             tatizo ValueError:
                 # missing clock like time.thread_time()
@@ -785,7 +785,7 @@ eleza main():
     dump_info(info)
 
     ikiwa error:
-        andika("Collection failed: exit with error", file=sys.stderr)
+        andika("Collection failed: exit ukijumuisha error", file=sys.stderr)
         sys.exit(1)
 
 

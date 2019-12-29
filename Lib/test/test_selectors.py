@@ -21,7 +21,7 @@ ikiwa hasattr(socket, 'socketpair'):
     socketpair = socket.socketpair
 isipokua:
     eleza socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
-        with socket.socket(family, type, proto) kama l:
+        ukijumuisha socket.socket(family, type, proto) kama l:
             l.bind((support.HOST, 0))
             l.listen()
             c = socket.socket(family, type, proto)
@@ -77,7 +77,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         # register twice
         self.assertRaises(KeyError, s.register, rd, selectors.EVENT_READ)
 
-        # register the same FD, but with a different object
+        # register the same FD, but ukijumuisha a different object
         self.assertRaises(KeyError, s.register, rd.fileno(),
                           selectors.EVENT_READ)
 
@@ -181,16 +181,16 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         ikiwa self.SELECTOR.__name__ == 'EpollSelector':
             patch = unittest.mock.patch(
                 'selectors.EpollSelector._selector_cls')
-        elikiwa self.SELECTOR.__name__ == 'PollSelector':
+        lasivyo self.SELECTOR.__name__ == 'PollSelector':
             patch = unittest.mock.patch(
                 'selectors.PollSelector._selector_cls')
-        elikiwa self.SELECTOR.__name__ == 'DevpollSelector':
+        lasivyo self.SELECTOR.__name__ == 'DevpollSelector':
             patch = unittest.mock.patch(
                 'selectors.DevpollSelector._selector_cls')
         isipokua:
             ashiria self.skipTest("")
 
-        with patch kama m:
+        ukijumuisha patch kama m:
             m.rudisha_value.modify = unittest.mock.Mock(
                 side_effect=ZeroDivisionError)
             s = self.SELECTOR()
@@ -198,7 +198,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
             rd, wr = self.make_socketpair()
             s.register(rd, selectors.EVENT_READ)
             self.assertEqual(len(s._map), 1)
-            with self.assertRaises(ZeroDivisionError):
+            ukijumuisha self.assertRaises(ZeroDivisionError):
                 s.modify(rd, selectors.EVENT_WRITE)
             self.assertEqual(len(s._map), 0)
 
@@ -248,11 +248,11 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         self.assertEqual(list(keys.values()), [key])
 
         # unknown file obj
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             keys[999999]
 
         # Read-only mapping
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             toa keys[rd]
 
     eleza test_select(self):
@@ -279,7 +279,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
 
         rd, wr = self.make_socketpair()
 
-        with s kama sel:
+        ukijumuisha s kama sel:
             sel.register(rd, selectors.EVENT_READ)
             sel.register(wr, selectors.EVENT_WRITE)
 
@@ -349,7 +349,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         self.assertEqual(bufs, [MSG] * NUM_SOCKETS)
 
     @unittest.skipIf(sys.platform == 'win32',
-                     'select.select() cannot be used with empty fd sets')
+                     'select.select() cannot be used ukijumuisha empty fd sets')
     eleza test_empty_select(self):
         # Issue #23009: Make sure EpollSelector.select() works when no FD is
         # registered.
@@ -406,7 +406,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() ni interrupted by a signal which ashirias an exception
-            with self.assertRaises(InterruptSelect):
+            ukijumuisha self.assertRaises(InterruptSelect):
                 s.select(30)
             # select() was interrupted before the timeout of 30 seconds
             self.assertLess(time() - t, 5.0)
@@ -430,7 +430,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() ni interrupted by a signal, but the signal handler doesn't
-            # ashiria an exception, so select() should by retries with a recomputed
+            # ashiria an exception, so select() should by retries ukijumuisha a recomputed
             # timeout
             self.assertUongo(s.select(1.5))
             self.assertGreaterEqual(time() - t, 1.0)
@@ -444,7 +444,7 @@ kundi ScalableSelectorMixIn:
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(resource, "Test needs resource module")
     eleza test_above_fd_setsize(self):
-        # A scalable implementation should have no problem with more than
+        # A scalable implementation should have no problem ukijumuisha more than
         # FD_SETSIZE file descriptors. Since we don't know the value, we just
         # try to set the soft RLIMIT_NOFILE to the hard RLIMIT_NOFILE ceiling.
         soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
@@ -468,7 +468,7 @@ kundi ScalableSelectorMixIn:
             tatizo OSError:
                 # too many FDs, skip - note that we should only catch EMFILE
                 # here, but apparently *BSD na Solaris can fail upon connect()
-                # ama bind() with EADDRNOTAVAIL, so let's be safe
+                # ama bind() ukijumuisha EADDRNOTAVAIL, so let's be safe
                 self.skipTest("FD limit reached")
 
             jaribu:
@@ -517,11 +517,11 @@ kundi EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
     eleza test_register_file(self):
         # epoll(7) rudishas EPERM when given a file to watch
         s = self.SELECTOR()
-        with tempfile.NamedTemporaryFile() kama f:
-            with self.assertRaises(IOError):
+        ukijumuisha tempfile.NamedTemporaryFile() kama f:
+            ukijumuisha self.assertRaises(IOError):
                 s.register(f, selectors.EVENT_READ)
             # the SelectorKey has been removed
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 s.get_key(f)
 
 
@@ -533,14 +533,14 @@ kundi KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
     eleza test_register_bad_fd(self):
         # a file descriptor that's been closed should ashiria an OSError
-        # with EBADF
+        # ukijumuisha EBADF
         s = self.SELECTOR()
         bad_f = support.make_bad_fd()
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             s.register(bad_f, selectors.EVENT_READ)
         self.assertEqual(cm.exception.errno, errno.EBADF)
         # the SelectorKey has been removed
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             s.get_key(bad_f)
 
 

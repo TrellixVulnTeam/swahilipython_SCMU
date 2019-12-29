@@ -544,7 +544,7 @@ kundi Pool(object):
                 isipokua:
                     ikiwa set_length:
                         util.debug('doing set_length()')
-                        idx = task[1] ikiwa task else -1
+                        idx = task[1] ikiwa task isipokua -1
                         set_length(idx + 1)
                     endelea
                 koma
@@ -659,7 +659,7 @@ kundi Pool(object):
         util.debug('joining pool')
         ikiwa self._state == RUN:
             ashiria ValueError("Pool ni still running")
-        elikiwa self._state haiko kwenye (CLOSE, TERMINATE):
+        lasivyo self._state haiko kwenye (CLOSE, TERMINATE):
             ashiria ValueError("In unknown state")
         self._worker_handler.join()
         self._task_handler.join()
@@ -690,7 +690,7 @@ kundi Pool(object):
 
         ikiwa (not result_handler.is_alive()) na (len(cache) != 0):
             ashiria AssertionError(
-                "Cannot have cache with result_hander sio alive")
+                "Cannot have cache ukijumuisha result_hander sio alive")
 
         result_handler._state = TERMINATE
         change_notifier.put(Tupu)
@@ -843,7 +843,7 @@ kundi IMapIterator(object):
         rudisha self
 
     eleza next(self, timeout=Tupu):
-        with self._cond:
+        ukijumuisha self._cond:
             jaribu:
                 item = self._items.popleft()
             tatizo IndexError:
@@ -867,7 +867,7 @@ kundi IMapIterator(object):
     __next__ = next                    # XXX
 
     eleza _set(self, i, obj):
-        with self._cond:
+        ukijumuisha self._cond:
             ikiwa self._index == i:
                 self._items.append(obj)
                 self._index += 1
@@ -884,7 +884,7 @@ kundi IMapIterator(object):
                 self._pool = Tupu
 
     eleza _set_length(self, length):
-        with self._cond:
+        ukijumuisha self._cond:
             self._length = length
             ikiwa self._index == self._length:
                 self._cond.notify()
@@ -898,7 +898,7 @@ kundi IMapIterator(object):
 kundi IMapUnorderedIterator(IMapIterator):
 
     eleza _set(self, i, obj):
-        with self._cond:
+        ukijumuisha self._cond:
             self._items.append(obj)
             self._index += 1
             self._cond.notify()

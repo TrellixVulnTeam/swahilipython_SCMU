@@ -36,7 +36,7 @@ _SHUTDOWN = "SHUTDOWN"
 kundi _SSLPipe(object):
     """An SSL "Pipe".
 
-    An SSL pipe allows you to communicate with an SSL/TLS protocol instance
+    An SSL pipe allows you to communicate ukijumuisha an SSL/TLS protocol instance
     through memory buffers. It can be used to implement a security layer kila an
     existing connection where you don't have access to the connection's file
     descriptor, ama kila some reason you don't want to use it.
@@ -110,7 +110,7 @@ kundi _SSLPipe(object):
 
         The optional *callback* argument can be used to install a callback that
         will be called when the handshake ni complete. The callback will be
-        called with Tupu ikiwa successful, else an exception instance.
+        called ukijumuisha Tupu ikiwa successful, isipokua an exception instance.
         """
         ikiwa self._state != _UNWRAPPED:
             ashiria RuntimeError('handshake kwenye progress ama completed')
@@ -202,7 +202,7 @@ kundi _SSLPipe(object):
                     ikiwa sio chunk:  # close_notify
                         koma
 
-            elikiwa self._state == _SHUTDOWN:
+            lasivyo self._state == _SHUTDOWN:
                 # Call shutdown() until it doesn't ashiria anymore.
                 self._sslobj.unwrap()
                 self._sslobj = Tupu
@@ -210,7 +210,7 @@ kundi _SSLPipe(object):
                 ikiwa self._shutdown_cb:
                     self._shutdown_cb()
 
-            elikiwa self._state == _UNWRAPPED:
+            lasivyo self._state == _UNWRAPPED:
                 # Drain possible plaintext data after close_notify.
                 appdata.append(self._incoming.read())
         tatizo (ssl.SSLError, ssl.CertificateError) kama exc:
@@ -237,7 +237,7 @@ kundi _SSLPipe(object):
         remote SSL instance. The offset ni the number of plaintext bytes that
         were processed, which may be less than the length of data.
 
-        NOTE: In case of short writes, this call MUST be retried with the SAME
+        NOTE: In case of short writes, this call MUST be retried ukijumuisha the SAME
         buffer pitaed into the *data* argument (i.e. the id() must be the
         same). This ni an OpenSSL requirement. A further particularity ni that
         a short write will always have offset == 0, because the _ssl module
@@ -311,7 +311,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data ni flushed, the
         protocol's connection_lost() method will (eventually) called
-        with Tupu kama its argument.
+        ukijumuisha Tupu kama its argument.
         """
         self._closed = Kweli
         self._ssl_protocol._start_shutdown()
@@ -395,7 +395,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Tupu kama its argument.
+        called ukijumuisha Tupu kama its argument.
         """
         self._ssl_protocol._abort()
         self._closed = Kweli
@@ -417,7 +417,7 @@ kundi SSLProtocol(protocols.Protocol):
 
         ikiwa ssl_handshake_timeout ni Tupu:
             ssl_handshake_timeout = constants.SSL_HANDSHAKE_TIMEOUT
-        elikiwa ssl_handshake_timeout <= 0:
+        lasivyo ssl_handshake_timeout <= 0:
             ashiria ValueError(
                 f"ssl_handshake_timeout should be a positive number, "
                 f"got {ssl_handshake_timeout}")
@@ -579,7 +579,7 @@ kundi SSLProtocol(protocols.Protocol):
     eleza _get_extra_info(self, name, default=Tupu):
         ikiwa name kwenye self._extra:
             rudisha self._extra[name]
-        elikiwa self._transport ni sio Tupu:
+        lasivyo self._transport ni sio Tupu:
             rudisha self._transport.get_extra_info(name, default)
         isipokua:
             rudisha default
@@ -673,7 +673,7 @@ kundi SSLProtocol(protocols.Protocol):
                 data, offset = self._write_backlog[0]
                 ikiwa data:
                     ssldata, offset = self._sslpipe.feed_appdata(data, offset)
-                elikiwa offset:
+                lasivyo offset:
                     ssldata = self._sslpipe.do_handshake(
                         self._on_handshake_complete)
                     offset = 1

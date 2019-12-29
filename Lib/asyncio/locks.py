@@ -18,16 +18,16 @@ kundi _ContextManager:
     This enables the following idiom kila acquiring na releasing a
     lock around a block:
 
-        with (tuma kutoka lock):
+        ukijumuisha (tuma kutoka lock):
             <block>
 
     wakati failing loudly when accidentally using:
 
-        with lock:
+        ukijumuisha lock:
             <block>
 
     Deprecated, use 'async with' statement:
-        async with lock:
+        async ukijumuisha lock:
             <block>
     """
 
@@ -60,7 +60,7 @@ kundi _ContextManagerMixin:
     eleza __iter__(self):
         # This ni sio a coroutine.  It ni meant to enable the idiom:
         #
-        #     with (tuma kutoka lock):
+        #     ukijumuisha (tuma kutoka lock):
         #         <block>
         #
         # kama an alternative to:
@@ -71,10 +71,10 @@ kundi _ContextManagerMixin:
         #     mwishowe:
         #         lock.release()
         # Deprecated, use 'async with' statement:
-        #     async with lock:
+        #     async ukijumuisha lock:
         #         <block>
-        warnings.warn("'with (tuma kutoka lock)' ni deprecated "
-                      "use 'async with lock' instead",
+        warnings.warn("'ukijumuisha (tuma kutoka lock)' ni deprecated "
+                      "use 'async ukijumuisha lock' instead",
                       DeprecationWarning, stacklevel=2)
         tuma kutoka self.acquire()
         rudisha _ContextManager(self)
@@ -87,10 +87,10 @@ kundi _ContextManagerMixin:
         rudisha _ContextManager(self)
 
     eleza __await__(self):
-        warnings.warn("'with await lock' ni deprecated "
-                      "use 'async with lock' instead",
+        warnings.warn("'ukijumuisha await lock' ni deprecated "
+                      "use 'async ukijumuisha lock' instead",
                       DeprecationWarning, stacklevel=2)
-        # To make "with await lock" work.
+        # To make "ukijumuisha await lock" work.
         rudisha self.__acquire_ctx().__await__()
 
     async eleza __aenter__(self):
@@ -125,10 +125,10 @@ kundi Lock(_ContextManagerMixin):
     release() call resets the state to unlocked; first coroutine which
     ni blocked kwenye acquire() ni being processed.
 
-    acquire() ni a coroutine na should be called with 'await'.
+    acquire() ni a coroutine na should be called ukijumuisha 'await'.
 
     Locks also support the asynchronous context management protocol.
-    'async with lock' statement should be used.
+    'async ukijumuisha lock' statement should be used.
 
     Usage:
 
@@ -144,7 +144,7 @@ kundi Lock(_ContextManagerMixin):
 
         lock = Lock()
         ...
-        async with lock:
+        async ukijumuisha lock:
              ...
 
     Lock objects can be tested kila locking state:
@@ -170,7 +170,7 @@ kundi Lock(_ContextManagerMixin):
 
     eleza __repr__(self):
         res = super().__repr__()
-        extra = 'locked' ikiwa self._locked else 'unlocked'
+        extra = 'locked' ikiwa self._locked isipokua 'unlocked'
         ikiwa self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         rudisha f'<{res[1:-1]} [{extra}]>'
@@ -248,7 +248,7 @@ kundi Event:
     """Asynchronous equivalent to threading.Event.
 
     Class implementing event objects. An event manages a flag that can be set
-    to true with the set() method na reset to false with the clear() method.
+    to true ukijumuisha the set() method na reset to false ukijumuisha the clear() method.
     The wait() method blocks until the flag ni true. The flag ni initially
     false.
     """
@@ -266,7 +266,7 @@ kundi Event:
 
     eleza __repr__(self):
         res = super().__repr__()
-        extra = 'set' ikiwa self._value else 'unset'
+        extra = 'set' ikiwa self._value isipokua 'unset'
         ikiwa self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         rudisha f'<{res[1:-1]} [{extra}]>'
@@ -333,8 +333,8 @@ kundi Condition(_ContextManagerMixin):
 
         ikiwa lock ni Tupu:
             lock = Lock(loop=loop)
-        elikiwa lock._loop ni sio self._loop:
-            ashiria ValueError("loop argument must agree with lock")
+        lasivyo lock._loop ni sio self._loop:
+            ashiria ValueError("loop argument must agree ukijumuisha lock")
 
         self._lock = lock
         # Export the lock's locked(), acquire() na release() methods.
@@ -346,7 +346,7 @@ kundi Condition(_ContextManagerMixin):
 
     eleza __repr__(self):
         res = super().__repr__()
-        extra = 'locked' ikiwa self.locked() else 'unlocked'
+        extra = 'locked' ikiwa self.locked() isipokua 'unlocked'
         ikiwa self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         rudisha f'<{res[1:-1]} [{extra}]>'
@@ -464,7 +464,7 @@ kundi Semaphore(_ContextManagerMixin):
 
     eleza __repr__(self):
         res = super().__repr__()
-        extra = 'locked' ikiwa self.locked() else f'unlocked, value:{self._value}'
+        extra = 'locked' ikiwa self.locked() isipokua f'unlocked, value:{self._value}'
         ikiwa self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
         rudisha f'<{res[1:-1]} [{extra}]>'

@@ -23,11 +23,11 @@ kundi GenericTests(unittest.TestCase):
             sig = getattr(signal, name)
             ikiwa name kwenye {'SIG_DFL', 'SIG_IGN'}:
                 self.assertIsInstance(sig, signal.Handlers)
-            elikiwa name kwenye {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
+            lasivyo name kwenye {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
                 self.assertIsInstance(sig, signal.Sigmasks)
-            elikiwa name.startswith('SIG') na sio name.startswith('SIG_'):
+            lasivyo name.startswith('SIG') na sio name.startswith('SIG_'):
                 self.assertIsInstance(sig, signal.Signals)
-            elikiwa name.startswith('CTRL_'):
+            lasivyo name.startswith('CTRL_'):
                 self.assertIsInstance(sig, signal.Signals)
                 self.assertEqual(sys.platform, "win32")
 
@@ -121,10 +121,10 @@ kundi WindowsSignalTests(unittest.TestCase):
         # Issue #18396: Ensure the above loop at least tested *something*
         self.assertKweli(checked)
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             signal.signal(-1, handler)
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             signal.signal(7, handler)
 
     @unittest.skipUnless(sys.executable, "sys.executable required.")
@@ -146,11 +146,11 @@ kundi WakeupFDTests(unittest.TestCase):
 
     eleza test_invalid_call(self):
         # First parameter ni positional-only
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             signal.set_wakeup_fd(signum=signal.SIGINT)
 
         # warn_on_full_buffer ni a keyword-only parameter
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             signal.set_wakeup_fd(signal.SIGINT, Uongo)
 
     eleza test_invalid_fd(self):
@@ -208,7 +208,7 @@ kundi WakeupFDTests(unittest.TestCase):
 
         # fd must be non-blocking
         os.set_blocking(wfd, Kweli)
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             signal.set_wakeup_fd(wfd)
         self.assertEqual(str(cm.exception),
                          "the fd %s must be kwenye non-blocking mode" % wfd)
@@ -283,7 +283,7 @@ kundi WakeupSignalTests(unittest.TestCase):
         # Set wakeup_fd a read-only file descriptor to trigger the error
         signal.set_wakeup_fd(r)
         jaribu:
-            with captured_stderr() kama err:
+            ukijumuisha captured_stderr() kama err:
                 signal.ashiria_signal(signal.SIGALRM)
         tatizo ZeroDivisionError:
             # An ignored exception should have been printed out on stderr
@@ -473,7 +473,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         read.close()
         write.close()
 
-        with captured_stderr() kama err:
+        ukijumuisha captured_stderr() kama err:
             signal.ashiria_signal(signum)
 
         err = err.getvalue()
@@ -518,7 +518,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         isipokua:
             write.setblocking(Uongo)
 
-        # Start with large chunk size to reduce the
+        # Start ukijumuisha large chunk size to reduce the
         # number of send needed to fill the buffer.
         written = 0
         kila chunk_size kwenye (2 ** 16, 2 ** 8, 1):
@@ -547,7 +547,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
                'to the signal wakeup fd')
         signal.set_wakeup_fd(write.fileno())
 
-        with captured_stderr() kama err:
+        ukijumuisha captured_stderr() kama err:
             signal.ashiria_signal(signum)
 
         err = err.getvalue()
@@ -558,7 +558,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         # And also ikiwa warn_on_full_buffer=Kweli
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=Kweli)
 
-        with captured_stderr() kama err:
+        ukijumuisha captured_stderr() kama err:
             signal.ashiria_signal(signum)
 
         err = err.getvalue()
@@ -569,7 +569,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         # But sio ikiwa warn_on_full_buffer=Uongo
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=Uongo)
 
-        with captured_stderr() kama err:
+        ukijumuisha captured_stderr() kama err:
             signal.ashiria_signal(signum)
 
         err = err.getvalue()
@@ -581,7 +581,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         # settings don't leak across calls.
         signal.set_wakeup_fd(write.fileno())
 
-        with captured_stderr() kama err:
+        ukijumuisha captured_stderr() kama err:
             signal.ashiria_signal(signum)
 
         err = err.getvalue()
@@ -639,7 +639,7 @@ kundi SiginterruptTest(unittest.TestCase):
                 os.close(r)
                 os.close(w)
         """ % (interrupt,)
-        with spawn_python('-c', code) kama process:
+        ukijumuisha spawn_python('-c', code) kama process:
             jaribu:
                 # wait until the child process ni loaded na has started
                 first_line = process.stdout.readline()
@@ -702,7 +702,7 @@ kundi ItimerTest(unittest.TestCase):
             # it shouldn't be here, because it should have been disabled.
             ashiria signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
                 "timer.")
-        elikiwa self.hndl_count == 3:
+        lasivyo self.hndl_count == 3:
             # disable ITIMER_VIRTUAL, this function shouldn't be called anymore
             signal.setitimer(signal.ITIMER_VIRTUAL, 0)
 
@@ -729,7 +729,7 @@ kundi ItimerTest(unittest.TestCase):
 
     # Issue 3864, unknown ikiwa this affects earlier versions of freebsd also
     @unittest.skipIf(sys.platform kwenye ('netbsd5',),
-        'itimer sio reliable (does sio mix well with threading) on some BSDs.')
+        'itimer sio reliable (does sio mix well ukijumuisha threading) on some BSDs.')
     eleza test_itimer_virtual(self):
         self.itimer = signal.ITIMER_VIRTUAL
         signal.signal(signal.SIGVTALRM, self.sig_vtalrm)
@@ -887,7 +887,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             sys.exit(1)
         ''' % (test.strip(), blocked)
 
-        # sig*wait* must be called with the signal blocked: since the current
+        # sig*wait* must be called ukijumuisha the signal blocked: since the current
         # process might have several threads running, use a subprocess to have
         # a single thread.
         assert_python_ok('-c', code)
@@ -929,7 +929,7 @@ kundi PendingSignalsTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigtimedwait()')
     eleza test_sigtimedwait_poll(self):
-        # check that polling with sigtimedwait works
+        # check that polling ukijumuisha sigtimedwait works
         self.wait_helper(signal.SIGALRM, '''
         eleza test(signum):
             agiza os
@@ -996,11 +996,11 @@ kundi PendingSignalsTests(unittest.TestCase):
         self.assertRaises(TypeError, signal.pthread_sigmask, 1)
         self.assertRaises(TypeError, signal.pthread_sigmask, 1, 2, 3)
         self.assertRaises(OSError, signal.pthread_sigmask, 1700, [])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             signal.pthread_sigmask(signal.SIG_BLOCK, [signal.NSIG])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             signal.pthread_sigmask(signal.SIG_BLOCK, [0])
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             signal.pthread_sigmask(signal.SIG_BLOCK, [1<<1000])
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
@@ -1092,7 +1092,7 @@ kundi PendingSignalsTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(signal, 'pthread_kill'),
                          'need signal.pthread_kill()')
     eleza test_pthread_kill_main_thread(self):
-        # Test that a signal can be sent to the main thread with pthread_kill()
+        # Test that a signal can be sent to the main thread ukijumuisha pthread_kill()
         # before any other thread has been created (see issue #12392).
         code = """ikiwa Kweli:
             agiza threading
@@ -1107,7 +1107,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             sys.exit(2)
         """
 
-        with spawn_python('-c', code) kama process:
+        ukijumuisha spawn_python('-c', code) kama process:
             stdout, stderr = process.communicate()
             exitcode = process.wait()
             ikiwa exitcode != 3:
@@ -1157,7 +1157,7 @@ kundi StressTest(unittest.TestCase):
         reso = self.measure_itimer_resolution()
         ikiwa reso <= 1e-4:
             rudisha 10000
-        elikiwa reso <= 1e-2:
+        lasivyo reso <= 1e-2:
             rudisha 100
         isipokua:
             self.skipTest("detected itimer resolution (%.3f s.) too high "
@@ -1246,7 +1246,7 @@ kundi StressTest(unittest.TestCase):
 kundi RaiseSignalTest(unittest.TestCase):
 
     eleza test_sigint(self):
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             signal.ashiria_signal(signal.SIGINT)
 
     @unittest.skipIf(sys.platform != "win32", "Windows specific test")

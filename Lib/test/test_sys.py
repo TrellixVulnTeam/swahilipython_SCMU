@@ -26,7 +26,7 @@ kundi DisplayHookTest(unittest.TestCase):
     eleza test_original_displayhook(self):
         dh = sys.__displayhook__
 
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             dh(42)
 
         self.assertEqual(out.getvalue(), "42\n")
@@ -34,7 +34,7 @@ kundi DisplayHookTest(unittest.TestCase):
 
         toa builtins._
 
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             dh(Tupu)
 
         self.assertEqual(out.getvalue(), "")
@@ -63,7 +63,7 @@ kundi DisplayHookTest(unittest.TestCase):
         eleza baddisplayhook(obj):
             ashiria ValueError
 
-        with support.swap_attr(sys, 'displayhook', baddisplayhook):
+        ukijumuisha support.swap_attr(sys, 'displayhook', baddisplayhook):
             code = compile("42", "<string>", "single")
             self.assertRaises(ValueError, eval, code)
 
@@ -74,7 +74,7 @@ kundi ExceptHookTest(unittest.TestCase):
         jaribu:
             ashiria ValueError(42)
         tatizo ValueError kama exc:
-            with support.captured_stderr() kama err:
+            ukijumuisha support.captured_stderr() kama err:
                 sys.__excepthook__(*sys.exc_info())
 
         self.assertKweli(err.getvalue().endswith("ValueError: 42\n"))
@@ -84,13 +84,13 @@ kundi ExceptHookTest(unittest.TestCase):
     eleza test_excepthook_bytes_filename(self):
         # bpo-37467: sys.excepthook() must sio crash ikiwa a filename
         # ni a bytes string
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
 
             jaribu:
                 ashiria SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
             tatizo SyntaxError kama exc:
-                with support.captured_stderr() kama err:
+                ukijumuisha support.captured_stderr() kama err:
                     sys.__excepthook__(*sys.exc_info())
 
         err = err.getvalue()
@@ -99,7 +99,7 @@ kundi ExceptHookTest(unittest.TestCase):
         self.assertKweli(err.endswith("SyntaxError: msg\n"))
 
     eleza test_excepthook(self):
-        with test.support.captured_output("stderr") kama stderr:
+        ukijumuisha test.support.captured_output("stderr") kama stderr:
             sys.excepthook(1, '1', 1)
         self.assertKweli("TypeError: print_exception(): Exception expected kila " \
                          "value, str found" kwenye stderr.getvalue())
@@ -114,11 +114,11 @@ kundi SysModuleTest(unittest.TestCase):
         test.support.reap_children()
 
     eleza test_exit(self):
-        # call with two arguments
+        # call ukijumuisha two arguments
         self.assertRaises(TypeError, sys.exit, 42, 42)
 
         # call without argument
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             sys.exit()
         self.assertIsTupu(cm.exception.code)
 
@@ -127,24 +127,24 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
-        # call with integer argument
-        with self.assertRaises(SystemExit) kama cm:
+        # call ukijumuisha integer argument
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             sys.exit(42)
         self.assertEqual(cm.exception.code, 42)
 
-        # call with tuple argument with one entry
+        # call ukijumuisha tuple argument ukijumuisha one entry
         # entry will be unpacked
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             sys.exit((42,))
         self.assertEqual(cm.exception.code, 42)
 
-        # call with string argument
-        with self.assertRaises(SystemExit) kama cm:
+        # call ukijumuisha string argument
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             sys.exit("exit")
         self.assertEqual(cm.exception.code, "exit")
 
-        # call with tuple argument with two entries
-        with self.assertRaises(SystemExit) kama cm:
+        # call ukijumuisha tuple argument ukijumuisha two entries
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             sys.exit((17, 23))
         self.assertEqual(cm.exception.code, (17, 23))
 
@@ -159,7 +159,7 @@ kundi SysModuleTest(unittest.TestCase):
             self.assertEqual(rc, 1)
             self.assertEqual(out, b'')
             self.assertKweli(err.startswith(expected),
-                "%s doesn't start with %s" % (ascii(err), ascii(expected)))
+                "%s doesn't start ukijumuisha %s" % (ascii(err), ascii(expected)))
 
         # test that stderr buffer ni flushed before the exit message ni written
         # into stderr
@@ -167,7 +167,7 @@ kundi SysModuleTest(unittest.TestCase):
             r'agiza sys; sys.stderr.write("unflushed,"); sys.exit("message")',
             b"unflushed,message")
 
-        # test that the exit message ni written with backslashreplace error
+        # test that the exit message ni written ukijumuisha backslashreplace error
         # handler to stderr
         check_exit_message(
             r'agiza sys; sys.exit("surrogates:\uDCFF")',
@@ -188,7 +188,7 @@ kundi SysModuleTest(unittest.TestCase):
     # testing sys.setprofile() ni done kwenye test_sys_setprofile.py
 
     eleza test_setcheckinterval(self):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.assertRaises(TypeError, sys.setcheckinterval)
             orig = sys.getcheckinterval()
@@ -222,7 +222,7 @@ kundi SysModuleTest(unittest.TestCase):
 
     eleza test_recursionlimit_recovery(self):
         ikiwa hasattr(sys, 'gettrace') na sys.gettrace():
-            self.skipTest('fatal error ikiwa run with a trace function')
+            self.skipTest('fatal error ikiwa run ukijumuisha a trace function')
 
         oldlimit = sys.getrecursionlimit()
         eleza f():
@@ -255,7 +255,7 @@ kundi SysModuleTest(unittest.TestCase):
         eleza set_recursion_limit_at_depth(depth, limit):
             recursion_depth = get_recursion_depth()
             ikiwa recursion_depth >= depth:
-                with self.assertRaises(RecursionError) kama cm:
+                ukijumuisha self.assertRaises(RecursionError) kama cm:
                     sys.setrecursionlimit(limit)
                 self.assertRegex(str(cm.exception),
                                  "cannot set the recursion limit to [0-9]+ "
@@ -292,7 +292,7 @@ kundi SysModuleTest(unittest.TestCase):
 
             sys.setrecursionlimit(%d)
             f()""")
-        with test.support.SuppressCrashReport():
+        ukijumuisha test.support.SuppressCrashReport():
             kila i kwenye (50, 1000):
                 sub = subprocess.Popen([sys.executable, '-c', code % i],
                     stderr=subprocess.PIPE)
@@ -349,7 +349,7 @@ kundi SysModuleTest(unittest.TestCase):
     @test.support.refcount_test
     eleza test_refcount(self):
         # n here must be a global kwenye order kila this test to pita while
-        # tracing with a python function.  Tracing calls PyFrame_FastToLocals
+        # tracing ukijumuisha a python function.  Tracing calls PyFrame_FastToLocals
         # which will add a copy of any locals to the frame object, causing
         # the reference count to increase by 2 instead of 1.
         global n
@@ -476,7 +476,7 @@ kundi SysModuleTest(unittest.TestCase):
 
             ikiwa algo == 1:
                 self.assertEqual(sys.hash_info.algorithm, "siphash24")
-            elikiwa algo == 2:
+            lasivyo algo == 2:
                 self.assertEqual(sys.hash_info.algorithm, "fnv")
             isipokua:
                 self.assertIn(sys.hash_info.algorithm, {"fnv", "siphash24"})
@@ -557,7 +557,7 @@ kundi SysModuleTest(unittest.TestCase):
                  "dev_mode", "utf8_mode")
         kila attr kwenye attrs:
             self.assertKweli(hasattr(sys.flags, attr), attr)
-            attr_type = bool ikiwa attr == "dev_mode" else int
+            attr_type = bool ikiwa attr == "dev_mode" isipokua int
             self.assertEqual(type(getattr(sys.flags, attr)), attr_type, attr)
         self.assertKweli(repr(sys.flags))
         self.assertEqual(len(sys.flags), len(attrs))
@@ -568,9 +568,9 @@ kundi SysModuleTest(unittest.TestCase):
         # Users are intentionally prevented kutoka creating new instances of
         # sys.flags, sys.version_info, na sys.getwindowsversion.
         attr_type = type(sys_attr)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             attr_type()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             attr_type.__new__(attr_type)
 
     eleza test_sys_flags_no_instantiation(self):
@@ -939,11 +939,11 @@ kundi UnraisableHookTest(unittest.TestCase):
 
     eleza test_original_unraisablehook(self):
         kila err_msg kwenye (Tupu, "original hook"):
-            with self.subTest(err_msg=err_msg):
+            ukijumuisha self.subTest(err_msg=err_msg):
                 obj = "an object"
 
-                with test.support.captured_output("stderr") kama stderr:
-                    with test.support.swap_attr(sys, 'unraisablehook',
+                ukijumuisha test.support.captured_output("stderr") kama stderr:
+                    ukijumuisha test.support.swap_attr(sys, 'unraisablehook',
                                                 sys.__unraisablehook__):
                         self.write_unraisable_exc(ValueError(42), err_msg, obj)
 
@@ -974,9 +974,9 @@ kundi UnraisableHookTest(unittest.TestCase):
                 ashiria exc
 
         kila test_kundi kwenye (BrokenDel, BrokenExceptionDel):
-            with self.subTest(test_class):
+            ukijumuisha self.subTest(test_class):
                 obj = test_class()
-                with test.support.captured_stderr() kama stderr, \
+                ukijumuisha test.support.captured_stderr() kama stderr, \
                      test.support.swap_attr(sys, 'unraisablehook',
                                             sys.__unraisablehook__):
                     # Trigger obj.__del__()
@@ -998,9 +998,9 @@ kundi UnraisableHookTest(unittest.TestCase):
 
     eleza test_original_unraisablehook_wrong_type(self):
         exc = ValueError(42)
-        with test.support.swap_attr(sys, 'unraisablehook',
+        ukijumuisha test.support.swap_attr(sys, 'unraisablehook',
                                     sys.__unraisablehook__):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 sys.unraisablehook(exc)
 
     eleza test_custom_unraisablehook(self):
@@ -1012,7 +1012,7 @@ kundi UnraisableHookTest(unittest.TestCase):
 
         obj = object()
         jaribu:
-            with test.support.swap_attr(sys, 'unraisablehook', hook_func):
+            ukijumuisha test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 expected = self.write_unraisable_exc(ValueError(42),
                                                      "custom hook", obj)
                 kila attr kwenye "exc_type exc_value exc_traceback err_msg object".split():
@@ -1028,8 +1028,8 @@ kundi UnraisableHookTest(unittest.TestCase):
         eleza hook_func(*args):
             ashiria Exception("hook_func failed")
 
-        with test.support.captured_output("stderr") kama stderr:
-            with test.support.swap_attr(sys, 'unraisablehook', hook_func):
+        ukijumuisha test.support.captured_output("stderr") kama stderr:
+            ukijumuisha test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 self.write_unraisable_exc(ValueError(42),
                                           "custom hook fail", Tupu)
 
@@ -1085,11 +1085,11 @@ kundi SizeofTest(unittest.TestCase):
                 rudisha int(self)
         self.assertEqual(sys.getsizeof(OverflowSizeof(sys.maxsize)),
                          sys.maxsize + self.gc_headsize)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             sys.getsizeof(OverflowSizeof(sys.maxsize + 1))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             sys.getsizeof(OverflowSizeof(-1))
-        with self.assertRaises((ValueError, OverflowError)):
+        ukijumuisha self.assertRaises((ValueError, OverflowError)):
             sys.getsizeof(OverflowSizeof(-sys.maxsize - 1))
 
     eleza test_default(self):
@@ -1317,15 +1317,15 @@ kundi SizeofTest(unittest.TestCase):
                   '2P'                  # PyBufferProcs
                   '4P')
         kundi newstyleclass(object): pita
-        # Separate block kila PyDictKeysObject with 8 keys na 5 entries
+        # Separate block kila PyDictKeysObject ukijumuisha 8 keys na 5 entries
         check(newstyleclass, s + calcsize("2nP2n0P") + 8 + 5*calcsize("n2P"))
-        # dict with shared keys
+        # dict ukijumuisha shared keys
         check(newstyleclass().__dict__, size('nQ2P') + 5*self.P)
         o = newstyleclass()
         o.a = o.b = o.c = o.d = o.e = o.f = o.g = o.h = 1
-        # Separate block kila PyDictKeysObject with 16 keys na 10 entries
+        # Separate block kila PyDictKeysObject ukijumuisha 16 keys na 10 entries
         check(newstyleclass, s + calcsize("2nP2n0P") + 16 + 10*calcsize("n2P"))
-        # dict with shared keys
+        # dict ukijumuisha shared keys
         check(newstyleclass().__dict__, size('nQ2P') + 10*self.P)
         # unicode
         # each tuple contains a string na its expected character size
@@ -1341,9 +1341,9 @@ kundi SizeofTest(unittest.TestCase):
             maxchar = ord(max(s))
             ikiwa maxchar < 128:
                 L = size(asciifields) + len(s) + 1
-            elikiwa maxchar < 256:
+            lasivyo maxchar < 256:
                 L = size(compactfields) + len(s) + 1
-            elikiwa maxchar < 65536:
+            lasivyo maxchar < 65536:
                 L = size(compactfields) + 2*(len(s) + 1)
             isipokua:
                 L = size(compactfields) + 4*(len(s) + 1)

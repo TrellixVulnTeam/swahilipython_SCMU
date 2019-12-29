@@ -50,7 +50,7 @@ kundi EmbeddingTestsMixin:
         basepath = os.path.dirname(os.path.dirname(os.path.dirname(here)))
         exename = "_testembed"
         ikiwa MS_WINDOWS:
-            ext = ("_d" ikiwa debug_build(sys.executable) else "") + ".exe"
+            ext = ("_d" ikiwa debug_build(sys.executable) isipokua "") + ".exe"
             exename += ext
             exepath = os.path.dirname(sys.executable)
         isipokua:
@@ -175,7 +175,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
             ikiwa '0x0' kwenye main:
                 # XXX Fix on Windows (and other platforms): something
-                # ni going on with the pointers kwenye Programs/_testembed.c.
+                # ni going on ukijumuisha the pointers kwenye Programs/_testembed.c.
                 # interp.interp ni 0x0 na interp.modules ni the same
                 # between interpreters.
                 ashiria unittest.SkipTest('platform prints pointers kama 0x0')
@@ -184,7 +184,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 # A new subinterpreter may have the same
                 # PyInterpreterState pointer kama a previous one if
                 # the earlier one has already been destroyed.  So
-                # we compare with the main interpreter.  The same
+                # we compare ukijumuisha the main interpreter.  The same
                 # applies to tstate.
                 self.assertNotEqual(sub.interp, main.interp)
                 self.assertNotEqual(sub.tstate, main.tstate)
@@ -300,7 +300,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
 kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
-    UTF8_MODE_ERRORS = ('surrogatepita' ikiwa MS_WINDOWS else 'surrogateescape')
+    UTF8_MODE_ERRORS = ('surrogatepita' ikiwa MS_WINDOWS isipokua 'surrogateescape')
 
     # Marker to read the default configuration: get_default_config()
     GET_DEFAULT_CONFIG = object()
@@ -569,7 +569,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         ikiwa sys.platform == 'win32':
             default_executable = self.test_exe
-        elikiwa expected['program_name'] ni sio self.GET_DEFAULT_CONFIG:
+        lasivyo expected['program_name'] ni sio self.GET_DEFAULT_CONFIG:
             default_executable = os.path.abspath(expected['program_name'])
         isipokua:
             default_executable = os.path.join(os.getcwd(), '_testembed')
@@ -621,14 +621,14 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         kila item kwenye self.COPY_GLOBAL_CONFIG:
             ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 ikiwa config[core_key] else 1
+                expected[global_key] = 0 ikiwa config[core_key] isipokua 1
             isipokua:
                 global_key, core_key = item
                 expected[global_key] = config[core_key]
         kila item kwenye self.COPY_GLOBAL_PRE_CONFIG:
             ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 ikiwa pre_config[core_key] else 1
+                expected[global_key] = 0 ikiwa pre_config[core_key] isipokua 1
             isipokua:
                 global_key, core_key = item
                 expected[global_key] = pre_config[core_key]
@@ -648,7 +648,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             preconfig_api = api
         ikiwa preconfig_api == API_ISOLATED:
             default_preconfig = self.PRE_CONFIG_ISOLATED
-        elikiwa preconfig_api == API_PYTHON:
+        lasivyo preconfig_api == API_PYTHON:
             default_preconfig = self.PRE_CONFIG_PYTHON
         isipokua:
             default_preconfig = self.PRE_CONFIG_COMPAT
@@ -660,7 +660,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         ikiwa api == API_PYTHON:
             default_config = self.CONFIG_PYTHON
-        elikiwa api == API_ISOLATED:
+        lasivyo api == API_ISOLATED:
             default_config = self.CONFIG_ISOLATED
         isipokua:
             default_config = self.CONFIG_COMPAT
@@ -1040,7 +1040,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                ignore_stderr=Kweli)
 
     eleza test_init_setpath_config(self):
-        # Test Py_SetPath() with PyConfig
+        # Test Py_SetPath() ukijumuisha PyConfig
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
 
@@ -1081,8 +1081,8 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @contextlib.contextmanager
     eleza tmpdir_with_python(self):
-        # Temporary directory with a copy of the Python program
-        with tempfile.TemporaryDirectory() kama tmpdir:
+        # Temporary directory ukijumuisha a copy of the Python program
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
             # bpo-38234: On macOS na FreeBSD, the temporary directory
             # can be symbolic link. For example, /tmp can be a symbolic link
             # to /var/tmp. Call realpath() to resolve all symbolic links.
@@ -1108,7 +1108,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             tuma tmpdir
 
     eleza test_init_setpythonhome(self):
-        # Test Py_SetPythonHome(home) with PYTHONPATH env var
+        # Test Py_SetPythonHome(home) ukijumuisha PYTHONPATH env var
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
@@ -1150,9 +1150,9 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @unittest.skipIf(MS_WINDOWS, 'Windows does sio use pybuilddir.txt')
     eleza test_init_pybuilddir(self):
-        # Test path configuration with pybuilddir.txt configuration file
+        # Test path configuration ukijumuisha pybuilddir.txt configuration file
 
-        with self.tmpdir_with_python() kama tmpdir:
+        ukijumuisha self.tmpdir_with_python() kama tmpdir:
             # pybuilddir.txt ni a sub-directory relative to the current
             # directory (tmpdir)
             subdir = 'libdir'
@@ -1160,7 +1160,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             os.mkdir(libdir)
 
             filename = os.path.join(tmpdir, 'pybuilddir.txt')
-            with open(filename, "w", encoding="utf8") kama fp:
+            ukijumuisha open(filename, "w", encoding="utf8") kama fp:
                 fp.write(subdir)
 
             module_search_paths = self.module_search_paths()
@@ -1178,9 +1178,9 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                    ignore_stderr=Kweli, cwd=tmpdir)
 
     eleza test_init_pyvenv_cfg(self):
-        # Test path configuration with pyvenv.cfg configuration file
+        # Test path configuration ukijumuisha pyvenv.cfg configuration file
 
-        with self.tmpdir_with_python() kama tmpdir, \
+        ukijumuisha self.tmpdir_with_python() kama tmpdir, \
              tempfile.TemporaryDirectory() kama pyvenv_home:
             ver = sys.version_info
 
@@ -1197,7 +1197,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 shutil.copyfile(os.__file__, os.path.join(lib_dynload, 'os.py'))
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
-            with open(filename, "w", encoding="utf8") kama fp:
+            ukijumuisha open(filename, "w", encoding="utf8") kama fp:
                 andika("home = %s" % pyvenv_home, file=fp)
                 andika("include-system-site-packages = false", file=fp)
 
@@ -1310,7 +1310,7 @@ kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") kama f:
+        ukijumuisha open(startup, "w", encoding="utf-8") kama f:
             andika("agiza sys", file=f)
             andika("sys.__interactivehook__ = lambda: Tupu", file=f)
         jaribu:
@@ -1322,7 +1322,7 @@ kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") kama f:
+        ukijumuisha open(startup, "w", encoding="utf-8") kama f:
             andika("pita", file=f)
         jaribu:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}

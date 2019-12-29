@@ -45,7 +45,7 @@ kundi Test_MultibyteCodec(unittest.TestCase):
                           b'apple\x92ham\x93spam', 'test.cjktest')
 
     eleza test_errorcallback_custom_ignore(self):
-        # Issue #23215: MemoryError with custom error handlers na multibyte codecs
+        # Issue #23215: MemoryError ukijumuisha custom error handlers na multibyte codecs
         data = 100 * "\udc00"
         codecs.register_error("test.ignore", codecs.ignore_errors)
         kila enc kwenye ALL_CJKENCODINGS:
@@ -207,7 +207,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
 kundi Test_IncrementalDecoder(unittest.TestCase):
 
     eleza test_dbcs(self):
-        # cp949 decoder ni simple with only 1 ama 2 bytes sequences.
+        # cp949 decoder ni simple ukijumuisha only 1 ama 2 bytes sequences.
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0\xcc\xbd'),
                          '\ud30c\uc774')

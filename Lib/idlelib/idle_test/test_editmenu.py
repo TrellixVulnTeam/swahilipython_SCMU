@@ -35,22 +35,22 @@ kundi PasteTest(unittest.TestCase):
         toa cls.root
 
     eleza test_paste_text(self):
-        "Test pasting into text with na without a selection."
+        "Test pasting into text ukijumuisha na without a selection."
         text = self.text
         kila tag, ans kwenye ('', 'onetwo\n'), ('sel', 'two\n'):
-            with self.subTest(tag=tag, ans=ans):
+            ukijumuisha self.subTest(tag=tag, ans=ans):
                 text.delete('1.0', 'end')
                 text.insert('1.0', 'one', tag)
                 text.event_generate('<<Paste>>')
                 self.assertEqual(text.get('1.0', 'end'), ans)
 
     eleza test_paste_entry(self):
-        "Test pasting into an entry with na without a selection."
+        "Test pasting into an entry ukijumuisha na without a selection."
         # Generated <<Paste>> fails kila tk entry without empty select
         # range kila 'no selection'.  Live widget works fine.
         kila entry kwenye self.entry, self.tenjaribu:
             kila end, ans kwenye (0, 'onetwo'), ('end', 'two'):
-                with self.subTest(entry=entry, end=end, ans=ans):
+                ukijumuisha self.subTest(entry=entry, end=end, ans=ans):
                     entry.delete(0, 'end')
                     entry.insert(0, 'one')
                     entry.select_range(0, end)
@@ -58,11 +58,11 @@ kundi PasteTest(unittest.TestCase):
                     self.assertEqual(entry.get(), ans)
 
     eleza test_paste_spin(self):
-        "Test pasting into a spinbox with na without a selection."
+        "Test pasting into a spinbox ukijumuisha na without a selection."
         # See note above kila entry.
         spin = self.spin
         kila end, ans kwenye (0, 'onetwo'), ('end', 'two'):
-            with self.subTest(end=end, ans=ans):
+            ukijumuisha self.subTest(end=end, ans=ans):
                 spin.delete(0, 'end')
                 spin.insert(0, 'one')
                 spin.selection('range', 0, end)  # see note

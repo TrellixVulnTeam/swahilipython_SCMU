@@ -32,9 +32,9 @@ eleza _format_callbacks(cb):
 
     ikiwa size == 1:
         cb = format_cb(cb[0][0])
-    elikiwa size == 2:
+    lasivyo size == 2:
         cb = '{}, {}'.format(format_cb(cb[0][0]), format_cb(cb[1][0]))
-    elikiwa size > 2:
+    lasivyo size > 2:
         cb = '{}, <{} more>, {}'.format(format_cb(cb[0][0]),
                                         size - 2,
                                         format_cb(cb[-1][0]))

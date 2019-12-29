@@ -133,7 +133,7 @@ eleza updatecache(filename, module_globals=Tupu):
         isipokua:
             rudisha []
     jaribu:
-        with tokenize.open(fullname) kama fp:
+        ukijumuisha tokenize.open(fullname) kama fp:
             lines = fp.readlines()
     tatizo OSError:
         rudisha []
@@ -145,7 +145,7 @@ eleza updatecache(filename, module_globals=Tupu):
 
 
 eleza lazycache(filename, module_globals):
-    """Seed the cache kila filename with module_globals.
+    """Seed the cache kila filename ukijumuisha module_globals.
 
     The module loader will be asked kila the source only when getlines is
     called, sio immediately.
@@ -153,7 +153,7 @@ eleza lazycache(filename, module_globals):
     If there ni an entry kwenye the cache already, it ni sio altered.
 
     :rudisha: Kweli ikiwa a lazy load ni registered kwenye the cache,
-        otherwise Uongo. To register such a load a module loader with a
+        otherwise Uongo. To register such a load a module loader ukijumuisha a
         get_source method must be found, the filename must be a cachable
         filename, na the filename must sio be already cached.
     """

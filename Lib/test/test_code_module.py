@@ -74,7 +74,7 @@ kundi TestInteractiveConsole(unittest.TestCase):
         self.assertKweli(hook.called)
 
     eleza test_banner(self):
-        # with banner
+        # ukijumuisha banner
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact(banner='Foo')
         self.assertEqual(len(self.stderr.method_calls), 3)

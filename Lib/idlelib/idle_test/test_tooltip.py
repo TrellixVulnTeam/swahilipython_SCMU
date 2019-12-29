@@ -1,6 +1,6 @@
 """Test tooltip, coverage 100%.
 
-Coverage ni 100% after excluding 6 lines with "# pragma: no cover".
+Coverage ni 100% after excluding 6 lines ukijumuisha "# pragma: no cover".
 They involve TclErrors that either should ama should sio happen kwenye a
 particular situation, na which are 'pita'ed ikiwa they do.
 """
@@ -60,7 +60,7 @@ kundi ToolTipBaseTest(unittest.TestCase):
         button.pack()
         self.addCleanup(button.destroy)
 
-        with self.assertRaises(NotImplementedError):
+        ukijumuisha self.assertRaises(NotImplementedError):
             tooltip = TooltipBase(button)
             tooltip.showtip()
 
@@ -111,7 +111,7 @@ kundi HovertipTest(unittest.TestCase):
     eleza test_hover_with_delay(self):
         # Run multiple tests requiring an actual delay simultaneously.
 
-        # Test #1: A hover tip with a non-zero delay appears after the delay.
+        # Test #1: A hover tip ukijumuisha a non-zero delay appears after the delay.
         tooltip1 = Hovertip(self.button, 'ToolTip text', hover_delay=100)
         self.addCleanup(tooltip1.hidetip)
         tooltip1.showtip = add_call_counting(tooltip1.showtip)
@@ -121,7 +121,7 @@ kundi HovertipTest(unittest.TestCase):
         root.update()
         self.assertUongo(self.is_tipwindow_shown(tooltip1))
 
-        # Test #2: A hover tip with a non-zero delay doesn't appear when
+        # Test #2: A hover tip ukijumuisha a non-zero delay doesn't appear when
         # the mouse stops hovering over the base widget before the delay
         # expires.
         tooltip2 = Hovertip(self.button, 'ToolTip text', hover_delay=100)

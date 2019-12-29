@@ -76,13 +76,13 @@ kundi SafeUUID(Enum):
 kundi UUID:
     """Instances of the UUID kundi represent UUIDs kama specified kwenye RFC 4122.
     UUID objects are immutable, hashable, na usable kama dictionary keys.
-    Converting a UUID to a string with str() tumas something kwenye the form
+    Converting a UUID to a string ukijumuisha str() tumas something kwenye the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
     five possible forms: a similar string of hexadecimal digits, ama a tuple
-    of six integer fields (with 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
+    of six integer fields (ukijumuisha 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
     48-bit values respectively) kama an argument named 'fields', ama a string
-    of 16 bytes (with all the integer fields kwenye big-endian order) kama an
-    argument named 'bytes', ama a string of 16 bytes (with the first three
+    of 16 bytes (ukijumuisha all the integer fields kwenye big-endian order) kama an
+    argument named 'bytes', ama a string of 16 bytes (ukijumuisha the first three
     fields kwenye little-endian order) kama an argument named 'bytes_le', ama a
     single 128-bit integer kama an argument named 'int'.
 
@@ -91,7 +91,7 @@ kundi UUID:
         bytes       the UUID kama a 16-byte string (containing the six
                     integer fields kwenye big-endian byte order)
 
-        bytes_le    the UUID kama a 16-byte string (with time_low, time_mid,
+        bytes_le    the UUID kama a 16-byte string (ukijumuisha time_low, time_mid,
                     na time_hi_version kwenye little-endian byte order)
 
         fields      a tuple of the six integer fields of the UUID,
@@ -226,7 +226,7 @@ kundi UUID:
         # is_safe was added kwenye 3.7; it ni also omitted when it ni "unknown"
         object.__setattr__(self, 'is_safe',
                            SafeUUID(state['is_safe'])
-                           ikiwa 'is_safe' kwenye state else SafeUUID.unknown)
+                           ikiwa 'is_safe' kwenye state isipokua SafeUUID.unknown)
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, UUID):
@@ -334,9 +334,9 @@ kundi UUID:
     eleza variant(self):
         ikiwa sio self.int & (0x8000 << 48):
             rudisha RESERVED_NCS
-        elikiwa sio self.int & (0x4000 << 48):
+        lasivyo sio self.int & (0x4000 << 48):
             rudisha RFC_4122
-        elikiwa sio self.int & (0x2000 << 48):
+        lasivyo sio self.int & (0x2000 << 48):
             rudisha RESERVED_MICROSOFT
         isipokua:
             rudisha RESERVED_FUTURE
@@ -390,7 +390,7 @@ eleza _find_mac(command, args, hw_identifiers, get_index):
         proc = _popen(command, *args.split())
         ikiwa sio proc:
             rudisha Tupu
-        with proc:
+        ukijumuisha proc:
             kila line kwenye proc.stdout:
                 words = line.lower().rstrip().split()
                 kila i kwenye range(len(words)):
@@ -424,7 +424,7 @@ eleza _ifconfig_getnode():
 
 eleza _ip_getnode():
     """Get the hardware address on Unix by running ip."""
-    # This works on Linux with iproute2.
+    # This works on Linux ukijumuisha iproute2.
     mac = _find_mac('ip', 'link', [b'link/ether'], lambda i: i+1)
     ikiwa mac:
         rudisha mac
@@ -469,7 +469,7 @@ eleza _netstat_getnode():
         proc = _popen('netstat', '-ia')
         ikiwa sio proc:
             rudisha Tupu
-        with proc:
+        ukijumuisha proc:
             words = proc.stdout.readline().rstrip().split()
             jaribu:
                 i = words.index(b'Address')
@@ -509,7 +509,7 @@ eleza _ipconfig_getnode():
                                     encoding="oem")
         tatizo OSError:
             endelea
-        with proc:
+        ukijumuisha proc:
             kila line kwenye proc.stdout:
                 value = line.split(':')[-1].strip().lower()
                 ikiwa re.fullmatch('(?:[0-9a-f][0-9a-f]-){5}[0-9a-f][0-9a-f]', value):
@@ -585,7 +585,7 @@ eleza _load_system_functions():
         # Assume that the uuid_generate functions are broken kutoka 10.5 onward,
         # the test can be adjusted when a later version ni fixed.
         pita
-    elikiwa _uuid ni sio Tupu:
+    lasivyo _uuid ni sio Tupu:
         _generate_time_safe = _uuid.generate_time_safe
         _has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
         rudisha
@@ -593,7 +593,7 @@ eleza _load_system_functions():
     jaribu:
         # If we couldn't find an extension module, try ctypes to find
         # system routines kila UUID generation.
-        # Thanks to Thomas Heller kila ctypes na kila his help with its use here.
+        # Thanks to Thomas Heller kila ctypes na kila his help ukijumuisha its use here.
         agiza ctypes
         agiza ctypes.util
 
@@ -618,7 +618,7 @@ eleza _load_system_functions():
                 _has_uuid_generate_time_safe = Kweli
                 koma
 
-            elikiwa hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
+            lasivyo hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
                 _uuid_generate_time = lib.uuid_generate_time
                 # void uuid_generate_time(uuid_t out);
                 _uuid_generate_time.restype = Tupu
@@ -666,10 +666,10 @@ eleza _windll_getnode():
 
 eleza _random_getnode():
     """Get a random node ID."""
-    # RFC 4122, $4.1.6 says "For systems with no IEEE address, a randomly or
+    # RFC 4122, $4.1.6 says "For systems ukijumuisha no IEEE address, a randomly or
     # pseudo-randomly generated value may be used; see Section 4.5.  The
     # multicast bit must be set kwenye such addresses, kwenye order that they will
-    # never conflict with addresses obtained kutoka network cards."
+    # never conflict ukijumuisha addresses obtained kutoka network cards."
     #
     # The "multicast bit" of a MAC address ni defined to be "the least
     # significant bit of the first octet".  This works out to be the 41st bit
@@ -688,18 +688,18 @@ eleza _random_getnode():
 #     @unittest.skipUnless(_uuid._ifconfig_getnode kwenye _uuid._GETTERS, ...)
 ikiwa _LINUX:
     _OS_GETTERS = [_ip_getnode, _ifconfig_getnode]
-elikiwa _DARWIN:
+lasivyo _DARWIN:
     _OS_GETTERS = [_ifconfig_getnode, _arp_getnode, _netstat_getnode]
-elikiwa _WINDOWS:
+lasivyo _WINDOWS:
     _OS_GETTERS = [_netbios_getnode, _ipconfig_getnode]
-elikiwa _AIX:
+lasivyo _AIX:
     _OS_GETTERS = [_netstat_getnode]
 isipokua:
     _OS_GETTERS = [_ifconfig_getnode, _ip_getnode, _arp_getnode,
                    _netstat_getnode, _lanscan_getnode]
 ikiwa os.name == 'posix':
     _GETTERS = [_unix_getnode] + _OS_GETTERS
-elikiwa os.name == 'nt':
+lasivyo os.name == 'nt':
     _GETTERS = [_windll_getnode] + _OS_GETTERS
 isipokua:
     _GETTERS = _OS_GETTERS
@@ -711,7 +711,7 @@ eleza getnode(*, getters=Tupu):
 
     The first time this runs, it may launch a separate program, which could
     be quite slow.  If all attempts to obtain the hardware address fail, we
-    choose a random 48-bit number with its eighth bit set to 1 kama recommended
+    choose a random 48-bit number ukijumuisha its eighth bit set to 1 kama recommended
     kwenye RFC 4122.
     """
     global _node
@@ -785,7 +785,7 @@ eleza uuid5(namespace, name):
     hash = sha1(namespace.bytes + bytes(name, "utf-8")).digest()
     rudisha UUID(bytes=hash[:16], version=5)
 
-# The following standard UUIDs are kila use with uuid3() ama uuid5().
+# The following standard UUIDs are kila use ukijumuisha uuid3() ama uuid5().
 
 NAMESPACE_DNS = UUID('6ba7b810-9dad-11d1-80b4-00c04fd430c8')
 NAMESPACE_URL = UUID('6ba7b811-9dad-11d1-80b4-00c04fd430c8')

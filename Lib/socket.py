@@ -24,7 +24,7 @@ inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
 socket.setdefaulttimeout() -- set the default timeout value
-create_connection() -- connects to an address, with an optional timeout and
+create_connection() -- connects to an address, ukijumuisha an optional timeout and
                        optional source address.
 
  [*] sio available on all platforms!
@@ -247,7 +247,7 @@ kundi socket(_socket.socket):
         s = "<%s.%s%s fd=%i, family=%s, type=%s, proto=%i" \
             % (self.__class__.__module__,
                self.__class__.__qualname__,
-               " [closed]" ikiwa closed else "",
+               " [closed]" ikiwa closed isipokua "",
                self.fileno(),
                self.family,
                self.type,
@@ -329,7 +329,7 @@ kundi socket(_socket.socket):
             rudisha raw
         ikiwa reading na writing:
             buffer = io.BufferedRWPair(raw, raw, buffering)
-        elikiwa reading:
+        lasivyo reading:
             buffer = io.BufferedReader(raw, buffering)
         isipokua:
             assert writing
@@ -417,7 +417,7 @@ kundi socket(_socket.socket):
             ashiria ValueError("non-blocking sockets are sio supported")
         ikiwa offset:
             file.seek(offset)
-        blocksize = min(count, 8192) ikiwa count else 8192
+        blocksize = min(count, 8192) ikiwa count isipokua 8192
         total_sent = 0
         # localize variable access to minimize overhead
         file_read = file.read
@@ -579,7 +579,7 @@ isipokua:
     eleza socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         ikiwa family == AF_INET:
             host = _LOCALHOST
-        elikiwa family == AF_INET6:
+        lasivyo family == AF_INET6:
             host = _LOCALHOST_V6
         isipokua:
             ashiria ValueError("Only AF_INET na AF_INET6 socket address families "
@@ -635,7 +635,7 @@ kundi SocketIO(io.RawIOBase):
     # main reasons why FileIO ni sio adapted:
     # - it wouldn't work under Windows (where you can't used read() and
     #   write() on a socket handle)
-    # - it wouldn't work with socket timeouts (FileIO would ignore the
+    # - it wouldn't work ukijumuisha socket timeouts (FileIO would ignore the
     #   timeout na consider the socket non-blocking)
 
     # XXX More docs
@@ -818,7 +818,7 @@ eleza has_dualstack_ipv6():
             ama sio hasattr(_socket, 'IPV6_V6ONLY'):
         rudisha Uongo
     jaribu:
-        with socket(AF_INET6, SOCK_STREAM) kama sock:
+        ukijumuisha socket(AF_INET6, SOCK_STREAM) kama sock:
             sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
             rudisha Kweli
     tatizo error:
@@ -839,7 +839,7 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
     connections. When false it will explicitly disable this option on
     platforms that enable it by default (e.g. Linux).
 
-    >>> with create_server((Tupu, 8000)) kama server:
+    >>> ukijumuisha create_server((Tupu, 8000)) kama server:
     ...     wakati Kweli:
     ...         conn, addr = server.accept()
     ...         # handle new connection
@@ -875,7 +875,7 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
         ikiwa has_ipv6 na family == AF_INET6:
             ikiwa dualstack_ipv6:
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
-            elikiwa hasattr(_socket, "IPV6_V6ONLY") na \
+            lasivyo hasattr(_socket, "IPV6_V6ONLY") na \
                     hasattr(_socket, "IPPROTO_IPV6"):
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 1)
         jaribu:

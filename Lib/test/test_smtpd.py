@@ -91,7 +91,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        decode_data=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, decode_data=Kweli)
-        with support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nhello\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -107,7 +107,7 @@ kundi DebuggingServerTest(unittest.TestCase):
         server = smtpd.DebuggingServer((support.HOST, 0), ('b', 0))
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr)
-        with support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -124,7 +124,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        with support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -141,7 +141,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        with support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n',
                            enable_SMTPUTF8=Kweli)
         stdout = s.getvalue()
@@ -630,7 +630,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
 
         self.write_line(b'DATA')
         self.assertEqual(self.channel.socket.last,
-            b'354 End data with <CR><LF>.<CR><LF>\r\n')
+            b'354 End data ukijumuisha <CR><LF>.<CR><LF>\r\n')
         self.write_line(b'data\r\nmore\r\n.')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
         self.assertEqual(self.server.messages,
@@ -713,49 +713,49 @@ kundi SMTPDChannelTest(unittest.TestCase):
                          b'recognized\r\n')
 
     eleza test_attribute_deprecations(self):
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__server
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__server = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__line
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__line = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__state
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__state = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__greeting
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__greeting = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__mailkutoka
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__mailkutoka = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__rcpttos
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__rcpttos = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__data
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__data = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__fqdn
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__fqdn = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__peer
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__peer = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__conn
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__conn = 'spam'
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             spam = self.channel._SMTPChannel__addr
-        with support.check_warnings(('', DeprecationWarning)):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__addr = 'spam'
 
 @unittest.skipUnless(support.IPV6_ENABLED, "IPv6 sio enabled")
@@ -801,7 +801,7 @@ kundi SMTPDChannelWithDataSizeLimitTest(unittest.TestCase):
 
         self.write_line(b'DATA')
         self.assertEqual(self.channel.socket.last,
-            b'354 End data with <CR><LF>.<CR><LF>\r\n')
+            b'354 End data ukijumuisha <CR><LF>.<CR><LF>\r\n')
         self.write_line(b'data\r\nmore\r\n.')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
         self.assertEqual(self.server.messages,
@@ -819,7 +819,7 @@ kundi SMTPDChannelWithDataSizeLimitTest(unittest.TestCase):
 
         self.write_line(b'DATA')
         self.assertEqual(self.channel.socket.last,
-            b'354 End data with <CR><LF>.<CR><LF>\r\n')
+            b'354 End data ukijumuisha <CR><LF>.<CR><LF>\r\n')
         self.write_line(b'This message ni longer than 32 bytes\r\n.')
         self.assertEqual(self.channel.socket.last,
                          b'552 Error: Too much mail data\r\n')

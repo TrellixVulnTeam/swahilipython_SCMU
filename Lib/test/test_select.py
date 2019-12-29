@@ -27,7 +27,7 @@ kundi SelectTestCase(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('freebsd'),
                      'skip because of a FreeBSD bug: kern/155606')
     eleza test_errno(self):
-        with open(__file__, 'rb') kama fp:
+        ukijumuisha open(__file__, 'rb') kama fp:
             fd = fp.fileno()
             fp.close()
             jaribu:
@@ -46,7 +46,7 @@ kundi SelectTestCase(unittest.TestCase):
 
     eleza test_select(self):
         cmd = 'kila i kwenye 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
-        with os.popen(cmd) kama p:
+        ukijumuisha os.popen(cmd) kama p:
             kila tout kwenye (0, 1, 2, 4, 8, 16) + (Tupu,)*10:
                 ikiwa support.verbose:
                     andika('timeout =', tout)

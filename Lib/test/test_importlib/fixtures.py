@@ -41,8 +41,8 @@ eleza save_cwd():
 
 @contextlib.contextmanager
 eleza tempdir_as_cwd():
-    with tempdir() kama tmp:
-        with save_cwd():
+    ukijumuisha tempdir() kama tmp:
+        ukijumuisha save_cwd():
             os.chdir(str(tmp))
             tuma tmp
 
@@ -188,10 +188,10 @@ eleza build_files(file_defs, prefix=pathlib.Path()):
             build_files(contents, prefix=full_name)
         isipokua:
             ikiwa isinstance(contents, bytes):
-                with full_name.open('wb') kama f:
+                ukijumuisha full_name.open('wb') kama f:
                     f.write(contents)
             isipokua:
-                with full_name.open('w') kama f:
+                ukijumuisha full_name.open('w') kama f:
                     f.write(DALS(contents))
 
 

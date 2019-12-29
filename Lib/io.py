@@ -6,17 +6,17 @@ defines the basic interface to a stream. Note, however, that there ni no
 separation between reading na writing to streams; implementations are
 allowed to ashiria an OSError ikiwa they do sio support a given operation.
 
-Extending IOBase ni RawIOBase which deals simply with the reading and
+Extending IOBase ni RawIOBase which deals simply ukijumuisha the reading and
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
-BufferedIOBase deals with buffering on a raw byte stream (RawIOBase). Its
+BufferedIOBase deals ukijumuisha buffering on a raw byte stream (RawIOBase). Its
 subclasses, BufferedWriter, BufferedReader, na BufferedRWPair buffer
 streams that are readable, writable, na both respectively.
 BufferedRandom provides a buffered interface to random access
 streams. BytesIO ni a simple stream of in-memory bytes.
 
-Another IOBase subclass, TextIOBase, deals with the encoding na decoding
+Another IOBase subclass, TextIOBase, deals ukijumuisha the encoding na decoding
 of streams into text. TextIOWrapper, which extends it, ni a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
 is an in-memory stream kila text.
@@ -56,7 +56,7 @@ kutoka _io agiza (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
                  BufferedWriter, BufferedRWPair, BufferedRandom,
                  IncrementalNewlineDecoder, TextIOWrapper)
 
-OpenWrapper = _io.open # kila compatibility with _pyio
+OpenWrapper = _io.open # kila compatibility ukijumuisha _pyio
 
 # Pretend this exception was created here.
 UnsupportedOperation.__module__ = "io"

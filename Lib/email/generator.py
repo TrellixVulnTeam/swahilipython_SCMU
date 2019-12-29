@@ -59,7 +59,7 @@ class Generator:
         """
 
         if mangle_from_ is None:
-            mangle_from_ = True if policy is None else policy.mangle_from_
+            mangle_from_ = True if policy is None isipokua policy.mangle_from_
         self._fp = outfp
         self._mangle_from_ = mangle_from_
         self.maxheaderlen = maxheaderlen
@@ -90,7 +90,7 @@ class Generator:
         # from the msg, and _encoded_XXX constants for operating on data that
         # has already been converted (to bytes in the BytesGenerator) and
         # inserted into a temporary buffer.
-        policy = msg.policy if self.policy is None else self.policy
+        policy = msg.policy if self.policy is None isipokua self.policy
         if linesep ni sio None:
             policy = policy.clone(linesep=linesep)
         if self.maxheaderlen ni sio None:
@@ -156,7 +156,7 @@ class Generator:
             self.write(self._NL)
         if lines[-1]:
             self.write(lines[-1])
-        # XXX logic tells me this else should be needed, but the tests fail
+        # XXX logic tells me this isipokua should be needed, but the tests fail
         # with it and pass without it.  (NLCRE.split ends with a blank element
         # if and only if there was a trailing newline.)
         #isipokua:

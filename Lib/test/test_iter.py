@@ -146,11 +146,11 @@ kundi TestCase(unittest.TestCase):
         res = [(i, j, k) kila i kwenye seq kila j kwenye seq kila k kwenye seq]
         self.assertEqual(res, TRIPLETS)
 
-    # Test a kundi with __iter__ kwenye a kila loop
+    # Test a kundi ukijumuisha __iter__ kwenye a kila loop
     eleza test_iter_class_for(self):
         self.check_for_loop(IteratingSequenceClass(10), list(range(10)))
 
-    # Test a kundi with __iter__ with explicit iter()
+    # Test a kundi ukijumuisha __iter__ ukijumuisha explicit iter()
     eleza test_iter_class_iter(self):
         self.check_iterator(iter(IteratingSequenceClass(10)), list(range(10)))
 
@@ -209,14 +209,14 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(list(empit), [5, 6])
         self.assertEqual(list(a), [0, 1, 2, 3, 4, 5, 6])
 
-    # Test a new_style kundi with __iter__ but no next() method
+    # Test a new_style kundi ukijumuisha __iter__ but no next() method
     eleza test_new_style_iter_class(self):
         kundi IterClass(object):
             eleza __iter__(self):
                 rudisha self
         self.assertRaises(TypeError, iter, IterClass())
 
-    # Test two-argument iter() with callable instance
+    # Test two-argument iter() ukijumuisha callable instance
     eleza test_iter_callable(self):
         kundi C:
             eleza __init__(self):
@@ -229,7 +229,7 @@ kundi TestCase(unittest.TestCase):
                 rudisha i
         self.check_iterator(iter(C(), 10), list(range(10)), pickle=Uongo)
 
-    # Test two-argument iter() with function
+    # Test two-argument iter() ukijumuisha function
     eleza test_iter_function(self):
         eleza spam(state=[0]):
             i = state[0]
@@ -237,7 +237,7 @@ kundi TestCase(unittest.TestCase):
             rudisha i
         self.check_iterator(iter(spam, 10), list(range(10)), pickle=Uongo)
 
-    # Test two-argument iter() with function that ashirias StopIteration
+    # Test two-argument iter() ukijumuisha function that ashirias StopIteration
     eleza test_iter_function_stop(self):
         eleza spam(state=[0]):
             i = state[0]
@@ -627,7 +627,7 @@ kundi TestCase(unittest.TestCase):
             tatizo OSError:
                 pita
 
-    # Test iterators with 'x kwenye y' na 'x haiko kwenye y'.
+    # Test iterators ukijumuisha 'x kwenye y' na 'x haiko kwenye y'.
     eleza test_in_and_not_in(self):
         kila sc5 kwenye IteratingSequenceClass(5), SequenceClass(5):
             kila i kwenye range(5):
@@ -668,7 +668,7 @@ kundi TestCase(unittest.TestCase):
             tatizo OSError:
                 pita
 
-    # Test iterators with operator.countOf (PySequence_Count).
+    # Test iterators ukijumuisha operator.countOf (PySequence_Count).
     eleza test_countOf(self):
         kutoka operator agiza countOf
         self.assertEqual(countOf([1,2,2,3,2,5], 2), 3)
@@ -703,7 +703,7 @@ kundi TestCase(unittest.TestCase):
             tatizo OSError:
                 pita
 
-    # Test iterators with operator.indexOf (PySequence_Index).
+    # Test iterators ukijumuisha operator.indexOf (PySequence_Index).
     eleza test_indexOf(self):
         kutoka operator agiza indexOf
         self.assertEqual(indexOf([1,2,2,3,2,5], 1), 0)
@@ -744,7 +744,7 @@ kundi TestCase(unittest.TestCase):
             self.assertEqual(indexOf(iclass, i), i)
         self.assertRaises(ValueError, indexOf, iclass, -1)
 
-    # Test iterators with file.writelines().
+    # Test iterators ukijumuisha file.writelines().
     eleza test_writelines(self):
         f = open(TESTFN, "w")
 
@@ -966,7 +966,7 @@ kundi TestCase(unittest.TestCase):
             pita
 
     eleza test_extending_list_with_iterator_does_not_segfault(self):
-        # The code to extend a list with an iterator has a fair
+        # The code to extend a list ukijumuisha an iterator has a fair
         # amount of nontrivial logic kwenye terms of guessing how
         # much memory to allocate kwenye advance, "stealing" refs,
         # na then shrinking at the end.  This ni a basic smoke
@@ -988,10 +988,10 @@ kundi TestCase(unittest.TestCase):
         it.__setstate__(sys.maxsize - 2)
         self.assertEqual(next(it), sys.maxsize - 2)
         self.assertEqual(next(it), sys.maxsize - 1)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             next(it)
         # Check that Overflow error ni always ashiriad
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             next(it)
 
     eleza test_iter_neg_setstate(self):

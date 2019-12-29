@@ -23,7 +23,7 @@ Here's a bunch of special=20
 characters... have fun!
 """
 
-# First line ends with a space
+# First line ends ukijumuisha a space
 DECSAMPLE = b"Here's a bunch of special \n" + \
 b"""\
 
@@ -97,13 +97,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'''),
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zz'''),
         # A line of 151 characters, forcing a soft line koma at position 75,
-        # with a second line of exactly 76 characters na no trailing =
+        # ukijumuisha a second line of exactly 76 characters na no trailing =
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
         # A string containing a hard line koma, but which the first line is
         # 151 characters na the second line ni exactly 76 characters.  This
-        # should leave us with three lines, the first which has a soft line
+        # should leave us ukijumuisha three lines, the first which has a soft line
         # koma, na which the second na third do not.
         (b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''',
@@ -188,7 +188,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         cout, cerr = process.communicate(p)
         # On Windows, Python will output the result to stdout using
         # CRLF, kama the mode of stdout ni text mode. To compare this
-        # with the expected result, we need to do a line-by-line comparison.
+        # ukijumuisha the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()
         assert len(cout)==len(e)

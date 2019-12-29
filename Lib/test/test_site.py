@@ -23,11 +23,11 @@ agiza tempfile
 kutoka unittest agiza mock
 kutoka copy agiza copy
 
-# These tests are sio particularly useful ikiwa Python was invoked with -S.
+# These tests are sio particularly useful ikiwa Python was invoked ukijumuisha -S.
 # If you add tests that are useful under -S, this skip should be moved
 # to the kundi level.
 ikiwa sys.flags.no_site:
-    ashiria unittest.SkipTest("Python was invoked with -S")
+    ashiria unittest.SkipTest("Python was invoked ukijumuisha -S")
 
 agiza site
 
@@ -106,7 +106,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         self.assertUongo(os.path.exists(pth_file.bad_dir_path))
 
     eleza test_addpackage(self):
-        # Make sure addpackage() agizas ikiwa the line starts with 'agiza',
+        # Make sure addpackage() agizas ikiwa the line starts ukijumuisha 'agiza',
         # adds directories to sys.path kila any line kwenye the file that ni sio a
         # comment ama agiza that ni a valid directory name kila where the .pth
         # file resides; invalid directories are sio added
@@ -125,7 +125,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         pth_dir = os.path.abspath(pth_dir)
         pth_basename = pth_name + '.pth'
         pth_fn = os.path.join(pth_dir, pth_basename)
-        with open(pth_fn, 'w', encoding='utf-8') kama pth_file:
+        ukijumuisha open(pth_fn, 'w', encoding='utf-8') kama pth_file:
             self.addCleanup(lambda: os.remove(pth_fn))
             pth_file.write(contents)
         rudisha pth_dir, pth_basename
@@ -133,7 +133,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_syntax(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("agiza bad-syntax\n")
-        with captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() kama err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 1")
         self.assertRegex(err_out.getvalue(),
@@ -148,7 +148,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_exec(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("randompath\nagiza nosuchmodule\n")
-        with captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() kama err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 2")
         self.assertRegex(err_out.getvalue(),
@@ -160,7 +160,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_pth_file(self):
         # Issue 5258
         pth_dir, pth_fn = self.make_pth("abc\x00def\n")
-        with captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() kama err_out:
             self.assertUongo(site.addpackage(pth_dir, pth_fn, set()))
         self.assertEqual(err_out.getvalue(), "")
         kila path kwenye sys.path:
@@ -213,7 +213,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         ikiwa usersite == site.getsitepackages()[0]:
             self.assertEqual(rc, 1)
         isipokua:
-            self.assertEqual(rc, 0, "User site still added to path with -s")
+            self.assertEqual(rc, 0, "User site still added to path ukijumuisha -s")
 
         env = os.environ.copy()
         env["PYTHONNOUSERSITE"] = "1"
@@ -224,7 +224,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
             self.assertEqual(rc, 1)
         isipokua:
             self.assertEqual(rc, 0,
-                        "User site still added to path with PYTHONNOUSERSITE")
+                        "User site still added to path ukijumuisha PYTHONNOUSERSITE")
 
         env = os.environ.copy()
         env["PYTHONUSERBASE"] = "/tmp"
@@ -246,7 +246,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         agiza sysconfig
         sysconfig._CONFIG_VARS = Tupu
 
-        with EnvironmentVarGuard() kama environ:
+        ukijumuisha EnvironmentVarGuard() kama environ:
             environ['PYTHONUSERBASE'] = 'xoxo'
             self.assertKweli(site.getuserbase().startswith('xoxo'),
                             site.getuserbase())
@@ -285,7 +285,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         site.USER_SITE = Tupu
         site.USER_BASE = Tupu
 
-        with EnvironmentVarGuard() kama environ, \
+        ukijumuisha EnvironmentVarGuard() kama environ, \
              mock.patch('os.path.expanduser', lambda path: path):
 
             toa environ['PYTHONUSERBASE']
@@ -298,7 +298,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
             user_site = site.getusersitepackages()
             self.assertKweli(user_site.startswith(user_base), user_site)
 
-        with mock.patch('os.path.isdir', rudisha_value=Uongo) kama mock_isdir, \
+        ukijumuisha mock.patch('os.path.isdir', rudisha_value=Uongo) kama mock_isdir, \
              mock.patch.object(site, 'addsitedir') kama mock_addsitedir, \
              support.swap_attr(site, 'ENABLE_USER_SITE', Kweli):
 
@@ -328,8 +328,8 @@ kundi PthFile(object):
         self.bad_dir_path = os.path.join(self.base_dir, self.bad_dirname)
 
     eleza create(self):
-        """Create a .pth file with a comment, blank lines, an ``agiza
-        <self.imported>``, a line with self.good_dirname, na a line with
+        """Create a .pth file ukijumuisha a comment, blank lines, an ``agiza
+        <self.imported>``, a line ukijumuisha self.good_dirname, na a line with
         self.bad_dirname.
 
         Creation of the directory kila self.good_dir_path (based off of
@@ -392,17 +392,17 @@ kundi ImportSideEffectTests(unittest.TestCase):
             # Failure to get relpath probably means we need to chdir
             # to the same drive.
             cwd, parent = os.path.split(os.path.dirname(os.__file__))
-        with change_cwd(cwd):
+        ukijumuisha change_cwd(cwd):
             env = os.environ.copy()
             env['PYTHONPATH'] = parent
             code = ('agiza os, sys',
-                # use ASCII to avoid locale issues with non-ASCII directories
+                # use ASCII to avoid locale issues ukijumuisha non-ASCII directories
                 'os_file = os.__file__.encode("ascii", "backslashreplace")',
                 r'sys.stdout.buffer.write(os_file + b"\n")',
                 'os_cached = os.__cached__.encode("ascii", "backslashreplace")',
                 r'sys.stdout.buffer.write(os_cached + b"\n")')
             command = '\n'.join(code)
-            # First, prove that with -S (no 'agiza site'), the paths are
+            # First, prove that ukijumuisha -S (no 'agiza site'), the paths are
             # relative.
             proc = subprocess.Popen([sys.executable, '-S', '-c', command],
                                     env=env,
@@ -413,7 +413,7 @@ kundi ImportSideEffectTests(unittest.TestCase):
             os__file__, os__cached__ = stdout.splitlines()[:2]
             self.assertUongo(os.path.isabs(os__file__))
             self.assertUongo(os.path.isabs(os__cached__))
-            # Now, with 'agiza site', it works.
+            # Now, ukijumuisha 'agiza site', it works.
             proc = subprocess.Popen([sys.executable, '-c', command],
                                     env=env,
                                     stdout=subprocess.PIPE)
@@ -501,8 +501,8 @@ kundi ImportSideEffectTests(unittest.TestCase):
         url = license._Printer__data.split()[1]
         req = urllib.request.Request(url, method='HEAD')
         jaribu:
-            with test.support.transient_internet(url):
-                with urllib.request.urlopen(req) kama data:
+            ukijumuisha test.support.transient_internet(url):
+                ukijumuisha urllib.request.urlopen(req) kama data:
                     code = data.getcode()
         tatizo urllib.error.HTTPError kama e:
             code = e.code
@@ -568,7 +568,7 @@ kundi _pthFileTests(unittest.TestCase):
         exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])
         shutil.copy(sys.executable, exe_file)
         _pth_file = os.path.splitext(exe_file)[0] + '._pth'
-        with open(_pth_file, 'w') kama f:
+        ukijumuisha open(_pth_file, 'w') kama f:
             kila line kwenye lines:
                 andika(line, file=f)
         rudisha exe_file
@@ -600,7 +600,7 @@ kundi _pthFileTests(unittest.TestCase):
         env['PYTHONPATH'] = 'kutoka-env'
         env['PATH'] = '{};{}'.format(exe_prefix, os.getenv('PATH'))
         output = subprocess.check_output([exe_file, '-c',
-            'agiza sys; andika("\\n".join(sys.path) ikiwa sys.flags.no_site else "")'
+            'agiza sys; andika("\\n".join(sys.path) ikiwa sys.flags.no_site isipokua "")'
         ], env=env, encoding='ansi')
         actual_sys_path = output.rstrip().split('\n')
         self.assertKweli(actual_sys_path, "sys.flags.no_site was Uongo")

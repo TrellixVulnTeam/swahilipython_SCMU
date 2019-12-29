@@ -1,7 +1,7 @@
 """This script contains the actual auditing tests.
 
 It should sio be imported directly, but should be run by the test_audit
-module with arguments identifying each test.
+module ukijumuisha arguments identifying each test.
 
 """
 
@@ -12,7 +12,7 @@ agiza sys
 kundi TestHook:
     """Used kwenye standard hook tests to collect any logged events.
 
-    Should be used kwenye a with block to ensure that it has no impact
+    Should be used kwenye a ukijumuisha block to ensure that it has no impact
     after the test completes.
     """
 
@@ -62,7 +62,7 @@ kundi TestFinalizeHook:
 
         ikiwa event == "cpython._PySys_ClearAuditHooks":
             ashiria RuntimeError("Should be ignored")
-        elikiwa event == "cpython.PyInterpreterState_Clear":
+        lasivyo event == "cpython.PyInterpreterState_Clear":
             ashiria RuntimeError("Should be ignored")
 
 
@@ -101,7 +101,7 @@ eleza assertRaises(ex_type):
 
 
 eleza test_basic():
-    with TestHook() kama hook:
+    ukijumuisha TestHook() kama hook:
         sys.audit("test_event", 1, 2, 3)
         assertEqual(hook.seen[0][0], "test_event")
         assertEqual(hook.seen[0][1], (1, 2, 3))
@@ -110,8 +110,8 @@ eleza test_basic():
 eleza test_block_add_hook():
     # Raising an exception should prevent a new hook kutoka being added,
     # but will sio propagate out.
-    with TestHook(ashiria_on_events="sys.addaudithook") kama hook1:
-        with TestHook() kama hook2:
+    ukijumuisha TestHook(ashiria_on_events="sys.addaudithook") kama hook1:
+        ukijumuisha TestHook() kama hook2:
             sys.audit("test_event")
             assertIn("test_event", hook1.seen_events)
             assertNotIn("test_event", hook2.seen_events)
@@ -119,12 +119,12 @@ eleza test_block_add_hook():
 
 eleza test_block_add_hook_baseexception():
     # Raising BaseException will propagate out when adding a hook
-    with assertRaises(BaseException):
-        with TestHook(
+    ukijumuisha assertRaises(BaseException):
+        ukijumuisha TestHook(
             ashiria_on_events="sys.addaudithook", exc_type=BaseException
         ) kama hook1:
             # Adding this next hook should ashiria BaseException
-            with TestHook() kama hook2:
+            ukijumuisha TestHook() kama hook2:
                 pita
 
 
@@ -145,11 +145,11 @@ eleza test_pickle():
     # Before we add the hook, ensure our malicious pickle loads
     assertEqual("Pwned!", pickle.loads(payload_1))
 
-    with TestHook(ashiria_on_events="pickle.find_class") kama hook:
-        with assertRaises(RuntimeError):
+    ukijumuisha TestHook(ashiria_on_events="pickle.find_class") kama hook:
+        ukijumuisha assertRaises(RuntimeError):
             # With the hook enabled, loading globals ni sio allowed
             pickle.loads(payload_1)
-        # pickles with no globals are okay
+        # pickles ukijumuisha no globals are okay
         pickle.loads(payload_2)
 
 
@@ -165,7 +165,7 @@ eleza test_monkeypatch():
 
     a = A()
 
-    with TestHook() kama hook:
+    ukijumuisha TestHook() kama hook:
         # Catch name changes
         C.__name__ = "X"
         # Catch type changes
@@ -196,7 +196,7 @@ eleza test_open():
 
     # Try a range of "open" functions.
     # All of them should fail
-    with TestHook(ashiria_on_events={"open"}) kama hook:
+    ukijumuisha TestHook(ashiria_on_events={"open"}) kama hook:
         kila fn, *args kwenye [
             (open, sys.argv[2], "r"),
             (open, sys.executable, "rb"),
@@ -206,7 +206,7 @@ eleza test_open():
         ]:
             ikiwa sio fn:
                 endelea
-            with assertRaises(RuntimeError):
+            ukijumuisha assertRaises(RuntimeError):
                 fn(*args)
 
     actual_mode = [(a[0], a[1]) kila e, a kwenye hook.seen ikiwa e == "open" na a[1]]
@@ -219,7 +219,7 @@ eleza test_open():
                 (sys.executable, "r"),
                 (3, "w"),
                 (sys.argv[2], "w"),
-                (sys.argv[2], "rb") ikiwa load_dh_params else Tupu,
+                (sys.argv[2], "rb") ikiwa load_dh_params isipokua Tupu,
             ]
             ikiwa i ni sio Tupu
         ],
@@ -237,7 +237,7 @@ eleza test_cantrace():
 
     old = sys.settrace(trace)
     jaribu:
-        with TestHook() kama hook:
+        ukijumuisha TestHook() kama hook:
             # No traced call
             eval("1")
 
@@ -263,7 +263,7 @@ eleza test_cantrace():
 
 eleza test_mmap():
     agiza mmap
-    with TestHook() kama hook:
+    ukijumuisha TestHook() kama hook:
         mmap.mmap(-1, 8)
         assertEqual(hook.seen[0][1][:2], (-1, 8))
 

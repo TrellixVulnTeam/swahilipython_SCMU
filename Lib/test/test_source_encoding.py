@@ -51,13 +51,13 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
 
     eleza test_issue7820(self):
         # Ensure that check_bom() restores all bytes kwenye the right order if
-        # check_bom() fails kwenye pydebug mode: a buffer starts with the first
+        # check_bom() fails kwenye pydebug mode: a buffer starts ukijumuisha the first
         # byte of a valid BOM, but next bytes are different
 
-        # one byte kwenye common with the UTF-16-LE BOM
+        # one byte kwenye common ukijumuisha the UTF-16-LE BOM
         self.assertRaises(SyntaxError, eval, b'\xff\x20')
 
-        # two bytes kwenye common with the UTF-8 BOM
+        # two bytes kwenye common ukijumuisha the UTF-8 BOM
         self.assertRaises(SyntaxError, eval, b'\xef\xbb\x20')
 
     eleza test_20731(self):
@@ -73,17 +73,17 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
         compile(b'# -*- coding: iso-8859-15 -*-\n', 'dummy', 'exec')
         compile(b'\xef\xbb\xbf\n', 'dummy', 'exec')
         compile(b'\xef\xbb\xbf# -*- coding: utf-8 -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'fake'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'fake'):
             compile(b'# -*- coding: fake -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'iso-8859-15'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'iso-8859-15'):
             compile(b'\xef\xbb\xbf# -*- coding: iso-8859-15 -*-\n',
                     'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'BOM'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'BOM'):
             compile(b'\xef\xbb\xbf# -*- coding: iso-8859-15 -*-\n',
                     'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'fake'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'fake'):
             compile(b'\xef\xbb\xbf# -*- coding: fake -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'BOM'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'BOM'):
             compile(b'\xef\xbb\xbf# -*- coding: fake -*-\n', 'dummy', 'exec')
 
     eleza test_bad_coding(self):
@@ -99,7 +99,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
 
         path = os.path.dirname(__file__)
         filename = os.path.join(path, module_name + '.py')
-        with open(filename, "rb") kama fp:
+        ukijumuisha open(filename, "rb") kama fp:
             bytes = fp.read()
         self.assertRaises(SyntaxError, compile, bytes, filename, 'exec')
 
@@ -116,7 +116,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
         f = open(filename, "w", encoding="cp1252")
         sys.path.insert(0, os.curdir)
         jaribu:
-            with f:
+            ukijumuisha f:
                 f.write("# -*- coding: cp1252 -*-\n")
                 f.write("'''A short string\n")
                 f.write("'''\n")
@@ -135,7 +135,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
     eleza test_error_kutoka_string(self):
         # See http://bugs.python.org/issue6289
         input = "# coding: ascii\n\N{SNOWMAN}".encode('utf-8')
-        with self.assertRaises(SyntaxError) kama c:
+        ukijumuisha self.assertRaises(SyntaxError) kama c:
             compile(input, "<string>", "exec")
         expected = "'ascii' codec can't decode byte 0xe2 kwenye position 16: " \
                    "ordinal haiko kwenye range(128)"
@@ -204,7 +204,7 @@ kundi AbstractSourceEncodingTest:
 kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        with captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() kama stdout:
             exec(src)
         out = stdout.getvalue().encode('latin1')
         self.assertEqual(out.rstrip(), expected)
@@ -213,9 +213,9 @@ kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 kundi FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        with tempfile.TemporaryDirectory() kama tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, 'test.py')
-            with open(fn, 'wb') kama fp:
+            ukijumuisha open(fn, 'wb') kama fp:
                 fp.write(src)
             res = script_helper.assert_python_ok(fn)
         self.assertEqual(res.out.rstrip(), expected)

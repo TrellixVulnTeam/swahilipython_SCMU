@@ -22,7 +22,7 @@ kundi CProfileTest(ProfileTest):
         # bpo-3895
         agiza _lsprof
 
-        with support.catch_unraisable_exception() kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             obj = _lsprof.Profiler(lambda: int)
             obj.enable()
             obj = _lsprof.Profiler(1)
@@ -47,7 +47,7 @@ kundi CProfileTest(ProfileTest):
         # Make sure we clean ourselves up ikiwa the test fails kila some reason.
         self.addCleanup(prof.disable)
 
-        with prof kama __enter__rudisha_value:
+        ukijumuisha prof kama __enter__rudisha_value:
             # profile.__enter__ should rudisha itself.
             self.assertIs(prof, __enter__rudisha_value)
 

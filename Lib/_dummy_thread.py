@@ -142,7 +142,7 @@ kundi LockType(object):
 
     def __repr__(self):
         return "<%s %s.%s object at %s>" % (
-            "locked" if self.locked_status else "unlocked",
+            "locked" if self.locked_status isipokua "unlocked",
             self.__class__.__module__,
             self.__class__.__qualname__,
             hex(id(self))

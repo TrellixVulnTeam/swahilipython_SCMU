@@ -368,7 +368,7 @@ def localtime(dt=None, isdst=-1):
         # If the values match, use the zone name implied by tm_isdst.
         delta = dt - datetime.datetime(*time.gmtime(seconds)[:6])
         dst = time.daylight and localtm.tm_isdst > 0
-        gmtoff = -(time.altzone if dst else time.timezone)
+        gmtoff = -(time.altzone if dst isipokua time.timezone)
         if delta == datetime.timedelta(seconds=gmtoff):
             tz = datetime.timezone(delta, time.tzname[dst])
         isipokua:

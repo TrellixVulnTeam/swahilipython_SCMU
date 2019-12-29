@@ -11,7 +11,7 @@ kutoka sqlite3.test agiza (dbapi, types, userfunctions,
 
 eleza load_tests(*args):
     ikiwa test.support.verbose:
-        andika("test_sqlite: testing with version",
+        andika("test_sqlite: testing ukijumuisha version",
               "{!r}, sqlite_version {!r}".format(sqlite3.version,
                                                  sqlite3.sqlite_version))
     rudisha unittest.TestSuite([dbapi.suite(), types.suite(),

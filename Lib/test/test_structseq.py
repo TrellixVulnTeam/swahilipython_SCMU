@@ -111,7 +111,7 @@ kundi StructSeqTest(unittest.TestCase):
         x = t.__reduce__()
 
     eleza test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing ukijumuisha list slicing.
         t = time.gmtime()
         L = list(t)
         indices = (0, Tupu, 1, 3, 19, 300, -1, -2, -31, -300)

@@ -61,7 +61,7 @@ kundi ExceptionClassTests(unittest.TestCase):
                     self.fail("%s sio a built-in exception" % exc_name)
                 ikiwa last_depth < depth:
                     superclasses.append((last_depth, last_exc))
-                elikiwa last_depth > depth:
+                lasivyo last_depth > depth:
                     wakati superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertKweli(issubclass(exc, superclasses[-1][1]),
@@ -106,7 +106,7 @@ kundi ExceptionClassTests(unittest.TestCase):
         self.interface_test_driver(results)
 
     eleza test_interface_no_arg(self):
-        # Make sure that with no args that interface ni correct
+        # Make sure that ukijumuisha no args that interface ni correct
         exc = Exception()
         results = ([len(exc.args), 0], [exc.args, tuple()],
                 [str(exc), ''],

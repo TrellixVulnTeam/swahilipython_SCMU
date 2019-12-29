@@ -104,7 +104,7 @@ eleza prepare_class(name, bases=(), kwds=Tupu):
 
     *metaclass* ni the appropriate metaclass
     *namespace* ni the prepared kundi namespace
-    *kwds* ni an updated copy of the pitaed kwenye kwds argument with any
+    *kwds* ni an updated copy of the pitaed kwenye kwds argument ukijumuisha any
     'metaclass' entry removed. If no kwds argument ni pitaed in, this will
     be an empty dict.
     """
@@ -155,7 +155,7 @@ kundi DynamicClassAttribute:
     class's __getattr__ method; this ni done by raising AttributeError.
 
     This allows one to have properties active on an instance, na have virtual
-    attributes on the kundi with the same name (see Enum kila an example).
+    attributes on the kundi ukijumuisha the same name (see Enum kila an example).
 
     """
     eleza __init__(self, fget=Tupu, fset=Tupu, fdel=Tupu, doc=Tupu):
@@ -173,7 +173,7 @@ kundi DynamicClassAttribute:
             ikiwa self.__isabstractmethod__:
                 rudisha self
             ashiria AttributeError()
-        elikiwa self.fget ni Tupu:
+        lasivyo self.fget ni Tupu:
             ashiria AttributeError("unreadable attribute")
         rudisha self.fget(instance)
 
@@ -188,7 +188,7 @@ kundi DynamicClassAttribute:
         self.fdel(instance)
 
     eleza getter(self, fget):
-        fdoc = fget.__doc__ ikiwa self.overwrite_doc else Tupu
+        fdoc = fget.__doc__ ikiwa self.overwrite_doc isipokua Tupu
         result = type(self)(fget, self.fset, self.fdel, fdoc ama self.__doc__)
         result.overwrite_doc = self.overwrite_doc
         rudisha result
@@ -268,7 +268,7 @@ eleza coroutine(func):
 
     # The following code ni primarily to support functions that
     # rudisha generator-like objects (kila instance generators
-    # compiled with Cython).
+    # compiled ukijumuisha Cython).
 
     # Delay functools na _collections_abc agiza kila speeding up types agiza.
     agiza functools

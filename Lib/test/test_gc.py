@@ -51,7 +51,7 @@ kundi GC_Detector(object):
 
 @with_tp_del
 kundi Uncollectable(object):
-    """Create a reference cycle with multiple __del__ methods.
+    """Create a reference cycle ukijumuisha multiple __del__ methods.
 
     An object kwenye a reference cycle will never have zero references,
     na so must be garbage collected.  If one ama more objects kwenye the
@@ -70,7 +70,7 @@ ikiwa sysconfig.get_config_vars().get('PY_CFLAGS', ''):
 isipokua:
     # Usually, sys.gettotalrefcount() ni only present ikiwa Python has been
     # compiled kwenye debug mode. If it's missing, expect that Python has
-    # been released kwenye release mode: with NDEBUG defined.
+    # been released kwenye release mode: ukijumuisha NDEBUG defined.
     BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
 
 ### Tests
@@ -92,7 +92,7 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 1)
 
     eleza test_tuple(self):
-        # since tuples are immutable we close the loop with a list
+        # since tuples are immutable we close the loop ukijumuisha a list
         l = []
         t = (l,)
         l.append(t)
@@ -236,7 +236,7 @@ kundi GCTests(unittest.TestCase):
         # First make sure we don't save away other stuff that just happens to
         # be waiting kila collection.
         gc.collect()
-        # ikiwa this fails, someone else created immortal trash
+        # ikiwa this fails, someone isipokua created immortal trash
         self.assertEqual(gc.garbage, [])
 
         L = []
@@ -410,7 +410,7 @@ kundi GCTests(unittest.TestCase):
             kila i kwenye range(N_THREADS):
                 t = threading.Thread(target=run_thread)
                 threads.append(t)
-            with start_threads(threads, lambda: exit.append(1)):
+            ukijumuisha start_threads(threads, lambda: exit.append(1)):
                 time.sleep(1.0)
         mwishowe:
             sys.setswitchinterval(old_switchinterval)
@@ -536,7 +536,7 @@ kundi GCTests(unittest.TestCase):
     eleza test_is_tracked(self):
         # Atomic built-in types are sio tracked, user-defined objects and
         # mutable containers are.
-        # NOTE: types with special optimizations (e.g. tuple) have tests
+        # NOTE: types ukijumuisha special optimizations (e.g. tuple) have tests
         # kwenye their own test files instead.
         self.assertUongo(gc.is_tracked(Tupu))
         self.assertUongo(gc.is_tracked(1))
@@ -598,10 +598,10 @@ kundi GCTests(unittest.TestCase):
         # cleared the instance's dict anyway.
         Cs = Tupu
         gc.collect()
-        self.assertEqual(len(ouch), 2)  # else the callbacks didn't run
+        self.assertEqual(len(ouch), 2)  # isipokua the callbacks didn't run
         kila x kwenye ouch:
             # If the callback resurrected one of these guys, the instance
-            # would be damaged, with an empty __dict__.
+            # would be damaged, ukijumuisha an empty __dict__.
             self.assertEqual(x, Tupu)
 
     eleza test_bug21435(self):
@@ -701,8 +701,8 @@ kundi GCTests(unittest.TestCase):
 
     @requires_type_collecting
     eleza test_gc_ordinary_module_at_shutdown(self):
-        # Same kama above, but with a non-__main__ module.
-        with temp_dir() kama script_dir:
+        # Same kama above, but ukijumuisha a non-__main__ module.
+        ukijumuisha temp_dir() kama script_dir:
             module = """ikiwa 1:
                 kundi C:
                     eleza __del__(self):
@@ -729,7 +729,7 @@ kundi GCTests(unittest.TestCase):
             a.link = a
             ashiria SystemExit(0)"""
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, 'w') kama script:
+        ukijumuisha open(TESTFN, 'w') kama script:
             script.write(code)
         rc, out, err = assert_python_ok(TESTFN)
         self.assertEqual(out.strip(), b'__del__ called')
@@ -1016,10 +1016,10 @@ kundi GCCallbackTests(unittest.TestCase):
 
 
     @unittest.skipIf(BUILD_WITH_NDEBUG,
-                     'built with -NDEBUG')
+                     'built ukijumuisha -NDEBUG')
     eleza test_refcount_errors(self):
         self.preclean()
-        # Verify the "handling" of objects with broken refcounts
+        # Verify the "handling" of objects ukijumuisha broken refcounts
 
         # Skip the test ikiwa ctypes ni sio available
         import_module("ctypes")
@@ -1093,7 +1093,7 @@ kundi GCTogglingTests(unittest.TestCase):
         eleza callback(ignored):
             ouch[:] = [c2wr()]
 
-        # The callback gets associated with a wr on an object kwenye generation 2.
+        # The callback gets associated ukijumuisha a wr on an object kwenye generation 2.
         c0wr = weakref.ref(c0, callback)
 
         c0 = c1 = c2 = Tupu
@@ -1105,7 +1105,7 @@ kundi GCTogglingTests(unittest.TestCase):
         # There's also a global weakref to c0 (c0wr), na that does have a
         # callback, na that callback references c2 via c2wr().
         #
-        #               c0 has a wr with callback, which references c2wr
+        #               c0 has a wr ukijumuisha callback, which references c2wr
         #               ^
         #               |
         #               |     Generation 2 above dots
@@ -1120,7 +1120,7 @@ kundi GCTogglingTests(unittest.TestCase):
         # So this ni the nightmare:  when generation 0 gets collected, we see
         # that c2 has a callback-free weakref, na c1 doesn't even have a
         # weakref.  Collecting generation 0 doesn't see c0 at all, na c0 is
-        # the only object that has a weakref with a callback.  gc clears c1
+        # the only object that has a weakref ukijumuisha a callback.  gc clears c1
         # na c2.  Clearing c1 has the side effect of dropping the refcount on
         # c0 to 0, so c0 goes away (despite that it's kwenye an older generation)
         # na c0's wr callback triggers.  That kwenye turn materializes a reference
@@ -1138,10 +1138,10 @@ kundi GCTogglingTests(unittest.TestCase):
             self.assertEqual(len(ouch), 0)
             junk.append([])  # this will eventually trigger gc
 
-        self.assertEqual(len(ouch), 1)  # else the callback wasn't invoked
+        self.assertEqual(len(ouch), 1)  # isipokua the callback wasn't invoked
         kila x kwenye ouch:
             # If the callback resurrected c2, the instance would be damaged,
-            # with an empty __dict__.
+            # ukijumuisha an empty __dict__.
             self.assertEqual(x, Tupu)
 
     eleza test_bug1055820d(self):
@@ -1205,9 +1205,9 @@ kundi GCTogglingTests(unittest.TestCase):
             self.assertEqual(len(ouch), 0)
             junk.append([])  # this will eventually trigger gc
 
-        self.assertEqual(len(ouch), 1)  # else __del__ wasn't invoked
+        self.assertEqual(len(ouch), 1)  # isipokua __del__ wasn't invoked
         kila x kwenye ouch:
-            # If __del__ resurrected c2, the instance would be damaged, with an
+            # If __del__ resurrected c2, the instance would be damaged, ukijumuisha an
             # empty __dict__.
             self.assertEqual(x, Tupu)
 

@@ -87,13 +87,13 @@ kundi SearchEngine:
         tatizo re.error kama what:
             args = what.args
             msg = args[0]
-            col = args[1] ikiwa len(args) >= 2 else -1
+            col = args[1] ikiwa len(args) >= 2 isipokua -1
             self.report_error(pat, msg, col)
             rudisha Tupu
         rudisha prog
 
     eleza report_error(self, pat, msg, col=-1):
-        # Derived kundi could override this with something fancier
+        # Derived kundi could override this ukijumuisha something fancier
         msg = "Error: " + str(msg)
         ikiwa pat:
             msg = msg + "\nPattern: " + str(pat)
@@ -105,15 +105,15 @@ kundi SearchEngine:
     eleza search_text(self, text, prog=Tupu, ok=0):
         '''Return (lineno, matchobj) ama Tupu kila forward/backward search.
 
-        This function calls the right function with the right arguments.
+        This function calls the right function ukijumuisha the right arguments.
         It directly rudisha the result of that call.
 
         Text ni a text widget. Prog ni a precompiled pattern.
         The ok parameter ni a bit complicated kama it has two effects.
 
         If there ni a selection, the search begin at either end,
-        depending on the direction setting na ok, with ok meaning that
-        the search starts with the selection. Otherwise, search begins
+        depending on the direction setting na ok, ukijumuisha ok meaning that
+        the search starts ukijumuisha the selection. Otherwise, search begins
         at the insert mark.
 
         To aid progress, the search functions do sio rudisha an empty
@@ -193,7 +193,7 @@ eleza search_reverse(prog, chars, col):
     '''Search backwards na rudisha an re match object ama Tupu.
 
     This ni done by searching forwards until there ni no match.
-    Prog: compiled re object with a search method rudishaing a match.
+    Prog: compiled re object ukijumuisha a search method rudishaing a match.
     Chars: line of text, without \\n.
     Col: stop index kila the search; the limit kila match.end().
     '''

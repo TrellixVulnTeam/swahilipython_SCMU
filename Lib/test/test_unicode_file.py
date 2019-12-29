@@ -1,6 +1,6 @@
 # Test some Unicode file name semantics
 # We don't test many operations on files other than
-# that their names can be used with Unicode characters.
+# that their names can be used ukijumuisha Unicode characters.
 agiza os, glob, time, shutil
 agiza unicodedata
 
@@ -86,7 +86,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
             rmtree(make_name)
         os.mkdir(make_name)
         jaribu:
-            with change_cwd(chdir_name):
+            ukijumuisha change_cwd(chdir_name):
                 cwd_result = os.getcwd()
                 name_result = make_name
 
@@ -97,7 +97,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
         mwishowe:
             os.rmdir(make_name)
 
-    # The '_test' functions 'entry points with params' - ie, what the
+    # The '_test' functions 'entry points ukijumuisha params' - ie, what the
     # top-level 'test' functions would be ikiwa they could take params
     eleza _test_single(self, filename):
         remove_if_exists(filename)
@@ -107,7 +107,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
         mwishowe:
             os.unlink(filename)
         self.assertKweli(not os.path.exists(filename))
-        # na again with os.open.
+        # na again ukijumuisha os.open.
         f = os.open(filename, os.O_CREAT)
         os.close(f)
         jaribu:
@@ -116,7 +116,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
             os.unlink(filename)
 
     # The 'test' functions are unittest entry points, na simply call our
-    # _test functions with each of the filename combinations we wish to test
+    # _test functions ukijumuisha each of the filename combinations we wish to test
     eleza test_single_files(self):
         self._test_single(TESTFN_UNICODE)
         ikiwa TESTFN_UNENCODABLE ni sio Tupu:
@@ -124,7 +124,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
 
     eleza test_directories(self):
         # For all 'equivalent' combinations:
-        #  Make dir with encoded, chdir with unicode, checkdir with encoded
+        #  Make dir ukijumuisha encoded, chdir ukijumuisha unicode, checkdir ukijumuisha encoded
         #  (or unicode/encoded/unicode, etc
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)

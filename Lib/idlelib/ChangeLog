@@ -52,7 +52,7 @@ IDLEfork ChangeLog
 	debugger -i	    open an interactive shell -i file(s) open a
 	shell na also an editor window kila each file -r script  run a file
 	as a script kwenye a shell -s	  run $IDLESTARTUP or
-	$PYTHONSTARTUP before anything else -t title   set title of shell
+	$PYTHONSTARTUP before anything isipokua -t title   set title of shell
 	window
 
 	Remaining arguments are applied to the command (-c) ama script (-r).
@@ -141,7 +141,7 @@ IDLEfork ChangeLog
 
 	* StackViewer.py: py-cvs-2001_07_13 (Rev 1.16) merge
 
-	"Refactored, with some future plans kwenye mind. This now uses the new
+	"Refactored, ukijumuisha some future plans kwenye mind. This now uses the new
 	gotofileline() method defined kwenye FileList.py"  --GvR
 
 2001-07-14 15:10  kbk
@@ -172,7 +172,7 @@ IDLEfork ChangeLog
 	all this work w/ a future-stmt just looks harder na harder."
 	--tim_one
 
-	(From Rel 1.8: "Hack to make this still work with Python 1.5.2.
+	(From Rel 1.8: "Hack to make this still work ukijumuisha Python 1.5.2.
 	;-( " --fdrake)
 
 2001-07-14 14:51  kbk
@@ -355,7 +355,7 @@ IDLEfork ChangeLog
 2001-07-13 09:41  kbk
 
 	* BrowserControl.py: py-cvs-rel2_1 (Rev 1.1) merge - New File -
-	Force HEAD to trunk with -f Note: browser.py was renamed
+	Force HEAD to trunk ukijumuisha -f Note: browser.py was renamed
 	BrowserControl.py 10 May 2000. It provides a collection of classes
 	and convenience functions to control external browsers "kila 1.5.2
 	support". It was removed kutoka py-cvs 18 April 2001.
@@ -426,7 +426,7 @@ IDLEfork ChangeLog
 	idle.py, idlever.py, setup.py, Icons/minusnode.gif,
 	Icons/python.gif: Import the release 2.1 version of Python CVS IDLE
 	on the existing 1.1.3 vendor branch named py-cvs-vendor-branch,
-	with release tag py-cvs-rel2_1.
+	ukijumuisha release tag py-cvs-rel2_1.
 
 2001-07-11 12:34  kbk
 
@@ -453,7 +453,7 @@ IDLEfork ChangeLog
 2001-07-04 13:43  kbk
 
 	* Icons/: folder.gif, minusnode.gif, openfolder.gif, plusnode.gif,
-	python.gif, tk.gif: Null commit with -f option to force an uprev
+	python.gif, tk.gif: Null commit ukijumuisha -f option to force an uprev
 	and put HEADs firmly on the trunk.
 
 2001-07-04 13:15  kbk
@@ -475,7 +475,7 @@ IDLEfork ChangeLog
 	config-win.txt, config.txt, eventparse.py, extend.txt, help.txt,
 	idle, idle.bat, idle.py, idle.pyw, idlever.py, keydefs.py,
 	loader.py, protocol.py, pyclbr.py, setup.py, spawn.py, tabnanny.py,
-	testcode.py: Null commit with -f option to force an uprev na put
+	testcode.py: Null commit ukijumuisha -f option to force an uprev na put
 	HEADs firmly on the trunk.
 
 2001-06-27 10:24  elguavas
@@ -593,7 +593,7 @@ Tue Feb 15 18:08:19 2000  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ChangeLog: Updated change log.
 
-	* NEWS.txt: News update.  Probably incomplete; what else ni new?
+	* NEWS.txt: News update.  Probably incomplete; what isipokua ni new?
 
 	* README.txt:
 	Updated kila pending IDLE 0.5 release (still very rough -- just getting
@@ -716,7 +716,7 @@ Thu Jun 10 17:48:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ClassBrowser.py:
 	Adapt to the new pyclbr's support of listing top-level functions.  If
-	this functionality ni sio present (e.g. when used with a vintage
+	this functionality ni sio present (e.g. when used ukijumuisha a vintage
 	Python 1.5.2 installation) top-level functions are sio listed.
 
 	(Hmm...  Any distribution of IDLE 0.5 should probably include a copy
@@ -756,7 +756,7 @@ Tue Jun  8 13:06:07 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	+ Set usetabs=1.  Editing pyclbr.py was driving me nuts <0.6 wink>.
 	usetabs=1 ni the Emacs pymode default too, na thanks to indentwidth !=
-	tabwidth magical usetabs disabling, new files are still created with tabs
+	tabwidth magical usetabs disabling, new files are still created ukijumuisha tabs
 	turned off.  The only implication ni that ikiwa you open a file whose first
 	indent ni a single tab, IDLE will now magically use tabs kila that file (and
 	set indentwidth to 8).  Note that the whole scheme doesn't work right for
@@ -1082,7 +1082,7 @@ Thu Apr 22 23:20:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* ColorDelegator.py:
 	Super-elegant patch by Tim Peters that speeds up colorization
 	dramatically (up to 15 times he claims).  Works by reading more than
-	one line at a time, up to 100-line chunks (starting with one line and
+	one line at a time, up to 100-line chunks (starting ukijumuisha one line and
 	then doubling up to the limit).  On a typical machine (e.g. Tim's
 	P5-166) this doesn't reduce interactive responsiveness kwenye a noticeable
 	way.
@@ -1176,7 +1176,7 @@ Wed Mar 10 05:18:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	    methods of selected class
 
 	Sinlge clicking kwenye a directory, module ama kundi item updates the next
-	column with info about the selected item.  Double clicking kwenye a
+	column ukijumuisha info about the selected item.  Double clicking kwenye a
 	module, kundi ama method item opens the file (and selects the clicked
 	item ikiwa it ni a kundi ama method).
 
@@ -1248,7 +1248,7 @@ Thu Jan 28 22:24:30 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* PyShell.py, EditorWindow.py, Bindings.py:
 	Move menu/key binding code kutoka Bindings.py to EditorWindow.py,
-	with changed APIs -- it makes much more sense there.
+	ukijumuisha changed APIs -- it makes much more sense there.
 	Also add a new feature: ikiwa the first character of a menu label is
 	a '!', it gets a checkbox.  Checkboxes are bound to Boolean Tcl variables
 	that can be accessed through the new getvar/setvar/getrawvar API;
@@ -1324,7 +1324,7 @@ Sat Jan  9 22:01:33 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ScriptBinding.py:
 	This now actually works.  See doc string.  It can run a module (i.e.
-	agiza ama reload) ama debug it (same with debugger control).  Output
+	agiza ama reload) ama debug it (same ukijumuisha debugger control).  Output
 	goes to a fresh output window, only created when needed.
 
 ======================================================================
@@ -1367,7 +1367,7 @@ Mon Jan  4 21:19:09 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* SearchBinding.py:
 	Add unix binding kila grep (otherwise the menu entry doesn't work!)
 
-	* ZoomHeight.py: Adjusted Unix height to work with fvwm96. :=(
+	* ZoomHeight.py: Adjusted Unix height to work ukijumuisha fvwm96. :=(
 
 	* GrepDialog.py: Need to agiza sys!
 
@@ -1393,7 +1393,7 @@ Sat Jan  2 21:28:54 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	The big news ni that there's a standard way to write IDLE extensions;
 	see extend.txt.  Some sample extensions have been provided, and
 	some existing code has been converted to extensions.  Probably the
-	biggest new user feature ni a new search dialog with more options,
+	biggest new user feature ni a new search dialog ukijumuisha more options,
 	search na replace, na even search kwenye files (grep).
 
 	This ni exactly kama downloaded kutoka my laptop after rudishaing
@@ -1440,7 +1440,7 @@ Sat Oct 24 16:38:38 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 	using Canvas coordinates, na goto() uses turtle coordinates
 	and accepts variable argument lists.
 
-	* Attic/turtle.py: Cope with destruction of the window
+	* Attic/turtle.py: Cope ukijumuisha destruction of the window
 
 	* Attic/turtle.py: Turtle graphics
 
@@ -1586,6 +1586,6 @@ Sat Oct 10 19:15:32 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* idle.pyw, help.txt, WidgetRedirector.py, UndoDelegator.py, StackViewer.py, SearchBinding.py, Attic/README, PyShell.py, Attic/PopupMenu.py, Percolator.py, Outline.py, IOBinding.py, History.py, Attic/HelpWindow.py, FrameViewer.py, FileList.py, EditorWindow.py, Delegator.py, ColorDelegator.py, Bindings.py, AutoIndent.py, AutoExpand.py:
 	Initial checking of Tk-based Python IDE.
-	Features: text editor with syntax coloring na undo;
+	Features: text editor ukijumuisha syntax coloring na undo;
 	subclassed into interactive Python shell which adds history.
 

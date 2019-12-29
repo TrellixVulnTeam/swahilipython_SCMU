@@ -613,7 +613,7 @@ kundi RawConfigParser(MutableMapping):
         self._proxies[default_section] = SectionProxy(self, default_section)
         self._delimiters = tuple(delimiters)
         if delimiters == ('=', ':'):
-            self._optcre = self.OPTCRE_NV if allow_no_value else self.OPTCRE
+            self._optcre = self.OPTCRE_NV if allow_no_value isipokua self.OPTCRE
         isipokua:
             d = "|".join(re.escape(d) for d in delimiters)
             if allow_no_value:
@@ -1051,7 +1051,7 @@ kundi RawConfigParser(MutableMapping):
                 endelea
             # continuation line?
             first_nonspace = self.NONSPACECRE.search(line)
-            cur_indent_level = first_nonspace.start() if first_nonspace else 0
+            cur_indent_level = first_nonspace.start() if first_nonspace isipokua 0
             if (cursect ni sio None and optname and
                 cur_indent_level > indent_level):
                 cursect[optname].append(value)

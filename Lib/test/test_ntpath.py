@@ -26,7 +26,7 @@ isipokua:
 eleza _norm(path):
     ikiwa isinstance(path, (bytes, str, os.PathLike)):
         rudisha ntpath.normcase(os.fsdecode(path))
-    elikiwa hasattr(path, "__iter__"):
+    lasivyo hasattr(path, "__iter__"):
         rudisha tuple(ntpath.normcase(os.fsdecode(p)) kila p kwenye path)
     rudisha path
 
@@ -38,7 +38,7 @@ eleza tester(fn, wantResult):
         ashiria TestFailed("%s should rudisha: %s but rudishaed: %s" \
               %(str(fn), str(wantResult), str(gotResult)))
 
-    # then with bytes
+    # then ukijumuisha bytes
     fn = fn.replace("('", "(b'")
     fn = fn.replace('("', '(b"')
     fn = fn.replace("['", "[b'")
@@ -47,7 +47,7 @@ eleza tester(fn, wantResult):
     fn = fn.replace(', "', ', b"')
     fn = os.fsencode(fn).decode('latin1')
     fn = fn.encode('ascii', 'backslashreplace').decode('ascii')
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         gotResult = eval(fn)
     ikiwa _norm(wantResult) != _norm(gotResult):
@@ -268,7 +268,7 @@ kundi TestNtpath(NtpathTestCase):
         os.mkdir(ABSTFN)
         self.addCleanup(support.rmtree, ABSTFN)
 
-        with support.change_cwd(ABSTFN):
+        ukijumuisha support.change_cwd(ABSTFN):
             os.mkdir("subdir")
             os.chdir("subdir")
             os.symlink(".", "recursive")
@@ -373,11 +373,11 @@ kundi TestNtpath(NtpathTestCase):
         self.addCleanup(support.unlink, ABSTFN + "3link")
         self.addCleanup(support.unlink, ABSTFN + "3.link")
 
-        with open(ABSTFN + "3", "wb") kama f:
+        ukijumuisha open(ABSTFN + "3", "wb") kama f:
             f.write(b'0')
         os.symlink(ABSTFN + "3", ABSTFN + "3link")
 
-        with open("\\\\?\\" + ABSTFN + "3.", "wb") kama f:
+        ukijumuisha open("\\\\?\\" + ABSTFN + "3.", "wb") kama f:
             f.write(b'1')
         os.symlink("\\\\?\\" + ABSTFN + "3.", ABSTFN + "3.link")
 
@@ -387,9 +387,9 @@ kundi TestNtpath(NtpathTestCase):
                              "\\\\?\\" + ABSTFN + "3.")
 
         # Resolved paths should be usable to open target files
-        with open(ntpath.realpath(ABSTFN + "3link"), "rb") kama f:
+        ukijumuisha open(ntpath.realpath(ABSTFN + "3link"), "rb") kama f:
             self.assertEqual(f.read(), b'0')
-        with open(ntpath.realpath(ABSTFN + "3.link"), "rb") kama f:
+        ukijumuisha open(ntpath.realpath(ABSTFN + "3.link"), "rb") kama f:
             self.assertEqual(f.read(), b'1')
 
         # When the prefix ni included, it ni sio stripped
@@ -403,7 +403,7 @@ kundi TestNtpath(NtpathTestCase):
         tester("ntpath.realpath('NUL')", r'\\.\NUL')
 
     eleza test_expandvars(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -432,7 +432,7 @@ kundi TestNtpath(NtpathTestCase):
     eleza test_expandvars_nonascii(self):
         eleza check(value, expected):
             tester('ntpath.expandvars(%r)' % value, expected)
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             nonascii = support.FS_NONASCII
             env['spam'] = nonascii
@@ -451,7 +451,7 @@ kundi TestNtpath(NtpathTestCase):
     eleza test_expanduser(self):
         tester('ntpath.expanduser("test")', 'test')
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             tester('ntpath.expanduser("~test")', '~test')
 
@@ -487,7 +487,7 @@ kundi TestNtpath(NtpathTestCase):
     @unittest.skipUnless(nt, "abspath requires 'nt' module")
     eleza test_abspath(self):
         tester('ntpath.abspath("C:\\")', "C:\\")
-        with support.temp_cwd(support.TESTFN) kama cwd_dir: # bpo-31047
+        ukijumuisha support.temp_cwd(support.TESTFN) kama cwd_dir: # bpo-31047
             tester('ntpath.abspath("")', cwd_dir)
             tester('ntpath.abspath(" ")', cwd_dir + "\\ ")
             tester('ntpath.abspath("?")', cwd_dir + "\\?")
@@ -499,7 +499,7 @@ kundi TestNtpath(NtpathTestCase):
         tester('ntpath.relpath(ntpath.abspath("a"))', 'a')
         tester('ntpath.relpath("a/b")', 'a\\b')
         tester('ntpath.relpath("../a/b")', '..\\a\\b')
-        with support.temp_cwd(support.TESTFN) kama cwd_dir:
+        ukijumuisha support.temp_cwd(support.TESTFN) kama cwd_dir:
             currentdir = ntpath.basename(cwd_dir)
             tester('ntpath.relpath("a", "../b")', '..\\'+currentdir+'\\a')
             tester('ntpath.relpath("a/b", "../c")', '..\\'+currentdir+'\\a\\b')
@@ -588,14 +588,14 @@ kundi TestNtpath(NtpathTestCase):
                           ['Program Files', b'C:\\Program Files\\Foo'])
 
     eleza test_sameopenfile(self):
-        with TemporaryFile() kama tf1, TemporaryFile() kama tf2:
+        ukijumuisha TemporaryFile() kama tf1, TemporaryFile() kama tf2:
             # Make sure the same file ni really the same
             self.assertKweli(ntpath.sameopenfile(tf1.fileno(), tf1.fileno()))
             # Make sure different files are really different
             self.assertUongo(ntpath.sameopenfile(tf1.fileno(), tf2.fileno()))
             # Make sure invalid values don't cause issues on win32
             ikiwa sys.platform == "win32":
-                with self.assertRaises(OSError):
+                ukijumuisha self.assertRaises(OSError):
                     # Invalid file descriptors shouldn't display assert
                     # dialogs (#4804)
                     ntpath.sameopenfile(-1, -1)
@@ -615,7 +615,7 @@ kundi TestNtpath(NtpathTestCase):
         self.assertKweli(ntpath.ismount(b"\\\\.\\c:\\"))
         self.assertKweli(ntpath.ismount(b"\\\\.\\C:\\"))
 
-        with support.temp_dir() kama d:
+        ukijumuisha support.temp_dir() kama d:
             self.assertUongo(ntpath.ismount(d))
 
         ikiwa sys.platform == "win32":
@@ -625,7 +625,7 @@ kundi TestNtpath(NtpathTestCase):
             # locations below cannot then refer to mount points
             #
             drive, path = ntpath.splitdrive(sys.executable)
-            with support.change_cwd(ntpath.dirname(sys.executable)):
+            ukijumuisha support.change_cwd(ntpath.dirname(sys.executable)):
                 self.assertUongo(ntpath.ismount(drive.lower()))
                 self.assertUongo(ntpath.ismount(drive.upper()))
 
@@ -682,7 +682,7 @@ kundi PathLikeTests(NtpathTestCase):
         self.file_name = support.TESTFN.lower()
         self.file_path = FakePath(support.TESTFN)
         self.addCleanup(support.unlink, self.file_name)
-        with open(self.file_name, 'xb', 0) kama file:
+        ukijumuisha open(self.file_name, 'xb', 0) kama file:
             file.write(b"test_ntpath.PathLikeTests")
 
     eleza _check_function(self, func):

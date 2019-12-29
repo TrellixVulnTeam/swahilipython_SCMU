@@ -198,13 +198,13 @@ class EmailPolicy(Policy):
 
         """
         folded = self._fold(name, value, refold_binary=self.cte_type=='7bit')
-        charset = 'utf8' if self.utf8 else 'ascii'
+        charset = 'utf8' if self.utf8 isipokua 'ascii'
         return folded.encode(charset, 'surrogateescape')
 
     def _fold(self, name, value, refold_binary=False):
         if hasattr(value, 'name'):
             return value.fold(policy=self)
-        maxlen = self.max_line_length if self.max_line_length else sys.maxsize
+        maxlen = self.max_line_length if self.max_line_length isipokua sys.maxsize
         lines = value.splitlines()
         refold = (self.refold_source == 'all' or
                   self.refold_source == 'long' and

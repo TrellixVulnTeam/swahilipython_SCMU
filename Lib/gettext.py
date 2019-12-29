@@ -14,7 +14,7 @@ internationalized, to the local language na cultural habits.
 # suggestions kutoka the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
-# C-based libintlmodule (later renamed _gettext), along with a skeletal
+# C-based libintlmodule (later renamed _gettext), along ukijumuisha a skeletal
 # gettext.py implementation.
 #
 # Peter Funk, who wrote fintl.py, a fairly complete wrapper around intlmodule,
@@ -39,7 +39,7 @@ internationalized, to the local language na cultural habits.
 #   memory, but that's probably bad kila large translated programs.  Instead,
 #   the lexical sort of original strings kwenye GNU .mo files should be exploited
 #   to do binary searches na lazy initializations.  Or you might want to use
-#   the undocumented double-hash algorithm kila .mo files with hash tables, but
+#   the undocumented double-hash algorithm kila .mo files ukijumuisha hash tables, but
 #   you'll need to study the GNU gettext code to do this.
 #
 # - Support Solaris .mo file formats.  Unfortunately, we've been unable to
@@ -65,7 +65,7 @@ _default_localedir = os.path.join(sys.base_prefix, 'share', 'locale')
 # Expression parsing kila plural form selection.
 #
 # The gettext library supports a small subset of C syntax.  The only
-# incompatible difference ni that integer literals starting with zero are
+# incompatible difference ni that integer literals starting ukijumuisha zero are
 # decimal.
 #
 # https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms
@@ -124,7 +124,7 @@ eleza _parse(tokens, priority=-1):
         result = '%s(%s)' % (result, sub)
         ikiwa nexttok != ')':
             ashiria ValueError('unbalanced parenthesis kwenye plural form')
-    elikiwa nexttok == 'n':
+    lasivyo nexttok == 'n':
         result = '%s%s' % (result, nexttok)
     isipokua:
         jaribu:
@@ -155,7 +155,7 @@ eleza _parse(tokens, priority=-1):
         ikiwa nexttok != ':':
             ashiria _error(nexttok)
         if_false, nexttok = _parse(tokens)
-        result = '%s ikiwa %s else %s' % (if_true, result, if_false)
+        result = '%s ikiwa %s isipokua %s' % (if_true, result, if_false)
         ikiwa priority == 0:
             result = '(%s)' % result
 
@@ -193,7 +193,7 @@ eleza c2py(plural):
                     # Python compiler limit ni about 90.
                     # The most complex example has 2.
                     ashiria ValueError('plural form expression ni too complex')
-            elikiwa c == ')':
+            lasivyo c == ')':
                 depth -= 1
 
         ns = {'_as_int': _as_int}
@@ -279,7 +279,7 @@ kundi NullTranslations:
         warnings.warn('lgettext() ni deprecated, use gettext() instead',
                       DeprecationWarning, 2)
         ikiwa self._fallback:
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
                                         DeprecationWarning)
                 rudisha self._fallback.lgettext(message)
@@ -300,7 +300,7 @@ kundi NullTranslations:
         warnings.warn('lngettext() ni deprecated, use ngettext() instead',
                       DeprecationWarning, 2)
         ikiwa self._fallback:
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.filterwarnings('ignore', r'.*\blngettext\b.*',
                                         DeprecationWarning)
                 rudisha self._fallback.lngettext(msgid1, msgid2, n)
@@ -386,7 +386,7 @@ kundi GNUTranslations(NullTranslations):
         ikiwa magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
             ii = '<II'
-        elikiwa magic == self.BE_MAGIC:
+        lasivyo magic == self.BE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
         isipokua:
@@ -427,11 +427,11 @@ kundi GNUTranslations(NullTranslations):
                         v = v.strip()
                         self._info[k] = v
                         lastk = k
-                    elikiwa lastk:
+                    lasivyo lastk:
                         self._info[lastk] += '\n' + item
                     ikiwa k == 'content-type':
                         self._charset = v.split('charset=')[1]
-                    elikiwa k == 'plural-forms':
+                    lasivyo k == 'plural-forms':
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
@@ -594,10 +594,10 @@ eleza translation(domain, localedir=Tupu, languages=Tupu,
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
         ikiwa t ni Tupu:
-            with open(mofile, 'rb') kama fp:
+            ukijumuisha open(mofile, 'rb') kama fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
-        # output charset. All other instance data ni shared with the
+        # output charset. All other instance data ni shared ukijumuisha the
         # cached object.
         # Delay copy agiza kila speeding up gettext agiza when .mo files
         # are sio used.
@@ -608,7 +608,7 @@ eleza translation(domain, localedir=Tupu, languages=Tupu,
             warnings.warn('parameter codeset ni deprecated',
                           DeprecationWarning, 2)
             ikiwa codeset:
-                with warnings.catch_warnings():
+                ukijumuisha warnings.catch_warnings():
                     warnings.filterwarnings('ignore', r'.*\bset_output_charset\b.*',
                                             DeprecationWarning)
                     t.set_output_charset(codeset)
@@ -670,13 +670,13 @@ eleza ldgettext(domain, message):
                   DeprecationWarning, 2)
     codeset = _localecodesets.get(domain)
     jaribu:
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
     tatizo OSError:
         rudisha message.encode(codeset ama locale.getpreferredencoding())
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
                                 DeprecationWarning)
         rudisha t.lgettext(message)
@@ -697,7 +697,7 @@ eleza ldngettext(domain, msgid1, msgid2, n):
                   DeprecationWarning, 2)
     codeset = _localecodesets.get(domain)
     jaribu:
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
@@ -707,7 +707,7 @@ eleza ldngettext(domain, msgid1, msgid2, n):
         isipokua:
             tmsg = msgid2
         rudisha tmsg.encode(codeset ama locale.getpreferredencoding())
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blngettext\b.*',
                                 DeprecationWarning)
         rudisha t.lngettext(msgid1, msgid2, n)
@@ -739,7 +739,7 @@ eleza lgettext(message):
     agiza warnings
     warnings.warn('lgettext() ni deprecated, use gettext() instead',
                   DeprecationWarning, 2)
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldgettext\b.*',
                                 DeprecationWarning)
         rudisha ldgettext(_current_domain, message)
@@ -751,7 +751,7 @@ eleza lngettext(msgid1, msgid2, n):
     agiza warnings
     warnings.warn('lngettext() ni deprecated, use ngettext() instead',
                   DeprecationWarning, 2)
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldngettext\b.*',
                                 DeprecationWarning)
         rudisha ldngettext(_current_domain, msgid1, msgid2, n)

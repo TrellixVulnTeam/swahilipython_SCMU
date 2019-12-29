@@ -61,21 +61,21 @@ kundi TarTest:
 kundi GzipTest:
     tarname = gzipname
     suffix = 'gz'
-    open = gzip.GzipFile ikiwa gzip else Tupu
+    open = gzip.GzipFile ikiwa gzip isipokua Tupu
     taropen = tarfile.TarFile.gzopen
 
 @support.requires_bz2
 kundi Bz2Test:
     tarname = bz2name
     suffix = 'bz2'
-    open = bz2.BZ2File ikiwa bz2 else Tupu
+    open = bz2.BZ2File ikiwa bz2 isipokua Tupu
     taropen = tarfile.TarFile.bz2open
 
 @support.requires_lzma
 kundi LzmaTest:
     tarname = xzname
     suffix = 'xz'
-    open = lzma.LZMAFile ikiwa lzma else Tupu
+    open = lzma.LZMAFile ikiwa lzma isipokua Tupu
     taropen = tarfile.TarFile.xzopen
 
 
@@ -95,7 +95,7 @@ kundi UstarReadTest(ReadTest, unittest.TestCase):
 
     eleza test_fileobj_regular_file(self):
         tarinfo = self.tar.getmember("ustar/regtype")
-        with self.tar.extractfile(tarinfo) kama fobj:
+        ukijumuisha self.tar.extractfile(tarinfo) kama fobj:
             data = fobj.read()
             self.assertEqual(len(data), tarinfo.size,
                     "regular file extraction failed")
@@ -105,10 +105,10 @@ kundi UstarReadTest(ReadTest, unittest.TestCase):
     eleza test_fileobj_readlines(self):
         self.tar.extract("ustar/regtype", TEMPDIR)
         tarinfo = self.tar.getmember("ustar/regtype")
-        with open(os.path.join(TEMPDIR, "ustar/regtype"), "r") kama fobj1:
+        ukijumuisha open(os.path.join(TEMPDIR, "ustar/regtype"), "r") kama fobj1:
             lines1 = fobj1.readlines()
 
-        with self.tar.extractfile(tarinfo) kama fobj:
+        ukijumuisha self.tar.extractfile(tarinfo) kama fobj:
             fobj2 = io.TextIOWrapper(fobj)
             lines2 = fobj2.readlines()
             self.assertEqual(lines1, lines2,
@@ -123,20 +123,20 @@ kundi UstarReadTest(ReadTest, unittest.TestCase):
     eleza test_fileobj_iter(self):
         self.tar.extract("ustar/regtype", TEMPDIR)
         tarinfo = self.tar.getmember("ustar/regtype")
-        with open(os.path.join(TEMPDIR, "ustar/regtype"), "r") kama fobj1:
+        ukijumuisha open(os.path.join(TEMPDIR, "ustar/regtype"), "r") kama fobj1:
             lines1 = fobj1.readlines()
-        with self.tar.extractfile(tarinfo) kama fobj2:
+        ukijumuisha self.tar.extractfile(tarinfo) kama fobj2:
             lines2 = list(io.TextIOWrapper(fobj2))
             self.assertEqual(lines1, lines2,
                     "fileobj.__iter__() failed")
 
     eleza test_fileobj_seek(self):
         self.tar.extract("ustar/regtype", TEMPDIR)
-        with open(os.path.join(TEMPDIR, "ustar/regtype"), "rb") kama fobj:
+        ukijumuisha open(os.path.join(TEMPDIR, "ustar/regtype"), "rb") kama fobj:
             data = fobj.read()
 
         tarinfo = self.tar.getmember("ustar/regtype")
-        with self.tar.extractfile(tarinfo) kama fobj:
+        ukijumuisha self.tar.extractfile(tarinfo) kama fobj:
             text = fobj.read()
             fobj.seek(0)
             self.assertEqual(0, fobj.tell(),
@@ -179,7 +179,7 @@ kundi UstarReadTest(ReadTest, unittest.TestCase):
                          "read() after readline() failed")
 
     eleza test_fileobj_text(self):
-        with self.tar.extractfile("ustar/regtype") kama fobj:
+        ukijumuisha self.tar.extractfile("ustar/regtype") kama fobj:
             fobj = io.TextIOWrapper(fobj)
             data = fobj.read().encode("iso8859-1")
             self.assertEqual(sha256sum(data), sha256_regtype)
@@ -194,7 +194,7 @@ kundi UstarReadTest(ReadTest, unittest.TestCase):
     # test link members each point to a regular member whose data is
     # supposed to be exported.
     eleza _test_fileobj_link(self, lnktype, regtype):
-        with self.tar.extractfile(lnktype) kama a, \
+        ukijumuisha self.tar.extractfile(lnktype) kama a, \
              self.tar.extractfile(regtype) kama b:
             self.assertEqual(a.name, b.name)
 
@@ -233,7 +233,7 @@ kundi ListTest(ReadTest, unittest.TestCase):
 
     eleza test_list(self):
         tio = io.TextIOWrapper(io.BytesIO(), 'ascii', newline='\n')
-        with support.swap_attr(sys, 'stdout', tio):
+        ukijumuisha support.swap_attr(sys, 'stdout', tio):
             self.tar.list(verbose=Uongo)
         out = tio.detach().getvalue()
         self.assertIn(b'ustar/conttype', out)
@@ -270,10 +270,10 @@ kundi ListTest(ReadTest, unittest.TestCase):
 
     eleza test_list_verbose(self):
         tio = io.TextIOWrapper(io.BytesIO(), 'ascii', newline='\n')
-        with support.swap_attr(sys, 'stdout', tio):
+        ukijumuisha support.swap_attr(sys, 'stdout', tio):
             self.tar.list(verbose=Kweli)
         out = tio.detach().getvalue()
-        # Make sure it prints files separated by one newline with 'ls -l'-like
+        # Make sure it prints files separated by one newline ukijumuisha 'ls -l'-like
         # accessories ikiwa verbose flag ni being used
         # ...
         # ?rw-r--r-- tarfile/tarfile     7011 2003-01-06 07:19:43 ustar/conttype
@@ -282,7 +282,7 @@ kundi ListTest(ReadTest, unittest.TestCase):
         self.assertRegex(out, (br'\?rw-r--r-- tarfile/tarfile\s+7011 '
                                br'\d{4}-\d\d-\d\d\s+\d\d:\d\d:\d\d '
                                br'ustar/\w+type ?\r?\n') * 2)
-        # Make sure it prints the source of link with verbose flag
+        # Make sure it prints the source of link ukijumuisha verbose flag
         self.assertIn(b'ustar/symtype -> regtype', out)
         self.assertIn(b'./ustar/linktest2/symtype -> ../linktest1/regtype', out)
         self.assertIn(b'./ustar/linktest2/lnktype link to '
@@ -298,7 +298,7 @@ kundi ListTest(ReadTest, unittest.TestCase):
             kila tarinfo kwenye tar.getmembers():
                 ikiwa 'reg' kwenye tarinfo.name:
                     tuma tarinfo
-        with support.swap_attr(sys, 'stdout', tio):
+        ukijumuisha support.swap_attr(sys, 'stdout', tio):
             self.tar.list(verbose=Uongo, members=members(self.tar))
         out = tio.detach().getvalue()
         self.assertIn(b'ustar/regtype', out)
@@ -324,7 +324,7 @@ kundi CommonReadTest(ReadTest):
         # This test checks ikiwa tarfile.open() ni able to open an empty tar
         # archive successfully. Note that an empty tar archive ni sio the
         # same kama an empty file!
-        with tarfile.open(tmpname, self.mode.replace("r", "w")):
+        ukijumuisha tarfile.open(tmpname, self.mode.replace("r", "w")):
             pita
         jaribu:
             tar = tarfile.open(tmpname, self.mode)
@@ -339,14 +339,14 @@ kundi CommonReadTest(ReadTest):
     eleza test_non_existent_tarfile(self):
         # Test kila issue11513: prevent non-existent gzipped tarfiles raising
         # multiple exceptions.
-        with self.assertRaisesRegex(FileNotFoundError, "xxx"):
+        ukijumuisha self.assertRaisesRegex(FileNotFoundError, "xxx"):
             tarfile.open("xxx", self.mode)
 
     eleza test_null_tarfile(self):
         # Test kila issue6123: Allow opening empty archives.
         # This test guarantees that tarfile.open() does sio treat an empty
         # file kama an empty tar archive.
-        with open(tmpname, "wb"):
+        ukijumuisha open(tmpname, "wb"):
             pita
         self.assertRaises(tarfile.ReadError, tarfile.open, tmpname, self.mode)
         self.assertRaises(tarfile.ReadError, tarfile.open, tmpname)
@@ -358,7 +358,7 @@ kundi CommonReadTest(ReadTest):
         kila char kwenye (b'\0', b'a'):
             # Test ikiwa EOFHeaderError ('\0') na InvalidHeaderError ('a')
             # are ignored correctly.
-            with self.open(tmpname, "w") kama fobj:
+            ukijumuisha self.open(tmpname, "w") kama fobj:
                 fobj.write(char * 1024)
                 tarinfo = tarfile.TarInfo("foo")
                 tarinfo.size = len(data)
@@ -375,26 +375,26 @@ kundi CommonReadTest(ReadTest):
 
     eleza test_premature_end_of_archive(self):
         kila size kwenye (512, 600, 1024, 1200):
-            with tarfile.open(tmpname, "w:") kama tar:
+            ukijumuisha tarfile.open(tmpname, "w:") kama tar:
                 t = tarfile.TarInfo("foo")
                 t.size = 1024
                 tar.addfile(t, io.BytesIO(b"a" * 1024))
 
-            with open(tmpname, "r+b") kama fobj:
+            ukijumuisha open(tmpname, "r+b") kama fobj:
                 fobj.truncate(size)
 
-            with tarfile.open(tmpname) kama tar:
-                with self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
+            ukijumuisha tarfile.open(tmpname) kama tar:
+                ukijumuisha self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
                     kila t kwenye tar:
                         pita
 
-            with tarfile.open(tmpname) kama tar:
+            ukijumuisha tarfile.open(tmpname) kama tar:
                 t = tar.next()
 
-                with self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
+                ukijumuisha self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
                     tar.extract(t, TEMPDIR)
 
-                with self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
+                ukijumuisha self.assertRaisesRegex(tarfile.ReadError, "unexpected end of data"):
                     tar.extractfile(t).read()
 
 kundi MiscReadTestBase(CommonReadTest):
@@ -403,14 +403,14 @@ kundi MiscReadTestBase(CommonReadTest):
 
     eleza test_no_name_argument(self):
         self.requires_name_attribute()
-        with open(self.tarname, "rb") kama fobj:
+        ukijumuisha open(self.tarname, "rb") kama fobj:
             self.assertIsInstance(fobj.name, str)
-            with tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
+            ukijumuisha tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
                 self.assertIsInstance(tar.name, str)
                 self.assertEqual(tar.name, os.path.abspath(fobj.name))
 
     eleza test_no_name_attribute(self):
-        with open(self.tarname, "rb") kama fobj:
+        ukijumuisha open(self.tarname, "rb") kama fobj:
             data = fobj.read()
         fobj = io.BytesIO(data)
         self.assertRaises(AttributeError, getattr, fobj, "name")
@@ -418,55 +418,55 @@ kundi MiscReadTestBase(CommonReadTest):
         self.assertIsTupu(tar.name)
 
     eleza test_empty_name_attribute(self):
-        with open(self.tarname, "rb") kama fobj:
+        ukijumuisha open(self.tarname, "rb") kama fobj:
             data = fobj.read()
         fobj = io.BytesIO(data)
         fobj.name = ""
-        with tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
+        ukijumuisha tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
             self.assertIsTupu(tar.name)
 
     eleza test_int_name_attribute(self):
-        # Issue 21044: tarfile.open() should handle fileobj with an integer
+        # Issue 21044: tarfile.open() should handle fileobj ukijumuisha an integer
         # 'name' attribute.
         fd = os.open(self.tarname, os.O_RDONLY)
-        with open(fd, 'rb') kama fobj:
+        ukijumuisha open(fd, 'rb') kama fobj:
             self.assertIsInstance(fobj.name, int)
-            with tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
+            ukijumuisha tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
                 self.assertIsTupu(tar.name)
 
     eleza test_bytes_name_attribute(self):
         self.requires_name_attribute()
         tarname = os.fsencode(self.tarname)
-        with open(tarname, 'rb') kama fobj:
+        ukijumuisha open(tarname, 'rb') kama fobj:
             self.assertIsInstance(fobj.name, bytes)
-            with tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
+            ukijumuisha tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
                 self.assertIsInstance(tar.name, bytes)
                 self.assertEqual(tar.name, os.path.abspath(fobj.name))
 
     eleza test_pathlike_name(self):
         tarname = pathlib.Path(self.tarname)
-        with tarfile.open(tarname, mode=self.mode) kama tar:
+        ukijumuisha tarfile.open(tarname, mode=self.mode) kama tar:
             self.assertIsInstance(tar.name, str)
             self.assertEqual(tar.name, os.path.abspath(os.fspath(tarname)))
-        with self.taropen(tarname) kama tar:
+        ukijumuisha self.taropen(tarname) kama tar:
             self.assertIsInstance(tar.name, str)
             self.assertEqual(tar.name, os.path.abspath(os.fspath(tarname)))
-        with tarfile.TarFile.open(tarname, mode=self.mode) kama tar:
+        ukijumuisha tarfile.TarFile.open(tarname, mode=self.mode) kama tar:
             self.assertIsInstance(tar.name, str)
             self.assertEqual(tar.name, os.path.abspath(os.fspath(tarname)))
         ikiwa self.suffix == '':
-            with tarfile.TarFile(tarname, mode='r') kama tar:
+            ukijumuisha tarfile.TarFile(tarname, mode='r') kama tar:
                 self.assertIsInstance(tar.name, str)
                 self.assertEqual(tar.name, os.path.abspath(os.fspath(tarname)))
 
     eleza test_illegal_mode_arg(self):
-        with open(tmpname, 'wb'):
+        ukijumuisha open(tmpname, 'wb'):
             pita
-        with self.assertRaisesRegex(ValueError, 'mode must be '):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'mode must be '):
             tar = self.taropen(tmpname, 'q')
-        with self.assertRaisesRegex(ValueError, 'mode must be '):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'mode must be '):
             tar = self.taropen(tmpname, 'rw')
-        with self.assertRaisesRegex(ValueError, 'mode must be '):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'mode must be '):
             tar = self.taropen(tmpname, '')
 
     eleza test_fileobj_with_offset(self):
@@ -478,17 +478,17 @@ kundi MiscReadTestBase(CommonReadTest):
             t = tar.next()
             name = t.name
             offset = t.offset
-            with tar.extractfile(t) kama f:
+            ukijumuisha tar.extractfile(t) kama f:
                 data = f.read()
         mwishowe:
             tar.close()
 
         # Open the testtar na seek to the offset of the second member.
-        with self.open(self.tarname) kama fobj:
+        ukijumuisha self.open(self.tarname) kama fobj:
             fobj.seek(offset)
 
-            # Test ikiwa the tarfile starts with the second member.
-            with tar.open(self.tarname, mode="r:", fileobj=fobj) kama tar:
+            # Test ikiwa the tarfile starts ukijumuisha the second member.
+            ukijumuisha tar.open(self.tarname, mode="r:", fileobj=fobj) kama tar:
                 t = tar.next()
                 self.assertEqual(t.name, name)
                 # Read to the end of fileobj na test ikiwa seeking back to the
@@ -498,16 +498,16 @@ kundi MiscReadTestBase(CommonReadTest):
                         "seek back did sio work")
 
     eleza test_fail_comp(self):
-        # For Gzip na Bz2 Tests: fail with a ReadError on an uncompressed file.
+        # For Gzip na Bz2 Tests: fail ukijumuisha a ReadError on an uncompressed file.
         self.assertRaises(tarfile.ReadError, tarfile.open, tarname, self.mode)
-        with open(tarname, "rb") kama fobj:
+        ukijumuisha open(tarname, "rb") kama fobj:
             self.assertRaises(tarfile.ReadError, tarfile.open,
                               fileobj=fobj, mode=self.mode)
 
     eleza test_v7_dirtype(self):
         # Test old style dirtype member (bug #1336623):
         # Old V7 tars create directory members using an AREGTYPE
-        # header with a "/" appended to the filename field.
+        # header ukijumuisha a "/" appended to the filename field.
         tarinfo = self.tar.getmember("misc/dirtype-old-v7")
         self.assertEqual(tarinfo.type, tarfile.DIRTYPE,
                 "v7 dirtype failed")
@@ -539,19 +539,19 @@ kundi MiscReadTestBase(CommonReadTest):
     @support.skip_unless_symlink
     eleza test_extract_hardlink(self):
         # Test hardlink extraction (e.g. bug #857297).
-        with tarfile.open(tarname, errorlevel=1, encoding="iso8859-1") kama tar:
+        ukijumuisha tarfile.open(tarname, errorlevel=1, encoding="iso8859-1") kama tar:
             tar.extract("ustar/regtype", TEMPDIR)
             self.addCleanup(support.unlink, os.path.join(TEMPDIR, "ustar/regtype"))
 
             tar.extract("ustar/lnktype", TEMPDIR)
             self.addCleanup(support.unlink, os.path.join(TEMPDIR, "ustar/lnktype"))
-            with open(os.path.join(TEMPDIR, "ustar/lnktype"), "rb") kama f:
+            ukijumuisha open(os.path.join(TEMPDIR, "ustar/lnktype"), "rb") kama f:
                 data = f.read()
             self.assertEqual(sha256sum(data), sha256_regtype)
 
             tar.extract("ustar/symtype", TEMPDIR)
             self.addCleanup(support.unlink, os.path.join(TEMPDIR, "ustar/symtype"))
-            with open(os.path.join(TEMPDIR, "ustar/symtype"), "rb") kama f:
+            ukijumuisha open(os.path.join(TEMPDIR, "ustar/symtype"), "rb") kama f:
                 data = f.read()
             self.assertEqual(sha256sum(data), sha256_regtype)
 
@@ -590,7 +590,7 @@ kundi MiscReadTestBase(CommonReadTest):
         DIR = os.path.join(TEMPDIR, "extractdir")
         os.mkdir(DIR)
         jaribu:
-            with tarfile.open(tarname, encoding="iso8859-1") kama tar:
+            ukijumuisha tarfile.open(tarname, encoding="iso8859-1") kama tar:
                 tarinfo = tar.getmember(dirtype)
                 tar.extract(tarinfo, path=DIR)
                 extracted = os.path.join(DIR, dirtype)
@@ -602,7 +602,7 @@ kundi MiscReadTestBase(CommonReadTest):
 
     eleza test_extractall_pathlike_name(self):
         DIR = pathlib.Path(TEMPDIR) / "extractall"
-        with support.temp_dir(DIR), \
+        ukijumuisha support.temp_dir(DIR), \
              tarfile.open(tarname, encoding="iso8859-1") kama tar:
             directories = [t kila t kwenye tar ikiwa t.isdir()]
             tar.extractall(DIR, directories)
@@ -613,7 +613,7 @@ kundi MiscReadTestBase(CommonReadTest):
     eleza test_extract_pathlike_name(self):
         dirtype = "ustar/dirtype"
         DIR = pathlib.Path(TEMPDIR) / "extractall"
-        with support.temp_dir(DIR), \
+        ukijumuisha support.temp_dir(DIR), \
              tarfile.open(tarname, encoding="iso8859-1") kama tar:
             tarinfo = tar.getmember(dirtype)
             tar.extract(tarinfo, path=DIR)
@@ -625,7 +625,7 @@ kundi MiscReadTestBase(CommonReadTest):
         # constructor kwenye case of an error. For the test we rely on
         # the fact that opening an empty file ashirias a ReadError.
         empty = os.path.join(TEMPDIR, "empty")
-        with open(empty, "wb") kama fobj:
+        ukijumuisha open(empty, "wb") kama fobj:
             fobj.write(b"")
 
         jaribu:
@@ -642,7 +642,7 @@ kundi MiscReadTestBase(CommonReadTest):
     eleza test_parallel_iteration(self):
         # Issue #16601: Restarting iteration over tarfile endelead
         # kutoka where it left off.
-        with tarfile.open(self.tarname) kama tar:
+        ukijumuisha tarfile.open(self.tarname) kama tar:
             kila m1, m2 kwenye zip(tar, tar):
                 self.assertEqual(m1.offset, m2.offset)
                 self.assertEqual(m1.get_info(), m2.get_info())
@@ -668,11 +668,11 @@ kundi StreamReadTest(CommonReadTest, unittest.TestCase):
 
     eleza test_read_through(self):
         # Issue #11224: A poorly designed _FileInFile.read() method
-        # caused seeking errors with stream tar files.
+        # caused seeking errors ukijumuisha stream tar files.
         kila tarinfo kwenye self.tar:
             ikiwa sio tarinfo.isreg():
                 endelea
-            with self.tar.extractfile(tarinfo) kama fobj:
+            ukijumuisha self.tar.extractfile(tarinfo) kama fobj:
                 wakati Kweli:
                     jaribu:
                         buf = fobj.read(512)
@@ -684,7 +684,7 @@ kundi StreamReadTest(CommonReadTest, unittest.TestCase):
 
     eleza test_fileobj_regular_file(self):
         tarinfo = self.tar.next() # get "regtype" (can't use getmember)
-        with self.tar.extractfile(tarinfo) kama fobj:
+        ukijumuisha self.tar.extractfile(tarinfo) kama fobj:
             data = fobj.read()
         self.assertEqual(len(data), tarinfo.size,
                 "regular file extraction failed")
@@ -693,7 +693,7 @@ kundi StreamReadTest(CommonReadTest, unittest.TestCase):
 
     eleza test_provoke_stream_error(self):
         tarinfos = self.tar.getmembers()
-        with self.tar.extractfile(tarinfos[0]) kama f: # read the first member
+        ukijumuisha self.tar.extractfile(tarinfos[0]) kama f: # read the first member
             self.assertRaises(tarfile.StreamError, f.read)
 
     eleza test_compare_members(self):
@@ -709,7 +709,7 @@ kundi StreamReadTest(CommonReadTest, unittest.TestCase):
                 self.assertIsNotTupu(t2, "stream.next() failed.")
 
                 ikiwa t2.islnk() ama t2.issym():
-                    with self.assertRaises(tarfile.StreamError):
+                    ukijumuisha self.assertRaises(tarfile.StreamError):
                         tar2.extractfile(t2)
                     endelea
 
@@ -744,7 +744,7 @@ kundi DetectReadTest(TarTest, unittest.TestCase):
 
     eleza _testfunc_fileobj(self, name, mode):
         jaribu:
-            with open(name, "rb") kama f:
+            ukijumuisha open(name, "rb") kama f:
                 tar = tarfile.open(name, mode, fileobj=f)
         tatizo tarfile.ReadError kama e:
             self.fail()
@@ -753,13 +753,13 @@ kundi DetectReadTest(TarTest, unittest.TestCase):
 
     eleza _test_modes(self, testfunc):
         ikiwa self.suffix:
-            with self.assertRaises(tarfile.ReadError):
+            ukijumuisha self.assertRaises(tarfile.ReadError):
                 tarfile.open(tarname, mode="r:" + self.suffix)
-            with self.assertRaises(tarfile.ReadError):
+            ukijumuisha self.assertRaises(tarfile.ReadError):
                 tarfile.open(tarname, mode="r|" + self.suffix)
-            with self.assertRaises(tarfile.ReadError):
+            ukijumuisha self.assertRaises(tarfile.ReadError):
                 tarfile.open(self.tarname, mode="r:")
-            with self.assertRaises(tarfile.ReadError):
+            ukijumuisha self.assertRaises(tarfile.ReadError):
                 tarfile.open(self.tarname, mode="r|")
         testfunc(self.tarname, "r")
         testfunc(self.tarname, "r:" + self.suffix)
@@ -782,11 +782,11 @@ kundi Bz2DetectReadTest(Bz2Test, DetectReadTest):
         # "BZh91" at the start of the file. This ni incorrect because
         # the '9' represents the blocksize (900,000 bytes). If the file was
         # compressed using another blocksize autodetection fails.
-        with open(tarname, "rb") kama fobj:
+        ukijumuisha open(tarname, "rb") kama fobj:
             data = fobj.read()
 
-        # Compress with blocksize 100,000 bytes, the file starts with "BZh11".
-        with bz2.BZ2File(tmpname, "wb", compresslevel=1) kama fobj:
+        # Compress ukijumuisha blocksize 100,000 bytes, the file starts ukijumuisha "BZh11".
+        ukijumuisha bz2.BZ2File(tmpname, "wb", compresslevel=1) kama fobj:
             fobj.write(data)
 
         self._testfunc_file(tmpname, "r|*")
@@ -799,7 +799,7 @@ kundi MemberReadTest(ReadTest, unittest.TestCase):
 
     eleza _test_member(self, tarinfo, chksum=Tupu, **kwargs):
         ikiwa chksum ni sio Tupu:
-            with self.tar.extractfile(tarinfo) kama f:
+            ukijumuisha self.tar.extractfile(tarinfo) kama f:
                 self.assertEqual(sha256sum(f.read()), chksum,
                         "wrong sha256sum kila %s" % tarinfo.name)
 
@@ -919,7 +919,7 @@ kundi LongnameTest:
         offset = tarinfo.offset
         self.tar.fileobj.seek(offset)
         fobj = io.BytesIO(self.tar.fileobj.read(3 * 512))
-        with self.assertRaises(tarfile.ReadError):
+        ukijumuisha self.assertRaises(tarfile.ReadError):
             tarfile.open(name="foo.tar", fileobj=fobj)
 
     eleza test_header_offset(self):
@@ -927,7 +927,7 @@ kundi LongnameTest:
         # the preceding extended header.
         longname = self.subdir + "/" + "123/" * 125 + "longname"
         offset = self.tar.getmember(longname).offset
-        with open(tarname, "rb") kama fobj:
+        ukijumuisha open(tarname, "rb") kama fobj:
             fobj.seek(offset)
             tarinfo = tarfile.TarInfo.kutokabuf(fobj.read(512),
                                               "iso8859-1", "strict")
@@ -940,7 +940,7 @@ kundi GNUReadTest(LongnameTest, ReadTest, unittest.TestCase):
     longnametype = tarfile.GNUTYPE_LONGNAME
 
     # Since 3.2 tarfile ni supposed to accurately restore sparse members and
-    # produce files with holes. This ni what we actually want to test here.
+    # produce files ukijumuisha holes. This ni what we actually want to test here.
     # Unfortunately, sio all platforms/filesystems support sparse files, and
     # even on platforms that do it ni non-trivial to make reliable assertions
     # about holes kwenye files. Therefore, we first do one basic test which works
@@ -949,7 +949,7 @@ kundi GNUReadTest(LongnameTest, ReadTest, unittest.TestCase):
     eleza _test_sparse_file(self, name):
         self.tar.extract(name, TEMPDIR)
         filename = os.path.join(TEMPDIR, name)
-        with open(filename, "rb") kama fobj:
+        ukijumuisha open(filename, "rb") kama fobj:
             data = fobj.read()
         self.assertEqual(sha256sum(data), sha256_sparse,
                 "wrong sha256sum kila %s" % name)
@@ -981,7 +981,7 @@ kundi GNUReadTest(LongnameTest, ReadTest, unittest.TestCase):
         ikiwa sys.platform.startswith("linux"):
             # Linux evidentially has 512 byte st_blocks units.
             name = os.path.join(TEMPDIR, "sparse-test")
-            with open(name, "wb") kama fobj:
+            ukijumuisha open(name, "wb") kama fobj:
                 # Seek to "punch a hole" of 4 KiB
                 fobj.seek(4096)
                 fobj.write(b'x' * 4096)
@@ -1043,10 +1043,10 @@ kundi WriteTestBase(TarTest):
 
     eleza test_fileobj_no_close(self):
         fobj = io.BytesIO()
-        with tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
+        ukijumuisha tarfile.open(fileobj=fobj, mode=self.mode) kama tar:
             tar.addfile(tarfile.TarInfo("foo"))
         self.assertUongo(fobj.closed, "external fileobjs must never closed")
-        # Issue #20238: Incomplete gzip output with mode="w:gz"
+        # Issue #20238: Incomplete gzip output ukijumuisha mode="w:gz"
         data = fobj.getvalue()
         toa tar
         support.gc_collect()
@@ -1058,12 +1058,12 @@ kundi WriteTestBase(TarTest):
         # tarfile insists on aligning archives to a 20 * 512 byte recordsize.
         # So, we create an archive that has exactly 10240 bytes without the
         # marker, na has 20480 bytes once the marker ni written.
-        with tarfile.open(tmpname, self.mode) kama tar:
+        ukijumuisha tarfile.open(tmpname, self.mode) kama tar:
             t = tarfile.TarInfo("foo")
             t.size = tarfile.RECORDSIZE - tarfile.BLOCKSIZE
             tar.addfile(t, io.BytesIO(b"a" * t.size))
 
-        with self.open(tmpname, "rb") kama fobj:
+        ukijumuisha self.open(tmpname, "rb") kama fobj:
             self.assertEqual(len(fobj.read()), tarfile.RECORDSIZE * 2)
 
 
@@ -1073,7 +1073,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
 
     eleza test_100_char_name(self):
         # The name field kwenye a tar header stores strings of at most 100 chars.
-        # If a string ni shorter than 100 chars it has to be padded with '\0',
+        # If a string ni shorter than 100 chars it has to be padded ukijumuisha '\0',
         # which implies that a string of exactly 100 chars ni stored without
         # a trailing '\0'.
         name = "0123456789" * 10
@@ -1096,7 +1096,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
         tar = tarfile.open(tmpname, self.mode)
         jaribu:
             path = os.path.join(TEMPDIR, "file")
-            with open(path, "wb") kama fobj:
+            ukijumuisha open(path, "wb") kama fobj:
                 fobj.write(b"aaa")
             tar.add(path)
         mwishowe:
@@ -1109,12 +1109,12 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
         tar = tarfile.open(tmpname, self.mode)
         jaribu:
             path = os.path.join(TEMPDIR, "file")
-            with open(path, "wb"):
+            ukijumuisha open(path, "wb"):
                 pita
             tarinfo = tar.gettarinfo(path)
             self.assertEqual(tarinfo.size, 0)
 
-            with open(path, "wb") kama fobj:
+            ukijumuisha open(path, "wb") kama fobj:
                 fobj.write(b"aaa")
             tarinfo = tar.gettarinfo(path)
             self.assertEqual(tarinfo.size, 3)
@@ -1144,7 +1144,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
         jaribu:
             tar = tarfile.open(tmpname, self.mode)
             jaribu:
-                with unittest.mock.patch('os.listdir') kama mock_listdir:
+                ukijumuisha unittest.mock.patch('os.listdir') kama mock_listdir:
                     mock_listdir.rudisha_value = ["2", "1"]
                     tar.add(path)
                 paths = []
@@ -1159,9 +1159,9 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
             support.rmdir(path)
 
     eleza test_gettarinfo_pathlike_name(self):
-        with tarfile.open(tmpname, self.mode) kama tar:
+        ukijumuisha tarfile.open(tmpname, self.mode) kama tar:
             path = pathlib.Path(TEMPDIR) / "file"
-            with open(path, "wb") kama fobj:
+            ukijumuisha open(path, "wb") kama fobj:
                 fobj.write(b"aaa")
             tarinfo = tar.gettarinfo(path)
             tarinfo2 = tar.gettarinfo(os.fspath(path))
@@ -1174,7 +1174,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
     eleza test_link_size(self):
         link = os.path.join(TEMPDIR, "link")
         target = os.path.join(TEMPDIR, "link_target")
-        with open(target, "wb") kama fobj:
+        ukijumuisha open(target, "wb") kama fobj:
             fobj.write(b"aaa")
         jaribu:
             os.link(target, link)
@@ -1218,7 +1218,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
             self.assertEqual(tar.getnames(), [],
                     "added the archive to itself")
 
-            with support.change_cwd(TEMPDIR):
+            ukijumuisha support.change_cwd(TEMPDIR):
                 tar.add(dstname)
             self.assertEqual(tar.getnames(), [],
                     "added the archive to itself")
@@ -1247,7 +1247,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
                 tar.close()
 
             # Verify that filter ni a keyword-only argument
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 tar.add(tempdir, "empty_dir", Kweli, Tupu, filter)
 
             tar = tarfile.open(tmpname, "r")
@@ -1266,8 +1266,8 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
     # pathnames relative.
     # For details see bug #6054.
     eleza _test_pathname(self, path, cmp_path=Tupu, dir=Uongo):
-        # Create a tarfile with an empty member named path
-        # na compare the stored name with the original.
+        # Create a tarfile ukijumuisha an empty member named path
+        # na compare the stored name ukijumuisha the original.
         foo = os.path.join(TEMPDIR, "foo")
         ikiwa sio dir:
             support.create_empty_file(foo)
@@ -1303,19 +1303,19 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
         jaribu:
             source_file = os.path.join(tempdir,'source')
             target_file = os.path.join(tempdir,'symlink')
-            with open(source_file,'w') kama f:
+            ukijumuisha open(source_file,'w') kama f:
                 f.write('something\n')
             os.symlink(source_file, target_file)
-            with tarfile.open(temparchive, 'w') kama tar:
+            ukijumuisha tarfile.open(temparchive, 'w') kama tar:
                 tar.add(source_file)
                 tar.add(target_file)
             # Let's extract it to the location which contains the symlink
-            with tarfile.open(temparchive) kama tar:
+            ukijumuisha tarfile.open(temparchive) kama tar:
                 # this should sio ashiria OSError: [Errno 17] File exists
                 jaribu:
                     tar.extractall(path=tempdir)
                 tatizo OSError:
-                    self.fail("extractall failed with symlinked files")
+                    self.fail("extractall failed ukijumuisha symlinked files")
         mwishowe:
             support.unlink(temparchive)
             support.rmtree(tempdir)
@@ -1346,7 +1346,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
 
     eleza test_cwd(self):
         # Test adding the current working directory.
-        with support.change_cwd(TEMPDIR):
+        ukijumuisha support.change_cwd(TEMPDIR):
             tar = tarfile.open(tmpname, self.mode)
             jaribu:
                 tar.add(".")
@@ -1371,7 +1371,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
                         ashiria exctype
 
             f = BadFile()
-            with self.assertRaises(exctype):
+            ukijumuisha self.assertRaises(exctype):
                 tar = tarfile.open(tmpname, self.mode, fileobj=f,
                                    format=tarfile.PAX_FORMAT,
                                    pax_headers={'non': 'empty'})
@@ -1398,12 +1398,12 @@ kundi StreamWriteTest(WriteTestBase, unittest.TestCase):
         tar.close()
         ikiwa self.decompressor:
             dec = self.decompressor()
-            with open(tmpname, "rb") kama fobj:
+            ukijumuisha open(tmpname, "rb") kama fobj:
                 data = fobj.read()
             data = dec.decompress(data)
             self.assertUongo(dec.unused_data, "found trailing data")
         isipokua:
-            with self.open(tmpname) kama fobj:
+            ukijumuisha self.open(tmpname) kama fobj:
                 data = fobj.read()
         self.assertEqual(data.count(b"\0"), tarfile.RECORDSIZE,
                         "incorrect zero padding")
@@ -1411,7 +1411,7 @@ kundi StreamWriteTest(WriteTestBase, unittest.TestCase):
     @unittest.skipUnless(sys.platform != "win32" na hasattr(os, "umask"),
                          "Missing umask implementation")
     eleza test_file_mode(self):
-        # Test kila issue #8464: Create files with correct
+        # Test kila issue #8464: Create files ukijumuisha correct
         # permissions.
         ikiwa os.path.exists(tmpname):
             support.unlink(tmpname)
@@ -1429,10 +1429,10 @@ kundi GzipStreamWriteTest(GzipTest, StreamWriteTest):
     pita
 
 kundi Bz2StreamWriteTest(Bz2Test, StreamWriteTest):
-    decompressor = bz2.BZ2Decompressor ikiwa bz2 else Tupu
+    decompressor = bz2.BZ2Decompressor ikiwa bz2 isipokua Tupu
 
 kundi LzmaStreamWriteTest(LzmaTest, StreamWriteTest):
-    decompressor = lzma.LZMADecompressor ikiwa lzma else Tupu
+    decompressor = lzma.LZMADecompressor ikiwa lzma isipokua Tupu
 
 
 kundi GNUWriteTest(unittest.TestCase):
@@ -1528,7 +1528,7 @@ kundi CreateTest(WriteTestBase, unittest.TestCase):
 
     @classmethod
     eleza setUpClass(cls):
-        with open(cls.file_path, "wb") kama fobj:
+        ukijumuisha open(cls.file_path, "wb") kama fobj:
             fobj.write(b"aaa")
 
     @classmethod
@@ -1536,50 +1536,50 @@ kundi CreateTest(WriteTestBase, unittest.TestCase):
         support.unlink(cls.file_path)
 
     eleza test_create(self):
-        with tarfile.open(tmpname, self.mode) kama tobj:
+        ukijumuisha tarfile.open(tmpname, self.mode) kama tobj:
             tobj.add(self.file_path)
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
     eleza test_create_existing(self):
-        with tarfile.open(tmpname, self.mode) kama tobj:
+        ukijumuisha tarfile.open(tmpname, self.mode) kama tobj:
             tobj.add(self.file_path)
 
-        with self.assertRaises(FileExistsError):
+        ukijumuisha self.assertRaises(FileExistsError):
             tobj = tarfile.open(tmpname, self.mode)
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
     eleza test_create_taropen(self):
-        with self.taropen(tmpname, "x") kama tobj:
+        ukijumuisha self.taropen(tmpname, "x") kama tobj:
             tobj.add(self.file_path)
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
     eleza test_create_existing_taropen(self):
-        with self.taropen(tmpname, "x") kama tobj:
+        ukijumuisha self.taropen(tmpname, "x") kama tobj:
             tobj.add(self.file_path)
 
-        with self.assertRaises(FileExistsError):
-            with self.taropen(tmpname, "x"):
+        ukijumuisha self.assertRaises(FileExistsError):
+            ukijumuisha self.taropen(tmpname, "x"):
                 pita
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn("spameggs42", names[0])
 
     eleza test_create_pathlike_name(self):
-        with tarfile.open(pathlib.Path(tmpname), self.mode) kama tobj:
+        ukijumuisha tarfile.open(pathlib.Path(tmpname), self.mode) kama tobj:
             self.assertIsInstance(tobj.name, str)
             self.assertEqual(tobj.name, os.path.abspath(tmpname))
             tobj.add(pathlib.Path(self.file_path))
@@ -1587,13 +1587,13 @@ kundi CreateTest(WriteTestBase, unittest.TestCase):
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
     eleza test_create_taropen_pathlike_name(self):
-        with self.taropen(pathlib.Path(tmpname), "x") kama tobj:
+        ukijumuisha self.taropen(pathlib.Path(tmpname), "x") kama tobj:
             self.assertIsInstance(tobj.name, str)
             self.assertEqual(tobj.name, os.path.abspath(tmpname))
             tobj.add(pathlib.Path(self.file_path))
@@ -1601,7 +1601,7 @@ kundi CreateTest(WriteTestBase, unittest.TestCase):
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
 
-        with self.taropen(tmpname) kama tobj:
+        ukijumuisha self.taropen(tmpname) kama tobj:
             names = tobj.getnames()
         self.assertEqual(len(names), 1)
         self.assertIn('spameggs42', names[0])
@@ -1635,7 +1635,7 @@ kundi HardlinkTest(unittest.TestCase):
         self.foo = os.path.join(TEMPDIR, "foo")
         self.bar = os.path.join(TEMPDIR, "bar")
 
-        with open(self.foo, "wb") kama fobj:
+        ukijumuisha open(self.foo, "wb") kama fobj:
             fobj.write(b"foo")
 
         jaribu:
@@ -1874,7 +1874,7 @@ kundi UstarUnicodeTest(UnicodeTest, unittest.TestCase):
         self._test_ustar_name("0123456789" * 15 + "01234/" + "0123456789" * 9 + "0123456\xff\xff", ValueError)
 
     eleza _test_ustar_name(self, name, exc=Tupu):
-        with tarfile.open(tmpname, "w", format=self.format, encoding="utf-8") kama tar:
+        ukijumuisha tarfile.open(tmpname, "w", format=self.format, encoding="utf-8") kama tar:
             t = tarfile.TarInfo(name)
             ikiwa exc ni Tupu:
                 tar.addfile(t)
@@ -1882,7 +1882,7 @@ kundi UstarUnicodeTest(UnicodeTest, unittest.TestCase):
                 self.assertRaises(exc, tar.addfile, t)
 
         ikiwa exc ni Tupu:
-            with tarfile.open(tmpname, "r", encoding="utf-8") kama tar:
+            ukijumuisha tarfile.open(tmpname, "r", encoding="utf-8") kama tar:
                 kila t kwenye tar:
                     self.assertEqual(name, t.name)
                     koma
@@ -1899,7 +1899,7 @@ kundi UstarUnicodeTest(UnicodeTest, unittest.TestCase):
         self._test_ustar_link("0123456789" * 9 + "0123456\xff\xff", ValueError)
 
     eleza _test_ustar_link(self, name, exc=Tupu):
-        with tarfile.open(tmpname, "w", format=self.format, encoding="utf-8") kama tar:
+        ukijumuisha tarfile.open(tmpname, "w", format=self.format, encoding="utf-8") kama tar:
             t = tarfile.TarInfo("foo")
             t.linkname = name
             ikiwa exc ni Tupu:
@@ -1908,7 +1908,7 @@ kundi UstarUnicodeTest(UnicodeTest, unittest.TestCase):
                 self.assertRaises(exc, tar.addfile, t)
 
         ikiwa exc ni Tupu:
-            with tarfile.open(tmpname, "r", encoding="utf-8") kama tar:
+            ukijumuisha tarfile.open(tmpname, "r", encoding="utf-8") kama tar:
                 kila t kwenye tar:
                     self.assertEqual(name, t.linkname)
                     koma
@@ -1924,7 +1924,7 @@ kundi GNUUnicodeTest(UnicodeTest, unittest.TestCase):
         kila encoding, name kwenye (
                 ("utf-8", "pax/bad-pax-\udce4\udcf6\udcfc"),
                 ("iso8859-1", "pax/bad-pax-\xe4\xf6\xfc"),):
-            with tarfile.open(tarname, encoding=encoding,
+            ukijumuisha tarfile.open(tarname, encoding=encoding,
                               errors="surrogateescape") kama tar:
                 jaribu:
                     t = tar.getmember(name)
@@ -1940,11 +1940,11 @@ kundi PAXUnicodeTest(UnicodeTest, unittest.TestCase):
     test_unicode_filename_error = Tupu
 
     eleza test_binary_header(self):
-        # Test a POSIX.1-2008 compatible header with a hdrcharset=BINARY field.
+        # Test a POSIX.1-2008 compatible header ukijumuisha a hdrcharset=BINARY field.
         kila encoding, name kwenye (
                 ("utf-8", "pax/hdrcharset-\udce4\udcf6\udcfc"),
                 ("iso8859-1", "pax/hdrcharset-\xe4\xf6\xfc"),):
-            with tarfile.open(tarname, encoding=encoding,
+            ukijumuisha tarfile.open(tarname, encoding=encoding,
                               errors="surrogateescape") kama tar:
                 jaribu:
                     t = tar.getmember(name)
@@ -1961,11 +1961,11 @@ kundi AppendTestBase:
             support.unlink(self.tarname)
 
     eleza _create_testtar(self, mode="w:"):
-        with tarfile.open(tarname, encoding="iso8859-1") kama src:
+        ukijumuisha tarfile.open(tarname, encoding="iso8859-1") kama src:
             t = src.getmember("ustar/regtype")
             t.name = "foo"
-            with src.extractfile(t) kama f:
-                with tarfile.open(self.tarname, mode) kama tar:
+            ukijumuisha src.extractfile(t) kama f:
+                ukijumuisha tarfile.open(self.tarname, mode) kama tar:
                     tar.addfile(t, f)
 
     eleza test_append_compressed(self):
@@ -1976,11 +1976,11 @@ kundi AppendTest(AppendTestBase, unittest.TestCase):
     test_append_compressed = Tupu
 
     eleza _add_testfile(self, fileobj=Tupu):
-        with tarfile.open(self.tarname, "a", fileobj=fileobj) kama tar:
+        ukijumuisha tarfile.open(self.tarname, "a", fileobj=fileobj) kama tar:
             tar.addfile(tarfile.TarInfo("bar"))
 
     eleza _test(self, names=["bar"], fileobj=Tupu):
-        with tarfile.open(self.tarname, fileobj=fileobj) kama tar:
+        ukijumuisha tarfile.open(self.tarname, fileobj=fileobj) kama tar:
             self.assertEqual(tar.getnames(), names)
 
     eleza test_non_existing(self):
@@ -2000,7 +2000,7 @@ kundi AppendTest(AppendTestBase, unittest.TestCase):
 
     eleza test_fileobj(self):
         self._create_testtar()
-        with open(self.tarname, "rb") kama fobj:
+        ukijumuisha open(self.tarname, "rb") kama fobj:
             data = fobj.read()
         fobj = io.BytesIO(data)
         self._add_testfile(fobj)
@@ -2013,9 +2013,9 @@ kundi AppendTest(AppendTestBase, unittest.TestCase):
         self._test(names=["foo", "bar"])
 
     # Append mode ni supposed to fail ikiwa the tarfile to append to
-    # does sio end with a zero block.
+    # does sio end ukijumuisha a zero block.
     eleza _test_error(self, data):
-        with open(self.tarname, "wb") kama fobj:
+        ukijumuisha open(self.tarname, "wb") kama fobj:
             fobj.write(data)
         self.assertRaises(tarfile.ReadError, self._add_testfile)
 
@@ -2057,7 +2057,7 @@ kundi LimitsTest(unittest.TestCase):
         tarinfo = tarfile.TarInfo("0123456789" * 10 + "0")
         self.assertRaises(ValueError, tarinfo.tobuf, tarfile.USTAR_FORMAT)
 
-        # 256 char name with a slash at pos 156
+        # 256 char name ukijumuisha a slash at pos 156
         tarinfo = tarfile.TarInfo("123/" * 62 + "longname")
         tarinfo.tobuf(tarfile.USTAR_FORMAT)
 
@@ -2161,13 +2161,13 @@ kundi MiscTest(unittest.TestCase):
         self.assertEqual(tarfile.nti(tarfile.itn(-0.1, format=tarfile.GNU_FORMAT)), 0)
 
     eleza test_number_field_limits(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tarfile.itn(-1, 8, tarfile.USTAR_FORMAT)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tarfile.itn(0o10000000, 8, tarfile.USTAR_FORMAT)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tarfile.itn(-0x10000000001, 6, tarfile.GNU_FORMAT)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tarfile.itn(0x10000000000, 6, tarfile.GNU_FORMAT)
 
     eleza test__all__(self):
@@ -2204,7 +2204,7 @@ kundi CommandLineTest(unittest.TestCase):
                  support.findfile('tokenize_tests-no-coding-cookie-'
                                   'and-utf8-bom-sig-only.txt')]
         self.addCleanup(support.unlink, tar_name)
-        with tarfile.open(tar_name, 'w') kama tf:
+        ukijumuisha tarfile.open(tar_name, 'w') kama tf:
             kila tardata kwenye files:
                 tf.add(tardata, arcname=os.path.basename(tardata))
 
@@ -2238,11 +2238,11 @@ kundi CommandLineTest(unittest.TestCase):
         self.assertEqual(rc, 1)
 
         kila tar_name kwenye testtarnames:
-            with self.subTest(tar_name=tar_name):
-                with open(tar_name, 'rb') kama f:
+            ukijumuisha self.subTest(tar_name=tar_name):
+                ukijumuisha open(tar_name, 'rb') kama f:
                     data = f.read()
                 jaribu:
-                    with open(tmpname, 'wb') kama f:
+                    ukijumuisha open(tmpname, 'wb') kama f:
                         f.write(data[:511])
                     rc, out, err = self.tarfilecmd_failure('-t', tmpname)
                     self.assertEqual(out, b'')
@@ -2252,8 +2252,8 @@ kundi CommandLineTest(unittest.TestCase):
 
     eleza test_list_command(self):
         kila tar_name kwenye testtarnames:
-            with support.captured_stdout() kama t:
-                with tarfile.open(tar_name, 'r') kama tf:
+            ukijumuisha support.captured_stdout() kama t:
+                ukijumuisha tarfile.open(tar_name, 'r') kama tf:
                     tf.list(verbose=Uongo)
             expected = t.getvalue().encode('ascii', 'backslashreplace')
             kila opt kwenye '-l', '--list':
@@ -2263,8 +2263,8 @@ kundi CommandLineTest(unittest.TestCase):
 
     eleza test_list_command_verbose(self):
         kila tar_name kwenye testtarnames:
-            with support.captured_stdout() kama t:
-                with tarfile.open(tar_name, 'r') kama tf:
+            ukijumuisha support.captured_stdout() kama t:
+                ukijumuisha tarfile.open(tar_name, 'r') kama tf:
                     tf.list(verbose=Kweli)
             expected = t.getvalue().encode('ascii', 'backslashreplace')
             kila opt kwenye '-v', '--verbose':
@@ -2287,7 +2287,7 @@ kundi CommandLineTest(unittest.TestCase):
             jaribu:
                 out = self.tarfilecmd(opt, tmpname, *files)
                 self.assertEqual(out, b'')
-                with tarfile.open(tmpname) kama tar:
+                ukijumuisha tarfile.open(tmpname) kama tar:
                     tar.getmembers()
             mwishowe:
                 support.unlink(tmpname)
@@ -2300,7 +2300,7 @@ kundi CommandLineTest(unittest.TestCase):
             jaribu:
                 out = self.tarfilecmd(opt, '-c', tmpname, *files)
                 self.assertIn(b' file created.', out)
-                with tarfile.open(tmpname) kama tar:
+                ukijumuisha tarfile.open(tmpname) kama tar:
                     tar.getmembers()
             mwishowe:
                 support.unlink(tmpname)
@@ -2310,7 +2310,7 @@ kundi CommandLineTest(unittest.TestCase):
         jaribu:
             out = self.tarfilecmd('-c', dotlessname, *files)
             self.assertEqual(out, b'')
-            with tarfile.open(dotlessname) kama tar:
+            ukijumuisha tarfile.open(dotlessname) kama tar:
                 tar.getmembers()
         mwishowe:
             support.unlink(dotlessname)
@@ -2321,7 +2321,7 @@ kundi CommandLineTest(unittest.TestCase):
         jaribu:
             out = self.tarfilecmd('-c', tar_name, *files)
             self.assertEqual(out, b'')
-            with tarfile.open(tar_name) kama tar:
+            ukijumuisha tarfile.open(tar_name) kama tar:
                 tar.getmembers()
         mwishowe:
             support.unlink(tar_name)
@@ -2336,7 +2336,7 @@ kundi CommandLineTest(unittest.TestCase):
             jaribu:
                 tar_name = tmpname + '.' + filetype.suffix
                 out = self.tarfilecmd('-c', tar_name, *files)
-                with filetype.taropen(tar_name) kama tar:
+                ukijumuisha filetype.taropen(tar_name) kama tar:
                     tar.getmembers()
             mwishowe:
                 support.unlink(tar_name)
@@ -2345,7 +2345,7 @@ kundi CommandLineTest(unittest.TestCase):
         self.make_simple_tarfile(tmpname)
         kila opt kwenye '-e', '--extract':
             jaribu:
-                with support.temp_cwd(tarextdir):
+                ukijumuisha support.temp_cwd(tarextdir):
                     out = self.tarfilecmd(opt, tmpname)
                 self.assertEqual(out, b'')
             mwishowe:
@@ -2355,7 +2355,7 @@ kundi CommandLineTest(unittest.TestCase):
         self.make_simple_tarfile(tmpname)
         kila opt kwenye '-v', '--verbose':
             jaribu:
-                with support.temp_cwd(tarextdir):
+                ukijumuisha support.temp_cwd(tarextdir):
                     out = self.tarfilecmd(opt, '-e', tmpname)
                 self.assertIn(b' file ni extracted.', out)
             mwishowe:
@@ -2364,7 +2364,7 @@ kundi CommandLineTest(unittest.TestCase):
     eleza test_extract_command_different_directory(self):
         self.make_simple_tarfile(tmpname)
         jaribu:
-            with support.temp_cwd(tarextdir):
+            ukijumuisha support.temp_cwd(tarextdir):
                 out = self.tarfilecmd('-e', tmpname, 'spamdir')
             self.assertEqual(out, b'')
         mwishowe:
@@ -2372,7 +2372,7 @@ kundi CommandLineTest(unittest.TestCase):
 
     eleza test_extract_command_invalid_file(self):
         zipname = support.findfile('zipdir.zip')
-        with support.temp_cwd(tarextdir):
+        ukijumuisha support.temp_cwd(tarextdir):
             rc, out, err = self.tarfilecmd_failure('-e', zipname)
         self.assertIn(b' ni sio a tar archive.', err)
         self.assertEqual(out, b'')
@@ -2382,7 +2382,7 @@ kundi CommandLineTest(unittest.TestCase):
 kundi ContextManagerTest(unittest.TestCase):
 
     eleza test_basic(self):
-        with tarfile.open(tarname) kama tar:
+        ukijumuisha tarfile.open(tarname) kama tar:
             self.assertUongo(tar.closed, "closed inside runtime context")
         self.assertKweli(tar.closed, "context manager failed")
 
@@ -2391,14 +2391,14 @@ kundi ContextManagerTest(unittest.TestCase):
         # ikiwa the TarFile object ni already closed.
         tar = tarfile.open(tarname)
         tar.close()
-        with self.assertRaises(OSError):
-            with tar:
+        ukijumuisha self.assertRaises(OSError):
+            ukijumuisha tar:
                 pita
 
     eleza test_exception(self):
         # Test ikiwa the OSError exception ni pitaed through properly.
-        with self.assertRaises(Exception) kama exc:
-            with tarfile.open(tarname) kama tar:
+        ukijumuisha self.assertRaises(Exception) kama exc:
+            ukijumuisha tarfile.open(tarname) kama tar:
                 ashiria OSError
         self.assertIsInstance(exc.exception, OSError,
                               "wrong exception ashiriad kwenye context manager")
@@ -2408,7 +2408,7 @@ kundi ContextManagerTest(unittest.TestCase):
         # __exit__() must sio write end-of-archive blocks ikiwa an
         # exception was ashiriad.
         jaribu:
-            with tarfile.open(tmpname, "w") kama tar:
+            ukijumuisha tarfile.open(tmpname, "w") kama tar:
                 ashiria Exception
         except:
             pita
@@ -2419,7 +2419,7 @@ kundi ContextManagerTest(unittest.TestCase):
     eleza test_eof(self):
         # __exit__() must write end-of-archive blocks, i.e. call
         # TarFile.close() ikiwa there was no error.
-        with tarfile.open(tmpname, "w"):
+        ukijumuisha tarfile.open(tmpname, "w"):
             pita
         self.assertNotEqual(os.path.getsize(tmpname), 0,
                 "context manager wrote no end-of-archive block")
@@ -2427,9 +2427,9 @@ kundi ContextManagerTest(unittest.TestCase):
     eleza test_fileobj(self):
         # Test that __exit__() did sio close the external file
         # object.
-        with open(tmpname, "wb") kama fobj:
+        ukijumuisha open(tmpname, "wb") kama fobj:
             jaribu:
-                with tarfile.open(fileobj=fobj, mode="w") kama tar:
+                ukijumuisha tarfile.open(fileobj=fobj, mode="w") kama tar:
                     ashiria Exception
             except:
                 pita
@@ -2445,7 +2445,7 @@ kundi LinkEmulationTest(ReadTest, unittest.TestCase):
     # kama the regular files they point to.
     eleza _test_link_extraction(self, name):
         self.tar.extract(name, TEMPDIR)
-        with open(os.path.join(TEMPDIR, name), "rb") kama f:
+        ukijumuisha open(os.path.join(TEMPDIR, name), "rb") kama f:
             data = f.read()
         self.assertEqual(sha256sum(data), sha256_regtype)
 
@@ -2528,13 +2528,13 @@ kundi NumericOwnerTest(unittest.TestCase):
         # the file contents to write
         fobj = io.BytesIO(b"content")
 
-        # create a tar file with a file, a directory, na a file within that
+        # create a tar file ukijumuisha a file, a directory, na a file within that
         #  directory. Assign various .uid/.gid values to them
         items = [(filename_1, 99, 98, tarfile.REGTYPE, fobj),
                  (dirname_1,  77, 76, tarfile.DIRTYPE, Tupu),
                  (filename_2, 88, 87, tarfile.REGTYPE, fobj),
                  ]
-        with tarfile.open(tmpname, 'w') kama tarfl:
+        ukijumuisha tarfile.open(tmpname, 'w') kama tarfl:
             kila name, uid, gid, typ, contents kwenye items:
                 t = tarfile.TarInfo(name)
                 t.uid = uid
@@ -2559,14 +2559,14 @@ kundi NumericOwnerTest(unittest.TestCase):
         dirname_1 = dirname
         filename_2 = os.path.join(dirname, fname)
 
-        # create the tarfile with the contents we're after
+        # create the tarfile ukijumuisha the contents we're after
         tar_filename = NumericOwnerTest._make_test_archive(filename_1,
                                                            dirname_1,
                                                            filename_2)
 
         # open the tarfile kila reading. tuma it na the names of the items
         #  we stored into the file
-        with tarfile.open(tar_filename) kama tarfl:
+        ukijumuisha tarfile.open(tar_filename) kama tarfl:
             tuma tarfl, filename_1, dirname_1, filename_2
 
     @unittest.mock.patch('os.chown')
@@ -2574,7 +2574,7 @@ kundi NumericOwnerTest(unittest.TestCase):
     @unittest.mock.patch('os.geteuid')
     eleza test_extract_with_numeric_owner(self, mock_geteuid, mock_chmod,
                                         mock_chown):
-        with self._setup_test(mock_geteuid) kama (tarfl, filename_1, _,
+        ukijumuisha self._setup_test(mock_geteuid) kama (tarfl, filename_1, _,
                                                 filename_2):
             tarfl.extract(filename_1, TEMPDIR, numeric_owner=Kweli)
             tarfl.extract(filename_2 , TEMPDIR, numeric_owner=Kweli)
@@ -2593,7 +2593,7 @@ kundi NumericOwnerTest(unittest.TestCase):
     @unittest.mock.patch('os.geteuid')
     eleza test_extractall_with_numeric_owner(self, mock_geteuid, mock_chmod,
                                            mock_chown):
-        with self._setup_test(mock_geteuid) kama (tarfl, filename_1, dirname_1,
+        ukijumuisha self._setup_test(mock_geteuid) kama (tarfl, filename_1, dirname_1,
                                                 filename_2):
             tarfl.extractall(TEMPDIR, numeric_owner=Kweli)
 
@@ -2619,7 +2619,7 @@ kundi NumericOwnerTest(unittest.TestCase):
     @unittest.mock.patch('os.geteuid')
     eleza test_extract_without_numeric_owner(self, mock_geteuid, mock_chmod,
                                            mock_chown):
-        with self._setup_test(mock_geteuid) kama (tarfl, filename_1, _, _):
+        ukijumuisha self._setup_test(mock_geteuid) kama (tarfl, filename_1, _, _):
             tarfl.extract(filename_1, TEMPDIR, numeric_owner=Uongo)
 
         # convert to filesystem paths
@@ -2629,7 +2629,7 @@ kundi NumericOwnerTest(unittest.TestCase):
 
     @unittest.mock.patch('os.geteuid')
     eleza test_keyword_only(self, mock_geteuid):
-        with self._setup_test(mock_geteuid) kama (tarfl, filename_1, _, _):
+        ukijumuisha self._setup_test(mock_geteuid) kama (tarfl, filename_1, _, _):
             self.assertRaises(TypeError,
                               tarfl.extract, filename_1, TEMPDIR, Uongo, Kweli)
 
@@ -2640,7 +2640,7 @@ eleza setUpModule():
 
     global testtarnames
     testtarnames = [tarname]
-    with open(tarname, "rb") kama fobj:
+    ukijumuisha open(tarname, "rb") kama fobj:
         data = fobj.read()
 
     # Create compressed tarfiles.
@@ -2648,7 +2648,7 @@ eleza setUpModule():
         ikiwa c.open:
             support.unlink(c.tarname)
             testtarnames.append(c.tarname)
-            with c.open(c.tarname, "wb") kama tar:
+            ukijumuisha c.open(c.tarname, "wb") kama tar:
                 tar.write(data)
 
 eleza tearDownModule():

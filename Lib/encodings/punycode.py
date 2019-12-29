@@ -135,7 +135,7 @@ eleza decode_generalized_number(extended, extpos, bias, errors):
         tatizo IndexError:
             if errors == "strict":
                 raise UnicodeError("incomplete punicode string")
-            rudisha extpos + 1, None
+            rudisha extpos + 1, Tupu
         extpos += 1
         if 0x41 <= char <= 0x5A: # A-Z
             digit = char - 0x41
@@ -145,7 +145,7 @@ eleza decode_generalized_number(extended, extpos, bias, errors):
             raise UnicodeError("Invalid extended code point '%s'"
                                % extended[extpos])
         isipokua:
-            rudisha extpos, None
+            rudisha extpos, Tupu
         t = T(j, bias)
         result += digit * w
         if digit < t:
@@ -163,7 +163,7 @@ eleza insertion_sort(base, extended, errors):
     wakati extpos < len(extended):
         newpos, delta = decode_generalized_number(extended, extpos,
                                                   bias, errors)
-        if delta is None:
+        if delta is Tupu:
             # There was an error in decoding. We can't endelea because
             # synchronization is lost.
             rudisha base
@@ -208,20 +208,20 @@ kundi Codec(codecs.Codec):
         rudisha res, len(input)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha punycode_encode(input)
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         if self.errors haiko kwenye ('strict', 'replace', 'ignore'):
             raise UnicodeError("Unsupported error handling "+self.errors)
         rudisha punycode_decode(input, self.errors)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

@@ -33,7 +33,7 @@ kundi TestAbstractAsyncContextManager(unittest.TestCase):
         manager = DefaultEnter()
         self.assertIs(await manager.__aenter__(), manager)
 
-        async with manager kama context:
+        async ukijumuisha manager kama context:
             self.assertIs(manager, context)
 
     @_async_test
@@ -45,13 +45,13 @@ kundi TestAbstractAsyncContextManager(unittest.TestCase):
             tuma
 
         async eleza gen():
-            async with ctx():
+            async ukijumuisha ctx():
                 tuma 11
 
         ret = []
         exc = ValueError(22)
-        with self.assertRaises(ValueError):
-            async with ctx():
+        ukijumuisha self.assertRaises(ValueError):
+            async ukijumuisha ctx():
                 async kila val kwenye gen():
                     ret.append(val)
                     ashiria exc
@@ -62,7 +62,7 @@ kundi TestAbstractAsyncContextManager(unittest.TestCase):
         kundi MissingAexit(AbstractAsyncContextManager):
             pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             MissingAexit()
 
     eleza test_structural_subclassing(self):
@@ -101,7 +101,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             state.append(1)
             tuma 42
             state.append(999)
-        async with woohoo() kama x:
+        async ukijumuisha woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -117,8 +117,8 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
                 tuma 42
             mwishowe:
                 state.append(999)
-        with self.assertRaises(ZeroDivisionError):
-            async with woohoo() kama x:
+        ukijumuisha self.assertRaises(ZeroDivisionError):
+            async ukijumuisha woohoo() kama x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
@@ -145,7 +145,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
                 tuma
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             await ctx.__aexit__(TypeError, TypeError('foo'), Tupu)
 
     @_async_test
@@ -155,7 +155,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             ikiwa Uongo:
                 tuma
         ctx = whoo()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             await ctx.__aenter__()
 
     @_async_test
@@ -166,7 +166,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             tuma
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             await ctx.__aexit__(Tupu, Tupu, Tupu)
 
     @_async_test
@@ -180,7 +180,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
 
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             await ctx.__aexit__(RuntimeError, Tupu, Tupu)
 
     @_async_test
@@ -194,7 +194,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             tatizo ZeroDivisionError kama e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
-        async with woohoo() kama x:
+        async ukijumuisha woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -208,9 +208,9 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             tuma
 
         kila stop_exc kwenye (StopIteration('spam'), StopAsyncIteration('ham')):
-            with self.subTest(type=type(stop_exc)):
+            ukijumuisha self.subTest(type=type(stop_exc)):
                 jaribu:
-                    async with woohoo():
+                    async ukijumuisha woohoo():
                         ashiria stop_exc
                 tatizo Exception kama ex:
                     self.assertIs(ex, stop_exc)
@@ -226,15 +226,15 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
             tatizo Exception kama exc:
                 ashiria RuntimeError(f'caught {exc}') kutoka exc
 
-        with self.assertRaises(RuntimeError):
-            async with woohoo():
+        ukijumuisha self.assertRaises(RuntimeError):
+            async ukijumuisha woohoo():
                 1 / 0
 
         # If the context manager wrapped StopAsyncIteration kwenye a RuntimeError,
         # we also unwrap it, because we can't tell whether the wrapping was
         # done by the generator machinery ama by the generator itself.
-        with self.assertRaises(StopAsyncIteration):
-            async with woohoo():
+        ukijumuisha self.assertRaises(StopAsyncIteration):
+            async ukijumuisha woohoo():
                 ashiria StopAsyncIteration
 
     eleza _create_contextmanager_attribs(self):
@@ -266,7 +266,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
     async eleza test_instance_docstring_given_cm_docstring(self):
         baz = self._create_contextmanager_attribs()(Tupu)
         self.assertEqual(baz.__doc__, "Whee!")
-        async with baz:
+        async ukijumuisha baz:
             pita  # suppress warning
 
     @_async_test
@@ -275,7 +275,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async eleza woohoo(self, func, args, kwds):
             tuma (self, func, args, kwds)
-        async with woohoo(self=11, func=22, args=33, kwds=44) kama target:
+        async ukijumuisha woohoo(self=11, func=22, args=33, kwds=44) kama target:
             self.assertEqual(target, (11, 22, 33, 44))
 
 
@@ -334,13 +334,13 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             """Test metadata propagation"""
             result.append((args, kwds))
 
-        async with AsyncExitStack() kama stack:
+        async ukijumuisha AsyncExitStack() kama stack:
             kila args, kwds kwenye reversed(expected):
                 ikiwa args na kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
-                elikiwa args:
+                lasivyo args:
                     f = stack.push_async_callback(_exit, *args)
-                elikiwa kwds:
+                lasivyo kwds:
                     f = stack.push_async_callback(_exit, **kwds)
                 isipokua:
                     f = stack.push_async_callback(_exit)
@@ -353,12 +353,12 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertEqual(result, expected)
 
         result = []
-        async with AsyncExitStack() kama stack:
-            with self.assertRaises(TypeError):
+        async ukijumuisha AsyncExitStack() kama stack:
+            ukijumuisha self.assertRaises(TypeError):
                 stack.push_async_callback(arg=1)
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 self.exit_stack.push_async_callback(arg=2)
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 stack.push_async_callback(callback=_exit, arg=3)
         self.assertEqual(result, [((), {'arg': 3})])
 
@@ -381,7 +381,7 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             async eleza __aexit__(self, *exc_details):
                 await self.check_exc(*exc_details)
 
-        async with self.exit_stack() kama stack:
+        async ukijumuisha self.exit_stack() kama stack:
             stack.push_async_exit(_expect_ok)
             self.assertIs(stack._exit_callbacks[-1][1], _expect_ok)
             cm = ExitCM(_expect_ok)
@@ -409,7 +409,7 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         result = []
         cm = TestCM()
 
-        async with AsyncExitStack() kama stack:
+        async ukijumuisha AsyncExitStack() kama stack:
             @stack.push_async_callback  # Registered first => cleaned up last
             async eleza _exit():
                 result.append(4)
@@ -433,7 +433,7 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             rudisha Kweli
 
         jaribu:
-            async with self.exit_stack() kama stack:
+            async ukijumuisha self.exit_stack() kama stack:
                 stack.push_async_callback(ashiria_exc, IndexError)
                 stack.push_async_callback(ashiria_exc, KeyError)
                 stack.push_async_callback(ashiria_exc, AttributeError)

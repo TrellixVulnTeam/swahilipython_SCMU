@@ -102,7 +102,7 @@ attribute.
    Set-Cookie: oreo=doublestuff; Path=/
 
 Each dictionary element has a 'value' attribute, which gives you
-back the value associated with the key.
+back the value associated ukijumuisha the key.
 
    >>> C = cookies.SimpleCookie()
    >>> C["twix"] = "none kila you"
@@ -150,7 +150,7 @@ kundi CookieError(Exception):
 # a two-way quoting algorithm.  Any non-text character ni translated
 # into a 4 character sequence: a forward-slash followed by the
 # three-digit octal equivalent of the character.  Any '\' ama '"' is
-# quoted with a preceding '\' slash.
+# quoted ukijumuisha a preceding '\' slash.
 # Because of the way browsers really handle cookies (as opposed to what
 # the RFC says) we also encode "," na ";".
 #
@@ -175,7 +175,7 @@ eleza _quote(str):
 
     If the string does sio need to be double-quoted, then just rudisha the
     string.  Otherwise, surround the string kwenye doublequotes na quote
-    (with a \) special characters.
+    (ukijumuisha a \) special characters.
     """
     ikiwa str ni Tupu ama _is_legal_key(str):
         rudisha str
@@ -254,7 +254,7 @@ kundi Morsel(dict):
     """A kundi to hold ONE (key, value) pair.
 
     In a cookie, each such pair may have several attributes, so this kundi is
-    used to keep the attributes associated with the appropriate key,value pair.
+    used to keep the attributes associated ukijumuisha the appropriate key,value pair.
     This kundi also includes a coded_value attribute, which ni used to hold
     the network representation of the value.
     """
@@ -406,11 +406,11 @@ kundi Morsel(dict):
                 endelea
             ikiwa key == "expires" na isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
-            elikiwa key == "max-age" na isinstance(value, int):
+            lasivyo key == "max-age" na isinstance(value, int):
                 append("%s=%d" % (self._reserved[key], value))
-            elikiwa key == "comment" na isinstance(value, str):
+            lasivyo key == "comment" na isinstance(value, str):
                 append("%s=%s" % (self._reserved[key], _quote(value)))
-            elikiwa key kwenye self._flags:
+            lasivyo key kwenye self._flags:
                 ikiwa value:
                     append(str(self._reserved[key]))
             isipokua:
@@ -562,7 +562,7 @@ kundi BaseCookie(dict):
                     # See RFC 2965. (Does anyone care?)
                     endelea
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
-            elikiwa key.lower() kwenye Morsel._reserved:
+            lasivyo key.lower() kwenye Morsel._reserved:
                 ikiwa sio morsel_seen:
                     # Invalid cookie string
                     rudisha
@@ -574,7 +574,7 @@ kundi BaseCookie(dict):
                         rudisha
                 isipokua:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            elikiwa value ni sio Tupu:
+            lasivyo value ni sio Tupu:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = Kweli
             isipokua:

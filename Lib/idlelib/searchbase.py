@@ -107,7 +107,7 @@ kundi SearchDialogBase:
         rudisha entry, label
 
     eleza create_entries(self):
-        "Create one ama more entry lines with make_entry."
+        "Create one ama more entry lines ukijumuisha make_entry."
         self.ent = self.make_entry("Find:", self.engine.patvar)[0]
 
     eleza make_frame(self,labeltext=Tupu):
@@ -130,8 +130,8 @@ kundi SearchDialogBase:
         '''Return (filled frame, options) kila testing.
 
         Options ni a list of searchengine booleanvar, label pairs.
-        A gridded frame kutoka make_frame ni filled with a Checkbutton
-        kila each pair, bound to the var, with the corresponding label.
+        A gridded frame kutoka make_frame ni filled ukijumuisha a Checkbutton
+        kila each pair, bound to the var, ukijumuisha the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
         engine = self.engine
@@ -149,7 +149,7 @@ kundi SearchDialogBase:
         '''Return (frame, others) kila testing.
 
         Others ni a list of value, label pairs.
-        A gridded frame kutoka make_frame ni filled with radio buttons.
+        A gridded frame kutoka make_frame ni filled ukijumuisha radio buttons.
         '''
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar
@@ -179,7 +179,7 @@ kundi SearchDialogBase:
 
 
 kundi _searchbase(SearchDialogBase):  # htest #
-    "Create auto-opening dialog with no text connection."
+    "Create auto-opening dialog ukijumuisha no text connection."
 
     eleza __init__(self, parent):
         agiza re

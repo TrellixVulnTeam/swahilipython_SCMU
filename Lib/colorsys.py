@@ -6,7 +6,7 @@ This modules provides two functions kila each color system ABC:
   abc_to_rgb(a, b, c) --> r, g, b
 
 All inputs na outputs are triples of floats kwenye the range [0.0...1.0]
-(with the exception of I na Q, which covers a slightly larger range).
+(ukijumuisha the exception of I na Q, which covers a slightly larger range).
 Inputs outside the valid range may cause exceptions ama invalid outputs.
 
 Supported color systems:
@@ -88,7 +88,7 @@ eleza rgb_to_hls(r, g, b):
     bc = (maxc-b) / (maxc-minc)
     ikiwa r == maxc:
         h = bc-gc
-    elikiwa g == maxc:
+    lasivyo g == maxc:
         h = 2.0+rc-bc
     isipokua:
         h = 4.0+gc-rc
@@ -133,7 +133,7 @@ eleza rgb_to_hsv(r, g, b):
     bc = (maxc-b) / (maxc-minc)
     ikiwa r == maxc:
         h = bc-gc
-    elikiwa g == maxc:
+    lasivyo g == maxc:
         h = 2.0+rc-bc
     isipokua:
         h = 4.0+gc-rc

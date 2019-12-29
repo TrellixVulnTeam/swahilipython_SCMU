@@ -18,18 +18,18 @@ kundi Codec(codecs.Codec):
         rudisha (str.translate(input, rot13_map), len(input))
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha str.translate(input, rot13_map)
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha str.translate(input, rot13_map)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 
@@ -42,7 +42,7 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )
 
 ### Map

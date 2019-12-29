@@ -79,7 +79,7 @@ Here we add keyword arguments
     >>> f(1, 2, 3, *(4, 5), x=6, y=7, **UserDict(a=8, b=9))
     (1, 2, 3, 4, 5) {'a': 8, 'b': 9, 'x': 6, 'y': 7}
 
-Examples with invalid arguments (TypeErrors). We're also testing the function
+Examples ukijumuisha invalid arguments (TypeErrors). We're also testing the function
 names kwenye the exception messages.
 
 Verify clearing of SF bug #733667
@@ -153,8 +153,8 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     0 (1, 2, 3) {}
 
-Check kila issue #4806: Does a TypeError kwenye a generator get propagated with the
-right error message? (Also check with other iterables.)
+Check kila issue #4806: Does a TypeError kwenye a generator get propagated ukijumuisha the
+right error message? (Also check ukijumuisha other iterables.)
 
     >>> eleza broken(): ashiria TypeError("myerror")
     ...
@@ -317,7 +317,7 @@ not function
       ...
     TypeError: dir() got multiple values kila keyword argument 'b'
 
-Test a kwargs mapping with duplicated keys.
+Test a kwargs mapping ukijumuisha duplicated keys.
 
     >>> kutoka collections.abc agiza Mapping
     >>> kundi MultiDict(Mapping):
@@ -487,7 +487,7 @@ Too few na missing arguments:
       ...
     TypeError: f() missing 1 required positional argument: 'a'
 
-Same with keyword only args:
+Same ukijumuisha keyword only args:
 
     >>> eleza f(*, w): pita
     >>> f()

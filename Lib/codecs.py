@@ -120,16 +120,16 @@ kundi Codec:
         string values are predefined:
 
          'strict' - ashiria a ValueError error (or a subclass)
-         'ignore' - ignore the character na endelea with the next
-         'replace' - replace with a suitable replacement character;
+         'ignore' - ignore the character na endelea ukijumuisha the next
+         'replace' - replace ukijumuisha a suitable replacement character;
                     Python will use the official U+FFFD REPLACEMENT
                     CHARACTER kila the builtin Unicode codecs on
                     decoding na '?' on encoding.
-         'surrogateescape' - replace with private code points U+DCnn.
-         'xmlcharrefreplace' - Replace with the appropriate XML
+         'surrogateescape' - replace ukijumuisha private code points U+DCnn.
+         'xmlcharrefreplace' - Replace ukijumuisha the appropriate XML
                                character reference (only kila encoding).
-         'backslashreplace'  - Replace with backslashed escape sequences.
-         'namereplace'       - Replace with \\N{...} escape sequences
+         'backslashreplace'  - Replace ukijumuisha backslashed escape sequences.
+         'namereplace'       - Replace ukijumuisha \\N{...} escape sequences
                                (only kila encoding).
 
         The set of allowed values can be extended via register_error.
@@ -356,13 +356,13 @@ kundi StreamWriter(Codec):
             parameters are predefined:
 
              'strict' - ashiria a ValueError (or a subclass)
-             'ignore' - ignore the character na endelea with the next
-             'replace'- replace with a suitable replacement character
-             'xmlcharrefreplace' - Replace with the appropriate XML
+             'ignore' - ignore the character na endelea ukijumuisha the next
+             'replace'- replace ukijumuisha a suitable replacement character
+             'xmlcharrefreplace' - Replace ukijumuisha the appropriate XML
                                    character reference.
-             'backslashreplace'  - Replace with backslashed escape
+             'backslashreplace'  - Replace ukijumuisha backslashed escape
                                    sequences.
-             'namereplace'       - Replace with \\N{...} escape sequences.
+             'namereplace'       - Replace ukijumuisha \\N{...} escape sequences.
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -431,9 +431,9 @@ kundi StreamReader(Codec):
             parameters are predefined:
 
              'strict' - ashiria a ValueError (or a subclass)
-             'ignore' - ignore the character na endelea with the next
-             'replace'- replace with a suitable replacement character
-             'backslashreplace' - Replace with backslashed escape sequences;
+             'ignore' - ignore the character na endelea ukijumuisha the next
+             'replace'- replace ukijumuisha a suitable replacement character
+             'backslashreplace' - Replace ukijumuisha backslashed escape sequences;
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -481,7 +481,7 @@ kundi StreamReader(Codec):
             self.linebuffer = Tupu
 
         ikiwa chars < 0:
-            # For compatibility with other read() methods that take a
+            # For compatibility ukijumuisha other read() methods that take a
             # single argument
             chars = size
 
@@ -742,7 +742,7 @@ kundi StreamReaderWriter:
         """
         rudisha getattr(self.stream, name)
 
-    # these are needed to make "with StreamReaderWriter(...)" work properly
+    # these are needed to make "ukijumuisha StreamReaderWriter(...)" work properly
 
     eleza __enter__(self):
         rudisha self

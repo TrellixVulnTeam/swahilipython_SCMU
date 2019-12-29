@@ -150,7 +150,7 @@ class AbstractWidgetTest(AbstractTkTest):
             errmsg2 = ' %s "{}": must be %s%s or %s' % (
                     name,
                     ', '.join(values[:-1]),
-                    ',' if len(values) > 2 else '',
+                    ',' if len(values) > 2 isipokua '',
                     values[-1])
             self.checkInvalidParam(widget, name, '',
                                    errmsg='ambiguous' + errmsg2)

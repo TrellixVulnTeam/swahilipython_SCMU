@@ -1,4 +1,4 @@
-"""Fixer kila tatizo statements with named exceptions.
+"""Fixer kila tatizo statements ukijumuisha named exceptions.
 
 The following cases will be converted:
 
@@ -83,7 +83,7 @@ kundi FixExcept(fixer_base.BaseFix):
                     kila child kwenye reversed(suite_stmts[:i]):
                         e_suite.insert_child(0, child)
                     e_suite.insert_child(i, assign)
-                elikiwa N.prefix == "":
+                lasivyo N.prefix == "":
                     # No space after a comma ni legal; no space after "as",
                     # sio so much.
                     N.prefix = " "

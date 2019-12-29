@@ -304,7 +304,7 @@ kundi BaseTestUUID:
         badtype(lambda: setattr(u, 'clock_seq_low', 0))
         badtype(lambda: setattr(u, 'node', 0))
 
-        # Comparison with a non-UUID object
+        # Comparison ukijumuisha a non-UUID object
         badtype(lambda: u < object())
         badtype(lambda: u > object())
 
@@ -321,14 +321,14 @@ kundi BaseTestUUID:
             self.assertEqual(actual, expected)
             self.assertEqual(actual.is_safe, expected.is_safe)
 
-        with support.swap_item(sys.modules, 'uuid', self.uuid):
+        ukijumuisha support.swap_item(sys.modules, 'uuid', self.uuid):
             kila is_safe kwenye self.uuid.SafeUUID:
                 u = self.uuid.UUID('d82579ce6642a0de7ddf490a7aec7aa5',
                                    is_safe=is_safe)
                 check(copy.copy(u), u)
                 check(copy.deepcopy(u), u)
                 kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-                    with self.subTest(protocol=proto):
+                    ukijumuisha self.subTest(protocol=proto):
                         check(pickle.loads(pickle.dumps(u, proto)), u)
 
     eleza test_unpickle_previous_python_versions(self):
@@ -439,7 +439,7 @@ kundi BaseTestUUID:
         u_unsafe = self.uuid.UUID('d82579ce6642a0de7ddf490a7aec7aa5',
                                   is_safe=self.uuid.SafeUUID.unsafe)
 
-        with support.swap_item(sys.modules, 'uuid', self.uuid):
+        ukijumuisha support.swap_item(sys.modules, 'uuid', self.uuid):
             kila pickled kwenye pickled_uuids:
                 # is_safe was added kwenye 3.7.  When unpickling values kutoka older
                 # versions, is_safe will be missing, so it should be set to
@@ -459,7 +459,7 @@ kundi BaseTestUUID:
         # uuid.getnode to fall back on uuid._random_getnode, which will
         # generate a valid value.
         too_large_getter = lambda: 1 << 48
-        with unittest.mock.patch.multiple(
+        ukijumuisha unittest.mock.patch.multiple(
             self.uuid,
             _node=Tupu,  # Ignore any cached node value.
             _GETTERS=[too_large_getter],
@@ -538,7 +538,7 @@ kundi BaseTestUUID:
         f = self.uuid._generate_time_safe
         ikiwa f ni Tupu:
             self.skipTest('need uuid._generate_time_safe')
-        with unittest.mock.patch.object(self.uuid, '_generate_time_safe',
+        ukijumuisha unittest.mock.patch.object(self.uuid, '_generate_time_safe',
                                         lambda: (f()[0], safe_value)):
             tuma
 
@@ -546,30 +546,30 @@ kundi BaseTestUUID:
     eleza test_uuid1_unknown(self):
         # Even ikiwa the platform has uuid_generate_time_safe(), let's mock it to
         # be uuid_generate_time() na ensure the safety ni unknown.
-        with self.mock_generate_time_safe(Tupu):
+        ukijumuisha self.mock_generate_time_safe(Tupu):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_is_safe(self):
-        with self.mock_generate_time_safe(0):
+        ukijumuisha self.mock_generate_time_safe(0):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.safe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_is_unsafe(self):
-        with self.mock_generate_time_safe(-1):
+        ukijumuisha self.mock_generate_time_safe(-1):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unsafe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_bogus_rudisha_value(self):
-        with self.mock_generate_time_safe(3):
+        ukijumuisha self.mock_generate_time_safe(3):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     eleza test_uuid1_time(self):
-        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
+        ukijumuisha mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
              mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
              mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
              mock.patch.object(self.uuid, 'getnode', rudisha_value=93328246233727), \
@@ -578,7 +578,7 @@ kundi BaseTestUUID:
             u = self.uuid.uuid1()
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
-        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
+        ukijumuisha mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
              mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
              mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
              mock.patch('time.time_ns', rudisha_value=1545052026752910643):
@@ -685,9 +685,9 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         popen = unittest.mock.MagicMock()
         popen.stdout = io.BytesIO(data.encode())
 
-        with unittest.mock.patch.object(shutil, 'which',
+        ukijumuisha unittest.mock.patch.object(shutil, 'which',
                                         rudisha_value='/sbin/ifconfig'):
-            with unittest.mock.patch.object(subprocess, 'Popen',
+            ukijumuisha unittest.mock.patch.object(subprocess, 'Popen',
                                             rudisha_value=popen):
                 mac = self.uuid._find_mac(
                     command='ifconfig',

@@ -83,7 +83,7 @@ eleza cache_kutoka_source(path, debug_override=Tupu):
     If sys.implementation.cache_tag ni Tupu then NotImplementedError ni ashiriad.
 
     """
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter('ignore')
         rudisha util.cache_kutoka_source(path, debug_override)
 
@@ -122,7 +122,7 @@ kundi NullImporter:
     eleza __init__(self, path):
         ikiwa path == '':
             ashiria ImportError('empty pathname', path='')
-        elikiwa os.path.isdir(path):
+        lasivyo os.path.isdir(path):
             ashiria ImportError('existing directory', path=path)
 
     eleza find_module(self, fullname):
@@ -151,7 +151,7 @@ kundi _HackedGetData:
             ikiwa self.file.closed:
                 self.file = file = open(self.path, 'rb')
 
-            with file:
+            ukijumuisha file:
                 rudisha file.read()
         isipokua:
             rudisha super().get_data(path)
@@ -227,24 +227,24 @@ eleza load_module(name, file, filename, details):
     suffix, mode, type_ = details
     ikiwa mode na (not mode.startswith(('r', 'U')) ama '+' kwenye mode):
         ashiria ValueError('invalid file open mode {!r}'.format(mode))
-    elikiwa file ni Tupu na type_ kwenye {PY_SOURCE, PY_COMPILED}:
+    lasivyo file ni Tupu na type_ kwenye {PY_SOURCE, PY_COMPILED}:
         msg = 'file object required kila agiza (type code {})'.format(type_)
         ashiria ValueError(msg)
-    elikiwa type_ == PY_SOURCE:
+    lasivyo type_ == PY_SOURCE:
         rudisha load_source(name, filename, file)
-    elikiwa type_ == PY_COMPILED:
+    lasivyo type_ == PY_COMPILED:
         rudisha load_compiled(name, filename, file)
-    elikiwa type_ == C_EXTENSION na load_dynamic ni sio Tupu:
+    lasivyo type_ == C_EXTENSION na load_dynamic ni sio Tupu:
         ikiwa file ni Tupu:
-            with open(filename, 'rb') kama opened_file:
+            ukijumuisha open(filename, 'rb') kama opened_file:
                 rudisha load_dynamic(name, filename, opened_file)
         isipokua:
             rudisha load_dynamic(name, filename, file)
-    elikiwa type_ == PKG_DIRECTORY:
+    lasivyo type_ == PKG_DIRECTORY:
         rudisha load_package(name, filename)
-    elikiwa type_ == C_BUILTIN:
+    lasivyo type_ == C_BUILTIN:
         rudisha init_builtin(name)
-    elikiwa type_ == PY_FROZEN:
+    lasivyo type_ == PY_FROZEN:
         rudisha init_frozen(name)
     isipokua:
         msg =  "Don't know how to agiza {} (type code {})".format(name, type_)
@@ -264,7 +264,7 @@ eleza find_module(name, path=Tupu):
     """
     ikiwa sio isinstance(name, str):
         ashiria TypeError("'name' must be a str, sio {}".format(type(name)))
-    elikiwa sio isinstance(path, (type(Tupu), list)):
+    lasivyo sio isinstance(path, (type(Tupu), list)):
         # Backwards-compatibility
         ashiria RuntimeError("'path' must be Tupu ama a list, "
                            "not {}".format(type(path)))
@@ -272,7 +272,7 @@ eleza find_module(name, path=Tupu):
     ikiwa path ni Tupu:
         ikiwa is_builtin(name):
             rudisha Tupu, Tupu, ('', '', C_BUILTIN)
-        elikiwa is_frozen(name):
+        lasivyo is_frozen(name):
             rudisha Tupu, Tupu, ('', '', PY_FROZEN)
         isipokua:
             path = sys.path
@@ -297,7 +297,7 @@ eleza find_module(name, path=Tupu):
 
     encoding = Tupu
     ikiwa 'b' haiko kwenye mode:
-        with open(file_path, 'rb') kama file:
+        ukijumuisha open(file_path, 'rb') kama file:
             encoding = tokenize.detect_encoding(file.readline)[0]
     file = open(file_path, mode, encoding=encoding)
     rudisha file, file_path, (suffix, mode, type_)

@@ -53,7 +53,7 @@ x = 2
 
 
 eleza test_main():
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings("error", module="<test string>")
         run_unittest(GlobalTests)
 

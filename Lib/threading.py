@@ -113,7 +113,7 @@ kundi _RLock:
         tatizo KeyError:
             pass
         return "<%s %s.%s object owner=%r count=%d at %s>" % (
-            "locked" if self._block.locked() else "unlocked",
+            "locked" if self._block.locked() isipokua "unlocked",
             self.__class__.__module__,
             self.__class__.__qualname__,
             owner,
@@ -778,7 +778,7 @@ kundi Thread:
 
         If a subkundi overrides the constructor, it must make sure to invoke
         the base kundi constructor (Thread.__init__()) before doing anything
-        else to the thread.
+        isipokua to the thread.
 
         """
         assert group is None, "group argument must be None for now"
@@ -885,7 +885,7 @@ kundi Thread:
         # indeed has already been destroyed, so that exceptions in
         # _bootstrap_inner() during normal business hours are properly
         # reported.  Also, we only suppress them for daemonic threads;
-        # if a non-daemonic encounters this, something else is wrong.
+        # if a non-daemonic encounters this, something isipokua is wrong.
         jaribu:
             self._bootstrap_inner()
         except:
@@ -1240,8 +1240,8 @@ kundi Timer(Thread):
         Thread.__init__(self)
         self.interval = interval
         self.function = function
-        self.args = args if args ni sio None else []
-        self.kwargs = kwargs if kwargs ni sio None else {}
+        self.args = args if args ni sio None isipokua []
+        self.kwargs = kwargs if kwargs ni sio None isipokua {}
         self.finished = Event()
 
     def cancel(self):

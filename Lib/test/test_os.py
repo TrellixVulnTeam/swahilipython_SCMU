@@ -63,7 +63,7 @@ ikiwa hasattr(os, 'geteuid'):
 
 # Detect whether we're on a Linux system that uses the (now outdated
 # na unmaintained) linuxthreads threading library.  There's an issue
-# when combining linuxthreads with a failed execv call: see
+# when combining linuxthreads ukijumuisha a failed execv call: see
 # http://bugs.python.org/issue4970.
 ikiwa hasattr(sys, 'thread_info') na sys.thread_info.version:
     USING_LINUXTHREADS = sys.thread_info.version.startswith("linuxthreads")
@@ -79,7 +79,7 @@ eleza requires_os_func(name):
 
 
 eleza create_file(filename, content=b'content'):
-    with open(filename, "xb", 0) kama fp:
+    ukijumuisha open(filename, "xb", 0) kama fp:
         fp.write(content)
 
 
@@ -105,8 +105,8 @@ kundi MiscTests(unittest.TestCase):
         dirname = 'python_test_dir_'
         dirname = dirname + ('a' * (dirlen - len(dirname)))
 
-        with tempfile.TemporaryDirectory() kama tmpdir:
-            with support.change_cwd(tmpdir) kama path:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
+            ukijumuisha support.change_cwd(tmpdir) kama path:
                 expected = path
 
                 wakati Kweli:
@@ -189,7 +189,7 @@ kundi FileTests(unittest.TestCase):
         self.assertEqual(old, new)
 
     eleza test_read(self):
-        with open(support.TESTFN, "w+b") kama fobj:
+        ukijumuisha open(support.TESTFN, "w+b") kama fobj:
             fobj.write(b"spam")
             fobj.flush()
             fd = fobj.fileno()
@@ -210,7 +210,7 @@ kundi FileTests(unittest.TestCase):
 
         # Issue #21932: Make sure that os.read() does sio ashiria an
         # OverflowError kila size larger than INT_MAX
-        with open(support.TESTFN, "rb") kama fp:
+        ukijumuisha open(support.TESTFN, "rb") kama fp:
             data = os.read(fp.fileno(), size)
 
         # The test does sio try to read more than 2 GiB at once because the
@@ -225,7 +225,7 @@ kundi FileTests(unittest.TestCase):
         os.write(fd, bytearray(b"eggs\n"))
         os.write(fd, memoryview(b"spam\n"))
         os.close(fd)
-        with open(support.TESTFN, "rb") kama fobj:
+        ukijumuisha open(support.TESTFN, "rb") kama fobj:
             self.assertEqual(fobj.read().splitlines(),
                 [b"bacon", b"eggs", b"spam"])
 
@@ -271,7 +271,7 @@ kundi FileTests(unittest.TestCase):
 
         os.replace(support.TESTFN, TESTFN2)
         self.assertRaises(FileNotFoundError, os.stat, support.TESTFN)
-        with open(TESTFN2, 'r') kama f:
+        ukijumuisha open(TESTFN2, 'r') kama f:
             self.assertEqual(f.read(), "1")
 
     eleza test_open_keywords(self):
@@ -289,7 +289,7 @@ kundi FileTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'copy_file_range'), 'test needs os.copy_file_range()')
     eleza test_copy_file_range_invalid_values(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.copy_file_range(0, 1, -10)
 
     @unittest.skipUnless(hasattr(os, 'copy_file_range'), 'test needs os.copy_file_range()')
@@ -313,7 +313,7 @@ kundi FileTests(unittest.TestCase):
             i = os.copy_file_range(in_fd, out_fd, 5)
         tatizo OSError kama e:
             # Handle the case kwenye which Python was compiled
-            # kwenye a system with the syscall but without support
+            # kwenye a system ukijumuisha the syscall but without support
             # kwenye the kernel.
             ikiwa e.errno != errno.ENOSYS:
                 ashiria
@@ -323,7 +323,7 @@ kundi FileTests(unittest.TestCase):
             # the number of bytes originally requested.
             self.assertIn(i, range(0, 6));
 
-            with open(TESTFN2, 'rb') kama in_file:
+            ukijumuisha open(TESTFN2, 'rb') kama in_file:
                 self.assertEqual(in_file.read(), data[:i])
 
     @unittest.skipUnless(hasattr(os, 'copy_file_range'), 'test needs os.copy_file_range()')
@@ -352,7 +352,7 @@ kundi FileTests(unittest.TestCase):
                                    offset_dst=out_seek)
         tatizo OSError kama e:
             # Handle the case kwenye which Python was compiled
-            # kwenye a system with the syscall but without support
+            # kwenye a system ukijumuisha the syscall but without support
             # kwenye the kernel.
             ikiwa e.errno != errno.ENOSYS:
                 ashiria
@@ -362,7 +362,7 @@ kundi FileTests(unittest.TestCase):
             # the number of bytes originally requested.
             self.assertIn(i, range(0, bytes_to_copy+1));
 
-            with open(TESTFN4, 'rb') kama in_file:
+            ukijumuisha open(TESTFN4, 'rb') kama in_file:
                 read = in_file.read()
             # seeked bytes (5) are zero'ed
             self.assertEqual(read[:out_seek], b'\x00'*out_seek)
@@ -430,14 +430,14 @@ kundi StatAttributeTests(unittest.TestCase):
         tatizo AttributeError:
             pita
 
-        # Use the stat_result constructor with a too-short tuple.
+        # Use the stat_result constructor ukijumuisha a too-short tuple.
         jaribu:
             result2 = os.stat_result((10,))
             self.fail("No exception ashiriad")
         tatizo TypeError:
             pita
 
-        # Use the constructor with a too-long tuple.
+        # Use the constructor ukijumuisha a too-long tuple.
         jaribu:
             result2 = os.stat_result((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14))
         tatizo TypeError:
@@ -494,14 +494,14 @@ kundi StatAttributeTests(unittest.TestCase):
         tatizo AttributeError:
             pita
 
-        # Use the constructor with a too-short tuple.
+        # Use the constructor ukijumuisha a too-short tuple.
         jaribu:
             result2 = os.statvfs_result((10,))
             self.fail("No exception ashiriad")
         tatizo TypeError:
             pita
 
-        # Use the constructor with a too-long tuple.
+        # Use the constructor ukijumuisha a too-long tuple.
         jaribu:
             result2 = os.statvfs_result((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14))
         tatizo TypeError:
@@ -540,7 +540,7 @@ kundi StatAttributeTests(unittest.TestCase):
         mwishowe:
             os.close(r)
             os.close(w)
-        with self.assertRaises(OSError) kama ctx:
+        ukijumuisha self.assertRaises(OSError) kama ctx:
             os.stat(r)
         self.assertEqual(ctx.exception.errno, errno.EBADF)
 
@@ -580,7 +580,7 @@ kundi StatAttributeTests(unittest.TestCase):
         self.addCleanup(support.unlink, fname)
         create_file(fname, b'ABC')
         # Deny the right to [S]YNCHRONIZE on the file to
-        # force CreateFile to fail with ERROR_ACCESS_DENIED.
+        # force CreateFile to fail ukijumuisha ERROR_ACCESS_DENIED.
         DETACHED_PROCESS = 8
         subprocess.check_call(
             # bpo-30584: Use security identifier *S-1-5-32-545 instead
@@ -623,11 +623,11 @@ kundi UtimeTests(unittest.TestCase):
 
         support_subsecond = self.support_subsecond(filename)
         ikiwa support_subsecond:
-            # Timestamp with a resolution of 1 microsecond (10^-6).
+            # Timestamp ukijumuisha a resolution of 1 microsecond (10^-6).
             #
             # The resolution of the C internal function used by os.utime()
             # depends on the platform: 1 sec, 1 us, 1 ns. Writing a portable
-            # test with a resolution of 1 ns requires more work:
+            # test ukijumuisha a resolution of 1 ns requires more work:
             # see the issue #15745.
             atime_ns = 1002003000   # 1.002003 seconds
             mtime_ns = 4005006000   # 4.005006 seconds
@@ -695,7 +695,7 @@ kundi UtimeTests(unittest.TestCase):
                          "fd support kila utime required kila this test.")
     eleza test_utime_fd(self):
         eleza set_time(filename, ns):
-            with open(filename, 'wb', 0) kama fp:
+            ukijumuisha open(filename, 'wb', 0) kama fp:
                 # use a file descriptor to test futimens(timespec)
                 # ama futimes(timeval)
                 os.utime(fp.fileno(), ns=ns)
@@ -733,7 +733,7 @@ kundi UtimeTests(unittest.TestCase):
             # On Windows, the usual resolution of time.time() ni 15.6 ms.
             # bpo-30649: Tolerate 50 ms kila slow Windows buildbots.
             #
-            # x86 Gentoo Refleaks 3.x once failed with dt=20.2 ms. So use
+            # x86 Gentoo Refleaks 3.x once failed ukijumuisha dt=20.2 ms. So use
             # also 50 ms on other platforms.
             delta = 0.050
         st = os.stat(self.fname)
@@ -769,7 +769,7 @@ kundi UtimeTests(unittest.TestCase):
 
     eleza test_large_time(self):
         # Many filesystems are limited to the year 2038. At least, the test
-        # pita with NTFS filesystem.
+        # pita ukijumuisha NTFS filesystem.
         ikiwa self.get_file_system(self.dirname) != "NTFS":
             self.skipTest("requires NTFS")
 
@@ -779,30 +779,30 @@ kundi UtimeTests(unittest.TestCase):
 
     eleza test_utime_invalid_arguments(self):
         # seconds na nanoseconds parameters are mutually exclusive
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.utime(self.fname, (5, 5), ns=(5, 5))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, [5, 5])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, (5,))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, (5, 5, 5))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=[5, 5])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=(5,))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=(5, 5, 5))
 
         ikiwa os.utime haiko kwenye os.supports_follow_symlinks:
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 os.utime(self.fname, (5, 5), follow_symlinks=Uongo)
         ikiwa os.utime haiko kwenye os.supports_fd:
-            with open(self.fname, 'wb', 0) kama fp:
-                with self.assertRaises(TypeError):
+            ukijumuisha open(self.fname, 'wb', 0) kama fp:
+                ukijumuisha self.assertRaises(TypeError):
                     os.utime(fp.fileno(), (5, 5))
         ikiwa os.utime haiko kwenye os.supports_dir_fd:
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 os.utime(self.fname, (5, 5), dir_fd=0)
 
     @support.cpython_only
@@ -814,11 +814,11 @@ kundi UtimeTests(unittest.TestCase):
                 eleza __divmod__(*args):
                     rudisha divmod_ret_val
             rudisha BadInt()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=(get_bad_int(42), 1))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=(get_bad_int(()), 1))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.utime(self.fname, ns=(get_bad_int((1, 2, 3)), 1))
 
 
@@ -855,14 +855,14 @@ kundi EnvironTests(mapping_tests.BasicTestMappingProtocol):
     eleza test_update2(self):
         os.environ.clear()
         os.environ.update(HELLO="World")
-        with os.popen("%s -c 'echo $HELLO'" % unix_shell) kama popen:
+        ukijumuisha os.popen("%s -c 'echo $HELLO'" % unix_shell) kama popen:
             value = popen.read().strip()
             self.assertEqual(value, "World")
 
     @unittest.skipUnless(unix_shell na os.path.exists(unix_shell),
                          'requires a shell')
     eleza test_os_popen_iter(self):
-        with os.popen("%s -c 'echo \"line1\nline2\nline3\"'"
+        ukijumuisha os.popen("%s -c 'echo \"line1\nline2\nline3\"'"
                       % unix_shell) kama popen:
             it = iter(popen)
             self.assertEqual(next(it), "line1\n")
@@ -914,10 +914,10 @@ kundi EnvironTests(mapping_tests.BasicTestMappingProtocol):
             # env cannot contain 'PATH' na b'PATH' keys
             jaribu:
                 # ignore BytesWarning warning
-                with warnings.catch_warnings(record=Kweli):
+                ukijumuisha warnings.catch_warnings(record=Kweli):
                     mixed_env = {'PATH': '1', b'PATH': b'2'}
             tatizo BytesWarning:
-                # mixed_env cannot be created with python -bb
+                # mixed_env cannot be created ukijumuisha python -bb
                 pita
             isipokua:
                 self.assertRaises(ValueError, os.get_exec_path, mixed_env)
@@ -969,12 +969,12 @@ kundi EnvironTests(mapping_tests.BasicTestMappingProtocol):
         missing = 'missingkey'
         self.assertNotIn(missing, os.environ)
 
-        with self.assertRaises(KeyError) kama cm:
+        ukijumuisha self.assertRaises(KeyError) kama cm:
             os.environ[missing]
         self.assertIs(cm.exception.args[0], missing)
         self.assertKweli(cm.exception.__suppress_context__)
 
-        with self.assertRaises(KeyError) kama cm:
+        ukijumuisha self.assertRaises(KeyError) kama cm:
             toa os.environ[missing]
         self.assertIs(cm.exception.args[0], missing)
         self.assertKweli(cm.exception.__suppress_context__)
@@ -1008,7 +1008,7 @@ kundi WalkTests(unittest.TestCase):
     """Tests kila os.walk()."""
 
     # Wrapper to hide minor differences between os.walk na os.fwalk
-    # to tests both functions with the same code base
+    # to tests both functions ukijumuisha the same code base
     eleza walk(self, top, **kwargs):
         ikiwa 'follow_symlinks' kwenye kwargs:
             kwargs['followlinks'] = kwargs.pop('follow_symlinks')
@@ -1058,7 +1058,7 @@ kundi WalkTests(unittest.TestCase):
         os.makedirs(t2_path)
 
         kila path kwenye tmp1_path, tmp2_path, tmp3_path, tmp4_path, tmp5_path:
-            with open(path, "x") kama f:
+            ukijumuisha open(path, "x") kama f:
                 f.write("I'm " + path + " na proud of it.  Blame test_os.\n")
 
         ikiwa support.can_symlink():
@@ -1155,7 +1155,7 @@ kundi WalkTests(unittest.TestCase):
                 self.assertEqual(files, ["tmp4"])
                 koma
         isipokua:
-            self.fail("Didn't follow symlink with followlinks=Kweli")
+            self.fail("Didn't follow symlink ukijumuisha followlinks=Kweli")
 
     eleza test_walk_bad_dir(self):
         # Walk top-down.
@@ -1186,7 +1186,7 @@ kundi WalkTests(unittest.TestCase):
 
         iters = [self.walk(base, topdown=Uongo) kila j kwenye range(100)]
         kila i kwenye range(depth + 1):
-            expected = (p, ['d'] ikiwa i else [], [])
+            expected = (p, ['d'] ikiwa i isipokua [], [])
             kila it kwenye iters:
                 self.assertEqual(next(it), expected)
             p = os.path.dirname(p)
@@ -1194,7 +1194,7 @@ kundi WalkTests(unittest.TestCase):
         iters = [self.walk(base, topdown=Kweli) kila j kwenye range(100)]
         p = base
         kila i kwenye range(depth + 1):
-            expected = (p, ['d'] ikiwa i < depth else [], [])
+            expected = (p, ['d'] ikiwa i < depth isipokua [], [])
             kila it kwenye iters:
                 self.assertEqual(next(it), expected)
             p = os.path.join(p, 'd')
@@ -1213,7 +1213,7 @@ kundi FwalkTests(WalkTests):
 
     eleza _compare_to_walk(self, walk_kwargs, fwalk_kwargs):
         """
-        compare with walk() results.
+        compare ukijumuisha walk() results.
         """
         walk_kwargs = walk_kwargs.copy()
         fwalk_kwargs = fwalk_kwargs.copy()
@@ -1273,7 +1273,7 @@ kundi FwalkTests(WalkTests):
 
 
 kundi BytesWalkTests(WalkTests):
-    """Tests kila os.walk() with bytes."""
+    """Tests kila os.walk() ukijumuisha bytes."""
     eleza walk(self, top, **kwargs):
         ikiwa 'follow_symlinks' kwenye kwargs:
             kwargs['followlinks'] = kwargs.pop('follow_symlinks')
@@ -1287,7 +1287,7 @@ kundi BytesWalkTests(WalkTests):
 
 @unittest.skipUnless(hasattr(os, 'fwalk'), "Test needs os.fwalk()")
 kundi BytesFwalkTests(FwalkTests):
-    """Tests kila os.walk() with bytes."""
+    """Tests kila os.walk() ukijumuisha bytes."""
     eleza fwalk(self, top='.', *args, **kwargs):
         kila broot, bdirs, bfiles, topfd kwenye os.fwalk(os.fsencode(top), *args, **kwargs):
             root = os.fsdecode(broot)
@@ -1309,7 +1309,7 @@ kundi MakedirTests(unittest.TestCase):
         path = os.path.join(base, 'dir1', 'dir2', 'dir3', 'dir4')
         os.makedirs(path)
 
-        # Try paths with a '.' kwenye them
+        # Try paths ukijumuisha a '.' kwenye them
         self.assertRaises(OSError, os.makedirs, os.curdir)
         path = os.path.join(base, 'dir1', 'dir2', 'dir3', 'dir4', 'dir5', os.curdir)
         os.makedirs(path)
@@ -1318,7 +1318,7 @@ kundi MakedirTests(unittest.TestCase):
         os.makedirs(path)
 
     eleza test_mode(self):
-        with support.temp_umask(0o002):
+        ukijumuisha support.temp_umask(0o002):
             base = support.TESTFN
             parent = os.path.join(base, 'dir1')
             path = os.path.join(parent, 'dir2')
@@ -1373,7 +1373,7 @@ kundi MakedirTests(unittest.TestCase):
     eleza test_exist_ok_existing_regular_file(self):
         base = support.TESTFN
         path = os.path.join(support.TESTFN, 'dir1')
-        with open(path, 'w') kama f:
+        ukijumuisha open(path, 'w') kama f:
             f.write('abc')
         self.assertRaises(OSError, os.makedirs, path)
         self.assertRaises(OSError, os.makedirs, path, exist_ok=Uongo)
@@ -1443,7 +1443,7 @@ kundi ChownFileTests(unittest.TestCase):
     eleza test_chown_without_permission(self):
         uid_1, uid_2 = all_users[:2]
         gid = os.stat(support.TESTFN).st_gid
-        with self.assertRaises(PermissionError):
+        ukijumuisha self.assertRaises(PermissionError):
             os.chown(support.TESTFN, uid_1, gid)
             os.chown(support.TESTFN, uid_2, gid)
 
@@ -1486,7 +1486,7 @@ kundi RemoveDirsTests(unittest.TestCase):
         dirb = os.path.join(dira, 'dirb')
         os.mkdir(dirb)
         create_file(os.path.join(dirb, 'file.txt'))
-        with self.assertRaises(OSError):
+        ukijumuisha self.assertRaises(OSError):
             os.removedirs(dirb)
         self.assertKweli(os.path.exists(dirb))
         self.assertKweli(os.path.exists(dira))
@@ -1495,10 +1495,10 @@ kundi RemoveDirsTests(unittest.TestCase):
 
 kundi DevNullTests(unittest.TestCase):
     eleza test_devnull(self):
-        with open(os.devnull, 'wb', 0) kama f:
+        ukijumuisha open(os.devnull, 'wb', 0) kama f:
             f.write(b'hello')
             f.close()
-        with open(os.devnull, 'rb') kama f:
+        ukijumuisha open(os.devnull, 'rb') kama f:
             self.assertEqual(f.read(), b'')
 
 
@@ -1543,7 +1543,7 @@ kundi GetRandomTests(unittest.TestCase):
             ikiwa exc.errno == errno.ENOSYS:
                 # Python compiled on a more recent Linux version
                 # than the current Linux kernel
-                ashiria unittest.SkipTest("getrandom() syscall fails with ENOSYS")
+                ashiria unittest.SkipTest("getrandom() syscall fails ukijumuisha ENOSYS")
             isipokua:
                 ashiria
 
@@ -1576,7 +1576,7 @@ kundi GetRandomTests(unittest.TestCase):
         self.assertNotEqual(data1, data2)
 
 
-# os.urandom() doesn't use a file descriptor when it ni implemented with the
+# os.urandom() doesn't use a file descriptor when it ni implemented ukijumuisha the
 # getentropy() function, the getrandom() function ama the getrandom() syscall
 OS_URANDOM_DONT_USE_FD = (
     sysconfig.get_config_var('HAVE_GETENTROPY') == 1
@@ -1619,7 +1619,7 @@ kundi URandomFDTests(unittest.TestCase):
             agiza sys
             agiza test.support
             os.urandom(4)
-            with test.support.SuppressCrashReport():
+            ukijumuisha test.support.SuppressCrashReport():
                 os.closerange(3, 256)
             sys.stdout.buffer.write(os.urandom(4))
             """
@@ -1636,7 +1636,7 @@ kundi URandomFDTests(unittest.TestCase):
             agiza sys
             agiza test.support
             os.urandom(4)
-            with test.support.SuppressCrashReport():
+            ukijumuisha test.support.SuppressCrashReport():
                 kila fd kwenye range(3, 256):
                     jaribu:
                         os.close(fd)
@@ -1646,7 +1646,7 @@ kundi URandomFDTests(unittest.TestCase):
                         # Found the urandom fd (XXX hopefully)
                         koma
                 os.closerange(3, 256)
-            with open({TESTFN!r}, 'rb') kama f:
+            ukijumuisha open({TESTFN!r}, 'rb') kama f:
                 new_fd = f.fileno()
                 # Issue #26935: posix allows new_fd na fd to be equal but
                 # some libc implementations have dup2 rudisha an error kwenye this
@@ -1736,25 +1736,25 @@ kundi ExecTests(unittest.TestCase):
                 native_fullpath = fullpath
         env = {'spam': 'beans'}
 
-        # test os._execvpe() with an absolute path
-        with _execvpe_mockup() kama calls:
+        # test os._execvpe() ukijumuisha an absolute path
+        ukijumuisha _execvpe_mockup() kama calls:
             self.assertRaises(RuntimeError,
                 os._execvpe, fullpath, arguments)
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0], ('execv', fullpath, (arguments,)))
 
-        # test os._execvpe() with a relative path:
+        # test os._execvpe() ukijumuisha a relative path:
         # os.get_exec_path() rudishas defpath
-        with _execvpe_mockup(defpath=program_path) kama calls:
+        ukijumuisha _execvpe_mockup(defpath=program_path) kama calls:
             self.assertRaises(OSError,
                 os._execvpe, program, arguments, env=env)
             self.assertEqual(len(calls), 1)
             self.assertSequenceEqual(calls[0],
                 ('execve', native_fullpath, (arguments, env)))
 
-        # test os._execvpe() with a relative path:
+        # test os._execvpe() ukijumuisha a relative path:
         # os.get_exec_path() reads the 'PATH' variable
-        with _execvpe_mockup() kama calls:
+        ukijumuisha _execvpe_mockup() kama calls:
             env_path = env.copy()
             ikiwa test_type ni bytes:
                 env_path[b'PATH'] = program_path
@@ -1777,19 +1777,19 @@ kundi ExecTests(unittest.TestCase):
         # null character kwenye the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT\0VEGETABLE"] = "cabbage"
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.execve(args[0], args, newenv)
 
         # null character kwenye the environment variable value
         newenv = os.environ.copy()
         newenv["FRUIT"] = "orange\0VEGETABLE=cabbage"
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.execve(args[0], args, newenv)
 
         # equal character kwenye the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT=ORANGE"] = "lemon"
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             os.execve(args[0], args, newenv)
 
     @unittest.skipUnless(sys.platform == "win32", "Win32-specific test")
@@ -1812,7 +1812,7 @@ kundi Win32ErrorTests(unittest.TestCase):
             exists = Uongo
         tatizo OSError kama exc:
             exists = Kweli
-            self.fail("file %s must sio exist; os.stat failed with %s"
+            self.fail("file %s must sio exist; os.stat failed ukijumuisha %s"
                       % (support.TESTFN, exc))
         isipokua:
             self.fail("file %s must sio exist" % support.TESTFN)
@@ -1829,7 +1829,7 @@ kundi Win32ErrorTests(unittest.TestCase):
     eleza test_mkdir(self):
         self.addCleanup(support.unlink, support.TESTFN)
 
-        with open(support.TESTFN, "x") kama f:
+        ukijumuisha open(support.TESTFN, "x") kama f:
             self.assertRaises(OSError, os.mkdir, support.TESTFN)
 
     eleza test_utime(self):
@@ -1858,7 +1858,7 @@ kundi TestInvalidFD(unittest.TestCase):
         tatizo OSError kama e:
             self.assertEqual(e.errno, errno.EBADF)
         isipokua:
-            self.fail("%r didn't ashiria an OSError with a bad file descriptor"
+            self.fail("%r didn't ashiria an OSError ukijumuisha a bad file descriptor"
                       % f)
 
     @unittest.skipUnless(hasattr(os, 'isatty'), 'test needs os.isatty()')
@@ -1956,7 +1956,7 @@ kundi LinkTests(unittest.TestCase):
             os.link(file1, file2)
         tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
-        with open(file1, "r") kama f1, open(file2, "r") kama f2:
+        ukijumuisha open(file1, "r") kama f1, open(file2, "r") kama f2:
             self.assertKweli(os.path.sameopenfile(f1.fileno(), f2.fileno()))
 
     eleza test_link(self):
@@ -2049,7 +2049,7 @@ kundi Pep383Tests(unittest.TestCase):
     eleza setUp(self):
         ikiwa support.TESTFN_UNENCODABLE:
             self.dir = support.TESTFN_UNENCODABLE
-        elikiwa support.TESTFN_NONASCII:
+        lasivyo support.TESTFN_NONASCII:
             self.dir = support.TESTFN_NONASCII
         isipokua:
             self.dir = support.TESTFN
@@ -2108,7 +2108,7 @@ kundi Pep383Tests(unittest.TestCase):
     eleza test_statvfs(self):
         # issue #9645
         kila fn kwenye self.unicodefn:
-            # should sio fail with file sio found error
+            # should sio fail ukijumuisha file sio found error
             fullname = os.path.join(self.dir, fn)
             os.statvfs(fullname)
 
@@ -2214,14 +2214,14 @@ kundi Win32KillTests(unittest.TestCase):
         kutoka ctypes agiza wintypes
         agiza ctypes
 
-        # Make a NULL value by creating a pointer with no argument.
+        # Make a NULL value by creating a pointer ukijumuisha no argument.
         NULL = ctypes.POINTER(ctypes.c_int)()
         SetConsoleCtrlHandler = ctypes.windll.kernel32.SetConsoleCtrlHandler
         SetConsoleCtrlHandler.argtypes = (ctypes.POINTER(ctypes.c_int),
                                           wintypes.BOOL)
         SetConsoleCtrlHandler.restype = wintypes.BOOL
 
-        # Calling this with NULL na FALSE causes the calling process to
+        # Calling this ukijumuisha NULL na FALSE causes the calling process to
         # handle Ctrl+C, rather than ignore it. This property ni inherited
         # by subprocesses.
         SetConsoleCtrlHandler(NULL, 0)
@@ -2244,7 +2244,7 @@ kundi Win32ListdirTests(unittest.TestCase):
             file_name = 'FILE%d' % i
             file_path = os.path.join(support.TESTFN, file_name)
             os.makedirs(dir_path)
-            with open(file_path, 'w') kama f:
+            ukijumuisha open(file_path, 'w') kama f:
                 f.write("I'm %s na proud of it. Blame test_os.\n" % file_path)
             self.created_paths.extend([dir_name, file_name])
         self.created_paths.sort()
@@ -2265,7 +2265,7 @@ kundi Win32ListdirTests(unittest.TestCase):
                 [os.fsencode(path) kila path kwenye self.created_paths])
 
     eleza test_listdir_extended_path(self):
-        """Test when the path starts with '\\\\?\\'."""
+        """Test when the path starts ukijumuisha '\\\\?\\'."""
         # See: http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#maxpath
         # unicode
         path = '\\\\?\\' + os.path.abspath(support.TESTFN)
@@ -2294,7 +2294,7 @@ kundi ReadlinkTests(unittest.TestCase):
             # Bad practice to blindly strip the prefix kama it may be required to
             # correctly refer to the file, but we're only comparing paths here.
             has_prefix = lambda p: p.startswith(
-                b'\\\\?\\' ikiwa isinstance(p, bytes) else '\\\\?\\')
+                b'\\\\?\\' ikiwa isinstance(p, bytes) isipokua '\\\\?\\')
             ikiwa has_prefix(left):
                 left = left[4:]
             ikiwa has_prefix(right):
@@ -2391,9 +2391,9 @@ kundi Win32SymlinkTests(unittest.TestCase):
 
     eleza test_remove_directory_link_to_missing_target(self):
         self._create_missing_dir_link()
-        # For compatibility with Unix, os.remove will check the
+        # For compatibility ukijumuisha Unix, os.remove will check the
         #  directory status na call RemoveDirectory ikiwa the symlink
-        #  was created with target_is_dir==Kweli.
+        #  was created ukijumuisha target_is_dir==Kweli.
         os.remove(self.missing_link)
 
     eleza test_isdir_on_directory_link_to_missing_target(self):
@@ -2452,13 +2452,13 @@ kundi Win32SymlinkTests(unittest.TestCase):
                             'Test directories sio found')
     eleza test_29248(self):
         # os.symlink() calls CreateSymbolicLink, which creates
-        # the reparse data buffer with the print name stored
+        # the reparse data buffer ukijumuisha the print name stored
         # first, so the offset ni always 0. CreateSymbolicLink
         # stores the "PrintName" DOS path (e.g. "C:\") first,
-        # with an offset of 0, followed by the "SubstituteName"
+        # ukijumuisha an offset of 0, followed by the "SubstituteName"
         # NT path (e.g. "\??\C:\"). The "All Users" link, on
         # the other hand, seems to have been created manually
-        # with an inverted order.
+        # ukijumuisha an inverted order.
         target = os.readlink(r'C:\Users\All Users')
         self.assertKweli(os.path.samefile(target, r'C:\ProgramData'))
 
@@ -2469,9 +2469,9 @@ kundi Win32SymlinkTests(unittest.TestCase):
         segment = 'X' * 27
         path = os.path.join(*[segment] * 10)
         test_cases = [
-            # overflow with absolute src
+            # overflow ukijumuisha absolute src
             ('\\' + path, segment),
-            # overflow dest with relative src
+            # overflow dest ukijumuisha relative src
             (segment, path),
             # overflow when joining src
             (path[:180], path[:180]),
@@ -2486,7 +2486,7 @@ kundi Win32SymlinkTests(unittest.TestCase):
                     os.remove(dest)
                 tatizo OSError:
                     pita
-            # Also test with bytes, since that ni a separate code path.
+            # Also test ukijumuisha bytes, since that ni a separate code path.
             jaribu:
                 os.symlink(os.fsencode(src), os.fsencode(dest))
             tatizo FileNotFoundError:
@@ -2701,7 +2701,7 @@ kundi SpawnTests(unittest.TestCase):
             code = ('agiza sys, os; magic = os.environ[%r]; sys.exit(%s)'
                     % (self.key, self.exitcode))
 
-        with open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") kama fp:
             fp.write(code)
 
         args = [sys.executable, filename]
@@ -2844,7 +2844,7 @@ kundi SpawnTests(unittest.TestCase):
         # equal character kwenye the environment variable value
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
-        with open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") kama fp:
             fp.write('agiza sys, os\n'
                      'ikiwa os.getenv("FRUIT") != "orange=lemon":\n'
                      '    ashiria AssertionError')
@@ -3035,7 +3035,7 @@ kundi TestSendfile(unittest.TestCase):
                 ikiwa err.errno == errno.ECONNRESET:
                     # disconnected
                     ashiria
-                elikiwa err.errno kwenye (errno.EAGAIN, errno.EBUSY):
+                lasivyo err.errno kwenye (errno.EAGAIN, errno.EBUSY):
                     # we have to retry send data
                     endelea
                 isipokua:
@@ -3104,7 +3104,7 @@ kundi TestSendfile(unittest.TestCase):
         self.assertEqual(data, b'')
 
     eleza test_invalid_offset(self):
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             os.sendfile(self.sockno, self.fileno, -1, 4096)
         self.assertEqual(cm.exception.errno, errno.EINVAL)
 
@@ -3151,7 +3151,7 @@ kundi TestSendfile(unittest.TestCase):
         self.addCleanup(support.unlink, TESTFN2)
         create_file(TESTFN2, file_data)
 
-        with open(TESTFN2, 'rb') kama f:
+        ukijumuisha open(TESTFN2, 'rb') kama f:
             os.sendfile(self.sockno, f.fileno(), 0, 5,
                         trailers=[b"123456", b"789"])
             self.client.close()
@@ -3163,7 +3163,7 @@ kundi TestSendfile(unittest.TestCase):
     @requires_32b
     eleza test_headers_overflow_32bits(self):
         self.server.handler_instance.accumulate = Uongo
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             os.sendfile(self.sockno, self.fileno, 0, 0,
                         headers=[b"x" * 2**16] * 2**15)
         self.assertEqual(cm.exception.errno, errno.EINVAL)
@@ -3172,7 +3172,7 @@ kundi TestSendfile(unittest.TestCase):
     @requires_32b
     eleza test_trailers_overflow_32bits(self):
         self.server.handler_instance.accumulate = Uongo
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             os.sendfile(self.sockno, self.fileno, 0, 0,
                         trailers=[b"x" * 2**16] * 2**15)
         self.assertEqual(cm.exception.errno, errno.EINVAL)
@@ -3194,7 +3194,7 @@ eleza supports_extended_attributes():
         rudisha Uongo
 
     jaribu:
-        with open(support.TESTFN, "xb", 0) kama fp:
+        ukijumuisha open(support.TESTFN, "xb", 0) kama fp:
             jaribu:
                 os.setxattr(fp.fileno(), b"user.test", b"")
             tatizo OSError:
@@ -3216,7 +3216,7 @@ kundi ExtendedAttributeTests(unittest.TestCase):
         self.addCleanup(support.unlink, fn)
         create_file(fn)
 
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             getxattr(fn, s("user.test"), **kwargs)
         self.assertEqual(cm.exception.errno, errno.ENODATA)
 
@@ -3231,11 +3231,11 @@ kundi ExtendedAttributeTests(unittest.TestCase):
         setxattr(fn, s("user.test"), b"hello", os.XATTR_REPLACE, **kwargs)
         self.assertEqual(getxattr(fn, b"user.test", **kwargs), b"hello")
 
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             setxattr(fn, s("user.test"), b"bye", os.XATTR_CREATE, **kwargs)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             setxattr(fn, s("user.test2"), b"bye", os.XATTR_REPLACE, **kwargs)
         self.assertEqual(cm.exception.errno, errno.ENODATA)
 
@@ -3244,7 +3244,7 @@ kundi ExtendedAttributeTests(unittest.TestCase):
         self.assertEqual(set(listxattr(fn)), xattr)
         removexattr(fn, s("user.test"), **kwargs)
 
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             getxattr(fn, s("user.test"), **kwargs)
         self.assertEqual(cm.exception.errno, errno.ENODATA)
 
@@ -3276,16 +3276,16 @@ kundi ExtendedAttributeTests(unittest.TestCase):
 
     eleza test_fds(self):
         eleza getxattr(path, *args):
-            with open(path, "rb") kama fp:
+            ukijumuisha open(path, "rb") kama fp:
                 rudisha os.getxattr(fp.fileno(), *args)
         eleza setxattr(path, *args):
-            with open(path, "wb", 0) kama fp:
+            ukijumuisha open(path, "wb", 0) kama fp:
                 os.setxattr(fp.fileno(), *args)
         eleza removexattr(path, *args):
-            with open(path, "wb", 0) kama fp:
+            ukijumuisha open(path, "wb", 0) kama fp:
                 os.removexattr(fp.fileno(), *args)
         eleza listxattr(path, *args):
-            with open(path, "rb") kama fp:
+            ukijumuisha open(path, "rb") kama fp:
                 rudisha os.listxattr(fp.fileno(), *args)
         self._check_xattrs(getxattr, setxattr, removexattr, listxattr)
 
@@ -3343,7 +3343,7 @@ kundi MemfdCreateTests(unittest.TestCase):
         self.assertNotEqual(fd, -1)
         self.addCleanup(os.close, fd)
         self.assertUongo(os.get_inheritable(fd))
-        with open(fd, "wb", closefd=Uongo) kama f:
+        ukijumuisha open(fd, "wb", closefd=Uongo) kama f:
             f.write(b'memfd_create')
             self.assertEqual(f.tell(), 12)
 
@@ -3436,7 +3436,7 @@ kundi OSErrorTests(unittest.TestCase):
                     ikiwa isinstance(name, (str, bytes)):
                         func(name, *func_args)
                     isipokua:
-                        with self.assertWarnsRegex(DeprecationWarning, 'should be'):
+                        ukijumuisha self.assertWarnsRegex(DeprecationWarning, 'should be'):
                             func(name, *func_args)
                 tatizo OSError kama err:
                     self.assertIs(err.filename, name, str(func))
@@ -3576,7 +3576,7 @@ kundi PathTConverterTests(unittest.TestCase):
         str_fspath = FakePath(str_filename)
 
         kila name, allow_fd, extra_args, cleanup_fn kwenye self.functions:
-            with self.subTest(name=name):
+            ukijumuisha self.subTest(name=name):
                 jaribu:
                     fn = getattr(os, name)
                 tatizo AttributeError:
@@ -3586,12 +3586,12 @@ kundi PathTConverterTests(unittest.TestCase):
                              bytes_fspath):
                     ikiwa path ni Tupu:
                         endelea
-                    with self.subTest(name=name, path=path):
+                    ukijumuisha self.subTest(name=name, path=path):
                         result = fn(path, *extra_args)
                         ikiwa cleanup_fn ni sio Tupu:
                             cleanup_fn(result)
 
-                with self.assertRaisesRegex(
+                ukijumuisha self.assertRaisesRegex(
                         TypeError, 'to rudisha str ama bytes'):
                     fn(int_fspath, *extra_args)
 
@@ -3600,18 +3600,18 @@ kundi PathTConverterTests(unittest.TestCase):
                     ikiwa cleanup_fn ni sio Tupu:
                         cleanup_fn(result)
                 isipokua:
-                    with self.assertRaisesRegex(
+                    ukijumuisha self.assertRaisesRegex(
                             TypeError,
                             'os.PathLike'):
                         fn(fd, *extra_args)
 
     eleza test_path_t_converter_and_custom_class(self):
         msg = r'__fspath__\(\) to rudisha str ama bytes, sio %s'
-        with self.assertRaisesRegex(TypeError, msg % r'int'):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg % r'int'):
             os.stat(FakePath(2))
-        with self.assertRaisesRegex(TypeError, msg % r'float'):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg % r'float'):
             os.stat(FakePath(2.34))
-        with self.assertRaisesRegex(TypeError, msg % r'object'):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg % r'object'):
             os.stat(FakePath(object()))
 
 
@@ -3647,7 +3647,7 @@ kundi TestScandir(unittest.TestCase):
         os.mkdir(self.path)
 
     eleza create_file(self, name="file.txt"):
-        path = self.bytes_path ikiwa isinstance(name, bytes) else self.path
+        path = self.bytes_path ikiwa isinstance(name, bytes) isipokua self.path
         filename = os.path.join(path, name)
         create_file(filename, b'python')
         rudisha filename
@@ -3741,7 +3741,7 @@ kundi TestScandir(unittest.TestCase):
             self.check_entry(entry, 'symlink_file.txt', Uongo, Kweli, Kweli)
 
     eleza get_entry(self, name):
-        path = self.bytes_path ikiwa isinstance(name, bytes) else self.path
+        path = self.bytes_path ikiwa isinstance(name, bytes) isipokua self.path
         entries = list(os.scandir(path))
         self.assertEqual(len(entries), 1)
 
@@ -3862,7 +3862,7 @@ kundi TestScandir(unittest.TestCase):
 
         kila cls kwenye bytearray, memoryview:
             path_bytes = cls(os.fsencode(self.path))
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 entries = list(os.scandir(path_bytes))
             self.assertEqual(len(entries), 1, entries)
             entry = entries[0]
@@ -3885,7 +3885,7 @@ kundi TestScandir(unittest.TestCase):
 
         fd = os.open(self.path, os.O_RDONLY)
         jaribu:
-            with os.scandir(fd) kama it:
+            ukijumuisha os.scandir(fd) kama it:
                 entries = list(it)
             names = [entry.name kila entry kwenye entries]
             self.assertEqual(sorted(names), expected_names)
@@ -3928,32 +3928,32 @@ kundi TestScandir(unittest.TestCase):
         iterator.close()
         # multiple closes
         iterator.close()
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             toa iterator
 
     eleza test_context_manager(self):
         self.create_file("file.txt")
         self.create_file("file2.txt")
-        with os.scandir(self.path) kama iterator:
+        ukijumuisha os.scandir(self.path) kama iterator:
             next(iterator)
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             toa iterator
 
     eleza test_context_manager_close(self):
         self.create_file("file.txt")
         self.create_file("file2.txt")
-        with os.scandir(self.path) kama iterator:
+        ukijumuisha os.scandir(self.path) kama iterator:
             next(iterator)
             iterator.close()
 
     eleza test_context_manager_exception(self):
         self.create_file("file.txt")
         self.create_file("file2.txt")
-        with self.assertRaises(ZeroDivisionError):
-            with os.scandir(self.path) kama iterator:
+        ukijumuisha self.assertRaises(ZeroDivisionError):
+            ukijumuisha os.scandir(self.path) kama iterator:
                 next(iterator)
                 1/0
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             toa iterator
 
     eleza test_resource_warning(self):
@@ -3961,13 +3961,13 @@ kundi TestScandir(unittest.TestCase):
         self.create_file("file2.txt")
         iterator = os.scandir(self.path)
         next(iterator)
-        with self.assertWarns(ResourceWarning):
+        ukijumuisha self.assertWarns(ResourceWarning):
             toa iterator
             support.gc_collect()
         # exhausted iterator
         iterator = os.scandir(self.path)
         list(iterator)
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             toa iterator
 
 

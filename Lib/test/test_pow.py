@@ -41,9 +41,9 @@ kundi PowTest(unittest.TestCase):
         ikiwa type == float:
             il = 1
             asseq = self.assertAlmostEqual
-        elikiwa type == int:
+        lasivyo type == int:
             jl = 0
-        elikiwa type == int:
+        lasivyo type == int:
             jl, jh = 0, 15
         kila i kwenye range(il, ih+1):
             kila j kwenye range(jl, jh+1):
@@ -118,14 +118,14 @@ kundi PowTest(unittest.TestCase):
             expected = fiveto % 2.0 na -1.0 ama 1.0
             eq(pow(a, fiveto), expected)
             eq(pow(a, -fiveto), expected)
-        eq(expected, 1.0)   # else we didn't push fiveto to evenness
+        eq(expected, 1.0)   # isipokua we didn't push fiveto to evenness
 
     eleza test_negative_exponent(self):
         kila a kwenye range(-50, 50):
             kila m kwenye range(-50, 50):
-                with self.subTest(a=a, m=m):
+                ukijumuisha self.subTest(a=a, m=m):
                     ikiwa m != 0 na math.gcd(a, m) == 1:
-                        # Exponent -1 should give an inverse, with the
+                        # Exponent -1 should give an inverse, ukijumuisha the
                         # same sign kama m.
                         inv = pow(a, -1, m)
                         self.assertEqual(inv, inv % m)
@@ -137,11 +137,11 @@ kundi PowTest(unittest.TestCase):
                         self.assertEqual(pow(a, -1001, m), pow(inv, 1001, m))
 
                     isipokua:
-                        with self.assertRaises(ValueError):
+                        ukijumuisha self.assertRaises(ValueError):
                             pow(a, -1, m)
-                        with self.assertRaises(ValueError):
+                        ukijumuisha self.assertRaises(ValueError):
                             pow(a, -2, m)
-                        with self.assertRaises(ValueError):
+                        ukijumuisha self.assertRaises(ValueError):
                             pow(a, -1001, m)
 
 

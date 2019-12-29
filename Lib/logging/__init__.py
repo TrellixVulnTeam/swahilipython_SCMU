@@ -81,10 +81,10 @@ logProcesses = Kweli
 #   Level related stuff
 #---------------------------------------------------------------------------
 #
-# Default levels na level names, these can be replaced with any positive set
+# Default levels na level names, these can be replaced ukijumuisha any positive set
 # of values having corresponding names. There ni a pseudo-level, NOTSET, which
 # ni only really there kama a lower limit kila user-defined levels. Handlers and
-# loggers are initialized with NOTSET so that they will log all messages, even
+# loggers are initialized ukijumuisha NOTSET so that they will log all messages, even
 # at user-defined levels.
 #
 
@@ -122,8 +122,8 @@ eleza getLevelName(level):
 
     If the level ni one of the predefined levels (CRITICAL, ERROR, WARNING,
     INFO, DEBUG) then you get the corresponding string. If you have
-    associated levels with names using addLevelName then the name you have
-    associated with 'level' ni rudishaed.
+    associated levels ukijumuisha names using addLevelName then the name you have
+    associated ukijumuisha 'level' ni rudishaed.
 
     If a numeric value corresponding to one of the defined levels ni pitaed
     in, the corresponding string representation ni rudishaed.
@@ -141,7 +141,7 @@ eleza getLevelName(level):
 
 eleza addLevelName(level, levelName):
     """
-    Associate 'levelName' with 'level'.
+    Associate 'levelName' ukijumuisha 'level'.
 
     This ni used when converting levels to text during message formatting.
     """
@@ -176,8 +176,8 @@ isipokua: #pragma: no cover
 
 _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 
-# _srcfile ni only used kwenye conjunction with sys._getframe().
-# To provide compatibility with older versions of Python, set _srcfile
+# _srcfile ni only used kwenye conjunction ukijumuisha sys._getframe().
+# To provide compatibility ukijumuisha older versions of Python, set _srcfile
 # to Tupu ikiwa _getframe() ni sio available; this value will prevent
 # findCaller() kutoka being called. You can also do this ikiwa you want to avoid
 # the overhead of fetching caller information, even when _getframe() is
@@ -189,7 +189,7 @@ _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 eleza _checkLevel(level):
     ikiwa isinstance(level, int):
         rv = level
-    elikiwa str(level) == level:
+    lasivyo str(level) == level:
         ikiwa level haiko kwenye _nameToLevel:
             ashiria ValueError("Unknown level: %r" % level)
         rv = _nameToLevel[level]
@@ -215,7 +215,7 @@ eleza _acquireLock():
     """
     Acquire the module-level lock kila serializing access to shared data.
 
-    This should be released with _releaseLock().
+    This should be released ukijumuisha _releaseLock().
     """
     ikiwa _lock:
         _lock.acquire()
@@ -234,11 +234,11 @@ ikiwa sio hasattr(os, 'register_at_fork'):  # Windows na friends.
     eleza _register_at_fork_reinit_lock(instance):
         pita  # no-op when os.register_at_fork does sio exist.
 isipokua:
-    # A collection of instances with a createLock method (logging.Handler)
+    # A collection of instances ukijumuisha a createLock method (logging.Handler)
     # to be called kwenye the child after forking.  The weakref avoids us keeping
     # discarded Handler instances alive.  A set ni used to avoid accumulating
     # duplicate registrations kama createLock() ni responsible kila registering
-    # a new Handler instance with this set kwenye the first place.
+    # a new Handler instance ukijumuisha this set kwenye the first place.
     _at_fork_reinit_lock_weakset = weakref.WeakSet()
 
     eleza _register_at_fork_reinit_lock(instance):
@@ -284,7 +284,7 @@ kundi LogRecord(object):
     eleza __init__(self, name, level, pathname, lineno,
                  msg, args, exc_info, func=Tupu, sinfo=Tupu, **kwargs):
         """
-        Initialize a logging record with interesting information.
+        Initialize a logging record ukijumuisha interesting information.
         """
         ct = time.time()
         self.name = name
@@ -362,7 +362,7 @@ kundi LogRecord(object):
         Return the message kila this LogRecord.
 
         Return the message kila this LogRecord after merging any user-supplied
-        arguments with the message.
+        arguments ukijumuisha the message.
         """
         msg = str(self.msg)
         ikiwa self.args:
@@ -488,9 +488,9 @@ kundi StringTemplateStyle(PercentStyle):
             d = m.groupdict()
             ikiwa d['named']:
                 fields.add(d['named'])
-            elikiwa d['braced']:
+            lasivyo d['braced']:
                 fields.add(d['braced'])
-            elikiwa m.group(0) == '$':
+            lasivyo m.group(0) == '$':
                 ashiria ValueError('invalid format: bare \'$\' sio allowed')
         ikiwa sio fields:
             ashiria ValueError('invalid format: no fields')
@@ -518,7 +518,7 @@ kundi Formatter(object):
     the style-dependent default value, "%(message)s", "{message}", or
     "${message}", ni used.
 
-    The Formatter can be initialized with a format string which makes use of
+    The Formatter can be initialized ukijumuisha a format string which makes use of
     knowledge of the LogRecord attributes - e.g. the default value mentioned
     above makes use of the fact that the user's message na arguments are pre-
     formatted into a LogRecord's message attribute. Currently, the useful
@@ -554,9 +554,9 @@ kundi Formatter(object):
 
     eleza __init__(self, fmt=Tupu, datefmt=Tupu, style='%', validate=Kweli):
         """
-        Initialize the formatter with specified format strings.
+        Initialize the formatter ukijumuisha specified format strings.
 
-        Initialize the formatter either with the specified format string, ama a
+        Initialize the formatter either ukijumuisha the specified format string, ama a
         default kama described above. Allow kila specialized date formatting with
         the optional datefmt argument. If datefmt ni omitted, you get an
         ISO8601-like (or RFC 3339-like) format.
@@ -589,12 +589,12 @@ kundi Formatter(object):
         wants to make use of a formatted time. This method can be overridden
         kwenye formatters to provide kila any specific requirement, but the
         basic behaviour ni kama follows: ikiwa datefmt (a string) ni specified,
-        it ni used with time.strftime() to format the creation time of the
+        it ni used ukijumuisha time.strftime() to format the creation time of the
         record. Otherwise, an ISO8601-like (or RFC 3339-like) format ni used.
         The resulting string ni rudishaed. This function uses a user-configurable
         function to convert the creation time to a tuple. By default,
         time.localtime() ni used; to change this kila a particular formatter
-        instance, set the 'converter' attribute to a function with the same
+        instance, set the 'converter' attribute to a function ukijumuisha the same
         signature kama time.localtime() ama time.gmtime(). To change it kila all
         formatters, kila example ikiwa you want all logging times to be shown kwenye GMT,
         set the 'converter' attribute kwenye the Formatter class.
@@ -641,7 +641,7 @@ kundi Formatter(object):
         formatting of stack information.
 
         The input data ni a string kama rudishaed kutoka a call to
-        :func:`traceback.print_stack`, but with the last trailing newline
+        :func:`traceback.print_stack`, but ukijumuisha the last trailing newline
         removed.
 
         The base implementation just rudishas the value pitaed in.
@@ -734,15 +734,15 @@ kundi Filter(object):
     Loggers na Handlers can optionally use Filter instances to filter
     records kama desired. The base filter kundi only allows events which are
     below a certain point kwenye the logger hierarchy. For example, a filter
-    initialized with "A.B" will allow events logged by loggers "A.B",
+    initialized ukijumuisha "A.B" will allow events logged by loggers "A.B",
     "A.B.C", "A.B.C.D", "A.B.D" etc. but sio "A.BB", "B.A.B" etc. If
-    initialized with the empty string, all events are pitaed.
+    initialized ukijumuisha the empty string, all events are pitaed.
     """
     eleza __init__(self, name=''):
         """
         Initialize a filter.
 
-        Initialize with the name of the logger which, together with its
+        Initialize ukijumuisha the name of the logger which, together ukijumuisha its
         children, will have its events allowed through the filter. If no
         name ni specified, allow every event.
         """
@@ -758,9 +758,9 @@ kundi Filter(object):
         """
         ikiwa self.nlen == 0:
             rudisha Kweli
-        elikiwa self.name == record.name:
+        lasivyo self.name == record.name:
             rudisha Kweli
-        elikiwa record.name.find(self.name, 0, self.nlen) != 0:
+        lasivyo record.name.find(self.name, 0, self.nlen) != 0:
             rudisha Uongo
         rudisha (record.name[self.nlen] == ".")
 
@@ -795,7 +795,7 @@ kundi Filterer(object):
 
         The default ni to allow the record to be logged; any filter can veto
         this na the record ni then dropped. Returns a zero value ikiwa a record
-        ni to be dropped, else non-zero.
+        ni to be dropped, isipokua non-zero.
 
         .. versionchanged:: 3.2
 
@@ -939,7 +939,7 @@ kundi Handler(Filterer):
         Conditionally emit the specified logging record.
 
         Emission depends on filters which may have been added to the handler.
-        Wrap the actual emission of the record with acquisition/release of
+        Wrap the actual emission of the record ukijumuisha acquisition/release of
         the I/O thread lock. Returns whether the filter pitaed the record for
         emission.
         """
@@ -993,7 +993,7 @@ kundi Handler(Filterer):
         exceptions get silently ignored. This ni what ni mostly wanted
         kila a logging system - most users will sio care about errors in
         the logging system, they are more interested kwenye application errors.
-        You could, however, replace this with a custom handler ikiwa you wish.
+        You could, however, replace this ukijumuisha a custom handler ikiwa you wish.
         The record which was being processed ni pitaed kwenye to this method.
         """
         ikiwa ashiriaExceptions na sys.stderr:  # see issue 13807
@@ -1071,7 +1071,7 @@ kundi StreamHandler(Handler):
         Emit a record.
 
         If a formatter ni specified, it ni used to format the record.
-        The record ni then written to the stream with a trailing newline.  If
+        The record ni then written to the stream ukijumuisha a trailing newline.  If
         exception information ni present, it ni formatted using
         traceback.print_exception na appended to the stream.  If the stream
         has an 'encoding' attribute, it ni used to determine how to do the
@@ -1166,7 +1166,7 @@ kundi FileHandler(StreamHandler):
 
     eleza _open(self):
         """
-        Open the current base file with the (original) mode na encoding.
+        Open the current base file ukijumuisha the (original) mode na encoding.
         Return the resulting stream.
         """
         rudisha open(self.baseFilename, self.mode, encoding=self.encoding)
@@ -1219,7 +1219,7 @@ kundi PlaceHolder(object):
     """
     eleza __init__(self, alogger):
         """
-        Initialize with the specified logger being a child of this placeholder.
+        Initialize ukijumuisha the specified logger being a child of this placeholder.
         """
         self.loggerMap = { alogger : Tupu }
 
@@ -1260,7 +1260,7 @@ kundi Manager(object):
     """
     eleza __init__(self, rootnode):
         """
-        Initialize the manager with the root node of the logger hierarchy.
+        Initialize the manager ukijumuisha the root node of the logger hierarchy.
         """
         self.root = rootnode
         self.disable = 0
@@ -1271,12 +1271,12 @@ kundi Manager(object):
 
     eleza getLogger(self, name):
         """
-        Get a logger with the specified name (channel name), creating it
+        Get a logger ukijumuisha the specified name (channel name), creating it
         ikiwa it doesn't yet exist. This name ni a dot-separated hierarchical
         name, such kama "a", "a.b", "a.b.c" ama similar.
 
         If a PlaceHolder existed kila the specified name [i.e. the logger
-        didn't exist but a child of it did], replace it with the created
+        didn't exist but a child of it did], replace it ukijumuisha the created
         logger na fix up the parent/child references which pointed to the
         placeholder to now point to the logger.
         """
@@ -1305,7 +1305,7 @@ kundi Manager(object):
 
     eleza setLoggerClass(self, klass):
         """
-        Set the kundi to be used when instantiating a logger with this Manager.
+        Set the kundi to be used when instantiating a logger ukijumuisha this Manager.
         """
         ikiwa klass != Logger:
             ikiwa sio issubclass(klass, Logger):
@@ -1315,7 +1315,7 @@ kundi Manager(object):
 
     eleza setLogRecordFactory(self, factory):
         """
-        Set the factory to be used when instantiating a log record with this
+        Set the factory to be used when instantiating a log record ukijumuisha this
         Manager.
         """
         self.logRecordFactory = factory
@@ -1391,7 +1391,7 @@ kundi Logger(Filterer):
     """
     eleza __init__(self, name, level=NOTSET):
         """
-        Initialize the logger with a name na an optional level.
+        Initialize the logger ukijumuisha a name na an optional level.
         """
         Filterer.__init__(self)
         self.name = name
@@ -1411,7 +1411,7 @@ kundi Logger(Filterer):
 
     eleza debug(self, msg, *args, **kwargs):
         """
-        Log 'msg % args' with severity 'DEBUG'.
+        Log 'msg % args' ukijumuisha severity 'DEBUG'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1423,7 +1423,7 @@ kundi Logger(Filterer):
 
     eleza info(self, msg, *args, **kwargs):
         """
-        Log 'msg % args' with severity 'INFO'.
+        Log 'msg % args' ukijumuisha severity 'INFO'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1435,7 +1435,7 @@ kundi Logger(Filterer):
 
     eleza warning(self, msg, *args, **kwargs):
         """
-        Log 'msg % args' with severity 'WARNING'.
+        Log 'msg % args' ukijumuisha severity 'WARNING'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1452,7 +1452,7 @@ kundi Logger(Filterer):
 
     eleza error(self, msg, *args, **kwargs):
         """
-        Log 'msg % args' with severity 'ERROR'.
+        Log 'msg % args' ukijumuisha severity 'ERROR'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1464,13 +1464,13 @@ kundi Logger(Filterer):
 
     eleza exception(self, msg, *args, exc_info=Kweli, **kwargs):
         """
-        Convenience method kila logging an ERROR with exception information.
+        Convenience method kila logging an ERROR ukijumuisha exception information.
         """
         self.error(msg, *args, exc_info=exc_info, **kwargs)
 
     eleza critical(self, msg, *args, **kwargs):
         """
-        Log 'msg % args' with severity 'CRITICAL'.
+        Log 'msg % args' ukijumuisha severity 'CRITICAL'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1484,7 +1484,7 @@ kundi Logger(Filterer):
 
     eleza log(self, level, msg, *args, **kwargs):
         """
-        Log 'msg % args' with the integer severity 'level'.
+        Log 'msg % args' ukijumuisha the integer severity 'level'.
 
         To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
@@ -1506,7 +1506,7 @@ kundi Logger(Filterer):
         """
         f = currentframe()
         #On some versions of IronPython, currentframe() rudishas Tupu if
-        #IronPython isn't run with -X:Frames.
+        #IronPython isn't run ukijumuisha -X:Frames.
         ikiwa f ni sio Tupu:
             f = f.f_back
         orig_f = f
@@ -1570,7 +1570,7 @@ kundi Logger(Filterer):
         ikiwa exc_info:
             ikiwa isinstance(exc_info, BaseException):
                 exc_info = (type(exc_info), exc_info, exc_info.__traceback__)
-            elikiwa sio isinstance(exc_info, tuple):
+            lasivyo sio isinstance(exc_info, tuple):
                 exc_info = sys.exc_info()
         record = self.makeRecord(self.name, level, fn, lno, msg, args,
                                  exc_info, func, extra, sinfo)
@@ -1613,8 +1613,8 @@ kundi Logger(Filterer):
         See ikiwa this logger has any handlers configured.
 
         Loop through all handlers kila this logger na its parents kwenye the
-        logger hierarchy. Return Kweli ikiwa a handler was found, else Uongo.
-        Stop searching up the hierarchy whenever a logger with the "propagate"
+        logger hierarchy. Return Kweli ikiwa a handler was found, isipokua Uongo.
+        Stop searching up the hierarchy whenever a logger ukijumuisha the "propagate"
         attribute set to zero ni found - that will be the last logger which
         ni checked kila the existence of handlers.
         """
@@ -1637,7 +1637,7 @@ kundi Logger(Filterer):
         Loop through all handlers kila this logger na its parents kwenye the
         logger hierarchy. If no handler was found, output a one-off error
         message to sys.stderr. Stop searching up the hierarchy whenever a
-        logger with the "propagate" attribute set to zero ni found - that
+        logger ukijumuisha the "propagate" attribute set to zero ni found - that
         will be the last logger whose handlers are called.
         """
         c = self
@@ -1655,7 +1655,7 @@ kundi Logger(Filterer):
             ikiwa lastResort:
                 ikiwa record.levelno >= lastResort.level:
                     lastResort.handle(record)
-            elikiwa ashiriaExceptions na sio self.manager.emittedNoHandlerWarning:
+            lasivyo ashiriaExceptions na sio self.manager.emittedNoHandlerWarning:
                 sys.stderr.write("No handlers could be found kila logger"
                                  " \"%s\"\n" % self.name)
                 self.manager.emittedNoHandlerWarning = Kweli
@@ -1733,7 +1733,7 @@ kundi RootLogger(Logger):
     """
     eleza __init__(self, level):
         """
-        Initialize the logger with the name "root".
+        Initialize the logger ukijumuisha the name "root".
         """
         Logger.__init__(self, "root", level)
 
@@ -1750,7 +1750,7 @@ kundi LoggerAdapter(object):
 
     eleza __init__(self, logger, extra):
         """
-        Initialize the adapter with a logger na a dict-like object which
+        Initialize the adapter ukijumuisha a logger na a dict-like object which
         provides contextual information. This constructor signature allows
         easy stacking of LoggerAdapters, ikiwa so desired.
 
@@ -1918,7 +1918,7 @@ eleza basicConfig(**kwargs):
               - defaults to '%').
     level     Set the root logger level to the specified level.
     stream    Use the specified stream to initialize the StreamHandler. Note
-              that this argument ni incompatible with 'filename' - ikiwa both
+              that this argument ni incompatible ukijumuisha 'filename' - ikiwa both
               are present, 'stream' ni ignored.
     handlers  If specified, this should be an iterable of already created
               handlers, which will be added to the root handler. Any handler
@@ -1944,7 +1944,7 @@ eleza basicConfig(**kwargs):
        Added the ``handlers`` parameter. A ``ValueError`` ni now thrown for
        incompatible arguments (e.g. ``handlers`` specified together with
        ``filename``/``filemode``, ama ``filename``/``filemode`` specified
-       together with ``stream``, ama ``handlers`` specified together with
+       together ukijumuisha ``stream``, ama ``handlers`` specified together with
        ``stream``.
     """
     # Add thread safety kwenye case someone mistakenly calls
@@ -1965,7 +1965,7 @@ eleza basicConfig(**kwargs):
             isipokua:
                 ikiwa "stream" kwenye kwargs ama "filename" kwenye kwargs:
                     ashiria ValueError("'stream' ama 'filename' should sio be "
-                                     "specified together with 'handlers'")
+                                     "specified together ukijumuisha 'handlers'")
             ikiwa handlers ni Tupu:
                 filename = kwargs.pop("filename", Tupu)
                 mode = kwargs.pop("filemode", 'a')
@@ -2002,7 +2002,7 @@ eleza basicConfig(**kwargs):
 
 eleza getLogger(name=Tupu):
     """
-    Return a logger with the specified name, creating it ikiwa necessary.
+    Return a logger ukijumuisha the specified name, creating it ikiwa necessary.
 
     If no name ni specified, rudisha the root logger.
     """
@@ -2013,8 +2013,8 @@ eleza getLogger(name=Tupu):
 
 eleza critical(msg, *args, **kwargs):
     """
-    Log a message with severity 'CRITICAL' on the root logger. If the logger
-    has no handlers, call basicConfig() to add a console handler with a
+    Log a message ukijumuisha severity 'CRITICAL' on the root logger. If the logger
+    has no handlers, call basicConfig() to add a console handler ukijumuisha a
     pre-defined format.
     """
     ikiwa len(root.handlers) == 0:
@@ -2025,8 +2025,8 @@ fatal = critical
 
 eleza error(msg, *args, **kwargs):
     """
-    Log a message with severity 'ERROR' on the root logger. If the logger has
-    no handlers, call basicConfig() to add a console handler with a pre-defined
+    Log a message ukijumuisha severity 'ERROR' on the root logger. If the logger has
+    no handlers, call basicConfig() to add a console handler ukijumuisha a pre-defined
     format.
     """
     ikiwa len(root.handlers) == 0:
@@ -2035,16 +2035,16 @@ eleza error(msg, *args, **kwargs):
 
 eleza exception(msg, *args, exc_info=Kweli, **kwargs):
     """
-    Log a message with severity 'ERROR' on the root logger, with exception
+    Log a message ukijumuisha severity 'ERROR' on the root logger, ukijumuisha exception
     information. If the logger has no handlers, basicConfig() ni called to add
-    a console handler with a pre-defined format.
+    a console handler ukijumuisha a pre-defined format.
     """
     error(msg, *args, exc_info=exc_info, **kwargs)
 
 eleza warning(msg, *args, **kwargs):
     """
-    Log a message with severity 'WARNING' on the root logger. If the logger has
-    no handlers, call basicConfig() to add a console handler with a pre-defined
+    Log a message ukijumuisha severity 'WARNING' on the root logger. If the logger has
+    no handlers, call basicConfig() to add a console handler ukijumuisha a pre-defined
     format.
     """
     ikiwa len(root.handlers) == 0:
@@ -2058,8 +2058,8 @@ eleza warn(msg, *args, **kwargs):
 
 eleza info(msg, *args, **kwargs):
     """
-    Log a message with severity 'INFO' on the root logger. If the logger has
-    no handlers, call basicConfig() to add a console handler with a pre-defined
+    Log a message ukijumuisha severity 'INFO' on the root logger. If the logger has
+    no handlers, call basicConfig() to add a console handler ukijumuisha a pre-defined
     format.
     """
     ikiwa len(root.handlers) == 0:
@@ -2068,8 +2068,8 @@ eleza info(msg, *args, **kwargs):
 
 eleza debug(msg, *args, **kwargs):
     """
-    Log a message with severity 'DEBUG' on the root logger. If the logger has
-    no handlers, call basicConfig() to add a console handler with a pre-defined
+    Log a message ukijumuisha severity 'DEBUG' on the root logger. If the logger has
+    no handlers, call basicConfig() to add a console handler ukijumuisha a pre-defined
     format.
     """
     ikiwa len(root.handlers) == 0:
@@ -2078,9 +2078,9 @@ eleza debug(msg, *args, **kwargs):
 
 eleza log(level, msg, *args, **kwargs):
     """
-    Log 'msg % args' with the integer severity 'level' on the root logger. If
+    Log 'msg % args' ukijumuisha the integer severity 'level' on the root logger. If
     the logger has no handlers, call basicConfig() to add a console handler
-    with a pre-defined format.
+    ukijumuisha a pre-defined format.
     """
     ikiwa len(root.handlers) == 0:
         basicConfig()
@@ -2158,7 +2158,7 @@ eleza _showwarning(message, category, filename, lineno, file=Tupu, line=Tupu):
     check to see ikiwa the file parameter ni Tupu. If a file ni specified, it will
     delegate to the original warnings implementation of showwarning. Otherwise,
     it will call warnings.formatwarning na will log the resulting string to a
-    warnings logger named "py.warnings" with level logging.WARNING.
+    warnings logger named "py.warnings" ukijumuisha level logging.WARNING.
     """
     ikiwa file ni sio Tupu:
         ikiwa _warnings_showwarning ni sio Tupu:

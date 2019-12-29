@@ -108,7 +108,7 @@ kundi TestCallable(unittest.TestCase):
 
         kila arg kwenye 'spec', 'spec_set':
             kila Klass kwenye CallableX, Sub, Multi:
-                with patch('%s.X' % __name__, **{arg: Klass}) kama mock:
+                ukijumuisha patch('%s.X' % __name__, **{arg: Klass}) kama mock:
                     instance = mock()
                     mock.assert_called_once_with()
 

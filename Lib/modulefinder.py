@@ -82,11 +82,11 @@ eleza _find_module(name, path=Tupu):
         kind = _PY_SOURCE
         mode = "r"
 
-    elikiwa isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
+    lasivyo isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
         kind = _C_EXTENSION
         mode = "rb"
 
-    elikiwa isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
+    lasivyo isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
         kind = _PY_COMPILED
         mode = "rb"
 
@@ -133,8 +133,8 @@ kundi ModuleFinder:
         self.badmodules = {}
         self.debug = debug
         self.indent = 0
-        self.excludes = excludes ikiwa excludes ni sio Tupu else []
-        self.replace_paths = replace_paths ikiwa replace_paths ni sio Tupu else []
+        self.excludes = excludes ikiwa excludes ni sio Tupu isipokua []
+        self.replace_paths = replace_paths ikiwa replace_paths ni sio Tupu isipokua []
         self.processed_paths = []   # Used kwenye debugging only
 
     eleza msg(self, level, str, *args):
@@ -160,14 +160,14 @@ kundi ModuleFinder:
 
     eleza run_script(self, pathname):
         self.msg(2, "run_script", pathname)
-        with open(pathname) kama fp:
+        ukijumuisha open(pathname) kama fp:
             stuff = ("", "r", _PY_SOURCE)
             self.load_module('__main__', fp, pathname, stuff)
 
     eleza load_file(self, pathname):
         dir, name = os.path.split(pathname)
         name, ext = os.path.splitext(name)
-        with open(pathname) kama fp:
+        ukijumuisha open(pathname) kama fp:
             stuff = (ext, "r", _PY_SOURCE)
             self.load_module(name, fp, pathname, stuff)
 
@@ -267,7 +267,7 @@ kundi ModuleFinder:
                     all = self.find_all_submodules(m)
                     ikiwa all:
                         self.ensure_kutokalist(m, all, 1)
-            elikiwa sio hasattr(m, sub):
+            lasivyo sio hasattr(m, sub):
                 subname = "%s.%s" % (m.__name__, sub)
                 submod = self.import_module(sub, subname, m)
                 ikiwa sio submod:
@@ -341,7 +341,7 @@ kundi ModuleFinder:
             rudisha m
         ikiwa type == _PY_SOURCE:
             co = compile(fp.read()+'\n', pathname, 'exec')
-        elikiwa type == _PY_COMPILED:
+        lasivyo type == _PY_COMPILED:
             jaribu:
                 data = fp.read()
                 importlib._bootstrap_external._classify_pyc(data, fqname, {})
@@ -423,7 +423,7 @@ kundi ModuleFinder:
             ikiwa what == "store":
                 name, = args
                 m.globalnames[name] = 1
-            elikiwa what == "absolute_agiza":
+            lasivyo what == "absolute_agiza":
                 kutokalist, name = args
                 have_star = 0
                 ikiwa kutokalist ni sio Tupu:
@@ -450,7 +450,7 @@ kundi ModuleFinder:
                             m.staragizas[name] = 1
                     isipokua:
                         m.staragizas[name] = 1
-            elikiwa what == "relative_agiza":
+            lasivyo what == "relative_agiza":
                 level, kutokalist, name = args
                 ikiwa name:
                     self._safe_import_hook(name, m, kutokalist, level=level)
@@ -458,7 +458,7 @@ kundi ModuleFinder:
                     parent = self.determine_parent(m, level=level)
                     self._safe_import_hook(parent.__name__, Tupu, kutokalist, level=0)
             isipokua:
-                # We don't expect anything else kutoka the generator.
+                # We don't expect anything isipokua kutoka the generator.
                 ashiria RuntimeError(what)
 
         kila c kwenye co.co_consts:
@@ -511,7 +511,7 @@ kundi ModuleFinder:
         rudisha _find_module(name, path)
 
     eleza report(self):
-        """Print a report to stdout, listing the found modules with their
+        """Print a report to stdout, listing the found modules ukijumuisha their
         paths, kama well kama modules that are missing, ama seem to be missing.
         """
         andika()
@@ -553,13 +553,13 @@ kundi ModuleFinder:
         rudisha missing + maybe
 
     eleza any_missing_maybe(self):
-        """Return two lists, one with modules that are certainly missing
-        na one with modules that *may* be missing. The latter names could
+        """Return two lists, one ukijumuisha modules that are certainly missing
+        na one ukijumuisha modules that *may* be missing. The latter names could
         either be submodules *or* just global names kwenye the package.
 
         The reason it can't always be determined ni that it's impossible to
         tell which names are imported when "kutoka module agiza *" ni done
-        with an extension module, short of actually agizaing it.
+        ukijumuisha an extension module, short of actually agizaing it.
         """
         missing = []
         maybe = []
@@ -578,10 +578,10 @@ kundi ModuleFinder:
                     # The package tried to agiza this module itself and
                     # failed. It's definitely missing.
                     missing.append(name)
-                elikiwa subname kwenye pkg.globalnames:
+                lasivyo subname kwenye pkg.globalnames:
                     # It's a global kwenye the package: definitely sio missing.
                     pita
-                elikiwa pkg.staragizas:
+                lasivyo pkg.staragizas:
                     # It could be missing, but the package did an "agiza *"
                     # kutoka a non-Python module, so we simply can't be sure.
                     maybe.append(name)

@@ -62,7 +62,7 @@ the behavior of the underlying server mechanism.
 To implement a service, you must derive a kundi kutoka
 BaseRequestHandler na redefine its handle() method.  You can then run
 various versions of the service by combining one of the server classes
-with your request handler class.
+ukijumuisha your request handler class.
 
 The request handler kundi must be different kila datagram ama stream
 services.  This can be hidden by using the request handler
@@ -106,7 +106,7 @@ Future work:
   na encryption schemes
 
 XXX Open problems:
-- What to do with out-of-band data?
+- What to do ukijumuisha out-of-band data?
 
 BaseServer:
 - split generic "request" functionality out into BaseServer class.
@@ -225,7 +225,7 @@ kundi BaseServer:
             # socket to wake this up instead of polling. Polling reduces our
             # responsiveness to a shutdown request na wastes cpu at all other
             # times.
-            with _ServerSelector() kama selector:
+            ukijumuisha _ServerSelector() kama selector:
                 selector.register(self, selectors.EVENT_READ)
 
                 wakati sio self.__shutdown_request:
@@ -280,14 +280,14 @@ kundi BaseServer:
         timeout = self.socket.gettimeout()
         ikiwa timeout ni Tupu:
             timeout = self.timeout
-        elikiwa self.timeout ni sio Tupu:
+        lasivyo self.timeout ni sio Tupu:
             timeout = min(timeout, self.timeout)
         ikiwa timeout ni sio Tupu:
             deadline = time() + timeout
 
         # Wait until a request arrives ama the timeout expires - the loop is
         # necessary to accommodate early wakeups due to EINTR.
-        with _ServerSelector() kama selector:
+        ukijumuisha _ServerSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
 
             wakati Kweli:
@@ -333,7 +333,7 @@ kundi BaseServer:
     eleza verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
 
-        Return Kweli ikiwa we should proceed with this request.
+        Return Kweli ikiwa we should proceed ukijumuisha this request.
 
         """
         rudisha Kweli
@@ -573,13 +573,13 @@ ikiwa hasattr(os, "fork"):
             # Now reap all defunct children.
             kila pid kwenye self.active_children.copy():
                 jaribu:
-                    flags = 0 ikiwa blocking else os.WNOHANG
+                    flags = 0 ikiwa blocking isipokua os.WNOHANG
                     pid, _ = os.waitpid(pid, flags)
                     # ikiwa the child hasn't exited yet, pid will be 0 na ignored by
                     # discard() below
                     self.active_children.discard(pid)
                 tatizo ChildProcessError:
-                    # someone else reaped it
+                    # someone isipokua reaped it
                     self.active_children.discard(pid)
                 tatizo OSError:
                     pita
@@ -797,7 +797,7 @@ kundi _SocketWriter(BufferedIOBase):
 
     eleza write(self, b):
         self._sock.sendall(b)
-        with memoryview(b) kama view:
+        ukijumuisha memoryview(b) kama view:
             rudisha view.nbytes
 
     eleza fileno(self):

@@ -60,7 +60,7 @@ git = mod.StupidGit()
 
 eleza signatures_with_lexicographic_keyword_only_parameters():
     """
-    Yields a whole bunch of functions with only keyword-only parameters,
+    Yields a whole bunch of functions ukijumuisha only keyword-only parameters,
     where those parameters are always kwenye lexicographically sorted order.
     """
     parameters = ['a', 'bar', 'c', 'delta', 'ephraim', 'magical', 'yoyo', 'z']
@@ -156,7 +156,7 @@ kundi TestPredicates(IsTestBase):
         self.istest(inspect.isasyncgenfunction,
                     'async_generator_function_example')
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.istest(inspect.iscoroutine, 'coroutine_function_example(1)')
             self.istest(inspect.iscoroutinefunction, 'coroutine_function_example')
@@ -365,12 +365,12 @@ kundi GetSourceBase(unittest.TestCase):
     fodderModule = Tupu
 
     eleza setUp(self):
-        with open(inspect.getsourcefile(self.fodderModule)) kama fp:
+        ukijumuisha open(inspect.getsourcefile(self.fodderModule)) kama fp:
             self.source = fp.read()
 
     eleza sourcerange(self, top, bottom):
         lines = self.source.split("\n")
-        rudisha "\n".join(lines[top-1:bottom]) + ("\n" ikiwa bottom else "")
+        rudisha "\n".join(lines[top-1:bottom]) + ("\n" ikiwa bottom isipokua "")
 
     eleza assertSourceEqual(self, obj, top, bottom):
         self.assertEqual(inspect.getsource(obj),
@@ -428,7 +428,7 @@ kundi TestRetrievingSourceCode(GetSourceBase):
                                      ('spam', mod.spam)])
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_getdoc(self):
         self.assertEqual(inspect.getdoc(mod), 'A module docstring.')
         self.assertEqual(inspect.getdoc(mod.StupidGit),
@@ -441,7 +441,7 @@ kundi TestRetrievingSourceCode(GetSourceBase):
                          'measured kwenye kilometers')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_getdoc_inherited(self):
         self.assertEqual(inspect.getdoc(mod.FesteringGob),
                          'A longer,\n\nindented\n\ndocstring.')
@@ -514,20 +514,20 @@ kundi TestRetrievingSourceCode(GetSourceBase):
         self.assertEqual(inspect.getfile(mod.StupidGit), mod.__file__)
 
     eleza test_getfile_builtin_module(self):
-        with self.assertRaises(TypeError) kama e:
+        ukijumuisha self.assertRaises(TypeError) kama e:
             inspect.getfile(sys)
         self.assertKweli(str(e.exception).startswith('<module'))
 
     eleza test_getfile_builtin_class(self):
-        with self.assertRaises(TypeError) kama e:
+        ukijumuisha self.assertRaises(TypeError) kama e:
             inspect.getfile(int)
         self.assertKweli(str(e.exception).startswith('<class'))
 
     eleza test_getfile_builtin_function_or_method(self):
-        with self.assertRaises(TypeError) kama e_abs:
+        ukijumuisha self.assertRaises(TypeError) kama e_abs:
             inspect.getfile(abs)
         self.assertIn('expected, got', str(e_abs.exception))
-        with self.assertRaises(TypeError) kama e_append:
+        ukijumuisha self.assertRaises(TypeError) kama e_append:
             inspect.getfile(list.append)
         self.assertIn('expected, got', str(e_append.exception))
 
@@ -538,7 +538,7 @@ kundi TestRetrievingSourceCode(GetSourceBase):
                 ashiria AttributeError
         kundi C(metaclass=CM):
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             inspect.getfile(C)
 
     eleza test_getfile_broken_repr(self):
@@ -546,7 +546,7 @@ kundi TestRetrievingSourceCode(GetSourceBase):
             eleza __repr__(self):
                 ashiria Exception('xyz')
         er = ErrorRepr()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             inspect.getfile(er)
 
     eleza test_getmodule_recursion(self):
@@ -608,42 +608,42 @@ kundi TestDecorators(GetSourceBase):
 kundi TestOneliners(GetSourceBase):
     fodderModule = mod2
     eleza test_oneline_lambda(self):
-        # Test inspect.getsource with a one-line lambda function.
+        # Test inspect.getsource ukijumuisha a one-line lambda function.
         self.assertSourceEqual(mod2.oll, 25, 25)
 
     eleza test_threeline_lambda(self):
-        # Test inspect.getsource with a three-line lambda function,
+        # Test inspect.getsource ukijumuisha a three-line lambda function,
         # where the second na third lines are _not_ indented.
         self.assertSourceEqual(mod2.tll, 28, 30)
 
     eleza test_twoline_indented_lambda(self):
-        # Test inspect.getsource with a two-line lambda function,
+        # Test inspect.getsource ukijumuisha a two-line lambda function,
         # where the second line _is_ indented.
         self.assertSourceEqual(mod2.tlli, 33, 34)
 
     eleza test_onelinefunc(self):
-        # Test inspect.getsource with a regular one-line function.
+        # Test inspect.getsource ukijumuisha a regular one-line function.
         self.assertSourceEqual(mod2.onelinefunc, 37, 37)
 
     eleza test_manyargs(self):
-        # Test inspect.getsource with a regular function where
+        # Test inspect.getsource ukijumuisha a regular function where
         # the arguments are on two lines na _not_ indented and
-        # the body on the second line with the last arguments.
+        # the body on the second line ukijumuisha the last arguments.
         self.assertSourceEqual(mod2.manyargs, 40, 41)
 
     eleza test_twolinefunc(self):
-        # Test inspect.getsource with a regular function where
+        # Test inspect.getsource ukijumuisha a regular function where
         # the body ni on two lines, following the argument list and
         # endelead on the next line by a \\.
         self.assertSourceEqual(mod2.twolinefunc, 44, 45)
 
     eleza test_lambda_in_list(self):
-        # Test inspect.getsource with a one-line lambda function
+        # Test inspect.getsource ukijumuisha a one-line lambda function
         # defined kwenye a list, indented.
         self.assertSourceEqual(mod2.a[1], 49, 49)
 
     eleza test_anonymous(self):
-        # Test inspect.getsource with a lambda function defined
+        # Test inspect.getsource ukijumuisha a lambda function defined
         # kama argument to another function.
         self.assertSourceEqual(mod2.anonymous, 55, 55)
 
@@ -709,10 +709,10 @@ kundi TestNoEOL(GetSourceBase):
     eleza setUp(self):
         self.tempdir = TESTFN + '_dir'
         os.mkdir(self.tempdir)
-        with open(os.path.join(self.tempdir,
+        ukijumuisha open(os.path.join(self.tempdir,
                                'inspect_fodder3%spy' % os.extsep), 'w') kama f:
             f.write("kundi X:\n    pita # No EOL")
-        with DirsOnSysPath(self.tempdir):
+        ukijumuisha DirsOnSysPath(self.tempdir):
             agiza inspect_fodder3 kama mod3
         self.fodderModule = mod3
         super().setUp()
@@ -768,14 +768,14 @@ kundi TestClassesAndFunctions(unittest.TestCase):
 
     eleza assertArgSpecEquals(self, routine, args_e, varargs_e=Tupu,
                             varkw_e=Tupu, defaults_e=Tupu, formatted=Tupu):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             args, varargs, varkw, defaults = inspect.getargspec(routine)
         self.assertEqual(args, args_e)
         self.assertEqual(varargs, varargs_e)
         self.assertEqual(varkw, varkw_e)
         self.assertEqual(defaults, defaults_e)
         ikiwa formatted ni sio Tupu:
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(inspect.formatargspec(args, varargs, varkw, defaults),
                                  formatted)
 
@@ -794,7 +794,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(kwonlydefaults, kwonlydefaults_e)
         self.assertEqual(ann, ann_e)
         ikiwa formatted ni sio Tupu:
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(inspect.formatargspec(args, varargs, varkw, defaults,
                                                        kwonlyargs, kwonlydefaults, ann),
                                  formatted)
@@ -934,7 +934,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
     eleza test_getfullargspec_builtin_func_no_signature(self):
         agiza _testcapi
         builtin = _testcapi.docstring_no_signature
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             inspect.getfullargspec(builtin)
 
     eleza test_getfullargspec_definition_order_preserved_on_kwonly(self):
@@ -1229,13 +1229,13 @@ kundi TestIsDataDescriptor(unittest.TestCase):
         kundi DataDescriptor2:
             __set__ = Tupu
         self.assertUongo(inspect.isdatadescriptor(NonDataDescriptor()),
-                         'kundi with only __get__ sio a data descriptor')
+                         'kundi ukijumuisha only __get__ sio a data descriptor')
         self.assertKweli(inspect.isdatadescriptor(DataDescriptor0()),
-                        'kundi with __set__ ni a data descriptor')
+                        'kundi ukijumuisha __set__ ni a data descriptor')
         self.assertKweli(inspect.isdatadescriptor(DataDescriptor1()),
-                        'kundi with __delete__ ni a data descriptor')
+                        'kundi ukijumuisha __delete__ ni a data descriptor')
         self.assertKweli(inspect.isdatadescriptor(DataDescriptor2()),
-                        'kundi with __set__ = Tupu ni a data descriptor')
+                        'kundi ukijumuisha __set__ = Tupu ni a data descriptor')
 
     eleza test_slot(self):
         kundi Slotted:
@@ -1571,7 +1571,7 @@ kundi TestGetcallargsFunctions(unittest.TestCase):
         # issue #20816: getcallargs() fails to iterate over non-existent
         # kwonlydefaults na ashirias a wrong TypeError
         eleza f5(*, a): pita
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     'missing 1 required keyword-only'):
             inspect.getcallargs(f5)
 
@@ -1579,20 +1579,20 @@ kundi TestGetcallargsFunctions(unittest.TestCase):
         # issue20817:
         eleza f6(a, b, c):
             pita
-        with self.assertRaisesRegex(TypeError, "'a', 'b' na 'c'"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "'a', 'b' na 'c'"):
             inspect.getcallargs(f6)
 
         # bpo-33197
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'variadic keyword parameters cannot'
                                     ' have default values'):
             inspect.Parameter("foo", kind=inspect.Parameter.VAR_KEYWORD,
                               default=42)
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     "value 5 ni sio a valid Parameter.kind"):
             inspect.Parameter("bar", kind=5, default=42)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                    'name must be a str, sio a int'):
             inspect.Parameter(123, kind=4)
 
@@ -1639,7 +1639,7 @@ kundi TestGetattrStatic(unittest.TestCase):
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
         self.assertEqual(inspect.getattr_static(thing, 'x', Tupu), Thing.x)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             inspect.getattr_static(thing, 'y')
 
         self.assertEqual(inspect.getattr_static(thing, 'y', 3), 3)
@@ -1741,7 +1741,7 @@ kundi TestGetattrStatic(unittest.TestCase):
 
     eleza test_no_dict_no_slots_instance_member(self):
         # rudishas descriptor
-        with open(__file__) kama handle:
+        ukijumuisha open(__file__) kama handle:
             self.assertEqual(inspect.getattr_static(handle, 'name'), type(handle).name)
 
     eleza test_inherited_slots(self):
@@ -1884,7 +1884,7 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi Thing(metaclass=Meta):
             pita
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             inspect.getattr_static(Thing, "spam")
         self.assertUongo(Thing.executed)
 
@@ -1912,7 +1912,7 @@ kundi TestGetGeneratorState(unittest.TestCase):
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
     eleza test_closed_after_immediate_exception(self):
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.generator.throw(RuntimeError)
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
@@ -2021,7 +2021,7 @@ kundi TestGetCoroutineState(unittest.TestCase):
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
 
     eleza test_closed_after_immediate_exception(self):
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.coroutine.throw(RuntimeError)
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
 
@@ -2068,13 +2068,13 @@ kundi TestSignatureObject(unittest.TestCase):
     eleza signature(func, **kw):
         sig = inspect.signature(func, **kw)
         rudisha (tuple((param.name,
-                       (... ikiwa param.default ni param.empty else param.default),
+                       (... ikiwa param.default ni param.empty isipokua param.default),
                        (... ikiwa param.annotation ni param.empty
-                                                        else param.annotation),
+                                                        isipokua param.annotation),
                        str(param.kind).lower())
                                     kila param kwenye sig.parameters.values()),
                 (... ikiwa sig.rudisha_annotation ni sig.empty
-                                            else sig.rudisha_annotation))
+                                            isipokua sig.rudisha_annotation))
 
     eleza test_signature_object(self):
         S = inspect.Signature
@@ -2095,29 +2095,29 @@ kundi TestSignatureObject(unittest.TestCase):
 
         S((po, pk, args, ko, kwargs))
 
-        with self.assertRaisesRegex(ValueError, 'wrong parameter order'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrong parameter order'):
             S((pk, po, args, ko, kwargs))
 
-        with self.assertRaisesRegex(ValueError, 'wrong parameter order'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrong parameter order'):
             S((po, args, pk, ko, kwargs))
 
-        with self.assertRaisesRegex(ValueError, 'wrong parameter order'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrong parameter order'):
             S((args, po, pk, ko, kwargs))
 
-        with self.assertRaisesRegex(ValueError, 'wrong parameter order'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrong parameter order'):
             S((po, pk, args, kwargs, ko))
 
         kwargs2 = kwargs.replace(name='args')
-        with self.assertRaisesRegex(ValueError, 'duplicate parameter name'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'duplicate parameter name'):
             S((po, pk, args, kwargs2, ko))
 
-        with self.assertRaisesRegex(ValueError, 'follows default argument'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'follows default argument'):
             S((pod, po))
 
-        with self.assertRaisesRegex(ValueError, 'follows default argument'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'follows default argument'):
             S((po, pkd, pk))
 
-        with self.assertRaisesRegex(ValueError, 'follows default argument'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'follows default argument'):
             S((pkd, pk))
 
         self.assertKweli(repr(sig).startswith('<Signature'))
@@ -2130,7 +2130,7 @@ kundi TestSignatureObject(unittest.TestCase):
         sig = inspect.signature(foo_partial)
 
         kila ver kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(pickle_ver=ver, subclass=Uongo):
+            ukijumuisha self.subTest(pickle_ver=ver, subclass=Uongo):
                 sig_pickled = pickle.loads(pickle.dumps(sig, ver))
                 self.assertEqual(sig, sig_pickled)
 
@@ -2144,7 +2144,7 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertKweli(isinstance(mysig.parameters['z'], MyParameter))
 
         kila ver kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(pickle_ver=ver, subclass=Kweli):
+            ukijumuisha self.subTest(pickle_ver=ver, subclass=Kweli):
                 sig_pickled = pickle.loads(pickle.dumps(mysig, ver))
                 self.assertEqual(mysig, sig_pickled)
                 self.assertKweli(isinstance(sig_pickled, MySignature))
@@ -2156,10 +2156,10 @@ kundi TestSignatureObject(unittest.TestCase):
             pita
         sig = inspect.signature(test)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             sig.foo = 'bar'
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             sig.parameters['a'] = Tupu
 
     eleza test_signature_on_noarg(self):
@@ -2291,7 +2291,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         # This doesn't work now.
         # (We don't have a valid signature kila "type" kwenye 3.4)
-        with self.assertRaisesRegex(ValueError, "no signature found"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "no signature found"):
             kundi ThisWorksNow:
                 __call__ = type
             test_callable(ThisWorksNow())
@@ -2329,16 +2329,16 @@ kundi TestSignatureObject(unittest.TestCase):
     @cpython_only
     eleza test_signature_on_builtins_no_signature(self):
         agiza _testcapi
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'no signature found kila builtin'):
             inspect.signature(_testcapi.docstring_no_signature)
 
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'no signature found kila builtin'):
             inspect.signature(str)
 
     eleza test_signature_on_non_function(self):
-        with self.assertRaisesRegex(TypeError, 'is sio a callable object'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'is sio a callable object'):
             inspect.signature(42)
 
     eleza test_signature_kutoka_functionlike_object(self):
@@ -2379,14 +2379,14 @@ kundi TestSignatureObject(unittest.TestCase):
                            ('kwargs', ..., ..., "var_keyword")),
                            ...))
 
-        # Test with cython-like builtins:
+        # Test ukijumuisha cython-like builtins:
         _orig_isdesc = inspect.ismethoddescriptor
         eleza _isdesc(obj):
             ikiwa hasattr(obj, '_builtinmock'):
                 rudisha Kweli
             rudisha _orig_isdesc(obj)
 
-        with unittest.mock.patch('inspect.ismethoddescriptor', _isdesc):
+        ukijumuisha unittest.mock.patch('inspect.ismethoddescriptor', _isdesc):
             builtin_func = funclike(func)
             # Make sure that our mock setup ni working
             self.assertUongo(inspect.ismethoddescriptor(builtin_func))
@@ -2437,7 +2437,7 @@ kundi TestSignatureObject(unittest.TestCase):
                          ((('args', ..., ..., "var_positional"),),
                           ...))
 
-        with self.assertRaisesRegex(ValueError, 'invalid method signature'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'invalid method signature'):
             self.signature(Test())
 
     eleza test_signature_wrapped_bound_method(self):
@@ -2499,10 +2499,10 @@ kundi TestSignatureObject(unittest.TestCase):
 
         self.assertEqual(self.signature(partial(test)), ((), ...))
 
-        with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(partial(test, 1))
 
-        with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(partial(test, a=1))
 
         eleza test(a, b, *, c, d):
@@ -2713,7 +2713,7 @@ kundi TestSignatureObject(unittest.TestCase):
                 pita
             ham = partialmethod(test)
 
-        with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(Spam.ham)
 
         kundi Spam:
@@ -2907,9 +2907,9 @@ kundi TestSignatureObject(unittest.TestCase):
         # Test meta-classes without user-defined __init__ ama __new__
         kundi C(type): pita
         kundi D(C): pita
-        with self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
             self.assertEqual(inspect.signature(C), Tupu)
-        with self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
             self.assertEqual(inspect.signature(D), Tupu)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
@@ -2948,7 +2948,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         kundi Spam:
             pita
-        with self.assertRaisesRegex(TypeError, "is sio a callable object"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "is sio a callable object"):
             inspect.signature(Spam())
 
         kundi Bar(Spam, Foo):
@@ -2966,7 +2966,7 @@ kundi TestSignatureObject(unittest.TestCase):
                           ...))
         # wrapper loop:
         Wrapped.__wrapped__ = Wrapped
-        with self.assertRaisesRegex(ValueError, 'wrapper loop'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             self.signature(Wrapped)
 
     eleza test_signature_on_lambdas(self):
@@ -3074,11 +3074,11 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertNotEqual(hash(foo_sig), hash(inspect.signature(bar)))
 
         eleza foo(a={}): pita
-        with self.assertRaisesRegex(TypeError, 'unhashable type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
         eleza foo(a) -> {}: pita
-        with self.assertRaisesRegex(TypeError, 'unhashable type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
     eleza test_signature_str(self):
@@ -3202,35 +3202,35 @@ kundi TestParameterObject(unittest.TestCase):
         self.assertIs(p.annotation, p.empty)
         self.assertEqual(p.kind, inspect.Parameter.POSITIONAL_ONLY)
 
-        with self.assertRaisesRegex(ValueError, "value '123' ni "
+        ukijumuisha self.assertRaisesRegex(ValueError, "value '123' ni "
                                     "not a valid Parameter.kind"):
             inspect.Parameter('foo', default=10, kind='123')
 
-        with self.assertRaisesRegex(ValueError, 'not a valid parameter name'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'not a valid parameter name'):
             inspect.Parameter('1', kind=inspect.Parameter.VAR_KEYWORD)
 
-        with self.assertRaisesRegex(TypeError, 'name must be a str'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'name must be a str'):
             inspect.Parameter(Tupu, kind=inspect.Parameter.VAR_KEYWORD)
 
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'is sio a valid parameter name'):
             inspect.Parameter('$', kind=inspect.Parameter.VAR_KEYWORD)
 
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'is sio a valid parameter name'):
             inspect.Parameter('.a', kind=inspect.Parameter.VAR_KEYWORD)
 
-        with self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_KEYWORD)
 
-        with self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_POSITIONAL)
 
         p = inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
-        with self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             p.replace(kind=inspect.Parameter.VAR_POSITIONAL)
 
         self.assertKweli(repr(p).startswith('<Parameter'))
@@ -3277,7 +3277,7 @@ kundi TestParameterObject(unittest.TestCase):
         self.assertEqual(p2.name, 'bar')
         self.assertNotEqual(p2, p)
 
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'name ni a required attribute'):
             p2 = p2.replace(name=p2.empty)
 
@@ -3293,7 +3293,7 @@ kundi TestParameterObject(unittest.TestCase):
         self.assertEqual(p2.kind, p2.POSITIONAL_OR_KEYWORD)
         self.assertNotEqual(p2, p)
 
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     "value <kundi 'inspect._empty'> "
                                     "is sio a valid Parameter.kind"):
             p2 = p2.replace(kind=p2.empty)
@@ -3302,12 +3302,12 @@ kundi TestParameterObject(unittest.TestCase):
         self.assertEqual(p2, p)
 
     eleza test_signature_parameter_positional_only(self):
-        with self.assertRaisesRegex(TypeError, 'name must be a str'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'name must be a str'):
             inspect.Parameter(Tupu, kind=inspect.Parameter.POSITIONAL_ONLY)
 
     @cpython_only
     eleza test_signature_parameter_implicit(self):
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     'implicit arguments must be pitaed kama '
                                     'positional ama keyword arguments, '
                                     'not positional-only'):
@@ -3321,10 +3321,10 @@ kundi TestParameterObject(unittest.TestCase):
     eleza test_signature_parameter_immutability(self):
         p = inspect.Parameter('spam', kind=inspect.Parameter.KEYWORD_ONLY)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             p.foo = 'bar'
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             p.kind = 123
 
 
@@ -3340,11 +3340,11 @@ kundi TestSignatureBind(unittest.TestCase):
             rudisha 42
 
         self.assertEqual(self.call(test), 42)
-        with self.assertRaisesRegex(TypeError, 'too many positional arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'too many positional arguments'):
             self.call(test, 1)
-        with self.assertRaisesRegex(TypeError, 'too many positional arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'too many positional arguments'):
             self.call(test, 1, spam=10)
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "got an unexpected keyword argument 'spam'"):
 
             self.call(test, spam=1)
@@ -3368,14 +3368,14 @@ kundi TestSignatureBind(unittest.TestCase):
 
         self.assertEqual(self.call(test, 1, 2, 3), (1, 2, 3))
 
-        with self.assertRaisesRegex(TypeError, 'too many positional arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'too many positional arguments'):
             self.call(test, 1, 2, 3, 4)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     "missing a required argument: 'b'"):
             self.call(test, 1)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     "missing a required argument: 'a'"):
             self.call(test)
 
@@ -3406,7 +3406,7 @@ kundi TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, b=1, a=2), (2, 1, 3, ()))
         self.assertEqual(self.call(test, 1, b=2), (1, 2, 3, ()))
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      "multiple values kila argument 'c'"):
             self.call(test, 1, 2, 3, c=4)
 
@@ -3441,14 +3441,14 @@ kundi TestSignatureBind(unittest.TestCase):
     eleza test_signature_bind_kwonly(self):
         eleza test(*, foo):
             rudisha foo
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      'too many positional arguments'):
             self.call(test, 1)
         self.assertEqual(self.call(test, foo=1), 1)
 
         eleza test(a, *, foo=1, bar):
             rudisha foo
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      "missing a required argument: 'bar'"):
             self.call(test, 1)
 
@@ -3457,25 +3457,25 @@ kundi TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, bar=2), (1, 2))
         self.assertEqual(self.call(test, bar=2, foo=1), (1, 2))
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "got an unexpected keyword argument 'spam'"):
 
             self.call(test, bar=2, foo=1, spam=10)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      'too many positional arguments'):
             self.call(test, 1, 2)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      'too many positional arguments'):
             self.call(test, 1, 2, bar=2)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "got an unexpected keyword argument 'spam'"):
 
             self.call(test, 1, bar=2, spam='ham')
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                      "missing a required argument: 'bar'"):
             self.call(test, 1)
 
@@ -3487,7 +3487,7 @@ kundi TestSignatureBind(unittest.TestCase):
                          (1, 2, {'spam': 'ham'}))
         self.assertEqual(self.call(test, spam='ham', foo=1, bar=2),
                          (1, 2, {'spam': 'ham'}))
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     "missing a required argument: 'foo'"):
             self.call(test, spam='ham', bar=2)
         self.assertEqual(self.call(test, 1, bar=2, bin=1, spam=10),
@@ -3529,13 +3529,13 @@ kundi TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, 2, foo=4, bar=5),
                          (1, 2, 3, 4, 5, {}))
 
-        with self.assertRaisesRegex(TypeError, "but was pitaed kama a keyword"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "but was pitaed kama a keyword"):
             self.call(test, 1, 2, foo=4, bar=5, c_po=10)
 
-        with self.assertRaisesRegex(TypeError, "parameter ni positional only"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "parameter ni positional only"):
             self.call(test, 1, 2, c_po=4)
 
-        with self.assertRaisesRegex(TypeError, "parameter ni positional only"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "parameter ni positional only"):
             self.call(test, a_po=1, b_po=2)
 
     eleza test_signature_bind_with_self_arg(self):
@@ -3553,7 +3553,7 @@ kundi TestSignatureBind(unittest.TestCase):
             rudisha a, args
         sig = inspect.signature(test)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "got an unexpected keyword argument 'args'"):
 
             sig.bind(a=0, args=1)
@@ -3568,7 +3568,7 @@ kundi TestSignatureBind(unittest.TestCase):
 
     @cpython_only
     eleza test_signature_bind_implicit_arg(self):
-        # Issue #19611: getcallargs should work with set comprehensions
+        # Issue #19611: getcallargs should work ukijumuisha set comprehensions
         eleza make_set():
             rudisha {z * z kila z kwenye range(5)}
         setcomp_code = make_set.__code__.co_consts[1]
@@ -3583,7 +3583,7 @@ kundi TestBoundArguments(unittest.TestCase):
         eleza foo(a): pita
         ba = inspect.signature(foo).bind(1)
 
-        with self.assertRaisesRegex(TypeError, 'unhashable type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(ba)
 
     eleza test_signature_bound_arguments_equality(self):
@@ -3623,7 +3623,7 @@ kundi TestBoundArguments(unittest.TestCase):
         ba = sig.bind(20, 30, z={})
 
         kila ver kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(pickle_ver=ver):
+            ukijumuisha self.subTest(pickle_ver=ver):
                 ba_pickled = pickle.loads(pickle.dumps(ba, ver))
                 self.assertEqual(ba, ba_pickled)
 
@@ -3785,14 +3785,14 @@ kundi TestSignatureDefinitions(unittest.TestCase):
             ikiwa (name kwenye no_signature):
                 # Not yet converted
                 endelea
-            with self.subTest(builtin=name):
+            ukijumuisha self.subTest(builtin=name):
                 self.assertIsNotTupu(inspect.signature(obj))
         # Check callables that haven't been converted don't claim a signature
         # This ensures this test will start failing kama more signatures are
         # added, so the affected items can be moved into the scope of the
         # regression test above
         kila name kwenye no_signature:
-            with self.subTest(builtin=name):
+            ukijumuisha self.subTest(builtin=name):
                 self.assertIsTupu(obj.__text_signature__)
 
     eleza test_python_function_override_signature(self):
@@ -3856,15 +3856,15 @@ kundi TestUnwrap(unittest.TestCase):
     eleza test_cycle(self):
         eleza func1(): pita
         func1.__wrapped__ = func1
-        with self.assertRaisesRegex(ValueError, 'wrapper loop'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func1)
 
         eleza func2(): pita
         func2.__wrapped__ = func1
         func1.__wrapped__ = func2
-        with self.assertRaisesRegex(ValueError, 'wrapper loop'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func1)
-        with self.assertRaisesRegex(ValueError, 'wrapper loop'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func2)
 
     eleza test_unhashable(self):
@@ -3877,7 +3877,7 @@ kundi TestUnwrap(unittest.TestCase):
 
     eleza test_recursion_limit(self):
         obj = NTimesUnwrappable(sys.getrecursionlimit() + 1)
-        with self.assertRaisesRegex(ValueError, 'wrapper loop'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(obj)
 
 kundi TestMain(unittest.TestCase):
@@ -3894,7 +3894,7 @@ kundi TestMain(unittest.TestCase):
         eleza foo():
             pita
         foo.__signature__ = 42
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             inspect.signature(foo)
 
     @unittest.skipIf(ThreadPoolExecutor ni Tupu,
@@ -3942,7 +3942,7 @@ eleza foo():
 
     eleza assertInspectEqual(self, path, source):
         inspected_src = inspect.getsource(source)
-        with open(path) kama src:
+        ukijumuisha open(path) kama src:
             self.assertEqual(
                 src.read().splitlines(Kweli),
                 inspected_src.splitlines(Kweli)
@@ -3950,10 +3950,10 @@ eleza foo():
 
     eleza test_getsource_reload(self):
         # see issue 1218234
-        with _ready_to_agiza('reload_bug', self.src_before) kama (name, path):
+        ukijumuisha _ready_to_agiza('reload_bug', self.src_before) kama (name, path):
             module = importlib.import_module(name)
             self.assertInspectEqual(path, module)
-            with open(path, 'w') kama src:
+            ukijumuisha open(path, 'w') kama src:
                 src.write(self.src_after)
             self.assertInspectEqual(path, module)
 

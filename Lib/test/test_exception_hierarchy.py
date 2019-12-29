@@ -148,16 +148,16 @@ kundi AttributesTest(unittest.TestCase):
         args = ("a", "b", "c", "d", "e")
         kila n kwenye range(6):
             e = BlockingIOError(*args[:n])
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 e.characters_written
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 toa e.characters_written
         e = BlockingIOError("a", "b", 3)
         self.assertEqual(e.characters_written, 3)
         e.characters_written = 5
         self.assertEqual(e.characters_written, 5)
         toa e.characters_written
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             e.characters_written
 
 

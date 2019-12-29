@@ -258,7 +258,7 @@ kundi DispatcherTests(unittest.TestCase):
         # capture output of dispatcher.log() (to stderr)
         l1 = "Lovely spam! Wonderful spam!"
         l2 = "I don't like spam!"
-        with support.captured_stderr() kama stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             d.log(l1)
             d.log(l2)
 
@@ -272,7 +272,7 @@ kundi DispatcherTests(unittest.TestCase):
         l1 = "Have you got anything without spam?"
         l2 = "Why can't she have egg bacon spam na sausage?"
         l3 = "THAT'S got spam kwenye it!"
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             d.log_info(l1, 'EGGS')
             d.log_info(l2)
             d.log_info(l3, 'SPAM')
@@ -286,7 +286,7 @@ kundi DispatcherTests(unittest.TestCase):
         d.ignore_log_types = ()
 
         # capture output of dispatcher.log_info() (to stdout via print)
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             d.handle_expt()
             d.handle_read()
             d.handle_write()
@@ -368,7 +368,7 @@ kundi DispatcherWithSendTests(unittest.TestCase):
 kundi FileWrapperTest(unittest.TestCase):
     eleza setUp(self):
         self.d = b"It's sio dead, it's sleeping!"
-        with open(support.TESTFN, 'wb') kama file:
+        ukijumuisha open(support.TESTFN, 'wb') kama file:
             file.write(self.d)
 
     eleza tearDown(self):
@@ -396,7 +396,7 @@ kundi FileWrapperTest(unittest.TestCase):
         w.write(d1)
         w.send(d2)
         w.close()
-        with open(support.TESTFN, 'rb') kama file:
+        ukijumuisha open(support.TESTFN, 'rb') kama file:
             self.assertEqual(file.read(), self.d + d1 + d2)
 
     @unittest.skipUnless(hasattr(asyncore, 'file_dispatcher'),
@@ -418,7 +418,7 @@ kundi FileWrapperTest(unittest.TestCase):
         f = asyncore.file_wrapper(fd)
 
         os.close(fd)
-        with support.check_warnings(('', ResourceWarning)):
+        ukijumuisha support.check_warnings(('', ResourceWarning)):
             f = Tupu
             support.gc_collect()
 
@@ -428,7 +428,7 @@ kundi FileWrapperTest(unittest.TestCase):
         os.close(fd)
 
         os.close(f.fd)  # file_wrapper dupped fd
-        with self.assertRaises(OSError):
+        ukijumuisha self.assertRaises(OSError):
             f.close()
 
         self.assertEqual(f.fd, -1)
@@ -749,7 +749,7 @@ kundi BaseTestAPI:
         ikiwa HAS_UNIX_SOCKETS na self.family == socket.AF_UNIX:
             self.skipTest("Not applicable to AF_UNIX sockets.")
 
-        with socket.socket(self.family) kama sock:
+        ukijumuisha socket.socket(self.family) kama sock:
             jaribu:
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             tatizo OSError:
@@ -778,7 +778,7 @@ kundi BaseTestAPI:
                                                           count=5))
         t.start()
         jaribu:
-            with socket.socket(self.family, socket.SOCK_STREAM) kama s:
+            ukijumuisha socket.socket(self.family, socket.SOCK_STREAM) kama s:
                 s.settimeout(.2)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
                              struct.pack('ii', 1, 0))

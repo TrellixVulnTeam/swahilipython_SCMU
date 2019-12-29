@@ -49,7 +49,7 @@ basic.events = [(0, 'call'),
 
 # Many of the tests below are tricky because they involve pita statements.
 # If there ni implicit control flow around a pita statement (in an except
-# clause ama else clause) under what conditions do you set a line number
+# clause ama isipokua clause) under what conditions do you set a line number
 # following that clause?
 
 
@@ -202,7 +202,7 @@ settrace_and_ashiria.events = [(2, 'exception'),
 # implicit rudisha example
 # This test ni interesting because of the isipokua: pita
 # part of the code.  The code generate kila the true
-# part of the ikiwa contains a jump past the else branch.
+# part of the ikiwa contains a jump past the isipokua branch.
 # The compiler then generates an implicit "rudisha Tupu"
 # Internally, the compiler visits the pita statement
 # na stores its line number kila use on the next instruction.
@@ -223,7 +223,7 @@ irudisha_example.events = [(0, 'call'),
                           (6, 'line'),
                           (6, 'rudisha')]
 
-# Tight loop with while(1) example (SF #765624)
+# Tight loop ukijumuisha while(1) example (SF #765624)
 eleza tightloop_example():
     items = range(0, 3)
     jaribu:
@@ -483,7 +483,7 @@ kundi TraceTestCase(unittest.TestCase):
 
 
 kundi SkipLineEventsTraceTestCase(TraceTestCase):
-    """Repeat the trace tests, but with per-line events skipped"""
+    """Repeat the trace tests, but ukijumuisha per-line events skipped"""
 
     eleza compare_events(self, line_offset, events, expected_events):
         skip_line_events = [e kila e kwenye expected_events ikiwa e[1] != 'line']
@@ -496,7 +496,7 @@ kundi SkipLineEventsTraceTestCase(TraceTestCase):
 
 @support.cpython_only
 kundi TraceOpcodesTestCase(TraceTestCase):
-    """Repeat the trace tests, but with per-opcodes events enabled"""
+    """Repeat the trace tests, but ukijumuisha per-opcodes events enabled"""
 
     eleza compare_events(self, line_offset, events, expected_events):
         skip_opcode_events = [e kila e kwenye events ikiwa e[1] != 'opcode']
@@ -615,7 +615,7 @@ kundi JumpTracer:
         self.jumpFrom = jumpFrom
         self.jumpTo = jumpTo
         self.event = event
-        self.firstLine = Tupu ikiwa decorated else self.code.co_firstlineno
+        self.firstLine = Tupu ikiwa decorated isipokua self.code.co_firstlineno
         self.done = Uongo
 
     eleza trace(self, frame, event, arg):
@@ -634,7 +634,7 @@ kundi JumpTracer:
             wakati f ni sio Tupu na f.f_code != self.code:
                 f = f.f_back
             ikiwa f ni sio Tupu:
-                # Cope with non-integer self.jumpTo (because of
+                # Cope ukijumuisha non-integer self.jumpTo (because of
                 # no_jump_to_non_integers below).
                 jaribu:
                     frame.f_lineno = self.firstLine + self.jumpTo
@@ -685,7 +685,7 @@ kundi JumpTestCase(unittest.TestCase):
         ikiwa error ni Tupu:
             func(output)
         isipokua:
-            with self.assertRaisesRegex(*error):
+            ukijumuisha self.assertRaisesRegex(*error):
                 func(output)
         sys.settrace(Tupu)
         self.compare_jump_output(expected, output)
@@ -698,7 +698,7 @@ kundi JumpTestCase(unittest.TestCase):
         ikiwa error ni Tupu:
             asyncio.run(func(output))
         isipokua:
-            with self.assertRaisesRegex(*error):
+            ukijumuisha self.assertRaisesRegex(*error):
                 asyncio.run(func(output))
         sys.settrace(Tupu)
         asyncio.set_event_loop_policy(Tupu)
@@ -867,26 +867,26 @@ kundi JumpTestCase(unittest.TestCase):
 
     @jump_test(2, 3, [1, 3])
     eleza test_jump_forwards_out_of_with_block(output):
-        with tracecontext(output, 1):
+        ukijumuisha tracecontext(output, 1):
             output.append(2)
         output.append(3)
 
     @async_jump_test(2, 3, [1, 3])
     async eleza test_jump_forwards_out_of_async_with_block(output):
-        async with asynctracecontext(output, 1):
+        async ukijumuisha asynctracecontext(output, 1):
             output.append(2)
         output.append(3)
 
     @jump_test(3, 1, [1, 2, 1, 2, 3, -2])
     eleza test_jump_backwards_out_of_with_block(output):
         output.append(1)
-        with tracecontext(output, 2):
+        ukijumuisha tracecontext(output, 2):
             output.append(3)
 
     @async_jump_test(3, 1, [1, 2, 1, 2, 3, -2])
     async eleza test_jump_backwards_out_of_async_with_block(output):
         output.append(1)
-        async with asynctracecontext(output, 2):
+        async ukijumuisha asynctracecontext(output, 2):
             output.append(3)
 
     @jump_test(2, 5, [5])
@@ -947,24 +947,24 @@ kundi JumpTestCase(unittest.TestCase):
     @jump_test(2, 4, [1, 4, 5, -4])
     eleza test_jump_across_with(output):
         output.append(1)
-        with tracecontext(output, 2):
+        ukijumuisha tracecontext(output, 2):
             output.append(3)
-        with tracecontext(output, 4):
+        ukijumuisha tracecontext(output, 4):
             output.append(5)
 
     @async_jump_test(2, 4, [1, 4, 5, -4])
     async eleza test_jump_across_async_with(output):
         output.append(1)
-        async with asynctracecontext(output, 2):
+        async ukijumuisha asynctracecontext(output, 2):
             output.append(3)
-        async with asynctracecontext(output, 4):
+        async ukijumuisha asynctracecontext(output, 4):
             output.append(5)
 
     @jump_test(4, 5, [1, 3, 5, 6])
     eleza test_jump_out_of_with_block_within_for_block(output):
         output.append(1)
         kila i kwenye [1]:
-            with tracecontext(output, 3):
+            ukijumuisha tracecontext(output, 3):
                 output.append(4)
             output.append(5)
         output.append(6)
@@ -973,7 +973,7 @@ kundi JumpTestCase(unittest.TestCase):
     async eleza test_jump_out_of_async_with_block_within_for_block(output):
         output.append(1)
         kila i kwenye [1]:
-            async with asynctracecontext(output, 3):
+            async ukijumuisha asynctracecontext(output, 3):
                 output.append(4)
             output.append(5)
         output.append(6)
@@ -981,8 +981,8 @@ kundi JumpTestCase(unittest.TestCase):
     @jump_test(4, 5, [1, 2, 3, 5, -2, 6])
     eleza test_jump_out_of_with_block_within_with_block(output):
         output.append(1)
-        with tracecontext(output, 2):
-            with tracecontext(output, 3):
+        ukijumuisha tracecontext(output, 2):
+            ukijumuisha tracecontext(output, 3):
                 output.append(4)
             output.append(5)
         output.append(6)
@@ -990,8 +990,8 @@ kundi JumpTestCase(unittest.TestCase):
     @async_jump_test(4, 5, [1, 2, 3, 5, -2, 6])
     async eleza test_jump_out_of_async_with_block_within_with_block(output):
         output.append(1)
-        with tracecontext(output, 2):
-            async with asynctracecontext(output, 3):
+        ukijumuisha tracecontext(output, 2):
+            async ukijumuisha asynctracecontext(output, 3):
                 output.append(4)
             output.append(5)
         output.append(6)
@@ -1001,7 +1001,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
         mwishowe:
-            with tracecontext(output, 4):
+            ukijumuisha tracecontext(output, 4):
                 output.append(5)
             output.append(6)
         output.append(7)
@@ -1011,7 +1011,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
         mwishowe:
-            async with asynctracecontext(output, 4):
+            async ukijumuisha asynctracecontext(output, 4):
                 output.append(5)
             output.append(6)
         output.append(7)
@@ -1034,7 +1034,7 @@ kundi JumpTestCase(unittest.TestCase):
     @jump_test(3, 5, [1, 2, 5])
     eleza test_jump_out_of_with_assignment(output):
         output.append(1)
-        with tracecontext(output, 2) \
+        ukijumuisha tracecontext(output, 2) \
                 kama x:
             output.append(4)
         output.append(5)
@@ -1042,7 +1042,7 @@ kundi JumpTestCase(unittest.TestCase):
     @async_jump_test(3, 5, [1, 2, 5])
     async eleza test_jump_out_of_async_with_assignment(output):
         output.append(1)
-        async with asynctracecontext(output, 2) \
+        async ukijumuisha asynctracecontext(output, 2) \
                 kama x:
             output.append(4)
         output.append(5)
@@ -1169,24 +1169,24 @@ kundi JumpTestCase(unittest.TestCase):
     @jump_test(1, 3, [], (ValueError, 'into'))
     eleza test_no_jump_forwards_into_with_block(output):
         output.append(1)
-        with tracecontext(output, 2):
+        ukijumuisha tracecontext(output, 2):
             output.append(3)
 
     @async_jump_test(1, 3, [], (ValueError, 'into'))
     async eleza test_no_jump_forwards_into_async_with_block(output):
         output.append(1)
-        async with asynctracecontext(output, 2):
+        async ukijumuisha asynctracecontext(output, 2):
             output.append(3)
 
     @jump_test(3, 2, [1, 2, -1], (ValueError, 'into'))
     eleza test_no_jump_backwards_into_with_block(output):
-        with tracecontext(output, 1):
+        ukijumuisha tracecontext(output, 1):
             output.append(2)
         output.append(3)
 
     @async_jump_test(3, 2, [1, 2, -1], (ValueError, 'into'))
     async eleza test_no_jump_backwards_into_async_with_block(output):
-        async with asynctracecontext(output, 1):
+        async ukijumuisha asynctracecontext(output, 1):
             output.append(2)
         output.append(3)
 
@@ -1224,7 +1224,7 @@ kundi JumpTestCase(unittest.TestCase):
             ashiria
         output.append(6)
 
-    # 'except' with a variable creates an implicit finally block
+    # 'except' ukijumuisha a variable creates an implicit finally block
     @jump_test(5, 7, [4], (ValueError, 'into'))
     eleza test_no_jump_between_except_blocks_2(output):
         jaribu:
@@ -1323,17 +1323,17 @@ kundi JumpTestCase(unittest.TestCase):
     @jump_test(3, 5, [1, 2, -2], (ValueError, 'into'))
     eleza test_no_jump_between_with_blocks(output):
         output.append(1)
-        with tracecontext(output, 2):
+        ukijumuisha tracecontext(output, 2):
             output.append(3)
-        with tracecontext(output, 4):
+        ukijumuisha tracecontext(output, 4):
             output.append(5)
 
     @async_jump_test(3, 5, [1, 2, -2], (ValueError, 'into'))
     async eleza test_no_jump_between_async_with_blocks(output):
         output.append(1)
-        async with asynctracecontext(output, 2):
+        async ukijumuisha asynctracecontext(output, 2):
             output.append(3)
-        async with asynctracecontext(output, 4):
+        async ukijumuisha asynctracecontext(output, 4):
             output.append(5)
 
     @jump_test(5, 7, [2, 4], (ValueError, 'finally'))
@@ -1372,7 +1372,7 @@ kundi JumpTestCase(unittest.TestCase):
         self.run_test(no_jump_to_non_integers, 2, "Spam", [Kweli])
 
     eleza test_no_jump_without_trace_function(self):
-        # Must set sys.settrace(Tupu) kwenye setUp(), else condition ni not
+        # Must set sys.settrace(Tupu) kwenye setUp(), isipokua condition ni not
         # triggered.
         no_jump_without_trace_function()
 

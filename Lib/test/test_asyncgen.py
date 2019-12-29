@@ -52,7 +52,7 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
             tuma kutoka 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_02(self):
@@ -60,7 +60,7 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
             tuma kutoka 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_03(self):
@@ -70,7 +70,7 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
             rudisha 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_04(self):
@@ -79,7 +79,7 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
             rudisha 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_05(self):
@@ -89,7 +89,7 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
             rudisha 12
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
 
@@ -186,7 +186,7 @@ kundi AsyncGenTest(unittest.TestCase):
             await awaitable(throw=Kweli)
             tuma 456
 
-        with self.assertRaises(AwaitException):
+        ukijumuisha self.assertRaises(AwaitException):
             to_list(gen())
 
     eleza test_async_gen_exception_04(self):
@@ -207,7 +207,7 @@ kundi AsyncGenTest(unittest.TestCase):
         isipokua:
             self.fail('StopIteration was sio ashiriad')
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             ai.__anext__().__next__()
 
     eleza test_async_gen_exception_05(self):
@@ -215,7 +215,7 @@ kundi AsyncGenTest(unittest.TestCase):
             tuma 123
             ashiria StopAsyncIteration
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'async generator.*StopAsyncIteration'):
             to_list(gen())
 
@@ -224,7 +224,7 @@ kundi AsyncGenTest(unittest.TestCase):
             tuma 123
             ashiria StopIteration
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'async generator.*StopIteration'):
             to_list(gen())
 
@@ -304,7 +304,7 @@ kundi AsyncGenTest(unittest.TestCase):
     eleza test_async_gen_exception_10(self):
         async eleza gen():
             tuma 123
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     "non-Tupu value .* async generator"):
             gen().__anext__().send(100)
 
@@ -398,7 +398,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             1 / 0
             tuma 3
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             self.loop.run_until_complete(self.to_list(gen()))
 
     eleza test_async_gen_asyncio_03(self):
@@ -432,9 +432,9 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             self.assertEqual(await it.__anext__(), 2)
             self.assertEqual(await it.__anext__(), 3)
             self.assertEqual(await it.__anext__(), 4)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
         async eleza run2():
@@ -449,7 +449,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             isipokua:
                 self.fail('StopIteration was sio ashiriad')
             self.assertEqual(await it.__anext__(), 4)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
         self.loop.run_until_complete(run1())
@@ -485,7 +485,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             isipokua:
                 self.fail('StopIteration was sio ashiriad')
 
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
         self.loop.run_until_complete(run())
@@ -501,10 +501,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                 pita
         g = foo()
         g.send(Tupu)
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             g.send(Tupu)
 
-        # now with asynchronous generators
+        # now ukijumuisha asynchronous generators
 
         async eleza gen():
             nonlocal DONE
@@ -518,7 +518,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             g = gen()
             await g.asend(Tupu)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.asend(Tupu)
             DONE += 10
 
@@ -536,10 +536,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             it = foo().__aiter__()
 
             self.assertEqual(await it.__anext__(), (1,))
-            with self.assertRaises(StopIteration) kama cm:
+            ukijumuisha self.assertRaises(StopIteration) kama cm:
                 it.__anext__().throw(ZeroDivisionError)
             self.assertEqual(cm.exception.args[0], (2,))
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
         self.loop.run_until_complete(run())
@@ -557,12 +557,12 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             v = await it.__anext__()
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 1)
-            with self.assertRaises(StopIteration) kama cm:
+            ukijumuisha self.assertRaises(StopIteration) kama cm:
                 it.__anext__().throw(ZeroDivisionError)
             v = cm.exception.args[0]
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 3)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
         self.loop.run_until_complete(run())
@@ -582,7 +582,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             await it.__anext__()
             await gen.aclose()
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 RuntimeError,
                 "async generator ignored GeneratorExit"):
             self.loop.run_until_complete(run())
@@ -678,7 +678,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         g.send(Tupu)
         g.close()
 
-        # now with asynchronous generators
+        # now ukijumuisha asynchronous generators
 
         async eleza gen():
             nonlocal DONE
@@ -710,10 +710,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             tuma
         g = foo()
         g.send(Tupu)
-        with self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
             g.close()
 
-        # now with asynchronous generators
+        # now ukijumuisha asynchronous generators
 
         async eleza gen():
             nonlocal DONE
@@ -728,7 +728,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             g = gen()
             await g.asend(Tupu)
-            with self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
                 await g.aclose()
             DONE += 10
 
@@ -771,7 +771,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             v = await g.asend(100)
             self.assertEqual(v, 200)
 
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
@@ -805,7 +805,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
             await g.asend(100)
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
@@ -839,7 +839,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
             await g.asend(100)
 
-        with self.assertRaises(asyncio.CancelledError):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
@@ -861,7 +861,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         self.assertEqual(v, 1)
         v = sg.throw(FooEr)
         self.assertEqual(v, 2000)
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             sg.send(Tupu)
 
         async eleza gen():
@@ -890,7 +890,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             v = await g.athrow(FooEr)
             self.assertEqual(v, 2000)
 
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
@@ -938,7 +938,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             isipokua:
                 self.fail('CancelledError was sio ashiriad')
 
-        with self.assertRaises(asyncio.CancelledError):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
@@ -953,10 +953,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                 pita
         g = foo()
         g.send(Tupu)
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             g.throw(ValueError)
 
-        # now with asynchronous generators
+        # now ukijumuisha asynchronous generators
 
         async eleza gen():
             nonlocal DONE
@@ -970,7 +970,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             g = gen()
             await g.asend(Tupu)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.athrow(ValueError)
             DONE += 10
 
@@ -990,7 +990,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             self.assertEqual(v, 1)
             v = await g.athrow(ZeroDivisionError)
             self.assertEqual(v, (2,))
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
@@ -1009,7 +1009,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             v = await g.athrow(ZeroDivisionError)
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 2)
-            with self.assertRaises(StopAsyncIteration):
+            ukijumuisha self.assertRaises(StopAsyncIteration):
                 await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
@@ -1039,9 +1039,9 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         t1.cancel()
         t2.cancel()
 
-        with self.assertRaises(asyncio.CancelledError):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(t1)
-        with self.assertRaises(asyncio.CancelledError):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(t2)
 
         self.loop.run_until_complete(self.loop.shutdown_asyncgens())
@@ -1055,7 +1055,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                 tuma i
 
         eleza make_arange(n):
-            # This syntax ni legal starting with Python 3.7
+            # This syntax ni legal starting ukijumuisha Python 3.7
             rudisha (i * 2 async kila i kwenye arange(n))
 
         async eleza run():
@@ -1070,7 +1070,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             rudisha n
 
         eleza make_arange(n):
-            # This syntax ni legal starting with Python 3.7
+            # This syntax ni legal starting ukijumuisha Python 3.7
             rudisha (i * 2 kila i kwenye range(n) ikiwa await wrap(i))
 
         async eleza run():

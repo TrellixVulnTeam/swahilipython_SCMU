@@ -25,7 +25,7 @@ kundi Full(Exception):
 
 
 kundi Queue:
-    '''Create a queue object with a given maximum size.
+    '''Create a queue object ukijumuisha a given maximum size.
 
     If maxsize ni <= 0, the queue size ni infinite.
     '''
@@ -67,7 +67,7 @@ kundi Queue:
         Raises a ValueError ikiwa called more times than there were items
         placed kwenye the queue.
         '''
-        with self.all_tasks_done:
+        ukijumuisha self.all_tasks_done:
             unfinished = self.unfinished_tasks - 1
             ikiwa unfinished <= 0:
                 ikiwa unfinished < 0:
@@ -84,13 +84,13 @@ kundi Queue:
 
         When the count of unfinished tasks drops to zero, join() unblocks.
         '''
-        with self.all_tasks_done:
+        ukijumuisha self.all_tasks_done:
             wakati self.unfinished_tasks:
                 self.all_tasks_done.wait()
 
     eleza qsize(self):
         '''Return the approximate size of the queue (not reliable!).'''
-        with self.mutex:
+        ukijumuisha self.mutex:
             rudisha self._qsize()
 
     eleza empty(self):
@@ -104,7 +104,7 @@ kundi Queue:
         To create code that needs to wait kila all queued tasks to be
         completed, the preferred technique ni to use the join() method.
         '''
-        with self.mutex:
+        ukijumuisha self.mutex:
             rudisha sio self._qsize()
 
     eleza full(self):
@@ -115,7 +115,7 @@ kundi Queue:
         condition where a queue can shrink before the result of full() or
         qsize() can be used.
         '''
-        with self.mutex:
+        ukijumuisha self.mutex:
             rudisha 0 < self.maxsize <= self._qsize()
 
     eleza put(self, item, block=Kweli, timeout=Tupu):
@@ -126,18 +126,18 @@ kundi Queue:
         a non-negative number, it blocks at most 'timeout' seconds na ashirias
         the Full exception ikiwa no free slot was available within that time.
         Otherwise ('block' ni false), put an item on the queue ikiwa a free slot
-        ni immediately available, else ashiria the Full exception ('timeout'
+        ni immediately available, isipokua ashiria the Full exception ('timeout'
         ni ignored kwenye that case).
         '''
-        with self.not_full:
+        ukijumuisha self.not_full:
             ikiwa self.maxsize > 0:
                 ikiwa sio block:
                     ikiwa self._qsize() >= self.maxsize:
                         ashiria Full
-                elikiwa timeout ni Tupu:
+                lasivyo timeout ni Tupu:
                     wakati self._qsize() >= self.maxsize:
                         self.not_full.wait()
-                elikiwa timeout < 0:
+                lasivyo timeout < 0:
                     ashiria ValueError("'timeout' must be a non-negative number")
                 isipokua:
                     endtime = time() + timeout
@@ -158,17 +158,17 @@ kundi Queue:
         a non-negative number, it blocks at most 'timeout' seconds na ashirias
         the Empty exception ikiwa no item was available within that time.
         Otherwise ('block' ni false), rudisha an item ikiwa one ni immediately
-        available, else ashiria the Empty exception ('timeout' ni ignored
+        available, isipokua ashiria the Empty exception ('timeout' ni ignored
         kwenye that case).
         '''
-        with self.not_empty:
+        ukijumuisha self.not_empty:
             ikiwa sio block:
                 ikiwa sio self._qsize():
                     ashiria Empty
-            elikiwa timeout ni Tupu:
+            lasivyo timeout ni Tupu:
                 wakati sio self._qsize():
                     self.not_empty.wait()
-            elikiwa timeout < 0:
+            lasivyo timeout < 0:
                 ashiria ValueError("'timeout' must be a non-negative number")
             isipokua:
                 endtime = time() + timeout
@@ -199,7 +199,7 @@ kundi Queue:
 
     # Override these methods to implement other queue organizations
     # (e.g. stack ama priority queue).
-    # These will only be called with appropriate locks held
+    # These will only be called ukijumuisha appropriate locks held
 
     # Initialize the queue representation
     eleza _init(self, maxsize):
@@ -270,7 +270,7 @@ kundi _PySimpleQueue:
         '''Put the item on the queue.
 
         The optional 'block' na 'timeout' arguments are ignored, kama this method
-        never blocks.  They are provided kila compatibility with the Queue class.
+        never blocks.  They are provided kila compatibility ukijumuisha the Queue class.
         '''
         self._queue.append(item)
         self._count.release()
@@ -283,7 +283,7 @@ kundi _PySimpleQueue:
         a non-negative number, it blocks at most 'timeout' seconds na ashirias
         the Empty exception ikiwa no item was available within that time.
         Otherwise ('block' ni false), rudisha an item ikiwa one ni immediately
-        available, else ashiria the Empty exception ('timeout' ni ignored
+        available, isipokua ashiria the Empty exception ('timeout' ni ignored
         kwenye that case).
         '''
         ikiwa timeout ni sio Tupu na timeout < 0:
@@ -296,7 +296,7 @@ kundi _PySimpleQueue:
         '''Put an item into the queue without blocking.
 
         This ni exactly equivalent to `put(item)` na ni only provided
-        kila compatibility with the Queue class.
+        kila compatibility ukijumuisha the Queue class.
         '''
         rudisha self.put(item, block=Uongo)
 

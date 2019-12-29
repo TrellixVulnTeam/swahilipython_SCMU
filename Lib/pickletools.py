@@ -109,7 +109,7 @@ bytes_types = pickle.bytes_types
 # sometimes painfully inefficient.
 #
 # The second major set of additions ni now called "protocol 1", na was called
-# "binary mode" before Python 2.3.  This added many opcodes with arguments
+# "binary mode" before Python 2.3.  This added many opcodes ukijumuisha arguments
 # consisting of arbitrary bytes, including NUL bytes na unprintable "high bit"
 # bytes.  Binary mode pickles can be substantially smaller than equivalent
 # text mode pickles, na sometimes faster too; e.g., BININT represents a 4-byte
@@ -136,7 +136,7 @@ bytes_types = pickle.bytes_types
 #   the registry contents are predefined (there's nothing akin to the memo's
 #   PUT).
 #
-# Another independent change with Python 2.3 ni the abandonment of any
+# Another independent change ukijumuisha Python 2.3 ni the abandonment of any
 # pretense that it might be safe to load pickles received kutoka untrusted
 # parties -- no sufficient security analysis has been done to guarantee
 # this na there isn't a use case that warrants the expense of such an
@@ -149,14 +149,14 @@ bytes_types = pickle.bytes_types
 
 
 # Meta-rule:  Descriptions are stored kwenye instances of descriptor objects,
-# with plain constructors.  No meta-language ni defined kutoka which
+# ukijumuisha plain constructors.  No meta-language ni defined kutoka which
 # descriptors could be constructed.  If you want, e.g., XML, write a little
 # program to generate XML kutoka the objects.
 
 ##############################################################################
 # Some pickle opcodes have an argument, following the opcode kwenye the
 # bytestream.  An argument ni of a specific type, described by an instance
-# of ArgumentDescriptor.  These are sio to be confused with arguments taken
+# of ArgumentDescriptor.  These are sio to be confused ukijumuisha arguments taken
 # off the stack -- ArgumentDescriptor applies only to arguments embedded in
 # the opcode stream, immediately following an opcode.
 
@@ -365,7 +365,7 @@ stringnl = ArgumentDescriptor(
                reader=read_stringnl,
                doc="""A newline-terminated string.
 
-                   This ni a repr-style string, with embedded escapes, and
+                   This ni a repr-style string, ukijumuisha embedded escapes, and
                    bracketing quotes.
                    """)
 
@@ -756,7 +756,7 @@ eleza read_decimalnl_short(f):
     >>> read_decimalnl_short(io.BytesIO(b"1234L\n56"))
     Traceback (most recent call last):
     ...
-    ValueError: invalid literal kila int() with base 10: b'1234L'
+    ValueError: invalid literal kila int() ukijumuisha base 10: b'1234L'
     """
 
     s = read_stringnl(f, decode=Uongo, stripquotes=Uongo)
@@ -764,7 +764,7 @@ eleza read_decimalnl_short(f):
     # There's a hack kila Kweli na Uongo here.
     ikiwa s == b"00":
         rudisha Uongo
-    elikiwa s == b"01":
+    lasivyo s == b"01":
         rudisha Kweli
 
     rudisha int(s)
@@ -854,7 +854,7 @@ float8 = ArgumentDescriptor(
              reader=read_float8,
              doc="""An 8-byte binary representation of a float, big-endian.
 
-             The format ni unique to Python, na shared with the struct
+             The format ni unique to Python, na shared ukijumuisha the struct
              module (format string '>d') "in theory" (the struct na pickle
              implementations don't share the code -- they should).  It's
              strongly related to the IEEE-754 double format, and, kwenye normal
@@ -1074,7 +1074,7 @@ stackslice = StackObject(
     obtype=StackObject,
     doc="""An object representing a contiguous slice of the stack.
 
-This ni used kwenye conjunction with markobject, to represent all
+This ni used kwenye conjunction ukijumuisha markobject, to represent all
 of the stack following the topmost markobject.  For example,
 the POP_MARK opcode changes the stack kutoka
 
@@ -1226,7 +1226,7 @@ opcodes = [
       proto=0,
       doc="""Push a long integer.
 
-      The same kama INT, tatizo that the literal ends with 'L', na always
+      The same kama INT, tatizo that the literal ends ukijumuisha 'L', na always
       unpickles to a Python long.  There doesn't seem a real purpose to the
       trailing 'L'.
 
@@ -1268,7 +1268,7 @@ opcodes = [
       proto=0,
       doc="""Push a Python string object.
 
-      The argument ni a repr-style string, with bracketing quote characters,
+      The argument ni a repr-style string, ukijumuisha bracketing quote characters,
       na perhaps embedded escapes.  The argument extends until the next
       newline character.  These are usually decoded into a str instance
       using the encoding given to the Unpickler constructor. ama the default,
@@ -1394,7 +1394,7 @@ opcodes = [
       proto=0,
       doc="Push Tupu on the stack."),
 
-    # Ways to spell bools, starting with proto 2.  See INT kila how this was
+    # Ways to spell bools, starting ukijumuisha proto 2.  See INT kila how this was
     # done before proto 2.
 
     I(name='NEWTRUE',
@@ -1495,7 +1495,7 @@ opcodes = [
       stack_before=[],
       stack_after=[pyfloat],
       proto=1,
-      doc="""Float stored kwenye binary form, with 8 bytes of data.
+      doc="""Float stored kwenye binary form, ukijumuisha 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
       In general, BINFLOAT cannot be used to transport infinities, NaNs, or
@@ -1974,9 +1974,9 @@ opcodes = [
       BUILD opcode to apply  __setstate__ to that argument.
 
       If sio isinstance(callable, type), REDUCE complains unless the
-      callable has been registered with the copyreg module's
+      callable has been registered ukijumuisha the copyreg module's
       safe_constructors dict, ama the callable has a magic
-      '__safe_for_unpickling__' attribute with a true value.  I'm sio sure
+      '__safe_for_unpickling__' attribute ukijumuisha a true value.  I'm sio sure
       why it does this, but I've sure seen this complaint often enough when
       I didn't want to <wink>.
       """),
@@ -2021,7 +2021,7 @@ opcodes = [
       ni used to get a kundi object.
 
       In addition, all the objects on the stack following the topmost
-      markobject are gathered into a tuple na popped (along with the
+      markobject are gathered into a tuple na popped (along ukijumuisha the
       topmost markobject), just kama kila the TUPLE opcode.
 
       Now it gets complicated.  If all of these are true:
@@ -2128,7 +2128,7 @@ opcodes = [
       proto=2,
       doc="""Protocol version indicator.
 
-      For protocol 2 na above, a pickle must start with this opcode.
+      For protocol 2 na above, a pickle must start ukijumuisha this opcode.
       The argument ni the protocol version, an int kwenye range(2, 256).
       """),
 
@@ -2140,7 +2140,7 @@ opcodes = [
       proto=0,
       doc="""Stop the unpickling machine.
 
-      Every pickle ends with this opcode.  The object at the top of the stack
+      Every pickle ends ukijumuisha this opcode.  The object at the top of the stack
       ni popped, na that's the result of unpickling.  The stack should be
       empty then.
       """),
@@ -2159,7 +2159,7 @@ opcodes = [
       underlying stream.
       """),
 
-    # Ways to deal with persistent IDs.
+    # Ways to deal ukijumuisha persistent IDs.
 
     I(name='PERSID',
       code='P',
@@ -2250,13 +2250,13 @@ eleza assure_pickle_consistency(verbose=Uongo):
             # of a different kind.
             toa copy[picklecode]
         isipokua:
-            ashiria ValueError("pickle.py appears to have a pickle opcode with "
+            ashiria ValueError("pickle.py appears to have a pickle opcode ukijumuisha "
                              "name %r na code %r, but we don't" %
                              (name, picklecode))
     ikiwa copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
         kila code, d kwenye copy.items():
-            msg.append("    name %r with code %r" % (d.name, code))
+            msg.append("    name %r ukijumuisha code %r" % (d.name, code))
         ashiria ValueError("\n".join(msg))
 
 assure_pickle_consistency()
@@ -2283,7 +2283,7 @@ eleza _genops(data, tuma_end_pos=Uongo):
                 ashiria ValueError("pickle exhausted before seeing STOP")
             isipokua:
                 ashiria ValueError("at position %s, opcode %r unknown" % (
-                                 "<unknown>" ikiwa pos ni Tupu else pos,
+                                 "<unknown>" ikiwa pos ni Tupu isipokua pos,
                                  code))
         ikiwa opcode.arg ni Tupu:
             arg = Tupu
@@ -2338,18 +2338,18 @@ eleza optimize(p):
         ikiwa 'PUT' kwenye opcode.name:
             oldids.add(arg)
             opcodes.append((put, arg))
-        elikiwa opcode.name == 'MEMOIZE':
+        lasivyo opcode.name == 'MEMOIZE':
             idx = len(oldids)
             oldids.add(idx)
             opcodes.append((put, idx))
-        elikiwa 'FRAME' kwenye opcode.name:
+        lasivyo 'FRAME' kwenye opcode.name:
             pita
-        elikiwa 'GET' kwenye opcode.name:
+        lasivyo 'GET' kwenye opcode.name:
             ikiwa opcode.proto > proto:
                 proto = opcode.proto
             newids[arg] = Tupu
             opcodes.append((get, arg))
-        elikiwa opcode.name == 'PROTO':
+        lasivyo opcode.name == 'PROTO':
             ikiwa arg > proto:
                 proto = arg
             ikiwa pos == 0:
@@ -2376,7 +2376,7 @@ eleza optimize(p):
             data = pickler.put(idx)
             newids[arg] = idx
             idx += 1
-        elikiwa op ni get:
+        lasivyo op ni get:
             data = pickler.get(newids[arg])
         isipokua:
             data = p[op:arg]
@@ -2406,7 +2406,7 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
     may be mutated by dis(), ikiwa the pickle contains PUT ama BINPUT opcodes.
     Passing the same memo object to another dis() call then allows disassembly
     to proceed across multiple pickles that were all created by the same
-    pickler with the same memo.  Ordinarily you don't need to worry about this.
+    pickler ukijumuisha the same memo.  Ordinarily you don't need to worry about this.
 
     Optional arg 'indentlevel' ni the number of blanks by which to indent
     a new MARK level.  It defaults to 4.
@@ -2496,13 +2496,13 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
                 memo_idx = arg
             ikiwa memo_idx kwenye memo:
                 errormsg = "memo key %r already defined" % arg
-            elikiwa sio stack:
+            lasivyo sio stack:
                 errormsg = "stack ni empty -- can't store into memo"
-            elikiwa stack[-1] ni markobject:
+            lasivyo stack[-1] ni markobject:
                 errormsg = "can't store markobject kwenye the memo"
             isipokua:
                 memo[memo_idx] = stack[-1]
-        elikiwa opcode.name kwenye ("GET", "BINGET", "LONG_BINGET"):
+        lasivyo opcode.name kwenye ("GET", "BINGET", "LONG_BINGET"):
             ikiwa arg kwenye memo:
                 assert len(after) == 1
                 after = [memo[arg]]     # kila better stack emulation
@@ -2532,7 +2532,7 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
 
         # Emulate the stack effects.
         ikiwa len(stack) < numtopop:
-            ashiria ValueError("tries to pop %d items kutoka stack with "
+            ashiria ValueError("tries to pop %d items kutoka stack ukijumuisha "
                              "only %d items" % (numtopop, len(stack)))
         ikiwa numtopop:
             toa stack[-numtopop:]
@@ -2590,7 +2590,7 @@ _dis_test = r"""
    87: .    STOP
 highest protocol among opcodes = 0
 
-Try again with a "binary" pickle.
+Try again ukijumuisha a "binary" pickle.
 
 >>> pkl1 = pickle.dumps(x, 1)
 >>> dis(pkl1)
@@ -2789,7 +2789,7 @@ highest protocol among opcodes = 2
    14: .    STOP
 highest protocol among opcodes = 2
 
-Try protocol 3 with annotations:
+Try protocol 3 ukijumuisha annotations:
 
 >>> dis(pickle.dumps(T, 3), annotate=1)
     0: \x80 PROTO      3 Protocol version indicator.
@@ -2861,7 +2861,7 @@ ikiwa __name__ == "__main__":
         help='the number of blanks by which to indent a new MARK level')
     parser.add_argument(
         '-a', '--annotate',  action='store_true',
-        help='annotate each line with a short opcode description')
+        help='annotate each line ukijumuisha a short opcode description')
     parser.add_argument(
         '-p', '--preamble', default="==> {name} <==",
         help='ikiwa more than one pickle file ni specified, print this before'
@@ -2876,14 +2876,14 @@ ikiwa __name__ == "__main__":
     ikiwa args.test:
         _test()
     isipokua:
-        annotate = 30 ikiwa args.annotate else 0
+        annotate = 30 ikiwa args.annotate isipokua 0
         ikiwa sio args.pickle_file:
             parser.print_help()
-        elikiwa len(args.pickle_file) == 1:
+        lasivyo len(args.pickle_file) == 1:
             dis(args.pickle_file[0], args.output, Tupu,
                 args.indentlevel, annotate)
         isipokua:
-            memo = {} ikiwa args.memo else Tupu
+            memo = {} ikiwa args.memo isipokua Tupu
             kila f kwenye args.pickle_file:
                 preamble = args.preamble.format(name=f.name)
                 args.output.write(preamble + '\n')

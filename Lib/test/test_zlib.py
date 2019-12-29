@@ -103,28 +103,28 @@ kundi ExceptionTestCase(unittest.TestCase):
             self.assertRaises(TypeError, zlib.decompress, arg)
 
     eleza test_badcompressobj(self):
-        # verify failure on building compress object with bad params
+        # verify failure on building compress object ukijumuisha bad params
         self.assertRaises(ValueError, zlib.compressobj, 1, zlib.DEFLATED, 0)
         # specifying total bits too large causes an error
         self.assertRaises(ValueError,
                 zlib.compressobj, 1, zlib.DEFLATED, zlib.MAX_WBITS + 1)
 
     eleza test_baddecompressobj(self):
-        # verify failure on building decompress object with bad params
+        # verify failure on building decompress object ukijumuisha bad params
         self.assertRaises(ValueError, zlib.decompressobj, -1)
 
     eleza test_decompressobj_badflush(self):
-        # verify failure on calling decompressobj.flush with bad params
+        # verify failure on calling decompressobj.flush ukijumuisha bad params
         self.assertRaises(ValueError, zlib.decompressobj().flush, 0)
         self.assertRaises(ValueError, zlib.decompressobj().flush, -1)
 
     @support.cpython_only
     eleza test_overflow(self):
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        ukijumuisha self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompress(b'', 15, sys.maxsize + 1)
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        ukijumuisha self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompressobj().decompress(b'', sys.maxsize + 1)
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        ukijumuisha self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompressobj().flush(sys.maxsize + 1)
 
 
@@ -168,7 +168,7 @@ kundi CompressTestCase(BaseCompressTestCase, unittest.TestCase):
     eleza test_keywords(self):
         x = zlib.compress(HAMLET_SCENE, level=3)
         self.assertEqual(zlib.decompress(x), HAMLET_SCENE)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             zlib.compress(data=HAMLET_SCENE, level=3)
         self.assertEqual(zlib.decompress(x,
                                          wbits=zlib.MAX_WBITS,
@@ -258,9 +258,9 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                               strategy=strategy,
                               zdict=b"")
         do = zlib.decompressobj(wbits=wbits, zdict=b"")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             co.compress(data=HAMLET_SCENE)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             do.decompress(data=zlib.compress(HAMLET_SCENE))
         x = co.compress(HAMLET_SCENE) + co.flush()
         y = do.decompress(x, max_length=len(HAMLET_SCENE)) + do.flush()
@@ -335,7 +335,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                                        len(dco.unconsumed_tail))
         self.assertEqual(b'', dco.unused_data)
         self.assertEqual(data, b''.join(bufs))
-        # Failure means: "decompressobj with init options failed"
+        # Failure means: "decompressobj ukijumuisha init options failed"
 
     eleza test_decompincflush(self):
         self.test_decompinc(flush=Kweli)
@@ -343,7 +343,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     eleza test_decompimax(self, source=Tupu, cx=256, dcx=64):
         # compress kwenye steps, decompress kwenye length-restricted steps
         source = source ama HAMLET_SCENE
-        # Check a decompression object with max_length specified
+        # Check a decompression object ukijumuisha max_length specified
         data = source * 128
         co = zlib.compressobj()
         bufs = []
@@ -368,7 +368,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
     eleza test_decompressmaxlen(self, flush=Uongo):
-        # Check a decompression object with max_length specified
+        # Check a decompression object ukijumuisha max_length specified
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
@@ -410,7 +410,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     eleza test_maxlen_large(self):
         # Sizes up to sys.maxsize should be accepted, although zlib is
-        # internally limited to expressing sizes with unsigned int
+        # internally limited to expressing sizes ukijumuisha unsigned int
         data = HAMLET_SCENE * 10
         self.assertGreater(len(data), zlib.DEF_BUF_SIZE)
         compressed = zlib.compress(data, 1)
@@ -433,7 +433,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(dco.unconsumed_tail, b"")
 
     eleza test_flushes(self):
-        # Test flush() with the various options, using all the
+        # Test flush() ukijumuisha the various options, using all the
         # different levels kwenye order to provide more variations.
         sync_opt = ['Z_NO_FLUSH', 'Z_SYNC_FLUSH', 'Z_FULL_FLUSH',
                     'Z_PARTIAL_FLUSH']
@@ -517,7 +517,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Use it to compress HAMLET.
         co = zlib.compressobj(zdict=zdict)
         cd = co.compress(h) + co.flush()
-        # Verify that it will decompress with the dictionary.
+        # Verify that it will decompress ukijumuisha the dictionary.
         dco = zlib.decompressobj(zdict=zdict)
         self.assertEqual(dco.decompress(cd) + dco.flush(), h)
         # Verify that it fails when sio given the dictionary.
@@ -543,7 +543,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # For the record
         self.assertEqual(zlib.decompress(x), b'foo')
         self.assertRaises(zlib.error, zlib.decompress, x[:-5])
-        # Omitting the stream end works with decompressor objects
+        # Omitting the stream end works ukijumuisha decompressor objects
         # (see issue #8672).
         dco = zlib.decompressobj()
         y = dco.decompress(x[:-5])
@@ -705,12 +705,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     eleza test_compresspickle(self):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.compressobj(zlib.Z_BEST_COMPRESSION), proto)
 
     eleza test_decompresspickle(self):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.decompressobj(), proto)
 
     # Memory use of the following functions takes into account overallocation
@@ -774,7 +774,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         v = zlib.ZLIB_RUNTIME_VERSION.split('-', 1)[0].split('.')
         ikiwa len(v) < 4:
             v.append('0')
-        elikiwa sio v[-1].isnumeric():
+        lasivyo sio v[-1].isnumeric():
             v[-1] = '0'
 
         v = tuple(map(int, v))
@@ -786,12 +786,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         ikiwa supports_wbits_0:
             self.assertEqual(zlib.decompress(zlib15, 0), HAMLET_SCENE)
         self.assertEqual(zlib.decompress(zlib15, 32 + 15), HAMLET_SCENE)
-        with self.assertRaisesRegex(zlib.error, 'invalid window size'):
+        ukijumuisha self.assertRaisesRegex(zlib.error, 'invalid window size'):
             zlib.decompress(zlib15, 14)
         dco = zlib.decompressobj(wbits=32 + 15)
         self.assertEqual(dco.decompress(zlib15), HAMLET_SCENE)
         dco = zlib.decompressobj(wbits=14)
-        with self.assertRaisesRegex(zlib.error, 'invalid window size'):
+        ukijumuisha self.assertRaisesRegex(zlib.error, 'invalid window size'):
             dco.decompress(zlib15)
 
         co = zlib.compressobj(level=1, wbits=9)
@@ -863,14 +863,14 @@ LORD POLONIUS
 
        Yet here, Laertes! aboard, aboard, kila shame!
        The wind sits kwenye the shoulder of your sail,
-       And you are stay'd for. There; my blessing with thee!
+       And you are stay'd for. There; my blessing ukijumuisha thee!
        And these few precepts kwenye thy memory
        See thou character. Give thy thoughts no tongue,
        Nor any unproportioned thought his act.
        Be thou familiar, but by no means vulgar.
        Those friends thou hast, na their adoption tried,
-       Grapple them to thy soul with hoops of steel;
-       But do sio dull thy palm with entertainment
+       Grapple them to thy soul ukijumuisha hoops of steel;
+       But do sio dull thy palm ukijumuisha entertainment
        Of each new-hatch'd, unfledged comrade. Beware
        Of entrance to a quarrel, but being in,
        Bear't that the opposed may beware of thee.

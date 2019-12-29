@@ -54,7 +54,7 @@ kundi TestSundryScripts(unittest.TestCase):
         ikiwa hasattr(sys, 'getdxp'):
             import_tool('analyze_dxp')
         isipokua:
-            with self.assertRaises(RuntimeError):
+            ukijumuisha self.assertRaises(RuntimeError):
                 import_tool('analyze_dxp')
 
 

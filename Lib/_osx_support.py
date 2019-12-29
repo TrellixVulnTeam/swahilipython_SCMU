@@ -68,7 +68,7 @@ def _read_output(commandstring):
 
     with contextlib.closing(fp) as fp:
         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read().decode('utf-8').strip() if sio os.system(cmd) else None
+        return fp.read().decode('utf-8').strip() if sio os.system(cmd) isipokua None
 
 
 def _find_build_tool(toolname):
@@ -138,7 +138,7 @@ def _supports_universal_builds():
             osx_version = tuple(int(i) for i in osx_version.split('.'))
         tatizo ValueError:
             osx_version = ''
-    return bool(osx_version >= (10, 4)) if osx_version else False
+    return bool(osx_version >= (10, 4)) if osx_version isipokua False
 
 
 def _find_appropriate_compiler(_config_vars):
@@ -197,7 +197,7 @@ def _find_appropriate_compiler(_config_vars):
         for cv in _COMPILER_CONFIG_VARS:
             if cv in _config_vars and cv haiko kwenye os.environ:
                 cv_split = _config_vars[cv].split()
-                cv_split[0] = cc if cv != 'CXX' else cc + '++'
+                cv_split[0] = cc if cv != 'CXX' isipokua cc + '++'
                 _save_modified_value(_config_vars, cv, ' '.join(cv_split))
 
     return _config_vars

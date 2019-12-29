@@ -72,7 +72,7 @@ eleza _is_exception(obj):
 
 
 eleza _extract_mock(obj):
-    # Autospecced functions will rudisha a FunctionType with "mock" attribute
+    # Autospecced functions will rudisha a FunctionType ukijumuisha "mock" attribute
     # which ni the actual mock object that needs to be used.
     ikiwa isinstance(obj, FunctionTypes) na hasattr(obj, 'mock'):
         rudisha obj.mock
@@ -91,7 +91,7 @@ eleza _get_signature_object(func, as_instance, eat_self):
         func = func.__init__
         # Skip the `self` argument kwenye __init__
         eat_self = Kweli
-    elikiwa sio isinstance(func, FunctionTypes):
+    lasivyo sio isinstance(func, FunctionTypes):
         # If we really want to motoa an instance of the pitaed type,
         # __call__ should be looked up, sio __init__.
         jaribu:
@@ -166,8 +166,8 @@ eleza _instance_callable(obj):
 
 
 eleza _set_signature(mock, original, instance=Uongo):
-    # creates a function with signature (*args, **kwargs) that delegates to a
-    # mock. It still does signature checking by calling a lambda with the same
+    # creates a function ukijumuisha signature (*args, **kwargs) that delegates to a
+    # mock. It still does signature checking by calling a lambda ukijumuisha the same
     # signature kama the original.
 
     skipfirst = isinstance(original, type)
@@ -228,8 +228,8 @@ eleza _setup_func(funcopy, mock, sig):
     funcopy.side_effect = mock.side_effect
     funcopy._mock_children = mock._mock_children
 
-    funcopy.assert_called_with = assert_called_with
-    funcopy.assert_called_once_with = assert_called_once_with
+    funcopy.assert_called_ukijumuisha = assert_called_with
+    funcopy.assert_called_once_ukijumuisha = assert_called_once_with
     funcopy.assert_has_calls = assert_has_calls
     funcopy.assert_any_call = assert_any_call
     funcopy.reset_mock = reset_mock
@@ -630,20 +630,20 @@ kundi NonCallableMock(Base):
     eleza __getattr__(self, name):
         ikiwa name kwenye {'_mock_methods', '_mock_unsafe'}:
             ashiria AttributeError(name)
-        elikiwa self._mock_methods ni sio Tupu:
+        lasivyo self._mock_methods ni sio Tupu:
             ikiwa name haiko kwenye self._mock_methods ama name kwenye _all_magics:
                 ashiria AttributeError("Mock object has no attribute %r" % name)
-        elikiwa _is_magic(name):
+        lasivyo _is_magic(name):
             ashiria AttributeError(name)
         ikiwa sio self._mock_unsafe:
             ikiwa name.startswith(('assert', 'assret')):
-                ashiria AttributeError("Attributes cannot start with 'assert' "
+                ashiria AttributeError("Attributes cannot start ukijumuisha 'assert' "
                                      "or 'assret'")
 
         result = self._mock_children.get(name)
         ikiwa result ni _deleted:
             ashiria AttributeError(name)
-        elikiwa result ni Tupu:
+        lasivyo result ni Tupu:
             wraps = Tupu
             ikiwa self._mock_wraps ni sio Tupu:
                 # XXXX should we get the attribute without triggering code
@@ -656,7 +656,7 @@ kundi NonCallableMock(Base):
             )
             self._mock_children[name]  = result
 
-        elikiwa isinstance(result, _SpecState):
+        lasivyo isinstance(result, _SpecState):
             result = create_autospec(
                 result.spec, result.spec_set, result.instance,
                 result.parent, result.name
@@ -736,14 +736,14 @@ kundi NonCallableMock(Base):
         ikiwa name kwenye _allowed_names:
             # property setters go through here
             rudisha object.__setattr__(self, name, value)
-        elikiwa (self._spec_set na self._mock_methods ni sio Tupu and
+        lasivyo (self._spec_set na self._mock_methods ni sio Tupu and
             name haiko kwenye self._mock_methods and
             name haiko kwenye self.__dict__):
             ashiria AttributeError("Mock object has no attribute '%s'" % name)
-        elikiwa name kwenye _unsupported_magics:
+        lasivyo name kwenye _unsupported_magics:
             msg = 'Attempting to set unsupported magic method %r.' % name
             ashiria AttributeError(msg)
-        elikiwa name kwenye _all_magics:
+        lasivyo name kwenye _all_magics:
             ikiwa self._mock_methods ni sio Tupu na name haiko kwenye self._mock_methods:
                 ashiria AttributeError("Mock object has no attribute '%s'" % name)
 
@@ -757,7 +757,7 @@ kundi NonCallableMock(Base):
                 _check_and_set_parent(self, value, Tupu, name)
                 setattr(type(self), name, value)
                 self._mock_children[name] = value
-        elikiwa name == '__class__':
+        lasivyo name == '__class__':
             self._spec_kundi = value
             rudisha
         isipokua:
@@ -782,7 +782,7 @@ kundi NonCallableMock(Base):
         obj = self._mock_children.get(name, _missing)
         ikiwa name kwenye self.__dict__:
             _safe_super(NonCallableMock, self).__delattr__(name)
-        elikiwa obj ni _deleted:
+        lasivyo obj ni _deleted:
             ashiria AttributeError(name)
         ikiwa obj ni sio _missing:
             toa self._mock_children[name]
@@ -834,7 +834,7 @@ kundi NonCallableMock(Base):
     eleza _call_matcher(self, _call):
         """
         Given a call (or simply an (args, kwargs) tuple), rudisha a
-        comparison key suitable kila matching with other calls.
+        comparison key suitable kila matching ukijumuisha other calls.
         This ni a best effort method which relies on the spec's signature,
         ikiwa available, ama falls back on the arguments themselves.
         """
@@ -886,7 +886,7 @@ kundi NonCallableMock(Base):
             ashiria AssertionError(msg)
 
     eleza assert_called_with(self, /, *args, **kwargs):
-        """assert that the last call was made with the specified arguments.
+        """assert that the last call was made ukijumuisha the specified arguments.
 
         Raises an AssertionError ikiwa the args na keyword args pitaed kwenye are
         different to the last call to the mock."""
@@ -903,13 +903,13 @@ kundi NonCallableMock(Base):
         expected = self._call_matcher((args, kwargs))
         actual = self._call_matcher(self.call_args)
         ikiwa expected != actual:
-            cause = expected ikiwa isinstance(expected, Exception) else Tupu
+            cause = expected ikiwa isinstance(expected, Exception) isipokua Tupu
             ashiria AssertionError(_error_message()) kutoka cause
 
 
     eleza assert_called_once_with(self, /, *args, **kwargs):
         """assert that the mock was called exactly once na that that call was
-        with the specified arguments."""
+        ukijumuisha the specified arguments."""
         ikiwa sio self.call_count == 1:
             msg = ("Expected '%s' to be called once. Called %s times.%s"
                    % (self._mock_name ama 'mock',
@@ -920,7 +920,7 @@ kundi NonCallableMock(Base):
 
 
     eleza assert_has_calls(self, calls, any_order=Uongo):
-        """assert the mock has been called with the specified calls.
+        """assert the mock has been called ukijumuisha the specified calls.
         The `mock_calls` list ni checked kila the calls.
 
         If `any_order` ni Uongo (the default) then the calls must be
@@ -939,7 +939,7 @@ kundi NonCallableMock(Base):
                 isipokua:
                     problem = ('Error processing expected calls.\n'
                                'Errors: {}').format(
-                                   [e ikiwa isinstance(e, Exception) else Tupu
+                                   [e ikiwa isinstance(e, Exception) isipokua Tupu
                                     kila e kwenye expected])
                 ashiria AssertionError(
                     f'{problem}\n'
@@ -965,7 +965,7 @@ kundi NonCallableMock(Base):
 
 
     eleza assert_any_call(self, /, *args, **kwargs):
-        """assert the mock has been called with the specified arguments.
+        """assert the mock has been called ukijumuisha the specified arguments.
 
         The assert pitaes ikiwa the mock has *ever* been called, unlike
         `assert_called_with` na `assert_called_once_with` that only pita if
@@ -973,7 +973,7 @@ kundi NonCallableMock(Base):
         expected = self._call_matcher((args, kwargs))
         actual = [self._call_matcher(c) kila c kwenye self.call_args_list]
         ikiwa expected haiko kwenye actual:
-            cause = expected ikiwa isinstance(expected, Exception) else Tupu
+            cause = expected ikiwa isinstance(expected, Exception) isipokua Tupu
             expected_string = self._format_mock_call_signature(args, kwargs)
             ashiria AssertionError(
                 '%s call sio found' % expected_string
@@ -996,23 +996,23 @@ kundi NonCallableMock(Base):
         ikiwa issubclass(_type, MagicMock) na _new_name kwenye _async_method_magics:
             # Any asynchronous magic becomes an AsyncMock
             klass = AsyncMock
-        elikiwa issubclass(_type, AsyncMockMixin):
+        lasivyo issubclass(_type, AsyncMockMixin):
             ikiwa (_new_name kwenye _all_sync_magics or
                     self._mock_methods na _new_name kwenye self._mock_methods):
                 # Any synchronous method on AsyncMock becomes a MagicMock
                 klass = MagicMock
             isipokua:
                 klass = AsyncMock
-        elikiwa sio issubclass(_type, CallableMixin):
+        lasivyo sio issubclass(_type, CallableMixin):
             ikiwa issubclass(_type, NonCallableMagicMock):
                 klass = MagicMock
-            elikiwa issubclass(_type, NonCallableMock):
+            lasivyo issubclass(_type, NonCallableMock):
                 klass = Mock
         isipokua:
             klass = _type.__mro__[1]
 
         ikiwa self._mock_sealed:
-            attribute = "." + kw["name"] ikiwa "name" kwenye kw else "()"
+            attribute = "." + kw["name"] ikiwa "name" kwenye kw isipokua "()"
             mock_name = self._extract_mock_name() + attribute
             ashiria AttributeError(mock_name)
 
@@ -1063,7 +1063,7 @@ kundi CallableMixin(Base):
 
 
     eleza _mock_check_sig(self, /, *args, **kwargs):
-        # stub method that can be replaced with one with a specific signature
+        # stub method that can be replaced ukijumuisha one ukijumuisha a specific signature
         pita
 
 
@@ -1132,7 +1132,7 @@ kundi CallableMixin(Base):
         ikiwa effect ni sio Tupu:
             ikiwa _is_exception(effect):
                 ashiria effect
-            elikiwa sio _callable(effect):
+            lasivyo sio _callable(effect):
                 result = next(effect)
                 ikiwa _is_exception(result):
                     ashiria result
@@ -1173,7 +1173,7 @@ kundi Mock(CallableMixin, NonCallableMock):
 
     * `side_effect`: A function to be called whenever the Mock ni called. See
       the `side_effect` attribute. Useful kila raising exceptions or
-      dynamically changing rudisha values. The function ni called with the same
+      dynamically changing rudisha values. The function ni called ukijumuisha the same
       arguments kama the mock, na unless it rudishas `DEFAULT`, the rudisha
       value of this function ni used kama the rudisha value.
 
@@ -1199,7 +1199,7 @@ kundi Mock(CallableMixin, NonCallableMock):
       mock. This can be useful kila debugging. The name ni propagated to child
       mocks.
 
-    Mocks can also be called with arbitrary keyword arguments. These will be
+    Mocks can also be called ukijumuisha arbitrary keyword arguments. These will be
     used to set attributes on the mock after it ni created.
     """
 
@@ -1308,7 +1308,7 @@ kundi _patch(object):
                 entered_patchers.append(patching)
                 ikiwa patching.attribute_name ni sio Tupu:
                     keywargs.update(arg)
-                elikiwa patching.new ni DEFAULT:
+                lasivyo patching.new ni DEFAULT:
                     extra_args.append(arg)
 
             args += tuple(extra_args)
@@ -1329,14 +1329,14 @@ kundi _patch(object):
 
 
     eleza decorate_callable(self, func):
-        # NB. Keep the method kwenye sync with decorate_async_callable()
+        # NB. Keep the method kwenye sync ukijumuisha decorate_async_callable()
         ikiwa hasattr(func, 'patchings'):
             func.patchings.append(self)
             rudisha func
 
         @wraps(func)
         eleza patched(*args, **keywargs):
-            with self.decoration_helper(patched,
+            ukijumuisha self.decoration_helper(patched,
                                         args,
                                         keywargs) kama (newargs, newkeywargs):
                 rudisha func(*newargs, **newkeywargs)
@@ -1346,14 +1346,14 @@ kundi _patch(object):
 
 
     eleza decorate_async_callable(self, func):
-        # NB. Keep the method kwenye sync with decorate_callable()
+        # NB. Keep the method kwenye sync ukijumuisha decorate_callable()
         ikiwa hasattr(func, 'patchings'):
             func.patchings.append(self)
             rudisha func
 
         @wraps(func)
         async eleza patched(*args, **keywargs):
-            with self.decoration_helper(patched,
+            ukijumuisha self.decoration_helper(patched,
                                         args,
                                         keywargs) kama (newargs, newkeywargs):
                 rudisha await func(*newargs, **newkeywargs)
@@ -1417,16 +1417,16 @@ kundi _patch(object):
                 ikiwa spec_set ni Kweli:
                     spec_set = original
                     spec = Tupu
-            elikiwa spec ni sio Tupu:
+            lasivyo spec ni sio Tupu:
                 ikiwa spec_set ni Kweli:
                     spec_set = spec
                     spec = Tupu
-            elikiwa spec_set ni Kweli:
+            lasivyo spec_set ni Kweli:
                 spec_set = original
 
             ikiwa spec ni sio Tupu ama spec_set ni sio Tupu:
                 ikiwa original ni DEFAULT:
-                    ashiria TypeError("Can't use 'spec' with create=Kweli")
+                    ashiria TypeError("Can't use 'spec' ukijumuisha create=Kweli")
                 ikiwa isinstance(original, type):
                     # If we're patching out a kundi na there ni a spec
                     inherit = Kweli
@@ -1437,7 +1437,7 @@ kundi _patch(object):
             _kwargs = {}
             ikiwa new_callable ni sio Tupu:
                 Klass = new_callable
-            elikiwa spec ni sio Tupu ama spec_set ni sio Tupu:
+            lasivyo spec ni sio Tupu ama spec_set ni sio Tupu:
                 this_spec = spec
                 ikiwa spec_set ni sio Tupu:
                     this_spec = spec_set
@@ -1447,7 +1447,7 @@ kundi _patch(object):
                     not_callable = sio callable(this_spec)
                 ikiwa _is_async_obj(this_spec):
                     Klass = AsyncMock
-                elikiwa not_callable:
+                lasivyo not_callable:
                     Klass = NonCallableMagicMock
 
             ikiwa spec ni sio Tupu:
@@ -1476,7 +1476,7 @@ kundi _patch(object):
                 _kwargs.pop('name')
                 new.rudisha_value = Klass(_new_parent=new, _new_name='()',
                                          **_kwargs)
-        elikiwa autospec ni sio Tupu:
+        lasivyo autospec ni sio Tupu:
             # spec ni ignored, new *must* be default, spec_set ni treated
             # kama a boolean. Should we check spec ni sio Tupu na that spec_set
             # ni a bool?
@@ -1486,14 +1486,14 @@ kundi _patch(object):
                     "autospec na new."
                 )
             ikiwa original ni DEFAULT:
-                ashiria TypeError("Can't use 'autospec' with create=Kweli")
+                ashiria TypeError("Can't use 'autospec' ukijumuisha create=Kweli")
             spec_set = bool(spec_set)
             ikiwa autospec ni Kweli:
                 autospec = original
 
             new = create_autospec(autospec, spec_set=spec_set,
                                   _name=self.attribute, **kwargs)
-        elikiwa kwargs:
+        lasivyo kwargs:
             # can't set keyword args when we aren't creating the mock
             # XXXX If new ni a Mock we could call new.configure_mock(**kwargs)
             ashiria TypeError("Can't pita kwargs to a mock we aren't creating")
@@ -1575,7 +1575,7 @@ eleza _patch_object(
         new_callable=Tupu, **kwargs
     ):
     """
-    patch the named member (`attribute`) on an object (`target`) with a mock
+    patch the named member (`attribute`) on an object (`target`) ukijumuisha a mock
     object.
 
     `patch.object` can be used kama a decorator, kundi decorator ama a context
@@ -1600,7 +1600,7 @@ eleza _patch_multiple(target, spec=Tupu, create=Uongo, spec_set=Tupu,
     patched (either kama an object ama a string to fetch the object by agizaing)
     na keyword arguments kila the patches::
 
-        with patch.multiple(settings, FIRST_PATCH='one', SECOND_PATCH='two'):
+        ukijumuisha patch.multiple(settings, FIRST_PATCH='one', SECOND_PATCH='two'):
             ...
 
     Use `DEFAULT` kama the value ikiwa you want `patch.multiple` to create
@@ -1623,7 +1623,7 @@ eleza _patch_multiple(target, spec=Tupu, create=Uongo, spec_set=Tupu,
 
     ikiwa sio kwargs:
         ashiria ValueError(
-            'Must supply at least one keyword argument with patch.multiple'
+            'Must supply at least one keyword argument ukijumuisha patch.multiple'
         )
     # need to wrap kwenye a list kila python 3, where items ni a view
     items = list(kwargs.items())
@@ -1649,11 +1649,11 @@ eleza patch(
     ):
     """
     `patch` acts kama a function decorator, kundi decorator ama a context
-    manager. Inside the body of the function ama with statement, the `target`
-    ni patched with a `new` object. When the function/with statement exits
+    manager. Inside the body of the function ama ukijumuisha statement, the `target`
+    ni patched ukijumuisha a `new` object. When the function/ukijumuisha statement exits
     the patch ni undone.
 
-    If `new` ni omitted, then the target ni replaced with an
+    If `new` ni omitted, then the target ni replaced ukijumuisha an
     `AsyncMock ikiwa the patched object ni an async function ama a
     `MagicMock` otherwise. If `patch` ni used kama a decorator na `new` is
     omitted, the created mock ni pitaed kwenye kama an extra argument to the
@@ -1661,7 +1661,7 @@ eleza patch(
     mock ni rudishaed by the context manager.
 
     `target` should be a string kwenye the form `'package.module.ClassName'`. The
-    `target` ni imported na the specified object replaced with the `new`
+    `target` ni imported na the specified object replaced ukijumuisha the `new`
     object, so the `target` must be agizaable kutoka the environment you are
     calling `patch` kutoka. The target ni imported when the decorated function
     ni executed, sio at decoration time.
@@ -1677,11 +1677,11 @@ eleza patch(
     used kila async functions na `MagicMock` kila the rest.
 
     A more powerful form of `spec` ni `autospec`. If you set `autospec=Kweli`
-    then the mock will be created with a spec kutoka the object being replaced.
+    then the mock will be created ukijumuisha a spec kutoka the object being replaced.
     All attributes of the mock will also have the spec of the corresponding
     attribute of the object being replaced. Methods na functions being
     mocked will have their arguments checked na will ashiria a `TypeError` if
-    they are called with the wrong signature. For mocks replacing a class,
+    they are called ukijumuisha the wrong signature. For mocks replacing a class,
     their rudisha value (the 'instance') will have the same spec kama the class.
 
     Instead of `autospec=Kweli` you can pita `autospec=some_object` to use an
@@ -1698,12 +1698,12 @@ eleza patch(
     Patch can be used kama a `TestCase` kundi decorator. It works by
     decorating each test method kwenye the class. This reduces the boilerplate
     code when your test methods share a common patchings set. `patch` finds
-    tests by looking kila method names that start with `patch.TEST_PREFIX`.
+    tests by looking kila method names that start ukijumuisha `patch.TEST_PREFIX`.
     By default this ni `test`, which matches the way `unittest` finds tests.
     You can specify an alternative prefix by setting `patch.TEST_PREFIX`.
 
-    Patch can be used kama a context manager, with the with statement. Here the
-    patching applies to the indented block after the with statement. If you
+    Patch can be used kama a context manager, ukijumuisha the ukijumuisha statement. Here the
+    patching applies to the indented block after the ukijumuisha statement. If you
     use "as" then the patched object will be bound to the name after the
     "as"; very useful ikiwa `patch` ni creating a mock object kila you.
 
@@ -1738,10 +1738,10 @@ kundi _patch_dict(object):
     If `clear` ni Kweli then the dictionary will be cleared before the new
     values are set.
 
-    `patch.dict` can also be called with arbitrary keyword arguments to set
+    `patch.dict` can also be called ukijumuisha arbitrary keyword arguments to set
     values kwenye the dictionary::
 
-        with patch.dict('sys.modules', mymodule=Mock(), other_module=Mock()):
+        ukijumuisha patch.dict('sys.modules', mymodule=Mock(), other_module=Mock()):
             ...
 
     `patch.dict` can be used kama a context manager, decorator ama class
@@ -1799,7 +1799,7 @@ kundi _patch_dict(object):
         jaribu:
             original = in_dict.copy()
         tatizo AttributeError:
-            # dict like object with no copy method
+            # dict like object ukijumuisha no copy method
             # must support iteration over keys
             original = {}
             kila key kwenye in_dict:
@@ -1812,7 +1812,7 @@ kundi _patch_dict(object):
         jaribu:
             in_dict.update(values)
         tatizo AttributeError:
-            # dict like object with no update method
+            # dict like object ukijumuisha no update method
             kila key kwenye values:
                 in_dict[key] = values[key]
 
@@ -1910,7 +1910,7 @@ _magics = {
 
 # Magic methods used kila async `with` statements
 _async_method_magics = {"__aenter__", "__aexit__", "__anext__"}
-# Magic methods that are only used with async calls but are synchronous functions themselves
+# Magic methods that are only used ukijumuisha async calls but are synchronous functions themselves
 _sync_async_magics = {"__aiter__"}
 _async_magics = _async_method_magics | _sync_async_magics
 
@@ -2063,7 +2063,7 @@ kundi AsyncMagicMixin(MagicMixin):
 
 kundi MagicMock(MagicMixin, Mock):
     """
-    MagicMock ni a subkundi of Mock with default implementations
+    MagicMock ni a subkundi of Mock ukijumuisha default implementations
     of most of the magic methods. You can use MagicMock without having to
     configure the magic methods yourself.
 
@@ -2165,7 +2165,7 @@ kundi AsyncMockMixin(Base):
 
     eleza assert_awaited_with(self, /, *args, **kwargs):
         """
-        Assert that the last await was with the specified arguments.
+        Assert that the last await was ukijumuisha the specified arguments.
         """
         ikiwa self.await_args ni Tupu:
             expected = self._format_mock_call_signature(args, kwargs)
@@ -2178,12 +2178,12 @@ kundi AsyncMockMixin(Base):
         expected = self._call_matcher((args, kwargs))
         actual = self._call_matcher(self.await_args)
         ikiwa expected != actual:
-            cause = expected ikiwa isinstance(expected, Exception) else Tupu
+            cause = expected ikiwa isinstance(expected, Exception) isipokua Tupu
             ashiria AssertionError(_error_message()) kutoka cause
 
     eleza assert_awaited_once_with(self, /, *args, **kwargs):
         """
-        Assert that the mock was awaited exactly once na with the specified
+        Assert that the mock was awaited exactly once na ukijumuisha the specified
         arguments.
         """
         ikiwa sio self.await_count == 1:
@@ -2194,12 +2194,12 @@ kundi AsyncMockMixin(Base):
 
     eleza assert_any_await(self, /, *args, **kwargs):
         """
-        Assert the mock has ever been awaited with the specified arguments.
+        Assert the mock has ever been awaited ukijumuisha the specified arguments.
         """
         expected = self._call_matcher((args, kwargs))
         actual = [self._call_matcher(c) kila c kwenye self.await_args_list]
         ikiwa expected haiko kwenye actual:
-            cause = expected ikiwa isinstance(expected, Exception) else Tupu
+            cause = expected ikiwa isinstance(expected, Exception) isipokua Tupu
             expected_string = self._format_mock_call_signature(args, kwargs)
             ashiria AssertionError(
                 '%s await sio found' % expected_string
@@ -2207,7 +2207,7 @@ kundi AsyncMockMixin(Base):
 
     eleza assert_has_awaits(self, calls, any_order=Uongo):
         """
-        Assert the mock has been awaited with the specified calls.
+        Assert the mock has been awaited ukijumuisha the specified calls.
         The :attr:`await_args_list` list ni checked kila the awaits.
 
         If `any_order` ni Uongo (the default) then the awaits must be
@@ -2227,7 +2227,7 @@ kundi AsyncMockMixin(Base):
                 isipokua:
                     problem = ('Error processing expected awaits.\n'
                                'Errors: {}').format(
-                                   [e ikiwa isinstance(e, Exception) else Tupu
+                                   [e ikiwa isinstance(e, Exception) isipokua Tupu
                                     kila e kwenye expected])
                 ashiria AssertionError(
                     f'{problem}\n'
@@ -2270,7 +2270,7 @@ kundi AsyncMockMixin(Base):
 
 kundi AsyncMock(AsyncMockMixin, AsyncMagicMixin, Mock):
     """
-    Enhance :class:`Mock` with features allowing to mock
+    Enhance :class:`Mock` ukijumuisha features allowing to mock
     an async function.
 
     The :class:`AsyncMock` object will behave so the object is
@@ -2302,8 +2302,8 @@ kundi AsyncMock(AsyncMockMixin, AsyncMagicMixin, Mock):
     async function itself (and sio an async function rudishaing an async
     function).
 
-    The test author can also specify a wrapped object with ``wraps``. In this
-    case, the :class:`Mock` object behavior ni the same kama with an
+    The test author can also specify a wrapped object ukijumuisha ``wraps``. In this
+    case, the :class:`Mock` object behavior ni the same kama ukijumuisha an
     :class:`.Mock` object: the wrapped object may have methods
     defined kama async function functions.
 
@@ -2357,7 +2357,7 @@ kundi _Call(tuple):
         _Call(('name', (1,), {})) == ('name', (1,))
         _Call(((), {'a': 'b'})) == ({'a': 'b'},)
 
-    The `_Call` object provides a useful shortcut kila comparing with call::
+    The `_Call` object provides a useful shortcut kila comparing ukijumuisha call::
 
         _Call(((1, 2), {'a': 3})) == call(1, 2, a=3)
         _Call(('foo', (1, 2), {'a': 3})) == call.foo(1, 2, a=3)
@@ -2371,7 +2371,7 @@ kundi _Call(tuple):
         _len = len(value)
         ikiwa _len == 3:
             name, args, kwargs = value
-        elikiwa _len == 2:
+        lasivyo _len == 2:
             first, second = value
             ikiwa isinstance(first, str):
                 name = first
@@ -2381,11 +2381,11 @@ kundi _Call(tuple):
                     kwargs = second
             isipokua:
                 args, kwargs = first, second
-        elikiwa _len == 1:
+        lasivyo _len == 1:
             value, = value
             ikiwa isinstance(value, str):
                 name = value
-            elikiwa isinstance(value, tuple):
+            lasivyo isinstance(value, tuple):
                 args = value
             isipokua:
                 kwargs = value
@@ -2424,20 +2424,20 @@ kundi _Call(tuple):
         other_name = ''
         ikiwa len_other == 0:
             other_args, other_kwargs = (), {}
-        elikiwa len_other == 3:
+        lasivyo len_other == 3:
             other_name, other_args, other_kwargs = other
-        elikiwa len_other == 1:
+        lasivyo len_other == 1:
             value, = other
             ikiwa isinstance(value, tuple):
                 other_args = value
                 other_kwargs = {}
-            elikiwa isinstance(value, str):
+            lasivyo isinstance(value, str):
                 other_name = value
                 other_args, other_kwargs = (), {}
             isipokua:
                 other_args = ()
                 other_kwargs = value
-        elikiwa len_other == 2:
+        lasivyo len_other == 2:
             # could be (name, args) ama (name, kwargs) ama (args, kwargs)
             first, second = other
             ikiwa isinstance(first, str):
@@ -2518,7 +2518,7 @@ kundi _Call(tuple):
             name, args, kwargs = self
             ikiwa sio name:
                 name = 'call'
-            elikiwa sio name.startswith('()'):
+            lasivyo sio name.startswith('()'):
                 name = 'call.%s' % name
             isipokua:
                 name = 'call%s' % name
@@ -2548,7 +2548,7 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
     spec.
 
     Functions ama methods being mocked will have their arguments checked
-    to check that they are called with the correct signature.
+    to check that they are called ukijumuisha the correct signature.
 
     If `spec_set` ni Kweli then attempting to set attributes that don't exist
     on the spec object will ashiria an `AttributeError`.
@@ -2570,8 +2570,8 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
     _kwargs = {'spec': spec}
     ikiwa spec_set:
         _kwargs = {'spec_set': spec}
-    elikiwa spec ni Tupu:
-        # Tupu we mock with a normal mock without a spec
+    lasivyo spec ni Tupu:
+        # Tupu we mock ukijumuisha a normal mock without a spec
         _kwargs = {}
     ikiwa _kwargs na instance:
         _kwargs['_spec_as_instance'] = Kweli
@@ -2583,14 +2583,14 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
         # descriptors don't have a spec
         # because we don't know what type they rudisha
         _kwargs = {}
-    elikiwa is_async_func:
+    lasivyo is_async_func:
         ikiwa instance:
             ashiria RuntimeError("Instance can sio be Kweli when create_autospec "
                                "is mocking an async function")
         Klass = AsyncMock
-    elikiwa sio _callable(spec):
+    lasivyo sio _callable(spec):
         Klass = NonCallableMagicMock
-    elikiwa is_type na instance na sio _instance_callable(spec):
+    lasivyo is_type na instance na sio _instance_callable(spec):
         Klass = NonCallableMagicMock
 
     _name = _kwargs.pop('name', _name)
@@ -2662,7 +2662,7 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
             mock._mock_children[entry] = new
             _check_signature(original, new, skipfirst=skipfirst)
 
-        # so functions created with _set_signature become instance attributes,
+        # so functions created ukijumuisha _set_signature become instance attributes,
         # *plus* their underlying mock exists kwenye _mock_children of the parent
         # mock. Adding to _mock_children may be unnecessary where we are also
         # setting kama an instance attribute?
@@ -2689,7 +2689,7 @@ eleza _must_skip(spec, entry, is_type):
             endelea
         ikiwa isinstance(result, (staticmethod, classmethod)):
             rudisha Uongo
-        elikiwa isinstance(getattr(result, '__get__', Tupu), MethodWrapperTypes):
+        lasivyo isinstance(getattr(result, '__get__', Tupu), MethodWrapperTypes):
             # Normal method => skip ikiwa looked up on type
             # (ikiwa looked up on instance, self ni already skipped)
             rudisha is_type
@@ -2740,7 +2740,7 @@ eleza mock_open(mock=Tupu, read_data=''):
     kila `open` called directly ama used kama a context manager.
 
     The `mock` argument ni the mock object to configure. If `Tupu` (the
-    default) then a `MagicMock` will be created kila you, with the API limited
+    default) then a `MagicMock` will be created kila you, ukijumuisha the API limited
     to methods ama attributes available on standard file handles.
 
     `read_data` ni a string kila the `read`, `readline` na `readlines` of the
@@ -2819,7 +2819,7 @@ kundi PropertyMock(Mock):
     a rudisha value when it ni fetched.
 
     Fetching a `PropertyMock` instance kutoka an object calls the mock, with
-    no args. Setting it calls the mock with the value being set.
+    no args. Setting it calls the mock ukijumuisha the value being set.
     """
     eleza _get_child_mock(self, /, **kwargs):
         rudisha MagicMock(**kwargs)

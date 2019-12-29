@@ -7,7 +7,7 @@ This avoids all the overhead of SAX na pulldom to gain performance.
 # Warning!
 #
 # This module ni tightly bound to the implementation details of the
-# minidom DOM na can't be used with other DOM implementations.  This
+# minidom DOM na can't be used ukijumuisha other DOM implementations.  This
 # ni due, kwenye part, to a lack of appropriate methods kwenye the DOM (there is
 # no way to create Entity na Notation nodes via the DOM Level 2
 # interface), na kila performance.  The latter ni the cause of some fairly
@@ -23,7 +23,7 @@ This avoids all the overhead of SAX na pulldom to gain performance.
 #      separate normalization pita.
 #
 #   -  Determining that a node exists ni done using an identity comparison
-#      with Tupu rather than a truth test; this avoids searching kila and
+#      ukijumuisha Tupu rather than a truth test; this avoids searching kila and
 #      calling any methods on the node object ikiwa it exists.  (A rather
 #      nice speedup ni achieved this way kama well!)
 
@@ -121,7 +121,7 @@ eleza _parse_ns_name(builder, name):
         qname = "%s:%s" % (prefix, localname)
         qname = intern(qname, qname)
         localname = intern(localname, localname)
-    elikiwa len(parts) == 2:
+    lasivyo len(parts) == 2:
         uri, localname = parts
         prefix = EMPTY_PREFIX
         qname = localname = intern(localname, localname)
@@ -143,7 +143,7 @@ kundi ExpatBuilder:
         isipokua:
             self._filter = Tupu
             # This *really* doesn't do anything kwenye this case, so
-            # override it with something fast & minimal.
+            # override it ukijumuisha something fast & minimal.
             self._finish_start_element = id
         self._parser = Tupu
         self.reset()
@@ -280,7 +280,7 @@ kundi ExpatBuilder:
                 rudisha
             node = self.document.createCDATASection(data)
             self._cdata_endelea = Kweli
-        elikiwa childNodes na childNodes[-1].nodeType == TEXT_NODE:
+        lasivyo childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
@@ -376,7 +376,7 @@ kundi ExpatBuilder:
             ikiwa filt == FILTER_REJECT:
                 # ignore this node & all descendents
                 Rejecter(self)
-            elikiwa filt == FILTER_SKIP:
+            lasivyo filt == FILTER_SKIP:
                 # ignore this node, but make it's children become
                 # children of the parent node
                 Skipper(self)
@@ -630,7 +630,7 @@ kundi FragmentBuilder(ExpatBuilder):
             ikiwa doctype.publicId:
                 ident = ('PUBLIC "%s" "%s"'
                          % (doctype.publicId, doctype.systemId))
-            elikiwa doctype.systemId:
+            lasivyo doctype.systemId:
                 ident = 'SYSTEM "%s"' % doctype.systemId
         isipokua:
             subset = ""
@@ -673,7 +673,7 @@ kundi FragmentBuilder(ExpatBuilder):
                 ikiwa entity.publicId:
                     s = '%s PUBLIC "%s"\n             "%s"' \
                         % (s, entity.publicId, entity.systemId)
-                elikiwa entity.systemId:
+                lasivyo entity.systemId:
                     s = '%s SYSTEM "%s"' % (s, entity.systemId)
                 isipokua:
                     s = '%s "%s"' % (s, entity.firstChild.data)
@@ -907,7 +907,7 @@ eleza parse(file, namespaces=Kweli):
         builder = ExpatBuilder()
 
     ikiwa isinstance(file, str):
-        with open(file, 'rb') kama fp:
+        ukijumuisha open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
     isipokua:
         result = builder.parseFile(file)
@@ -938,7 +938,7 @@ eleza parseFragment(file, context, namespaces=Kweli):
         builder = FragmentBuilder(context)
 
     ikiwa isinstance(file, str):
-        with open(file, 'rb') kama fp:
+        ukijumuisha open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
     isipokua:
         result = builder.parseFile(file)

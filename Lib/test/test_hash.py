@@ -44,7 +44,7 @@ eleza skip_unless_internalhash(test):
     """Skip decorator kila tests that depend on SipHash24 ama FNV"""
     ok = sys.hash_info.algorithm kwenye {"fnv", "siphash24"}
     msg = "Requires SipHash24 ama FNV"
-    rudisha test ikiwa ok else unittest.skip(msg)(test)
+    rudisha test ikiwa ok isipokua unittest.skip(msg)(test)
 
 
 kundi HashEqualityTestCase(unittest.TestCase):
@@ -244,10 +244,10 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
         isipokua:
             algorithm = sys.hash_info.algorithm
         ikiwa sys.byteorder == 'little':
-            platform = 1 ikiwa IS_64BIT else 0
+            platform = 1 ikiwa IS_64BIT isipokua 0
         isipokua:
             assert(sys.byteorder == 'big')
-            platform = 3 ikiwa IS_64BIT else 2
+            platform = 3 ikiwa IS_64BIT isipokua 2
         rudisha self.known_hashes[algorithm][position][platform]
 
     eleza test_null_hash(self):
@@ -331,7 +331,7 @@ kundi HashDistributionTestCase(unittest.TestCase):
         base = "abcdefghabcdefg"
         kila i kwenye range(1, len(base)):
             prefix = base[:i]
-            with self.subTest(prefix=prefix):
+            ukijumuisha self.subTest(prefix=prefix):
                 s15 = set()
                 s255 = set()
                 kila c kwenye range(256):

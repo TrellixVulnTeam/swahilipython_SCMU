@@ -1794,7 +1794,7 @@ class BaseTaskTests:
         outer.cancel()
         test_utils.run_briefly(self.loop)
         self.assertTrue(outer.cancelled())
-        self.assertEqual(0, 0 if outer._callbacks is None else len(outer._callbacks))
+        self.assertEqual(0, 0 if outer._callbacks is None isipokua len(outer._callbacks))
 
     def test_shield_shortcut(self):
         fut = self.new_future(self.loop)

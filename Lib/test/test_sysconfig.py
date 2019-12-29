@@ -80,7 +80,7 @@ kundi TestSysConfig(unittest.TestCase):
         path = TESTFN
         ikiwa os.path.isfile(path):
             os.remove(path)
-        elikiwa os.path.isdir(path):
+        lasivyo os.path.isdir(path):
             shutil.rmtree(path)
 
     eleza test_get_path_names(self):
@@ -162,7 +162,7 @@ kundi TestSysConfig(unittest.TestCase):
         mwishowe:
             sys.maxsize = maxint
 
-        # macbook with fat binaries (fat, universal ama fat64)
+        # macbook ukijumuisha fat binaries (fat, universal ama fat64)
         _osx_support._remove_original_values(get_config_vars())
         get_config_vars()['MACOSX_DEPLOYMENT_TARGET'] = '10.4'
         get_config_vars()['CFLAGS'] = ('-arch ppc -arch i386 -isysroot '
@@ -234,7 +234,7 @@ kundi TestSysConfig(unittest.TestCase):
 
     @skip_unless_symlink
     eleza test_symlink(self): # Issue 7880
-        with PythonSymlink() kama py:
+        ukijumuisha PythonSymlink() kama py:
             cmd = "-c", "agiza sysconfig; andika(sysconfig.get_platform())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -252,7 +252,7 @@ kundi TestSysConfig(unittest.TestCase):
             ikiwa adapt:
                 global_path = global_path.replace(sys.exec_prefix, sys.base_prefix)
                 base = base.replace(sys.exec_prefix, sys.base_prefix)
-            elikiwa sys.base_prefix != sys.prefix:
+            lasivyo sys.base_prefix != sys.prefix:
                 # virtual environment? Likewise, we have to adapt the paths
                 # before comparing
                 global_path = global_path.replace(sys.base_prefix, sys.prefix)
@@ -262,7 +262,7 @@ kundi TestSysConfig(unittest.TestCase):
 
     eleza test_main(self):
         # just making sure _main() runs na rudishas things kwenye the stdout
-        with captured_stdout() kama output:
+        ukijumuisha captured_stdout() kama output:
             _main()
         self.assertKweli(len(output.getvalue().split('\n')) > 0)
 
@@ -297,7 +297,7 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test with MACOSX_DEPLOYMENT_TARGET kwenye the environment, and
+        # Test ukijumuisha MACOSX_DEPLOYMENT_TARGET kwenye the environment, and
         # using a value that ni unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
@@ -329,7 +329,7 @@ kundi TestSysConfig(unittest.TestCase):
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertKweli(os.path.exists(Python_h), Python_h)
             self.assertKweli(sysconfig._is_python_source_dir(srcdir))
-        elikiwa os.name == 'posix':
+        lasivyo os.name == 'posix':
             makefile_dir = os.path.dirname(sysconfig.get_makefile_filename())
             # Issue #19340: srcdir has been realpath'ed already
             makefile_dir = os.path.realpath(makefile_dir)
@@ -339,7 +339,7 @@ kundi TestSysConfig(unittest.TestCase):
         # srcdir should be independent of the current working directory
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
-        with change_cwd(os.pardir):
+        ukijumuisha change_cwd(os.pardir):
             srcdir2 = sysconfig.get_config_var('srcdir')
         self.assertEqual(srcdir, srcdir2)
 
@@ -352,7 +352,7 @@ kundi TestSysConfig(unittest.TestCase):
     @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
                      'EXT_SUFFIX required kila this test')
     eleza test_SO_value(self):
-        with check_warnings(('', DeprecationWarning)):
+        ukijumuisha check_warnings(('', DeprecationWarning)):
             self.assertEqual(sysconfig.get_config_var('SO'),
                              sysconfig.get_config_var('EXT_SUFFIX'))
 
@@ -396,7 +396,7 @@ kundi MakefileTests(unittest.TestCase):
 
     eleza test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, "w") kama makefile:
+        ukijumuisha open(TESTFN, "w") kama makefile:
             andika("var1=a$(VAR2)", file=makefile)
             andika("VAR2=b$(var3)", file=makefile)
             andika("var3=42", file=makefile)

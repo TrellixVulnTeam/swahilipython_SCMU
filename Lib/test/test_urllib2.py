@@ -57,7 +57,7 @@ kundi TrivialTests(unittest.TestCase):
         isipokua:
             file_url = "file://%s" % fname
 
-        with urllib.request.urlopen(file_url) kama f:
+        ukijumuisha urllib.request.urlopen(file_url) kama f:
             f.read()
 
     eleza test_parse_http_list(self):
@@ -387,14 +387,14 @@ kundi MockHandler:
         self.parent.calls.append((self, fn_name, args, kwds))
         ikiwa action ni Tupu:
             rudisha Tupu
-        elikiwa action == "rudisha self":
+        lasivyo action == "rudisha self":
             rudisha self
-        elikiwa action == "rudisha response":
+        lasivyo action == "rudisha response":
             res = MockResponse(200, "OK", {}, "")
             rudisha res
-        elikiwa action == "rudisha request":
+        lasivyo action == "rudisha request":
             rudisha Request("http://blah/")
-        elikiwa action.startswith("error"):
+        lasivyo action.startswith("error"):
             code = action[action.rfind(" ")+1:]
             jaribu:
                 code = int(code)
@@ -402,7 +402,7 @@ kundi MockHandler:
                 pita
             res = MockResponse(200, "OK", {}, "")
             rudisha self.parent.error("http", args[0], res, code, "", {})
-        elikiwa action == "ashiria":
+        lasivyo action == "ashiria":
             ashiria urllib.error.URLError("blah")
         assert Uongo
 
@@ -931,14 +931,14 @@ kundi HandlerTests(unittest.TestCase):
         file_obj.close()
         self.addCleanup(os.unlink, file_path)
 
-        with open(file_path, "rb") kama f:
+        ukijumuisha open(file_path, "rb") kama f:
             req = Request("http://example.com/", f, {})
             newreq = h.do_request_(req)
             te = newreq.get_header('Transfer-encoding')
             self.assertEqual(te, "chunked")
             self.assertUongo(newreq.has_header('Content-length'))
 
-        with open(file_path, "rb") kama f:
+        ukijumuisha open(file_path, "rb") kama f:
             req = Request("http://example.com/", f, {"Content-Length": 30})
             newreq = h.do_request_(req)
             self.assertEqual(int(newreq.get_header('Content-length')), 30)
@@ -978,7 +978,7 @@ kundi HandlerTests(unittest.TestCase):
 
         cmd = [sys.executable, "-c", r"pita"]
         kila headers kwenye {}, {"Content-Length": 30}:
-            with subprocess.Popen(cmd, stdout=subprocess.PIPE) kama proc:
+            ukijumuisha subprocess.Popen(cmd, stdout=subprocess.PIPE) kama proc:
                 req = Request("http://example.com/", proc.stdout, headers)
                 newreq = h.do_request_(req)
                 ikiwa sio headers:
@@ -1132,7 +1132,7 @@ kundi HandlerTests(unittest.TestCase):
         newr = h.http_response(req, r)
         self.assertIs(r, newr)
         self.assertUongo(hasattr(o, "proto"))  # o.error sio called
-        # anything else calls o.error (and MockOpener rudishas Tupu, here)
+        # anything isipokua calls o.error (and MockOpener rudishas Tupu, here)
         r = MockResponse(502, "Bad gateway", {}, "", url)
         self.assertIsTupu(h.http_response(req, r))
         self.assertEqual(o.proto, "http")  # o.error called
@@ -1203,7 +1203,7 @@ kundi HandlerTests(unittest.TestCase):
             h.http_error_302(req, MockFile(), 302, "Blah",
                              MockHeaders({"location": url}))
         # Note that the *original* request shares the same record of
-        # redirections with the sub-requests caused by the redirections.
+        # redirections ukijumuisha the sub-requests caused by the redirections.
 
         # detect infinite loop redirect of a URL to itself
         req = Request(kutoka_url, origin_req_host="example.com")
@@ -1328,7 +1328,7 @@ kundi HandlerTests(unittest.TestCase):
             (b'/?p\xC3\xA5-dansk', b'/?p%C3%A5-dansk'),
         )
         kila [location, result] kwenye tests:
-            with self.subTest(repr(location)):
+            ukijumuisha self.subTest(repr(location)):
                 handler.connection = test_urllib.fakehttp(
                     b'HTTP/1.1 302 Redirect\r\n'
                     b'Location: ' + location + b'\r\n'
@@ -1472,7 +1472,7 @@ kundi HandlerTests(unittest.TestCase):
             401, 'WWW-Authenticate: Basic realm=%s\r\n\r\n' % realm)
         opener.add_handler(auth_handler)
         opener.add_handler(http_handler)
-        with self.assertWarns(UserWarning):
+        ukijumuisha self.assertWarns(UserWarning):
             self._test_basic_auth(opener, auth_handler, "Authorization",
                                 realm, http_handler, pitaword_manager,
                                 "http://acme.example.com/protected",
@@ -1626,7 +1626,7 @@ kundi HandlerTests(unittest.TestCase):
 
         opener.open(request_url)
 
-        # expect request to be sent with auth header
+        # expect request to be sent ukijumuisha auth header
         self.assertKweli(http_handler.has_auth_header)
 
     eleza test_basic_prior_auth_send_after_first_success(self):
@@ -1666,7 +1666,7 @@ kundi HandlerTests(unittest.TestCase):
         # Next request sends header kwenye the first request
         opener.open(request_url)
 
-        # expect request to be sent with auth header
+        # expect request to be sent ukijumuisha auth header
         self.assertKweli(http_handler.has_auth_header)
 
     eleza test_http_closed(self):
@@ -1681,10 +1681,10 @@ kundi HandlerTests(unittest.TestCase):
             handler = urllib.request.AbstractHTTPHandler()
             req = Request("http://dummy/")
             req.timeout = Tupu
-            with handler.do_open(conn, req) kama resp:
+            ukijumuisha handler.do_open(conn, req) kama resp:
                 resp.read()
             self.assertKweli(conn.fakesock.closed,
-                "Connection sio closed with {!r}".format(transfer))
+                "Connection sio closed ukijumuisha {!r}".format(transfer))
 
     eleza test_invalid_closed(self):
         """Test the connection ni cleaned up after an invalid response"""
@@ -1692,7 +1692,7 @@ kundi HandlerTests(unittest.TestCase):
         handler = urllib.request.AbstractHTTPHandler()
         req = Request("http://dummy/")
         req.timeout = Tupu
-        with self.assertRaises(http.client.BadStatusLine):
+        ukijumuisha self.assertRaises(http.client.BadStatusLine):
             handler.do_open(conn, req)
         self.assertKweli(conn.fakesock.closed, "Connection sio closed")
 
@@ -1750,7 +1750,7 @@ kundi MiscTests(unittest.TestCase):
     @unittest.skipUnless(support.is_resource_enabled('network'),
                          'test requires network access')
     eleza test_issue16464(self):
-        with support.transient_internet("http://www.example.com/"):
+        ukijumuisha support.transient_internet("http://www.example.com/"):
             opener = urllib.request.build_opener()
             request = urllib.request.Request("http://www.example.com/")
             self.assertEqual(Tupu, request.data)
@@ -1796,7 +1796,7 @@ kundi MiscTests(unittest.TestCase):
              (Tupu, 'joe', 'pitaword', 'proxy.example.com')),
             ('joe:pitaword@proxy.example.com:3128',
              (Tupu, 'joe', 'pitaword', 'proxy.example.com:3128')),
-            #Examples with URLS
+            #Examples ukijumuisha URLS
             ('http://proxy.example.com/',
              ('http', Tupu, Tupu, 'proxy.example.com')),
             ('http://proxy.example.com:3128/',
@@ -1820,7 +1820,7 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_unsupported_algorithm(self):
         handler = AbstractDigestAuthHandler()
-        with self.assertRaises(ValueError) kama exc:
+        ukijumuisha self.assertRaises(ValueError) kama exc:
             handler.get_algorithm_impls('invalid')
         self.assertEqual(
             str(exc.exception),

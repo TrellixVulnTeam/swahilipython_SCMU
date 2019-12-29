@@ -492,11 +492,11 @@ kundi OperatorTestCase:
         self.assertEqual(operator.length_hint(X(2)), 2)
         self.assertEqual(operator.length_hint(X(NotImplemented), 4), 4)
         self.assertEqual(operator.length_hint(X(TypeError), 12), 12)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             operator.length_hint(X("abc"))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             operator.length_hint(X(-2))
-        with self.assertRaises(LookupError):
+        ukijumuisha self.assertRaises(LookupError):
             operator.length_hint(X(LookupError))
 
     eleza test_dunder_is_original(self):
@@ -519,9 +519,9 @@ kundi COperatorTestCase(OperatorTestCase, unittest.TestCase):
 
 kundi OperatorPickleTestCase:
     eleza copy(self, obj, proto):
-        with support.swap_item(sys.modules, 'operator', self.module):
+        ukijumuisha support.swap_item(sys.modules, 'operator', self.module):
             pickled = pickle.dumps(obj, proto)
-        with support.swap_item(sys.modules, 'operator', self.module2):
+        ukijumuisha support.swap_item(sys.modules, 'operator', self.module2):
             rudisha pickle.loads(pickled)
 
     eleza test_attrgetter(self):
@@ -536,7 +536,7 @@ kundi OperatorPickleTestCase:
         a.t.u = A()
         a.t.u.v = 'V'
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 f = attrgetter('x')
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -556,7 +556,7 @@ kundi OperatorPickleTestCase:
         itemgetter = self.module.itemgetter
         a = 'ABCDE'
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 f = itemgetter(2)
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -578,7 +578,7 @@ kundi OperatorPickleTestCase:
                 rudisha kwds['name'], kwds['self']
         a = A()
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 f = methodcaller('bar')
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -595,7 +595,7 @@ kundi OperatorPickleTestCase:
                 self.assertEqual(f2(a), f(a))
                 f = methodcaller('baz', self='eggs', name='spam')
                 f2 = self.copy(f, proto)
-                # Can't test repr consistently with multiple keyword args
+                # Can't test repr consistently ukijumuisha multiple keyword args
                 self.assertEqual(f2(a), f(a))
 
 kundi PyPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):

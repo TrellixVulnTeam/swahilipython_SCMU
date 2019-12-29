@@ -473,7 +473,7 @@ class _ValueFormatter:
             return
         self.newline()
         self._current_line.push(self._continuation_ws, last_line)
-        # Everything else are full lines in themselves.
+        # Everything isipokua are full lines in themselves.
         for line in encoded_lines:
             self._lines.append(self._continuation_ws + line)
 

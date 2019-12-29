@@ -79,7 +79,7 @@ kundi HTTPStatus(IntEnum):
         'URI sio available kwenye preferred format')
     PROXY_AUTHENTICATION_REQUIRED = (407,
         'Proxy Authentication Required',
-        'You must authenticate with this proxy before proceeding')
+        'You must authenticate ukijumuisha this proxy before proceeding')
     REQUEST_TIMEOUT = (408, 'Request Timeout',
         'Request timed out; try again later')
     CONFLICT = 409, 'Conflict', 'Request conflict'

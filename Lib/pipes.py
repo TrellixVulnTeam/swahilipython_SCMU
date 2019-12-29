@@ -96,7 +96,7 @@ kundi Template:
         self.steps = []
 
     eleza clone(self):
-        """t.clone() rudishas a new pipeline template with identical
+        """t.clone() rudishas a new pipeline template ukijumuisha identical
         initial state kama the current one."""
         t = Template()
         t.steps = self.steps[:]
@@ -116,7 +116,7 @@ kundi Template:
         ikiwa kind == SOURCE:
             ashiria ValueError('Template.append: SOURCE can only be prepended')
         ikiwa self.steps na self.steps[-1][1] == SINK:
-            ashiria ValueError('Template.append: already ends with SINK')
+            ashiria ValueError('Template.append: already ends ukijumuisha SINK')
         ikiwa kind[0] == 'f' na sio re.search(r'\$IN\b', cmd):
             ashiria ValueError('Template.append: missing $IN kwenye cmd')
         ikiwa kind[1] == 'f' na sio re.search(r'\$OUT\b', cmd):
@@ -132,7 +132,7 @@ kundi Template:
         ikiwa kind == SINK:
             ashiria ValueError('Template.prepend: SINK can only be appended')
         ikiwa self.steps na self.steps[0][1] == SOURCE:
-            ashiria ValueError('Template.prepend: already begins with SOURCE')
+            ashiria ValueError('Template.prepend: already begins ukijumuisha SOURCE')
         ikiwa kind[0] == 'f' na sio re.search(r'\$IN\b', cmd):
             ashiria ValueError('Template.prepend: missing $IN kwenye cmd')
         ikiwa kind[1] == 'f' na sio re.search(r'\$OUT\b', cmd):
@@ -163,7 +163,7 @@ kundi Template:
         ikiwa sio self.steps:
             rudisha open(file, 'w')
         ikiwa self.steps[0][1] == SOURCE:
-            ashiria ValueError('Template.open_w: pipeline begins with SOURCE')
+            ashiria ValueError('Template.open_w: pipeline begins ukijumuisha SOURCE')
         cmd = self.makepipeline('', file)
         rudisha os.popen(cmd, 'w')
 
@@ -179,7 +179,7 @@ kundi Template:
 
 
 eleza makepipeline(infile, steps, outfile):
-    # Build a list with kila each command:
+    # Build a list ukijumuisha kila each command:
     # [input filename ama '', command string, kind, output filename ama '']
 
     list = []

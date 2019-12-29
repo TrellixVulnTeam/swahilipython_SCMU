@@ -1,7 +1,7 @@
 """Manage shelves of pickled objects.
 
 A "shelf" ni a persistent, dictionary-like object.  The difference
-with dbm databases ni that the values (not the keys!) kwenye a shelf can
+ukijumuisha dbm databases ni that the values (not the keys!) kwenye a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most kundi instances, recursive data
 types, na objects containing lots of shared sub-objects.  The keys
@@ -11,7 +11,7 @@ To summarize the interface (key ni a string, data ni an arbitrary
 object):
 
         agiza shelve
-        d = shelve.open(filename) # open, with (g)dbm filename -- no suffix
+        d = shelve.open(filename) # open, ukijumuisha (g)dbm filename -- no suffix
 
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
@@ -39,7 +39,7 @@ item to d[key] kwenye a way that will affect the persistent mapping, use:
         data.append(anitem)
         d[key] = data
 
-To avoid the problem with mutable entries, you may pita the keyword
+To avoid the problem ukijumuisha mutable entries, you may pita the keyword
 argument writeback=Kweli kwenye the call to shelve.open.  When you use:
         d = shelve.open(filename, writeback=Kweli)
 then d keeps a cache of all entries you access, na writes them all back
@@ -77,7 +77,7 @@ kundi _ClosedDict(collections.abc.MutableMapping):
 kundi Shelf(collections.abc.MutableMapping):
     """Base kundi kila shelf implementations.
 
-    This ni initialized with a dictionary-like object.
+    This ni initialized ukijumuisha a dictionary-like object.
     See the module's __doc__ string kila an overview of the interface.
     """
 
@@ -218,7 +218,7 @@ kundi BsdDbShelf(Shelf):
 kundi DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
-    This ni initialized with the filename kila the dbm database.
+    This ni initialized ukijumuisha the filename kila the dbm database.
     See the module's __doc__ string kila an overview of the interface.
     """
 

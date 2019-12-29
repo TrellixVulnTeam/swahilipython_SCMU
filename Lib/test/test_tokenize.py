@@ -36,7 +36,7 @@ kundi TokenizeTest(TestCase):
     # Tests kila the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
-    # code, print out a table with tokens. The ENDMARKER, ENCODING and
+    # code, print out a table ukijumuisha tokens. The ENDMARKER, ENCODING and
     # final NEWLINE are omitted kila brevity.
 
     eleza check_tokenize(self, s, expected):
@@ -88,7 +88,7 @@ eleza k(x):
   x += 5
 """
         readline = BytesIO(indent_error_file).readline
-        with self.assertRaisesRegex(IndentationError,
+        ukijumuisha self.assertRaisesRegex(IndentationError,
                                     "unindent does sio match any "
                                     "outer indentation level"):
             kila tok kwenye tokenize(readline):
@@ -224,7 +224,7 @@ eleza k(x):
             rudisha 'invalid token'
         kila lit kwenye VALID_UNDERSCORE_LITERALS:
             ikiwa '(' kwenye lit:
-                # this won't work with compound complex inputs
+                # this won't work ukijumuisha compound complex inputs
                 endelea
             self.assertEqual(number_token(lit), lit)
         kila lit kwenye INVALID_UNDERSCORE_LITERALS:
@@ -733,7 +733,7 @@ def"', """\
     NAME       'pita'        (1, 18) (1, 22)
     """)
 
-        self.check_tokenize("async with a kama b: pita", """\
+        self.check_tokenize("async ukijumuisha a kama b: pita", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'with'        (1, 6) (1, 10)
     NAME       'a'           (1, 11) (1, 12)
@@ -985,7 +985,7 @@ kundi TestMisc(TestCase):
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')
 
-        # Output kutoka calculations with Decimal should be identical across all
+        # Output kutoka calculations ukijumuisha Decimal should be identical across all
         # platforms.
         self.assertEqual(eval(decistmt(s)),
                          Decimal('-3.217160342717258261933904529E-7'))
@@ -1006,9 +1006,9 @@ kundi TestTokenizerAdheresToPep0263(TestCase):
 
     eleza test_latin1_coding_cookie_and_utf8_bom(self):
         """
-        As per PEP 0263, ikiwa a file starts with a utf-8 BOM signature, the only
+        As per PEP 0263, ikiwa a file starts ukijumuisha a utf-8 BOM signature, the only
         allowed encoding kila the comment ni 'utf-8'.  The text file used in
-        this test starts with a BOM signature, but specifies latin1 kama the
+        this test starts ukijumuisha a BOM signature, but specifies latin1 kama the
         coding, so verify that a SyntaxError ni ashiriad, which matches the
         behaviour of the interpreter when it encounters a similar condition.
         """
@@ -1046,7 +1046,7 @@ kundi Test_Tokenize(TestCase):
         tokens = list(_tokenize(readline, encoding='utf-8'))[1:-2]
         expected_tokens = [(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
-                         "bytes sio decoded with encoding")
+                         "bytes sio decoded ukijumuisha encoding")
 
     eleza test__tokenize_does_not_decode_with_encoding_none(self):
         literal = '"ЉЊЈЁЂ"'
@@ -1270,17 +1270,17 @@ kundi TestDetectEncoding(TestCase):
 
         # test coding cookie
         kila encoding kwenye ('iso-8859-15', 'utf-8'):
-            with open(filename, 'w', encoding=encoding) kama fp:
+            ukijumuisha open(filename, 'w', encoding=encoding) kama fp:
                 andika("# coding: %s" % encoding, file=fp)
                 andika("andika('euro:\u20ac')", file=fp)
-            with tokenize_open(filename) kama fp:
+            ukijumuisha tokenize_open(filename) kama fp:
                 self.assertEqual(fp.encoding, encoding)
                 self.assertEqual(fp.mode, 'r')
 
         # test BOM (no coding cookie)
-        with open(filename, 'w', encoding='utf-8-sig') kama fp:
+        ukijumuisha open(filename, 'w', encoding='utf-8-sig') kama fp:
             andika("andika('euro:\u20ac')", file=fp)
-        with tokenize_open(filename) kama fp:
+        ukijumuisha tokenize_open(filename) kama fp:
             self.assertEqual(fp.encoding, 'utf-8-sig')
             self.assertEqual(fp.mode, 'r')
 
@@ -1303,19 +1303,19 @@ kundi TestDetectEncoding(TestCase):
                 self._index += 1
                 rudisha line
 
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             ins = Bunk(lines, path)
             # Make sure lacking a name isn't an issue.
             toa ins.name
             detect_encoding(ins.readline)
-        with self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
             ins = Bunk(lines, path)
             detect_encoding(ins.readline)
 
     eleza test_open_error(self):
         # Issue #23840: open() must close the binary file on error
         m = BytesIO(b'#coding:xxx')
-        with mock.patch('tokenize._builtin_open', rudisha_value=m):
+        ukijumuisha mock.patch('tokenize._builtin_open', rudisha_value=m):
             self.assertRaises(SyntaxError, tokenize_open, 'foobar')
         self.assertKweli(m.closed)
 
@@ -1465,7 +1465,7 @@ kundi UntokenizeTest(TestCase):
         u = Untokenizer()
         u.prev_row = 2
         u.prev_col = 2
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             u.add_whitespace((1,3))
         self.assertEqual(cm.exception.args[0],
                 'start (1,3) precedes previous end (2,2)')
@@ -1509,7 +1509,7 @@ kundi TestRoundtrip(TestCase):
         tokenize.untokenize(), na the latter tokenized again to 2-tuples.
         The test fails ikiwa the 3 pair tokenizations do sio match.
 
-        When untokenize bugs are fixed, untokenize with 5-tuples should
+        When untokenize bugs are fixed, untokenize ukijumuisha 5-tuples should
         reproduce code that does sio contain a backslash continuation
         following spaces.  A proper test should test this.
         """
@@ -1549,7 +1549,7 @@ kundi TestRoundtrip(TestCase):
         self.check_roundtrip("ikiwa x == 1 : \n"
                              "  andika(x)\n")
         fn = support.findfile("tokenize_tests.txt")
-        with open(fn, 'rb') kama f:
+        ukijumuisha open(fn, 'rb') kama f:
             self.check_roundtrip(f)
         self.check_roundtrip("ikiwa x == 1:\n"
                              "    # A comment by itself.\n"
@@ -1560,7 +1560,7 @@ kundi TestRoundtrip(TestCase):
                              "    == 1):\n"
                              "    andika('x==1')\n")
         self.check_roundtrip("kundi Test: # A comment here\n"
-                             "  # A comment with weird indent\n"
+                             "  # A comment ukijumuisha weird indent\n"
                              "  after_com = 5\n"
                              "  eleza x(m): rudisha m*5 # a one liner\n"
                              "  eleza y(m): # A whitespace after the colon\n"
@@ -1622,8 +1622,8 @@ kundi TestRoundtrip(TestCase):
         kila testfile kwenye testfiles:
             ikiwa support.verbose >= 2:
                 andika('tokenize', testfile)
-            with open(testfile, 'rb') kama f:
-                with self.subTest(file=testfile):
+            ukijumuisha open(testfile, 'rb') kama f:
+                ukijumuisha self.subTest(file=testfile):
                     self.check_roundtrip(f)
 
 

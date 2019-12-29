@@ -61,7 +61,7 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
     eleza testTooManyPositionalErrorMessage(self):
         eleza f(a, b=Tupu, *, c=Tupu):
             pita
-        with self.assertRaises(TypeError) kama exc:
+        ukijumuisha self.assertRaises(TypeError) kama exc:
             f(1, 2, 3)
         expected = "f() takes kutoka 1 to 2 positional arguments but 3 were given"
         self.assertEqual(str(exc.exception), expected)
@@ -152,7 +152,7 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
         # determine their scope: global, local, cell...
         # This was sio done kila the default values of keyword
         # arguments kwenye a lambda definition, na the following line
-        # used to fail with a SystemError.
+        # used to fail ukijumuisha a SystemError.
         lambda *, k1=unittest: Tupu
 
     eleza test_mangling(self):
@@ -164,11 +164,11 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
     eleza test_default_evaluation_order(self):
         # See issue 16967
         a = 42
-        with self.assertRaises(NameError) kama err:
+        ukijumuisha self.assertRaises(NameError) kama err:
             eleza f(v=a, x=b, *, y=c, z=d):
                 pita
         self.assertEqual(str(err.exception), "name 'b' ni sio defined")
-        with self.assertRaises(NameError) kama err:
+        ukijumuisha self.assertRaises(NameError) kama err:
             f = lambda v=a, x=b, *, y=c, z=d: Tupu
         self.assertEqual(str(err.exception), "name 'b' ni sio defined")
 

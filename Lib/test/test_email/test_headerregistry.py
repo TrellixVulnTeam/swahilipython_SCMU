@@ -132,9 +132,9 @@ class TestUnstructuredHeader(TestHeaderBase):
                         decoded,
                         *args):
         l = len(args)
-        defects = args[0] if l>0 else []
-        header = 'Subject:' + (' ' if source else '')
-        folded = header + (args[1] if l>1 else source) + '\n'
+        defects = args[0] if l>0 isipokua []
+        header = 'Subject:' + (' ' if source isipokua '')
+        folded = header + (args[1] if l>1 isipokua source) + '\n'
         h = self.make_header('Subject', source)
         self.assertEqual(h, decoded)
         self.assertDefectsEqual(h.defects, defects)
@@ -225,11 +225,11 @@ class TestContentTypeHeader(TestHeaderBase):
                               subtype,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 else {}
-        defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] ni sio DITTO else source
-        header = 'Content-Type:' + ' ' if source else ''
-        folded = args[3] if l>3 else header + decoded + '\n'
+        parmdict = args[0] if l>0 isipokua {}
+        defects =  args[1] if l>1 isipokua []
+        decoded =  args[2] if l>2 and args[2] ni sio DITTO isipokua source
+        header = 'Content-Type:' + ' ' if source isipokua ''
+        folded = args[3] if l>3 isipokua header + decoded + '\n'
         h = self.make_header('Content-Type', source)
         self.assertEqual(h.content_type, content_type)
         self.assertEqual(h.maintype, maintype)
@@ -779,10 +779,10 @@ class TestContentTransferEncoding(TestHeaderBase):
                      cte,
                      *args):
         l = len(args)
-        defects =  args[0] if l>0 else []
-        decoded =  args[1] if l>1 and args[1] ni sio DITTO else source
-        header = 'Content-Transfer-Encoding:' + ' ' if source else ''
-        folded = args[2] if l>2 else header + source + '\n'
+        defects =  args[0] if l>0 isipokua []
+        decoded =  args[1] if l>1 and args[1] ni sio DITTO isipokua source
+        header = 'Content-Transfer-Encoding:' + ' ' if source isipokua ''
+        folded = args[2] if l>2 isipokua header + source + '\n'
         h = self.make_header('Content-Transfer-Encoding', source)
         self.assertEqual(h.cte, cte)
         self.assertDefectsEqual(h.defects, defects)
@@ -819,11 +819,11 @@ class TestContentDisposition(TestHeaderBase):
                               content_disposition,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 else {}
-        defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] ni sio DITTO else source
-        header = 'Content-Disposition:' + ' ' if source else ''
-        folded = args[3] if l>3 else header + source + '\n'
+        parmdict = args[0] if l>0 isipokua {}
+        defects =  args[1] if l>1 isipokua []
+        decoded =  args[2] if l>2 and args[2] ni sio DITTO isipokua source
+        header = 'Content-Disposition:' + ' ' if source isipokua ''
+        folded = args[3] if l>3 isipokua header + source + '\n'
         h = self.make_header('Content-Disposition', source)
         self.assertEqual(h.content_disposition, content_disposition)
         self.assertEqual(h.params, parmdict)
@@ -1215,7 +1215,7 @@ class TestAddressHeader(TestHeaderBase):
     def example_as_group(self, source, defects, decoded, display_name,
                          addr_spec, username, domain, comment):
         source = 'foo: {};'.format(source)
-        gdecoded = 'foo: {};'.format(decoded) if decoded else 'foo:;'
+        gdecoded = 'foo: {};'.format(decoded) if decoded isipokua 'foo:;'
         h = self.make_header('to', source)
         self.assertEqual(h, gdecoded)
         self.assertDefectsEqual(h.defects, defects)

@@ -71,8 +71,8 @@ kundi BaseTest(unittest.TestCase):
         rmtree(self.env_dir)
 
     eleza run_with_capture(self, func, *args, **kwargs):
-        with captured_stdout() kama output:
-            with captured_stderr() kama error:
+        ukijumuisha captured_stdout() kama output:
+            ukijumuisha captured_stderr() kama error:
                 func(*args, **kwargs)
         rudisha output.getvalue(), error.getvalue()
 
@@ -80,7 +80,7 @@ kundi BaseTest(unittest.TestCase):
         rudisha os.path.join(self.env_dir, *args)
 
     eleza get_text_file_contents(self, *args):
-        with open(self.get_env_file(*args), 'r') kama f:
+        ukijumuisha open(self.get_env_file(*args), 'r') kama f:
             result = f.read()
         rudisha result
 
@@ -93,7 +93,7 @@ kundi BasicTest(BaseTest):
 
     eleza test_defaults(self):
         """
-        Test the create function with default arguments.
+        Test the create function ukijumuisha default arguments.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -182,7 +182,7 @@ kundi BasicTest(BaseTest):
             d = os.path.join(self.env_dir, *subdirs)
             os.mkdir(d)
             fn = os.path.join(d, filename)
-            with open(fn, 'wb') kama f:
+            ukijumuisha open(fn, 'wb') kama f:
                 f.write(b'Still here?')
 
     eleza test_overwrite_existing(self):
@@ -194,7 +194,7 @@ kundi BasicTest(BaseTest):
         kila subdirs kwenye self.ENV_SUBDIRS:
             fn = os.path.join(self.env_dir, *(subdirs + ('foo',)))
             self.assertKweli(os.path.exists(fn))
-            with open(fn, 'rb') kama f:
+            ukijumuisha open(fn, 'rb') kama f:
                 self.assertEqual(f.read(), b'Still here?')
 
         builder = venv.EnvBuilder(clear=Kweli)
@@ -208,14 +208,14 @@ kundi BasicTest(BaseTest):
             fn = os.path.join(path, fn)
             ikiwa os.path.islink(fn) ama os.path.isfile(fn):
                 os.remove(fn)
-            elikiwa os.path.isdir(fn):
+            lasivyo os.path.isdir(fn):
                 rmtree(fn)
 
     eleza test_unoverwritable_fails(self):
-        #create a file clashing with directories kwenye the env dir
+        #create a file clashing ukijumuisha directories kwenye the env dir
         kila paths kwenye self.ENV_SUBDIRS[:3]:
             fn = os.path.join(self.env_dir, *paths)
-            with open(fn, 'wb') kama f:
+            ukijumuisha open(fn, 'wb') kama f:
                 f.write(b'')
             self.assertRaises((ValueError, OSError), venv.create, self.env_dir)
             self.clear_directory(self.env_dir)
@@ -349,7 +349,7 @@ kundi BasicTest(BaseTest):
         builder.create(self.env_dir)
         activate = os.path.join(self.env_dir, self.bindir, "activate")
         test_script = os.path.join(self.env_dir, "test_strict.sh")
-        with open(test_script, "w") kama f:
+        ukijumuisha open(test_script, "w") kama f:
             f.write("set -euo pipefail\n"
                     f"source {activate}\n"
                     "deactivate\n")
@@ -389,14 +389,14 @@ kundi EnsurePipTest(BaseTest):
         # appear empty. However http://bugs.python.org/issue20541 means
         # that doesn't currently work properly on Windows. Once that is
         # fixed, the "win_location" part of test_with_pip should be restored
-        with open(os.devnull, "rb") kama f:
+        ukijumuisha open(os.devnull, "rb") kama f:
             self.assertEqual(f.read(), b"")
 
         self.assertKweli(os.path.exists(os.devnull))
 
     eleza do_test_with_pip(self, system_site_packages):
         rmtree(self.env_dir)
-        with EnvironmentVarGuard() kama envvars:
+        ukijumuisha EnvironmentVarGuard() kama envvars:
             # pip's cross-version compatibility may trigger deprecation
             # warnings kwenye current versions of Python. Ensure related
             # environment settings don't cause venv to fail.
@@ -409,7 +409,7 @@ kundi EnsurePipTest(BaseTest):
             envvars["PIP_NO_INSTALL"] = "1"
             # Also check that we ignore the pip configuration file
             # See http://bugs.python.org/issue20053
-            with tempfile.TemporaryDirectory() kama home_dir:
+            ukijumuisha tempfile.TemporaryDirectory() kama home_dir:
                 envvars["HOME"] = home_dir
                 bad_config = "[global]\nno-install=1"
                 # Write to both config file names on all platforms to reduce
@@ -421,10 +421,10 @@ kundi EnsurePipTest(BaseTest):
                     dirpath = os.path.join(home_dir, dirname)
                     os.mkdir(dirpath)
                     fpath = os.path.join(dirpath, fname)
-                    with open(fpath, 'w') kama f:
+                    ukijumuisha open(fpath, 'w') kama f:
                         f.write(bad_config)
 
-                # Actually run the create command with all that unhelpful
+                # Actually run the create command ukijumuisha all that unhelpful
                 # config kwenye place to ensure we ignore it
                 jaribu:
                     self.run_with_capture(venv.create, self.env_dir,
@@ -454,7 +454,7 @@ kundi EnsurePipTest(BaseTest):
         # http://bugs.python.org/issue19728
         # Check the private uninstall command provided kila the Windows
         # installers works (at least kwenye a virtual environment)
-        with EnvironmentVarGuard() kama envvars:
+        ukijumuisha EnvironmentVarGuard() kama envvars:
             out, err = check_output([envpy,
                 '-W', 'ignore::DeprecationWarning', '-I',
                 '-m', 'ensurepip._uninstall'])
@@ -465,7 +465,7 @@ kundi EnsurePipTest(BaseTest):
         #   "The directory '$HOME/.cache/pip/http' ama its parent directory
         #    ni sio owned by the current user na the cache has been disabled.
         #    Please check the permissions na owner of that directory. If
-        #    executing pip with sudo, you may want sudo's -H flag."
+        #    executing pip ukijumuisha sudo, you may want sudo's -H flag."
         # where $HOME ni replaced by the HOME environment variable.
         err = re.sub("^(WARNING: )?The directory .* ama its parent directory "
                      "is sio owned by the current user .*$", "",

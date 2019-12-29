@@ -256,7 +256,7 @@ kundi TestCopy(unittest.TestCase):
                 rudisha self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
-        # State with boolean value ni false (issue #25718)
+        # State ukijumuisha boolean value ni false (issue #25718)
         x = C(0.0)
         self.assertEqual(copy.copy(x), x)
 
@@ -442,7 +442,7 @@ kundi TestCopy(unittest.TestCase):
         x = [(1, 2)]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # Tuples with immutable contents are immutable kila deepcopy.
+        # Tuples ukijumuisha immutable contents are immutable kila deepcopy.
         self.assertEqual(len(memo), 2)
 
     eleza test_deepcopy_inst_vanilla(self):
@@ -563,7 +563,7 @@ kundi TestCopy(unittest.TestCase):
         self.assertEqual(y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y.foo, x.foo)
-        # State with boolean value ni false (issue #25718)
+        # State ukijumuisha boolean value ni false (issue #25718)
         x = C([])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)

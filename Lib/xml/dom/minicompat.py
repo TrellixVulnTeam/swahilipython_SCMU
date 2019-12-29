@@ -15,7 +15,7 @@ should sio be imported; use xml.dom.minidom instead.
 #
 #   StringTypes   -- tuple of defined string types
 #
-#   defproperty   -- function used kwenye conjunction with GetattrMagic;
+#   defproperty   -- function used kwenye conjunction ukijumuisha GetattrMagic;
 #                    using these together ni needed to make them work
 #                    kama efficiently kama possible kwenye both Python 2.2+
 #                    na older versions.  For example:

@@ -180,7 +180,7 @@ kundi CodeTest(unittest.TestCase):
             rudisha (lambda: __class__).__closure__
 
         eleza new_code(c):
-            '''A new code object with a __class__ cell added to freevars'''
+            '''A new code object ukijumuisha a __class__ cell added to freevars'''
             rudisha c.replace(co_freevars=c.co_freevars + ('__class__',))
 
         eleza add_foreign_method(cls, name, f):
@@ -261,7 +261,7 @@ kundi CodeTest(unittest.TestCase):
             ("co_name", "newname"),
             ("co_lnotab", code2.co_lnotab),
         ):
-            with self.subTest(attr=attr, value=value):
+            ukijumuisha self.subTest(attr=attr, value=value):
                 new_code = code.replace(**{attr: value})
                 self.assertEqual(getattr(new_code, attr), value)
 

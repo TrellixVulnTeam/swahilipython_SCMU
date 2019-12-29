@@ -572,7 +572,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                         get, set = hits.get(key, (Tupu, Tupu))
                         get = val
                         hits[key] = get, set
-                    elikiwa key.startswith("_set_"):
+                    lasivyo key.startswith("_set_"):
                         key = key[5:]
                         get, set = hits.get(key, (Tupu, Tupu))
                         set = val
@@ -673,7 +673,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
         kundi B(metaclass=BMeta):
             pita
-        # BMeta.__new__ calls AMeta.__new__ with super:
+        # BMeta.__new__ calls AMeta.__new__ ukijumuisha super:
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
 
@@ -774,7 +774,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
         # This ni a TypeError, because of a metakundi conflict:
         # BNotMeta ni neither a subclass, nor a superkundi of type
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi D(C, metaclass=type):
                 pita
 
@@ -804,10 +804,10 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
         # TypeError: BNotMeta ni neither a
         # subclass, nor a superkundi of int
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(C, int()):
                 pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(int(), C):
                 pita
 
@@ -957,7 +957,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
     # see "A Monotonic Superkundi Linearization kila Dylan",
     # by Kim Barrett et al. (OOPSLA 1996)
     eleza test_consistency_with_epg(self):
-        # Testing consistency with EPG...
+        # Testing consistency ukijumuisha EPG...
         kundi Pane(object): pita
         kundi ScrollingMixin(object): pita
         kundi EditingMixin(object): pita
@@ -1058,37 +1058,37 @@ order (MRO) kila bases """
 
         kundi MyInt(int):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             (1).__class__ = MyInt
 
         kundi MyFloat(float):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             (1.0).__class__ = MyFloat
 
         kundi MyComplex(complex):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             (1 + 2j).__class__ = MyComplex
 
         kundi MyStr(str):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             "a".__class__ = MyStr
 
         kundi MyBytes(bytes):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             b"a".__class__ = MyBytes
 
         kundi MyTuple(tuple):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ().__class__ = MyTuple
 
         kundi MyFrozenSet(frozenset):
             __slots__ = ()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             frozenset().__class__ = MyFrozenSet
 
     eleza test_slots(self):
@@ -1283,14 +1283,14 @@ order (MRO) kila bases """
             eleza __del__(self_):
                 self.assertEqual(self_.a, 1)
                 self.assertEqual(self_.b, 2)
-        with support.captured_output('stderr') kama s:
+        ukijumuisha support.captured_output('stderr') kama s:
             h = H()
             toa h
         self.assertEqual(s.getvalue(), '')
 
         kundi X(object):
             __slots__ = "a"
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa X().a
 
     eleza test_slots_special(self):
@@ -1352,7 +1352,7 @@ order (MRO) kila bases """
         self.assertNotHasAttr(c, "__classcell__")
         c.__classcell__ = 42
         self.assertEqual(c.__classcell__, 42)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi C3:
                 __classcell__ = 42
                 __slots__ = ["__classcell__"]
@@ -1366,7 +1366,7 @@ order (MRO) kila bases """
         self.assertNotHasAttr(q, "__qualname__")
         q.__qualname__ = "q"
         self.assertEqual(q.__qualname__, "q")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi Q2:
                 __qualname__ = object()
                 __slots__ = ["__qualname__"]
@@ -1451,7 +1451,7 @@ order (MRO) kila bases """
         self.assertEqual(I(3)*2, 6)
         self.assertEqual(I(3)*I(2), 6)
 
-        # Test comparison of classes with dynamic metaclasses
+        # Test comparison of classes ukijumuisha dynamic metaclasses
         kundi dynamicmetaclass(type):
             pita
         kundi someclass(metaclass=dynamicmetaclass):
@@ -1540,7 +1540,7 @@ order (MRO) kila bases """
         self.assertEqual(ff.__get__(0, int)(42), (int, 42))
         self.assertEqual(ff.__get__(0)(42), (int, 42))
 
-        # Test super() with classmethods (SF bug 535444)
+        # Test super() ukijumuisha classmethods (SF bug 535444)
         self.assertEqual(C.goo.__self__, C)
         self.assertEqual(D.goo.__self__, D)
         self.assertEqual(super(D,D).goo.__self__, D)
@@ -1602,28 +1602,28 @@ order (MRO) kila bases """
         self.assertEqual(a2, a1)
         self.assertEqual(d2, d1)
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             spam_cm()
         self.assertEqual(
             str(cm.exception),
             "descriptor 'classmeth' of 'xxsubtype.spamlist' "
             "object needs an argument")
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             spam_cm(spam.spamlist())
         self.assertEqual(
             str(cm.exception),
             "descriptor 'classmeth' requires a type "
             "but received a 'xxsubtype.spamlist' instance")
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             spam_cm(list)
         expected_errmsg = (
             "descriptor 'classmeth' requires a subtype of 'xxsubtype.spamlist' "
             "but received 'list'")
         self.assertEqual(str(cm.exception), expected_errmsg)
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             spam_cm.__get__(Tupu, list)
         self.assertEqual(str(cm.exception), expected_errmsg)
 
@@ -1805,7 +1805,7 @@ order (MRO) kila bases """
             __new__ = object.__new__
             eleza __init__(self, foo):
                 self.foo = foo
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             b = B(3)
         self.assertEqual(b.foo, 3)
@@ -1813,7 +1813,7 @@ order (MRO) kila bases """
         toa B.__new__
         self.assertRaises(AssertionError, B)
         toa A.__new__
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             b = B(3)
         self.assertEqual(b.foo, 3)
@@ -1969,17 +1969,17 @@ order (MRO) kila bases """
 
         expected_errmsg = "descriptor 'add' of 'set' object needs an argument"
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             set_add()
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
         expected_errmsg = "descriptor 'add' kila 'set' objects doesn't apply to a 'int' object"
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             set_add(0)
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             set_add.__get__(0)
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
@@ -1988,7 +1988,7 @@ order (MRO) kila bases """
         # __getattribute__, but they still can be descriptors.
 
         eleza run_context(manager):
-            with manager:
+            ukijumuisha manager:
                 pita
         eleza iden(self):
             rudisha self
@@ -2047,10 +2047,10 @@ order (MRO) kila bases """
 
         kundi Checker(object):
             eleza __getattr__(self, attr, test=self):
-                test.fail("__getattr__ called with {0}".format(attr))
+                test.fail("__getattr__ called ukijumuisha {0}".format(attr))
             eleza __getattribute__(self, attr, test=self):
                 ikiwa attr haiko kwenye ok:
-                    test.fail("__getattribute__ called with {0}".format(attr))
+                    test.fail("__getattribute__ called ukijumuisha {0}".format(attr))
                 rudisha object.__getattribute__(self, attr)
         kundi SpecialDescr(object):
             eleza __init__(self, impl):
@@ -2281,7 +2281,7 @@ order (MRO) kila bases """
             self.fail("expected ZeroDivisionError kutoka bad property")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_properties_doc_attrib(self):
         kundi E(object):
             eleza getter(self):
@@ -2659,7 +2659,7 @@ order (MRO) kila bases """
         self.assertEqual(Sub.test(), Base.aProp)
 
         # Verify that super() doesn't allow keyword args
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             super(Base, kw=1)
 
     eleza test_basic_inheritance(self):
@@ -2996,18 +2996,18 @@ order (MRO) kila bases """
 
     eleza test_keywords(self):
         # Testing keyword args to basic type constructors ...
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             int(x=1)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             float(x=2)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             bool(x=2)
         self.assertEqual(complex(imag=42, real=666), complex(666, 42))
         self.assertEqual(str(object=500), '500')
         self.assertEqual(str(object=b'abc', errors='strict'), 'abc')
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             tuple(sequence=range(3))
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             list(sequence=(0, 1, 2))
         # note: kama of Python 2.3, dict() no longer has an "items" keyword arg
 
@@ -3695,7 +3695,7 @@ order (MRO) kila bases """
         kundi C(object):
             eleza __new__(cls, arg):
                 ikiwa isinstance(arg, str): rudisha [1, 2, 3]
-                elikiwa isinstance(arg, int): rudisha object.__new__(D)
+                lasivyo isinstance(arg, int): rudisha object.__new__(D)
                 isipokua: rudisha object.__new__(cls)
         kundi D(C):
             eleza __init__(self, arg):
@@ -3783,7 +3783,7 @@ order (MRO) kila bases """
         self.assertEqual(b.getfoo(), 24)
 
     eleza test_slices(self):
-        # Testing cases with slices na overridden __getitem__ ...
+        # Testing cases ukijumuisha slices na overridden __getitem__ ...
 
         # Strings
         self.assertEqual("hello"[:4], "hell")
@@ -3847,7 +3847,7 @@ order (MRO) kila bases """
         support.gc_collect()
         self.assertEqual(len(C.container), 1)
 
-        # Make c mortal again, so that the test framework with -l doesn't report
+        # Make c mortal again, so that the test framework ukijumuisha -l doesn't report
         # it kama a leak.
         toa C.__del__
 
@@ -4006,39 +4006,39 @@ order (MRO) kila bases """
             assert 0, "best_base calculation found wanting"
 
     eleza test_unsubclassable_types(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu)):
                 pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(object, type(Tupu)):
                 pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu), object):
                 pita
         kundi O(object):
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(O, type(Tupu)):
                 pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu), O):
                 pita
 
         kundi X(object):
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = type(Tupu),
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = object, type(Tupu)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = type(Tupu), object
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = O, type(Tupu)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = type(Tupu), O
 
     eleza test_mutable_bases_with_failing_mro(self):
-        # Testing mutable bases with failing mro...
+        # Testing mutable bases ukijumuisha failing mro...
         kundi WorkOnce(type):
             eleza __new__(self, name, bases, ns):
                 self.flag = 0
@@ -4053,7 +4053,7 @@ order (MRO) kila bases """
         kundi WorkAlways(type):
             eleza mro(self):
                 # this ni here to make sure that .mro()s aren't called
-                # with an exception set (which was possible at one point).
+                # ukijumuisha an exception set (which was possible at one point).
                 # An error message will be printed kwenye a debug build.
                 # What's a good way to test kila this?
                 rudisha type.mro(self)
@@ -4248,28 +4248,28 @@ order (MRO) kila bases """
                     rudisha object.__getattribute__(self, name)
                 isipokua:
                     rudisha getattr(self.__obj, name)
-        # Test with a classic class
+        # Test ukijumuisha a classic class
         kundi C:
             pita
         a = C()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
-        # Test with a classic subclass
+        # Test ukijumuisha a classic subclass
         kundi D(C):
             pita
         a = D()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
-        # Test with a new-style class
+        # Test ukijumuisha a new-style class
         kundi C(object):
             pita
         a = C()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
-        # Test with a new-style subclass
+        # Test ukijumuisha a new-style subclass
         kundi D(C):
             pita
         a = D()
@@ -4402,13 +4402,13 @@ order (MRO) kila bases """
             self.fail("did sio test __init__() kila Tupu rudisha")
 
     eleza assertNotOrderable(self, a, b):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a < b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a > b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a <= b
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a >= b
 
     eleza test_method_wrapper(self):
@@ -4611,7 +4611,7 @@ order (MRO) kila bases """
         self.assertRaises(AttributeError, getattr, meta, "__abstractmethods__")
         kundi X(object):
             pita
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa X.__abstractmethods__
 
     eleza test_proxy_call(self):
@@ -4623,11 +4623,11 @@ order (MRO) kila bases """
         self.assertIsInstance(fake_str, str)
 
         # call a method descriptor
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             str.split(fake_str)
 
         # call a slot wrapper descriptor
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             str.__add__(fake_str, "abc")
 
     eleza test_repr_as_str(self):
@@ -4656,28 +4656,28 @@ order (MRO) kila bases """
             __eq__ = str.__eq__
             __add__ = str.__add__
         a = A()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a == a
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a + a
 
     eleza test_slot_shadows_class_variable(self):
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             kundi X:
                 __slots__ = ["foo"]
                 foo = Tupu
         m = str(cm.exception)
-        self.assertEqual("'foo' kwenye __slots__ conflicts with kundi variable", m)
+        self.assertEqual("'foo' kwenye __slots__ conflicts ukijumuisha kundi variable", m)
 
     eleza test_set_doc(self):
         kundi X:
             "elephant"
         X.__doc__ = "banana"
         self.assertEqual(X.__doc__, "banana")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             type(list).__dict__["__doc__"].__set__(list, "blah")
         self.assertIn("can't set list.__doc__", str(cm.exception))
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             type(X).__dict__["__doc__"].__delete__(X)
         self.assertIn("can't delete X.__doc__", str(cm.exception))
         self.assertEqual(X.__doc__, "banana")
@@ -4701,7 +4701,7 @@ order (MRO) kila bases """
 
         kundi X:
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             toa X.__qualname__
 
         self.assertRaises(TypeError, type.__dict__['__qualname__'].__set__,
@@ -4825,7 +4825,7 @@ order (MRO) kila bases """
     @unittest.skipIf(_testcapi ni Tupu, 'need the _testcapi module')
     eleza test_bpo25750(self):
         # bpo-25750: calling a descriptor (implemented kama built-in
-        # function with METH_FASTCALL) should sio crash CPython ikiwa the
+        # function ukijumuisha METH_FASTCALL) should sio crash CPython ikiwa the
         # descriptor deletes itself kutoka the class.
         kundi Descr:
             __get__ = _testcapi.bad_get
@@ -4890,7 +4890,7 @@ kundi DictProxyTests(unittest.TestCase):
 
     eleza test_repr(self):
         # Testing mappingproxy.__repr__.
-        # We can't blindly compare with the repr of another dict kama ordering
+        # We can't blindly compare ukijumuisha the repr of another dict kama ordering
         # of keys na values ni arbitrary na may differ.
         r = repr(self.C.__dict__)
         self.assertKweli(r.startswith('mappingproxy('), r)
@@ -4974,7 +4974,7 @@ kundi PicklingTests(unittest.TestCase):
             reduce_value = (copyreg._reconstructor,
                             (type(obj),
                              base_type,
-                             Tupu ikiwa base_type ni object else base_type(obj)))
+                             Tupu ikiwa base_type ni object isipokua base_type(obj)))
             ikiwa state ni sio Tupu:
                 reduce_value += (state,)
             self.assertEqual(obj.__reduce_ex__(proto), reduce_value)
@@ -5004,7 +5004,7 @@ kundi PicklingTests(unittest.TestCase):
         obj = C2()
         kila proto kwenye protocols:
             ikiwa proto >= 2:
-                with self.assertRaises(TypeError):
+                ukijumuisha self.assertRaises(TypeError):
                     obj.__reduce_ex__(proto)
 
         kundi C3:
@@ -5031,7 +5031,7 @@ kundi PicklingTests(unittest.TestCase):
             kila cls kwenye C4, C5, C6, C7:
                 obj = cls()
                 ikiwa proto >= 2:
-                    with self.assertRaises((TypeError, ValueError)):
+                    ukijumuisha self.assertRaises((TypeError, ValueError)):
                         obj.__reduce_ex__(proto)
 
         kundi C9:
@@ -5047,7 +5047,7 @@ kundi PicklingTests(unittest.TestCase):
         obj = C10()
         kila proto kwenye protocols:
             ikiwa proto >= 2:
-                with self.assertRaises(IndexError):
+                ukijumuisha self.assertRaises(IndexError):
                     obj.__reduce_ex__(proto)
 
         kundi C11:
@@ -5069,10 +5069,10 @@ kundi PicklingTests(unittest.TestCase):
                 ashiria IndexError
         obj = C13()
         kila proto kwenye protocols:
-            with self.assertRaises(IndexError):
+            ukijumuisha self.assertRaises(IndexError):
                 obj.__reduce_ex__(proto)
             ikiwa proto < 2:
-                with self.assertRaises(IndexError):
+                ukijumuisha self.assertRaises(IndexError):
                     obj.__reduce__()
 
         kundi C14:
@@ -5086,9 +5086,9 @@ kundi PicklingTests(unittest.TestCase):
             ikiwa proto >= 2:
                 self._check_reduce(proto, obj, state=(Tupu, state))
             isipokua:
-                with self.assertRaises(TypeError):
+                ukijumuisha self.assertRaises(TypeError):
                     obj.__reduce_ex__(proto)
-                with self.assertRaises(TypeError):
+                ukijumuisha self.assertRaises(TypeError):
                     obj.__reduce__()
 
         kundi C15(dict):
@@ -5114,7 +5114,7 @@ kundi PicklingTests(unittest.TestCase):
                     ashiria AssertionError(attr)
                 rudisha Tupu
         kila protocol kwenye protocols:
-            state = {} ikiwa protocol >= 2 else Tupu
+            state = {} ikiwa protocol >= 2 isipokua Tupu
             self._check_reduce(protocol, Picky(), state=state)
 
     eleza _assert_is_copy(self, obj, objcopy, msg=Tupu):
@@ -5169,24 +5169,24 @@ kundi PicklingTests(unittest.TestCase):
                                      {pickle.loads, pickle._loads}))
 
     eleza test_pickle_slots(self):
-        # Tests pickling of classes with __slots__.
+        # Tests pickling of classes ukijumuisha __slots__.
 
-        # Pickling of classes with __slots__ but without __getstate__ should
+        # Pickling of classes ukijumuisha __slots__ but without __getstate__ should
         # fail (ikiwa using protocol 0 ama 1)
         global C
         kundi C:
             __slots__ = ['a']
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             pickle.dumps(C(), 0)
 
         global D
         kundi D(C):
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             pickle.dumps(D(), 0)
 
         kundi C:
-            "A kundi with __getstate__ na __setstate__ implemented."
+            "A kundi ukijumuisha __getstate__ na __setstate__ implemented."
             __slots__ = ['a']
             eleza __getstate__(self):
                 state = getattr(self, '__dict__', {}).copy()
@@ -5204,17 +5204,17 @@ kundi PicklingTests(unittest.TestCase):
                 rudisha "%s()<%r>" % (type(self).__name__, self.__getstate__())
 
         kundi D(C):
-            "A subkundi of a kundi with slots."
+            "A subkundi of a kundi ukijumuisha slots."
             pita
 
         global E
         kundi E(C):
-            "A subkundi with an extra slot."
+            "A subkundi ukijumuisha an extra slot."
             __slots__ = ['b']
 
         # Now it should work
         kila pickle_copier kwenye self._generate_pickle_copiers():
-            with self.subTest(pickle_copier=pickle_copier):
+            ukijumuisha self.subTest(pickle_copier=pickle_copier):
                 x = C()
                 y = pickle_copier.copy(x)
                 self._assert_is_copy(x, y)
@@ -5328,7 +5328,7 @@ kundi PicklingTests(unittest.TestCase):
         # Testing copying through pickle
         pickle_copiers = self._generate_pickle_copiers()
         kila cls, pickle_copier kwenye itertools.product(test_classes, pickle_copiers):
-            with self.subTest(cls=cls, pickle_copier=pickle_copier):
+            ukijumuisha self.subTest(cls=cls, pickle_copier=pickle_copier):
                 kwargs = getattr(cls, 'KWARGS', {})
                 obj = cls(*cls.ARGS, **kwargs)
                 proto = pickle_copier.proto
@@ -5345,7 +5345,7 @@ kundi PicklingTests(unittest.TestCase):
 
         # Testing copying through copy.deepcopy()
         kila cls kwenye test_classes:
-            with self.subTest(cls=cls):
+            ukijumuisha self.subTest(cls=cls):
                 kwargs = getattr(cls, 'KWARGS', {})
                 obj = cls(*cls.ARGS, **kwargs)
                 objcopy = deepcopy(obj)
@@ -5380,13 +5380,13 @@ kundi PicklingTests(unittest.TestCase):
         # Issue #29914
         # __reduce__() takes no arguments
         object().__reduce__()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             object().__reduce__(0)
         # __reduce_ex__() takes one integer argument
         object().__reduce_ex__(0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             object().__reduce_ex__()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             object().__reduce_ex__(Tupu)
 
 
@@ -5420,7 +5420,7 @@ kundi DebugHelperMeta(type):
     """
     eleza __new__(mcls, name, bases, attrs):
         ikiwa attrs.get('__doc__') ni Tupu:
-            attrs['__doc__'] = name  # helps when debugging with gdb
+            attrs['__doc__'] = name  # helps when debugging ukijumuisha gdb
         rudisha type.__new__(mcls, name, bases, attrs)
     eleza __repr__(cls):
         rudisha repr(cls.__name__)
@@ -5530,7 +5530,7 @@ kundi MroTest(unittest.TestCase):
             pita
 
         self.ready = Kweli
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             B1.__bases__ += ()
 
     eleza test_tp_subclasses_cycle_in_update_slots(self):
@@ -5596,7 +5596,7 @@ kundi MroTest(unittest.TestCase):
             pita
 
         self.ready = Kweli
-        with self.assertRaises(E):
+        ukijumuisha self.assertRaises(E):
             C.__bases__ = (B1,)
         B1.__bases__ = (C,)
 
@@ -5605,14 +5605,14 @@ kundi MroTest(unittest.TestCase):
 
     eleza test_incomplete_extend(self):
         """
-        Extending an unitialized type with type->tp_mro == NULL must
+        Extending an unitialized type ukijumuisha type->tp_mro == NULL must
         throw a reasonable TypeError exception, instead of failing
-        with PyErr_BadInternalCall.
+        ukijumuisha PyErr_BadInternalCall.
         """
         kundi M(DebugHelperMeta):
             eleza mro(cls):
                 ikiwa cls.__mro__ ni Tupu na cls.__name__ != 'X':
-                    with self.assertRaises(TypeError):
+                    ukijumuisha self.assertRaises(TypeError):
                         kundi X(cls):
                             pita
 
@@ -5629,7 +5629,7 @@ kundi MroTest(unittest.TestCase):
         kundi M(DebugHelperMeta):
             eleza mro(cls):
                 ikiwa cls.__mro__ ni Tupu:
-                    with self.assertRaises(AttributeError):
+                    ukijumuisha self.assertRaises(AttributeError):
                         super(cls, cls).xxx
 
                 rudisha type.mro(cls)
@@ -5639,7 +5639,7 @@ kundi MroTest(unittest.TestCase):
 
 
 eleza test_main():
-    # Run all local test cases, with PTypesLongInitTest first.
+    # Run all local test cases, ukijumuisha PTypesLongInitTest first.
     support.run_unittest(PTypesLongInitTest, OperatorsTest,
                          ClassPropertiesAndMethods, DictProxyTests,
                          MiscTests, PicklingTests, SharedKeyTests,

@@ -158,14 +158,14 @@ kundi Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_b(Index()))
         self.assertEqual(0, getargs_b(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_b, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_b(BadIndex2()))
         self.assertEqual(0, getargs_b(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_b(Int()))
         self.assertEqual(0, getargs_b(IntSubclass()))
         self.assertRaises(TypeError, getargs_b, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_b(BadInt2()))
         self.assertEqual(0, getargs_b(BadInt3()))
 
@@ -184,14 +184,14 @@ kundi Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_B(Index()))
         self.assertEqual(0, getargs_B(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_B, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_B(BadIndex2()))
         self.assertEqual(0, getargs_B(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_B(Int()))
         self.assertEqual(0, getargs_B(IntSubclass()))
         self.assertRaises(TypeError, getargs_B, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_B(BadInt2()))
         self.assertEqual(0, getargs_B(BadInt3()))
 
@@ -210,14 +210,14 @@ kundi Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_H(Index()))
         self.assertEqual(0, getargs_H(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_H, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_H(BadIndex2()))
         self.assertEqual(0, getargs_H(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_H(Int()))
         self.assertEqual(0, getargs_H(IntSubclass()))
         self.assertRaises(TypeError, getargs_H, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_H(BadInt2()))
         self.assertEqual(0, getargs_H(BadInt3()))
 
@@ -237,14 +237,14 @@ kundi Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_I(Index()))
         self.assertEqual(0, getargs_I(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_I, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_I(BadIndex2()))
         self.assertEqual(0, getargs_I(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_I(Int()))
         self.assertEqual(0, getargs_I(IntSubclass()))
         self.assertRaises(TypeError, getargs_I, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_I(BadInt2()))
         self.assertEqual(0, getargs_I(BadInt3()))
 
@@ -260,7 +260,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
     eleza test_k(self):
         kutoka _testcapi agiza getargs_k
         # k rudishas 'unsigned long', no range checking
-        # it does sio accept float, ama instances with __int__
+        # it does sio accept float, ama instances ukijumuisha __int__
         self.assertRaises(TypeError, getargs_k, 3.14)
         self.assertRaises(TypeError, getargs_k, Index())
         self.assertEqual(0, getargs_k(IndexIntSubclass()))
@@ -290,14 +290,14 @@ kundi Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_h(Index()))
         self.assertEqual(0, getargs_h(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_h, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_h(BadIndex2()))
         self.assertEqual(0, getargs_h(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_h(Int()))
         self.assertEqual(0, getargs_h(IntSubclass()))
         self.assertRaises(TypeError, getargs_h, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_h(BadInt2()))
         self.assertEqual(0, getargs_h(BadInt3()))
 
@@ -316,14 +316,14 @@ kundi Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_i(Index()))
         self.assertEqual(0, getargs_i(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_i, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_i(BadIndex2()))
         self.assertEqual(0, getargs_i(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_i(Int()))
         self.assertEqual(0, getargs_i(IntSubclass()))
         self.assertRaises(TypeError, getargs_i, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_i(BadInt2()))
         self.assertEqual(0, getargs_i(BadInt3()))
 
@@ -342,14 +342,14 @@ kundi Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_l(Index()))
         self.assertEqual(0, getargs_l(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_l, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_l(BadIndex2()))
         self.assertEqual(0, getargs_l(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_l(Int()))
         self.assertEqual(0, getargs_l(IntSubclass()))
         self.assertRaises(TypeError, getargs_l, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_l(BadInt2()))
         self.assertEqual(0, getargs_l(BadInt3()))
 
@@ -369,7 +369,7 @@ kundi Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_n(Index()))
         self.assertEqual(0, getargs_n(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_n, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_n(BadIndex2()))
         self.assertEqual(0, getargs_n(BadIndex3()))
         self.assertRaises(TypeError, getargs_n, Int())
@@ -397,14 +397,14 @@ kundi LongLong_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_L(Index()))
         self.assertEqual(0, getargs_L(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_L, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_L(BadIndex2()))
         self.assertEqual(0, getargs_L(BadIndex3()))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(99, getargs_L(Int()))
         self.assertEqual(0, getargs_L(IntSubclass()))
         self.assertRaises(TypeError, getargs_L, BadInt())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_L(BadInt2()))
         self.assertEqual(0, getargs_L(BadInt3()))
 
@@ -454,7 +454,7 @@ kundi Float_TestCase(unittest.TestCase):
         self.assertEqual(getargs_f(FloatSubclass(7.5)), 7.5)
         self.assertEqual(getargs_f(FloatSubclass2(7.5)), 7.5)
         self.assertRaises(TypeError, getargs_f, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_f(BadFloat2()), 4.25)
         self.assertEqual(getargs_f(BadFloat3(7.5)), 7.5)
         self.assertEqual(getargs_f(Index()), 99.0)
@@ -488,7 +488,7 @@ kundi Float_TestCase(unittest.TestCase):
         self.assertEqual(getargs_d(FloatSubclass(7.5)), 7.5)
         self.assertEqual(getargs_d(FloatSubclass2(7.5)), 7.5)
         self.assertRaises(TypeError, getargs_d, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_d(BadFloat2()), 4.25)
         self.assertEqual(getargs_d(BadFloat3(7.5)), 7.5)
         self.assertEqual(getargs_d(Index()), 99.0)
@@ -512,7 +512,7 @@ kundi Float_TestCase(unittest.TestCase):
         self.assertEqual(getargs_D(ComplexSubclass(7.5+0.25j)), 7.5+0.25j)
         self.assertEqual(getargs_D(ComplexSubclass2(7.5+0.25j)), 7.5+0.25j)
         self.assertRaises(TypeError, getargs_D, BadComplex())
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_D(BadComplex2()), 4.25+0.5j)
         self.assertEqual(getargs_D(BadComplex3(7.5+0.25j)), 7.5+0.25j)
         self.assertEqual(getargs_D(Index()), 99.0+0j)
@@ -732,31 +732,31 @@ kundi KeywordOnly_TestCase(unittest.TestCase):
             (1, -1, -1)
             )
         # required arg missing
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function missing required argument 'required' \(pos 1\)"):
             getargs_keyword_only(optional=2)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function missing required argument 'required' \(pos 1\)"):
             getargs_keyword_only(keyword_only=3)
 
     eleza test_too_many_args(self):
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function takes at most 2 positional arguments \(3 given\)"):
             getargs_keyword_only(1, 2, 3)
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function takes at most 3 arguments \(4 given\)"):
             getargs_keyword_only(1, 2, 3, keyword_only=5)
 
     eleza test_invalid_keyword(self):
         # extraneous keyword arg
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             "'monster' ni an invalid keyword argument kila this function"):
             getargs_keyword_only(1, 2, monster=666)
 
     eleza test_surrogate_keyword(self):
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             "'\udc80' ni an invalid keyword argument kila this function"):
             getargs_keyword_only(1, 2, **{'\uDC80': 10})
 
@@ -780,16 +780,16 @@ kundi PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
     eleza test_required_args(self):
         self.assertEqual(self.getargs(1), (1, -1, -1))
         # required positional arg missing
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function takes at least 1 positional argument \(0 given\)"):
             self.getargs()
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             r"function takes at least 1 positional argument \(0 given\)"):
             self.getargs(keyword=3)
 
     eleza test_empty_keyword(self):
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
             "'' ni an invalid keyword argument kila this function"):
             self.getargs(1, 2, **{'': 666})
 
@@ -1083,7 +1083,7 @@ kundi SkipitemTest(unittest.TestCase):
            ** Some format units have special funny semantics na it would
               be difficult to accommodate them here.  Since these are all
               well-established na properly skipped kwenye skipitem() we can
-              get away with sio testing them--this test ni really intended
+              get away ukijumuisha sio testing them--this test ni really intended
               to catch *new* format units.
 
           *** Python C source files must be ASCII.  Therefore it's impossible
@@ -1143,23 +1143,23 @@ kundi SkipitemTest(unittest.TestCase):
         kila c kwenye string.ascii_letters:
             kila c2 kwenye '#*':
                 f = c + c2
-                with self.subTest(format=f):
+                ukijumuisha self.subTest(format=f):
                     optional_format = "|" + f + "i"
                     ikiwa f kwenye supported:
                         parse(empty_tuple, dict_b, optional_format, keywords)
                     isipokua:
-                        with self.assertRaisesRegex(SystemError,
+                        ukijumuisha self.assertRaisesRegex(SystemError,
                                     'impossible<bad format char>'):
                             parse(empty_tuple, dict_b, optional_format, keywords)
 
         kila c kwenye map(chr, range(32, 128)):
             f = 'e' + c
             optional_format = "|" + f + "i"
-            with self.subTest(format=f):
+            ukijumuisha self.subTest(format=f):
                 ikiwa c kwenye 'st':
                     parse(empty_tuple, dict_b, optional_format, keywords)
                 isipokua:
-                    with self.assertRaisesRegex(SystemError,
+                    ukijumuisha self.assertRaisesRegex(SystemError,
                                 'impossible<bad format char>'):
                         parse(empty_tuple, dict_b, optional_format, keywords)
 
@@ -1206,24 +1206,24 @@ kundi ParseTupleAndKeywords_Test(unittest.TestCase):
 
         parse((1, 2, 3), {}, 'OOO', ['', '', 'a'])
         parse((1, 2), {'a': 3}, 'OOO', ['', '', 'a'])
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                r'function takes at least 2 positional arguments \(1 given\)'):
             parse((1,), {'a': 3}, 'OOO', ['', '', 'a'])
         parse((1,), {}, 'O|OO', ['', '', 'a'])
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                r'function takes at least 1 positional argument \(0 given\)'):
             parse((), {}, 'O|OO', ['', '', 'a'])
         parse((1, 2), {'a': 3}, 'OO$O', ['', '', 'a'])
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                r'function takes exactly 2 positional arguments \(1 given\)'):
             parse((1,), {'a': 3}, 'OO$O', ['', '', 'a'])
         parse((1,), {}, 'O|O$O', ['', '', 'a'])
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                r'function takes at least 1 positional argument \(0 given\)'):
             parse((), {}, 'O|O$O', ['', '', 'a'])
-        with self.assertRaisesRegex(SystemError, r'Empty parameter name after \$'):
+        ukijumuisha self.assertRaisesRegex(SystemError, r'Empty parameter name after \$'):
             parse((1,), {}, 'O|$OO', ['', '', 'a'])
-        with self.assertRaisesRegex(SystemError, 'Empty keyword'):
+        ukijumuisha self.assertRaisesRegex(SystemError, 'Empty keyword'):
             parse((1,), {}, 'O|OO', ['', 'a', ''])
 
 

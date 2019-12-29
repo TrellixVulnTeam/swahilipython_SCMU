@@ -86,7 +86,7 @@ kundi MimeTypes:
         to the list of known extensions.
 
         If strict ni true, information will be added to
-        list of standard types, else to the list of non-standard
+        list of standard types, isipokua to the list of non-standard
         types.
         """
         self.types_map[strict][ext] = type
@@ -145,14 +145,14 @@ kundi MimeTypes:
         types_map = self.types_map[Kweli]
         ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() kwenye types_map:
+        lasivyo ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
-        elikiwa strict:
+        lasivyo strict:
             rudisha Tupu, encoding
         types_map = self.types_map[Uongo]
         ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() kwenye types_map:
+        lasivyo ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
         isipokua:
             rudisha Tupu, encoding
@@ -162,7 +162,7 @@ kundi MimeTypes:
 
         Return value ni a list of strings giving the possible filename
         extensions, including the leading dot ('.').  The extension ni not
-        guaranteed to have been associated with any particular data stream,
+        guaranteed to have been associated ukijumuisha any particular data stream,
         but would be mapped to the MIME type `type' by guess_type().
 
         Optional `strict' argument when false adds a bunch of commonly found,
@@ -181,7 +181,7 @@ kundi MimeTypes:
 
         Return value ni a string giving a filename extension,
         including the leading dot ('.').  The extension ni not
-        guaranteed to have been associated with any particular data
+        guaranteed to have been associated ukijumuisha any particular data
         stream, but would be mapped to the MIME type `type' by
         guess_type().  If no extension can be guessed kila `type', Tupu
         ni rudishaed.
@@ -199,10 +199,10 @@ kundi MimeTypes:
         Read a single mime.types-format file, specified by pathname.
 
         If strict ni true, information will be added to
-        list of standard types, else to the list of non-standard
+        list of standard types, isipokua to the list of non-standard
         types.
         """
-        with open(filename, encoding='utf-8') kama fp:
+        ukijumuisha open(filename, encoding='utf-8') kama fp:
             self.readfp(fp, strict)
 
     eleza readfp(self, fp, strict=Kweli):
@@ -210,7 +210,7 @@ kundi MimeTypes:
         Read a single mime.types-format file.
 
         If strict ni true, information will be added to
-        list of standard types, else to the list of non-standard
+        list of standard types, isipokua to the list of non-standard
         types.
         """
         wakati 1:
@@ -233,7 +233,7 @@ kundi MimeTypes:
         Load the MIME types database kutoka Windows registry.
 
         If strict ni true, information will be added to
-        list of standard types, else to the list of non-standard
+        list of standard types, isipokua to the list of non-standard
         types.
         """
 
@@ -253,10 +253,10 @@ kundi MimeTypes:
                         tuma ctype
                 i += 1
 
-        with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') kama hkcr:
+        ukijumuisha _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') kama hkcr:
             kila subkeyname kwenye enum_types(hkcr):
                 jaribu:
-                    with _winreg.OpenKey(hkcr, subkeyname) kama subkey:
+                    ukijumuisha _winreg.OpenKey(hkcr, subkeyname) kama subkey:
                         # Only check file extensions
                         ikiwa sio subkeyname.startswith("."):
                             endelea
@@ -297,7 +297,7 @@ eleza guess_all_extensions(type, strict=Kweli):
 
     Return value ni a list of strings giving the possible filename
     extensions, including the leading dot ('.').  The extension ni not
-    guaranteed to have been associated with any particular data
+    guaranteed to have been associated ukijumuisha any particular data
     stream, but would be mapped to the MIME type `type' by
     guess_type().  If no extension can be guessed kila `type', Tupu
     ni rudishaed.
@@ -314,7 +314,7 @@ eleza guess_extension(type, strict=Kweli):
 
     Return value ni a string giving a filename extension, including the
     leading dot ('.').  The extension ni sio guaranteed to have been
-    associated with any particular data stream, but would be mapped to the
+    associated ukijumuisha any particular data stream, but would be mapped to the
     MIME type `type' by guess_type().  If no extension can be guessed for
     `type', Tupu ni rudishaed.
 
@@ -334,7 +334,7 @@ eleza add_type(type, ext, strict=Kweli):
     to the list of known extensions.
 
     If strict ni true, information will be added to
-    list of standard types, else to the list of non-standard
+    list of standard types, isipokua to the list of non-standard
     types.
     """
     ikiwa _db ni Tupu:
@@ -375,7 +375,7 @@ eleza read_mime_types(file):
         f = open(file)
     tatizo OSError:
         rudisha Tupu
-    with f:
+    ukijumuisha f:
         db = MimeTypes()
         db.readfp(f, Kweli)
         rudisha db.types_map[Kweli]
@@ -403,12 +403,12 @@ eleza _default_mime_types():
         '.xz': 'xz',
         }
 
-    # Before adding new types, make sure they are either registered with IANA,
+    # Before adding new types, make sure they are either registered ukijumuisha IANA,
     # at http://www.iana.org/assignments/media-types
     # ama extensions, i.e. using the x- prefix
 
     # If you add to these, please keep them sorted by mime type.
-    # Make sure the entry with the preferred file extension kila a particular mime type
+    # Make sure the entry ukijumuisha the preferred file extension kila a particular mime type
     # appears before any others of the same mimetype.
     types_map = _types_map_default = {
         '.js'     : 'application/javascript',
@@ -594,9 +594,9 @@ More than one type argument may be given.
     kila opt, arg kwenye opts:
         ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elikiwa opt kwenye ('-l', '--lenient'):
+        lasivyo opt kwenye ('-l', '--lenient'):
             strict = 0
-        elikiwa opt kwenye ('-e', '--extension'):
+        lasivyo opt kwenye ('-e', '--extension'):
             extension = 1
     kila gtype kwenye args:
         ikiwa extension:

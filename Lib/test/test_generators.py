@@ -103,7 +103,7 @@ kundi FinalizationTest(unittest.TestCase):
         kila gen_fun kwenye (f, g, f2, g2, f3, g3):
             gen = gen_fun()
             self.assertEqual(next(gen), 1)
-            with self.assertRaises(StopIteration) kama cm:
+            ukijumuisha self.assertRaises(StopIteration) kama cm:
                 gen.send(2)
             self.assertEqual(cm.exception.value, 2)
 
@@ -150,7 +150,7 @@ kundi GeneratorTest(unittest.TestCase):
         eleza f():
             tuma 1
         g = f()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             copy.copy(g)
 
     eleza test_pickle(self):
@@ -158,7 +158,7 @@ kundi GeneratorTest(unittest.TestCase):
             tuma 1
         g = f()
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(g, proto)
 
 
@@ -196,7 +196,7 @@ kundi ExceptionTest(unittest.TestCase):
                 pita
 
         next(make)
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             next(make)
         self.assertIsTupu(cm.exception.__context__)
 
@@ -277,7 +277,7 @@ kundi ExceptionTest(unittest.TestCase):
             ashiria StopIteration
             tuma
 
-        with self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
             next(gen())
 
     eleza test_tutorial_stopiteration(self):
@@ -291,7 +291,7 @@ kundi ExceptionTest(unittest.TestCase):
         g = f()
         self.assertEqual(next(g), 1)
 
-        with self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
             next(g)
 
     eleza test_rudisha_tuple(self):
@@ -300,7 +300,7 @@ kundi ExceptionTest(unittest.TestCase):
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        with self.assertRaises(StopIteration) kama cm:
+        ukijumuisha self.assertRaises(StopIteration) kama cm:
             gen.send((2,))
         self.assertEqual(cm.exception.value, (2,))
 
@@ -310,7 +310,7 @@ kundi ExceptionTest(unittest.TestCase):
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        with self.assertRaises(StopIteration) kama cm:
+        ukijumuisha self.assertRaises(StopIteration) kama cm:
             gen.send(StopIteration(2))
         self.assertIsInstance(cm.exception.value, StopIteration)
         self.assertEqual(cm.exception.value.value, 2)
@@ -716,7 +716,7 @@ From the Iterators list, about the types of these things.
 >>> [s kila s kwenye dir(i) ikiwa sio s.startswith('_')]
 ['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_tumakutoka', 'send', 'throw']
 >>> kutoka test.support agiza HAVE_DOCSTRINGS
->>> andika(i.__next__.__doc__ ikiwa HAVE_DOCSTRINGS else 'Implement next(self).')
+>>> andika(i.__next__.__doc__ ikiwa HAVE_DOCSTRINGS isipokua 'Implement next(self).')
 Implement next(self).
 >>> iter(i) ni i
 Kweli
@@ -875,7 +875,7 @@ Try writing it without generators, na correctly, na without generating
 ...         ikiwa ng < nh:
 ...             tuma ng
 ...             ng = next(g)
-...         elikiwa ng > nh:
+...         lasivyo ng > nh:
 ...             tuma nh
 ...             nh = next(h)
 ...         isipokua:
@@ -914,7 +914,7 @@ address space, na it *looked* like a very slow leak.
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
 
-Heh.  Here's one way to get a shared list, complete with an excruciating
+Heh.  Here's one way to get a shared list, complete ukijumuisha an excruciating
 namespace renaming trick.  The *pretty* part ni that the times() na merge()
 functions can be reused as-is, because they only assume their stream
 arguments are iterable -- a LazyList ni the same kama a generator to times().
@@ -977,7 +977,7 @@ Ye olde Fibonacci generator, LazyList style.
 [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
 
 
-Running after your tail with itertools.tee (new kwenye version 2.4)
+Running after your tail ukijumuisha itertools.tee (new kwenye version 2.4)
 
 The algorithms "m235" (Hamming) na Fibonacci presented above are both
 examples of a whole family of FP (functional programming) algorithms
@@ -994,8 +994,8 @@ and over again. This ni ensured kwenye most FP languages kama a built-in feature
 In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
-This ni what had been attempted above with the LazyList class. One problem
-with that kundi ni that it keeps a list of all of the generated results and
+This ni what had been attempted above ukijumuisha the LazyList class. One problem
+ukijumuisha that kundi ni that it keeps a list of all of the generated results and
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only kama needed instead of producing them
 all na thereby wasting memory.
@@ -1030,7 +1030,7 @@ iterators, whereupon it ni deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, ama very little.
 
 The beauty of it ni that recursive running-after-their-tail FP algorithms
-are quite straightforwardly expressed with this Python idiom.
+are quite straightforwardly expressed ukijumuisha this Python idiom.
 
 Ye olde Fibonacci generator, tee style.
 
@@ -1056,7 +1056,7 @@ Ye olde Fibonacci generator, tee style.
 
 """
 
-# syntax_tests mostly provokes SyntaxErrors.  Also fiddling with #ikiwa 0
+# syntax_tests mostly provokes SyntaxErrors.  Also fiddling ukijumuisha #ikiwa 0
 # hackery.
 
 syntax_tests = """
@@ -1131,7 +1131,7 @@ These are fine:
 ...     jaribu:
 ...         ikiwa x==4:
 ...             pita
-...         elikiwa 0:
+...         lasivyo 0:
 ...             jaribu:
 ...                 1//0
 ...             tatizo SyntaxError:
@@ -1289,7 +1289,7 @@ eleza conjoin(gs):
         ikiwa i >= n:
             tuma values
 
-        elikiwa (n-i) % 3:
+        lasivyo (n-i) % 3:
             ip1 = i+1
             kila values[i] kwenye gs[i]():
                 kila x kwenye gen(ip1):
@@ -1333,12 +1333,12 @@ eleza conjoin(gs):
 # needs 10,000 levels).  In such cases Python ni likely to run out of
 # stack space due to recursion.  So here's a recursion-free version of
 # conjoin too.
-# NOTE WELL:  This allows large problems to be solved with only trivial
+# NOTE WELL:  This allows large problems to be solved ukijumuisha only trivial
 # demands on stack space.  Without explicitly resumable generators, this is
 # much harder to achieve.  OTOH, this ni much slower (up to a factor of 2)
 # than the fancy unrolled recursive conjoin.
 
-eleza flat_conjoin(gs):  # rename to conjoin to run tests with this instead
+eleza flat_conjoin(gs):  # rename to conjoin to run tests ukijumuisha this instead
     n = len(gs)
     values = [Tupu] * n
     iters  = [Tupu] * n
@@ -1425,7 +1425,7 @@ kundi Queens:
             andika(sep)
 
 # A conjoin-based Knight's Tour solver.  This ni pretty sophisticated
-# (e.g., when used with flat_conjoin above, na pitaing hard=1 to the
+# (e.g., when used ukijumuisha flat_conjoin above, na pitaing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
 # creating 10s of thousands of generators then!), na ni lengthy.
 
@@ -1439,15 +1439,15 @@ kundi Knights:
 
         # Remove i0 kutoka each of its successor's successor lists, i.e.
         # successors can't go back to i0 again.  Return 0 ikiwa we can
-        # detect this makes a solution impossible, else rudisha 1.
+        # detect this makes a solution impossible, isipokua rudisha 1.
 
         eleza remove_kutoka_successors(i0, len=len):
             # If we remove all exits kutoka a free square, we're dead:
             # even ikiwa we move to it next, we can't leave it again.
-            # If we create a square with one exit, we must visit it next;
-            # else somebody else will have to visit it, na since there's
+            # If we create a square ukijumuisha one exit, we must visit it next;
+            # isipokua somebody isipokua will have to visit it, na since there's
             # only one adjacent, there won't be a way to leave it again.
-            # Finally, ikiwa we create more than one free square with a
+            # Finally, ikiwa we create more than one free square ukijumuisha a
             # single exit, we can only move to one of them next, leaving
             # the other one a dead end.
             ne0 = ne1 = 0
@@ -1457,7 +1457,7 @@ kundi Knights:
                 e = len(s)
                 ikiwa e == 0:
                     ne0 += 1
-                elikiwa e == 1:
+                lasivyo e == 1:
                     ne1 += 1
             rudisha ne0 == 0 na ne1 < 2
 
@@ -1508,7 +1508,7 @@ kundi Knights:
         # Generate moves 3 through m*n-1.
         eleza advance(len=len):
             # If some successor has only one exit, must take it.
-            # Else favor successors with fewer exits.
+            # Else favor successors ukijumuisha fewer exits.
             candidates = []
             kila i kwenye succs[self.lastij]:
                 e = len(succs[i])
@@ -1534,7 +1534,7 @@ kundi Knights:
         # matters a lot ni 52x52.
         eleza advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
-            # Else favor successors with fewer exits.
+            # Else favor successors ukijumuisha fewer exits.
             # Break ties via max distance kutoka board centerpoint (favor
             # corners na edges whenever possible).
             candidates = []
@@ -1826,7 +1826,7 @@ Yield ni allowed only kwenye the outermost iterable kwenye generator expression:
 <kundi 'generator'>
 
 
-A tuma expression with augmented assignment.
+A tuma expression ukijumuisha augmented assignment.
 
 >>> eleza coroutine(seq):
 ...     count = 0
@@ -1929,7 +1929,7 @@ TypeError: exceptions must be classes ama instances deriving kutoka BaseExceptio
 ...         ashiria exc
 ...     except:
 ...         g.throw(*sys.exc_info())
->>> throw(g,ValueError) # do it with traceback included
+>>> throw(g,ValueError) # do it ukijumuisha traceback included
 caught ValueError ()
 
 >>> g.send(1)
@@ -2050,7 +2050,7 @@ RuntimeError: generator ignored GeneratorExit
 
 Our ill-behaved code should be invoked during GC:
 
->>> with support.catch_unraisable_exception() kama cm:
+>>> ukijumuisha support.catch_unraisable_exception() kama cm:
 ...     g = f()
 ...     next(g)
 ...     toa g
@@ -2164,7 +2164,7 @@ to test.
 ...             ashiria RuntimeError(message)
 ...         invoke("toa failed")
 ...
->>> with support.catch_unraisable_exception() kama cm:
+>>> ukijumuisha support.catch_unraisable_exception() kama cm:
 ...     l = Leaker()
 ...     toa l
 ...

@@ -116,19 +116,19 @@ kundi TransactionTests(unittest.TestCase):
     eleza CheckRaiseTimeout(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.cur2.execute("insert into test(i) values (5)")
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 2),
                      'test hangs on sqlite versions older than 3.2.2')
     eleza CheckLocking(self):
         """
-        This tests the improved concurrency with pysqlite 2.3.4. You needed
+        This tests the improved concurrency ukijumuisha pysqlite 2.3.4. You needed
         to roll back con2 before you could commit con1.
         """
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.cur2.execute("insert into test(i) values (5)")
         # NO self.con2.rollback() HERE!!!
         self.con1.commit()
@@ -145,7 +145,7 @@ kundi TransactionTests(unittest.TestCase):
         cur.execute("select 1 union select 2 union select 3")
 
         con.rollback()
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             cur.fetchall()
 
 kundi SpecialCommandTests(unittest.TestCase):
@@ -185,7 +185,7 @@ kundi TransactionalDDL(unittest.TestCase):
         self.con.execute("begin immediate")
         self.con.execute("create table test(i)")
         self.con.rollback()
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.con.execute("select * kutoka test")
 
     eleza CheckTransactionalDDL(self):
@@ -194,7 +194,7 @@ kundi TransactionalDDL(unittest.TestCase):
         self.con.execute("begin")
         self.con.execute("create table test(i)")
         self.con.rollback()
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.con.execute("select * kutoka test")
 
     eleza tearDown(self):

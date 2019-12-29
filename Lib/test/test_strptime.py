@@ -46,7 +46,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
 
     eleza test_weekday(self):
         # Make sure that full na abbreviated weekday names are correct in
-        # both string na position with tuple
+        # both string na position ukijumuisha tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
                                   "Testing of full weekday name failed")
         self.compare_against_time(self.LT_ins.a_weekday, '%a', 6,
@@ -81,7 +81,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
 
     eleza test_date_time(self):
         # Check that LC_date_time, LC_date, na LC_time are correct
-        # the magic date ni used so kama to sio have issues with %c when day of
+        # the magic date ni used so kama to sio have issues ukijumuisha %c when day of
         #  the month ni a single digit na has a leading space.  This ni sio an
         #  issue since strptime still parses it correctly.  The problem is
         #  testing these directives kila correctness by comparing strftime
@@ -146,7 +146,7 @@ kundi TimeRETests(unittest.TestCase):
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
                                self.locale_time.a_month[4]))
         self.assertKweli(found,
-            "Match failed with '%s' regex na '%s' string" %
+            "Match failed ukijumuisha '%s' regex na '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
         self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] and
@@ -169,7 +169,7 @@ kundi TimeRETests(unittest.TestCase):
         test_locale = _strptime.LocaleTime()
         test_locale.timezone = (frozenset(), frozenset())
         self.assertEqual(_strptime.TimeRE(test_locale).pattern("%Z"), '',
-                         "with timezone == ('',''), TimeRE().pattern('%Z') != ''")
+                         "ukijumuisha timezone == ('',''), TimeRE().pattern('%Z') != ''")
 
     eleza test_matching_with_escapes(self):
         # Make sure a format that requires escaping of characters works
@@ -222,32 +222,32 @@ kundi StrptimeTests(unittest.TestCase):
                 self.fail("'%s' did sio ashiria ValueError" % bad_format)
 
         # Ambiguous ama incomplete cases using ISO year/week/weekday directives
-        # 1. ISO week (%V) ni specified, but the year ni specified with %Y
+        # 1. ISO week (%V) ni specified, but the year ni specified ukijumuisha %Y
         # instead of %G
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("1999 50", "%Y %V")
         # 2. ISO year (%G) na ISO week (%V) are specified, but weekday ni not
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("1999 51", "%G %V")
         # 3. ISO year (%G) na weekday are specified, but ISO week (%V) ni not
         kila w kwenye ('A', 'a', 'w', 'u'):
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 _strptime._strptime("1999 51","%G %{}".format(w))
         # 4. ISO year ni specified alone (e.g. time.strptime('2015', '%G'))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("2015", "%G")
-        # 5. Julian/ordinal day (%j) ni specified with %G, but sio %Y
-        with self.assertRaises(ValueError):
+        # 5. Julian/ordinal day (%j) ni specified ukijumuisha %G, but sio %Y
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("1999 256", "%G %j")
 
 
     eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) kama e:
             _strptime._strptime_time('', '%D')
         self.assertIs(e.exception.__suppress_context__, Kweli)
         # additional check kila IndexError branch (issue #19545)
-        with self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) kama e:
             _strptime._strptime_time('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, Kweli)
 
@@ -355,23 +355,23 @@ kundi StrptimeTests(unittest.TestCase):
         self.assertEqual(offset_fraction, 0)
 
     eleza test_bad_offset(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30.", "%z")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("-0130:30", "%z")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30.1234567", "%z")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30:123456", "%z")
-        with self.assertRaises(ValueError) kama err:
+        ukijumuisha self.assertRaises(ValueError) kama err:
             _strptime._strptime("-01:3030", "%z")
         self.assertEqual("Inconsistent use of : kwenye -01:3030", str(err.exception))
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_timezone(self):
         # Test timezone directives.
-        # When gmtime() ni used with %Z, entire result of strftime() ni empty.
-        # Check kila equal timezone names deals with bad locale info when this
+        # When gmtime() ni used ukijumuisha %Z, entire result of strftime() ni empty.
+        # Check kila equal timezone names deals ukijumuisha bad locale info when this
         # occurs; first found kwenye FreeBSD 4.4.
         strp_output = _strptime._strptime_time("UTC", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
@@ -397,7 +397,7 @@ kundi StrptimeTests(unittest.TestCase):
         ikiwa tz_name.upper() kwenye ("UTC", "GMT"):
             self.skipTest('need non-UTC/GMT timezone')
 
-        with support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
+        ukijumuisha support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
              support.swap_attr(time, 'daylight', 1), \
              support.swap_attr(time, 'tzset', lambda: Tupu):
             time.tzname = (tz_name, tz_name)
@@ -549,7 +549,7 @@ kundi CalculationTests(unittest.TestCase):
                     rudisha
                 kila weekday_format kwenye ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
-                    with self.subTest(test_reason,
+                    ukijumuisha self.subTest(test_reason,
                                       date=ymd_tuple,
                                       format=format_string):
                         dt_date = datetime_date(*ymd_tuple)
@@ -576,10 +576,10 @@ kundi CalculationTests(unittest.TestCase):
         test_helper((2004, 12, 18), "randomly chosen date")
         test_helper((1978, 10, 23), "year starting na ending on Monday wakati "
                                         "date sio on Sunday ama Monday")
-        test_helper((1917, 12, 17), "year starting na ending on Monday with "
+        test_helper((1917, 12, 17), "year starting na ending on Monday ukijumuisha "
                                         "a Monday sio at the beginning ama end "
                                         "of the year")
-        test_helper((1917, 12, 31), "Dec 31 on Monday with year starting na "
+        test_helper((1917, 12, 31), "Dec 31 on Monday ukijumuisha year starting na "
                                         "ending on Monday")
         test_helper((2007, 1, 7), "First Sunday of 2007")
         test_helper((2007, 1, 14), "Second Sunday of 2007")
@@ -720,9 +720,9 @@ kundi CacheTests(unittest.TestCase):
         # They should sio be equal.
         self.assertIsNot(first_time_re, second_time_re)
         # Make sure old names no longer accepted.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime_time(oldtzname[0], '%Z')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime_time(oldtzname[1], '%Z')
 
 

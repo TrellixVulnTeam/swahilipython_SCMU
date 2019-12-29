@@ -135,7 +135,7 @@ eleza get_argspec(ob):
     tatizo BaseException:
         rudisha default
 
-    fob = ob_call ikiwa isinstance(ob_call, types.MethodType) else ob
+    fob = ob_call ikiwa isinstance(ob_call, types.MethodType) isipokua ob
 
     jaribu:
         argspec = str(inspect.signature(fob))
@@ -152,7 +152,7 @@ eleza get_argspec(ob):
         argspec = _default_callable_argspec
 
     lines = (textwrap.wrap(argspec, _MAX_COLS, subsequent_indent=_INDENT)
-             ikiwa len(argspec) > _MAX_COLS else [argspec] ikiwa argspec else [])
+             ikiwa len(argspec) > _MAX_COLS isipokua [argspec] ikiwa argspec isipokua [])
 
     ikiwa isinstance(ob_call, types.MethodType):
         doc = ob_call.__doc__

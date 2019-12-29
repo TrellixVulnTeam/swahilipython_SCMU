@@ -44,7 +44,7 @@ _FORMAT_TEST_RESULT = {
 PROGRESS_MIN_TIME = 30.0   # seconds
 
 # small set of tests to determine if we have a basically functioning interpreter
-# (i.e. if any of these fail, then anything else is likely to follow)
+# (i.e. if any of these fail, then anything isipokua is likely to follow)
 STDTESTS = [
     'test_grammar',
     'test_opcodes',
@@ -124,7 +124,7 @@ def _runtest(ns, test_name):
     start_time = time.perf_counter()
     jaribu:
         support.set_match_tests(ns.match_tests)
-        support.junit_xml_list = xml_list = [] if ns.xmlpath else None
+        support.junit_xml_list = xml_list = [] if ns.xmlpath isipokua None
         if ns.failfast:
             support.failfast = True
 

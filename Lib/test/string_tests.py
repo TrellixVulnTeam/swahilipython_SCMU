@@ -39,11 +39,11 @@ kundi BaseTest:
     eleza fixtype(self, obj):
         ikiwa isinstance(obj, str):
             rudisha self.__class__.type2test(obj)
-        elikiwa isinstance(obj, list):
+        lasivyo isinstance(obj, list):
             rudisha [self.fixtype(x) kila x kwenye obj]
-        elikiwa isinstance(obj, tuple):
+        lasivyo isinstance(obj, tuple):
             rudisha tuple([self.fixtype(x) kila x kwenye obj])
-        elikiwa isinstance(obj, dict):
+        lasivyo isinstance(obj, dict):
             rudisha dict([
                (self.fixtype(key), self.fixtype(value))
                kila (key, value) kwenye obj.items()
@@ -66,7 +66,7 @@ kundi BaseTest:
             realresult
         )
         # ikiwa the original ni rudishaed make sure that
-        # this doesn't happen with subclasses
+        # this doesn't happen ukijumuisha subclasses
         ikiwa obj ni realresult:
             jaribu:
                 kundi subtype(self.__class__.type2test):
@@ -82,7 +82,7 @@ kundi BaseTest:
     eleza checkashirias(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        with self.assertRaises(exc) kama cm:
+        ukijumuisha self.assertRaises(exc) kama cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
@@ -408,7 +408,7 @@ kundi BaseTest:
         self.checkequal(['a']*18 + ['aBLAHa'], ('aBLAH'*20)[:-4],
                         'split', 'BLAH', 18)
 
-        # with keyword args
+        # ukijumuisha keyword args
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'split', sep='|')
         self.checkequal(['a', 'b|c|d'],
                         'a|b|c|d', 'split', '|', maxsplit=1)
@@ -478,7 +478,7 @@ kundi BaseTest:
         self.checkequal(['aBLAHa'] + ['a']*18, ('aBLAH'*20)[:-4],
                         'rsplit', 'BLAH', 18)
 
-        # with keyword args
+        # ukijumuisha keyword args
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'rsplit', sep='|')
         self.checkequal(['a|b|c', 'd'],
                         'a|b|c|d', 'rsplit', '|', maxsplit=1)
@@ -777,14 +777,14 @@ kundi BaseTest:
         self.checkequal('abc \t\n\r\f\v', b, 'lstrip')
         self.checkequal(' \t\n\r\f\vabc', b, 'rstrip')
 
-        # strip/lstrip/rstrip with Tupu arg
+        # strip/lstrip/rstrip ukijumuisha Tupu arg
         self.checkequal('hello', '   hello   ', 'strip', Tupu)
         self.checkequal('hello   ', '   hello   ', 'lstrip', Tupu)
         self.checkequal('   hello', '   hello   ', 'rstrip', Tupu)
         self.checkequal('hello', 'hello', 'strip', Tupu)
 
     eleza test_strip(self):
-        # strip/lstrip/rstrip with str arg
+        # strip/lstrip/rstrip ukijumuisha str arg
         self.checkequal('hello', 'xyzzyhelloxyzzy', 'strip', 'xyz')
         self.checkequal('helloxyzzy', 'xyzzyhelloxyzzy', 'lstrip', 'xyz')
         self.checkequal('xyzzyhello', 'xyzzyhelloxyzzy', 'rstrip', 'xyz')
@@ -979,7 +979,7 @@ kundi CommonTest(BaseTest):
         # \u1ffc ni the titlecased char
         self.checkequal('\u1ffc\u1ff3\u1ff3\u1ff3',
                         '\u1ff3\u1ff3\u1ffc\u1ffc', 'capitalize')
-        # check with cased non-letter chars
+        # check ukijumuisha cased non-letter chars
         self.checkequal('\u24c5\u24e8\u24e3\u24d7\u24de\u24dd',
                         '\u24c5\u24ce\u24c9\u24bd\u24c4\u24c3', 'capitalize')
         self.checkequal('\u24c5\u24e8\u24e3\u24d7\u24de\u24dd',
@@ -988,7 +988,7 @@ kundi CommonTest(BaseTest):
                         '\u2160\u2161\u2162', 'capitalize')
         self.checkequal('\u2160\u2171\u2172',
                         '\u2170\u2171\u2172', 'capitalize')
-        # check with Ll chars with no upper - nothing changes here
+        # check ukijumuisha Ll chars ukijumuisha no upper - nothing changes here
         self.checkequal('\u019b\u1d00\u1d86\u0221\u1fb7',
                         '\u019b\u1d00\u1d86\u0221\u1fb7', 'capitalize')
 
@@ -1133,7 +1133,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkashirias(TypeError, 'abc', '__getitem__', 'def')
 
     eleza test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing ukijumuisha list slicing.
         s = string.ascii_letters + string.digits
         indices = (0, Tupu, 1, 3, 41, sys.maxsize, -1, -2, -37)
         kila start kwenye indices:
@@ -1156,7 +1156,7 @@ kundi MixinStrUnicodeUserStringTest:
         #self.checkashirias(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
     eleza test_join(self):
-        # join now works with any sequence type
+        # join now works ukijumuisha any sequence type
         # moved here, because the argument order is
         # different kwenye string.join
         self.checkequal('a b c d', ' ', 'join', ['a', 'b', 'c', 'd'])
@@ -1223,7 +1223,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkashirias(TypeError, '%d', '__mod__', "42") # sio numeric
         self.checkashirias(TypeError, '%d', '__mod__', (42+0j)) # no int conversion provided
 
-        # argument names with properly nested brackets are supported
+        # argument names ukijumuisha properly nested brackets are supported
         self.checkequal('bar', '%((foo))s', '__mod__', {'(foo)': 'bar'})
 
         # 100 ni a magic number kwenye PyUnicode_Format, this forces a resize
@@ -1378,7 +1378,7 @@ kundi MixinStrUnicodeUserStringTest:
 
 
 kundi MixinStrUnicodeTest:
-    # Additional tests that only work with str.
+    # Additional tests that only work ukijumuisha str.
 
     eleza test_bug1001011(self):
         # Make sure join rudishas a NEW object kila single item sequences

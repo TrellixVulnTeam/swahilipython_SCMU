@@ -175,7 +175,7 @@ kundi TestChainMap(unittest.TestCase):
         self.assertEqual(d.pop('a', 1001), 1, d)
         self.assertEqual(d.pop('a', 1002), 1002)                       # check pop() w/missing
         self.assertEqual(d.popitem(), ('b', 2))                        # check popitem() w/missing
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             d.popitem()
 
     eleza test_order_preservation(self):
@@ -251,12 +251,12 @@ kundi TestNamedTuple(unittest.TestCase):
 
         self.assertRaises(ValueError, namedtuple, 'abc%', 'efg ghi')       # type has non-alpha char
         self.assertRaises(ValueError, namedtuple, 'class', 'efg ghi')      # type has keyword
-        self.assertRaises(ValueError, namedtuple, '9abc', 'efg ghi')       # type starts with digit
+        self.assertRaises(ValueError, namedtuple, '9abc', 'efg ghi')       # type starts ukijumuisha digit
 
-        self.assertRaises(ValueError, namedtuple, 'abc', 'efg g%hi')       # field with non-alpha char
+        self.assertRaises(ValueError, namedtuple, 'abc', 'efg g%hi')       # field ukijumuisha non-alpha char
         self.assertRaises(ValueError, namedtuple, 'abc', 'abc class')      # field has keyword
-        self.assertRaises(ValueError, namedtuple, 'abc', '8efg 9ghi')      # field starts with digit
-        self.assertRaises(ValueError, namedtuple, 'abc', '_efg ghi')       # field with leading underscore
+        self.assertRaises(ValueError, namedtuple, 'abc', '8efg 9ghi')      # field starts ukijumuisha digit
+        self.assertRaises(ValueError, namedtuple, 'abc', '_efg ghi')       # field ukijumuisha leading underscore
         self.assertRaises(ValueError, namedtuple, 'abc', 'efg efg ghi')    # duplicate field
 
         namedtuple('Point0', 'x1 y2')   # Verify that numbers are allowed kwenye names
@@ -285,25 +285,25 @@ kundi TestNamedTuple(unittest.TestCase):
         Point = namedtuple('Point', 'x y', defaults=())                     # 0 defaults
         self.assertEqual(Point._field_defaults, {})
         self.assertEqual(Point(1, 2), (1, 2))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             Point(1)
 
-        with self.assertRaises(TypeError):                                  # catch too few args
+        ukijumuisha self.assertRaises(TypeError):                                  # catch too few args
             Point()
-        with self.assertRaises(TypeError):                                  # catch too many args
+        ukijumuisha self.assertRaises(TypeError):                                  # catch too many args
             Point(1, 2, 3)
-        with self.assertRaises(TypeError):                                  # too many defaults
+        ukijumuisha self.assertRaises(TypeError):                                  # too many defaults
             Point = namedtuple('Point', 'x y', defaults=(10, 20, 30))
-        with self.assertRaises(TypeError):                                  # non-iterable defaults
+        ukijumuisha self.assertRaises(TypeError):                                  # non-iterable defaults
             Point = namedtuple('Point', 'x y', defaults=10)
-        with self.assertRaises(TypeError):                                  # another non-iterable default
+        ukijumuisha self.assertRaises(TypeError):                                  # another non-iterable default
             Point = namedtuple('Point', 'x y', defaults=Uongo)
 
         Point = namedtuple('Point', 'x y', defaults=Tupu)                   # default ni Tupu
         self.assertEqual(Point._field_defaults, {})
         self.assertIsTupu(Point.__new__.__defaults__, Tupu)
         self.assertEqual(Point(10, 20), (10, 20))
-        with self.assertRaises(TypeError):                                  # catch too few args
+        ukijumuisha self.assertRaises(TypeError):                                  # catch too few args
             Point(10)
 
         Point = namedtuple('Point', 'x y', defaults=[10, 20])               # allow non-tuple iterable
@@ -323,19 +323,19 @@ kundi TestNamedTuple(unittest.TestCase):
     eleza test_readonly(self):
         Point = namedtuple('Point', 'x y')
         p = Point(11, 22)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             p.x = 33
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa p.x
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             p[0] = 33
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             toa p[0]
         self.assertEqual(p.x, 11)
         self.assertEqual(p[0], 11)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_factory_doc_attr(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.__doc__, 'Point(x, y)')
@@ -343,7 +343,7 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(Point.__doc__, '2D point')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_field_doc(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.x.__doc__, 'Alias kila field number 0')
@@ -358,7 +358,7 @@ kundi TestNamedTuple(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_field_doc_reuse(self):
         P = namedtuple('P', ['m', 'n'])
         Q = namedtuple('Q', ['o', 'p'])
@@ -367,10 +367,10 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_name_fixer(self):
         kila spec, renamed kwenye [
-            [('efg', 'g%hi'),  ('efg', '_1')],                              # field with non-alpha char
+            [('efg', 'g%hi'),  ('efg', '_1')],                              # field ukijumuisha non-alpha char
             [('abc', 'class'), ('abc', '_1')],                              # field has keyword
-            [('8efg', '9ghi'), ('_0', '_1')],                               # field starts with digit
-            [('abc', '_efg'), ('abc', '_1')],                               # field with leading underscore
+            [('8efg', '9ghi'), ('_0', '_1')],                               # field starts ukijumuisha digit
+            [('abc', '_efg'), ('abc', '_1')],                               # field ukijumuisha leading underscore
             [('abc', 'efg', 'efg', 'ghi'), ('abc', 'efg', '_2', 'ghi')],    # duplicate field
             [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname ni a space
         ]:
@@ -390,9 +390,9 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(p, Point(**dict(x=11, y=22)))
         self.assertRaises(TypeError, Point, 1)          # too few args
         self.assertRaises(TypeError, Point, 1, 2, 3)    # too many args
-        with self.assertRaises(TypeError):              # wrong keyword argument
+        ukijumuisha self.assertRaises(TypeError):              # wrong keyword argument
             Point(XXX=1, y=2)
-        with self.assertRaises(TypeError):              # missing keyword argument
+        ukijumuisha self.assertRaises(TypeError):              # missing keyword argument
             Point(x=1)
         self.assertEqual(repr(p), 'Point(x=11, y=22)')
         self.assertNotIn('__weakref__', dir(p))
@@ -431,14 +431,14 @@ kundi TestNamedTuple(unittest.TestCase):
         x, y = p
         self.assertEqual(p, (x, y))                                         # unpacks like a tuple
         self.assertEqual((p[0], p[1]), (11, 22))                            # indexable like a tuple
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             p[3]
         self.assertEqual(p[-1], 22)
         self.assertEqual(hash(p), hash((11, 22)))
 
         self.assertEqual(p.x, x)
         self.assertEqual(p.y, y)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             p.z
 
     eleza test_odd_sizes(self):
@@ -571,12 +571,12 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_keyword_only_arguments(self):
         # See issue 25628
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             NT = namedtuple('NT', ['x', 'y'], Kweli)
 
         NT = namedtuple('NT', ['abc', 'def'], rename=Kweli)
         self.assertEqual(NT._fields, ('abc', '_1'))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             NT = namedtuple('NT', ['abc', 'def'], Uongo, Kweli)
 
     eleza test_namedtuple_subclass_issue_24931(self):
@@ -709,7 +709,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             self.assertKweli(issubclass(type(x), Awaitable))
 
         c = coro()
-        # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
+        # Iterable coroutines (generators ukijumuisha CO_ITERABLE_COROUTINE
         # flag don't have '__await__' method, hence can't be instances
         # of Awaitable. Use inspect.isawaitable to detect them.
         self.assertNotIsInstance(c, Awaitable)
@@ -759,7 +759,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             self.assertKweli(issubclass(type(x), Awaitable))
 
         c = coro()
-        # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
+        # Iterable coroutines (generators ukijumuisha CO_ITERABLE_COROUTINE
         # flag don't have '__await__' method, hence can't be instances
         # of Coroutine. Use inspect.isawaitable to detect them.
         self.assertNotIsInstance(c, Coroutine)
@@ -1179,7 +1179,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
                 jaribu:
                     coro.send(Tupu)
                 tatizo StopIteration kama ex:
-                    result = ex.args[0] ikiwa ex.args else Tupu
+                    result = ex.args[0] ikiwa ex.args isipokua Tupu
                     koma
             rudisha result
 
@@ -1189,21 +1189,21 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         self.assertIs(run_async(mgen.asend(Tupu)), run_async(mgen.__anext__()))
         self.assertEqual(2, run_async(mgen.asend(2)))
         self.assertIsTupu(run_async(mgen.aclose()))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             run_async(mgen.athrow(ValueError))
 
         kundi FailOnClose(AsyncGenerator):
             async eleza asend(self, value): rudisha value
             async eleza athrow(self, *args): ashiria ValueError
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
 
         kundi IgnoreGeneratorExit(AsyncGenerator):
             async eleza asend(self, value): rudisha value
             async eleza athrow(self, *args): pita
 
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             run_async(IgnoreGeneratorExit().aclose())
 
     eleza test_Sized(self):
@@ -1575,11 +1575,11 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertKweli(r1 < r3)
         self.assertUongo(r1 < r1)
         self.assertUongo(r1 < r2)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 < l3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 < l1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 < l2
 
         # any subset
@@ -1592,11 +1592,11 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertKweli(r1 <= r3)
         self.assertKweli(r1 <= r1)
         self.assertUongo(r1 <= r2)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 <= l3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 <= l1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 <= l2
 
         # proper superset
@@ -1609,11 +1609,11 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertKweli(r3 > r1)
         self.assertUongo(r1 > r1)
         self.assertUongo(r2 > r1)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 > l3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 > l1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 > l2
 
         # any superset
@@ -1626,11 +1626,11 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertKweli(r3 >= r1)
         self.assertKweli(r1 >= r1)
         self.assertUongo(r2 >= r1)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 >= l3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 >=l1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f1 >= l2
 
         # equality
@@ -1731,7 +1731,7 @@ kundi TestCollectionABCs(ABCTestCase):
             jaribu:
                 expected = seq1.index(*index_args)
             tatizo ValueError:
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     seq2.index(*index_args)
             isipokua:
                 actual = seq2.index(*index_args)
@@ -1896,7 +1896,7 @@ kundi TestCounter(unittest.TestCase):
         c.update(dict(a=5, b=3))
         c.update(c=1)
         c.update(Counter('a' * 50 + 'b' * 30))
-        c.update()          # test case with no args
+        c.update()          # test case ukijumuisha no args
         c.__init__('a' * 500 + 'b' * 300)
         c.__init__('cdc')
         c.__init__()
@@ -1918,7 +1918,7 @@ kundi TestCounter(unittest.TestCase):
         # Input order dictates items() order
         self.assertEqual(list(Counter('abracadabra').items()),
                [('a', 5), ('b', 2), ('r', 2), ('c', 1), ('d', 1)])
-        # letters with same count:   ^----------^         ^---------^
+        # letters ukijumuisha same count:   ^----------^         ^---------^
 
         # Verify retention of order even when all counts are equal
         self.assertEqual(list(Counter('xyzpdqqdpzyx').items()),
@@ -1997,7 +1997,7 @@ kundi TestCounter(unittest.TestCase):
         check(copy.copy(words))
         check(copy.deepcopy(words))
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 check(pickle.loads(pickle.dumps(words, proto)))
         check(eval(repr(words)))
         update_test = Counter()
@@ -2055,7 +2055,7 @@ kundi TestCounter(unittest.TestCase):
 
         elements = 'abcdef'
         kila i kwenye range(100):
-            # verify that random multisets with no repeats are exactly like sets
+            # verify that random multisets ukijumuisha no repeats are exactly like sets
             p = Counter(dict((elem, randrange(0, 2)) kila elem kwenye elements))
             q = Counter(dict((elem, randrange(0, 2)) kila elem kwenye elements))
             kila counterop, setop kwenye [

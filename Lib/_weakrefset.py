@@ -1,6 +1,6 @@
 # Access WeakSet through the weakref module.
 # This code is separated-out because it is needed
-# by abc.py to load everything else at startup.
+# by abc.py to load everything isipokua at startup.
 
 kutoka _weakref agiza ref
 

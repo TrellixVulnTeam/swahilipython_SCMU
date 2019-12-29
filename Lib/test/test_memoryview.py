@@ -114,7 +114,7 @@ kundi AbstractMemoryTests:
         slices = (slice(0,1,1), slice(0,1,2))
         self.assertRaises(NotImplementedError, setitem, slices, b"a")
         # Trying to resize the memory object
-        exc = ValueError ikiwa m.format == 'c' else TypeError
+        exc = ValueError ikiwa m.format == 'c' isipokua TypeError
         self.assertRaises(exc, setitem, 0, b"")
         self.assertRaises(exc, setitem, 0, b"ab")
         self.assertRaises(ValueError, setitem, slice(1,1), b"a")
@@ -127,9 +127,9 @@ kundi AbstractMemoryTests:
         kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 toa m[1]
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 toa m[1:4]
 
     eleza test_tobytes(self):
@@ -149,7 +149,7 @@ kundi AbstractMemoryTests:
             self.assertEqual(l, list(b"abcdef"))
 
     eleza test_compare(self):
-        # memoryviews can compare kila equality with other objects
+        # memoryviews can compare kila equality ukijumuisha other objects
         # having the buffer interface.
         kila tp kwenye self._types:
             m = self._view(tp(self._source))
@@ -165,7 +165,7 @@ kundi AbstractMemoryTests:
             self.assertKweli(m[0:6] == m[:])
             self.assertUongo(m[0:5] == m)
 
-            # Comparison with objects which don't support the buffer API
+            # Comparison ukijumuisha objects which don't support the buffer API
             self.assertUongo(m == "abcdef")
             self.assertKweli(m != "abcdef")
             self.assertUongo("abcdef" == m)
@@ -254,20 +254,20 @@ kundi AbstractMemoryTests:
 
     eleza _check_released(self, m, tp):
         check = self.assertRaisesRegex(ValueError, "released")
-        with check: bytes(m)
-        with check: m.tobytes()
-        with check: m.tolist()
-        with check: m[0]
-        with check: m[0] = b'x'
-        with check: len(m)
-        with check: m.format
-        with check: m.itemsize
-        with check: m.ndim
-        with check: m.readonly
-        with check: m.shape
-        with check: m.strides
-        with check:
-            with m:
+        ukijumuisha check: bytes(m)
+        ukijumuisha check: m.tobytes()
+        ukijumuisha check: m.tolist()
+        ukijumuisha check: m[0]
+        ukijumuisha check: m[0] = b'x'
+        ukijumuisha check: len(m)
+        ukijumuisha check: m.format
+        ukijumuisha check: m.itemsize
+        ukijumuisha check: m.ndim
+        ukijumuisha check: m.readonly
+        ukijumuisha check: m.shape
+        ukijumuisha check: m.strides
+        ukijumuisha check:
+            ukijumuisha m:
                 pita
         # str() na repr() still function
         self.assertIn("released memory", str(m))
@@ -280,12 +280,12 @@ kundi AbstractMemoryTests:
         kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
-            with m kama cm:
+            ukijumuisha m kama cm:
                 self.assertIs(cm, m)
             self._check_released(m, tp)
             m = self._view(b)
             # Can release explicitly inside the context manager
-            with m:
+            ukijumuisha m:
                 m.release()
 
     eleza test_release(self):
@@ -321,11 +321,11 @@ kundi AbstractMemoryTests:
         b = tp(self._source)
         m = self._view(b)
         self.assertEqual(hash(m), hash(b"abcdef"))
-        # Releasing the memoryview keeps the stored hash value (as with weakrefs)
+        # Releasing the memoryview keeps the stored hash value (as ukijumuisha weakrefs)
         m.release()
         self.assertEqual(hash(m), hash(b"abcdef"))
         # Hashing a memoryview kila the first time after it ni released
-        # results kwenye an error (as with weakrefs).
+        # results kwenye an error (as ukijumuisha weakrefs).
         m = self._view(b)
         m.release()
         self.assertRaises(ValueError, hash, m)
@@ -396,7 +396,7 @@ kundi AbstractMemoryTests:
 
 
 # Variations on source objects kila the buffer: bytes-like objects, then arrays
-# with itemsize > 1.
+# ukijumuisha itemsize > 1.
 # NOTE: support kila multi-dimensional objects ni unimplemented.
 
 kundi BaseBytesMemoryTests(AbstractMemoryTests):
@@ -480,7 +480,7 @@ kundi ArrayMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseArrayMemoryTests):
 
     eleza test_array_assign(self):
-        # Issue #4569: segfault when mutating a memoryview with itemsize != 1
+        # Issue #4569: segfault when mutating a memoryview ukijumuisha itemsize != 1
         a = array.array('i', range(10))
         m = memoryview(a)
         new_a = array.array('i', range(9, -1, -1))
@@ -518,7 +518,7 @@ kundi OtherTest(unittest.TestCase):
         self.assertEqual(d.value, 0.6)
 
         kila format kwenye "Bbc":
-            with self.subTest(format):
+            ukijumuisha self.subTest(format):
                 d = ctypes.c_double()
                 m = memoryview(d).cast(format)
                 m[:2] = memoryview(p6).cast(format)[:2]
@@ -526,7 +526,7 @@ kundi OtherTest(unittest.TestCase):
                 self.assertEqual(d.value, 0.6)
 
     eleza test_memoryview_hex(self):
-        # Issue #9951: memoryview.hex() segfaults with non-contiguous buffers.
+        # Issue #9951: memoryview.hex() segfaults ukijumuisha non-contiguous buffers.
         x = b'0' * 200000
         m1 = memoryview(x)
         m2 = m1[::-1]
@@ -534,13 +534,13 @@ kundi OtherTest(unittest.TestCase):
 
     eleza test_copy(self):
         m = memoryview(b'abc')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             copy.copy(m)
 
     eleza test_pickle(self):
         m = memoryview(b'abc')
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 pickle.dumps(m, proto)
 
 

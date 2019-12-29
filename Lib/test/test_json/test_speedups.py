@@ -46,9 +46,9 @@ kundi TestEncode(CTest):
         enc = self.json.encoder.c_make_encoder(Tupu, lambda obj: str(obj),
                                                bad_encoder1, Tupu, ': ', ', ',
                                                Uongo, Uongo, Uongo)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             enc('spam', 4)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             enc({'spam': 42}, 4)
 
         eleza bad_encoder2(*args):
@@ -56,7 +56,7 @@ kundi TestEncode(CTest):
         enc = self.json.encoder.c_make_encoder(Tupu, lambda obj: str(obj),
                                                bad_encoder2, Tupu, ': ', ', ',
                                                Uongo, Uongo, Uongo)
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             enc('spam', 4)
 
     eleza test_bad_bool_args(self):
@@ -69,5 +69,5 @@ kundi TestEncode(CTest):
         self.assertRaises(ZeroDivisionError, test, 'sort_keys')
 
     eleza test_unsortable_keys(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.json.encoder.JSONEncoder(sort_keys=Kweli).encode({'a': 1, 1: 'a'})

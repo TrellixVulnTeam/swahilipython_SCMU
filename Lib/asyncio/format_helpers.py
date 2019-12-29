@@ -48,7 +48,7 @@ eleza _format_callback(func, args, kwargs, suffix=''):
 
     ikiwa hasattr(func, '__qualname__') na func.__qualname__:
         func_repr = func.__qualname__
-    elikiwa hasattr(func, '__name__') na func.__name__:
+    lasivyo hasattr(func, '__name__') na func.__name__:
         func_repr = func.__name__
     isipokua:
         func_repr = repr(func)

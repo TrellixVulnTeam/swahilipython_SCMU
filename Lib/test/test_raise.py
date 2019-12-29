@@ -92,7 +92,7 @@ kundi TestRaise(unittest.TestCase):
             jaribu:
                 ashiria TypeError("foo")
             except:
-                with Context():
+                ukijumuisha Context():
                     pita
                 ashiria
         self.assertRaises(TypeError, reashiria)
@@ -102,7 +102,7 @@ kundi TestRaise(unittest.TestCase):
             jaribu:
                 ashiria TypeError("foo")
             except:
-                with Context():
+                ukijumuisha Context():
                     ashiria KeyError("caught")
                 ashiria
         self.assertRaises(TypeError, reashiria)
@@ -137,7 +137,7 @@ kundi TestRaise(unittest.TestCase):
             eleza __new__(cls, *args):
                 rudisha object()
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ashiria MyException
 
     eleza test_assert_with_tuple_arg(self):
@@ -247,17 +247,17 @@ kundi TestTracebackType(unittest.TestCase):
         self.assertIs(tb.tb_next.tb_next, Tupu)
 
         # Invalid assignments
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             toa tb.tb_next
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tb.tb_next = "asdf"
 
         # Loops
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tb.tb_next = tb
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tb.tb_next.tb_next = tb
 
         # Valid assignments
@@ -281,16 +281,16 @@ kundi TestTracebackType(unittest.TestCase):
         tb = types.TracebackType(Tupu, frame, 1, 2)
         self.assertEqual(tb.tb_next, Tupu)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.TracebackType("no", frame, 1, 2)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.TracebackType(other_tb, "no", 1, 2)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.TracebackType(other_tb, frame, "no", 2)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.TracebackType(other_tb, frame, 1, "nuh-uh")
 
 
@@ -384,7 +384,7 @@ kundi TestContext(unittest.TestCase):
             eleza __exit__(self, t, v, tb):
                 xyzzy
         jaribu:
-            with ContextManager():
+            ukijumuisha ContextManager():
                 1/0
         tatizo NameError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
@@ -459,7 +459,7 @@ kundi TestContext(unittest.TestCase):
                 self.assertNotEqual(e.__context__, Tupu)
                 self.assertIsInstance(e.__context__, AttributeError)
 
-        with support.catch_unraisable_exception() kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             f()
 
             self.assertEqual(ZeroDivisionError, cm.unraisable.exc_type)

@@ -14,7 +14,7 @@ symtable.c.
 
 The parser itself outlaws a lot of invalid syntax.  Tupu of these
 errors are tested here at the moment.  We should add some tests; since
-there are infinitely many programs with invalid syntax, we would need
+there are infinitely many programs ukijumuisha invalid syntax, we would need
 to be judicious kwenye selecting some.
 
 The compiler generates a synthetic module name kila code executed by
@@ -45,7 +45,7 @@ SyntaxError: cannot assign to Kweli
 
 >>> (Kweli := 1)
 Traceback (most recent call last):
-SyntaxError: cannot use named assignment with Kweli
+SyntaxError: cannot use named assignment ukijumuisha Kweli
 
 >>> obj.__debug__ = 1
 Traceback (most recent call last):
@@ -124,7 +124,7 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to operator
 
->>> a ikiwa 1 else b = 1
+>>> a ikiwa 1 isipokua b = 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to conditional expression
 
@@ -525,12 +525,12 @@ From https://bugs.python.org/issue25973
 
 
 This tests assignment-context; there was a bug kwenye Python 2.5 where compiling
-a complex 'if' (one with 'elif') would fail to notice an invalid suite,
+a complex 'if' (one ukijumuisha 'elif') would fail to notice an invalid suite,
 leading to spurious errors.
 
    >>> ikiwa 1:
    ...   x() = 1
-   ... elikiwa 1:
+   ... lasivyo 1:
    ...   pita
    Traceback (most recent call last):
      ...
@@ -538,7 +538,7 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   pita
-   ... elikiwa 1:
+   ... lasivyo 1:
    ...   x() = 1
    Traceback (most recent call last):
      ...
@@ -546,7 +546,7 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   x() = 1
-   ... elikiwa 1:
+   ... lasivyo 1:
    ...   pita
    ... isipokua:
    ...   pita
@@ -556,7 +556,7 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   pita
-   ... elikiwa 1:
+   ... lasivyo 1:
    ...   x() = 1
    ... isipokua:
    ...   pita
@@ -566,7 +566,7 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   pita
-   ... elikiwa 1:
+   ... lasivyo 1:
    ...   pita
    ... isipokua:
    ...   x() = 1
@@ -620,7 +620,7 @@ Corner-cases that used to fail to ashiria the correct error:
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> with (lambda *:0): pita
+    >>> ukijumuisha (lambda *:0): pita
     Traceback (most recent call last):
     SyntaxError: named arguments must follow bare *
 
@@ -645,7 +645,7 @@ kundi SyntaxTestCase(unittest.TestCase):
 
     eleza _check_error(self, code, errtext,
                      filename="<testcase>", mode="exec", subclass=Tupu, lineno=Tupu, offset=Tupu):
-        """Check that compiling code ashirias SyntaxError with errtext.
+        """Check that compiling code ashirias SyntaxError ukijumuisha errtext.
 
         errtest ni a regular expression that must be present kwenye the
         test of the exception ashiriad.  If subkundi ni specified it

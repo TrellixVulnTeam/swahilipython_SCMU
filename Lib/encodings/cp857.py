@@ -15,18 +15,18 @@ kundi Codec(codecs.Codec):
         rudisha codecs.charmap_decode(input,errors,decoding_table)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha codecs.charmap_encode(input,self.errors,encoding_map)[0]
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 
@@ -130,7 +130,7 @@ decoding_map.update({
     0x00d2: 0x00ca,     #  LATIN CAPITAL LETTER E WITH CIRCUMFLEX
     0x00d3: 0x00cb,     #  LATIN CAPITAL LETTER E WITH DIAERESIS
     0x00d4: 0x00c8,     #  LATIN CAPITAL LETTER E WITH GRAVE
-    0x00d5: None,       #  UNDEFINED
+    0x00d5: Tupu,       #  UNDEFINED
     0x00d6: 0x00cd,     #  LATIN CAPITAL LETTER I WITH ACUTE
     0x00d7: 0x00ce,     #  LATIN CAPITAL LETTER I WITH CIRCUMFLEX
     0x00d8: 0x00cf,     #  LATIN CAPITAL LETTER I WITH DIAERESIS
@@ -148,7 +148,7 @@ decoding_map.update({
     0x00e4: 0x00f5,     #  LATIN SMALL LETTER O WITH TILDE
     0x00e5: 0x00d5,     #  LATIN CAPITAL LETTER O WITH TILDE
     0x00e6: 0x00b5,     #  MICRO SIGN
-    0x00e7: None,       #  UNDEFINED
+    0x00e7: Tupu,       #  UNDEFINED
     0x00e8: 0x00d7,     #  MULTIPLICATION SIGN
     0x00e9: 0x00da,     #  LATIN CAPITAL LETTER U WITH ACUTE
     0x00ea: 0x00db,     #  LATIN CAPITAL LETTER U WITH CIRCUMFLEX
@@ -158,7 +158,7 @@ decoding_map.update({
     0x00ef: 0x00b4,     #  ACUTE ACCENT
     0x00f0: 0x00ad,     #  SOFT HYPHEN
     0x00f1: 0x00b1,     #  PLUS-MINUS SIGN
-    0x00f2: None,       #  UNDEFINED
+    0x00f2: Tupu,       #  UNDEFINED
     0x00f3: 0x00be,     #  VULGAR FRACTION THREE QUARTERS
     0x00f4: 0x00b6,     #  PILCROW SIGN
     0x00f5: 0x00a7,     #  SECTION SIGN

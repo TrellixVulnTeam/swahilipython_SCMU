@@ -1,7 +1,7 @@
-'''Complete the current word before the cursor with words kwenye the editor.
+'''Complete the current word before the cursor ukijumuisha words kwenye the editor.
 
-Each menu selection ama shortcut key selection replaces the word with a
-different word with the same prefix. The search kila matches begins
+Each menu selection ama shortcut key selection replaces the word ukijumuisha a
+different word ukijumuisha the same prefix. The search kila matches begins
 before the target na moves toward the top of the editor. It then starts
 after the cursor na moves down. It then rudishas to the original word and
 the cycle starts again.
@@ -25,7 +25,7 @@ kundi AutoExpand:
         self.state = Tupu
 
     eleza expand_word_event(self, event):
-        "Replace the current word with the next expansion."
+        "Replace the current word ukijumuisha the next expansion."
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
         ikiwa sio self.state:

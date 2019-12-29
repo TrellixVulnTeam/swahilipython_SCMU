@@ -30,7 +30,7 @@ kundi Test_OSXSupport(unittest.TestCase):
 
     eleza add_expected_saved_initial_values(self, config_vars, expected_vars):
         # Ensure that the initial values kila all modified config vars
-        # are also saved with modified keys.
+        # are also saved ukijumuisha modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
                 config_vars[k]) kila k kwenye config_vars
                     ikiwa config_vars[k] != expected_vars[k])
@@ -42,7 +42,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         test.support.unlink(self.prog_name)
         self.assertIsTupu(_osx_support._find_executable(self.prog_name))
         self.addCleanup(test.support.unlink, self.prog_name)
-        with open(self.prog_name, 'w') kama f:
+        ukijumuisha open(self.prog_name, 'w') kama f:
             f.write("#!/bin/sh\n/bin/echo OK\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual(self.prog_name,
@@ -54,7 +54,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
         self.addCleanup(test.support.unlink, self.prog_name)
-        with open(self.prog_name, 'w') kama f:
+        ukijumuisha open(self.prog_name, 'w') kama f:
             f.write("#!/bin/sh\n/bin/echo ExpectedOutput\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual('ExpectedOutput',
@@ -140,12 +140,12 @@ kundi Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] isipokua ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         kila c_name, c_output kwenye compilers:
             test.support.unlink(c_name)
             self.addCleanup(test.support.unlink, c_name)
-            with open(c_name, 'w') kama f:
+            ukijumuisha open(c_name, 'w') kama f:
                 f.write("#!/bin/sh\n/bin/echo " + c_output)
             os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,
@@ -195,13 +195,13 @@ kundi Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] isipokua ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         c_name = 'clang'
         test.support.unlink(c_name)
         self.addCleanup(test.support.unlink, c_name)
         # exit status 255 means no PPC support kwenye this compiler chain
-        with open(c_name, 'w') kama f:
+        ukijumuisha open(c_name, 'w') kama f:
             f.write("#!/bin/sh\nexit 255")
         os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,

@@ -31,7 +31,7 @@ kundi HyperParserTest(unittest.TestCase):
             "z = ((r'asdf')+('a')))\n"
             '[x kila x in\n'
             'kila = Uongo\n'
-            'cliché = "this ni a string with unicode, what a cliché"'
+            'cliché = "this ni a string ukijumuisha unicode, what a cliché"'
             )
 
     @classmethod
@@ -57,7 +57,7 @@ kundi HyperParserTest(unittest.TestCase):
 
     eleza get_parser(self, index):
         """
-        Return a parser object with index at 'index'
+        Return a parser object ukijumuisha index at 'index'
         """
         rudisha HyperParser(self.editwin, index)
 
@@ -65,7 +65,7 @@ kundi HyperParserTest(unittest.TestCase):
         """
         test corner cases kwenye the init method
         """
-        with self.assertRaises(ValueError) kama ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             self.text.tag_add('console', '1.0', '1.end')
             p = self.get_parser('1.5')
         self.assertIn('precedes', str(ve.exception))
@@ -120,12 +120,12 @@ kundi HyperParserTest(unittest.TestCase):
 
         eleza without_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=Uongo
+            # ukijumuisha mustclose=Uongo
             rudisha parser.get_surrounding_brackets(mustclose=Uongo)
 
         eleza with_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=Kweli
+            # ukijumuisha mustclose=Kweli
             rudisha parser.get_surrounding_brackets(mustclose=Kweli)
 
         p = get('3.2')
@@ -155,7 +155,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), 'y ')
 
         p = get('4.7')
-        with self.assertRaises(ValueError) kama ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -178,7 +178,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), "r'asdf'")
 
         p = get('9.17')
-        with self.assertRaises(ValueError) kama ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -205,7 +205,7 @@ kundi HyperParserTest(unittest.TestCase):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
             ikiwa result == len(candidate):
                 rudisha Kweli
-            elikiwa result == 0:
+            lasivyo result == 0:
                 rudisha Uongo
             isipokua:
                 err_msg = "Unexpected result: {} (expected 0 ama {}".format(

@@ -127,34 +127,34 @@ kundi SunauLowLevelTest(unittest.TestCase):
 
     eleza test_read_bad_magic_number(self):
         b = b'SPA'
-        with self.assertRaises(EOFError):
+        ukijumuisha self.assertRaises(EOFError):
             sunau.open(io.BytesIO(b))
         b = b'SPAM'
-        with self.assertRaisesRegex(sunau.Error, 'bad magic number'):
+        ukijumuisha self.assertRaisesRegex(sunau.Error, 'bad magic number'):
             sunau.open(io.BytesIO(b))
 
     eleza test_read_too_small_header(self):
         b = struct.pack('>LLLLL', sunau.AUDIO_FILE_MAGIC, 20, 0,
                         sunau.AUDIO_FILE_ENCODING_LINEAR_8, 11025)
-        with self.assertRaisesRegex(sunau.Error, 'header size too small'):
+        ukijumuisha self.assertRaisesRegex(sunau.Error, 'header size too small'):
             sunau.open(io.BytesIO(b))
 
     eleza test_read_too_large_header(self):
         b = struct.pack('>LLLLLL', sunau.AUDIO_FILE_MAGIC, 124, 0,
                         sunau.AUDIO_FILE_ENCODING_LINEAR_8, 11025, 1)
         b += b'\0' * 100
-        with self.assertRaisesRegex(sunau.Error, 'header size ridiculously large'):
+        ukijumuisha self.assertRaisesRegex(sunau.Error, 'header size ridiculously large'):
             sunau.open(io.BytesIO(b))
 
     eleza test_read_wrong_encoding(self):
         b = struct.pack('>LLLLLL', sunau.AUDIO_FILE_MAGIC, 24, 0, 0, 11025, 1)
-        with self.assertRaisesRegex(sunau.Error, r'encoding sio \(yet\) supported'):
+        ukijumuisha self.assertRaisesRegex(sunau.Error, r'encoding sio \(yet\) supported'):
             sunau.open(io.BytesIO(b))
 
     eleza test_read_wrong_number_of_channels(self):
         b = struct.pack('>LLLLLL', sunau.AUDIO_FILE_MAGIC, 24, 0,
                         sunau.AUDIO_FILE_ENCODING_LINEAR_8, 11025, 0)
-        with self.assertRaisesRegex(sunau.Error, 'bad # of channels'):
+        ukijumuisha self.assertRaisesRegex(sunau.Error, 'bad # of channels'):
             sunau.open(io.BytesIO(b))
 
 

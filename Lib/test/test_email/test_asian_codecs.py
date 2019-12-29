@@ -9,7 +9,7 @@ kutoka email.charset agiza Charset
 kutoka email.header agiza Header, decode_header
 kutoka email.message agiza Message
 
-# We're compatible with Python 2.3, but it doesn't have the built-in Asian
+# We're compatible ukijumuisha Python 2.3, but it doesn't have the built-in Asian
 # codecs, so we have to skip all these tests.
 jaribu:
     str(b'foo', 'euc-jp')

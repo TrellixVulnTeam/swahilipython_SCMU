@@ -6,7 +6,7 @@ agiza time
 
 resource = support.import_module('resource')
 
-# This test ni checking a few specific problem spots with the resource module.
+# This test ni checking a few specific problem spots ukijumuisha the resource module.
 
 kundi ResourceTest(unittest.TestCase):
 
@@ -25,7 +25,7 @@ kundi ResourceTest(unittest.TestCase):
             pita
         isipokua:
             # RLIMIT_FSIZE should be RLIM_INFINITY, which will be a really big
-            # number on a platform with large file support.  On these platforms,
+            # number on a platform ukijumuisha large file support.  On these platforms,
             # we need to test that the get/setrlimit functions properly convert
             # the number to a C long long na that the conversion doesn't ashiria
             # an error.
@@ -138,12 +138,12 @@ kundi ResourceTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == 'linux', 'test requires Linux')
     eleza test_linux_constants(self):
         kila attr kwenye ['MSGQUEUE', 'NICE', 'RTPRIO', 'RTTIME', 'SIGPENDING']:
-            with contextlib.suppress(AttributeError):
+            ukijumuisha contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
     eleza test_freebsd_contants(self):
         kila attr kwenye ['SWAP', 'SBSIZE', 'NPTS']:
-            with contextlib.suppress(AttributeError):
+            ukijumuisha contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
     @unittest.skipUnless(hasattr(resource, 'prlimit'), 'no prlimit')

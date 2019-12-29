@@ -80,10 +80,10 @@ kundi TestDecode:
     eleza test_string_with_utf8_bom(self):
         # see #18958
         bom_json = "[1,2,3]".encode('utf-8-sig').decode('utf-8')
-        with self.assertRaises(self.JSONDecodeError) kama cm:
+        ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
             self.loads(bom_json)
         self.assertIn('BOM', str(cm.exception))
-        with self.assertRaises(self.JSONDecodeError) kama cm:
+        ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
             self.json.load(StringIO(bom_json))
         self.assertIn('BOM', str(cm.exception))
         # make sure that the BOM ni sio detected kwenye the middle of a string
@@ -96,7 +96,7 @@ kundi TestDecode:
         self.assertRaises(ValueError, d.raw_decode, 'a'*42, -50000)
 
     eleza test_deprecated_encode(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.loads('{}', encoding='fake')
 
 kundi TestPyDecode(TestDecode, PyTest): pita

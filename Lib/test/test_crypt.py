@@ -90,17 +90,17 @@ kundi CryptTestCase(unittest.TestCase):
     eleza test_invalid_rounds(self):
         kila method kwenye (crypt.METHOD_SHA256, crypt.METHOD_SHA512,
                        crypt.METHOD_BLOWFISH):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 crypt.mksalt(method, rounds='4096')
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 crypt.mksalt(method, rounds=4096.0)
             kila rounds kwenye (0, 1, -1, 1<<999):
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     crypt.mksalt(method, rounds=rounds)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             crypt.mksalt(crypt.METHOD_BLOWFISH, rounds=1000)
         kila method kwenye (crypt.METHOD_CRYPT, crypt.METHOD_MD5):
-            with self.assertRaisesRegex(ValueError, 'support'):
+            ukijumuisha self.assertRaisesRegex(ValueError, 'support'):
                 crypt.mksalt(method, rounds=4096)
 
 

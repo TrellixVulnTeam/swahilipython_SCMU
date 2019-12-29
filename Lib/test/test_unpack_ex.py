@@ -289,7 +289,7 @@ error
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3:
     ...             rudisha i
-    ...         elikiwa i == 3:
+    ...         lasivyo i == 3:
     ...             ashiria BozoError
     ...         isipokua:
     ...             ashiria IndexError

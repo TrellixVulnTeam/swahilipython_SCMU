@@ -90,9 +90,9 @@ kundi FixIdioms(fixer_base.BaseFix):
     eleza transform(self, node, results):
         ikiwa "isinstance" kwenye results:
             rudisha self.transform_isinstance(node, results)
-        elikiwa "while" kwenye results:
+        lasivyo "while" kwenye results:
             rudisha self.transform_while(node, results)
-        elikiwa "sorted" kwenye results:
+        lasivyo "sorted" kwenye results:
             rudisha self.transform_sort(node, results)
         isipokua:
             ashiria RuntimeError("Invalid match")
@@ -121,7 +121,7 @@ kundi FixIdioms(fixer_base.BaseFix):
 
         ikiwa list_call:
             list_call.replace(Name("sorted", prefix=list_call.prefix))
-        elikiwa simple_expr:
+        lasivyo simple_expr:
             new = simple_expr.clone()
             new.prefix = ""
             simple_expr.replace(Call(Name("sorted"), [new],

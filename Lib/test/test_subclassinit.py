@@ -46,7 +46,7 @@ kundi Test(unittest.TestCase):
             eleza __init_subclass__(cls):
                 ashiria RuntimeError
 
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kundi B(A):
                 pita
 
@@ -55,7 +55,7 @@ kundi Test(unittest.TestCase):
             eleza __init_subclass__(cls, whatever):
                 pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi B(A):
                 pita
 
@@ -134,7 +134,7 @@ kundi Test(unittest.TestCase):
             eleza __set_name__(self, owner, name):
                 1/0
 
-        with self.assertRaises(RuntimeError) kama cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             kundi NotGoingToWork:
                 attr = Descriptor()
 
@@ -149,7 +149,7 @@ kundi Test(unittest.TestCase):
             eleza __set_name__(self):
                 pita
 
-        with self.assertRaises(RuntimeError) kama cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             kundi NotGoingToWork:
                 attr = Descriptor()
 
@@ -217,11 +217,11 @@ kundi Test(unittest.TestCase):
         kundi MyMeta(type):
             pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta, otherarg=1):
                 pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.new_class("MyClass", (object,),
                             dict(metaclass=MyMeta, otherarg=1))
         types.prepare_class("MyClass", (object,),
@@ -231,7 +231,7 @@ kundi Test(unittest.TestCase):
             eleza __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta, otherarg=1):
                 pita
 
@@ -255,7 +255,7 @@ kundi Test(unittest.TestCase):
                 rudisha super().__new__(cls, name=name, bases=bases,
                                        dict=namespace)
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta):
                 pita
 
@@ -275,7 +275,7 @@ kundi Test(unittest.TestCase):
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, 'NewClass')
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type(name='NewClass', bases=(object,), dict={})
 
 

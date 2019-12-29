@@ -19,7 +19,7 @@ kundi OpcodeTests(unittest.TestCase):
         self.assertRaises(ValueError, stack_effect, dis.opmap['POP_TOP'], 0)
         # All defined opcodes
         kila name, code kwenye dis.opmap.items():
-            with self.subTest(opname=name):
+            ukijumuisha self.subTest(opname=name):
                 ikiwa code < dis.HAVE_ARGUMENT:
                     stack_effect(code)
                     self.assertRaises(ValueError, stack_effect, code, 0)
@@ -28,7 +28,7 @@ kundi OpcodeTests(unittest.TestCase):
                     self.assertRaises(ValueError, stack_effect, code)
         # All sio defined opcodes
         kila code kwenye set(range(256)) - set(dis.opmap.values()):
-            with self.subTest(opcode=code):
+            ukijumuisha self.subTest(opcode=code):
                 self.assertRaises(ValueError, stack_effect, code)
                 self.assertRaises(ValueError, stack_effect, code, 0)
 
@@ -48,7 +48,7 @@ kundi OpcodeTests(unittest.TestCase):
         # All defined opcodes
         has_jump = dis.hasjabs + dis.hasjrel
         kila name, code kwenye dis.opmap.items():
-            with self.subTest(opname=name):
+            ukijumuisha self.subTest(opname=name):
                 ikiwa code < dis.HAVE_ARGUMENT:
                     common = stack_effect(code)
                     jump = stack_effect(code, jump=Kweli)

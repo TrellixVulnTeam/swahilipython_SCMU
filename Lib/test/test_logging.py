@@ -444,7 +444,7 @@ kundi VerySpecificFilter(logging.Filter):
 
 kundi CustomLevelsAndFiltersTest(BaseTest):
 
-    """Test various filtering possibilities with custom logging levels."""
+    """Test various filtering possibilities ukijumuisha custom logging levels."""
 
     # Skip the logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
@@ -542,7 +542,7 @@ kundi HandlerTest(BaseTest):
 
     eleza test_builtin_handlers(self):
         # We can't actually *use* too many handlers kwenye the tests,
-        # but we can try instantiating them with various options
+        # but we can try instantiating them ukijumuisha various options
         ikiwa sys.platform kwenye ('linux', 'darwin'):
             kila existing kwenye (Kweli, Uongo):
                 fd, fn = tempfile.mkstemp()
@@ -704,7 +704,7 @@ kundi HandlerTest(BaseTest):
                     locks_held__ready_to_fork.set()
 
                     # If the deadlock bug exists, the fork will happen
-                    # without dealing with the locks we hold, deadlocking
+                    # without dealing ukijumuisha the locks we hold, deadlocking
                     # the child.
 
                     # Wait kila a successful fork ama an unreasonable amount of
@@ -776,13 +776,13 @@ kundi StreamHandlerTest(BaseTest):
             self.assertIs(h.error_record, r)
 
             h = logging.StreamHandler(BadStream())
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 h.handle(r)
                 msg = '\nRuntimeError: deliberate mistake\n'
                 self.assertIn(msg, stderr.getvalue())
 
             logging.ashiriaExceptions = Uongo
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 h.handle(r)
                 self.assertEqual('', stderr.getvalue())
         mwishowe:
@@ -891,7 +891,7 @@ kundi ControlMixin(object):
     provide a callable which will be pitaed each received request to be
     processed.
 
-    :param handler: A handler callable which will be called with a
+    :param handler: A handler callable which will be called ukijumuisha a
                     single parameter - the request - kwenye order to
                     process the request. This handler ni called on the
                     server thread, effectively meaning that requests are
@@ -940,8 +940,8 @@ kundi TestHTTPServer(ControlMixin, HTTPServer):
     """
     An HTTP server which ni controllable using :class:`ControlMixin`.
 
-    :param addr: A tuple with the IP address na port to listen on.
-    :param handler: A handler callable which will be called with a
+    :param addr: A tuple ukijumuisha the IP address na port to listen on.
+    :param handler: A handler callable which will be called ukijumuisha a
                     single parameter - the request - kwenye order to
                     process the request.
     :param poll_interval: The polling interval kwenye seconds.
@@ -981,8 +981,8 @@ kundi TestTCPServer(ControlMixin, ThreadingTCPServer):
     """
     A TCP server which ni controllable using :class:`ControlMixin`.
 
-    :param addr: A tuple with the IP address na port to listen on.
-    :param handler: A handler callable which will be called with a single
+    :param addr: A tuple ukijumuisha the IP address na port to listen on.
+    :param handler: A handler callable which will be called ukijumuisha a single
                     parameter - the request - kwenye order to process the request.
     :param poll_interval: The polling interval kwenye seconds.
     :bind_and_activate: If Kweli (the default), binds the server na starts it
@@ -1012,8 +1012,8 @@ kundi TestUDPServer(ControlMixin, ThreadingUDPServer):
     """
     A UDP server which ni controllable using :class:`ControlMixin`.
 
-    :param addr: A tuple with the IP address na port to listen on.
-    :param handler: A handler callable which will be called with a
+    :param addr: A tuple ukijumuisha the IP address na port to listen on.
+    :param handler: A handler callable which will be called ukijumuisha a
                     single parameter - the request - kwenye order to
                     process the request.
     :param poll_interval: The polling interval kila shutdown requests,
@@ -1100,7 +1100,7 @@ kundi MemoryHandlerTest(BaseTest):
 
     """Tests kila the MemoryHandler."""
 
-    # Do sio bother with a logger name group.
+    # Do sio bother ukijumuisha a logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
 
     eleza setUp(self):
@@ -1441,7 +1441,7 @@ kundi ConfigFileTest(BaseTest):
 
     eleza test_config0_ok(self):
         # A simple config file which overrides the default settings.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config0)
             logger = logging.getLogger()
             # Won't output anything
@@ -1456,7 +1456,7 @@ kundi ConfigFileTest(BaseTest):
 
     eleza test_config0_using_cp_ok(self):
         # A simple config file which overrides the default settings.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             file = io.StringIO(textwrap.dedent(self.config0))
             cp = configparser.ConfigParser()
             cp.read_file(file)
@@ -1474,7 +1474,7 @@ kundi ConfigFileTest(BaseTest):
 
     eleza test_config1_ok(self, config=config1):
         # A config file defining a sub-parser kama well.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(config)
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -1497,7 +1497,7 @@ kundi ConfigFileTest(BaseTest):
 
     eleza test_config4_ok(self):
         # A config file specifying a custom formatter class.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config4)
             logger = logging.getLogger()
             jaribu:
@@ -1517,7 +1517,7 @@ kundi ConfigFileTest(BaseTest):
         self.test_config1_ok(config=self.config6)
 
     eleza test_config7_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config1a)
             logger = logging.getLogger("compiler.parser")
             # See issue #11424. compiler-hyphenated sorts
@@ -1537,7 +1537,7 @@ kundi ConfigFileTest(BaseTest):
             ], stream=output)
             # Original logger output ni empty.
             self.assert_log_lines([])
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config7)
             logger = logging.getLogger("compiler.parser")
             self.assertUongo(logger.disabled)
@@ -1565,11 +1565,11 @@ kundi ConfigFileTest(BaseTest):
             h1.close()
             os.remove(fn)
 
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             fd, fn = tempfile.mkstemp(".log", "test_logging-X-")
             os.close(fd)
 
-            # Replace single backslash with double backslash kwenye windows
+            # Replace single backslash ukijumuisha double backslash kwenye windows
             # to avoid unicode error during string formatting
             ikiwa os.name == "nt":
                 fn = fn.replace("\\", "\\\\")
@@ -1646,7 +1646,7 @@ kundi SocketHandlerTest(BaseTest):
         """Set up a TCP server to receive log messages, na a SocketHandler
         pointing to that server's address na port."""
         BaseTest.setUp(self)
-        # Issue #29177: deal with errors that happen during setup
+        # Issue #29177: deal ukijumuisha errors that happen during setup
         self.server = self.sock_hdlr = self.server_exception = Tupu
         jaribu:
             self.server = server = self.server_class(self.address,
@@ -1735,7 +1735,7 @@ eleza _get_temp_domain_socket():
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
 kundi UnixSocketHandlerTest(SocketHandlerTest):
 
-    """Test kila SocketHandler with unix sockets."""
+    """Test kila SocketHandler ukijumuisha unix sockets."""
 
     ikiwa hasattr(socket, "AF_UNIX"):
         server_kundi = TestUnixStreamServer
@@ -1760,7 +1760,7 @@ kundi DatagramHandlerTest(BaseTest):
         """Set up a UDP server to receive log messages, na a DatagramHandler
         pointing to that server's address na port."""
         BaseTest.setUp(self)
-        # Issue #29177: deal with errors that happen during setup
+        # Issue #29177: deal ukijumuisha errors that happen during setup
         self.server = self.sock_hdlr = self.server_exception = Tupu
         jaribu:
             self.server = server = self.server_class(self.address,
@@ -1841,7 +1841,7 @@ kundi SysLogHandlerTest(BaseTest):
         """Set up a UDP server to receive log messages, na a SysLogHandler
         pointing to that server's address na port."""
         BaseTest.setUp(self)
-        # Issue #29177: deal with errors that happen during setup
+        # Issue #29177: deal ukijumuisha errors that happen during setup
         self.server = self.sl_hdlr = self.server_exception = Tupu
         jaribu:
             self.server = server = self.server_class(self.address,
@@ -1900,7 +1900,7 @@ kundi SysLogHandlerTest(BaseTest):
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
 kundi UnixSysLogHandlerTest(SysLogHandlerTest):
 
-    """Test kila SysLogHandler with Unix sockets."""
+    """Test kila SysLogHandler ukijumuisha Unix sockets."""
 
     ikiwa hasattr(socket, "AF_UNIX"):
         server_kundi = TestUnixDatagramServer
@@ -1918,7 +1918,7 @@ kundi UnixSysLogHandlerTest(SysLogHandlerTest):
                      'IPv6 support required kila this test.')
 kundi IPv6SysLogHandlerTest(SysLogHandlerTest):
 
-    """Test kila SysLogHandler with IPv6 host."""
+    """Test kila SysLogHandler ukijumuisha IPv6 host."""
 
     server_kundi = TestUDPServer
     address = ('::1', 0)
@@ -2112,7 +2112,7 @@ kundi EncodingTest(BaseTest):
 kundi WarningsTest(BaseTest):
 
     eleza test_warnings(self):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             logging.captureWarnings(Kweli)
             self.addCleanup(logging.captureWarnings, Uongo)
             warnings.filterwarnings("always", category=UserWarning)
@@ -2136,7 +2136,7 @@ kundi WarningsTest(BaseTest):
                 "dummy.py:42: UserWarning: Explicit\n  Dummy line\n")
 
     eleza test_warnings_no_handlers(self):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             logging.captureWarnings(Kweli)
             self.addCleanup(logging.captureWarnings, Uongo)
 
@@ -2218,7 +2218,7 @@ kundi ConfigDictTest(BaseTest):
         },
     }
 
-    # config1a moves the handler to the root. Used with config8a
+    # config1a moves the handler to the root. Used ukijumuisha config8a
     config1a = {
         'version': 1,
         'formatters': {
@@ -2272,7 +2272,7 @@ kundi ConfigDictTest(BaseTest):
         },
     }
 
-    # As config1 but with a misspelt level on a handler
+    # As config1 but ukijumuisha a misspelt level on a handler
     config2a = {
         'version': 1,
         'formatters': {
@@ -2300,7 +2300,7 @@ kundi ConfigDictTest(BaseTest):
     }
 
 
-    # As config1 but with a misspelt level on a logger
+    # As config1 but ukijumuisha a misspelt level on a logger
     config2b = {
         'version': 1,
         'formatters': {
@@ -2613,7 +2613,7 @@ kundi ConfigDictTest(BaseTest):
         },
     }
 
-    # As config1 but with a filter added
+    # As config1 but ukijumuisha a filter added
     config10 = {
         'version': 1,
         'formatters': {
@@ -2739,7 +2739,7 @@ kundi ConfigDictTest(BaseTest):
         },
     }
 
-    # As config0, but with properties
+    # As config0, but ukijumuisha properties
     config14 = {
         'version': 1,
         'formatters': {
@@ -2796,7 +2796,7 @@ kundi ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom logging.Formatter subkundi kama '()' key na 'validate' set to Uongo
+    # Configuration ukijumuisha custom logging.Formatter subkundi kama '()' key na 'validate' set to Uongo
     custom_formatter_class_validate = {
         'version': 1,
         'formatters': {
@@ -2823,7 +2823,7 @@ kundi ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom logging.Formatter subkundi kama 'class' key na 'validate' set to Uongo
+    # Configuration ukijumuisha custom logging.Formatter subkundi kama 'class' key na 'validate' set to Uongo
     custom_formatter_class_validate2 = {
         'version': 1,
         'formatters': {
@@ -2850,7 +2850,7 @@ kundi ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom kundi that ni sio inherited kutoka logging.Formatter
+    # Configuration ukijumuisha custom kundi that ni sio inherited kutoka logging.Formatter
     custom_formatter_class_validate3 = {
         'version': 1,
         'formatters': {
@@ -2877,7 +2877,7 @@ kundi ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom function na 'validate' set to Uongo
+    # Configuration ukijumuisha custom function na 'validate' set to Uongo
     custom_formatter_with_function = {
         'version': 1,
         'formatters': {
@@ -2909,7 +2909,7 @@ kundi ConfigDictTest(BaseTest):
 
     eleza test_config0_ok(self):
         # A simple config which overrides the default settings.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config0)
             logger = logging.getLogger()
             # Won't output anything
@@ -2924,7 +2924,7 @@ kundi ConfigDictTest(BaseTest):
 
     eleza test_config1_ok(self, config=config1):
         # A config defining a sub-parser kama well.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(config)
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -2955,7 +2955,7 @@ kundi ConfigDictTest(BaseTest):
 
     eleza test_config4_ok(self):
         # A config specifying a custom formatter class.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config4)
             #logger = logging.getLogger()
             jaribu:
@@ -2970,7 +2970,7 @@ kundi ConfigDictTest(BaseTest):
 
     eleza test_config4a_ok(self):
         # A config specifying a custom formatter class.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config4a)
             #logger = logging.getLogger()
             jaribu:
@@ -2990,7 +2990,7 @@ kundi ConfigDictTest(BaseTest):
         self.assertRaises(Exception, self.apply_config, self.config6)
 
     eleza test_config7_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config1)
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -3002,7 +3002,7 @@ kundi ConfigDictTest(BaseTest):
             ], stream=output)
             # Original logger output ni empty.
             self.assert_log_lines([])
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config7)
             logger = logging.getLogger("compiler.parser")
             self.assertKweli(logger.disabled)
@@ -3019,7 +3019,7 @@ kundi ConfigDictTest(BaseTest):
 
     # Same kama test_config_7_ok but don't disable old loggers.
     eleza test_config_8_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config1)
             logger = logging.getLogger("compiler.parser")
             # All will output a message
@@ -3031,7 +3031,7 @@ kundi ConfigDictTest(BaseTest):
             ], stream=output)
             # Original logger output ni empty.
             self.assert_log_lines([])
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config8)
             logger = logging.getLogger("compiler.parser")
             self.assertUongo(logger.disabled)
@@ -3052,7 +3052,7 @@ kundi ConfigDictTest(BaseTest):
             self.assert_log_lines([])
 
     eleza test_config_8a_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config1a)
             logger = logging.getLogger("compiler.parser")
             # See issue #11424. compiler-hyphenated sorts
@@ -3072,7 +3072,7 @@ kundi ConfigDictTest(BaseTest):
             ], stream=output)
             # Original logger output ni empty.
             self.assert_log_lines([])
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config8a)
             logger = logging.getLogger("compiler.parser")
             self.assertUongo(logger.disabled)
@@ -3095,7 +3095,7 @@ kundi ConfigDictTest(BaseTest):
             self.assert_log_lines([])
 
     eleza test_config_9_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config9)
             logger = logging.getLogger("compiler.parser")
             # Nothing will be output since both handler na logger are set to WARNING
@@ -3113,7 +3113,7 @@ kundi ConfigDictTest(BaseTest):
             ], stream=output)
 
     eleza test_config_10_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config10)
             logger = logging.getLogger("compiler.parser")
             logger.warning(self.next_message())
@@ -3141,7 +3141,7 @@ kundi ConfigDictTest(BaseTest):
         self.assertRaises(Exception, self.apply_config, self.config13)
 
     eleza test_config14_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.apply_config(self.config14)
             h = logging._handlers['hand1']
             self.assertEqual(h.foo, 'bar')
@@ -3155,7 +3155,7 @@ kundi ConfigDictTest(BaseTest):
             h1.close()
             os.remove(fn)
 
-        with self.check_no_resource_warning():
+        ukijumuisha self.check_no_resource_warning():
             fd, fn = tempfile.mkstemp(".log", "test_logging-X-")
             os.close(fd)
 
@@ -3207,7 +3207,7 @@ kundi ConfigDictTest(BaseTest):
             support.join_thread(t, 2.0)
 
     eleza test_listen_config_10_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.setup_via_listener(json.dumps(self.config10))
             logger = logging.getLogger("compiler.parser")
             logger.warning(self.next_message())
@@ -3226,7 +3226,7 @@ kundi ConfigDictTest(BaseTest):
             ], stream=output)
 
     eleza test_listen_config_1_ok(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.setup_via_listener(textwrap.dedent(ConfigFileTest.config1))
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -3252,7 +3252,7 @@ kundi ConfigDictTest(BaseTest):
         # First, specify a verification function that will fail.
         # We expect to see no output, since our configuration
         # never took effect.
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.setup_via_listener(to_send, verify_fail)
             # Both will output a message
             logger.info(self.next_message())
@@ -3267,7 +3267,7 @@ kundi ConfigDictTest(BaseTest):
         # Now, perform no verification. Our configuration
         # should take effect.
 
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.setup_via_listener(to_send)    # no verify callable specified
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -3285,7 +3285,7 @@ kundi ConfigDictTest(BaseTest):
 
         # Now, perform verification which transforms the bytes.
 
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self.setup_via_listener(to_send[::-1], verify_reverse)
             logger = logging.getLogger("compiler.parser")
             # Both will output a message
@@ -3440,7 +3440,7 @@ kundi LogRecordFactoryTest(BaseTest):
 
 
 kundi QueueHandlerTest(BaseTest):
-    # Do sio bother with a logger name group.
+    # Do sio bother ukijumuisha a logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
 
     eleza setUp(self):
@@ -3499,7 +3499,7 @@ kundi QueueHandlerTest(BaseTest):
         self.assertKweli(handler.matches(levelno=logging.CRITICAL, message='3'))
         handler.close()
 
-        # Now test with respect_handler_level set
+        # Now test ukijumuisha respect_handler_level set
 
         handler = support.TestHandler(support.Matcher())
         handler.setLevel(logging.CRITICAL)
@@ -3559,7 +3559,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
         @staticmethod
         eleza setup_and_log(log_queue, ident):
             """
-            Creates a logger with a QueueHandler that logs to a queue read by a
+            Creates a logger ukijumuisha a QueueHandler that logs to a queue read by a
             QueueListener. Starts the listener, logs five messages, na stops
             the listener.
             """
@@ -3631,7 +3631,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
                 self.assertIn(items, expected,
                               'Found unexpected messages kwenye queue: %s' % (
                                     [m.msg ikiwa isinstance(m, logging.LogRecord)
-                                     else m kila m kwenye items]))
+                                     isipokua m kila m kwenye items]))
 
         eleza test_calls_task_done_after_stop(self):
             # Issue 36813: Make sure queue.join does sio deadlock.
@@ -3639,7 +3639,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
             listener = logging.handlers.QueueListener(log_queue)
             listener.start()
             listener.stop()
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 # Make sure all tasks are done na .join won't block.
                 log_queue.task_done()
 
@@ -3666,7 +3666,7 @@ kundi FormatterTest(unittest.TestCase):
             'lineno': 42,
             'exc_info': Tupu,
             'func': Tupu,
-            'msg': 'Message with %d %s',
+            'msg': 'Message ukijumuisha %d %s',
             'args': (2, 'placeholders'),
         }
         self.variants = {
@@ -3688,7 +3688,7 @@ kundi FormatterTest(unittest.TestCase):
         # Test %-formatting
         r = self.get_record()
         f = logging.Formatter('${%(message)s}')
-        self.assertEqual(f.format(r), '${Message with 2 placeholders}')
+        self.assertEqual(f.format(r), '${Message ukijumuisha 2 placeholders}')
         f = logging.Formatter('%(random)s')
         self.assertRaises(ValueError, f.format, r)
         self.assertUongo(f.usesTime())
@@ -3703,7 +3703,7 @@ kundi FormatterTest(unittest.TestCase):
         # Test {}-formatting
         r = self.get_record()
         f = logging.Formatter('$%{message}%$', style='{')
-        self.assertEqual(f.format(r), '$%Message with 2 placeholders%$')
+        self.assertEqual(f.format(r), '$%Message ukijumuisha 2 placeholders%$')
         f = logging.Formatter('{random}', style='{')
         self.assertRaises(ValueError, f.format, r)
         f = logging.Formatter("{message}", style='{')
@@ -3719,11 +3719,11 @@ kundi FormatterTest(unittest.TestCase):
         # Test $-formatting
         r = self.get_record()
         f = logging.Formatter('${message}', style='$')
-        self.assertEqual(f.format(r), 'Message with 2 placeholders')
+        self.assertEqual(f.format(r), 'Message ukijumuisha 2 placeholders')
         f = logging.Formatter('$message', style='$')
-        self.assertEqual(f.format(r), 'Message with 2 placeholders')
+        self.assertEqual(f.format(r), 'Message ukijumuisha 2 placeholders')
         f = logging.Formatter('$$%${message}%$$', style='$')
-        self.assertEqual(f.format(r), '$%Message with 2 placeholders%$')
+        self.assertEqual(f.format(r), '$%Message ukijumuisha 2 placeholders%$')
         f = logging.Formatter('${random}', style='$')
         self.assertRaises(ValueError, f.format, r)
         self.assertUongo(f.usesTime())
@@ -3795,7 +3795,7 @@ kundi FormatterTest(unittest.TestCase):
         self.assertRaises(ValueError, logging.Formatter, "%(asctime)_")
         self.assertRaises(ValueError, logging.Formatter, '{asctime}')
         self.assertRaises(ValueError, logging.Formatter, '${message}')
-        self.assertRaises(ValueError, logging.Formatter, '%(foo)#12.3*f')  # with both * na decimal number kama precision
+        self.assertRaises(ValueError, logging.Formatter, '%(foo)#12.3*f')  # ukijumuisha both * na decimal number kama precision
         self.assertRaises(ValueError, logging.Formatter, '%(foo)0*.8*f')
 
         # StrFormat Style
@@ -3960,7 +3960,7 @@ kundi LastResortTest(BaseTest):
         old_ashiria_exceptions = logging.ashiriaExceptions
 
         jaribu:
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 root.debug('This should sio appear')
                 self.assertEqual(stderr.getvalue(), '')
                 root.warning('Final chance!')
@@ -3968,20 +3968,20 @@ kundi LastResortTest(BaseTest):
 
             # No handlers na no last resort, so 'No handlers' message
             logging.lastResort = Tupu
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 root.warning('Final chance!')
                 msg = 'No handlers could be found kila logger "root"\n'
                 self.assertEqual(stderr.getvalue(), msg)
 
             # 'No handlers' message only printed once
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 root.warning('Final chance!')
                 self.assertEqual(stderr.getvalue(), '')
 
             # If ashiriaExceptions ni Uongo, no message ni printed
             root.manager.emittedNoHandlerWarning = Uongo
             logging.ashiriaExceptions = Uongo
-            with support.captured_stderr() kama stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 root.warning('Final chance!')
                 self.assertEqual(stderr.getvalue(), '')
         mwishowe:
@@ -4136,7 +4136,7 @@ kundi ModuleLevelMiscTest(BaseTest):
         record = recording.records[0]
         self.assertEqual(record.getMessage(), "test me: %r" % recording)
 
-        expected_level = level ikiwa level ni sio Tupu else getattr(logging, method.upper())
+        expected_level = level ikiwa level ni sio Tupu isipokua getattr(logging, method.upper())
         self.assertEqual(record.levelno, expected_level)
 
         # basicConfig was sio called!
@@ -4338,7 +4338,7 @@ kundi BasicConfigTest(unittest.TestCase):
         self.assertEqual(logging.root.level, self.original_logging_level)
 
     eleza test_strformatstyle(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             logging.basicConfig(stream=sys.stdout, style="{")
             logging.error("Log an error")
             sys.stdout.seek(0)
@@ -4346,7 +4346,7 @@ kundi BasicConfigTest(unittest.TestCase):
                 "ERROR:root:Log an error")
 
     eleza test_stringtemplatestyle(self):
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             logging.basicConfig(stream=sys.stdout, style="$")
             logging.error("Log an error")
             sys.stdout.seek(0)
@@ -4496,7 +4496,7 @@ kundi BasicConfigTest(unittest.TestCase):
         isipokua:
             log_method("test me")
 
-        # basicConfig was called with no arguments
+        # basicConfig was called ukijumuisha no arguments
         self.assertEqual(called, [((), {})])
 
     eleza test_log(self):
@@ -4658,11 +4658,11 @@ kundi LoggerTest(BaseTest):
                          (exc.__class__, exc, exc.__traceback__))
 
     eleza test_log_invalid_level_with_ashiria(self):
-        with support.swap_attr(logging, 'ashiriaExceptions', Kweli):
+        ukijumuisha support.swap_attr(logging, 'ashiriaExceptions', Kweli):
             self.assertRaises(TypeError, self.logger.log, '10', 'test message')
 
     eleza test_log_invalid_level_no_ashiria(self):
-        with support.swap_attr(logging, 'ashiriaExceptions', Uongo):
+        ukijumuisha support.swap_attr(logging, 'ashiriaExceptions', Uongo):
             self.logger.log('10', 'test message')  # no exception happens
 
     eleza test_find_caller_with_stack_info(self):
@@ -4918,10 +4918,10 @@ kundi RotatingFileHandlerTest(BaseFileTest):
             rudisha name + ".gz"
 
         eleza rotator(source, dest):
-            with open(source, "rb") kama sf:
+            ukijumuisha open(source, "rb") kama sf:
                 data = sf.read()
                 compressed = zlib.compress(data, 9)
-                with open(dest, "wb") kama df:
+                ukijumuisha open(dest, "wb") kama df:
                     df.write(compressed)
             os.remove(source)
 
@@ -4937,20 +4937,20 @@ kundi RotatingFileHandlerTest(BaseFileTest):
         fn = namer(self.fn + ".1")
         self.assertLogFile(fn)
         newline = os.linesep
-        with open(fn, "rb") kama f:
+        ukijumuisha open(fn, "rb") kama f:
             compressed = f.read()
             data = zlib.decompress(compressed)
             self.assertEqual(data.decode("ascii"), m1.msg + newline)
         rh.emit(self.next_rec())
         fn = namer(self.fn + ".2")
         self.assertLogFile(fn)
-        with open(fn, "rb") kama f:
+        ukijumuisha open(fn, "rb") kama f:
             compressed = f.read()
             data = zlib.decompress(compressed)
             self.assertEqual(data.decode("ascii"), m1.msg + newline)
         rh.emit(self.next_rec())
         fn = namer(self.fn + ".2")
-        with open(fn, "rb") kama f:
+        ukijumuisha open(fn, "rb") kama f:
             compressed = f.read()
             data = zlib.decompress(compressed)
             self.assertEqual(data.decode("ascii"), m2.msg + newline)
@@ -4997,7 +4997,7 @@ kundi TimedRotatingFileHandlerTest(BaseFileTest):
             kila f kwenye files:
                 andika('Contents of %s:' % f)
                 path = os.path.join(dn, f)
-                with open(path, 'r') kama tf:
+                ukijumuisha open(path, 'r') kama tf:
                     andika(tf.read())
         self.assertKweli(found, msg=msg)
 

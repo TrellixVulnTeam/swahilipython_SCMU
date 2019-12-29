@@ -28,7 +28,7 @@ eleza grep(text, io=Tupu, flist=Tupu):
     Args:
         text: Text widget that contains the selected text for
               default search phrase.
-        io: iomenu.IOBinding instance with default path to search.
+        io: iomenu.IOBinding instance ukijumuisha default path to search.
         flist: filelist.FileList instance kila OutputWindow parent.
     """
     root = text._root()
@@ -172,7 +172,7 @@ kundi GrepDialog(SearchDialogBase):
         jaribu:
             kila fn kwenye filelist:
                 jaribu:
-                    with open(fn, errors='replace') kama f:
+                    ukijumuisha open(fn, errors='replace') kama f:
                         kila lineno, line kwenye enumerate(f, 1):
                             ikiwa line[-1:] == '\n':
                                 line = line[:-1]
@@ -182,7 +182,7 @@ kundi GrepDialog(SearchDialogBase):
                 tatizo OSError kama msg:
                     andika(msg)
             andika(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
-                  ikiwa hits else "No hits.")
+                  ikiwa hits isipokua "No hits.")
         tatizo AttributeError:
             # Tk window has been closed, OutputWindow.text = Tupu,
             # so kwenye OW.write, OW.text.insert fails.

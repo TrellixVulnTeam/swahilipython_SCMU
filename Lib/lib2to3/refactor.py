@@ -121,11 +121,11 @@ eleza _detect_future_features(source):
             tp, value = advance()
             ikiwa tp kwenye ignore:
                 endelea
-            elikiwa tp == token.STRING:
+            lasivyo tp == token.STRING:
                 ikiwa have_docstring:
                     koma
                 have_docstring = Kweli
-            elikiwa tp == token.NAME na value == "kutoka":
+            lasivyo tp == token.NAME na value == "kutoka":
                 tp, value = advance()
                 ikiwa tp != token.NAME ama value != "__future__":
                     koma
@@ -158,14 +158,14 @@ kundi RefactoringTool(object):
                         "write_unchanged_files" : Uongo}
 
     CLASS_PREFIX = "Fix" # The prefix kila fixer classes
-    FILE_PREFIX = "fix_" # The prefix kila modules with a fixer within
+    FILE_PREFIX = "fix_" # The prefix kila modules ukijumuisha a fixer within
 
     eleza __init__(self, fixer_names, options=Tupu, explicit=Tupu):
         """Initializer.
 
         Args:
             fixer_names: a list of fixers to agiza
-            options: a dict with configuration.
+            options: a dict ukijumuisha configuration.
             explicit: a list of fixers to run even ikiwa they are explicit.
         """
         self.fixers = fixer_names
@@ -202,9 +202,9 @@ kundi RefactoringTool(object):
                 self.BM.add_fixer(fixer)
                 # remove fixers that will be handled by the bottom-up
                 # matcher
-            elikiwa fixer kwenye self.pre_order:
+            lasivyo fixer kwenye self.pre_order:
                 self.bmi_pre_order.append(fixer)
-            elikiwa fixer kwenye self.post_order:
+            lasivyo fixer kwenye self.post_order:
                 self.bmi_post_order.append(fixer)
 
         self.bmi_pre_order_heads = _get_headnode_dict(self.bmi_pre_order)
@@ -242,7 +242,7 @@ kundi RefactoringTool(object):
             self.log_debug("Adding transformation: %s", fix_name)
             ikiwa fixer.order == "pre":
                 pre_order_fixers.append(fixer)
-            elikiwa fixer.order == "post":
+            lasivyo fixer.order == "post":
                 post_order_fixers.append(fixer)
             isipokua:
                 ashiria FixerError("Illegal fixer order: %r" % fixer.order)
@@ -268,7 +268,7 @@ kundi RefactoringTool(object):
         self.logger.debug(msg)
 
     eleza print_output(self, old_text, new_text, filename, equal):
-        """Called with the old version, new version, na filename of a
+        """Called ukijumuisha the old version, new version, na filename of a
         refactored file."""
         pita
 
@@ -286,7 +286,7 @@ kundi RefactoringTool(object):
 
         Python files are assumed to have a .py extension.
 
-        Files na subdirectories starting with '.' are skipped.
+        Files na subdirectories starting ukijumuisha '.' are skipped.
         """
         py_ext = os.extsep + "py"
         kila dirpath, dirnames, filenames kwenye os.walk(dir_name):
@@ -298,7 +298,7 @@ kundi RefactoringTool(object):
                     os.path.splitext(name)[1] == py_ext):
                     fullname = os.path.join(dirpath, name)
                     self.refactor_file(fullname, write, doctests_only)
-            # Modify dirnames in-place to remove subdirs with leading dots
+            # Modify dirnames in-place to remove subdirs ukijumuisha leading dots
             dirnames[:] = [dn kila dn kwenye dirnames ikiwa sio dn.startswith(".")]
 
     eleza _read_python_source(self, filename):
@@ -314,7 +314,7 @@ kundi RefactoringTool(object):
             encoding = tokenize.detect_encoding(f.readline)[0]
         mwishowe:
             f.close()
-        with io.open(filename, "r", encoding=encoding, newline='') kama f:
+        ukijumuisha io.open(filename, "r", encoding=encoding, newline='') kama f:
             rudisha f.read(), encoding
 
     eleza refactor_file(self, filename, write=Uongo, doctests_only=Uongo):
@@ -417,7 +417,7 @@ kundi RefactoringTool(object):
 
                     ikiwa fixer.keep_line_order:
                         #some fixers(eg fix_agizas) must be applied
-                        #with the original file's line order
+                        #ukijumuisha the original file's line order
                         match_set[fixer].sort(key=pytree.Base.get_lineno)
 
                     kila node kwenye list(match_set[fixer]):
@@ -519,7 +519,7 @@ kundi RefactoringTool(object):
             self.log_error("Can't create %s: %s", filename, err)
             rudisha
 
-        with fp:
+        ukijumuisha fp:
             jaribu:
                 fp.write(new_text)
             tatizo OSError kama err:
@@ -534,8 +534,8 @@ kundi RefactoringTool(object):
         """Refactors a docstring, looking kila doctests.
 
         This rudishas a modified version of the input string.  It looks
-        kila doctests, which start with a ">>>" prompt, na may be
-        endelead with "..." prompts, kama long kama the "..." ni indented
+        kila doctests, which start ukijumuisha a ">>>" prompt, na may be
+        endelead ukijumuisha "..." prompts, kama long kama the "..." ni indented
         the same kama the ">>>".
 
         (Unfortunately we can't use the doctest module's parser,
@@ -557,7 +557,7 @@ kundi RefactoringTool(object):
                 block = [line]
                 i = line.find(self.PS1)
                 indent = line[:i]
-            elikiwa (indent ni sio Tupu and
+            lasivyo (indent ni sio Tupu and
                   (line.startswith(indent + self.PS2) or
                    line == indent + self.PS2.rstrip() + "\n")):
                 block.append(line)
@@ -577,8 +577,8 @@ kundi RefactoringTool(object):
         """Refactors one doctest.
 
         A doctest ni given kama a block of lines, the first of which starts
-        with ">>>" (possibly indented), wakati the remaining lines start
-        with "..." (identically indented).
+        ukijumuisha ">>>" (possibly indented), wakati the remaining lines start
+        ukijumuisha "..." (identically indented).
 
         """
         jaribu:
@@ -660,7 +660,7 @@ kundi RefactoringTool(object):
         kila line kwenye block:
             ikiwa line.startswith(prefix):
                 tuma line[len(prefix):]
-            elikiwa line == prefix.rstrip() + "\n":
+            lasivyo line == prefix.rstrip() + "\n":
                 tuma "\n"
             isipokua:
                 ashiria AssertionError("line=%r, prefix=%r" % (line, prefix))

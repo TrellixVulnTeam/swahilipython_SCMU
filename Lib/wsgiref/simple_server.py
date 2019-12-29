@@ -157,7 +157,7 @@ eleza make_server(
 
 
 ikiwa __name__ == '__main__':
-    with make_server('', 8000, demo_app) kama httpd:
+    ukijumuisha make_server('', 8000, demo_app) kama httpd:
         sa = httpd.socket.getsockname()
         andika("Serving HTTP on", sa[0], "port", sa[1], "...")
         agiza webbrowser

@@ -44,19 +44,19 @@ kundi APITest:
     exception when pitaing kwenye an int kila the module name)."""
 
     eleza test_ashirias_ModuleNotFoundError(self):
-        with self.assertRaises(ModuleNotFoundError):
+        ukijumuisha self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does sio exist')
 
     eleza test_name_requires_rparition(self):
         # Raise TypeError ikiwa a non-string ni pitaed kwenye kila the module name.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.__import__(42)
 
     eleza test_negative_level(self):
         # Raise ValueError when a negative level ni specified.
-        # PEP 328 did away with sys.module Tupu entries na the ambiguity of
+        # PEP 328 did away ukijumuisha sys.module Tupu entries na the ambiguity of
         # absolute/relative agizas.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
 
     eleza test_nonexistent_kutokalist_entry(self):
@@ -64,8 +64,8 @@ kundi APITest:
         # issue15715
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME):
+        ukijumuisha util.import_state(meta_path=[self.bad_finder_loader]):
+            ukijumuisha util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
                 self.__import__(PKG_NAME, kutokalist=['not here'])
 
@@ -75,10 +75,10 @@ kundi APITest:
         # issue15316
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME):
+        ukijumuisha util.import_state(meta_path=[self.bad_finder_loader]):
+            ukijumuisha util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
-                with self.assertRaises(ImportError):
+                ukijumuisha self.assertRaises(ImportError):
                     self.__import__(PKG_NAME,
                                     kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
 
@@ -87,11 +87,11 @@ kundi APITest:
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME, SUBMOD_NAME):
+        ukijumuisha util.import_state(meta_path=[self.bad_finder_loader]):
+            ukijumuisha util.uncache(PKG_NAME, SUBMOD_NAME):
                 sys.modules[PKG_NAME] = mod
                 sys.modules[SUBMOD_NAME] = Tupu
-                with self.assertRaises(ModuleNotFoundError) kama cm:
+                ukijumuisha self.assertRaises(ModuleNotFoundError) kama cm:
                     self.__import__(PKG_NAME,
                                     kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)

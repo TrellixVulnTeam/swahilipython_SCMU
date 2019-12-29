@@ -14,15 +14,15 @@ kutoka textwrap agiza TextWrapper, wrap, fill, dedent, indent, shorten
 
 
 kundi BaseTestCase(unittest.TestCase):
-    '''Parent kundi with utility methods kila textwrap tests.'''
+    '''Parent kundi ukijumuisha utility methods kila textwrap tests.'''
 
     eleza show(self, textin):
         ikiwa isinstance(textin, list):
             result = []
             kila i kwenye range(len(textin)):
                 result.append("  %d: %r" % (i, textin[i]))
-            result = "\n".join(result) ikiwa result else "  no lines"
-        elikiwa isinstance(textin, str):
+            result = "\n".join(result) ikiwa result isipokua "  no lines"
+        lasivyo isinstance(textin, str):
             result = "  %s\n" % repr(textin)
         rudisha result
 
@@ -216,7 +216,7 @@ What a mess!
         self.check_wrap(text, 1, text.split(), koma_long_words=Uongo)
 
     eleza test_em_dash(self):
-        # Test text with em-dashes
+        # Test text ukijumuisha em-dashes
         text = "Em-dashes should be written -- thus."
         self.check_wrap(text, 25,
                         ["Em-dashes should be",
@@ -322,7 +322,7 @@ What a mess!
                          ["foo", " ", "--option-", "opt", " ", "bar"])
 
     eleza test_punct_hyphens(self):
-        # Oh bother, SF #965425 found another problem with hyphens --
+        # Oh bother, SF #965425 found another problem ukijumuisha hyphens --
         # hyphenated words kwenye single quotes weren't handled correctly.
         # In fact, the bug ni that *any* punctuation around a hyphenated
         # word was handled incorrectly, tatizo kila a leading "--", which
@@ -358,10 +358,10 @@ What a mess!
     eleza test_drop_whitespace_false(self):
         # Check that drop_whitespace=Uongo preserves whitespace.
         # SF patch #1581073
-        text = " This ni a    sentence with     much whitespace."
+        text = " This ni a    sentence ukijumuisha     much whitespace."
         self.check_wrap(text, 10,
                         [" This ni a", "    ", "sentence ",
-                         "with     ", "much white", "space."],
+                         "ukijumuisha     ", "much white", "space."],
                         drop_whitespace=Uongo)
 
     eleza test_drop_whitespace_false_whitespace_only(self):
@@ -383,9 +383,9 @@ What a mess!
         # followed by non-whitespace).
         # SF bug #622849 reported inconsistent handling of leading
         # whitespace; let's test that a bit, shall we?
-        text = " This ni a sentence with leading whitespace."
+        text = " This ni a sentence ukijumuisha leading whitespace."
         self.check_wrap(text, 50,
-                        [" This ni a sentence with leading whitespace."])
+                        [" This ni a sentence ukijumuisha leading whitespace."])
         self.check_wrap(text, 30,
                         [" This ni a sentence with", "leading whitespace."])
 
@@ -445,11 +445,11 @@ What a mess!
         self.check_wrap(text, 7, ["aa \xe4\xe4-", "\xe4\xe4"])
 
     eleza test_non_komaing_space(self):
-        text = 'This ni a sentence with non-komaing\N{NO-BREAK SPACE}space.'
+        text = 'This ni a sentence ukijumuisha non-komaing\N{NO-BREAK SPACE}space.'
 
         self.check_wrap(text, 20,
                         ['This ni a sentence',
-                         'with non-',
+                         'ukijumuisha non-',
                          'komaing\N{NO-BREAK SPACE}space.'],
                         koma_on_hyphens=Kweli)
 
@@ -460,12 +460,12 @@ What a mess!
                         koma_on_hyphens=Uongo)
 
     eleza test_narrow_non_komaing_space(self):
-        text = ('This ni a sentence with non-komaing'
+        text = ('This ni a sentence ukijumuisha non-komaing'
                 '\N{NARROW NO-BREAK SPACE}space.')
 
         self.check_wrap(text, 20,
                         ['This ni a sentence',
-                         'with non-',
+                         'ukijumuisha non-',
                          'komaing\N{NARROW NO-BREAK SPACE}space.'],
                         koma_on_hyphens=Kweli)
 
@@ -538,10 +538,10 @@ kundi MaxLinesTestCase(BaseTestCase):
                         max_lines=2,
                         placeholder='...')
         # long placeholder na indentation
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             wrap(self.text, 16, initial_indent='    ',
                  max_lines=1, placeholder=' [truncated]...')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             wrap(self.text, 16, subsequent_indent='    ',
                  max_lines=2, placeholder=' [truncated]...')
         self.check_wrap(self.text, 16,
@@ -580,7 +580,7 @@ How *do* you spell that odd word, anyways?
 '''
 
     eleza test_koma_long(self):
-        # Wrap text with long words na lots of punctuation
+        # Wrap text ukijumuisha long words na lots of punctuation
 
         self.check_wrap(self.text, 30,
                         ['Did you say "supercalifragilis',
@@ -616,7 +616,7 @@ How *do* you spell that odd word, anyways?
                          'anyways?'])
 
     eleza test_nokoma_long(self):
-        # Test with koma_long_words disabled
+        # Test ukijumuisha koma_long_words disabled
         self.wrapper.koma_long_words = 0
         self.wrapper.width = 30
         expect = ['Did you say',
@@ -627,7 +627,7 @@ How *do* you spell that odd word, anyways?
         result = self.wrapper.wrap(self.text)
         self.check(result, expect)
 
-        # Same thing with kwargs pitaed to standalone wrap() function.
+        # Same thing ukijumuisha kwargs pitaed to standalone wrap() function.
         result = wrap(self.text, width=30, koma_long_words=0)
         self.check(result, expect)
 
@@ -646,7 +646,7 @@ kundi IndentTestCases(BaseTestCase):
     eleza setUp(self):
         self.text = '''\
 This paragraph will be filled, first without any indentation,
-and then with some (including a hanging indent).'''
+and then ukijumuisha some (including a hanging indent).'''
 
 
     eleza test_fill(self):
@@ -666,7 +666,7 @@ some (including a hanging indent).'''
 
         expect = ["     This paragraph will be filled,",
                   "first without any indentation, na then",
-                  "with some (including a hanging indent)."]
+                  "ukijumuisha some (including a hanging indent)."]
         result = wrap(self.text, 40, initial_indent="     ")
         self.check(result, expect)
 
@@ -681,7 +681,7 @@ some (including a hanging indent).'''
         expect = '''\
   * This paragraph will be filled, first
     without any indentation, na then
-    with some (including a hanging
+    ukijumuisha some (including a hanging
     indent).'''
 
         result = fill(self.text, 40,
@@ -702,7 +702,7 @@ kundi DedentTestCase(unittest.TestCase):
         text = "Hello there.\nHow are you?\nOh good, I'm glad."
         self.assertUnchanged(text)
 
-        # Similar, with a blank line.
+        # Similar, ukijumuisha a blank line.
         text = "Hello there.\n\nBoo!"
         self.assertUnchanged(text)
 
@@ -720,7 +720,7 @@ kundi DedentTestCase(unittest.TestCase):
         expect = "Hello there.\nHow are ya?\nOh good."
         self.assertEqual(expect, dedent(text))
 
-        # Same, with blank lines.
+        # Same, ukijumuisha blank lines.
         text = "  Hello there.\n\n  How are ya?\n  Oh good.\n"
         expect = "Hello there.\n\nHow are ya?\nOh good.\n"
         self.assertEqual(expect, dedent(text))
@@ -744,28 +744,28 @@ eleza foo():
 '''
         self.assertEqual(expect, dedent(text))
 
-        # Uneven indentation with a blank line.
+        # Uneven indentation ukijumuisha a blank line.
         text = "  Foo\n    Bar\n\n   Baz\n"
         expect = "Foo\n  Bar\n\n Baz\n"
         self.assertEqual(expect, dedent(text))
 
-        # Uneven indentation with a whitespace-only line.
+        # Uneven indentation ukijumuisha a whitespace-only line.
         text = "  Foo\n    Bar\n \n   Baz\n"
         expect = "Foo\n  Bar\n\n Baz\n"
         self.assertEqual(expect, dedent(text))
 
     eleza test_dedent_declining(self):
-        # Uneven indentation with declining indent level.
+        # Uneven indentation ukijumuisha declining indent level.
         text = "     Foo\n    Bar\n"  # 5 spaces, then 4
         expect = " Foo\nBar\n"
         self.assertEqual(expect, dedent(text))
 
-        # Declining indent level with blank line.
+        # Declining indent level ukijumuisha blank line.
         text = "     Foo\n\n    Bar\n"  # 5 spaces, blank, then 4
         expect = " Foo\n\nBar\n"
         self.assertEqual(expect, dedent(text))
 
-        # Declining indent level with whitespace only line.
+        # Declining indent level ukijumuisha whitespace only line.
         text = "     Foo\n    \n    Bar\n"  # 5 spaces, then 4, then 4
         expect = " Foo\n\nBar\n"
         self.assertEqual(expect, dedent(text))
@@ -858,17 +858,17 @@ kundi IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, '    ', predicate), text)
 
     eleza test_roundtrip_spaces(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip ukijumuisha dedent
         kila text kwenye self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '    ')), text)
 
     eleza test_roundtrip_tabs(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip ukijumuisha dedent
         kila text kwenye self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '\t\t')), text)
 
     eleza test_roundtrip_mixed(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip ukijumuisha dedent
         kila text kwenye self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, ' \t  \t ')), text)
 
@@ -997,7 +997,7 @@ kundi ShortenTestCase(BaseTestCase):
 
     eleza test_width_too_small_for_placeholder(self):
         shorten("x" * 20, width=8, placeholder="(......)")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             shorten("x" * 20, width=8, placeholder="(.......)")
 
     eleza test_first_word_too_long_but_placeholder_fits(self):

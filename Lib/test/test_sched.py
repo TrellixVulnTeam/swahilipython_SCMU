@@ -16,13 +16,13 @@ kundi Timer:
         self._stop = 0
 
     eleza time(self):
-        with self._cond:
+        ukijumuisha self._cond:
             rudisha self._time
 
     # increase the time but sio beyond the established limit
     eleza sleep(self, t):
         assert t >= 0
-        with self._cond:
+        ukijumuisha self._cond:
             t += self._time
             wakati self._stop < t:
                 self._time = self._stop
@@ -32,7 +32,7 @@ kundi Timer:
     # advance time limit kila user code
     eleza advance(self, t):
         assert t >= 0
-        with self._cond:
+        ukijumuisha self._cond:
             self._stop += t
             self._cond.notify_all()
 

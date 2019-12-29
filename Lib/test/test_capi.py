@@ -1,5 +1,5 @@
 # Run the _testcapi module tests (tests kila the Python/C API):  by defn,
-# these are all functions _testcapi exports whose name begins with 'test_'.
+# these are all functions _testcapi exports whose name begins ukijumuisha 'test_'.
 
 kutoka collections agiza OrderedDict
 agiza os
@@ -23,7 +23,7 @@ tatizo ImportError:
 # Skip this test ikiwa the _testcapi module isn't available.
 _testcapi = support.import_module('_testcapi')
 
-# Were we compiled --with-pydebug ama with #define Py_DEBUG?
+# Were we compiled --with-pydebug ama ukijumuisha #define Py_DEBUG?
 Py_DEBUG = hasattr(sys, 'gettotalrefcount')
 
 
@@ -50,7 +50,7 @@ kundi CAPITest(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, inst.testfunction, "attribute", "test")
 
     eleza test_no_FatalError_infinite_loop(self):
-        with support.SuppressCrashReport():
+        ukijumuisha support.SuppressCrashReport():
             p = subprocess.Popen([sys.executable, "-c",
                                   'agiza _testcapi;'
                                   '_testcapi.crash_no_current_thread()'],
@@ -191,7 +191,7 @@ kundi CAPITest(unittest.TestCase):
                 agiza _testcapi
                 kutoka test agiza support
 
-                with support.SuppressCrashReport():
+                ukijumuisha support.SuppressCrashReport():
                     _testcapi.rudisha_null_without_error()
             """)
             rc, out, err = assert_python_failure('-c', code)
@@ -206,26 +206,26 @@ kundi CAPITest(unittest.TestCase):
                              br'Current thread.*:\n'
                              br'  File .*", line 6 kwenye <module>')
         isipokua:
-            with self.assertRaises(SystemError) kama cm:
+            ukijumuisha self.assertRaises(SystemError) kama cm:
                 _testcapi.rudisha_null_without_error()
             self.assertRegex(str(cm.exception),
                              'rudisha_null_without_error.* '
                              'rudishaed NULL without setting an error')
 
     eleza test_rudisha_result_with_error(self):
-        # Issue #23571: A function must sio rudisha a result with an error set
+        # Issue #23571: A function must sio rudisha a result ukijumuisha an error set
         ikiwa Py_DEBUG:
             code = textwrap.dedent("""
                 agiza _testcapi
                 kutoka test agiza support
 
-                with support.SuppressCrashReport():
+                ukijumuisha support.SuppressCrashReport():
                     _testcapi.rudisha_result_with_error()
             """)
             rc, out, err = assert_python_failure('-c', code)
             self.assertRegex(err.replace(b'\r', b''),
                              br'Fatal Python error: a function rudishaed a '
-                                br'result with an error set\n'
+                                br'result ukijumuisha an error set\n'
                              br'Python runtime state: initialized\n'
                              br'ValueError\n'
                              br'\n'
@@ -234,16 +234,16 @@ kundi CAPITest(unittest.TestCase):
                              br'\n'
                              br'SystemError: <built-in '
                                 br'function rudisha_result_with_error> '
-                                br'rudishaed a result with an error set\n'
+                                br'rudishaed a result ukijumuisha an error set\n'
                              br'\n'
                              br'Current thread.*:\n'
                              br'  File .*, line 6 kwenye <module>')
         isipokua:
-            with self.assertRaises(SystemError) kama cm:
+            ukijumuisha self.assertRaises(SystemError) kama cm:
                 _testcapi.rudisha_result_with_error()
             self.assertRegex(str(cm.exception),
                              'rudisha_result_with_error.* '
-                             'rudishaed a result with an error set')
+                             'rudishaed a result ukijumuisha an error set')
 
     eleza test_buildvalue_N(self):
         _testcapi.test_buildvalue_N()
@@ -333,7 +333,7 @@ kundi CAPITest(unittest.TestCase):
             agiza _testcapi
             kutoka test agiza support
 
-            with support.SuppressCrashReport():
+            ukijumuisha support.SuppressCrashReport():
                 _testcapi.negative_refcount()
         """)
         rc, out, err = assert_python_failure('-c', code)
@@ -525,14 +525,14 @@ kundi TestPendingCalls(unittest.TestCase):
         threads = [threading.Thread(target=self.pendingcalls_thread,
                                     args=(context,))
                    kila i kwenye range(context.nThreads)]
-        with support.start_threads(threads):
+        ukijumuisha support.start_threads(threads):
             self.pendingcalls_wait(context.l, n, context)
 
     eleza pendingcalls_thread(self, context):
         jaribu:
             self.pendingcalls_submit(context.l, context.n)
         mwishowe:
-            with context.lock:
+            ukijumuisha context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
                 ikiwa Uongo na support.verbose:
@@ -558,11 +558,11 @@ kundi SubinterpreterTest(unittest.TestCase):
         r, w = os.pipe()
         code = """ikiwa 1:
             agiza sys, builtins, pickle
-            with open({:d}, "wb") kama f:
+            ukijumuisha open({:d}, "wb") kama f:
                 pickle.dump(id(sys.modules), f)
                 pickle.dump(id(builtins), f)
             """.format(w)
-        with open(r, "rb") kama f:
+        ukijumuisha open(r, "rb") kama f:
             ret = support.run_in_subinterp(code)
             self.assertEqual(ret, 0)
             self.assertNotEqual(pickle.load(f), id(sys.modules))
@@ -618,7 +618,7 @@ kundi PyMemDebugTests(unittest.TestCase):
     PTR_REGEX = r'(?:0x)?[0-9a-fA-F]+'
 
     eleza check(self, code):
-        with support.SuppressCrashReport():
+        ukijumuisha support.SuppressCrashReport():
             out = assert_python_failure('-c', code,
                                         PYTHONMALLOC=self.PYTHONMALLOC)
         stderr = out.err

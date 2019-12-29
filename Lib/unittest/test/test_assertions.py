@@ -73,7 +73,7 @@ kundi Test_Assertions(unittest.TestCase):
             pita
         isipokua:
             self.fail("assertRaises() didn't let exception pita through")
-        with self.assertRaises(KeyError) kama cm:
+        ukijumuisha self.assertRaises(KeyError) kama cm:
             jaribu:
                 ashiria KeyError
             tatizo Exception kama e:
@@ -81,17 +81,17 @@ kundi Test_Assertions(unittest.TestCase):
                 ashiria
         self.assertIs(cm.exception, exc)
 
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             ashiria KeyError("key")
         jaribu:
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 pita
         tatizo self.failureException kama e:
             self.assertIn("KeyError sio ashiriad", str(e))
         isipokua:
             self.fail("assertRaises() didn't fail")
         jaribu:
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 ashiria ValueError
         tatizo ValueError:
             pita
@@ -120,7 +120,7 @@ kundi Test_Assertions(unittest.TestCase):
                 self.assertRaises(ValueError, self.foo)
 
             eleza test_with(self):
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     self.foo()
 
         Foo("test_functional").run()
@@ -203,7 +203,7 @@ kundi TestLongMessage(unittest.TestCase):
             ikiwa withMsg:
                 kwargs = {"msg": "oops"}
 
-            with self.assertRaisesRegex(self.failureException,
+            ukijumuisha self.assertRaisesRegex(self.failureException,
                                         expected_regex=expected_regex):
                 testMethod(*args, **kwargs)
 
@@ -269,7 +269,7 @@ kundi TestLongMessage(unittest.TestCase):
                              r"\+ \{'key': 'value'\} : oops$"])
 
     eleza testAssertDictContainsSubset(self):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
 
             self.assertMessages('assertDictContainsSubset', ({'key': 'value'}, {}),
@@ -348,7 +348,7 @@ kundi TestLongMessage(unittest.TestCase):
     eleza assertMessagesCM(self, methodName, args, func, errors):
         """
         Check that the correct error messages are ashiriad wakati executing:
-          with method(*args):
+          ukijumuisha method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:
           1) longMessage = Uongo na no msg pitaed;
@@ -360,8 +360,8 @@ kundi TestLongMessage(unittest.TestCase):
                     ({}, {"msg": "oops"}))
         kila (cls, kwargs), err kwenye zip(p, errors):
             method = getattr(cls, methodName)
-            with self.assertRaisesRegex(cls.failureException, err):
-                with method(*args, **kwargs) kama cm:
+            ukijumuisha self.assertRaisesRegex(cls.failureException, err):
+                ukijumuisha method(*args, **kwargs) kama cm:
                     func()
 
     eleza testAssertRaises(self):
@@ -377,7 +377,7 @@ kundi TestLongMessage(unittest.TestCase):
                               ['^TypeError sio ashiriad$', '^oops$',
                                '^TypeError sio ashiriad$',
                                '^TypeError sio ashiriad : oops$'])
-        # test error ashiriad but with wrong message
+        # test error ashiriad but ukijumuisha wrong message
         eleza ashiria_wrong_message():
             ashiria TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
@@ -399,7 +399,7 @@ kundi TestLongMessage(unittest.TestCase):
                               ['^UserWarning sio triggered$', '^oops$',
                                '^UserWarning sio triggered$',
                                '^UserWarning sio triggered : oops$'])
-        # test warning ashiriad but with wrong message
+        # test warning ashiriad but ukijumuisha wrong message
         eleza ashiria_wrong_message():
             warnings.warn('foo')
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'regex'),

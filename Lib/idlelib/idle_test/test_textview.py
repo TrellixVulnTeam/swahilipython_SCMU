@@ -27,7 +27,7 @@ eleza tearDownModule():
     root.destroy()
     toa root
 
-# If we call ViewWindow ama wrapper functions with defaults
+# If we call ViewWindow ama wrapper functions ukijumuisha defaults
 # modal=Kweli, _utest=Uongo, test hangs on call to wait_window.
 # Have also gotten tk error 'can't invoke "event" command'.
 
@@ -38,7 +38,7 @@ kundi VW(tv.ViewWindow):  # Used kwenye ViewWindowTest.
     wait_window = Func()
 
 
-# Call wrapper kundi VW with mock wait_window.
+# Call wrapper kundi VW ukijumuisha mock wait_window.
 kundi ViewWindowTest(unittest.TestCase):
 
     eleza setUp(self):
@@ -108,14 +108,14 @@ kundi ScrollableTextFrameTest(unittest.TestCase):
         # the 'wrap' setting: It should only be shown when 'wrap' is
         # set to NONE.
 
-        # wrap = NONE -> with horizontal scrolling
+        # wrap = NONE -> ukijumuisha horizontal scrolling
         frame = self.make_frame(wrap=NONE)
         self.assertEqual(frame.text.cget('wrap'), NONE)
         self.assertIsNotTupu(frame.xscroll)
 
         # wrap != NONE -> no horizontal scrolling
         kila wrap kwenye [CHAR, WORD]:
-            with self.subTest(wrap=wrap):
+            ukijumuisha self.subTest(wrap=wrap):
                 frame = self.make_frame(wrap=wrap)
                 self.assertEqual(frame.text.cget('wrap'), wrap)
                 self.assertIsTupu(frame.xscroll)
@@ -141,7 +141,7 @@ kundi ViewFrameTest(unittest.TestCase):
         self.assertEqual(get('1.0', '1.end'), 'test text')
 
 
-# Call ViewWindow with modal=Uongo.
+# Call ViewWindow ukijumuisha modal=Uongo.
 kundi ViewFunctionTest(unittest.TestCase):
 
     @classmethod
@@ -187,7 +187,7 @@ kundi ViewFunctionTest(unittest.TestCase):
         self.assertEqual(text_widget.cget('wrap'), 'none')
 
 
-# Call ViewWindow with _utest=Kweli.
+# Call ViewWindow ukijumuisha _utest=Kweli.
 kundi ButtonClickTest(unittest.TestCase):
 
     eleza setUp(self):
@@ -223,7 +223,7 @@ kundi ButtonClickTest(unittest.TestCase):
         self.assertEqual(self.called, Kweli)
         self.assertEqual(self.view.title(), 'TITLE_FILE')
         get = self.view.viewframe.textframe.text.get
-        with open(__file__) kama f:
+        ukijumuisha open(__file__) kama f:
             self.assertEqual(get('1.0', '1.end'), f.readline().strip())
             f.readline()
             self.assertEqual(get('3.0', '3.end'), f.readline().strip())

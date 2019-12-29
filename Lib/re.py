@@ -53,7 +53,7 @@ The special characters are:
     (?!...)  Matches ikiwa ... doesn't match next.
     (?<=...) Matches ikiwa preceded by ... (must be fixed length).
     (?<!...) Matches ikiwa sio preceded by ... (must be fixed length).
-    (?(id/name)yes|no) Matches yes pattern ikiwa the group with id/name matched,
+    (?(id/name)yes|no) Matches yes pattern ikiwa the group ukijumuisha id/name matched,
                        the (optional) no pattern otherwise.
 
 The special sequences consist of "\\" na a character kutoka the list
@@ -65,17 +65,17 @@ resulting RE will match the second character.
     \b       Matches the empty string, but only at the start ama end of a word.
     \B       Matches the empty string, but sio at the start ama end of a word.
     \d       Matches any decimal digit; equivalent to the set [0-9] in
-             bytes patterns ama string patterns with the ASCII flag.
+             bytes patterns ama string patterns ukijumuisha the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode digits.
     \D       Matches any non-digit character; equivalent to [^\d].
     \s       Matches any whitespace character; equivalent to [ \t\n\r\f\v] in
-             bytes patterns ama string patterns with the ASCII flag.
+             bytes patterns ama string patterns ukijumuisha the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode whitespace characters.
     \S       Matches any non-whitespace character; equivalent to [^\s].
     \w       Matches any alphanumeric character; equivalent to [a-zA-Z0-9_]
-             kwenye bytes patterns ama string patterns with the ASCII flag.
+             kwenye bytes patterns ama string patterns ukijumuisha the ASCII flag.
              In string patterns without the ASCII flag, it will match the
              range of Unicode alphanumeric characters (letters plus digits
              plus underscore).
@@ -295,7 +295,7 @@ eleza _compile(pattern, flags):
     ikiwa isinstance(pattern, Pattern):
         ikiwa flags:
             ashiria ValueError(
-                "cannot process flags argument with a compiled pattern")
+                "cannot process flags argument ukijumuisha a compiled pattern")
         rudisha pattern
     ikiwa sio sre_compile.isstring(pattern):
         ashiria TypeError("first argument must be string ama compiled pattern")

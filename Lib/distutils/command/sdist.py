@@ -219,7 +219,7 @@ class sdist(Command):
           - all C sources listed as part of extensions or C libraries
             in the setup script (doesn't catch C headers!)
         Warns if (README or README.txt) or setup.py are missing; everything
-        else is optional.
+        isipokua is optional.
         """
         self._add_defaults_standards()
         self._add_defaults_optional()

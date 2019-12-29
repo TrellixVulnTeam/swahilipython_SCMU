@@ -48,7 +48,7 @@ kundi ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format("-{format_string}-", format_string='test'),
                          '-test-')
         self.assertRaises(KeyError, fmt.format, "-{format_string}-")
-        with self.assertRaisesRegex(TypeError, "format_string"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "format_string"):
             fmt.format(format_string="-{arg}-", arg='test')
 
     eleza test_auto_numbering(self):
@@ -64,10 +64,10 @@ kundi ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format('{:^{pad}}{}', 'foo', 'bar', pad=6),
                          '{:^{pad}}{}'.format('foo', 'bar', pad=6))
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             fmt.format('foo{1}{}', 'bar', 6)
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             fmt.format('foo{}{1}', 'bar', 6)
 
     eleza test_conversion_specifiers(self):
@@ -89,16 +89,16 @@ kundi ModuleTest(unittest.TestCase):
                 rudisha attr
         x = AnyAttr()
         self.assertEqual(fmt.format("{0.lumber}{0.jack}", x), 'lumberjack')
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             fmt.format("{0.lumber}{0.jack}", '')
 
     eleza test_index_lookup(self):
         fmt = string.Formatter()
         lookup = ["eggs", "and", "spam"]
         self.assertEqual(fmt.format("{0[2]}{0[0]}", lookup), 'spameggs')
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             fmt.format("{0[2]}{0[0]}", [])
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             fmt.format("{0[2]}{0[0]}", {})
 
     eleza test_override_get_value(self):
@@ -183,7 +183,7 @@ kundi ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         args = ()
         kwargs = dict(i=100)
-        with self.assertRaises(ValueError) kama err:
+        ukijumuisha self.assertRaises(ValueError) kama err:
             fmt._vformat("{i}", args, kwargs, set(), -1)
         self.assertIn("recursion", str(err.exception))
 
@@ -397,7 +397,7 @@ kundi TestTemplate(unittest.TestCase):
         # has a special case kila no data that the default
         # pattern can't trigger (always has at least '$')
         # So we craft a pattern that ni always invalid
-        # with no leading data.
+        # ukijumuisha no leading data.
         kundi MyTemplate(Template):
             pattern = r"""
               (?P<invalid>) |
@@ -408,7 +408,7 @@ kundi TestTemplate(unittest.TestCase):
               )
             """
         s = MyTemplate('')
-        with self.assertRaises(ValueError) kama err:
+        ukijumuisha self.assertRaises(ValueError) kama err:
             s.substitute({})
         self.assertIn('line 1, col 1', str(err.exception))
 

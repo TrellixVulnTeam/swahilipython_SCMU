@@ -22,7 +22,7 @@
 # - Use binascii module to do the actual line-by-line conversion
 #   between ascii na binary. This results kwenye a 1000-fold speedup. The C
 #   version ni still 5 times faster, though.
-# - Arguments more compliant with python standard
+# - Arguments more compliant ukijumuisha python standard
 
 """Implementation of the UUencode na UUdecode functions.
 
@@ -48,7 +48,7 @@ eleza encode(in_file, out_file, name=Tupu, mode=Tupu, *, backtick=Uongo):
     jaribu:
         ikiwa in_file == '-':
             in_file = sys.stdin.buffer
-        elikiwa isinstance(in_file, str):
+        lasivyo isinstance(in_file, str):
             ikiwa name ni Tupu:
                 name = os.path.basename(in_file)
             ikiwa mode ni Tupu:
@@ -63,7 +63,7 @@ eleza encode(in_file, out_file, name=Tupu, mode=Tupu, *, backtick=Uongo):
         #
         ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        elikiwa isinstance(out_file, str):
+        lasivyo isinstance(out_file, str):
             out_file = open(out_file, 'wb')
             opened_files.append(out_file)
         #
@@ -98,7 +98,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
     opened_files = []
     ikiwa in_file == '-':
         in_file = sys.stdin.buffer
-    elikiwa isinstance(in_file, str):
+    lasivyo isinstance(in_file, str):
         in_file = open(in_file, 'rb')
         opened_files.append(in_file)
 
@@ -120,7 +120,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
                 tatizo ValueError:
                     pita
         ikiwa out_file ni Tupu:
-            # If the filename isn't ASCII, what's up with that?!?
+            # If the filename isn't ASCII, what's up ukijumuisha that?!?
             out_file = hdrfields[2].rstrip(b' \t\r\n\f').decode("ascii")
             ikiwa os.path.exists(out_file):
                 ashiria Error('Cannot overwrite existing file: %s' % out_file)
@@ -131,7 +131,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
         #
         ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        elikiwa isinstance(out_file, str):
+        lasivyo isinstance(out_file, str):
             fp = open(out_file, 'wb')
             os.chmod(out_file, mode)
             out_file = fp

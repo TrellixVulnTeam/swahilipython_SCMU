@@ -18,10 +18,10 @@ agiza codecs
 encode = mbcs_encode
 
 eleza decode(input, errors='strict'):
-    rudisha mbcs_decode(input, errors, True)
+    rudisha mbcs_decode(input, errors, Kweli)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha mbcs_encode(input, self.errors)[0]
 
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):

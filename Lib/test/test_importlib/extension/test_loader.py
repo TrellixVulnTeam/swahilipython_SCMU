@@ -26,7 +26,7 @@ kundi LoaderTests(abc.LoaderTests):
         # Test the default argument kila load_module().
         self.loader.load_module()
         self.loader.load_module(Tupu)
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             self.load_module('XXX')
 
     eleza test_equality(self):
@@ -40,7 +40,7 @@ kundi LoaderTests(abc.LoaderTests):
         self.assertNotEqual(self.loader, other)
 
     eleza test_module(self):
-        with util.uncache(util.EXTENSIONS.name):
+        ukijumuisha util.uncache(util.EXTENSIONS.name):
             module = self.load_module(util.EXTENSIONS.name)
             kila attr, value kwenye [('__name__', util.EXTENSIONS.name),
                                 ('__file__', util.EXTENSIONS.file_path),
@@ -57,7 +57,7 @@ kundi LoaderTests(abc.LoaderTests):
     test_lacking_parent = Tupu
 
     eleza test_module_reuse(self):
-        with util.uncache(util.EXTENSIONS.name):
+        ukijumuisha util.uncache(util.EXTENSIONS.name):
             module1 = self.load_module(util.EXTENSIONS.name)
             module2 = self.load_module(util.EXTENSIONS.name)
             self.assertIs(module1, module2)
@@ -67,7 +67,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         name = 'asdfjkl;'
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -83,7 +83,7 @@ kundi LoaderTests(abc.LoaderTests):
  ) = util.test_both(LoaderTests, machinery=machinery)
 
 kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
-    """Test loading extension modules with multi-phase initialization (PEP 489)
+    """Test loading extension modules ukijumuisha multi-phase initialization (PEP 489)
     """
 
     eleza setUp(self):
@@ -105,13 +105,13 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
     eleza test_module(self):
         '''Test loading an extension module'''
-        with util.uncache(self.name):
+        ukijumuisha util.uncache(self.name):
             module = self.load_module()
             kila attr, value kwenye [('__name__', self.name),
                                 ('__file__', self.spec.origin),
                                 ('__package__', '')]:
                 self.assertEqual(getattr(module, attr), value)
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 module.__path__
             self.assertIs(module, sys.modules[self.name])
             self.assertIsInstance(module.__loader__,
@@ -119,27 +119,27 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
     eleza test_functionality(self):
         '''Test basic functionality of stuff defined kwenye an extension module'''
-        with util.uncache(self.name):
+        ukijumuisha util.uncache(self.name):
             module = self.load_module()
             self.assertIsInstance(module, types.ModuleType)
             ex = module.Example()
             self.assertEqual(ex.demo('abcd'), 'abcd')
             self.assertEqual(ex.demo(), Tupu)
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 ex.abc
             ex.abc = 0
             self.assertEqual(ex.abc, 0)
             self.assertEqual(module.foo(9, 9), 18)
             self.assertIsInstance(module.Str(), str)
             self.assertEqual(module.Str(1) + '23', '123')
-            with self.assertRaises(module.error):
+            ukijumuisha self.assertRaises(module.error):
                 ashiria module.error()
             self.assertEqual(module.int_const, 1969)
             self.assertEqual(module.str_const, 'something different')
 
     eleza test_reload(self):
         '''Test that reload didn't re-set the module's attributes'''
-        with util.uncache(self.name):
+        ukijumuisha util.uncache(self.name):
             module = self.load_module()
             ex_kundi = module.Example
             importlib.reload(module)
@@ -148,13 +148,13 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
     eleza test_try_registration(self):
         '''Assert that the PyState_{Find,Add,Remove}Module C API doesn't work'''
         module = self.load_module()
-        with self.subTest('PyState_FindModule'):
+        ukijumuisha self.subTest('PyState_FindModule'):
             self.assertEqual(module.call_state_registration_func(0), Tupu)
-        with self.subTest('PyState_AddModule'):
-            with self.assertRaises(SystemError):
+        ukijumuisha self.subTest('PyState_AddModule'):
+            ukijumuisha self.assertRaises(SystemError):
                 module.call_state_registration_func(1)
-        with self.subTest('PyState_RemoveModule'):
-            with self.assertRaises(SystemError):
+        ukijumuisha self.subTest('PyState_RemoveModule'):
+            ukijumuisha self.assertRaises(SystemError):
                 module.call_state_registration_func(2)
 
     eleza load_module(self):
@@ -178,7 +178,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.assertEqual(module.str_const, 'something different')
 
     eleza test_load_short_name(self):
-        '''Test loading module with a one-character name'''
+        '''Test loading module ukijumuisha a one-character name'''
         module = self.load_module_by_name('x')
         self.assertIsInstance(module, types.ModuleType)
         self.assertEqual(module.__name__, 'x')
@@ -194,14 +194,14 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
     eleza test_unloadable(self):
         '''Test nonexistent module'''
         name = 'asdfjkl;'
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module_by_name(name)
         self.assertEqual(cm.exception.name, name)
 
     eleza test_unloadable_nonascii(self):
-        '''Test behavior with nonexistent module with non-ASCII name'''
+        '''Test behavior ukijumuisha nonexistent module ukijumuisha non-ASCII name'''
         name = 'fo\xf3'
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module_by_name(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -214,7 +214,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
     # issue 27782
     eleza test_nonmodule_with_methods(self):
-        '''Test creating a non-module object with methods defined'''
+        '''Test creating a non-module object ukijumuisha methods defined'''
         name = self.name + '_nonmodule_with_methods'
         mod = self.load_module_by_name(name)
         self.assertNotEqual(type(mod), type(unittest))
@@ -247,13 +247,13 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 'exec_ashiria',
                 'exec_unreported_exception',
                 ]:
-            with self.subTest(name_base):
+            ukijumuisha self.subTest(name_base):
                 name = self.name + '_' + name_base
-                with self.assertRaises(SystemError):
+                ukijumuisha self.assertRaises(SystemError):
                     self.load_module_by_name(name)
 
     eleza test_nonascii(self):
-        '''Test that modules with non-ASCII names can be loaded'''
+        '''Test that modules ukijumuisha non-ASCII names can be loaded'''
         # punycode behaves slightly differently kwenye some-ASCII na no-ASCII
         # cases, so test both
         cases = [
@@ -262,7 +262,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
              'Japanese'),
             ]
         kila name, lang kwenye cases:
-            with self.subTest(name):
+            ukijumuisha self.subTest(name):
                 module = self.load_module_by_name(name)
                 self.assertEqual(module.__name__, name)
                 self.assertEqual(module.__doc__, "Module named kwenye %s" % lang)
@@ -281,11 +281,11 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
                     spec = util.find_spec('_testmultiphase')
                     spec.name = '_testmultiphase_with_bad_traverse'
 
-                    with support.SuppressCrashReport():
+                    ukijumuisha support.SuppressCrashReport():
                         m = spec.loader.create_module(spec)
                 except:
                     # Prevent Python-level exceptions kutoka
-                    # ending the process with non-zero status
+                    # ending the process ukijumuisha non-zero status
                     # (We are testing kila a crash kwenye C-code)
                     pita"""
         assert_python_failure("-c", script)

@@ -31,14 +31,14 @@ kundi TestRlcompleter(unittest.TestCase):
         self.assertRaises(TypeError, rlcompleter.Completer, B((1,)))
 
     eleza test_global_matches(self):
-        # test with builtins namespace
+        # test ukijumuisha builtins namespace
         self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
                          [x+'(' kila x kwenye dir(builtins) ikiwa x.startswith('di')])
         self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
                          [x+'(' kila x kwenye dir(builtins) ikiwa x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
-        # test with a customized namespace
+        # test ukijumuisha a customized namespace
         self.assertEqual(self.completer.global_matches('CompleteM'),
                          ['CompleteMe('])
         self.assertEqual(self.completer.global_matches('eg'),
@@ -48,18 +48,18 @@ kundi TestRlcompleter(unittest.TestCase):
                          ['CompleteMe('])
 
     eleza test_attr_matches(self):
-        # test with builtins namespace
+        # test ukijumuisha builtins namespace
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
                          ['str.{}('.format(x) kila x kwenye dir(str)
                           ikiwa x.startswith('s')])
         self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
-        expected = sorted({'Tupu.%s%s' % (x, '(' ikiwa x != '__doc__' else '')
+        expected = sorted({'Tupu.%s%s' % (x, '(' ikiwa x != '__doc__' isipokua '')
                            kila x kwenye dir(Tupu)})
         self.assertEqual(self.stdcompleter.attr_matches('Tupu.'), expected)
         self.assertEqual(self.stdcompleter.attr_matches('Tupu._'), expected)
         self.assertEqual(self.stdcompleter.attr_matches('Tupu.__'), expected)
 
-        # test with a customized namespace
+        # test ukijumuisha a customized namespace
         self.assertEqual(self.completer.attr_matches('CompleteMe.sp'),
                          ['CompleteMe.spam'])
         self.assertEqual(self.completer.attr_matches('Completeme.egg'), [])
@@ -73,7 +73,7 @@ kundi TestRlcompleter(unittest.TestCase):
         self.assertIn('CompleteMe.__name__', matches)
         self.assertIn('CompleteMe.__new__(', matches)
 
-        with patch.object(CompleteMe, "me", CompleteMe, create=Kweli):
+        ukijumuisha patch.object(CompleteMe, "me", CompleteMe, create=Kweli):
             self.assertEqual(self.completer.attr_matches('CompleteMe.me.me.sp'),
                              ['CompleteMe.me.me.spam'])
             self.assertEqual(self.completer.attr_matches('egg.s'),
@@ -111,7 +111,7 @@ kundi TestRlcompleter(unittest.TestCase):
         self.assertEqual(completer.complete('an', 0), 'and ')
         self.assertEqual(completer.complete('pa', 0), 'pita')
         self.assertEqual(completer.complete('Fa', 0), 'Uongo')
-        self.assertEqual(completer.complete('el', 0), 'elikiwa ')
+        self.assertEqual(completer.complete('el', 0), 'lasivyo ')
         self.assertEqual(completer.complete('el', 1), 'else')
         self.assertEqual(completer.complete('tr', 0), 'jaribu:')
 

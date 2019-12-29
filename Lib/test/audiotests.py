@@ -55,7 +55,7 @@ kundi AudioMiscTests(AudioTests):
     eleza test_openfp_deprecated(self):
         arg = "arg"
         mode = "mode"
-        with mock.patch(f"{self.module.__name__}.open") kama mock_open, \
+        ukijumuisha mock.patch(f"{self.module.__name__}.open") kama mock_open, \
              self.assertWarns(DeprecationWarning):
             self.module.openfp(arg, mode=mode)
             mock_open.assert_called_with(arg, mode=mode)
@@ -72,7 +72,7 @@ kundi AudioWriteTests(AudioTests):
         rudisha f
 
     eleza check_file(self, testfile, nframes, frames):
-        with self.module.open(testfile, 'rb') kama f:
+        ukijumuisha self.module.open(testfile, 'rb') kama f:
             self.assertEqual(f.getnchannels(), self.nchannels)
             self.assertEqual(f.getsampwidth(), self.sampwidth)
             self.assertEqual(f.getframerate(), self.framerate)
@@ -90,24 +90,24 @@ kundi AudioWriteTests(AudioTests):
     eleza test_write_context_manager_calls_close(self):
         # Close checks kila a minimum header na will ashiria an error
         # ikiwa it ni sio set, so this proves that close ni called.
-        with self.assertRaises(self.module.Error):
-            with self.module.open(TESTFN, 'wb'):
+        ukijumuisha self.assertRaises(self.module.Error):
+            ukijumuisha self.module.open(TESTFN, 'wb'):
                 pita
-        with self.assertRaises(self.module.Error):
-            with open(TESTFN, 'wb') kama testfile:
-                with self.module.open(testfile):
+        ukijumuisha self.assertRaises(self.module.Error):
+            ukijumuisha open(TESTFN, 'wb') kama testfile:
+                ukijumuisha self.module.open(testfile):
                     pita
 
     eleza test_context_manager_with_open_file(self):
-        with open(TESTFN, 'wb') kama testfile:
-            with self.module.open(testfile) kama f:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
+            ukijumuisha self.module.open(testfile) kama f:
                 f.setnchannels(self.nchannels)
                 f.setsampwidth(self.sampwidth)
                 f.setframerate(self.framerate)
                 f.setcomptype(self.comptype, self.compname)
             self.assertEqual(testfile.closed, self.close_fd)
-        with open(TESTFN, 'rb') kama testfile:
-            with self.module.open(testfile) kama f:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
+            ukijumuisha self.module.open(testfile) kama f:
                 self.assertUongo(f.getfp().closed)
                 params = f.getparams()
                 self.assertEqual(params.nchannels, self.nchannels)
@@ -120,12 +120,12 @@ kundi AudioWriteTests(AudioTests):
     eleza test_context_manager_with_filename(self):
         # If the file doesn't get closed, this test won't fail, but it will
         # produce a resource leak warning.
-        with self.module.open(TESTFN, 'wb') kama f:
+        ukijumuisha self.module.open(TESTFN, 'wb') kama f:
             f.setnchannels(self.nchannels)
             f.setsampwidth(self.sampwidth)
             f.setframerate(self.framerate)
             f.setcomptype(self.comptype, self.compname)
-        with self.module.open(TESTFN) kama f:
+        ukijumuisha self.module.open(TESTFN) kama f:
             self.assertUongo(f.getfp().closed)
             params = f.getparams()
             self.assertEqual(params.nchannels, self.nchannels)
@@ -167,19 +167,19 @@ kundi AudioWriteTests(AudioTests):
         self.check_file(TESTFN, self.nframes, self.frames)
 
     eleza test_incompleted_write(self):
-        with open(TESTFN, 'wb') kama testfile:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes + 1)
             f.writeframes(self.frames)
             f.close()
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
     eleza test_multiple_writes(self):
-        with open(TESTFN, 'wb') kama testfile:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes)
@@ -188,40 +188,40 @@ kundi AudioWriteTests(AudioTests):
             f.writeframes(self.frames[-framesize:])
             f.close()
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
     eleza test_overflowed_write(self):
-        with open(TESTFN, 'wb') kama testfile:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes - 1)
             f.writeframes(self.frames)
             f.close()
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
     eleza test_unseekable_read(self):
-        with self.create_file(TESTFN) kama f:
+        ukijumuisha self.create_file(TESTFN) kama f:
             f.setnframes(self.nframes)
             f.writeframes(self.frames)
 
-        with UnseekableIO(TESTFN, 'rb') kama testfile:
+        ukijumuisha UnseekableIO(TESTFN, 'rb') kama testfile:
             self.check_file(testfile, self.nframes, self.frames)
 
     eleza test_unseekable_write(self):
-        with UnseekableIO(TESTFN, 'wb') kama testfile:
-            with self.create_file(testfile) kama f:
+        ukijumuisha UnseekableIO(TESTFN, 'wb') kama testfile:
+            ukijumuisha self.create_file(testfile) kama f:
                 f.setnframes(self.nframes)
                 f.writeframes(self.frames)
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
     eleza test_unseekable_incompleted_write(self):
-        with UnseekableIO(TESTFN, 'wb') kama testfile:
+        ukijumuisha UnseekableIO(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes + 1)
@@ -234,12 +234,12 @@ kundi AudioWriteTests(AudioTests):
             tatizo OSError:
                 pita
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes + 1, self.frames)
 
     eleza test_unseekable_overflowed_write(self):
-        with UnseekableIO(TESTFN, 'wb') kama testfile:
+        ukijumuisha UnseekableIO(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes - 1)
@@ -252,7 +252,7 @@ kundi AudioWriteTests(AudioTests):
             tatizo OSError:
                 pita
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             framesize = self.nchannels * self.sampwidth
             self.check_file(testfile, self.nframes - 1, self.frames[:-framesize])
@@ -271,15 +271,15 @@ kundi AudioTestsWithSourceFile(AudioTests):
                           self.sndfilenframes, self.comptype, self.compname)
 
     eleza test_close(self):
-        with open(self.sndfilepath, 'rb') kama testfile:
+        ukijumuisha open(self.sndfilepath, 'rb') kama testfile:
             f = self.f = self.module.open(testfile)
             self.assertUongo(testfile.closed)
             f.close()
             self.assertEqual(testfile.closed, self.close_fd)
-        with open(TESTFN, 'wb') kama testfile:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
             fout = self.fout = self.module.open(testfile, 'wb')
             self.assertUongo(testfile.closed)
-            with self.assertRaises(self.module.Error):
+            ukijumuisha self.assertRaises(self.module.Error):
                 fout.close()
             self.assertEqual(testfile.closed, self.close_fd)
             fout.close() # do nothing
@@ -303,9 +303,9 @@ kundi AudioTestsWithSourceFile(AudioTests):
         self.assertEqual(f.readframes(2), chunk2)
         f.setpos(pos0)
         self.assertEqual(f.readframes(2), chunk1)
-        with self.assertRaises(self.module.Error):
+        ukijumuisha self.assertRaises(self.module.Error):
             f.setpos(-1)
-        with self.assertRaises(self.module.Error):
+        ukijumuisha self.assertRaises(self.module.Error):
             f.setpos(f.getnframes() + 1)
 
     eleza test_copy(self):
@@ -326,14 +326,14 @@ kundi AudioTestsWithSourceFile(AudioTests):
                          fout.readframes(fout.getnframes()))
 
     eleza test_read_not_kutoka_start(self):
-        with open(TESTFN, 'wb') kama testfile:
+        ukijumuisha open(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
-            with open(self.sndfilepath, 'rb') kama f:
+            ukijumuisha open(self.sndfilepath, 'rb') kama f:
                 testfile.write(f.read())
 
-        with open(TESTFN, 'rb') kama testfile:
+        ukijumuisha open(TESTFN, 'rb') kama testfile:
             self.assertEqual(testfile.read(13), b'ababagalamaga')
-            with self.module.open(testfile, 'rb') kama f:
+            ukijumuisha self.module.open(testfile, 'rb') kama f:
                 self.assertEqual(f.getnchannels(), self.nchannels)
                 self.assertEqual(f.getsampwidth(), self.sampwidth)
                 self.assertEqual(f.getframerate(), self.framerate)

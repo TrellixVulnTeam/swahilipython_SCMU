@@ -29,7 +29,7 @@ kundi Test_TestResult(unittest.TestCase):
     # other TestResult methods.
     #
     # Accordingly, tests kila the aforenamed attributes are incorporated
-    # kwenye with the tests kila the defining methods.
+    # kwenye ukijumuisha the tests kila the defining methods.
     ################################################################
 
     eleza test_init(self):
@@ -264,7 +264,7 @@ kundi Test_TestResult(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
                 nonlocal subtest
-                with self.subTest(foo=1):
+                ukijumuisha self.subTest(foo=1):
                     subtest = self._subtest
                     jaribu:
                         1/0
@@ -302,13 +302,13 @@ kundi Test_TestResult(unittest.TestCase):
                 '.Test_TestResult)')
 
     eleza testGetSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1, bar=2):
+        ukijumuisha self.subTest(foo=1, bar=2):
             result = unittest.TextTestResult(Tupu, Kweli, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
                     'testGetSubTestDescriptionWithoutDocstring (' + __name__ +
                     '.Test_TestResult) (foo=1, bar=2)')
-        with self.subTest('some message'):
+        ukijumuisha self.subTest('some message'):
             result = unittest.TextTestResult(Tupu, Kweli, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
@@ -316,7 +316,7 @@ kundi Test_TestResult(unittest.TestCase):
                     '.Test_TestResult) [some message]')
 
     eleza testGetSubTestDescriptionWithoutDocstringAndParams(self):
-        with self.subTest():
+        ukijumuisha self.subTest():
             result = unittest.TextTestResult(Tupu, Kweli, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
@@ -327,15 +327,15 @@ kundi Test_TestResult(unittest.TestCase):
         expected = 'testGetSubTestDescriptionForFalsyValues (%s.Test_TestResult) [%s]'
         result = unittest.TextTestResult(Tupu, Kweli, 1)
         kila arg kwenye [0, Tupu, []]:
-            with self.subTest(arg):
+            ukijumuisha self.subTest(arg):
                 self.assertEqual(
                     result.getDescription(self._subtest),
                     expected % (__name__, arg)
                 )
 
     eleza testGetNestedSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1):
-            with self.subTest(baz=2, bar=3):
+        ukijumuisha self.subTest(foo=1):
+            ukijumuisha self.subTest(baz=2, bar=3):
                 result = unittest.TextTestResult(Tupu, Kweli, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
@@ -343,8 +343,8 @@ kundi Test_TestResult(unittest.TestCase):
                         '(' + __name__ + '.Test_TestResult) (baz=2, bar=3, foo=1)')
 
     eleza testGetDuplicatedNestedSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1, bar=2):
-            with self.subTest(baz=3, bar=4):
+        ukijumuisha self.subTest(foo=1, bar=2):
+            ukijumuisha self.subTest(baz=3, bar=4):
                 result = unittest.TextTestResult(Tupu, Kweli, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
@@ -352,32 +352,32 @@ kundi Test_TestResult(unittest.TestCase):
                         '(' + __name__ + '.Test_TestResult) (baz=3, bar=4, foo=1)')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza testGetDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() kila a method with a docstring."""
+        """Tests getDescription() kila a method ukijumuisha a docstring."""
         result = unittest.TextTestResult(Tupu, Kweli, 1)
         self.assertEqual(
                 result.getDescription(self),
                ('testGetDescriptionWithOneLineDocstring '
                 '(' + __name__ + '.Test_TestResult)\n'
-                'Tests getDescription() kila a method with a docstring.'))
+                'Tests getDescription() kila a method ukijumuisha a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza testGetSubTestDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() kila a method with a docstring."""
+        """Tests getDescription() kila a method ukijumuisha a docstring."""
         result = unittest.TextTestResult(Tupu, Kweli, 1)
-        with self.subTest(foo=1, bar=2):
+        ukijumuisha self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
                ('testGetSubTestDescriptionWithOneLineDocstring '
                 '(' + __name__ + '.Test_TestResult) (foo=1, bar=2)\n'
-                'Tests getDescription() kila a method with a docstring.'))
+                'Tests getDescription() kila a method ukijumuisha a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza testGetDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() kila a method with a longer docstring.
+        """Tests getDescription() kila a method ukijumuisha a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(Tupu, Kweli, 1)
@@ -385,22 +385,22 @@ kundi Test_TestResult(unittest.TestCase):
                 result.getDescription(self),
                ('testGetDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TestResult)\n'
-                'Tests getDescription() kila a method with a longer '
+                'Tests getDescription() kila a method ukijumuisha a longer '
                 'docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza testGetSubTestDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() kila a method with a longer docstring.
+        """Tests getDescription() kila a method ukijumuisha a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(Tupu, Kweli, 1)
-        with self.subTest(foo=1, bar=2):
+        ukijumuisha self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
                ('testGetSubTestDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TestResult) (foo=1, bar=2)\n'
-                'Tests getDescription() kila a method with a longer '
+                'Tests getDescription() kila a method ukijumuisha a longer '
                 'docstring.'))
 
     eleza testStackFrameTrimming(self):
@@ -458,7 +458,7 @@ OldResult = type('OldResult', (object,), classDict)
 kundi Test_OldTestResult(unittest.TestCase):
 
     eleza assertOldResultWarning(self, test, failures):
-        with support.check_warnings(("TestResult has no add.+ method,",
+        ukijumuisha support.check_warnings(("TestResult has no add.+ method,",
                                      RuntimeWarning)):
             result = OldResult()
             test.run(result)

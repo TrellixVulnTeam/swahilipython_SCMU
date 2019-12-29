@@ -1,7 +1,7 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-# Note: each test ni run with Python na C versions of ABCMeta. Except for
+# Note: each test ni run ukijumuisha Python na C versions of ABCMeta. Except for
 # test_ABC_helper(), which assures that abc.ABC ni an instance of abc.ABCMeta.
 
 """Unit tests kila abc.py."""
@@ -195,12 +195,12 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                 eleza foo(self, val): pita
             self.assertEqual(E().foo, 3)
             # check that the property's __isabstractmethod__ descriptor does the
-            # right thing when presented with a value that fails truth testing:
+            # right thing when presented ukijumuisha a value that fails truth testing:
             kundi NotBool(object):
                 eleza __bool__(self):
                     ashiria ValueError()
                 __len__ = __bool__
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 kundi F(C):
                     eleza bar(self):
                         pita
@@ -396,10 +396,10 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             kundi A(metaclass=abc_ABCMeta):
                 pita
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 issubclass({}, A)  # unhashable
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 issubclass(42, A)  # No __mro__
 
             # Python version supports any iterable kama __mro__.
@@ -407,7 +407,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             kundi C:
                 __mro__ = 42  # __mro__ ni sio tuple
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 issubclass(C(), A)
 
             # bpo-34441: Check that issubclass() doesn't crash on bogus
@@ -423,8 +423,8 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                 kundi S(metaclass=abc_ABCMeta):
                     __subclasses__ = func
 
-                with self.subTest(i=i):
-                    with self.assertRaises(TypeError):
+                ukijumuisha self.subTest(i=i):
+                    ukijumuisha self.assertRaises(TypeError):
                         issubclass(int, S)
 
             # Also check that issubclass() propagates exceptions ashiriad by
@@ -437,7 +437,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             kundi S(metaclass=abc_ABCMeta):
                 __subclasses__ = ashiria_exc
 
-            with self.assertRaisesRegex(Exception, exc_msg):
+            ukijumuisha self.assertRaisesRegex(Exception, exc_msg):
                 issubclass(int, S)
 
         eleza test_all_new_methods_are_called(self):

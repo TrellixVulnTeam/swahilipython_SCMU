@@ -25,7 +25,7 @@ kundi TestZip(unittest.TestCase):
         self.assertEqual(version('example'), '21.12')
 
     eleza test_zip_version_does_not_match(self):
-        with self.assertRaises(PackageNotFoundError):
+        ukijumuisha self.assertRaises(PackageNotFoundError):
             version('definitely-not-installed')
 
     eleza test_zip_entry_points(self):

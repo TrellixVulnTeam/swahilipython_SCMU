@@ -25,11 +25,11 @@ eleza traverse_agizas(names):
         node = pending.pop()
         ikiwa node.type == token.NAME:
             tuma node.value
-        elikiwa node.type == syms.dotted_name:
+        lasivyo node.type == syms.dotted_name:
             tuma "".join([ch.value kila ch kwenye node.children])
-        elikiwa node.type == syms.dotted_as_name:
+        lasivyo node.type == syms.dotted_as_name:
             pending.append(node.children[0])
-        elikiwa node.type == syms.dotted_as_names:
+        lasivyo node.type == syms.dotted_as_names:
             pending.extend(node.children[::-2])
         isipokua:
             ashiria AssertionError("unknown node type")

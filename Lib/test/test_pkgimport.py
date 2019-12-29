@@ -42,7 +42,7 @@ kundi TestImport(unittest.TestCase):
         compiled_path = cache_kutoka_source(self.module_path)
         ikiwa os.path.exists(compiled_path):
             os.remove(compiled_path)
-        with open(self.module_path, 'w') kama f:
+        ukijumuisha open(self.module_path, 'w') kama f:
             f.write(contents)
 
     eleza test_package_import__semantics(self):

@@ -48,10 +48,10 @@ kundi BaseTest(unittest.TestCase):
     eleza assertParseOK(self, args, expected_opts, expected_positional_args):
         """Assert the options are what we expected when parsing arguments.
 
-        Otherwise, fail with a nicely formatted message.
+        Otherwise, fail ukijumuisha a nicely formatted message.
 
         Keyword arguments:
-        args -- A list of arguments to parse with OptionParser.
+        args -- A list of arguments to parse ukijumuisha OptionParser.
         expected_opts -- The options expected.
         expected_positional_args -- The positional arguments expected.
 
@@ -127,7 +127,7 @@ actual exception message:
         isipokua:
             self.fail("""expected exception %(expected_exception)s sio ashiriad
 called %(func)r
-with args %(args)r
+ukijumuisha args %(args)r
 and kwargs %(kwargs)r
 """ % locals ())
 
@@ -136,7 +136,7 @@ and kwargs %(kwargs)r
 
     eleza assertParseFail(self, cmdline_args, expected_output):
         """
-        Assert the parser fails with the expected message.  Caller
+        Assert the parser fails ukijumuisha the expected message.  Caller
         must ensure that self.parser ni an InterceptingOptionParser.
         """
         jaribu:
@@ -190,7 +190,7 @@ and kwargs %(kwargs)r
 # -- Test make_option() aka Option -------------------------------------
 
 # It's sio necessary to test correct options here.  All the tests kwenye the
-# parser.parse_args() section deal with those, because they're needed
+# parser.parse_args() section deal ukijumuisha those, because they're needed
 # there.
 
 kundi TestOptionChecks(BaseTest):
@@ -219,7 +219,7 @@ kundi TestOptionChecks(BaseTest):
     eleza test_opt_string_long_invalid(self):
         self.assertOptionError(
             "invalid long option string '---': "
-            "must start with --, followed by non-dash",
+            "must start ukijumuisha --, followed by non-dash",
             ["---"])
 
     eleza test_attr_invalid(self):
@@ -320,7 +320,7 @@ kundi TestOptionChecks(BaseTest):
     eleza test_no_single_dash(self):
         self.assertOptionError(
             "invalid long option string '-debug': "
-            "must start with --, followed by non-dash",
+            "must start ukijumuisha --, followed by non-dash",
             ["-debug"])
 
         self.assertOptionError(
@@ -330,7 +330,7 @@ kundi TestOptionChecks(BaseTest):
 
         self.assertOptionError(
             "invalid long option string '-debug': "
-            "must start with --, followed by non-dash",
+            "must start ukijumuisha --, followed by non-dash",
             ["-debug", "--debug"])
 
 kundi TestOptionParser(BaseTest):
@@ -612,10 +612,10 @@ Options:
     eleza test_float_default(self):
         self.parser.add_option(
             "-p", "--prob",
-            help="blow up with probability PROB [default: %default]")
+            help="blow up ukijumuisha probability PROB [default: %default]")
         self.parser.set_defaults(prob=0.43)
         expected_help = self.help_prefix + \
-            "  -p PROB, --prob=PROB  blow up with probability PROB [default: 0.43]\n"
+            "  -p PROB, --prob=PROB  blow up ukijumuisha probability PROB [default: 0.43]\n"
         self.assertHelp(self.parser, expected_help)
 
     eleza test_alt_expand(self):
@@ -1023,14 +1023,14 @@ kundi TestExtendAddTypes(BaseTest):
     eleza tearDown(self):
         ikiwa os.path.isdir(support.TESTFN):
             os.rmdir(support.TESTFN)
-        elikiwa os.path.isfile(support.TESTFN):
+        lasivyo os.path.isfile(support.TESTFN):
             os.unlink(support.TESTFN)
 
     kundi MyOption (Option):
         eleza check_file(option, opt, value):
             ikiwa sio os.path.exists(value):
                 ashiria OptionValueError("%s: file does sio exist" % value)
-            elikiwa sio os.path.isfile(value):
+            lasivyo sio os.path.isfile(value):
                 ashiria OptionValueError("%s: sio a regular file" % value)
             rudisha value
 
@@ -1110,7 +1110,7 @@ kundi TestCallback(BaseTest):
             self.assertEqual(vars(parser_.values), {'filename': Tupu})
 
             parser_.values.x = 42
-        elikiwa opt == "--file":
+        lasivyo opt == "--file":
             self.assertEqual(option._short_opts, ["-f"])
             self.assertEqual(option._long_opts, ["--file"])
             self.assertKweli(parser_ ni self.parser)
@@ -1155,7 +1155,7 @@ kundi TestCallbackExtraArgs(BaseTest):
 
         ikiwa opt == "-p":
             self.assertEqual(value, "1,2,3")
-        elikiwa opt == "--point":
+        lasivyo opt == "--point":
             self.assertEqual(value, "4,5,6")
 
         value = tuple(map(type, value.split(",")))
@@ -1206,11 +1206,11 @@ kundi TestCallbackManyArgs(BaseTest):
     eleza process_many(self, option, opt, value, parser_):
         ikiwa opt == "-a":
             self.assertEqual(value, ("foo", "bar"))
-        elikiwa opt == "--apple":
+        lasivyo opt == "--apple":
             self.assertEqual(value, ("ding", "dong"))
-        elikiwa opt == "-b":
+        lasivyo opt == "-b":
             self.assertEqual(value, (1, 2, 3))
-        elikiwa opt == "--bob":
+        lasivyo opt == "--bob":
             self.assertEqual(value, (-666, 42, 0))
 
     eleza test_many_args(self):
@@ -1497,7 +1497,7 @@ kundi TestHelp(BaseTest):
         # we must restore its original value -- otherwise, this test
         # screws things up kila other tests when it's part of the Python
         # test suite.
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['COLUMNS'] = str(columns)
             rudisha InterceptingOptionParser(option_list=options)
 
@@ -1522,7 +1522,7 @@ kundi TestHelp(BaseTest):
         self.assertHelpEquals(_expected_help_long_opts_first)
 
     eleza test_help_title_formatter(self):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["COLUMNS"] = "80"
             self.parser.formatter = TitledHelpFormatter()
             self.assertHelpEquals(_expected_help_title_formatter)

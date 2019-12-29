@@ -190,7 +190,7 @@ kundi SubinterpreterTest(unittest.TestCase):
         self.assertEqual(atexit._ncallbacks(), n)
 
     eleza test_callbacks_leak_refcycle(self):
-        # Similar to the above, but with a refcycle through the atexit
+        # Similar to the above, but ukijumuisha a refcycle through the atexit
         # module.
         n = atexit._ncallbacks()
         code = r"""ikiwa 1:

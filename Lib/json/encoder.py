@@ -94,7 +94,7 @@ kundi JSONEncoder(object):
     +-------------------+---------------+
 
     To extend this to recognize other objects, subkundi na implement a
-    ``.default()`` method with another method that rudishas a serializable
+    ``.default()`` method ukijumuisha another method that rudishas a serializable
     object kila ``o`` ikiwa possible, otherwise it should call the superclass
     implementation (to ashiria ``TypeError``).
 
@@ -104,14 +104,14 @@ kundi JSONEncoder(object):
     eleza __init__(self, *, skipkeys=Uongo, ensure_ascii=Kweli,
             check_circular=Kweli, allow_nan=Kweli, sort_keys=Uongo,
             indent=Tupu, separators=Tupu, default=Tupu):
-        """Constructor kila JSONEncoder, with sensible defaults.
+        """Constructor kila JSONEncoder, ukijumuisha sensible defaults.
 
         If skipkeys ni false, then it ni a TypeError to attempt
         encoding of keys that are sio str, int, float ama Tupu.  If
         skipkeys ni Kweli, such items are simply skipped.
 
         If ensure_ascii ni true, the output ni guaranteed to be str
-        objects with all incoming non-ASCII characters escaped.  If
+        objects ukijumuisha all incoming non-ASCII characters escaped.  If
         ensure_ascii ni false, the output can contain non-ASCII characters.
 
         If check_circular ni true, then lists, dicts, na custom encoded
@@ -121,7 +121,7 @@ kundi JSONEncoder(object):
 
         If allow_nan ni true, then NaN, Infinity, na -Infinity will be
         encoded kama such.  This behavior ni sio JSON specification compliant,
-        but ni consistent with most JavaScript based encoders na decoders.
+        but ni consistent ukijumuisha most JavaScript based encoders na decoders.
         Otherwise, it will be a ValueError to encode such floats.
 
         If sort_keys ni true, then the output of dictionaries will be
@@ -129,7 +129,7 @@ kundi JSONEncoder(object):
         that JSON serializations can be compared on a day-to-day basis.
 
         If indent ni a non-negative integer, then JSON array
-        elements na object members will be pretty-printed with that
+        elements na object members will be pretty-printed ukijumuisha that
         indent level.  An indent level of 0 will only insert newlines.
         Tupu ni the most compact representation.
 
@@ -152,7 +152,7 @@ kundi JSONEncoder(object):
         self.indent = indent
         ikiwa separators ni sio Tupu:
             self.item_separator, self.key_separator = separators
-        elikiwa indent ni sio Tupu:
+        lasivyo indent ni sio Tupu:
             self.item_separator = ','
         ikiwa default ni sio Tupu:
             self.default = default
@@ -228,9 +228,9 @@ kundi JSONEncoder(object):
 
             ikiwa o != o:
                 text = 'NaN'
-            elikiwa o == _inf:
+            lasivyo o == _inf:
                 text = 'Infinity'
-            elikiwa o == _neginf:
+            lasivyo o == _neginf:
                 text = '-Infinity'
             isipokua:
                 rudisha _repr(o)
@@ -300,25 +300,25 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 buf = separator
             ikiwa isinstance(value, str):
                 tuma buf + _encoder(value)
-            elikiwa value ni Tupu:
+            lasivyo value ni Tupu:
                 tuma buf + 'null'
-            elikiwa value ni Kweli:
+            lasivyo value ni Kweli:
                 tuma buf + 'true'
-            elikiwa value ni Uongo:
+            lasivyo value ni Uongo:
                 tuma buf + 'false'
-            elikiwa isinstance(value, int):
+            lasivyo isinstance(value, int):
                 # Subclasses of int/float may override __repr__, but we still
                 # want to encode them kama integers/floats kwenye JSON. One example
                 # within the standard library ni IntEnum.
                 tuma buf + _intstr(value)
-            elikiwa isinstance(value, float):
+            lasivyo isinstance(value, float):
                 # see comment above kila int
                 tuma buf + _floatstr(value)
             isipokua:
                 tuma buf
                 ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elikiwa isinstance(value, dict):
+                lasivyo isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 isipokua:
                     chunks = _iterencode(value, _current_indent_level)
@@ -358,19 +358,19 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 pita
             # JavaScript ni weakly typed kila these, so it makes sense to
             # also allow them.  Many encoders seem to do something like this.
-            elikiwa isinstance(key, float):
+            lasivyo isinstance(key, float):
                 # see comment kila int/float kwenye _make_iterencode
                 key = _floatstr(key)
-            elikiwa key ni Kweli:
+            lasivyo key ni Kweli:
                 key = 'true'
-            elikiwa key ni Uongo:
+            lasivyo key ni Uongo:
                 key = 'false'
-            elikiwa key ni Tupu:
+            lasivyo key ni Tupu:
                 key = 'null'
-            elikiwa isinstance(key, int):
+            lasivyo isinstance(key, int):
                 # see comment kila int/float kwenye _make_iterencode
                 key = _intstr(key)
-            elikiwa _skipkeys:
+            lasivyo _skipkeys:
                 endelea
             isipokua:
                 ashiria TypeError(f'keys must be str, int, float, bool ama Tupu, '
@@ -383,22 +383,22 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             tuma _key_separator
             ikiwa isinstance(value, str):
                 tuma _encoder(value)
-            elikiwa value ni Tupu:
+            lasivyo value ni Tupu:
                 tuma 'null'
-            elikiwa value ni Kweli:
+            lasivyo value ni Kweli:
                 tuma 'true'
-            elikiwa value ni Uongo:
+            lasivyo value ni Uongo:
                 tuma 'false'
-            elikiwa isinstance(value, int):
+            lasivyo isinstance(value, int):
                 # see comment kila int/float kwenye _make_iterencode
                 tuma _intstr(value)
-            elikiwa isinstance(value, float):
+            lasivyo isinstance(value, float):
                 # see comment kila int/float kwenye _make_iterencode
                 tuma _floatstr(value)
             isipokua:
                 ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elikiwa isinstance(value, dict):
+                lasivyo isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 isipokua:
                     chunks = _iterencode(value, _current_indent_level)
@@ -413,21 +413,21 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode(o, _current_indent_level):
         ikiwa isinstance(o, str):
             tuma _encoder(o)
-        elikiwa o ni Tupu:
+        lasivyo o ni Tupu:
             tuma 'null'
-        elikiwa o ni Kweli:
+        lasivyo o ni Kweli:
             tuma 'true'
-        elikiwa o ni Uongo:
+        lasivyo o ni Uongo:
             tuma 'false'
-        elikiwa isinstance(o, int):
+        lasivyo isinstance(o, int):
             # see comment kila int/float kwenye _make_iterencode
             tuma _intstr(o)
-        elikiwa isinstance(o, float):
+        lasivyo isinstance(o, float):
             # see comment kila int/float kwenye _make_iterencode
             tuma _floatstr(o)
-        elikiwa isinstance(o, (list, tuple)):
+        lasivyo isinstance(o, (list, tuple)):
             tuma kutoka _iterencode_list(o, _current_indent_level)
-        elikiwa isinstance(o, dict):
+        lasivyo isinstance(o, dict):
             tuma kutoka _iterencode_dict(o, _current_indent_level)
         isipokua:
             ikiwa markers ni sio Tupu:

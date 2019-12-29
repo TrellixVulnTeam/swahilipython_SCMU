@@ -3,7 +3,7 @@
 Region formatting options: paragraph, comment block, indent, deindent,
 comment, uncomment, tabify, na untabify.
 
-File renamed kutoka paragraph.py with functions added kutoka editor.py.
+File renamed kutoka paragraph.py ukijumuisha functions added kutoka editor.py.
 """
 agiza re
 kutoka tkinter.messagebox agiza askyesno
@@ -19,7 +19,7 @@ kundi FormatParagraph:
     extension ni really only suitable kila reformatting these comment
     blocks ama triple-quoted strings.
 
-    Known problems with comment reformatting:
+    Known problems ukijumuisha comment reformatting:
     * If there ni a selection marked, na the first line of the
       selection ni sio complete, the block will probably sio be detected
       kama comments, na will have the normal "text formatting" rules
@@ -49,9 +49,9 @@ kundi FormatParagraph:
         cursor location to determine the paragraph (lines of text surrounded
         by blank lines) na formats it.
 
-        The length limit parameter ni kila testing with a known value.
+        The length limit parameter ni kila testing ukijumuisha a known value.
         """
-        limit = self.max_width ikiwa limit ni Tupu else limit
+        limit = self.max_width ikiwa limit ni Tupu isipokua limit
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
         ikiwa first na last:
@@ -116,7 +116,7 @@ eleza find_paragraph(text, mark):
 
     rudisha first, last, comment_header, text.get(first, last)
 
-# This should perhaps be replaced with textwrap.wrap
+# This should perhaps be replaced ukijumuisha textwrap.wrap
 eleza reformat_paragraph(data, limit):
     """Return data reformatted to specified width (limit)."""
     lines = data.split("\n")
@@ -154,7 +154,7 @@ eleza reformat_paragraph(data, limit):
     rudisha "\n".join(new)
 
 eleza reformat_comment(data, limit, comment_header):
-    """Return data reformatted to specified width with comment header."""
+    """Return data reformatted to specified width ukijumuisha comment header."""
 
     # Remove header kutoka the comment lines
     lc = len(comment_header)
@@ -185,11 +185,11 @@ eleza get_indent(line):
     rudisha re.match(r"^([ \t]*)", line).group()
 
 eleza get_comment_header(line):
-    """Return string with leading whitespace na '#' kutoka line ama ''.
+    """Return string ukijumuisha leading whitespace na '#' kutoka line ama ''.
 
     A null rudisha indicates that the line ni sio a comment line. A non-
     null rudisha, such kama '    #', will be used to find the other lines of
-    a comment block with the same  indent.
+    a comment block ukijumuisha the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
     ikiwa m ni Tupu: rudisha ""
@@ -310,7 +310,7 @@ kundi FormatRegion:
                 endelea
             ikiwa line[:2] == '##':
                 line = line[2:]
-            elikiwa line[:1] == '#':
+            lasivyo line[:1] == '#':
                 line = line[1:]
             lines[pos] = line
         self.set_region(head, tail, chars, lines)

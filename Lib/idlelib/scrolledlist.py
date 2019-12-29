@@ -9,7 +9,7 @@ kundi ScrolledList:
     default = "(Tupu)"
 
     eleza __init__(self, master, **options):
-        # Create top frame, with scrollbar na listbox
+        # Create top frame, ukijumuisha scrollbar na listbox
         self.master = master
         self.frame = frame = Frame(master)
         self.frame.pack(fill="both", expand=1)

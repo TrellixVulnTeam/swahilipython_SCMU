@@ -1,4 +1,4 @@
-"""Filename matching with shell patterns.
+"""Filename matching ukijumuisha shell patterns.
 
 fnmatch(FILENAME, PATTERN) matches according to the local convention.
 fnmatchcase(FILENAME, PATTERN) always takes case kwenye account.
@@ -84,9 +84,9 @@ eleza translate(pat):
         i = i+1
         ikiwa c == '*':
             res = res + '.*'
-        elikiwa c == '?':
+        lasivyo c == '?':
             res = res + '.'
-        elikiwa c == '[':
+        lasivyo c == '[':
             j = i
             ikiwa j < n na pat[j] == '!':
                 j = j+1
@@ -102,7 +102,7 @@ eleza translate(pat):
                     stuff = stuff.replace('\\', r'\\')
                 isipokua:
                     chunks = []
-                    k = i+2 ikiwa pat[i] == '!' else i+1
+                    k = i+2 ikiwa pat[i] == '!' isipokua i+1
                     wakati Kweli:
                         k = pat.find('-', k, j)
                         ikiwa k < 0:
@@ -120,7 +120,7 @@ eleza translate(pat):
                 i = j+1
                 ikiwa stuff[0] == '!':
                     stuff = '^' + stuff[1:]
-                elikiwa stuff[0] kwenye ('^', '['):
+                lasivyo stuff[0] kwenye ('^', '['):
                     stuff = '\\' + stuff
                 res = '%s[%s]' % (res, stuff)
         isipokua:

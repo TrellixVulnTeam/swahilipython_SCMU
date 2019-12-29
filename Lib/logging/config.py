@@ -228,7 +228,7 @@ eleza _install_loggers(cp, handlers, disable_existing):
         propagate = section.getint("propagate", fallback=1)
         logger = logging.getLogger(qn)
         ikiwa qn kwenye existing:
-            i = existing.index(qn) + 1 # start with the entry after qn
+            i = existing.index(qn) + 1 # start ukijumuisha the entry after qn
             prefixed = qn + "."
             pflen = len(prefixed)
             num_existing = len(existing)
@@ -262,7 +262,7 @@ eleza _install_loggers(cp, handlers, disable_existing):
     #        logger.level = logging.NOTSET
     #        logger.handlers = []
     #        logger.propagate = 1
-    #    elikiwa disable_existing_loggers:
+    #    lasivyo disable_existing_loggers:
     #        logger.disabled = 1
     _handle_existing_loggers(existing, child_loggers, disable_existing)
 
@@ -443,14 +443,14 @@ kundi BaseConfigurator(object):
         ikiwa sio isinstance(value, ConvertingDict) na isinstance(value, dict):
             value = ConvertingDict(value)
             value.configurator = self
-        elikiwa sio isinstance(value, ConvertingList) na isinstance(value, list):
+        lasivyo sio isinstance(value, ConvertingList) na isinstance(value, list):
             value = ConvertingList(value)
             value.configurator = self
-        elikiwa sio isinstance(value, ConvertingTuple) and\
+        lasivyo sio isinstance(value, ConvertingTuple) and\
                  isinstance(value, tuple):
             value = ConvertingTuple(value)
             value.configurator = self
-        elikiwa isinstance(value, str): # str kila py3k
+        lasivyo isinstance(value, str): # str kila py3k
             m = self.CONVERT_PATTERN.match(value)
             ikiwa m:
                 d = m.groupdict()
@@ -463,7 +463,7 @@ kundi BaseConfigurator(object):
         rudisha value
 
     eleza configure_custom(self, config):
-        """Configure an object with a user-supplied factory."""
+        """Configure an object ukijumuisha a user-supplied factory."""
         c = config.pop('()')
         ikiwa sio callable(c):
             c = self.resolve(c)
@@ -504,7 +504,7 @@ kundi DictConfigurator(BaseConfigurator):
                 handlers = config.get('handlers', EMPTY_DICT)
                 kila name kwenye handlers:
                     ikiwa name haiko kwenye logging._handlers:
-                        ashiria ValueError('No handler found with '
+                        ashiria ValueError('No handler found ukijumuisha '
                                          'name %r'  % name)
                     isipokua:
                         jaribu:
@@ -630,7 +630,7 @@ kundi DictConfigurator(BaseConfigurator):
                 #        logger.level = logging.NOTSET
                 #        logger.handlers = []
                 #        logger.propagate = Kweli
-                #    elikiwa disable_existing:
+                #    lasivyo disable_existing:
                 #        logger.disabled = Kweli
                 _handle_existing_loggers(existing, child_loggers,
                                          disable_existing)
@@ -656,8 +656,8 @@ kundi DictConfigurator(BaseConfigurator):
                 ikiwa "'format'" haiko kwenye str(te):
                     ashiria
                 #Name of parameter changed kutoka fmt to format.
-                #Retry with old name.
-                #This ni so that code can be used with older Python versions
+                #Retry ukijumuisha old name.
+                #This ni so that code can be used ukijumuisha older Python versions
                 #(e.g. by Django)
                 config['fmt'] = config.pop('format')
                 config['()'] = factory
@@ -673,7 +673,7 @@ kundi DictConfigurator(BaseConfigurator):
             isipokua:
                 c = _resolve(cname)
 
-            # A TypeError would be ashiriad ikiwa "validate" key ni pitaed kwenye with a formatter callable
+            # A TypeError would be ashiriad ikiwa "validate" key ni pitaed kwenye ukijumuisha a formatter callable
             # that does sio accept "validate" kama a parameter
             ikiwa 'validate' kwenye config:  # ikiwa user hasn't mentioned it, the default will be fine
                 result = c(fmt, dfmt, style, config['validate'])
@@ -731,10 +731,10 @@ kundi DictConfigurator(BaseConfigurator):
                 tatizo Exception kama e:
                     ashiria ValueError('Unable to set target handler '
                                      '%r' % config['target']) kutoka e
-            elikiwa issubclass(klass, logging.handlers.SMTPHandler) and\
+            lasivyo issubclass(klass, logging.handlers.SMTPHandler) and\
                 'mailhost' kwenye config:
                 config['mailhost'] = self.as_tuple(config['mailhost'])
-            elikiwa issubclass(klass, logging.handlers.SysLogHandler) and\
+            lasivyo issubclass(klass, logging.handlers.SysLogHandler) and\
                 'address' kwenye config:
                 config['address'] = self.as_tuple(config['address'])
             factory = klass
@@ -746,8 +746,8 @@ kundi DictConfigurator(BaseConfigurator):
             ikiwa "'stream'" haiko kwenye str(te):
                 ashiria
             #The argument name changed kutoka strm to stream
-            #Retry with old name.
-            #This ni so that code can be used with older Python versions
+            #Retry ukijumuisha old name.
+            #This ni so that code can be used ukijumuisha older Python versions
             #(e.g. by Django)
             kwargs['strm'] = kwargs.pop('stream')
             result = factory(**kwargs)
@@ -932,7 +932,7 @@ eleza listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Tupu):
 
 eleza stopListening():
     """
-    Stop the listening server which was created with a call to listen().
+    Stop the listening server which was created ukijumuisha a call to listen().
     """
     global _listener
     logging._acquireLock()

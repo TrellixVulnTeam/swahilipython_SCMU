@@ -1,6 +1,6 @@
 doctests = """
 
-Test simple loop with conditional
+Test simple loop ukijumuisha conditional
 
     >>> sum(i*i kila i kwenye range(100) ikiwa i&1 == 1)
     166650
@@ -10,7 +10,7 @@ Test simple nesting
     >>> list((i,j) kila i kwenye range(3) kila j kwenye range(4) )
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
-Test nesting with the inner expression dependent on the outer
+Test nesting ukijumuisha the inner expression dependent on the outer
 
     >>> list((i,j) kila i kwenye range(4) kila j kwenye range(i) )
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
@@ -222,7 +222,7 @@ Check that generator attributes are present
     Kweli
 
     >>> kutoka test.support agiza HAVE_DOCSTRINGS
-    >>> andika(g.__next__.__doc__ ikiwa HAVE_DOCSTRINGS else 'Implement next(self).')
+    >>> andika(g.__next__.__doc__ ikiwa HAVE_DOCSTRINGS isipokua 'Implement next(self).')
     Implement next(self).
     >>> agiza types
     >>> isinstance(g, types.GeneratorType)

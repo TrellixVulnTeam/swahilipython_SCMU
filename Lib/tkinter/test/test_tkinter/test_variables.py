@@ -265,7 +265,7 @@ class TestBooleanVar(TestBase):
         self.assertIs(v.get(), True)
         self.root.globalsetvar("name", "0")
         self.assertIs(v.get(), False)
-        self.root.globalsetvar("name", 42 if self.root.wantobjects() else 1)
+        self.root.globalsetvar("name", 42 if self.root.wantobjects() isipokua 1)
         self.assertIs(v.get(), True)
         self.root.globalsetvar("name", 0)
         self.assertIs(v.get(), False)
@@ -273,8 +273,8 @@ class TestBooleanVar(TestBase):
         self.assertIs(v.get(), True)
 
     def test_set(self):
-        true = 1 if self.root.wantobjects() else "1"
-        false = 0 if self.root.wantobjects() else "0"
+        true = 1 if self.root.wantobjects() isipokua "1"
+        false = 0 if self.root.wantobjects() isipokua "0"
         v = BooleanVar(self.root, name="name")
         v.set(True)
         self.assertEqual(self.root.globalgetvar("name"), true)
@@ -288,7 +288,7 @@ class TestBooleanVar(TestBase):
         self.assertEqual(self.root.globalgetvar("name"), true)
 
     def test_invalid_value_domain(self):
-        false = 0 if self.root.wantobjects() else "0"
+        false = 0 if self.root.wantobjects() isipokua "0"
         v = BooleanVar(self.root, name="name")
         with self.assertRaises(TclError):
             v.set("value")

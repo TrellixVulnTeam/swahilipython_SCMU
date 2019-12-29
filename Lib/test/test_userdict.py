@@ -30,7 +30,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict(one=1, two=2), d2)
         # item sequence constructor
         self.assertEqual(collections.UserDict([('one',1), ('two',2)]), d2)
-        with self.assertWarnsRegex(DeprecationWarning, "'dict'"):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, "'dict'"):
             self.assertEqual(collections.UserDict(dict=[('one',1), ('two',2)]), d2)
         # both together
         self.assertEqual(collections.UserDict([('one',1), ('two',2)], two=3, three=5), d3)
@@ -149,7 +149,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
                          [('dict', 42)])
         self.assertEqual(list(collections.UserDict({}, dict=Tupu).items()),
                          [('dict', Tupu)])
-        with self.assertWarnsRegex(DeprecationWarning, "'dict'"):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, "'dict'"):
             self.assertEqual(list(collections.UserDict(dict={'a': 42}).items()),
                              [('a', 42)])
         self.assertRaises(TypeError, collections.UserDict, 42)

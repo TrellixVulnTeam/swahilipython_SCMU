@@ -110,7 +110,7 @@ kundi TestBasic(unittest.TestCase):
         self.assertEqual(deque('abc', maxlen=4).maxlen, 4)
         self.assertEqual(deque('abc', maxlen=2).maxlen, 2)
         self.assertEqual(deque('abc', maxlen=0).maxlen, 0)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             d = deque('abc')
             d.maxlen = 10
 
@@ -174,13 +174,13 @@ kundi TestBasic(unittest.TestCase):
         # Test detection of mutation during iteration
         d = deque(range(n))
         d[n//2] = MutateCmp(d, Uongo)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             n kwenye d
 
         # Test detection of comparison exceptions
         d = deque(range(n))
         d[n//2] = BadCmp()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             n kwenye d
 
     eleza test_extend(self):
@@ -208,7 +208,7 @@ kundi TestBasic(unittest.TestCase):
         h = deque('gh')
         self.assertEqual(g + h, deque('efgh'))
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             deque('abc') + 'def'
 
     eleza test_iadd(self):
@@ -257,19 +257,19 @@ kundi TestBasic(unittest.TestCase):
             kila i kwenye range(n):
                 self.assertEqual(d.index(i), i)
 
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 d.index(n+1)
 
             # Test detection of mutation during iteration
             d = deque(range(n))
             d[n//2] = MutateCmp(d, Uongo)
-            with self.assertRaises(RuntimeError):
+            ukijumuisha self.assertRaises(RuntimeError):
                 d.index(n)
 
             # Test detection of comparison exceptions
             d = deque(range(n))
             d[n//2] = BadCmp()
-            with self.assertRaises(RuntimeError):
+            ukijumuisha self.assertRaises(RuntimeError):
                 d.index(n)
 
         # Test start na stop arguments behavior matches list.index()
@@ -283,7 +283,7 @@ kundi TestBasic(unittest.TestCase):
                     jaribu:
                         target = s.index(element, start, stop)
                     tatizo ValueError:
-                        with self.assertRaises(ValueError):
+                        ukijumuisha self.assertRaises(ValueError):
                             d.index(element, start, stop)
                     isipokua:
                         self.assertEqual(d.index(element, start, stop), target)
@@ -293,12 +293,12 @@ kundi TestBasic(unittest.TestCase):
         kila step kwenye range(100):
             i = d.index(8500, 700)
             self.assertEqual(d[i], 8500)
-            # Repeat test with a different internal offset
+            # Repeat test ukijumuisha a different internal offset
             d.rotate()
 
     eleza test_index_bug_24913(self):
         d = deque('A' * 3)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             i = d.index("Hello world", 0, 4)
 
     eleza test_insert(self):
@@ -314,7 +314,7 @@ kundi TestBasic(unittest.TestCase):
     eleza test_insert_bug_26194(self):
         data = 'ABC'
         d = deque(data, maxlen=len(data))
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             d.insert(2, Tupu)
 
         elements = 'ABCDEFGHI'
@@ -708,7 +708,7 @@ kundi TestBasic(unittest.TestCase):
         kila i kwenye range(5):
             kila maxlen kwenye range(-1, 6):
                 s = [random.random() kila j kwenye range(i)]
-                d = deque(s) ikiwa maxlen == -1 else deque(s, maxlen)
+                d = deque(s) ikiwa maxlen == -1 isipokua deque(s, maxlen)
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
@@ -735,7 +735,7 @@ kundi TestBasic(unittest.TestCase):
     eleza test_gc_doesnt_blowup(self):
         agiza gc
         # This used to assert-fail kwenye deque_traverse() under a debug
-        # build, ama run wild with a NULL pointer kwenye a release build.
+        # build, ama run wild ukijumuisha a NULL pointer kwenye a release build.
         d = deque()
         kila i kwenye range(100):
             d.append(1)
@@ -910,9 +910,9 @@ kundi TestSubclass(unittest.TestCase):
         eleza bad___new__(cls, *args, **kwargs):
             rudisha [42]
         X.__new__ = bad___new__
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             d * 42  # shouldn't crash
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             d + deque([1, 2, 3])  # shouldn't crash
 
 
@@ -950,7 +950,7 @@ libreftest = """
 Example kutoka the Library Reference:  Doc/lib/libcollections.tex
 
 >>> kutoka collections agiza deque
->>> d = deque('ghi')                 # make a new deque with three items
+>>> d = deque('ghi')                 # make a new deque ukijumuisha three items
 >>> kila elem kwenye d:                   # iterate over the deque's elements
 ...     andika(elem.upper())
 G

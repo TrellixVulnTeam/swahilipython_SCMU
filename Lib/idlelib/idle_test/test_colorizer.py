@@ -21,7 +21,7 @@ testcfg = {
 
 source = (
     "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
-    "elikiwa Uongo: andika(0)  # 'string' kwenye comment\n"
+    "lasivyo Uongo: andika(0)  # 'string' kwenye comment\n"
     "isipokua: float(Tupu)  # ikiwa kwenye comment\n"
     "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
     "if'': x or''  # valid string-keyword no-space combinations\n"
@@ -181,7 +181,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
     eleza test_LoadTagDefs(self):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         kila tag, colors kwenye self.color.tagdefs.items():
-            with self.subTest(tag=tag):
+            ukijumuisha self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
                 ikiwa tag haiko kwenye ('SYNC', 'TODO'):
@@ -192,7 +192,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         kila tag kwenye self.color.tagdefs:
             kila plane kwenye ('background', 'foreground'):
-                with self.subTest(tag=tag, plane=plane):
+                ukijumuisha self.subTest(tag=tag, plane=plane):
                     ikiwa tag kwenye ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
                     isipokua:
@@ -268,7 +268,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
         color = self.color
         eq = self.assertEqual
 
-        # Starts with colorizing allowed na scheduled.
+        # Starts ukijumuisha colorizing allowed na scheduled.
         self.assertUongo(color.colorizing)
         self.assertUongo(color.stop_colorizing)
         self.assertKweli(color.allow_colorizing)
@@ -374,7 +374,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize_main()
         kila tag kwenye text.tag_names():
-            with self.subTest(tag=tag):
+            ukijumuisha self.subTest(tag=tag):
                 eq(text.tag_ranges(tag), ())
 
         # Source marked kila processing.
@@ -382,7 +382,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
         # Check some indexes.
         color.recolorize_main()
         kila index, expected_tags kwenye expected:
-            with self.subTest(index=index):
+            ukijumuisha self.subTest(index=index):
                 eq(text.tag_names(index), expected_tags)
 
         # Check kila some tags kila ranges.
@@ -410,12 +410,12 @@ kundi ColorDelegatorTest(unittest.TestCase):
         text.tag_add("TODO", "1.0")
         text.tag_add("hit", "1.0")
         kila tag kwenye color.tagdefs:
-            with self.subTest(tag=tag):
+            ukijumuisha self.subTest(tag=tag):
                 self.assertNotEqual(text.tag_ranges(tag), ())
 
         color.removecolors()
         kila tag kwenye color.tagdefs:
-            with self.subTest(tag=tag):
+            ukijumuisha self.subTest(tag=tag):
                 self.assertEqual(text.tag_ranges(tag), ())
 
 

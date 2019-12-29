@@ -20,7 +20,7 @@ eleza get_widget_padding(widget):
     manager = widget.winfo_manager()
     ikiwa manager == 'pack':
         info = widget.pack_info()
-    elikiwa manager == 'grid':
+    lasivyo manager == 'grid':
         info = widget.grid_info()
     isipokua:
         ashiria ValueError(f"Unsupported geometry manager: {manager}")
@@ -119,12 +119,12 @@ kundi BaseSideBar:
 
 
 kundi EndLineDelegator(Delegator):
-    """Generate callbacks with the current end line number after
+    """Generate callbacks ukijumuisha the current end line number after
        insert ama delete operations"""
     eleza __init__(self, changed_callback):
         """
         changed_callback - Callable, will be called after insert
-                           ama delete operations with the current
+                           ama delete operations ukijumuisha the current
                            end line number.
         """
         Delegator.__init__(self)
@@ -176,7 +176,7 @@ kundi LineNumbers(BaseSideBar):
 
         # Redirect mouse scrolling to the main editor text widget.
         #
-        # Note that without this, scrolling with the mouse only scrolls
+        # Note that without this, scrolling ukijumuisha the mouse only scrolls
         # the line numbers.
         self.sidebar_text.bind('<MouseWheel>', self.redirect_mousewheel_event)
 
@@ -244,9 +244,9 @@ kundi LineNumbers(BaseSideBar):
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", f"{a}.0", f"{b+1}.0")
             self.text.mark_set("insert",
-                               f"{lineno ikiwa lineno == a else lineno + 1}.0")
+                               f"{lineno ikiwa lineno == a isipokua lineno + 1}.0")
 
-        # Special handling of dragging with mouse button 1.  In "normal" text
+        # Special handling of dragging ukijumuisha mouse button 1.  In "normal" text
         # widgets this selects text, but the line numbers text widget has
         # selection disabled.  Still, dragging triggers some selection-related
         # functionality under the hood.  Specifically, dragging to above or
@@ -286,7 +286,7 @@ kundi LineNumbers(BaseSideBar):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber kila that line
-        Synchronize with editwin.text so that both sidebar_text and
+        Synchronize ukijumuisha editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
         ikiwa end == self.prev_end:
             rudisha

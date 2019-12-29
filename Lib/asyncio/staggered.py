@@ -1,4 +1,4 @@
-"""Support kila running coroutines kwenye parallel with staggered start times."""
+"""Support kila running coroutines kwenye parallel ukijumuisha staggered start times."""
 
 __all__ = 'staggered_race',
 
@@ -21,7 +21,7 @@ async eleza staggered_race(
     typing.Optional[int],
     typing.List[typing.Optional[Exception]]
 ]:
-    """Run coroutines with staggered start times na take the first to finish.
+    """Run coroutines ukijumuisha staggered start times na take the first to finish.
 
     This method takes an iterable of coroutine functions. The first one is
     started immediately. From then on, whenever the immediately preceding one
@@ -83,7 +83,7 @@ async eleza staggered_race(
             previous_failed: typing.Optional[locks.Event]) -> Tupu:
         # Wait kila the previous task to finish, ama kila delay seconds
         ikiwa previous_failed ni sio Tupu:
-            with contextlib.suppress(futures.TimeoutError):
+            ukijumuisha contextlib.suppress(futures.TimeoutError):
                 # Use asyncio.wait_for() instead of asyncio.wait() here, so
                 # that ikiwa we get cancelled at this point, Event.wait() ni also
                 # cancelled, otherwise there will be a "Task destroyed but it is

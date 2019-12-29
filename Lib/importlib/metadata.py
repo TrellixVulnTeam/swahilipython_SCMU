@@ -112,11 +112,11 @@ kundi PackagePath(pathlib.PurePosixPath):
     """A reference to a path kwenye a package"""
 
     eleza read_text(self, encoding='utf-8'):
-        with self.locate().open(encoding=encoding) kama stream:
+        ukijumuisha self.locate().open(encoding=encoding) kama stream:
             rudisha stream.read()
 
     eleza read_binary(self):
-        with self.locate().open('rb') kama stream:
+        ukijumuisha self.locate().open('rb') kama stream:
             rudisha stream.read()
 
     eleza locate(self):
@@ -246,8 +246,8 @@ kundi Distribution:
 
         eleza make_file(name, hash=Tupu, size_str=Tupu):
             result = PackagePath(name)
-            result.hash = FileHash(hash) ikiwa hash else Tupu
-            result.size = int(size_str) ikiwa size_str else Tupu
+            result.hash = FileHash(hash) ikiwa hash isipokua Tupu
+            result.size = int(size_str) ikiwa size_str isipokua Tupu
             result.dist = self
             rudisha result
 
@@ -305,9 +305,9 @@ kundi Distribution:
     eleza _convert_egg_info_reqs_to_simple_reqs(sections):
         """
         Historically, setuptools would solicit na store 'extra'
-        requirements, including those with environment markers,
+        requirements, including those ukijumuisha environment markers,
         kwenye separate sections. More modern tools expect each
-        dependency to be defined separately, with any relevant
+        dependency to be defined separately, ukijumuisha any relevant
         extras na environment markers attached directly to that
         requirement. This method converts the former to the
         latter. See _test_deps_kutoka_requires_text kila an example.
@@ -321,7 +321,7 @@ kundi Distribution:
             ikiwa extra na markers:
                 markers = '({markers})'.format(markers=markers)
             conditions = list(filter(Tupu, [markers, make_condition(extra)]))
-            rudisha '; ' + ' na '.join(conditions) ikiwa conditions else ''
+            rudisha '; ' + ' na '.join(conditions) ikiwa conditions isipokua ''
 
         kila section, deps kwenye sections.items():
             kila dep kwenye deps:
@@ -352,7 +352,7 @@ kundi DistributionFinder(MetaPathFinder):
 
         @property
         eleza pattern(self):
-            rudisha '.*' ikiwa self.name ni Tupu else re.escape(self.name)
+            rudisha '.*' ikiwa self.name ni Tupu isipokua re.escape(self.name)
 
     @abc.abstractmethod
     eleza find_distributions(self, context=Context()):
@@ -391,7 +391,7 @@ kundi MetadataPathFinder(DistributionFinder):
     eleza _switch_path(path):
         PYPY_OPEN_BUG = Uongo
         ikiwa sio PYPY_OPEN_BUG ama os.path.isfile(path):  # pragma: no branch
-            with suppress(Exception):
+            ukijumuisha suppress(Exception):
                 rudisha zipfile.Path(path)
         rudisha pathlib.Path(path)
 
@@ -427,7 +427,7 @@ kundi PathDistribution(Distribution):
         self._path = path
 
     eleza read_text(self, filename):
-        with suppress(FileNotFoundError, IsADirectoryError, KeyError,
+        ukijumuisha suppress(FileNotFoundError, IsADirectoryError, KeyError,
                       NotADirectoryError, PermissionError):
             rudisha self._path.joinpath(filename).read_text(encoding='utf-8')
     read_text.__doc__ = Distribution.read_text.__doc__

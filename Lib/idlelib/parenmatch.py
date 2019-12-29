@@ -26,7 +26,7 @@ kundi ParenMatch:
     highlight.  If flash-delay ni 0, there ni no maximum.
 
     TODO:
-    - Augment bell() with mismatch warning kwenye status window.
+    - Augment bell() ukijumuisha mismatch warning kwenye status window.
     - Highlight when cursor ni moved to the right of a closer.
       This might be too expensive to check.
     """
@@ -167,7 +167,7 @@ kundi ParenMatch:
 
     eleza set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
-        # associate a counter with an event; only disable the "paren"
+        # associate a counter ukijumuisha an event; only disable the "paren"
         # tag ikiwa the event ni kila the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(

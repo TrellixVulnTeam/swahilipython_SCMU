@@ -16,21 +16,21 @@ kundi SampleException(Exception): pita
 kundi WithTest(unittest.TestCase):
 
     eleza test_with_statement(self):
-        with patch('%s.something' % __name__, sentinel.Something2):
+        ukijumuisha patch('%s.something' % __name__, sentinel.Something2):
             self.assertEqual(something, sentinel.Something2, "unpatched")
         self.assertEqual(something, sentinel.Something)
 
 
     eleza test_with_statement_exception(self):
-        with self.assertRaises(SampleException):
-            with patch('%s.something' % __name__, sentinel.Something2):
+        ukijumuisha self.assertRaises(SampleException):
+            ukijumuisha patch('%s.something' % __name__, sentinel.Something2):
                 self.assertEqual(something, sentinel.Something2, "unpatched")
                 ashiria SampleException()
         self.assertEqual(something, sentinel.Something)
 
 
     eleza test_with_statement_as(self):
-        with patch('%s.something' % __name__) kama mock_something:
+        ukijumuisha patch('%s.something' % __name__) kama mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertKweli(is_instance(mock_something, MagicMock),
                             "patching wrong type")
@@ -41,14 +41,14 @@ kundi WithTest(unittest.TestCase):
         kundi Foo(object):
             something = 'foo'
         original = Foo.something
-        with patch.object(Foo, 'something'):
+        ukijumuisha patch.object(Foo, 'something'):
             self.assertNotEqual(Foo.something, original, "unpatched")
         self.assertEqual(Foo.something, original)
 
 
     eleza test_with_statement_nested(self):
-        with catch_warnings(record=Kweli):
-            with patch('%s.something' % __name__) kama mock_something, patch('%s.something_else' % __name__) kama mock_something_isipokua:
+        ukijumuisha catch_warnings(record=Kweli):
+            ukijumuisha patch('%s.something' % __name__) kama mock_something, patch('%s.something_else' % __name__) kama mock_something_isipokua:
                 self.assertEqual(something, mock_something, "unpatched")
                 self.assertEqual(something_else, mock_something_else,
                                  "unpatched")
@@ -58,7 +58,7 @@ kundi WithTest(unittest.TestCase):
 
 
     eleza test_with_statement_specified(self):
-        with patch('%s.something' % __name__, sentinel.Patched) kama mock_something:
+        ukijumuisha patch('%s.something' % __name__, sentinel.Patched) kama mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertEqual(mock_something, sentinel.Patched, "wrong patch")
         self.assertEqual(something, sentinel.Something)
@@ -70,7 +70,7 @@ kundi WithTest(unittest.TestCase):
         mock.__exit__ = Mock()
         mock.__exit__.rudisha_value = Uongo
 
-        with mock kama m:
+        ukijumuisha mock kama m:
             self.assertEqual(m, mock.__enter__.rudisha_value)
         mock.__enter__.assert_called_with()
         mock.__exit__.assert_called_with(Tupu, Tupu, Tupu)
@@ -79,31 +79,31 @@ kundi WithTest(unittest.TestCase):
     eleza test_context_manager_with_magic_mock(self):
         mock = MagicMock()
 
-        with self.assertRaises(TypeError):
-            with mock:
+        ukijumuisha self.assertRaises(TypeError):
+            ukijumuisha mock:
                 'foo' + 3
         mock.__enter__.assert_called_with()
         self.assertKweli(mock.__exit__.called)
 
 
     eleza test_with_statement_same_attribute(self):
-        with patch('%s.something' % __name__, sentinel.Patched) kama mock_something:
+        ukijumuisha patch('%s.something' % __name__, sentinel.Patched) kama mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
-            with patch('%s.something' % __name__) kama mock_again:
+            ukijumuisha patch('%s.something' % __name__) kama mock_again:
                 self.assertEqual(something, mock_again, "unpatched")
 
             self.assertEqual(something, mock_something,
-                             "restored with wrong instance")
+                             "restored ukijumuisha wrong instance")
 
         self.assertEqual(something, sentinel.Something, "not restored")
 
 
     eleza test_with_statement_imbricated(self):
-        with patch('%s.something' % __name__) kama mock_something:
+        ukijumuisha patch('%s.something' % __name__) kama mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
-            with patch('%s.something_else' % __name__) kama mock_something_isipokua:
+            ukijumuisha patch('%s.something_else' % __name__) kama mock_something_isipokua:
                 self.assertEqual(something_else, mock_something_else,
                                  "unpatched")
 
@@ -113,12 +113,12 @@ kundi WithTest(unittest.TestCase):
 
     eleza test_dict_context_manager(self):
         foo = {}
-        with patch.dict(foo, {'a': 'b'}):
+        ukijumuisha patch.dict(foo, {'a': 'b'}):
             self.assertEqual(foo, {'a': 'b'})
         self.assertEqual(foo, {})
 
-        with self.assertRaises(NameError):
-            with patch.dict(foo, {'a': 'b'}):
+        ukijumuisha self.assertRaises(NameError):
+            ukijumuisha patch.dict(foo, {'a': 'b'}):
                 self.assertEqual(foo, {'a': 'b'})
                 ashiria NameError('Konrad')
 
@@ -130,8 +130,8 @@ kundi WithTest(unittest.TestCase):
 
         c = C()
 
-        with patch.object(c, 'f', autospec=Kweli) kama patch1:
-            with patch.object(c, 'f', autospec=Kweli) kama patch2:
+        ukijumuisha patch.object(c, 'f', autospec=Kweli) kama patch1:
+            ukijumuisha patch.object(c, 'f', autospec=Kweli) kama patch2:
                 c.f()
             self.assertEqual(patch2.call_count, 1)
             self.assertEqual(patch1.call_count, 0)
@@ -143,7 +143,7 @@ kundi TestMockOpen(unittest.TestCase):
 
     eleza test_mock_open(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=Kweli) kama patched:
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli) kama patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -153,8 +153,8 @@ kundi TestMockOpen(unittest.TestCase):
     eleza test_mock_open_context_manager(self):
         mock = mock_open()
         handle = mock.rudisha_value
-        with patch('%s.open' % __name__, mock, create=Kweli):
-            with open('foo') kama f:
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
+            ukijumuisha open('foo') kama f:
                 f.read()
 
         expected_calls = [call('foo'), call().__enter__(), call().read(),
@@ -164,10 +164,10 @@ kundi TestMockOpen(unittest.TestCase):
 
     eleza test_mock_open_context_manager_multiple_times(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=Kweli):
-            with open('foo') kama f:
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
+            ukijumuisha open('foo') kama f:
                 f.read()
-            with open('bar') kama f:
+            ukijumuisha open('bar') kama f:
                 f.read()
 
         expected_calls = [
@@ -181,7 +181,7 @@ kundi TestMockOpen(unittest.TestCase):
         mock = MagicMock()
         mock_open(mock)
 
-        with patch('%s.open' % __name__, mock, create=Kweli) kama patched:
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli) kama patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -190,7 +190,7 @@ kundi TestMockOpen(unittest.TestCase):
 
     eleza test_read_data(self):
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             result = h.read()
 
@@ -201,7 +201,7 @@ kundi TestMockOpen(unittest.TestCase):
         # Check that readline will rudisha all the lines kutoka the fake file
         # And that once fully consumed, readline will rudisha an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             line1 = h.readline()
             line2 = h.readline()
@@ -213,7 +213,7 @@ kundi TestMockOpen(unittest.TestCase):
 
         # Check that we properly emulate a file that doesn't end kwenye a newline
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             result = h.readline()
         self.assertEqual(result, 'foo')
@@ -223,21 +223,21 @@ kundi TestMockOpen(unittest.TestCase):
     eleza test_dunder_iter_data(self):
         # Check that dunder_iter will rudisha all the lines kutoka the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             lines = [l kila l kwenye h]
         self.assertEqual(lines[0], 'foo\n')
         self.assertEqual(lines[1], 'bar\n')
         self.assertEqual(lines[2], 'baz\n')
         self.assertEqual(h.readline(), '')
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             next(h)
 
     eleza test_next_data(self):
         # Check that next will correctly rudisha the next available
-        # line na plays well with the dunder_iter part.
+        # line na plays well ukijumuisha the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             line1 = next(h)
             line2 = next(h)
@@ -250,7 +250,7 @@ kundi TestMockOpen(unittest.TestCase):
     eleza test_readlines_data(self):
         # Test that emulating a file that ends kwenye a newline character works
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             result = h.readlines()
         self.assertEqual(result, ['foo\n', 'bar\n', 'baz\n'])
@@ -258,7 +258,7 @@ kundi TestMockOpen(unittest.TestCase):
         # Test that files without a final newline will also be correctly
         # emulated
         mock = mock_open(read_data='foo\nbar\nbaz')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             result = h.readlines()
 
@@ -267,16 +267,16 @@ kundi TestMockOpen(unittest.TestCase):
 
     eleza test_read_bytes(self):
         mock = mock_open(read_data=b'\xc6')
-        with patch('%s.open' % __name__, mock, create=Kweli):
-            with open('abc', 'rb') kama f:
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
+            ukijumuisha open('abc', 'rb') kama f:
                 result = f.read()
         self.assertEqual(result, b'\xc6')
 
 
     eleza test_readline_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=Kweli):
-            with open('abc', 'rb') kama f:
+        ukijumuisha patch('%s.open' % __name__, m, create=Kweli):
+            ukijumuisha open('abc', 'rb') kama f:
                 line1 = f.readline()
                 line2 = f.readline()
                 line3 = f.readline()
@@ -287,14 +287,14 @@ kundi TestMockOpen(unittest.TestCase):
 
     eleza test_readlines_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=Kweli):
-            with open('abc', 'rb') kama f:
+        ukijumuisha patch('%s.open' % __name__, m, create=Kweli):
+            ukijumuisha open('abc', 'rb') kama f:
                 result = f.readlines()
         self.assertEqual(result, [b'abc\n', b'def\n', b'ghi\n'])
 
 
     eleza test_mock_open_read_with_argument(self):
-        # At one point calling read with an argument was broken
+        # At one point calling read ukijumuisha an argument was broken
         # kila mocks rudishaed by mock_open
         some_data = 'foo\nbar\nbaz'
         mock = mock_open(read_data=some_data)
@@ -310,7 +310,7 @@ kundi TestMockOpen(unittest.TestCase):
         # Test that calling read, readline, na readlines pulls data
         # sequentially kutoka the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             line1 = h.readline()
             rest = h.readlines()
@@ -318,7 +318,7 @@ kundi TestMockOpen(unittest.TestCase):
         self.assertEqual(rest, ['bar\n', 'baz\n'])
 
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Kweli):
+        ukijumuisha patch('%s.open' % __name__, mock, create=Kweli):
             h = open('bar')
             line1 = h.readline()
             rest = h.read()

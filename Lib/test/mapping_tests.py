@@ -20,7 +20,7 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         """Return an empty mapping object"""
         rudisha self.type2test()
     eleza _full_mapping(self, data):
-        """Return a mapping object with the value contained kwenye data
+        """Return a mapping object ukijumuisha the value contained kwenye data
         dictionary"""
         x = self._empty_mapping()
         kila key, value kwenye data.items():
@@ -191,7 +191,7 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         d.update(self.other.items())
         self.assertEqual(list(d.items()), list(self.other.items()))
 
-        # FIXME: Doesn't work with UserDict
+        # FIXME: Doesn't work ukijumuisha UserDict
         # self.assertRaises((TypeError, AttributeError), d.update, Tupu)
         self.assertRaises((TypeError, AttributeError), d.update, 42)
 
@@ -524,7 +524,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
     eleza test_pop(self):
         BasicTestMappingProtocol.test_pop(self)
 
-        # Tests kila pop with specified key
+        # Tests kila pop ukijumuisha specified key
         d = self._empty_mapping()
         k, v = 'abc', 'def'
 

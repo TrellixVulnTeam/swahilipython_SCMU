@@ -47,7 +47,7 @@ kundi ParenMatchTest(unittest.TestCase):
 
     eleza test_paren_styles(self):
         """
-        Test ParenMatch with each style.
+        Test ParenMatch ukijumuisha each style.
         """
         text = self.text
         pm = self.get_parenmatch()
@@ -56,7 +56,7 @@ kundi ParenMatchTest(unittest.TestCase):
                 ('default',('1.10', '1.11'),('1.10', '1.11')),
                 ('parens', ('1.14', '1.15'), ('1.15', '1.16')),
                 ('expression', ('1.10', '1.15'), ('1.10', '1.16'))):
-            with self.subTest(style=style):
+            ukijumuisha self.subTest(style=style):
                 text.delete('1.0', 'end')
                 pm.STYLE = style
                 text.insert('insert', 'eleza foobar(a, b')

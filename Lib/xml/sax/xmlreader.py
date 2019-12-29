@@ -96,7 +96,7 @@ kundi IncrementalParser(XMLReader):
 
     When the parser ni instantiated it ni ready to begin accepting
     data kutoka the feed method immediately. After parsing has been
-    finished with a call to close the reset method must be called to
+    finished ukijumuisha a call to close the reset method must be called to
     make the parser ready to accept new data, either kutoka feed or
     using the parse method.
 
@@ -163,7 +163,7 @@ kundi IncrementalParser(XMLReader):
 # ===== LOCATOR =====
 
 kundi Locator:
-    """Interface kila associating a SAX event with a document
+    """Interface kila associating a SAX event ukijumuisha a document
     location. A locator object will rudisha valid results only during
     calls to DocumentHandler methods; at any other time, the
     results are unpredictable."""
@@ -191,7 +191,7 @@ kundi InputSource:
     read entities.
 
     This kundi may include information about the public identifier,
-    system identifier, byte stream (possibly with character encoding
+    system identifier, byte stream (possibly ukijumuisha character encoding
     information) and/or the character stream of an entity.
 
     Applications will create objects of this kundi kila use kwenye the
@@ -249,7 +249,7 @@ kundi InputSource:
         to opening a URI connection itself.
 
         If the application knows the character encoding of the byte
-        stream, it should set it with the setEncoding method."""
+        stream, it should set it ukijumuisha the setEncoding method."""
         self.__bytefile = bytefile
 
     eleza getByteStream(self):

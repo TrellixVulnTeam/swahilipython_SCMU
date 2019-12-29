@@ -74,7 +74,7 @@ kundi HelperFunctionTest(unittest.TestCase):
         self.assertIsInstance(mcfiles, list)
         kila m kwenye mcfiles:
             self.assertIsInstance(m, str)
-        with test.support.EnvironmentVarGuard() kama env:
+        ukijumuisha test.support.EnvironmentVarGuard() kama env:
             # According to RFC 1524, ikiwa MAILCAPS env variable exists, use that
             # na only that.
             ikiwa "MAILCAPS" kwenye env:
@@ -87,8 +87,8 @@ kundi HelperFunctionTest(unittest.TestCase):
 
     eleza test_readmailcapfile(self):
         # Test readmailcapfile() using test file. It should match MAILCAPDICT.
-        with open(MAILCAPFILE, 'r') kama mcf:
-            with self.assertWarns(DeprecationWarning):
+        ukijumuisha open(MAILCAPFILE, 'r') kama mcf:
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 d = mailcap.readmailcapfile(mcf)
         self.assertDictEqual(d, MAILCAPDICT_DEPRECATED)
 
@@ -99,7 +99,7 @@ kundi HelperFunctionTest(unittest.TestCase):
         actual = mailcap.lookup(MAILCAPDICT, 'video/mpeg')
         self.assertListEqual(expected, actual)
 
-        # Test with key
+        # Test ukijumuisha key
         key = 'compose'
         expected = [{'edit': 'audiocompose %s',
                      'compose': 'audiocompose %s',
@@ -136,13 +136,13 @@ kundi GetcapsTest(unittest.TestCase):
         # Test mailcap.getcaps() using mock mailcap file kwenye this dir.
         # Temporarily override any existing system mailcap file by pointing the
         # MAILCAPS environment variable to our mock file.
-        with test.support.EnvironmentVarGuard() kama env:
+        ukijumuisha test.support.EnvironmentVarGuard() kama env:
             env["MAILCAPS"] = MAILCAPFILE
             caps = mailcap.getcaps()
             self.assertDictEqual(caps, MAILCAPDICT)
 
     eleza test_system_mailcap(self):
-        # Test mailcap.getcaps() with mailcap file(s) on system, ikiwa any.
+        # Test mailcap.getcaps() ukijumuisha mailcap file(s) on system, ikiwa any.
         caps = mailcap.getcaps()
         self.assertIsInstance(caps, dict)
         mailcapfiles = mailcap.listmailcapfiles()

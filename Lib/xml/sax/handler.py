@@ -1,6 +1,6 @@
 """
 This module contains the core classes of version 2.0 of SAX kila Python.
-This file provides only default classes with absolutely minimum
+This file provides only default classes ukijumuisha absolutely minimum
 functionality, kutoka which drivers na applications can be subclassed.
 
 Many of these classes are empty na are included only kama documentation
@@ -23,7 +23,7 @@ kundi ErrorHandler:
     """Basic interface kila SAX error handlers.
 
     If you create an object that implements this interface, then
-    register the object with your XMLReader, the parser will call the
+    register the object ukijumuisha your XMLReader, the parser will call the
     methods kwenye your object to report all warnings na errors. There
     are three levels of errors available: warnings, (possibly)
     recoverable errors, na unrecoverable errors. All methods take a
@@ -70,7 +70,7 @@ kundi ContentHandler:
         this information kila reporting its own errors (such as
         character content that does sio match an application's
         business rules). The information rudishaed by the locator is
-        probably sio sufficient kila use with a search engine.
+        probably sio sufficient kila use ukijumuisha a search engine.
 
         Note that the locator will rudisha correct information only
         during the invocation of the events kwenye this interface. The
@@ -135,7 +135,7 @@ kundi ContentHandler:
         """Signals the end of an element kwenye non-namespace mode.
 
         The name parameter contains the name of the element type, just
-        kama with the startElement event."""
+        kama ukijumuisha the startElement event."""
 
     eleza startElementNS(self, name, qname, attrs):
         """Signals the start of an element kwenye namespace mode.
@@ -153,7 +153,7 @@ kundi ContentHandler:
         """Signals the end of an element kwenye namespace mode.
 
         The name parameter contains the name of the element type, just
-        kama with the startElementNS event."""
+        kama ukijumuisha the startElementNS event."""
 
     eleza characters(self, content):
         """Receive notification of character data.
@@ -222,10 +222,10 @@ kundi DTDHandler:
 
 kundi EntityResolver:
     """Basic interface kila resolving entities. If you create an object
-    implementing this interface, then register the object with your
+    implementing this interface, then register the object ukijumuisha your
     Parser, the parser will call the method kwenye your object to
     resolve all external entities. Note that DefaultHandler implements
-    this interface with the default behaviour."""
+    this interface ukijumuisha the default behaviour."""
 
     eleza resolveEntity(self, publicId, systemId):
         """Resolve the system identifier of an entity na rudisha either

@@ -17,7 +17,7 @@ Subkundi HelpSource gets menu item na path kila additions to Help menu.
 # generic na specific parts.  3.6 only, July 2016.
 # ModuleName.entry_ok came kutoka editor.EditorWindow.load_module.
 # HelpSource was extracted kutoka configHelpSourceEdit.py (temporarily
-# config_help.py), with darwin code moved kutoka ok to path_ok.
+# config_help.py), ukijumuisha darwin code moved kutoka ok to path_ok.
 
 agiza importlib
 agiza os
@@ -80,7 +80,7 @@ kundi Query(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    ikiwa sio _htest else 150)
+                    ikiwa sio _htest isipokua 150)
                 ) )
         self.resizable(height=Uongo, width=Uongo)
 
@@ -178,10 +178,10 @@ kundi SectionName(Query):
         ikiwa sio name:
             self.showerror('no name specified.')
             rudisha Tupu
-        elikiwa len(name)>30:
+        lasivyo len(name)>30:
             self.showerror('name ni longer than 30 characters.')
             rudisha Tupu
-        elikiwa name kwenye self.used_names:
+        lasivyo name kwenye self.used_names:
             self.showerror('name ni already kwenye use.')
             rudisha Tupu
         rudisha name
@@ -298,7 +298,7 @@ kundi HelpSource(Query):
         ikiwa sio path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
             rudisha Tupu
-        elikiwa sio path.startswith(('www.', 'http')):
+        lasivyo sio path.startswith(('www.', 'http')):
             ikiwa path[:5] == 'file:':
                 path = path[5:]
             ikiwa sio os.path.exists(path):
@@ -315,7 +315,7 @@ kundi HelpSource(Query):
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        rudisha Tupu ikiwa name ni Tupu ama path ni Tupu else (name, path)
+        rudisha Tupu ikiwa name ni Tupu ama path ni Tupu isipokua (name, path)
 
 kundi CustomRun(Query):
     """Get settings kila custom run of module.
@@ -365,7 +365,7 @@ kundi CustomRun(Query):
         self.entry_error['text'] = ''
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
-        rudisha Tupu ikiwa cli_args ni Tupu else (cli_args, restart)
+        rudisha Tupu ikiwa cli_args ni Tupu isipokua (cli_args, restart)
 
 
 ikiwa __name__ == '__main__':

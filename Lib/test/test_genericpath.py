@@ -13,7 +13,7 @@ kutoka test.support agiza FakePath
 
 
 eleza create_file(filename, data=b'foo'):
-    with open(filename, 'xb', 0) kama fp:
+    ukijumuisha open(filename, 'xb', 0) kama fp:
         fp.write(data)
 
 
@@ -24,7 +24,7 @@ kundi GenericTest:
 
     eleza test_no_argument(self):
         kila attr kwenye self.common_attributes + self.attributes:
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
                 ashiria self.fail("{}.{}() did sio ashiria a TypeError"
                                 .format(self.pathmodule.__name__, attr))
@@ -113,10 +113,10 @@ kundi GenericTest:
 
         create_file(filename, b'foo')
 
-        with open(filename, "ab", 0) kama f:
+        ukijumuisha open(filename, "ab", 0) kama f:
             f.write(b"bar")
 
-        with open(filename, "rb", 0) kama f:
+        ukijumuisha open(filename, "rb", 0) kama f:
             data = f.read()
         self.assertEqual(data, b"foobar")
 
@@ -298,9 +298,9 @@ kundi GenericTest:
         self.addCleanup(support.unlink, filename)
         create_file(filename)
 
-        with open(filename, "rb", 0) kama fp1:
+        ukijumuisha open(filename, "rb", 0) kama fp1:
             fd1 = fp1.fileno()
-            with open(filename, "rb", 0) kama fp2:
+            ukijumuisha open(filename, "rb", 0) kama fp2:
                 fd2 = fp2.fileno()
                 self.assertKweli(self.pathmodule.sameopenfile(fd1, fd2))
 
@@ -317,20 +317,20 @@ kundi TestGenericTest(GenericTest, unittest.TestCase):
             ikiwa attr == 'commonprefix':
                 endelea
             func = getattr(self.pathmodule, attr)
-            with self.subTest(attr=attr):
+            ukijumuisha self.subTest(attr=attr):
                 ikiwa attr kwenye ('exists', 'isdir', 'isfile'):
                     func('/tmp\udfffabcds')
                     func(b'/tmp\xffabcds')
                     func('/tmp\x00abcds')
                     func(b'/tmp\x00abcds')
                 isipokua:
-                    with self.assertRaises((OSError, UnicodeEncodeError)):
+                    ukijumuisha self.assertRaises((OSError, UnicodeEncodeError)):
                         func('/tmp\udfffabcds')
-                    with self.assertRaises((OSError, UnicodeDecodeError)):
+                    ukijumuisha self.assertRaises((OSError, UnicodeDecodeError)):
                         func(b'/tmp\xffabcds')
-                    with self.assertRaisesRegex(ValueError, 'embedded null'):
+                    ukijumuisha self.assertRaisesRegex(ValueError, 'embedded null'):
                         func('/tmp\x00abcds')
-                    with self.assertRaisesRegex(ValueError, 'embedded null'):
+                    ukijumuisha self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
 # Following TestCase ni sio supposed to be run kutoka test_genericpath.
@@ -374,7 +374,7 @@ kundi CommonTest(GenericTest):
 
     eleza test_expandvars(self):
         expandvars = self.pathmodule.expandvars
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -408,7 +408,7 @@ kundi CommonTest(GenericTest):
         expandvars = self.pathmodule.expandvars
         eleza check(value, expected):
             self.assertEqual(expandvars(value), expected)
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             nonascii = support.FS_NONASCII
             env['spam'] = nonascii
@@ -431,22 +431,22 @@ kundi CommonTest(GenericTest):
 
     eleza test_abspath(self):
         self.assertIn("foo", self.pathmodule.abspath("foo"))
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.abspath(b"foo"))
 
         # avoid UnicodeDecodeError on Windows
-        undecodable_path = b'' ikiwa sys.platform == 'win32' else b'f\xf2\xf2'
+        undecodable_path = b'' ikiwa sys.platform == 'win32' isipokua b'f\xf2\xf2'
 
         # Abspath rudishas bytes when the arg ni bytes
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             kila path kwenye (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
                 self.assertIsInstance(self.pathmodule.abspath(path), bytes)
 
     eleza test_realpath(self):
         self.assertIn("foo", self.pathmodule.realpath("foo"))
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.realpath(b"foo"))
 
@@ -457,7 +457,7 @@ kundi CommonTest(GenericTest):
 
     eleza test_abspath_issue3426(self):
         # Check that abspath rudishas unicode when the arg ni unicode
-        # with both ASCII na non-ASCII cwds.
+        # ukijumuisha both ASCII na non-ASCII cwds.
         abspath = self.pathmodule.abspath
         kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
             self.assertIsInstance(abspath(path), str)
@@ -469,62 +469,62 @@ kundi CommonTest(GenericTest):
             # FS encoding ni probably ASCII
             pita
         isipokua:
-            with support.temp_cwd(unicwd):
+            ukijumuisha support.temp_cwd(unicwd):
                 kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
     eleza test_nonascii_abspath(self):
         ikiwa (support.TESTFN_UNDECODABLE
-        # Mac OS X denies the creation of a directory with an invalid
-        # UTF-8 name. Windows allows creating a directory with an
+        # Mac OS X denies the creation of a directory ukijumuisha an invalid
+        # UTF-8 name. Windows allows creating a directory ukijumuisha an
         # arbitrary bytes name, but fails to enter this directory
         # (when the bytes name ni used).
         na sys.platform haiko kwenye ('win32', 'darwin')):
             name = support.TESTFN_UNDECODABLE
-        elikiwa support.TESTFN_NONASCII:
+        lasivyo support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
         isipokua:
             self.skipTest("need support.TESTFN_NONASCII")
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            with support.temp_cwd(name):
+            ukijumuisha support.temp_cwd(name):
                 self.test_abspath()
 
     eleza test_join_errors(self):
         # Check join() ashirias friendly TypeErrors.
-        with support.check_warnings(('', BytesWarning), quiet=Kweli):
+        ukijumuisha support.check_warnings(('', BytesWarning), quiet=Kweli):
             errmsg = "Can't mix strings na bytes kwenye path components"
-            with self.assertRaisesRegex(TypeError, errmsg):
+            ukijumuisha self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join(b'bytes', 'str')
-            with self.assertRaisesRegex(TypeError, errmsg):
+            ukijumuisha self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join('str', b'bytes')
             # regression, see #15377
-            with self.assertRaisesRegex(TypeError, 'int'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join(42, 'str')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join('str', 42)
-            with self.assertRaisesRegex(TypeError, 'int'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join(42)
-            with self.assertRaisesRegex(TypeError, 'list'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'list'):
                 self.pathmodule.join([])
-            with self.assertRaisesRegex(TypeError, 'bytearray'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.join(bytearray(b'foo'), bytearray(b'bar'))
 
     eleza test_relpath_errors(self):
         # Check relpath() ashirias friendly TypeErrors.
-        with support.check_warnings(('', (BytesWarning, DeprecationWarning)),
+        ukijumuisha support.check_warnings(('', (BytesWarning, DeprecationWarning)),
                                     quiet=Kweli):
             errmsg = "Can't mix strings na bytes kwenye path components"
-            with self.assertRaisesRegex(TypeError, errmsg):
+            ukijumuisha self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath(b'bytes', 'str')
-            with self.assertRaisesRegex(TypeError, errmsg):
+            ukijumuisha self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath('str', b'bytes')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.relpath(42, 'str')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.relpath('str', 42)
-            with self.assertRaisesRegex(TypeError, 'bytearray'):
+            ukijumuisha self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.relpath(bytearray(b'foo'), bytearray(b'bar'))
 
     eleza test_agiza(self):

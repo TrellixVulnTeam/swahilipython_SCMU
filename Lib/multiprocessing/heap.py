@@ -156,7 +156,7 @@ kundi Heap(object):
         rudisha (n + mask) & ~mask
 
     eleza _new_arena(self, size):
-        # Create a new arena with at least the given *size*
+        # Create a new arena ukijumuisha at least the given *size*
         length = self._roundup(max(self._size, size), mmap.PAGESIZE)
         # We carve larger na larger arenas, kila efficiency, until we
         # reach a large-ish size (roughly L3 cache-sized)
@@ -203,7 +203,7 @@ kundi Heap(object):
         rudisha block
 
     eleza _add_free_block(self, block):
-        # make block available na try to merge with its neighbours kwenye the arena
+        # make block available na try to merge ukijumuisha its neighbours kwenye the arena
         (arena, start, stop) = block
 
         jaribu:
@@ -233,7 +233,7 @@ kundi Heap(object):
         self._stop_to_block[(arena, stop)] = block
 
     eleza _absorb(self, block):
-        # deregister this block so it can be merged with a neighbour
+        # deregister this block so it can be merged ukijumuisha a neighbour
         (arena, start, stop) = block
         toa self._start_to_block[(arena, start)]
         toa self._stop_to_block[(arena, stop)]
@@ -256,7 +256,7 @@ kundi Heap(object):
             self._discard_arena(arena)
 
     eleza _free_pending_blocks(self):
-        # Free all the blocks kwenye the pending list - called with the lock held.
+        # Free all the blocks kwenye the pending list - called ukijumuisha the lock held.
         wakati Kweli:
             jaribu:
                 block = self._pending_free_blocks.pop()
@@ -301,7 +301,7 @@ kundi Heap(object):
             ashiria OverflowError("Size {0:n} too large".format(size))
         ikiwa os.getpid() != self._lastpid:
             self.__init__()                     # reinitialize after fork
-        with self._lock:
+        ukijumuisha self._lock:
             self._n_mallocs += 1
             # allow pending blocks to be marked available
             self._free_pending_blocks()

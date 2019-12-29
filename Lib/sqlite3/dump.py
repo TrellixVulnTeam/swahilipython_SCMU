@@ -31,12 +31,12 @@ eleza _iterdump(connection):
     kila table_name, type, sql kwenye schema_res.fetchall():
         ikiwa table_name == 'sqlite_sequence':
             tuma('DELETE FROM "sqlite_sequence";')
-        elikiwa table_name == 'sqlite_stat1':
+        lasivyo table_name == 'sqlite_stat1':
             tuma('ANALYZE "sqlite_master";')
-        elikiwa table_name.startswith('sqlite_'):
+        lasivyo table_name.startswith('sqlite_'):
             endelea
         # NOTE: Virtual table support sio implemented
-        #elikiwa sql.startswith('CREATE VIRTUAL TABLE'):
+        #lasivyo sql.startswith('CREATE VIRTUAL TABLE'):
         #    qtable = table_name.replace("'", "''")
         #    tuma("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"\
         #        "VALUES('table','{0}','{0}',0,'{1}');".format(

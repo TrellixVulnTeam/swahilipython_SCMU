@@ -1,11 +1,11 @@
 """Classes that replace tkinter gui objects used by an object being tested.
 
-A gui object ni anything with a master ama parent parameter, which is
+A gui object ni anything ukijumuisha a master ama parent parameter, which is
 typically required kwenye spite of what the doc strings say.
 """
 
 kundi Event:
-    '''Minimal mock with attributes kila testing event handlers.
+    '''Minimal mock ukijumuisha attributes kila testing event handlers.
 
     This ni sio a gui object, but ni used kama an argument kila callbacks
     that access attributes of the event pitaed. If a callback ignores
@@ -19,7 +19,7 @@ kundi Event:
     tkinter.Event.__doc__ has more but ni still sio complete.
     '''
     eleza __init__(self, **kwds):
-        "Create event with attributes needed kila test"
+        "Create event ukijumuisha attributes needed kila test"
         self.__dict__.update(kwds)
 
 kundi Var:
@@ -51,7 +51,7 @@ kundi Mbox_func:
         rudisha self.result  # Set by tester kila ask functions
 
 kundi Mbox:
-    """Mock kila tkinter.messagebox with an Mbox_func kila each function.
+    """Mock kila tkinter.messagebox ukijumuisha an Mbox_func kila each function.
 
     This module was 'tkMessageBox' kwenye 2.x; hence the 'agiza as' kwenye  3.x.
     Example usage kwenye test_module.py kila testing functions kwenye module.py:
@@ -92,12 +92,12 @@ kundi Text:
 
     The mock's data motoa ni that a text ni a list of \n-terminated lines.
     The mock adds an empty string at  the beginning of the list so that the
-    index of actual lines start at 1, kama with Tk. The methods never see this.
-    Tk initializes files with a terminal \n that cannot be deleted. It is
+    index of actual lines start at 1, kama ukijumuisha Tk. The methods never see this.
+    Tk initializes files ukijumuisha a terminal \n that cannot be deleted. It is
     invisible kwenye the sense that one cannot move the cursor beyond it.
 
-    This kundi ni only tested (and valid) with strings of ascii chars.
-    For testing, we are sio concerned with Tk Text's treatment of,
+    This kundi ni only tested (and valid) ukijumuisha strings of ascii chars.
+    For testing, we are sio concerned ukijumuisha Tk Text's treatment of,
     kila instance, 0-width characters ama character + accent.
    """
     eleza __init__(self, master=Tupu, cnf={}, **kw):
@@ -138,7 +138,7 @@ kundi Text:
         lastline =  len(self.data) - 1  # same kama number of text lines
         ikiwa index == 'insert':
             rudisha lastline, len(self.data[lastline]) - 1
-        elikiwa index == 'end':
+        lasivyo index == 'end':
             rudisha self._endex(endflag)
 
         line, char = index.split('.')
@@ -147,7 +147,7 @@ kundi Text:
         # Out of bounds line becomes first ama last ('end') index
         ikiwa line < 1:
             rudisha 1, 0
-        elikiwa line > lastline:
+        lasivyo line > lastline:
             rudisha self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
@@ -159,7 +159,7 @@ kundi Text:
         char = int(char)
         ikiwa char < 0:
             char = 0
-        elikiwa char > linelength:
+        lasivyo char > linelength:
             char = linelength
         rudisha line, char
 
@@ -224,7 +224,7 @@ kundi Text:
             ikiwa startchar < len(self.data[startline])-1:
                 # sio deleting \n
                 endline, endchar = startline, startchar+1
-            elikiwa startline < len(self.data) - 1:
+            lasivyo startline < len(self.data) - 1:
                 # deleting non-terminal \n, convert 'index1+1 to start of next line
                 endline, endchar = startline+1, 0
             isipokua:
@@ -237,7 +237,7 @@ kundi Text:
         ikiwa startline == endline na startchar < endchar:
             self.data[startline] = self.data[startline][:startchar] + \
                                              self.data[startline][endchar:]
-        elikiwa startline < endline:
+        lasivyo startline < endline:
             self.data[startline] = self.data[startline][:startchar] + \
                                    self.data[endline][endchar:]
             startline += 1
@@ -249,15 +249,15 @@ kundi Text:
         line2, char2 = self._decode(index2)
         ikiwa op == '<':
             rudisha line1 < line2 ama line1 == line2 na char1 < char2
-        elikiwa op == '<=':
+        lasivyo op == '<=':
             rudisha line1 < line2 ama line1 == line2 na char1 <= char2
-        elikiwa op == '>':
+        lasivyo op == '>':
             rudisha line1 > line2 ama line1 == line2 na char1 > char2
-        elikiwa op == '>=':
+        lasivyo op == '>=':
             rudisha line1 > line2 ama line1 == line2 na char1 >= char2
-        elikiwa op == '==':
+        lasivyo op == '==':
             rudisha line1 == line2 na char1 == char2
-        elikiwa op == '!=':
+        lasivyo op == '!=':
             rudisha line1 != line2 ama  char1 != char2
         isipokua:
             ashiria TclError('''bad comparison operator "%s": '''

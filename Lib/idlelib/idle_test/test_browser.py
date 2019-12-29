@@ -100,14 +100,14 @@ kundi TransformChildrenTest(unittest.TestCase):
     eleza test_transform_node_children(self):
         eq = self.assertEqual
         transform = browser.transform_children
-        # Class with two children, one name altered.
+        # Class ukijumuisha two children, one name altered.
         tcl = list(transform(C0.children))
         eq(tcl, [F1, C1])
         eq(tcl[0].name, 'F1')
         eq(tcl[1].name, 'C1()')
         tcl = list(transform(C0.children))
         eq(tcl[1].name, 'C1()')
-        # Function with two children.
+        # Function ukijumuisha two children.
         eq(list(transform(f0.children)), [f1, c1])
 
 
@@ -154,11 +154,11 @@ kundi ModuleBrowserTreeItemTest(unittest.TestCase):
     eleza test_ondoubleclick(self, fopen):
         mbt = self.mbt
 
-        with mock.patch('os.path.exists', rudisha_value=Uongo):
+        ukijumuisha mock.patch('os.path.exists', rudisha_value=Uongo):
             mbt.OnDoubleClick()
             fopen.assert_not_called()
 
-        with mock.patch('os.path.exists', rudisha_value=Kweli):
+        ukijumuisha mock.patch('os.path.exists', rudisha_value=Kweli):
             mbt.OnDoubleClick()
             fopen.assert_called()
             fopen.called_with(fname)

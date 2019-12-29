@@ -1,6 +1,6 @@
 """A generic kundi to build line-oriented command interpreters.
 
-Interpreters constructed with this kundi obey the following conventions:
+Interpreters constructed ukijumuisha this kundi obey the following conventions:
 
 1. End of file on input ni processed kama the command 'EOF'.
 2. A command ni parsed out of each line by collecting the prefix composed
@@ -11,14 +11,14 @@ Interpreters constructed with this kundi obey the following conventions:
    method `emptyline', which may be overridden kwenye a subclass.)
 5. There ni a predefined `help' method.  Given an argument `topic', it
    calls the command `help_topic'.  With no arguments, it lists all topics
-   with defined help_ functions, broken into up to three topics; documented
+   ukijumuisha defined help_ functions, broken into up to three topics; documented
    commands, miscellaneous help topics, na undocumented commands.
 6. The command '?' ni a synonym kila `help'.  The command '!' ni a synonym
    kila `shell', ikiwa a do_shell method exists.
 7. If completion ni enabled, completing commands will be done automatically,
    na completing of commands args ni done by calling complete_foo() with
    arguments text, line, begidx, endidx.  text ni string we are matching
-   against, all rudishaed matches must begin with it.  line ni the current
+   against, all rudishaed matches must begin ukijumuisha it.  line ni the current
    input line (lstripped), begidx na endidx are the beginning na end
    indexes of the text being matched, which could be used to provide
    different completion depending upon which position the argument ni in.
@@ -177,9 +177,9 @@ kundi Cmd:
         line = line.strip()
         ikiwa sio line:
             rudisha Tupu, Tupu, line
-        elikiwa line[0] == '?':
+        lasivyo line[0] == '?':
             line = 'help ' + line[1:]
-        elikiwa line[0] == '!':
+        lasivyo line[0] == '!':
             ikiwa hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
             isipokua:
@@ -290,7 +290,7 @@ kundi Cmd:
         rudisha list(commands | topics)
 
     eleza do_help(self, arg):
-        'List available commands with "help" ama detailed help with "help cmd".'
+        'List available commands ukijumuisha "help" ama detailed help ukijumuisha "help cmd".'
         ikiwa arg:
             # XXX check arg syntax
             jaribu:
@@ -326,7 +326,7 @@ kundi Cmd:
                     ikiwa cmd kwenye help:
                         cmds_doc.append(cmd)
                         toa help[cmd]
-                    elikiwa getattr(self, name).__doc__:
+                    lasivyo getattr(self, name).__doc__:
                         cmds_doc.append(cmd)
                     isipokua:
                         cmds_undoc.append(cmd)

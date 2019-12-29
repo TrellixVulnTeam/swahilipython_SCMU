@@ -6,9 +6,9 @@ is available kwenye IDLE by selecting Help => IDLE Help.  This README documents
 idlelib kila IDLE developers na curious users.
 
 IDLELIB FILES lists files alphabetically by category,
-with a short description of each.
+ukijumuisha a short description of each.
 
-IDLE MENU show the menu tree, annotated with the module
+IDLE MENU show the menu tree, annotated ukijumuisha the module
 or module object that implements the corresponding function.
 
 This file ni descriptive, sio prescriptive, na may have errors
@@ -31,7 +31,7 @@ Implementation
 --------------
 autocomplete.py   # Complete attribute names ama filenames.
 autocomplete_w.py # Display completions.
-autoexpand.py     # Expand word with previous word kwenye file.
+autoexpand.py     # Expand word ukijumuisha previous word kwenye file.
 browser.py        # Create module browser window.
 calltip_w.py      # Display calltip.
 calltips.py       # Create calltip text.
@@ -43,7 +43,7 @@ config_help.py    # Specify help source kwenye configdialog.
 config_key.py     # Change keybindings.
 dynoption.py      # Define mutable OptionMenu widget (nim).
 debugobj.py       # Define kundi used kwenye stackviewer.
-debugobj_r.py     # Communicate objects between processes with rpc (nim).
+debugobj_r.py     # Communicate objects between processes ukijumuisha rpc (nim).
 debugger.py       # Debug code run kutoka shell ama editor; show window.
 debugger_r.py     # Debug code run kwenye remote process.
 delegator.py      # Define base kundi kila delegators (nim).
@@ -116,7 +116,7 @@ tooltip.py # unused
 IDLE MENUS
 Top level items na most submenu items are defined kwenye mainmenu.
 Extensions add submenu items when active.  The names given are
-found, quoted, kwenye one of these modules, paired with a '<<pseudoevent>>'.
+found, quoted, kwenye one of these modules, paired ukijumuisha a '<<pseudoevent>>'.
 Each pseudoevent ni bound to an event handler.  Some event handlers
 call another function that does the actual work.  The annotations below
 are intended to at least give the module where the actual work ni done.

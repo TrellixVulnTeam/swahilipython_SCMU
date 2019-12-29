@@ -75,7 +75,7 @@ kundi FixMap(fixer_base.ConditionalFix):
             new = node.clone()
             new.prefix = ""
             new = Call(Name("list"), [new])
-        elikiwa "map_lambda" kwenye results:
+        lasivyo "map_lambda" kwenye results:
             new = ListComp(results["xp"].clone(),
                            results["fp"].clone(),
                            results["it"].clone())
@@ -93,7 +93,7 @@ kundi FixMap(fixer_base.ConditionalFix):
                        args.children[1].children[0].type == token.NAME na \
                        args.children[1].children[0].value == "Tupu":
                         self.warning(node, "cannot convert map(Tupu, ...) "
-                                     "with multiple arguments because map() "
+                                     "ukijumuisha multiple arguments because map() "
                                      "now truncates to the shortest sequence")
                         rudisha
 

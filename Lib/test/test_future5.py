@@ -12,7 +12,7 @@ kundi TestMultipleFeatures(unittest.TestCase):
         self.assertIsInstance("", str)
 
     eleza test_print_function(self):
-        with support.captured_output("stderr") kama s:
+        ukijumuisha support.captured_output("stderr") kama s:
             andika("foo", file=sys.stderr)
         self.assertEqual(s.getvalue(), "foo\n")
 

@@ -5,7 +5,7 @@ text into the shell. This makes looking at the previous history difficult.
 Worse, this can cause IDLE to become very slow, even to the point of being
 completely unusable.
 
-This extension will automatically replace long texts with a small button.
+This extension will automatically replace long texts ukijumuisha a small button.
 Double-clicking this button will remove it na insert the original text instead.
 Middle-clicking will copy the text to the clipboard. Right-clicking will open
 the text kwenye a separate viewing window.
@@ -44,7 +44,7 @@ eleza count_lines_with_wrapping(s, linewidth=80):
         pos += numchars
         current_column += numchars
 
-        # Deal with tab ama newline.
+        # Deal ukijumuisha tab ama newline.
         ikiwa s[pos] == '\n':
             # Avoid the `current_column == 0` edge-case, na wakati we're
             # at it, don't bother adding 0.
@@ -75,7 +75,7 @@ eleza count_lines_with_wrapping(s, linewidth=80):
     ikiwa current_column > 0:
         linecount += (current_column - 1) // linewidth
     isipokua:
-        # Text ended with newline; don't count an extra line after it.
+        # Text ended ukijumuisha newline; don't count an extra line after it.
         linecount -= 1
 
     rudisha linecount
@@ -85,7 +85,7 @@ kundi ExpandingButton(tk.Button):
     """Class kila the "squeezed" text buttons used by Squeezer
 
     These buttons are displayed inside a Tk Text widget kwenye place of text. A
-    user can then use the button to replace it with the original text, copy
+    user can then use the button to replace it ukijumuisha the original text, copy
     the original text to the clipboard ama view the original text kwenye a separate
     window.
 
@@ -102,7 +102,7 @@ kundi ExpandingButton(tk.Button):
         # The base Text widget ni needed to change text before iomark.
         self.base_text = editwin.per.bottom
 
-        line_plurality = "lines" ikiwa numoflines != 1 else "line"
+        line_plurality = "lines" ikiwa numoflines != 1 isipokua "line"
         button_text = f"Squeezed text ({numoflines} {line_plurality})."
         tk.Button.__init__(self, text, text=button_text,
                            background="#FFFFC0", activebackground="#FFFFE0")
@@ -196,7 +196,7 @@ kundi ExpandingButton(tk.Button):
 
 
 kundi Squeezer:
-    """Replace long outputs kwenye the shell with a simple button.
+    """Replace long outputs kwenye the shell ukijumuisha a simple button.
 
     This avoids IDLE's shell slowing down considerably, na even becoming
     completely unresponsive, when very long outputs are written.
@@ -238,14 +238,14 @@ kundi Squeezer:
 
         self.expandingbuttons = []
 
-        # Replace the PyShell instance's write method with a wrapper,
+        # Replace the PyShell instance's write method ukijumuisha a wrapper,
         # which inserts an ExpandingButton instead of a long text.
         eleza mywrite(s, tags=(), write=editwin.write):
             # Only auto-squeeze text which has just the "stdout" tag.
             ikiwa tags != "stdout":
                 rudisha write(s, tags)
 
-            # Only auto-squeeze text with at least the minimum
+            # Only auto-squeeze text ukijumuisha at least the minimum
             # configured number of lines.
             auto_squeeze_min_lines = self.auto_squeeze_min_lines
             # First, a very quick check to skip very short texts.

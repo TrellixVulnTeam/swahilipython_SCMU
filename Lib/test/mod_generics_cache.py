@@ -23,9 +23,9 @@ ikiwa sys.version_info[:2] >= (3, 6):
 
         my_inner_a1: 'B.A'
         my_inner_a2: A
-        my_outer_a: 'A'  # unless somebody calls get_type_hints with localns=B.__dict__
+        my_outer_a: 'A'  # unless somebody calls get_type_hints ukijumuisha localns=B.__dict__
     """))
-isipokua:  # This should stay kwenye sync with the syntax above.
+isipokua:  # This should stay kwenye sync ukijumuisha the syntax above.
     __annotations__ = dict(
         default_a=Optional['A'],
         default_b=Optional['B'],
@@ -49,5 +49,5 @@ isipokua:  # This should stay kwenye sync with the syntax above.
         __annotations__ = dict(
             my_inner_a1='B.A',
             my_inner_a2=A,
-            my_outer_a='A'  # unless somebody calls get_type_hints with localns=B.__dict__
+            my_outer_a='A'  # unless somebody calls get_type_hints ukijumuisha localns=B.__dict__
         )

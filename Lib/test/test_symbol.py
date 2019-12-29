@@ -18,9 +18,9 @@ TEST_PY_FILE             = 'symbol_test.py'
 kundi TestSymbolGeneration(unittest.TestCase):
 
     eleza _copy_file_without_generated_symbols(self, source_file, dest_file):
-        with open(source_file) kama fp:
+        ukijumuisha open(source_file) kama fp:
             lines = fp.readlines()
-        with open(dest_file, 'w') kama fp:
+        ukijumuisha open(dest_file, 'w') kama fp:
             fp.writelines(lines[:lines.index("#--start constants--\n") + 1])
             fp.writelines(lines[lines.index("#--end constants--\n"):])
 
@@ -33,9 +33,9 @@ kundi TestSymbolGeneration(unittest.TestCase):
         rudisha proc.returncode, stderr
 
     eleza compare_files(self, file1, file2):
-        with open(file1) kama fp:
+        ukijumuisha open(file1) kama fp:
             lines1 = fp.readlines()
-        with open(file2) kama fp:
+        ukijumuisha open(file2) kama fp:
             lines2 = fp.readlines()
         self.assertEqual(lines1, lines2)
 

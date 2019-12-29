@@ -18,9 +18,9 @@
   source code window. IT CANNOT BE EDITED, but ONLY VIEWED!
 
   The demo viewer windows can be resized. The divider between text
-  na canvas can be moved by grabbing it with the mouse. The text font
-  size can be changed kutoka the menu na with Control/Command '-'/'+'.
-  It can also be changed on most systems with Control-mousewheel
+  na canvas can be moved by grabbing it ukijumuisha the mouse. The text font
+  size can be changed kutoka the menu na ukijumuisha Control/Command '-'/'+'.
+  It can also be changed on most systems ukijumuisha Control-mousewheel
   when the mouse ni over the text.
 
   Press START button to start the demo.
@@ -79,7 +79,7 @@
      "EVENTLOOP". This informs the demo viewer that the script is
      still running na must be stopped by the user!
 
-     If an "EVENTLOOP" demo runs by itself, kama with clock, which uses
+     If an "EVENTLOOP" demo runs by itself, kama ukijumuisha clock, which uses
      ontimer, ama minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
      ashiriad when the user presses the STOP button.  (Paint ni sio such
@@ -217,7 +217,7 @@ kundi DemoWindow(object):
         text['xscrollcommand'] = hbar.set
 
         text['font'] = tuple(txtfont)
-        shortcut = 'Command' ikiwa darwin else 'Control'
+        shortcut = 'Command' ikiwa darwin isipokua 'Control'
         text.bind_all('<%s-minus>' % shortcut, self.decrease_size)
         text.bind_all('<%s-underscore>' % shortcut, self.decrease_size)
         text.bind_all('<%s-equal>' % shortcut, self.increase_size)
@@ -268,9 +268,9 @@ kundi DemoWindow(object):
 
     eleza configGUI(self, start, stop, clear, txt="", color="blue"):
         self.start_btn.config(state=start,
-                              bg="#d00" ikiwa start == NORMAL else "#fca")
+                              bg="#d00" ikiwa start == NORMAL isipokua "#fca")
         self.stop_btn.config(state=stop,
-                             bg="#d00" ikiwa stop == NORMAL else "#fca")
+                             bg="#d00" ikiwa stop == NORMAL isipokua "#fca")
         self.clear_btn.config(state=clear,
                               bg="#d00" ikiwa clear == NORMAL else"#fca")
         self.output_lbl.config(text=txt, fg=color)
@@ -320,7 +320,7 @@ kundi DemoWindow(object):
         modname = 'turtledemo.' + filename
         __import__(modname)
         self.module = sys.modules[modname]
-        with open(self.module.__file__, 'r') kama f:
+        ukijumuisha open(self.module.__file__, 'r') kama f:
             chars = f.read()
         self.text.delete("1.0", "end")
         self.text.insert("1.0", chars)
@@ -353,7 +353,7 @@ kundi DemoWindow(object):
         ikiwa self.state == DONE:
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
-        elikiwa self.state == EVENTDRIVEN:
+        lasivyo self.state == EVENTDRIVEN:
             self.exitflag = Kweli
             self.configGUI(DISABLED, NORMAL, DISABLED,
                            "use mouse/keys ama STOP", "red")

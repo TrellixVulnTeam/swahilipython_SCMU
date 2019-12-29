@@ -49,7 +49,7 @@ kundi ModuleFromSpecTests:
             eleza exec_module(self, module):
                 pita
         spec = self.machinery.ModuleSpec('test', Loader())
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             module = self.util.module_kutoka_spec(spec)
 
     eleza test_create_module_rudishas_Tupu(self):
@@ -126,15 +126,15 @@ kundi ModuleForLoaderTests:
 
     @classmethod
     eleza module_for_loader(cls, func):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             rudisha cls.util.module_for_loader(func)
 
     eleza test_warning(self):
         # Should ashiria a PendingDeprecationWarning when used.
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
-            with self.assertRaises(DeprecationWarning):
+            ukijumuisha self.assertRaises(DeprecationWarning):
                 func = self.util.module_for_loader(lambda x: x)
 
     eleza rudisha_module(self, name):
@@ -154,7 +154,7 @@ kundi ModuleForLoaderTests:
         # Test that when no module exists kwenye sys.modules a new module is
         # created.
         module_name = 'a.b.c'
-        with util.uncache(module_name):
+        ukijumuisha util.uncache(module_name):
             module = self.rudisha_module(module_name)
             self.assertIn(module_name, sys.modules)
         self.assertIsInstance(module, types.ModuleType)
@@ -172,7 +172,7 @@ kundi ModuleForLoaderTests:
         module = types.ModuleType('a.b.c')
         module.__loader__ = 42
         module.__package__ = 42
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             sys.modules[name] = module
             loader = FakeLoader()
             rudishaed_module = loader.load_module(name)
@@ -184,7 +184,7 @@ kundi ModuleForLoaderTests:
         # Test that a module ni removed kutoka sys.modules ikiwa added but an
         # exception ni ashiriad.
         name = 'a.b.c'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             self.ashiria_exception(name)
             self.assertNotIn(name, sys.modules)
 
@@ -192,7 +192,7 @@ kundi ModuleForLoaderTests:
         # Test that a failure on reload leaves the module in-place.
         name = 'a.b.c'
         module = types.ModuleType(name)
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             sys.modules[name] = module
             self.ashiria_exception(name)
             self.assertIs(module, sys.modules[name])
@@ -211,7 +211,7 @@ kundi ModuleForLoaderTests:
 
         name = 'mod'
         module = UongoModule(name)
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             self.assertUongo(module)
             sys.modules[name] = module
             given = self.rudisha_module(name)
@@ -230,7 +230,7 @@ kundi ModuleForLoaderTests:
                 rudisha module
 
         name = 'pkg.mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             loader = FakeLoader(Uongo)
             module = loader.load_module(name)
             self.assertEqual(module.__name__, name)
@@ -238,7 +238,7 @@ kundi ModuleForLoaderTests:
             self.assertEqual(module.__package__, 'pkg')
 
         name = 'pkg.sub'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             loader = FakeLoader(Kweli)
             module = loader.load_module(name)
             self.assertEqual(module.__name__, name)
@@ -260,7 +260,7 @@ kundi SetPackageTests:
         pitaing through set_package."""
         fxn = lambda: module
         wrapped = self.util.set_package(fxn)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             wrapped()
         self.assertKweli(hasattr(module, '__package__'))
@@ -302,7 +302,7 @@ kundi SetPackageTests:
 
     eleza test_decorator_attrs(self):
         eleza fxn(module): pita
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             wrapped = self.util.set_package(fxn)
         self.assertEqual(wrapped.__name__, fxn.__name__)
@@ -335,7 +335,7 @@ kundi SetLoaderTests:
             toa loader.module.__loader__
         tatizo AttributeError:
             pita
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(loader, loader.load_module('blah').__loader__)
 
@@ -343,7 +343,7 @@ kundi SetLoaderTests:
         loader = self.DummyLoader()
         loader.module = types.ModuleType('blah')
         loader.module.__loader__ = Tupu
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(loader, loader.load_module('blah').__loader__)
 
@@ -351,7 +351,7 @@ kundi SetLoaderTests:
         loader = self.DummyLoader()
         loader.module = types.ModuleType('blah')
         loader.module.__loader__ = 42
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(42, loader.load_module('blah').__loader__)
 
@@ -375,7 +375,7 @@ kundi ResolveNameTests:
 
     eleza test_no_package(self):
         # .bacon kwenye ''
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.util.resolve_name('.bacon', '')
 
     eleza test_in_package(self):
@@ -390,7 +390,7 @@ kundi ResolveNameTests:
 
     eleza test_escape(self):
         # ..bacon kwenye spam
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.util.resolve_name('..bacon', 'spam')
 
 
@@ -407,7 +407,7 @@ kundi FindSpecTests:
 
     eleza test_sys_modules(self):
         name = 'some_mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             module = types.ModuleType(name)
             loader = 'a loader!'
             spec = self.machinery.ModuleSpec(name, loader)
@@ -419,7 +419,7 @@ kundi FindSpecTests:
 
     eleza test_sys_modules_without___loader__(self):
         name = 'some_mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             module = types.ModuleType(name)
             toa module.__loader__
             loader = 'a loader!'
@@ -431,16 +431,16 @@ kundi FindSpecTests:
 
     eleza test_sys_modules_spec_is_Tupu(self):
         name = 'some_mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             module = types.ModuleType(name)
             module.__spec__ = Tupu
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     eleza test_sys_modules_loader_is_Tupu(self):
         name = 'some_mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             module = types.ModuleType(name)
             spec = self.machinery.ModuleSpec(name, Tupu)
             module.__spec__ = spec
@@ -450,20 +450,20 @@ kundi FindSpecTests:
 
     eleza test_sys_modules_spec_is_not_set(self):
         name = 'some_mod'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             module = types.ModuleType(name)
             jaribu:
                 toa module.__spec__
             tatizo AttributeError:
                 pita
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     eleza test_success(self):
         name = 'some_mod'
-        with util.uncache(name):
-            with util.import_state(meta_path=[self.FakeMetaFinder]):
+        ukijumuisha util.uncache(name):
+            ukijumuisha util.import_state(meta_path=[self.FakeMetaFinder]):
                 self.assertEqual((name, Tupu, Tupu),
                                  self.util.find_spec(name))
 
@@ -474,7 +474,7 @@ kundi FindSpecTests:
     eleza test_find_submodule(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
             self.assertIsNot(spec, Tupu)
@@ -487,7 +487,7 @@ kundi FindSpecTests:
     eleza test_find_submodule_parent_already_imported(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
             self.init.import_module(name)
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
@@ -501,7 +501,7 @@ kundi FindSpecTests:
     eleza test_find_relative_module(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             spec = self.util.find_spec(relname, name)
@@ -515,10 +515,10 @@ kundi FindSpecTests:
     eleza test_find_relative_module_missing_package(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.util.find_spec(relname)
             self.assertNotIn(name, sorted(sys.modules))
             self.assertNotIn(fullname, sorted(sys.modules))
@@ -526,7 +526,7 @@ kundi FindSpecTests:
     eleza test_find_submodule_in_module(self):
         # ModuleNotFoundError ashiriad when a module ni specified as
         # a parent instead of a package.
-        with self.assertRaises(ModuleNotFoundError):
+        ukijumuisha self.assertRaises(ModuleNotFoundError):
             self.util.find_spec('module.name')
 
 
@@ -571,12 +571,12 @@ kundi PEP3147Tests:
 
     eleza test_cache_kutoka_source_no_cache_tag(self):
         # No cache tag means NotImplementedError.
-        with support.swap_attr(sys.implementation, 'cache_tag', Tupu):
-            with self.assertRaises(NotImplementedError):
+        ukijumuisha support.swap_attr(sys.implementation, 'cache_tag', Tupu):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 self.util.cache_kutoka_source('whatever.py')
 
     eleza test_cache_kutoka_source_no_dot(self):
-        # Directory with a dot, filename without dot.
+        # Directory ukijumuisha a dot, filename without dot.
         path = os.path.join('foo.bar', 'file')
         expect = os.path.join('foo.bar', '__pycache__',
                               'file{}.pyc'.format(self.tag))
@@ -587,17 +587,17 @@ kundi PEP3147Tests:
         # Given the path to a .py file, rudisha the path to its PEP 3147/PEP 488
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_kutoka_source(path, Uongo),
                              self.util.cache_kutoka_source(path, optimization=1))
             self.assertEqual(self.util.cache_kutoka_source(path, Kweli),
                              self.util.cache_kutoka_source(path, optimization=''))
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error')
-            with self.assertRaises(DeprecationWarning):
+            ukijumuisha self.assertRaises(DeprecationWarning):
                 self.util.cache_kutoka_source(path, Uongo)
-            with self.assertRaises(DeprecationWarning):
+            ukijumuisha self.assertRaises(DeprecationWarning):
                 self.util.cache_kutoka_source(path, Kweli)
 
     eleza test_cache_kutoka_source_cwd(self):
@@ -614,13 +614,13 @@ kundi PEP3147Tests:
         # propagates.
         kundi Bearish:
             eleza __bool__(self): ashiria RuntimeError
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_kutoka_source(path, []),
                              self.util.cache_kutoka_source(path, optimization=1))
             self.assertEqual(self.util.cache_kutoka_source(path, [17]),
                              self.util.cache_kutoka_source(path, optimization=''))
-            with self.assertRaises(RuntimeError):
+            ukijumuisha self.assertRaises(RuntimeError):
                 self.util.cache_kutoka_source('/foo/bar/baz.py', Bearish())
 
 
@@ -639,7 +639,7 @@ kundi PEP3147Tests:
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
         ikiwa optimization_level == 0:
             expect = almost_expect + '.pyc'
-        elikiwa optimization_level <= 2:
+        lasivyo optimization_level <= 2:
             expect = almost_expect + '.opt-{}.pyc'.format(optimization_level)
         isipokua:
             msg = '{!r} ni a non-standard optimization level'.format(optimization_level)
@@ -661,14 +661,14 @@ kundi PEP3147Tests:
         self.assertEqual(self.util.cache_kutoka_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
         # Invalid characters ashiria ValueError.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.util.cache_kutoka_source(path, optimization='path/is/bad')
 
     eleza test_cache_kutoka_source_debug_override_optimization_both_set(self):
         # Can only set one of the optimization-related parameters.
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 self.util.cache_kutoka_source('foo.py', Uongo, optimization='')
 
     @unittest.skipUnless(os.sep == '\\' na os.altsep == '/',
@@ -701,8 +701,8 @@ kundi PEP3147Tests:
     eleza test_source_kutoka_cache_no_cache_tag(self):
         # If sys.implementation.cache_tag ni Tupu, ashiria NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
-        with support.swap_attr(sys.implementation, 'cache_tag', Tupu):
-            with self.assertRaises(NotImplementedError):
+        ukijumuisha support.swap_attr(sys.implementation, 'cache_tag', Tupu):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 self.util.source_kutoka_cache(path)
 
     eleza test_source_kutoka_cache_bad_path(self):
@@ -722,7 +722,7 @@ kundi PEP3147Tests:
             ValueError, self.util.source_kutoka_cache, '__pycache__/foo.pyc')
 
     eleza test_source_kutoka_cache_too_many_dots(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.util.source_kutoka_cache(
                     '__pycache__/foo.cpython-32.opt-1.foo.pyc')
 
@@ -733,7 +733,7 @@ kundi PEP3147Tests:
             '__pycache__/foo.cpython-32.foo.pyc')
 
     eleza test_source_kutoka_cache_no__pycache__(self):
-        # Another problem with the path -> ValueError
+        # Another problem ukijumuisha the path -> ValueError
         self.assertRaises(
             ValueError, self.util.source_kutoka_cache,
             '/foo/bar/foo.cpython-32.foo.pyc')
@@ -746,7 +746,7 @@ kundi PEP3147Tests:
     eleza test_source_kutoka_cache_missing_optimization(self):
         # An empty optimization level ni a no-no.
         path = os.path.join('__pycache__', 'foo.{}.opt-.pyc'.format(self.tag))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.util.source_kutoka_cache(path)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
@@ -775,13 +775,13 @@ kundi PEP3147Tests:
                 f'{drive}{prefix}' kila prefix kwenye pycache_prefixes]
             pycache_prefixes += [r'\\?\C:\foo', r'\\localhost\c$\bar']
         kila pycache_prefix kwenye pycache_prefixes:
-            with self.subTest(path=pycache_prefix):
+            ukijumuisha self.subTest(path=pycache_prefix):
                 path = drive + os.path.join(
                     os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
                 expect = os.path.join(
                     pycache_prefix, 'foo', 'bar', 'baz',
                     'qux.{}.pyc'.format(self.tag))
-                with util.temporary_pycache_prefix(pycache_prefix):
+                ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
                     self.assertEqual(
                         self.util.cache_kutoka_source(path, optimization=''),
                         expect)
@@ -790,7 +790,7 @@ kundi PEP3147Tests:
                      'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_cache_kutoka_source_respects_pycache_prefix_relative(self):
         # If the .py path we are given ni relative, we will resolve to an
-        # absolute path before prefixing with pycache_prefix, to avoid any
+        # absolute path before prefixing ukijumuisha pycache_prefix, to avoid any
         # possible ambiguity.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
@@ -799,7 +799,7 @@ kundi PEP3147Tests:
             pycache_prefix,
             os.path.relpath(os.getcwd(), root),
             'foo', 'bar', 'baz', f'qux.{self.tag}.pyc')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(
                 self.util.cache_kutoka_source(path, optimization=''),
                 expect)
@@ -814,7 +814,7 @@ kundi PEP3147Tests:
         path = os.path.join(pycache_prefix, 'foo', 'bar', 'baz',
                             f'qux.{self.tag}.pyc')
         expect = os.path.join(os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_kutoka_cache(path), expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
@@ -827,7 +827,7 @@ kundi PEP3147Tests:
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             f'qux.{self.tag}.pyc')
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_kutoka_cache(path), expect)
 
 
@@ -865,13 +865,13 @@ kundi MagicNumberTests(unittest.TestCase):
         actual = int.kutoka_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
 
         msg = (
-            "To avoid komaing backwards compatibility with cached bytecode "
+            "To avoid komaing backwards compatibility ukijumuisha cached bytecode "
             "files that can't be automatically regenerated by the current "
             "user, candidate na final releases require the current  "
             "importlib.util.MAGIC_NUMBER to match the expected "
             "magic number kwenye this test. Set the expected "
             "magic number kwenye this test to the current MAGIC_NUMBER to "
-            "endelea with the release.\n\n"
+            "endelea ukijumuisha the release.\n\n"
             "Changing the MAGIC_NUMBER kila a maintenance release "
             "requires discussion kwenye python-dev na notification of "
             "community stakeholders."

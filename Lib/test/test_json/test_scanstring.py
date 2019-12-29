@@ -129,11 +129,11 @@ kundi TestScanstring:
             '"\\ud834\\u0X20"',
         ]
         kila s kwenye bad_escapes:
-            with self.assertRaises(self.JSONDecodeError, msg=s):
+            ukijumuisha self.assertRaises(self.JSONDecodeError, msg=s):
                 scanstring(s, 1, Kweli)
 
     eleza test_overflow(self):
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             self.json.decoder.scanstring(b"xxx", sys.maxsize+1)
 
 

@@ -81,7 +81,7 @@ kundi BaseTestCase(unittest.TestCase):
                 rudisha Kweli
 
         bad_int = BadInt()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = operator.index(bad_int)
         self.assertEqual(n, 1)
 

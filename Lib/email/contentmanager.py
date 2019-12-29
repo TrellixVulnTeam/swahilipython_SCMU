@@ -43,7 +43,7 @@ class ContentManager:
                 return self.set_handlers[typ]
             qname = typ.__qualname__
             modname = getattr(typ, '__module__', '')
-            full_path = '.'.join((modname, qname)) if modname else qname
+            full_path = '.'.join((modname, qname)) if modname isipokua qname
             if full_path_for_error is None:
                 full_path_for_error = full_path
             if full_path in self.set_handlers:
@@ -207,7 +207,7 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
         # or sio it actually has to do anything.
-        cte = '8bit' if cte is None else cte
+        cte = '8bit' if cte is None isipokua cte
     lasivyo subtype == 'external-body':
         if cte haiko kwenye (None, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.

@@ -47,7 +47,7 @@ kundi TokenTests(unittest.TestCase):
                     x = eval(s)
                 tatizo OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        elikiwa maxsize == 9223372036854775807:
+        lasivyo maxsize == 9223372036854775807:
             self.assertEquals(-9223372036854775807-1, -0o1000000000000000000000)
             self.assert_(0o1777777777777777777777 > 0)
             self.assert_(0xffffffffffffffff > 0)
@@ -343,7 +343,7 @@ kundi GrammarTests(unittest.TestCase):
         eleza f(x) -> list: pita
         self.assertEquals(f.__annotations__, {'rudisha': list})
 
-        # test closures with a variety of oparg's
+        # test closures ukijumuisha a variety of oparg's
         closure = 1
         eleza f(): rudisha closure
         eleza f(x=1): rudisha closure
@@ -380,7 +380,7 @@ kundi GrammarTests(unittest.TestCase):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
         x = 1; pita; toa x
         eleza foo():
-            # verify statements that end with semi-colons
+            # verify statements that end ukijumuisha semi-colons
             x = 1; pita; toa x;
         foo()
 
@@ -454,7 +454,7 @@ kundi GrammarTests(unittest.TestCase):
         # arguments to be popped off the stack na the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
         # *must* written kama a function, na the tracking vars *must* be function
-        # arguments with default values. Otherwise, the test will loop na loop.
+        # arguments ukijumuisha default values. Otherwise, the test will loop na loop.
 
         eleza test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
@@ -540,11 +540,11 @@ kundi GrammarTests(unittest.TestCase):
         ikiwa 1: pita
         isipokua: pita
         ikiwa 0: pita
-        elikiwa 0: pita
+        lasivyo 0: pita
         ikiwa 0: pita
-        elikiwa 0: pita
-        elikiwa 0: pita
-        elikiwa 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
         isipokua: pita
 
     eleza testWhile(self):
@@ -704,14 +704,14 @@ kundi GrammarTests(unittest.TestCase):
         s = a[-4:-3]
         # A rough test of SF bug 1333982.  http://python.org/sf/1333982
         # The testing here ni fairly incomplete.
-        # Test cases should include: commas with 1 na 2 colons
+        # Test cases should include: commas ukijumuisha 1 na 2 colons
         d = {}
         d[1] = 1
         d[1,] = 2
         d[1,2] = 3
         d[1,2,3] = 4
         L = list(d)
-        L.sort(key=lambda x: x ikiwa isinstance(x, tuple) else ())
+        L.sort(key=lambda x: x ikiwa isinstance(x, tuple) isipokua ())
         self.assertEquals(str(L), '[1, (1,), (1, 2), (1, 2, 3)]')
 
     eleza testAtoms(self):
@@ -899,17 +899,17 @@ kundi GrammarTests(unittest.TestCase):
             eleza __exit__(self, *args):
                 pita
 
-        with manager():
+        ukijumuisha manager():
             pita
-        with manager() kama x:
+        ukijumuisha manager() kama x:
             pita
-        with manager() kama (x, y):
+        ukijumuisha manager() kama (x, y):
             pita
-        with manager(), manager():
+        ukijumuisha manager(), manager():
             pita
-        with manager() kama x, manager() kama y:
+        ukijumuisha manager() kama x, manager() kama y:
             pita
-        with manager() kama x, manager():
+        ukijumuisha manager() kama x, manager():
             pita
 
     eleza testIfElseExpr(self):
@@ -922,22 +922,22 @@ kundi GrammarTests(unittest.TestCase):
         # the next line ni sio allowed anymore
         #self.assertEqual([ x() kila x kwenye lambda: Kweli, lambda: Uongo ikiwa x() ], [Kweli])
         self.assertEqual([ x() kila x kwenye (lambda: Kweli, lambda: Uongo) ikiwa x() ], [Kweli])
-        self.assertEqual([ x(Uongo) kila x kwenye (lambda x: Uongo ikiwa x else Kweli, lambda x: Kweli ikiwa x else Uongo) ikiwa x(Uongo) ], [Kweli])
-        self.assertEqual((5 ikiwa 1 else _checkeval("check 1", 0)), 5)
-        self.assertEqual((_checkeval("check 2", 0) ikiwa 0 else 5), 5)
-        self.assertEqual((5 na 6 ikiwa 0 else 1), 1)
-        self.assertEqual(((5 na 6) ikiwa 0 else 1), 1)
-        self.assertEqual((5 na (6 ikiwa 1 else 1)), 6)
-        self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 else 3), 3)
-        self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 else _checkeval("check 5", 3)), 1)
-        self.assertEqual((0 ama 5 ikiwa 1 else _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 ikiwa 1 else 1), Uongo)
-        self.assertEqual((not 5 ikiwa 0 else 1), 1)
-        self.assertEqual((6 + 1 ikiwa 1 else 2), 7)
-        self.assertEqual((6 - 1 ikiwa 1 else 2), 5)
-        self.assertEqual((6 * 2 ikiwa 1 else 4), 12)
-        self.assertEqual((6 / 2 ikiwa 1 else 3), 3)
-        self.assertEqual((6 < 4 ikiwa 0 else 2), 2)
+        self.assertEqual([ x(Uongo) kila x kwenye (lambda x: Uongo ikiwa x isipokua Kweli, lambda x: Kweli ikiwa x isipokua Uongo) ikiwa x(Uongo) ], [Kweli])
+        self.assertEqual((5 ikiwa 1 isipokua _checkeval("check 1", 0)), 5)
+        self.assertEqual((_checkeval("check 2", 0) ikiwa 0 isipokua 5), 5)
+        self.assertEqual((5 na 6 ikiwa 0 isipokua 1), 1)
+        self.assertEqual(((5 na 6) ikiwa 0 isipokua 1), 1)
+        self.assertEqual((5 na (6 ikiwa 1 isipokua 1)), 6)
+        self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 isipokua 3), 3)
+        self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 isipokua _checkeval("check 5", 3)), 1)
+        self.assertEqual((0 ama 5 ikiwa 1 isipokua _checkeval("check 6", 3)), 5)
+        self.assertEqual((not 5 ikiwa 1 isipokua 1), Uongo)
+        self.assertEqual((not 5 ikiwa 0 isipokua 1), 1)
+        self.assertEqual((6 + 1 ikiwa 1 isipokua 2), 7)
+        self.assertEqual((6 - 1 ikiwa 1 isipokua 2), 5)
+        self.assertEqual((6 * 2 ikiwa 1 isipokua 4), 12)
+        self.assertEqual((6 / 2 ikiwa 1 isipokua 3), 3)
+        self.assertEqual((6 < 4 ikiwa 0 isipokua 2), 2)
 
 
 eleza test_main():

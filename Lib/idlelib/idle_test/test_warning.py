@@ -39,7 +39,7 @@ kundi RunWarnTest(unittest.TestCase):
         self.assertIs(warnings.showwarning, showwarning)
 
     eleza test_run_show(self):
-        with captured_stderr() kama f:
+        ukijumuisha captured_stderr() kama f:
             run.idle_showwarning_subproc(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             # The following uses .splitlines to erase line-ending differences
@@ -63,7 +63,7 @@ kundi ShellWarnTest(unittest.TestCase):
         self.assertEqual(idlemsg, s)
 
     eleza test_shell_show(self):
-        with captured_stderr() kama f:
+        ukijumuisha captured_stderr() kama f:
             shell.idle_showwarning(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             self.assertEqual(shellmsg.splitlines(), f.getvalue().splitlines())

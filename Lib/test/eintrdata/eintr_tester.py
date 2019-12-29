@@ -271,7 +271,7 @@ class SocketEINTRTest(EINTRBaseTest):
             wakati written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
                 # sendall() returns None
-                written += len(data) if sent is None else sent
+                written += len(data) if sent is None isipokua sent
             self.assertEqual(proc.wait(), 0)
 
     def test_send(self):

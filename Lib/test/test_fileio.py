@@ -78,7 +78,7 @@ kundi AutoFileTests:
         self.f.close()
 
         ba = bytearray(b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(ba)
         self.assertEqual(ba, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -88,13 +88,13 @@ kundi AutoFileTests:
         self.f.close()
 
         m = memoryview(bytearray(b'abcdefgh'))
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(m)
         self.assertEqual(m, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
 
         m = memoryview(bytearray(b'abcdefgh')).cast('H', shape=[2, 2])
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(m)
         self.assertEqual(bytes(m), b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -104,19 +104,19 @@ kundi AutoFileTests:
         self.f.close()
 
         a = array('B', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('B', [1, 2, 0, 255, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('b', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('b', [1, 2, 0, -1, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('I', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') kama f:
+        ukijumuisha self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('I', b'\x01\x02\x00\xffefgh'))
         self.assertEqual(n, 4)
@@ -169,7 +169,7 @@ kundi AutoFileTests:
     eleza testReprNoCloseFD(self):
         fd = os.open(TESTFN, os.O_RDONLY)
         jaribu:
-            with self.FileIO(fd, 'r', closefd=Uongo) kama f:
+            ukijumuisha self.FileIO(fd, 'r', closefd=Uongo) kama f:
                 self.assertEqual(repr(f),
                                  "<%s.FileIO name=%r mode=%r closefd=Uongo>" %
                                  (self.modulename, f.name, f.mode))
@@ -178,8 +178,8 @@ kundi AutoFileTests:
 
     eleza testRecursiveRepr(self):
         # Issue #25455
-        with swap_attr(self.f, 'name', self.f):
-            with self.assertRaises(RuntimeError):
+        ukijumuisha swap_attr(self.f, 'name', self.f):
+            ukijumuisha self.assertRaises(RuntimeError):
                 repr(self.f)  # Should sio crash
 
     eleza testErrors(self):
@@ -233,7 +233,7 @@ kundi AutoFileTests:
     @unittest.skipIf(os.name == 'nt', "test only works on a POSIX-like system")
     eleza testOpenDirFD(self):
         fd = os.open('.', os.O_RDONLY)
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             self.FileIO(fd, 'r')
         os.close(fd)
         self.assertEqual(cm.exception.errno, errno.EISDIR)
@@ -412,7 +412,7 @@ kundi OtherFileTests:
                           ('ab+', 'ab+'), ('a+b', 'ab+'), ('r', 'rb'),
                           ('rb', 'rb'), ('rb+', 'rb+'), ('r+b', 'rb+')]:
                 # read modes are last so that TESTFN will exist first
-                with self.FileIO(TESTFN, modes[0]) kama f:
+                ukijumuisha self.FileIO(TESTFN, modes[0]) kama f:
                     self.assertEqual(f.mode, modes[1])
         mwishowe:
             ikiwa os.path.exists(TESTFN):
@@ -434,7 +434,7 @@ kundi OtherFileTests:
         jaribu:
             f.write(b"abc")
             f.close()
-            with open(TESTFN, "rb") kama f:
+            ukijumuisha open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), b"abc")
         mwishowe:
             os.unlink(TESTFN)
@@ -451,7 +451,7 @@ kundi OtherFileTests:
         jaribu:
             f.write(b"abc")
             f.close()
-            with open(TESTFN_UNICODE, "rb") kama f:
+            ukijumuisha open(TESTFN_UNICODE, "rb") kama f:
                 self.assertEqual(f.read(), b"abc")
         mwishowe:
             os.unlink(TESTFN_UNICODE)
@@ -547,7 +547,7 @@ kundi OtherFileTests:
         self.assertRaises(TypeError, self.FileIO, "1", 0, 0)
 
     eleza testWarnings(self):
-        with check_warnings(quiet=Kweli) kama w:
+        ukijumuisha check_warnings(quiet=Kweli) kama w:
             self.assertEqual(w.warnings, [])
             self.assertRaises(TypeError, self.FileIO, [])
             self.assertEqual(w.warnings, [])
@@ -580,9 +580,9 @@ kundi COtherFileTests(OtherFileTests, unittest.TestCase):
     eleza test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") kama f:
+        ukijumuisha self.FileIO(__file__, "rb") kama f:
             expected = f.read()
-        with _io.open_code(__file__) kama f:
+        ukijumuisha _io.open_code(__file__) kama f:
             actual = f.read()
         self.assertEqual(expected, actual)
 
@@ -594,11 +594,11 @@ kundi PyOtherFileTests(OtherFileTests, unittest.TestCase):
     eleza test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") kama f:
+        ukijumuisha self.FileIO(__file__, "rb") kama f:
             expected = f.read()
-        with check_warnings(quiet=Kweli) kama w:
+        ukijumuisha check_warnings(quiet=Kweli) kama w:
             # Always test _open_code_with_warning
-            with _pyio._open_code_with_warning(__file__) kama f:
+            ukijumuisha _pyio._open_code_with_warning(__file__) kama f:
                 actual = f.read()
             self.assertEqual(expected, actual)
             self.assertNotEqual(w.warnings, [])

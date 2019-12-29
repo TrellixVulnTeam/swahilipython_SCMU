@@ -276,10 +276,10 @@ kundi TestFuncs(unittest.TestCase):
     eleza test_arg_errors(self):
         res = self.tracer.runfunc(traced_capturer, 1, 2, self=3, func=4)
         self.assertEqual(res, ((1, 2), {'self': 3, 'func': 4}))
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             res = self.tracer.runfunc(func=traced_capturer, arg=1)
         self.assertEqual(res, ((), {'arg': 1}))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.tracer.runfunc()
 
     eleza test_loop_caller_agizaing(self):
@@ -365,7 +365,7 @@ kundi TestCoverage(unittest.TestCase):
 
     eleza test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
-        with captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
@@ -380,7 +380,7 @@ kundi TestCoverage(unittest.TestCase):
         # sys.prefix does sio work when running kutoka a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath], trace=0, count=1)
-        with captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer)
         ikiwa os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
@@ -394,7 +394,7 @@ kundi TestCoverage(unittest.TestCase):
             toa sys.modules[modname]
         cmd = ("agiza test.tracedmodules.testmod kama t;"
                "t.func(0); t.func2();")
-        with captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer, cmd)
         stdout.seek(0)
         stdout.readline()
@@ -407,9 +407,9 @@ kundi TestCoverage(unittest.TestCase):
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
 
-### Tests that don't mess with sys.settrace na can be traced
-### themselves TODO: Skip tests that do mess with sys.settrace when
-### regrtest ni invoked with -T option.
+### Tests that don't mess ukijumuisha sys.settrace na can be traced
+### themselves TODO: Skip tests that do mess ukijumuisha sys.settrace when
+### regrtest ni invoked ukijumuisha -T option.
 kundi Test_Ignore(unittest.TestCase):
     eleza test_ignored(self):
         jn = os.path.join
@@ -429,7 +429,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
     coverfile = 'tmp.cover'
 
     eleza setUp(self):
-        with open(self.codefile, 'w') kama f:
+        ukijumuisha open(self.codefile, 'w') kama f:
             f.write(textwrap.dedent('''\
                 x = 42
                 ikiwa []:
@@ -452,7 +452,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         self.assertEqual(stderr, b'')
         self.assertUongo(os.path.exists(tracecoverpath))
         self.assertKweli(os.path.exists(self.coverfile))
-        with open(self.coverfile) kama f:
+        ukijumuisha open(self.coverfile) kama f:
             self.assertEqual(f.read(),
                 "    1: x = 42\n"
                 "    1: ikiwa []:\n"
@@ -463,7 +463,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertKweli(os.path.exists(self.coverfile))
-        with open(self.coverfile) kama f:
+        ukijumuisha open(self.coverfile) kama f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                     1: x = 42
                     1: ikiwa []:
@@ -474,26 +474,26 @@ kundi TestCommandLine(unittest.TestCase):
 
     eleza test_failures(self):
         _errors = (
-            (b'progname ni missing: required with the main options', '-l', '-T'),
+            (b'progname ni missing: required ukijumuisha the main options', '-l', '-T'),
             (b'cannot specify both --listfuncs na (--trace ama --count)', '-lc'),
-            (b'argument -R/--no-report: sio allowed with argument -r/--report', '-rR'),
+            (b'argument -R/--no-report: sio allowed ukijumuisha argument -r/--report', '-rR'),
             (b'must specify one of --trace, --count, --report, --listfuncs, ama --trackcalls', '-g'),
             (b'-r/--report requires -f/--file', '-r'),
-            (b'--summary can only be used with --count ama --report', '-sT'),
+            (b'--summary can only be used ukijumuisha --count ama --report', '-sT'),
             (b'unrecognized arguments: -y', '-y'))
         kila message, *args kwenye _errors:
             *_, stderr = assert_python_failure('-m', 'trace', *args)
             self.assertIn(message, stderr)
 
     eleza test_listfuncs_flag_success(self):
-        with open(TESTFN, 'w') kama fd:
+        ukijumuisha open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
             self.assertIn(b'functions called:', stdout)
 
     eleza test_sys_argv_list(self):
-        with open(TESTFN, 'w') kama fd:
+        ukijumuisha open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("agiza sys\n")
             fd.write("andika(type(sys.argv))\n")
@@ -505,7 +505,7 @@ kundi TestCommandLine(unittest.TestCase):
     eleza test_count_and_summary(self):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
-        with open(filename, 'w') kama fd:
+        ukijumuisha open(filename, 'w') kama fd:
             self.addCleanup(unlink, filename)
             self.addCleanup(unlink, coverfilename)
             fd.write(textwrap.dedent("""\

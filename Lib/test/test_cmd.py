@@ -236,7 +236,7 @@ eleza test_coverage(coverdir):
 ikiwa __name__ == "__main__":
     ikiwa "-c" kwenye sys.argv:
         test_coverage('/tmp/cmd.cover')
-    elikiwa "-i" kwenye sys.argv:
+    lasivyo "-i" kwenye sys.argv:
         samplecmdclass().cmdloop()
     isipokua:
         test_main()

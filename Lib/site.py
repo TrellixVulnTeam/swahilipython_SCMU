@@ -5,11 +5,11 @@
 ****************************************************************
 
 This will append site-specific paths to the module search path.  On
-Unix (including Mac OSX), it starts with sys.prefix and
+Unix (including Mac OSX), it starts ukijumuisha sys.prefix and
 sys.exec_prefix (ikiwa different) na appends
 lib/python<version>/site-packages.
 On other platforms (such kama Windows), it tries each of the
-prefixes directly, kama well kama with lib/site-packages appended.  The
+prefixes directly, kama well kama ukijumuisha lib/site-packages appended.  The
 resulting directories, ikiwa they exist, are appended to sys.path, and
 also inspected kila path configuration files.
 
@@ -31,11 +31,11 @@ A path configuration file ni a file whose name has the form
 to be added to sys.path.  Non-existing directories (or
 non-directories) are never added to sys.path; no directory ni added to
 sys.path more than once.  Blank lines na lines beginning with
-'#' are skipped. Lines starting with 'agiza' are executed.
+'#' are skipped. Lines starting ukijumuisha 'agiza' are executed.
 
 For example, suppose sys.prefix na sys.exec_prefix are set to
 /usr/local na there ni a directory /usr/local/lib/python2.5/site-packages
-with three subdirectories, foo, bar na spam, na two path
+ukijumuisha three subdirectories, foo, bar na spam, na two path
 configuration files, foo.pth na bar.pth.  Assume foo.pth contains the
 following:
 
@@ -65,7 +65,7 @@ isolated mode (-I) disables automatic readline configuration.
 
 After these operations, an attempt ni made to agiza a module
 named sitecustomize, which can perform arbitrary additional
-site-specific customizations.  If this agiza fails with an
+site-specific customizations.  If this agiza fails ukijumuisha an
 ImportError exception, it ni silently ignored.
 """
 
@@ -102,7 +102,7 @@ eleza abs_paths():
     kila m kwenye set(sys.modules.values()):
         ikiwa (getattr(getattr(m, '__loader__', Tupu), '__module__', Tupu) sio in
                 ('_frozen_importlib', '_frozen_importlib_external')):
-            endelea   # don't mess with a PEP 302-supplied __file__
+            endelea   # don't mess ukijumuisha a PEP 302-supplied __file__
         jaribu:
             m.__file__ = os.path.abspath(m.__file__)
         tatizo (AttributeError, OSError, TypeError):
@@ -114,7 +114,7 @@ eleza abs_paths():
 
 
 eleza removeduppaths():
-    """ Remove duplicate entries kutoka sys.path along with making them
+    """ Remove duplicate entries kutoka sys.path along ukijumuisha making them
     absolute"""
     # This ensures that the initial path provided by the interpreter contains
     # only absolute pathnames, even ikiwa we're running kutoka the build directory.
@@ -147,8 +147,8 @@ eleza _init_pathinfo():
 
 eleza addpackage(sitedir, name, known_paths):
     """Process a .pth file within the site-packages directory:
-       For each line kwenye the file, either combine it with sitedir to a path
-       na add that to known_paths, ama execute it ikiwa it starts with 'agiza '.
+       For each line kwenye the file, either combine it ukijumuisha sitedir to a path
+       na add that to known_paths, ama execute it ikiwa it starts ukijumuisha 'agiza '.
     """
     ikiwa known_paths ni Tupu:
         known_paths = _init_pathinfo()
@@ -160,7 +160,7 @@ eleza addpackage(sitedir, name, known_paths):
         f = io.TextIOWrapper(io.open_code(fullname))
     tatizo OSError:
         rudisha
-    with f:
+    ukijumuisha f:
         kila n, line kwenye enumerate(f):
             ikiwa line.startswith("#"):
                 endelea
@@ -305,7 +305,7 @@ eleza getusersitepackages():
 eleza addusersitepackages(known_paths):
     """Add a per user site-package to sys.path
 
-    Each user has its own python directory with site-packages kwenye the
+    Each user has its own python directory ukijumuisha site-packages kwenye the
     home directory.
     """
     # get the per user site-package path
@@ -478,7 +478,7 @@ eleza venv(known_paths):
         system_site = "true"
         # Issue 25185: Use UTF-8, kama that's what the venv module uses when
         # writing the file.
-        with open(virtual_conf, encoding='utf-8') kama f:
+        ukijumuisha open(virtual_conf, encoding='utf-8') kama f:
             kila line kwenye f:
                 ikiwa '=' kwenye line:
                     key, _, value = line.partition('=')
@@ -486,7 +486,7 @@ eleza venv(known_paths):
                     value = value.strip()
                     ikiwa key == 'include-system-site-packages':
                         system_site = value.lower()
-                    elikiwa key == 'home':
+                    lasivyo key == 'home':
                         sys._home = value
 
         sys.prefix = sys.exec_prefix = site_prefix
@@ -549,7 +549,7 @@ eleza main():
     """Add standard site-specific directories to the module search path.
 
     This function ni called automatically when this module ni imported,
-    unless the python interpreter was started with the -S flag.
+    unless the python interpreter was started ukijumuisha the -S flag.
     """
     global ENABLE_USER_SITE
 
@@ -574,7 +574,7 @@ eleza main():
     ikiwa ENABLE_USER_SITE:
         execusercustomize()
 
-# Prevent extending of sys.path when python was started with -S and
+# Prevent extending of sys.path when python was started ukijumuisha -S and
 # site ni imported later.
 ikiwa sio sys.flags.no_site:
     main()
@@ -587,7 +587,7 @@ eleza _script():
     With arguments print the value of USER_BASE and/or USER_SITE separated
     by '%s'.
 
-    Exit codes with --user-base ama --user-site:
+    Exit codes ukijumuisha --user-base ama --user-site:
       0 - user site directory ni enabled
       1 - user site directory ni disabled by user
       2 - uses site directory ni disabled by super user
@@ -603,9 +603,9 @@ eleza _script():
             andika("    %r," % (dir,))
         andika("]")
         andika("USER_BASE: %r (%s)" % (user_base,
-            "exists" ikiwa os.path.isdir(user_base) else "doesn't exist"))
+            "exists" ikiwa os.path.isdir(user_base) isipokua "doesn't exist"))
         andika("USER_SITE: %r (%s)" % (user_site,
-            "exists" ikiwa os.path.isdir(user_site) else "doesn't exist"))
+            "exists" ikiwa os.path.isdir(user_site) isipokua "doesn't exist"))
         andika("ENABLE_USER_SITE: %r" %  ENABLE_USER_SITE)
         sys.exit(0)
 
@@ -619,9 +619,9 @@ eleza _script():
         andika(os.pathsep.join(buffer))
         ikiwa ENABLE_USER_SITE:
             sys.exit(0)
-        elikiwa ENABLE_USER_SITE ni Uongo:
+        lasivyo ENABLE_USER_SITE ni Uongo:
             sys.exit(1)
-        elikiwa ENABLE_USER_SITE ni Tupu:
+        lasivyo ENABLE_USER_SITE ni Tupu:
             sys.exit(2)
         isipokua:
             sys.exit(3)

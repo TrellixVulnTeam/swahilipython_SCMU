@@ -66,13 +66,13 @@ kundi MsiDatabaseTestCase(unittest.TestCase):
             os.unlink(db_path)
 
     eleza test_database_open_failed(self):
-        with self.assertRaises(msilib.MSIError) kama cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
             msilib.OpenDatabase('non-existent.msi', msilib.MSIDBOPEN_READONLY)
         self.assertEqual(str(cm.exception), 'open failed')
 
     eleza test_database_create_failed(self):
         db_path = os.path.join(TESTFN, 'test.msi')
-        with self.assertRaises(msilib.MSIError) kama cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
             msilib.OpenDatabase(db_path, msilib.MSIDBOPEN_CREATE)
         self.assertEqual(str(cm.exception), 'create failed')
 
@@ -99,7 +99,7 @@ kundi MsiDatabaseTestCase(unittest.TestCase):
         self.addCleanup(unlink, db_path)
         self.addCleanup(db.Close)
         si = db.GetSummaryInformation(0)
-        with self.assertRaises(msilib.MSIError):
+        ukijumuisha self.assertRaises(msilib.MSIError):
             si.GetProperty(-1)
 
 
@@ -107,7 +107,7 @@ kundi Test_make_id(unittest.TestCase):
     #http://msdn.microsoft.com/en-us/library/aa369212(v=vs.85).aspx
     """The Identifier data type ni a text string. Identifiers may contain the
     ASCII characters A-Z (a-z), digits, underscores (_), ama periods (.).
-    However, every identifier must begin with either a letter ama an
+    However, every identifier must begin ukijumuisha either a letter ama an
     underscore.
     """
 

@@ -68,11 +68,11 @@ kundi TestRecursion:
     eleza test_highly_nested_objects_decoding(self):
         # test that loading highly-nested objects doesn't segfault when C
         # accelerations are used. See #12017
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             self.loads('{"a":' * 100000 + '1' + '}' * 100000)
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             self.loads('{"a":' * 100000 + '[1]' + '}' * 100000)
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             self.loads('[' * 100000 + '1' + ']' * 100000)
 
     eleza test_highly_nested_objects_encoding(self):
@@ -80,9 +80,9 @@ kundi TestRecursion:
         l, d = [], {}
         kila x kwenye range(100000):
             l, d = [l], {'k':d}
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             self.dumps(l)
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             self.dumps(d)
 
     eleza test_endless_recursion(self):
@@ -92,7 +92,7 @@ kundi TestRecursion:
                 """If check_circular ni Uongo, this will keep adding another list."""
                 rudisha [o]
 
-        with self.assertRaises(RecursionError):
+        ukijumuisha self.assertRaises(RecursionError):
             EndlessJSONEncoder(check_circular=Uongo).encode(5j)
 
 

@@ -71,7 +71,7 @@ kundi NimModel(object):
             self.game.state = Nim.OVER
             self.winner = self.player
             self.game.view.notify_over()
-        elikiwa self.player == 0:
+        lasivyo self.player == 0:
             self.player = 1
             row, col = computerzug(self.sticks)
             self.move(row, col)

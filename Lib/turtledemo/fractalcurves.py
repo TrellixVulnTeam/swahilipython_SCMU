@@ -22,10 +22,10 @@ kundi CurvesTurtle(Pen):
     eleza hilbert(self, size, level, parity):
         ikiwa level == 0:
             rudisha
-        # rotate na draw first subcurve with opposite parity to big curve
+        # rotate na draw first subcurve ukijumuisha opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
-        # interface to na draw second subcurve with same parity kama big curve
+        # interface to na draw second subcurve ukijumuisha same parity kama big curve
         self.forward(size)
         self.right(parity * 90)
         self.hilbert(size, level - 1, parity)
@@ -40,7 +40,7 @@ kundi CurvesTurtle(Pen):
         # end up facing outward kutoka the large square
         self.left(parity * 90)
 
-    # Visual Modeling with Logo: A Structural Approach to Seeing
+    # Visual Modeling ukijumuisha Logo: A Structural Approach to Seeing
     # by James Clayson
     # Koch curve, after Helge von Koch who introduced this geometric figure kwenye 1904
     # p. 146

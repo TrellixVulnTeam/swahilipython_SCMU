@@ -43,7 +43,7 @@ requires_32b = unittest.skipUnless(sys.maxsize < 2**32,
 protocols = range(pickle.HIGHEST_PROTOCOL + 1)
 
 
-# Return Kweli ikiwa opcode code appears kwenye the pickle, else Uongo.
+# Return Kweli ikiwa opcode code appears kwenye the pickle, isipokua Uongo.
 eleza opcode_in_pickle(code, pickle):
     kila op, dummy, dummy kwenye pickletools.genops(pickle):
         ikiwa op.code == code.decode("latin-1"):
@@ -192,7 +192,7 @@ kundi ZeroCopyBytes(bytes):
 
     @classmethod
     eleza _reconstruct(cls, obj):
-        with memoryview(obj) kama m:
+        ukijumuisha memoryview(obj) kama m:
             obj = m.obj
             ikiwa type(obj) ni cls:
                 # Zero-copy
@@ -220,7 +220,7 @@ kundi ZeroCopyBytearray(bytearray):
 
     @classmethod
     eleza _reconstruct(cls, obj):
-        with memoryview(obj) kama m:
+        ukijumuisha memoryview(obj) kama m:
             obj = m.obj
             ikiwa type(obj) ni cls:
                 # Zero-copy
@@ -285,20 +285,20 @@ ikiwa _testbuffer ni sio Tupu:
                               "strides": self.array.strides,
                               "format": self.array.format,
                               "flags": (0 ikiwa self.readonly
-                                        else _testbuffer.ND_WRITABLE)}
+                                        isipokua _testbuffer.ND_WRITABLE)}
             pb = pickle.PickleBuffer(self.array)
             ikiwa protocol >= 5:
                 rudisha (type(self)._reconstruct,
                         (pb, ndarray_kwargs))
             isipokua:
                 # Need to serialize the bytes kwenye physical order
-                with pb.raw() kama m:
+                ukijumuisha pb.raw() kama m:
                     rudisha (type(self)._reconstruct,
                             (m.tobytes(), ndarray_kwargs))
 
         @classmethod
         eleza _reconstruct(cls, obj, kwargs):
-            with memoryview(obj) kama m:
+            ukijumuisha memoryview(obj) kama m:
                 # For some reason, ndarray() wants a list of integers...
                 # XXX This only works ikiwa format == 'B'
                 items = list(m.tobytes())
@@ -711,13 +711,13 @@ DATA4_DIS = """\
 highest protocol among opcodes = 4
 """
 
-# set([1,2]) pickled kutoka 2.x with protocol 2
+# set([1,2]) pickled kutoka 2.x ukijumuisha protocol 2
 DATA_SET = b'\x80\x02c__builtin__\nset\nq\x00]q\x01(K\x01K\x02e\x85q\x02Rq\x03.'
 
-# xrange(5) pickled kutoka 2.x with protocol 2
+# xrange(5) pickled kutoka 2.x ukijumuisha protocol 2
 DATA_XRANGE = b'\x80\x02c__builtin__\nxrange\nq\x00K\x00K\x05K\x01\x87q\x01Rq\x02.'
 
-# a SimpleCookie() object pickled kutoka 2.x with protocol 2
+# a SimpleCookie() object pickled kutoka 2.x ukijumuisha protocol 2
 DATA_COOKIE = (b'\x80\x02cCookie\nSimpleCookie\nq\x00)\x81q\x01U\x03key'
                b'q\x02cCookie\nMorsel\nq\x03)\x81q\x04(U\x07commentq\x05U'
                b'\x00q\x06U\x06domainq\x07h\x06U\x06secureq\x08h\x06U\x07'
@@ -725,7 +725,7 @@ DATA_COOKIE = (b'\x80\x02cCookie\nSimpleCookie\nq\x00)\x81q\x01U\x03key'
                b'\x04pathq\x0ch\x06U\x08httponlyq\rh\x06u}q\x0e(U\x0b'
                b'coded_valueq\x0fU\x05valueq\x10h\x10h\x10h\x02h\x02ubs}q\x11b.')
 
-# set([3]) pickled kutoka 2.x with protocol 2
+# set([3]) pickled kutoka 2.x ukijumuisha protocol 2
 DATA_SET2 = b'\x80\x02c__builtin__\nset\nq\x00]q\x01K\x03a\x85q\x02Rq\x03.'
 
 python2_exceptions_without_args = (
@@ -778,7 +778,7 @@ python2_exceptions_without_args = (
 
 exception_pickle = b'\x80\x02cexceptions\n?\nq\x00)Rq\x01.'
 
-# UnicodeEncodeError object pickled kutoka 2.x with protocol 2
+# UnicodeEncodeError object pickled kutoka 2.x ukijumuisha protocol 2
 DATA_UEERR = (b'\x80\x02cexceptions\nUnicodeEncodeError\n'
               b'q\x00(U\x05asciiq\x01X\x03\x00\x00\x00fooq\x02K\x00K\x01'
               b'U\x03badq\x03tq\x04Rq\x05.')
@@ -829,7 +829,7 @@ kundi AbstractUnpickleTests(unittest.TestCase):
                                  getattr(objcopy, slot, Tupu), msg=msg)
 
     eleza check_unpickling_error(self, errors, data):
-        with self.subTest(data=data), \
+        ukijumuisha self.subTest(data=data), \
              self.assertRaises(errors):
             jaribu:
                 self.loads(data)
@@ -917,7 +917,7 @@ kundi AbstractUnpickleTests(unittest.TestCase):
         got = self.loads(data)
         self.assert_is_copy(maxint64, got)
 
-        # Try too with a bogus literal.
+        # Try too ukijumuisha a bogus literal.
         data = b'I' + str(maxint64).encode("ascii") + b'JUNK\n.'
         self.check_unpickling_error(ValueError, data)
 
@@ -933,7 +933,7 @@ kundi AbstractUnpickleTests(unittest.TestCase):
         self.assertEqual(list(loaded.keys()), ["key"])
         self.assertEqual(loaded["key"].value, "value")
 
-        # Exception objects without arguments pickled kutoka 2.x with protocol 2
+        # Exception objects without arguments pickled kutoka 2.x ukijumuisha protocol 2
         kila exc kwenye python2_exceptions_without_args:
             data = exception_pickle.replace(b'?', exc.__name__.encode("ascii"))
             loaded = self.loads(data)
@@ -1354,9 +1354,9 @@ kundi AbstractUnpickleTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, TESTFN)
         sys.path.insert(0, TESTFN)
         self.addCleanup(sys.path.remove, TESTFN)
-        with open(os.path.join(TESTFN, "locker.py"), "wb") kama f:
+        ukijumuisha open(os.path.join(TESTFN, "locker.py"), "wb") kama f:
             f.write(locker_module.encode('utf-8'))
-        with open(os.path.join(TESTFN, "locking_agiza.py"), "wb") kama f:
+        ukijumuisha open(os.path.join(TESTFN, "locking_agiza.py"), "wb") kama f:
             f.write(locking_import_module.encode('utf-8'))
         self.addCleanup(forget, "locker")
         self.addCleanup(forget, "locking_agiza")
@@ -1440,8 +1440,8 @@ kundi AbstractPickleTests(unittest.TestCase):
     # There are gratuitous differences between pickles produced by
     # pickle na cPickle, largely because cPickle starts PUT indices at
     # 1 na pickle starts them at 0.  See XXX comment kwenye cPickle's put2() --
-    # there's a comment with an exclamation point there whose meaning
-    # ni a mystery.  cPickle also suppresses PUT kila objects with a refcount
+    # there's a comment ukijumuisha an exclamation point there whose meaning
+    # ni a mystery.  cPickle also suppresses PUT kila objects ukijumuisha a refcount
     # of 1.
     eleza dont_test_disassembly(self):
         kutoka io agiza StringIO
@@ -1651,10 +1651,10 @@ kundi AbstractPickleTests(unittest.TestCase):
                     # bytearray ni serialized using a global reference
                     self.assertIn(b'bytearray', p)
                     self.assertKweli(opcode_in_pickle(pickle.GLOBAL, p))
-                elikiwa proto == 4:
+                lasivyo proto == 4:
                     self.assertIn(b'bytearray', p)
                     self.assertKweli(opcode_in_pickle(pickle.STACK_GLOBAL, p))
-                elikiwa proto == 5:
+                lasivyo proto == 5:
                     self.assertNotIn(b'bytearray', p)
                     self.assertKweli(opcode_in_pickle(pickle.BYTEARRAY8, p))
 
@@ -1679,7 +1679,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                         got = self.loads(pickle)
                         self.assert_is_copy(n, got)
         # Try a monster.  This ni quadratic-time kwenye protos 0 & 1, so don't
-        # bother with those.
+        # bother ukijumuisha those.
         nbase = int("deadbeeffeedface", 16)
         nbase += nbase << 1000000
         kila n kwenye nbase, -nbase:
@@ -1703,7 +1703,7 @@ kundi AbstractPickleTests(unittest.TestCase):
 
     @run_with_locale('LC_ALL', 'de_DE', 'fr_FR')
     eleza test_float_format(self):
-        # make sure that floats are formatted locale independent with proto 0
+        # make sure that floats are formatted locale independent ukijumuisha proto 0
         self.assertEqual(self.dumps(1.2, 0)[0:3], b'F1.')
 
     eleza test_reduce(self):
@@ -1939,7 +1939,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         mwishowe:
             SimpleNewObj = save
 
-    # Register a type with copyreg, with extension code extcode.  Pickle
+    # Register a type ukijumuisha copyreg, ukijumuisha extension code extcode.  Pickle
     # an object of that type.  Check that the resulting pickle uses opcode
     # (EXT[124]) under proto 2, na haiko kwenye proto 1.
 
@@ -2059,7 +2059,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         x = SimpleNewObj.__new__(SimpleNewObj, 0xface)  # avoid __init__
         x.abc = 666
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 s = self.dumps(x, proto)
                 ikiwa proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
@@ -2075,13 +2075,13 @@ kundi AbstractPickleTests(unittest.TestCase):
         x = ComplexNewObj.__new__(ComplexNewObj, 0xface)  # avoid __init__
         x.abc = 666
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 s = self.dumps(x, proto)
                 ikiwa proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
-                elikiwa proto < 2:
+                lasivyo proto < 2:
                     self.assertIn(b'M\xce\xfa', s)  # BININT2
-                elikiwa proto < 4:
+                lasivyo proto < 4:
                     self.assertIn(b'X\x04\x00\x00\x00FACE', s)  # BINUNICODE
                 isipokua:
                     self.assertIn(b'\x8c\x04FACE', s)  # SHORT_BINUNICODE
@@ -2095,13 +2095,13 @@ kundi AbstractPickleTests(unittest.TestCase):
         x = ComplexNewObjEx.__new__(ComplexNewObjEx, 0xface)  # avoid __init__
         x.abc = 666
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 s = self.dumps(x, proto)
                 ikiwa proto < 1:
                     self.assertIn(b'\nI64206', s)  # INT
-                elikiwa proto < 2:
+                lasivyo proto < 2:
                     self.assertIn(b'M\xce\xfa', s)  # BININT2
-                elikiwa proto < 4:
+                lasivyo proto < 4:
                     self.assertIn(b'X\x04\x00\x00\x00FACE', s)  # BINUNICODE
                 isipokua:
                     self.assertIn(b'\x8c\x04FACE', s)  # SHORT_BINUNICODE
@@ -2195,14 +2195,14 @@ kundi AbstractPickleTests(unittest.TestCase):
                 pita
 
     eleza test_many_puts_and_gets(self):
-        # Test that internal data structures correctly deal with lots of
+        # Test that internal data structures correctly deal ukijumuisha lots of
         # puts/gets.
         keys = ("aaa" + str(i) kila i kwenye range(100))
         large_dict = dict((k, [4, 5, 6]) kila k kwenye keys)
         obj = [dict(large_dict), dict(large_dict), dict(large_dict)]
 
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 dumped = self.dumps(obj, proto)
                 loaded = self.loads(dumped)
                 self.assert_is_copy(obj, loaded)
@@ -2222,7 +2222,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                 self.assertIs(x_key, y_key)
 
     eleza test_pickle_to_2x(self):
-        # Pickle non-trivial data with protocol 2, expecting that it tumas
+        # Pickle non-trivial data ukijumuisha protocol 2, expecting that it tumas
         # the same result kama Python 2.x did.
         # NOTE: this test ni a bit too strong since we can produce different
         # bytecode that 2.x will still understand.
@@ -2244,7 +2244,7 @@ kundi AbstractPickleTests(unittest.TestCase):
     eleza test_int_pickling_efficiency(self):
         # Test compacity of int representation (see issue #12744)
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 pickles = [self.dumps(2**n, proto) kila n kwenye range(70)]
                 sizes = list(map(len, pickles))
                 # the size function ni monotonic
@@ -2315,7 +2315,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                         self.assertLess(pos - frameless_start,
                                         self.FRAME_SIZE_MIN)
                         frameless_start = Tupu
-                elikiwa frameless_start ni Tupu na op.name != 'PROTO':
+                lasivyo frameless_start ni Tupu na op.name != 'PROTO':
                     frameless_start = pos
 
             ikiwa op.name == 'FRAME':
@@ -2325,14 +2325,14 @@ kundi AbstractPickleTests(unittest.TestCase):
         pos = len(pickled)
         ikiwa frame_end ni sio Tupu:
             self.assertEqual(frame_end, pos)
-        elikiwa frameless_start ni sio Tupu:
+        lasivyo frameless_start ni sio Tupu:
             self.assertLess(pos - frameless_start, self.FRAME_SIZE_MIN)
 
     @support.skip_if_pgo_task
     eleza test_framing_many_objects(self):
         obj = list(range(10**5))
         kila proto kwenye range(4, pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 pickled = self.dumps(obj, proto)
                 unpickled = self.loads(pickled)
                 self.assertEqual(obj, unpickled)
@@ -2350,10 +2350,10 @@ kundi AbstractPickleTests(unittest.TestCase):
         obj = [b'x' * N, *small_items, b'y' * N, 'z' * N]
         kila proto kwenye range(4, pickle.HIGHEST_PROTOCOL + 1):
             kila fast kwenye [Uongo, Kweli]:
-                with self.subTest(proto=proto, fast=fast):
+                ukijumuisha self.subTest(proto=proto, fast=fast):
                     ikiwa sio fast:
                         # fast=Uongo by default.
-                        # This covers in-memory pickling with pickle.dumps().
+                        # This covers in-memory pickling ukijumuisha pickle.dumps().
                         pickled = self.dumps(obj, proto)
                     isipokua:
                         # Pickler ni required when fast=Kweli.
@@ -2401,7 +2401,7 @@ kundi AbstractPickleTests(unittest.TestCase):
 
         frame_size = self.FRAME_SIZE_TARGET
         num_frames = 20
-        # Large byte objects (dict values) intermittent with small objects
+        # Large byte objects (dict values) intermittent ukijumuisha small objects
         # (dict keys)
         kila bytes_type kwenye (bytes, bytearray):
             obj = {i: bytes_type([i]) * frame_size kila i kwenye range(num_frames)}
@@ -2493,7 +2493,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                         pita
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             kila obj kwenye [Nested.A, Nested.A.B, Nested.A.B.C]:
-                with self.subTest(proto=proto, obj=obj):
+                ukijumuisha self.subTest(proto=proto, obj=obj):
                     unpickled = self.loads(self.dumps(obj, proto))
                     self.assertIs(obj, unpickled)
 
@@ -2504,7 +2504,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         Recursive.mod = sys.modules[Recursive.__module__]
         Recursive.__qualname__ = 'Recursive.mod.Recursive'
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 unpickled = self.loads(self.dumps(Recursive, proto))
                 self.assertIs(unpickled, Recursive)
         toa Recursive.mod # koma reference loop
@@ -2549,12 +2549,12 @@ kundi AbstractPickleTests(unittest.TestCase):
         )
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             kila method kwenye py_methods:
-                with self.subTest(proto=proto, method=method):
+                ukijumuisha self.subTest(proto=proto, method=method):
                     unpickled = self.loads(self.dumps(method, proto))
                     self.assertEqual(method(), unpickled())
             kila method, cls kwenye py_unbound_methods:
                 obj = cls()
-                with self.subTest(proto=proto, method=method):
+                ukijumuisha self.subTest(proto=proto, method=method):
                     unpickled = self.loads(self.dumps(method, proto))
                     self.assertEqual(method(obj), unpickled(obj))
 
@@ -2589,7 +2589,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         )
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             kila method, args kwenye c_methods:
-                with self.subTest(proto=proto, method=method):
+                ukijumuisha self.subTest(proto=proto, method=method):
                     unpickled = self.loads(self.dumps(method, proto))
                     self.assertEqual(method(*args), unpickled(*args))
 
@@ -2606,7 +2606,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         ]
         kila val, mod, name kwenye tests:
             kila proto kwenye range(3):
-                with self.subTest(type=type(val), proto=proto):
+                ukijumuisha self.subTest(type=type(val), proto=proto):
                     pickled = self.dumps(val, proto)
                     self.assertIn(('c%s\n%s' % (mod, name)).encode(), pickled)
                     self.assertIs(type(self.loads(pickled)), type(val))
@@ -2618,18 +2618,18 @@ kundi AbstractPickleTests(unittest.TestCase):
             pita
         # Since the function ni local, lookup will fail
         kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((AttributeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((AttributeError, pickle.PicklingError)):
                 pickletools.dis(self.dumps(f, proto))
         # Same without a __module__ attribute (exercises a different path
         # kwenye _pickle.c).
         toa f.__module__
         kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((AttributeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((AttributeError, pickle.PicklingError)):
                 pickletools.dis(self.dumps(f, proto))
         # Yet a different path.
         f.__name__ = f.__qualname__
         kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((AttributeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((AttributeError, pickle.PicklingError)):
                 pickletools.dis(self.dumps(f, proto))
 
     #
@@ -2637,7 +2637,7 @@ kundi AbstractPickleTests(unittest.TestCase):
     #
 
     eleza buffer_like_objects(self):
-        # Yield buffer-like objects with the bytestring "abcdef" kwenye them
+        # Yield buffer-like objects ukijumuisha the bytestring "abcdef" kwenye them
         bytestring = b"abcdefgh"
         tuma ZeroCopyBytes(bytestring)
         tuma ZeroCopyBytearray(bytestring)
@@ -2667,9 +2667,9 @@ kundi AbstractPickleTests(unittest.TestCase):
                 self.assertEqual(count_opcode(pickle.NEXT_BUFFER, data), 0)
                 ikiwa proto >= 5:
                     self.assertEqual(count_opcode(pickle.SHORT_BINBYTES, data),
-                                     1 ikiwa obj.readonly else 0)
+                                     1 ikiwa obj.readonly isipokua 0)
                     self.assertEqual(count_opcode(pickle.BYTEARRAY8, data),
-                                     0 ikiwa obj.readonly else 1)
+                                     0 ikiwa obj.readonly isipokua 1)
                     # Return a true value kutoka buffer_callback should have
                     # the same effect
                     eleza buffer_callback(obj):
@@ -2692,7 +2692,7 @@ kundi AbstractPickleTests(unittest.TestCase):
         kila obj kwenye self.buffer_like_objects():
             kila proto kwenye range(0, 5):
                 # Need protocol >= 5 kila buffer_callback
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     self.dumps(obj, proto,
                                buffer_callback=[].append)
             kila proto kwenye range(5, pickle.HIGHEST_PROTOCOL + 1):
@@ -2705,12 +2705,12 @@ kundi AbstractPickleTests(unittest.TestCase):
                 self.assertEqual(count_opcode(pickle.BYTEARRAY8, data), 0)
                 self.assertEqual(count_opcode(pickle.NEXT_BUFFER, data), 1)
                 self.assertEqual(count_opcode(pickle.READONLY_BUFFER, data),
-                                 1 ikiwa obj.readonly else 0)
+                                 1 ikiwa obj.readonly isipokua 0)
 
                 ikiwa obj.c_contiguous:
                     self.assertEqual(bytes(buffers[0]), b"abcdefgh")
                 # Need buffers argument to unpickle properly
-                with self.assertRaises(pickle.UnpicklingError):
+                ukijumuisha self.assertRaises(pickle.UnpicklingError):
                     self.loads(data)
 
                 new = self.loads(data, buffers=buffers)
@@ -2743,17 +2743,17 @@ kundi AbstractPickleTests(unittest.TestCase):
             self.assertEqual(new, obj)
 
     eleza test_picklebuffer_error(self):
-        # PickleBuffer forbidden with protocol < 5
+        # PickleBuffer forbidden ukijumuisha protocol < 5
         pb = pickle.PickleBuffer(b"foobar")
         kila proto kwenye range(0, 5):
-            with self.assertRaises(pickle.PickleError):
+            ukijumuisha self.assertRaises(pickle.PickleError):
                 self.dumps(pb, proto)
 
     eleza test_buffer_callback_error(self):
         eleza buffer_callback(buffers):
             1/0
         pb = pickle.PickleBuffer(b"foobar")
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             self.dumps(pb, 5, buffer_callback=buffer_callback)
 
     eleza test_buffers_error(self):
@@ -2761,10 +2761,10 @@ kundi AbstractPickleTests(unittest.TestCase):
         kila proto kwenye range(5, pickle.HIGHEST_PROTOCOL + 1):
             data = self.dumps(pb, proto, buffer_callback=[].append)
             # Non iterable buffers
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 self.loads(data, buffers=object())
             # Buffer iterable exhausts too early
-            with self.assertRaises(pickle.UnpicklingError):
+            ukijumuisha self.assertRaises(pickle.UnpicklingError):
                 self.loads(data, buffers=[])
 
     eleza test_inband_accept_default_buffers_argument(self):
@@ -2829,8 +2829,8 @@ kundi BigmemPickleTests(unittest.TestCase):
             kila proto kwenye protocols:
                 ikiwa proto < 2:
                     endelea
-                with self.subTest(proto=proto):
-                    with self.assertRaises((ValueError, OverflowError)):
+                ukijumuisha self.subTest(proto=proto):
+                    ukijumuisha self.assertRaises((ValueError, OverflowError)):
                         self.dumps(data, protocol=proto)
         mwishowe:
             data = Tupu
@@ -2846,7 +2846,7 @@ kundi BigmemPickleTests(unittest.TestCase):
             kila proto kwenye protocols:
                 ikiwa proto < 3:
                     endelea
-                with self.subTest(proto=proto):
+                ukijumuisha self.subTest(proto=proto):
                     jaribu:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINBYTES +
@@ -2867,11 +2867,11 @@ kundi BigmemPickleTests(unittest.TestCase):
             kila proto kwenye protocols:
                 ikiwa proto < 3:
                     endelea
-                with self.subTest(proto=proto):
+                ukijumuisha self.subTest(proto=proto):
                     ikiwa proto == 3:
                         # Protocol 3 does sio support large bytes objects.
                         # Verify that we do sio crash when processing one.
-                        with self.assertRaises((ValueError, OverflowError)):
+                        ukijumuisha self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
                         endelea
                     jaribu:
@@ -2897,7 +2897,7 @@ kundi BigmemPickleTests(unittest.TestCase):
             kila proto kwenye protocols:
                 ikiwa proto == 0:
                     endelea
-                with self.subTest(proto=proto):
+                ukijumuisha self.subTest(proto=proto):
                     jaribu:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINUNICODE +
@@ -2924,9 +2924,9 @@ kundi BigmemPickleTests(unittest.TestCase):
             kila proto kwenye protocols:
                 ikiwa proto == 0:
                     endelea
-                with self.subTest(proto=proto):
+                ukijumuisha self.subTest(proto=proto):
                     ikiwa proto < 4:
-                        with self.assertRaises((ValueError, OverflowError)):
+                        ukijumuisha self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
                         endelea
                     jaribu:
@@ -2977,7 +2977,7 @@ kundi REX_four(object):
         rudisha object.__reduce_ex__(self, proto)
 
 kundi REX_five(object):
-    """This one used to fail with infinite recursion"""
+    """This one used to fail ukijumuisha infinite recursion"""
     _reduce_called = 0
     eleza __reduce__(self):
         self._reduce_called = 1
@@ -2988,7 +2988,7 @@ kundi REX_six(object):
     the reduce protocol.
     """
     eleza __init__(self, items=Tupu):
-        self.items = items ikiwa items ni sio Tupu else []
+        self.items = items ikiwa items ni sio Tupu isipokua []
     eleza __eq__(self, other):
         rudisha type(self) ni type(other) na self.items == other.items
     eleza append(self, item):
@@ -3001,7 +3001,7 @@ kundi REX_seven(object):
     the reduce protocol.
     """
     eleza __init__(self, table=Tupu):
-        self.table = table ikiwa table ni sio Tupu else {}
+        self.table = table ikiwa table ni sio Tupu isipokua {}
     eleza __eq__(self, other):
         rudisha type(self) ni type(other) na self.table == other.table
     eleza __setitem__(self, key, value):
@@ -3144,7 +3144,7 @@ kundi AbstractPickleModuleTests(unittest.TestCase):
 
         kila proto kwenye range(0, 5):
             # Need protocol >= 5 kila buffer_callback
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 dumps(obj, protocol=proto,
                       buffer_callback=[].append)
         kila proto kwenye range(5, pickle.HIGHEST_PROTOCOL + 1):
@@ -3155,17 +3155,17 @@ kundi AbstractPickleModuleTests(unittest.TestCase):
             self.assertNotIn(b"foo", data)
             self.assertEqual(bytes(buffers[0]), b"foo")
             # Need buffers argument to unpickle properly
-            with self.assertRaises(pickle.UnpicklingError):
+            ukijumuisha self.assertRaises(pickle.UnpicklingError):
                 loads(data)
             new = loads(data, buffers=buffers)
             self.assertIs(new, obj)
 
     eleza test_dumps_loads_oob_buffers(self):
-        # Test out-of-band buffers (PEP 574) with top-level dumps() na loads()
+        # Test out-of-band buffers (PEP 574) ukijumuisha top-level dumps() na loads()
         self.check_dumps_loads_oob_buffers(self.dumps, self.loads)
 
     eleza test_dump_load_oob_buffers(self):
-        # Test out-of-band buffers (PEP 574) with top-level dump() na load()
+        # Test out-of-band buffers (PEP 574) ukijumuisha top-level dump() na load()
         eleza dumps(obj, **kwargs):
             f = io.BytesIO()
             self.dump(obj, f, **kwargs)
@@ -3188,7 +3188,7 @@ kundi AbstractPersistentPicklerTests(unittest.TestCase):
         ikiwa isinstance(object, int) na object % 2 == 0:
             self.id_count += 1
             rudisha str(object)
-        elikiwa object == "test_false_value":
+        lasivyo object == "test_false_value":
             self.false_count += 1
             rudisha ""
         isipokua:
@@ -3363,7 +3363,7 @@ kundi AbstractPicklerUnpicklerObjectTests(unittest.TestCase):
 
     eleza _check_multiple_unpicklings(self, ioclass):
         kila proto kwenye protocols:
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 data1 = [(x, str(x)) kila x kwenye range(2000)] + [b"abcde", len]
                 f = ioclass()
                 pickler = self.pickler_class(f, protocol=proto)
@@ -3444,12 +3444,12 @@ kundi AbstractCustomPicklerClass:
         ikiwa obj_name == 'MyClass':
             rudisha str, ('some str',)
 
-        elikiwa obj_name == 'g':
+        lasivyo obj_name == 'g':
             # kwenye this case, the callback rudishas an invalid result (not a 2-5
             # tuple ama a string), the pickler should ashiria a proper error.
             rudisha Uongo
 
-        elikiwa obj_name == 'h':
+        lasivyo obj_name == 'h':
             # Simulate a case when the reducer fails. The error should
             # be propagated to the original ``dump`` call.
             ashiria ValueError('The reducer just failed')
@@ -3475,7 +3475,7 @@ kundi AbstractHookTests(unittest.TestCase):
             pita
 
         kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 bio = io.BytesIO()
                 p = self.pickler_class(bio, proto)
 
@@ -3490,10 +3490,10 @@ kundi AbstractHookTests(unittest.TestCase):
                 # NotImplemented
                 self.assertIs(math_log, math.log)
 
-                with self.assertRaises(pickle.PicklingError):
+                ukijumuisha self.assertRaises(pickle.PicklingError):
                     p.dump(g)
 
-                with self.assertRaisesRegex(
+                ukijumuisha self.assertRaisesRegex(
                         ValueError, 'The reducer just failed'):
                     p.dump(h)
 
@@ -3504,7 +3504,7 @@ kundi AbstractDispatchTableTests(unittest.TestCase):
         # No dispatch_table attribute by default
         f = io.BytesIO()
         p = self.pickler_class(f, 0)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             p.dispatch_table
         self.assertUongo(hasattr(p, 'dispatch_table'))
 
@@ -3585,7 +3585,7 @@ kundi AbstractDispatchTableTests(unittest.TestCase):
         self.assertEqual(default_load_dump(a), REDUCE_A)
         self.assertIsInstance(default_load_dump(b), BBB)
 
-        # End-to-end testing of save_reduce with the state_setter keyword
+        # End-to-end testing of save_reduce ukijumuisha the state_setter keyword
         # argument. This ni a dispatch_table test kama the primary goal of
         # state_setter ni to tweak objects reduction behavior.
         # In particular, state_setter ni useful when the default __setstate__

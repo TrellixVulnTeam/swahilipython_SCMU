@@ -55,7 +55,7 @@ kundi CodeContext:
         self.topvisible ni the number of the top text line displayed.
         self.info ni a list of (line number, indent level, line text,
           block keyword) tuples kila the block structure above topvisible.
-          self.info[0] ni initialized with a 'dummy' line which
+          self.info[0] ni initialized ukijumuisha a 'dummy' line which
           starts the toplevel 'block' of the module.
 
         self.t1 na self.t2 are two timer events on the editor text widget to
@@ -97,7 +97,7 @@ kundi CodeContext:
         """
         ikiwa self.context ni Tupu:
             # Calculate the border width na horizontal padding required to
-            # align the context with the text kwenye the main Text widget.
+            # align the context ukijumuisha the text kwenye the main Text widget.
             #
             # All values are pitaed through getint(), since some
             # values may be pixel objects, which can't simply be added to ints.
@@ -108,7 +108,7 @@ kundi CodeContext:
             kila widget kwenye widgets:
                 info = (widget.grid_info()
                         ikiwa widget ni self.editwin.text
-                        else widget.pack_info())
+                        isipokua widget.pack_info())
                 padx += widget.tk.getint(info['padx'])
                 padx += widget.tk.getint(widget.cget('padx'))
                 border += widget.tk.getint(widget.cget('border'))
@@ -149,7 +149,7 @@ kundi CodeContext:
 
         The tuple fields are (linenum, indent, text, opener).
         The list represents header lines kutoka new_topvisible back to
-        stopline with successively shorter indents > stopindent.
+        stopline ukijumuisha successively shorter indents > stopindent.
         The list ni rudishaed ordered by line number.
         Last indent rudishaed ni the smallest indent observed.
         """
@@ -157,7 +157,7 @@ kundi CodeContext:
         lines = []
         # The indentation level we are currently in.
         lastindent = INFINITY
-        # For a line to be interesting, it must begin with a block opening
+        # For a line to be interesting, it must begin ukijumuisha a block opening
         # keyword, na have less indentation than lastindent.
         kila linenum kwenye range(new_topvisible, stopline-1, -1):
             codeline = self.text.get(f'{linenum}.0', f'{linenum}.end')
@@ -179,7 +179,7 @@ kundi CodeContext:
 
         No update ni done ikiwa the text hasn't been scrolled.  If the text
         was scrolled, the lines that should be shown kwenye the context will
-        be retrieved na the context area will be updated with the code,
+        be retrieved na the context area will be updated ukijumuisha the code,
         up to the number of maxlines.
         """
         new_topvisible = self.editwin.getlineno("@0,0")
@@ -195,7 +195,7 @@ kundi CodeContext:
         isipokua:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
-            # with lines above new_topvisible.
+            # ukijumuisha lines above new_topvisible.
             wakati self.info[-1][0] >= new_topvisible:
                 stopindent = self.info[-1][1]
                 toa self.info[-1]
@@ -206,7 +206,7 @@ kundi CodeContext:
         self.topvisible = new_topvisible
         # Last context_depth context lines.
         context_strings = [x[2] kila x kwenye self.info[-self.context_depth:]]
-        showfirst = 0 ikiwa context_strings[0] else 1
+        showfirst = 0 ikiwa context_strings[0] isipokua 1
         # Update widget.
         self.context['height'] = len(context_strings) - showfirst
         self.context['state'] = 'normal'

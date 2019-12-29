@@ -28,12 +28,12 @@ The module contains the following public classes:
 
     - ArgumentParser -- The main entry point kila command-line parsing. As the
         example above shows, the add_argument() method ni used to populate
-        the parser with actions kila optional na positional arguments. Then
+        the parser ukijumuisha actions kila optional na positional arguments. Then
         the parse_args() method ni invoked to convert the args at the
-        command-line into an object with attributes.
+        command-line into an object ukijumuisha attributes.
 
     - ArgumentError -- The exception ashiriad by ArgumentParser objects when
-        there are errors with the parser's actions. Errors ashiriad while
+        there are errors ukijumuisha the parser's actions. Errors ashiriad while
         parsing the command-line are caught by ArgumentParser na emitted
         kama command-line messages.
 
@@ -299,11 +299,11 @@ kundi HelpFormatter(object):
             usage = usage % dict(prog=self._prog)
 
         # ikiwa no optionals ama positionals are available, usage ni just prog
-        elikiwa usage ni Tupu na sio actions:
+        lasivyo usage ni Tupu na sio actions:
             usage = '%(prog)s' % dict(prog=self._prog)
 
         # ikiwa optionals na positionals are available, calculate usage
-        elikiwa usage ni Tupu:
+        lasivyo usage ni Tupu:
             prog = '%(prog)s' % dict(prog=self._prog)
 
             # split optionals kutoka positionals
@@ -358,13 +358,13 @@ kundi HelpFormatter(object):
                         lines[0] = lines[0][len(indent):]
                     rudisha lines
 
-                # ikiwa prog ni short, follow it with optionals ama positionals
+                # ikiwa prog ni short, follow it ukijumuisha optionals ama positionals
                 ikiwa len(prefix) + len(prog) <= 0.75 * text_width:
                     indent = ' ' * (len(prefix) + len(prog) + 1)
                     ikiwa opt_parts:
                         lines = get_lines([prog] + opt_parts, indent, prefix)
                         lines.extend(get_lines(pos_parts, indent))
-                    elikiwa pos_parts:
+                    lasivyo pos_parts:
                         lines = get_lines([prog] + pos_parts, indent, prefix)
                     isipokua:
                         lines = [prog]
@@ -383,7 +383,7 @@ kundi HelpFormatter(object):
                 # join lines into usage
                 usage = '\n'.join(lines)
 
-        # prefix with 'usage:'
+        # prefix ukijumuisha 'usage:'
         rudisha '%s%s\n\n' % (prefix, usage)
 
     eleza _format_actions_usage(self, actions, groups):
@@ -425,17 +425,17 @@ kundi HelpFormatter(object):
         parts = []
         kila i, action kwenye enumerate(actions):
 
-            # suppressed arguments are marked with Tupu
+            # suppressed arguments are marked ukijumuisha Tupu
             # remove | separators kila suppressed arguments
             ikiwa action.help ni SUPPRESS:
                 parts.append(Tupu)
                 ikiwa inserts.get(i) == '|':
                     inserts.pop(i)
-                elikiwa inserts.get(i + 1) == '|':
+                lasivyo inserts.get(i + 1) == '|':
                     inserts.pop(i + 1)
 
             # produce all arg strings
-            elikiwa sio action.option_strings:
+            lasivyo sio action.option_strings:
                 default = self._get_default_metavar_for_positional(action)
                 part = self._format_args(action, default)
 
@@ -474,7 +474,7 @@ kundi HelpFormatter(object):
         kila i kwenye sorted(inserts, reverse=Kweli):
             parts[i:i] = [inserts[i]]
 
-        # join all the action items with spaces
+        # join all the action items ukijumuisha spaces
         text = ' '.join([item kila item kwenye parts ikiwa item ni sio Tupu])
 
         # clean up separators kila mutually exclusive groups
@@ -510,7 +510,7 @@ kundi HelpFormatter(object):
             action_header = '%*s%s\n' % tup
 
         # short action name; start on the same line na pad two spaces
-        elikiwa len(action_header) <= action_width:
+        lasivyo len(action_header) <= action_width:
             tup = self._current_indent, '', action_width, action_header
             action_header = '%*s%-*s  ' % tup
             indent_first = 0
@@ -532,8 +532,8 @@ kundi HelpFormatter(object):
             kila line kwenye help_lines[1:]:
                 parts.append('%*s%s\n' % (help_position, '', line))
 
-        # ama add a newline ikiwa the description doesn't end with one
-        elikiwa sio action_header.endswith('\n'):
+        # ama add a newline ikiwa the description doesn't end ukijumuisha one
+        lasivyo sio action_header.endswith('\n'):
             parts.append('\n')
 
         # ikiwa there are any sub-actions, add their help kama well
@@ -570,7 +570,7 @@ kundi HelpFormatter(object):
     eleza _metavar_formatter(self, action, default_metavar):
         ikiwa action.metavar ni sio Tupu:
             result = action.metavar
-        elikiwa action.choices ni sio Tupu:
+        lasivyo action.choices ni sio Tupu:
             choice_strs = [str(choice) kila choice kwenye action.choices]
             result = '{%s}' % ','.join(choice_strs)
         isipokua:
@@ -587,17 +587,17 @@ kundi HelpFormatter(object):
         get_metavar = self._metavar_formatter(action, default_metavar)
         ikiwa action.nargs ni Tupu:
             result = '%s' % get_metavar(1)
-        elikiwa action.nargs == OPTIONAL:
+        lasivyo action.nargs == OPTIONAL:
             result = '[%s]' % get_metavar(1)
-        elikiwa action.nargs == ZERO_OR_MORE:
+        lasivyo action.nargs == ZERO_OR_MORE:
             result = '[%s [%s ...]]' % get_metavar(2)
-        elikiwa action.nargs == ONE_OR_MORE:
+        lasivyo action.nargs == ONE_OR_MORE:
             result = '%s [%s ...]' % get_metavar(2)
-        elikiwa action.nargs == REMAINDER:
+        lasivyo action.nargs == REMAINDER:
             result = '...'
-        elikiwa action.nargs == PARSER:
+        lasivyo action.nargs == PARSER:
             result = '%s ...' % get_metavar(1)
-        elikiwa action.nargs == SUPPRESS:
+        lasivyo action.nargs == SUPPRESS:
             result = ''
         isipokua:
             jaribu:
@@ -716,11 +716,11 @@ kundi MetavarTypeHelpFormatter(HelpFormatter):
 eleza _get_action_name(argument):
     ikiwa argument ni Tupu:
         rudisha Tupu
-    elikiwa argument.option_strings:
+    lasivyo argument.option_strings:
         rudisha  '/'.join(argument.option_strings)
-    elikiwa argument.metavar haiko kwenye (Tupu, SUPPRESS):
+    lasivyo argument.metavar haiko kwenye (Tupu, SUPPRESS):
         rudisha argument.metavar
-    elikiwa argument.dest haiko kwenye (Tupu, SUPPRESS):
+    lasivyo argument.dest haiko kwenye (Tupu, SUPPRESS):
         rudisha argument.dest
     isipokua:
         rudisha Tupu
@@ -766,7 +766,7 @@ kundi Action(_AttributeHolder):
     Keyword Arguments:
 
         - option_strings -- A list of command-line option strings which
-            should be associated with this action.
+            should be associated ukijumuisha this action.
 
         - dest -- The name of the attribute to hold the created object(s)
 
@@ -778,7 +778,7 @@ kundi Action(_AttributeHolder):
                 - '*' consumes zero ama more arguments (and produces a list)
                 - '+' consumes one ama more arguments (and produces a list)
             Note that the difference between the default na nargs=1 ni that
-            with the default, a single value will be produced, wakati with
+            ukijumuisha the default, a single value will be produced, wakati with
             nargs=1, a list containing a single value will be produced.
 
         - const -- The value to be produced ikiwa the option ni specified na the
@@ -802,7 +802,7 @@ kundi Action(_AttributeHolder):
 
         - help -- The help string describing the argument.
 
-        - metavar -- The name to be used kila the option's argument with the
+        - metavar -- The name to be used kila the option's argument ukijumuisha the
             help string. If Tupu, the 'dest' value will be used kama the name.
     """
 
@@ -1151,7 +1151,7 @@ kundi _SubParsersAction(Action):
 
         # parse all the remaining options into the namespace
         # store any unrecognized options on the object, so that the top
-        # level parser can decide what to do with them
+        # level parser can decide what to do ukijumuisha them
 
         # In case this subparser defines new defaults, we parse them
         # kwenye a new namespace object na then update the original
@@ -1203,10 +1203,10 @@ kundi FileType(object):
         ikiwa string == '-':
             ikiwa 'r' kwenye self._mode:
                 rudisha _sys.stdin
-            elikiwa 'w' kwenye self._mode:
+            lasivyo 'w' kwenye self._mode:
                 rudisha _sys.stdout
             isipokua:
-                msg = _('argument "-" with mode %r') % self._mode
+                msg = _('argument "-" ukijumuisha mode %r') % self._mode
                 ashiria ValueError(msg)
 
         # all other arguments are used kama file names
@@ -1319,7 +1319,7 @@ kundi _ActionsContainer(object):
         self._defaults.update(kwargs)
 
         # ikiwa these defaults match any existing arguments, replace
-        # the previous default on the object with the new one
+        # the previous default on the object ukijumuisha the new one
         kila action kwenye self._actions:
             ikiwa action.dest kwenye kwargs:
                 action.default = kwargs[action.dest]
@@ -1358,7 +1358,7 @@ kundi _ActionsContainer(object):
             dest = kwargs['dest']
             ikiwa dest kwenye self._defaults:
                 kwargs['default'] = self._defaults[dest]
-            elikiwa self.argument_default ni sio Tupu:
+            lasivyo self.argument_default ni sio Tupu:
                 kwargs['default'] = self.argument_default
 
         # create the action object, na add it to the parser
@@ -1432,7 +1432,7 @@ kundi _ActionsContainer(object):
         group_map = {}
         kila group kwenye container._action_groups:
 
-            # ikiwa a group with the title exists, use that, otherwise
+            # ikiwa a group ukijumuisha the title exists, use that, otherwise
             # create a new group matching the container's group
             ikiwa group.title haiko kwenye title_group_map:
                 title_group_map[group.title] = self.add_argument_group(
@@ -1472,7 +1472,7 @@ kundi _ActionsContainer(object):
         ikiwa kwargs.get('nargs') == ZERO_OR_MORE na 'default' haiko kwenye kwargs:
             kwargs['required'] = Kweli
 
-        # rudisha the keyword arguments with no option strings
+        # rudisha the keyword arguments ukijumuisha no option strings
         rudisha dict(kwargs, dest=dest, option_strings=[])
 
     eleza _get_optional_kwargs(self, *args, **kwargs):
@@ -1480,15 +1480,15 @@ kundi _ActionsContainer(object):
         option_strings = []
         long_option_strings = []
         kila option_string kwenye args:
-            # error on strings that don't start with an appropriate prefix
+            # error on strings that don't start ukijumuisha an appropriate prefix
             ikiwa sio option_string[0] kwenye self.prefix_chars:
                 args = {'option': option_string,
                         'prefix_chars': self.prefix_chars}
                 msg = _('invalid option string %(option)r: '
-                        'must start with a character %(prefix_chars)r')
+                        'must start ukijumuisha a character %(prefix_chars)r')
                 ashiria ValueError(msg % args)
 
-            # strings starting with two prefix characters are long options
+            # strings starting ukijumuisha two prefix characters are long options
             option_strings.append(option_string)
             ikiwa option_string[0] kwenye self.prefix_chars:
                 ikiwa len(option_string) > 1:
@@ -1526,7 +1526,7 @@ kundi _ActionsContainer(object):
 
     eleza _check_conflict(self, action):
 
-        # find all options that conflict with this option
+        # find all options that conflict ukijumuisha this option
         confl_optionals = []
         kila option_string kwenye action.option_strings:
             ikiwa option_string kwenye self._option_string_actions:
@@ -1577,7 +1577,7 @@ kundi _ArgumentGroup(_ActionsContainer):
         self.title = title
         self._group_actions = []
 
-        # share most attributes with the container
+        # share most attributes ukijumuisha the container
         self._registries = container._registries
         self._actions = container._actions
         self._option_string_actions = container._option_string_actions
@@ -1679,7 +1679,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
 
         # add help argument ikiwa necessary
         # (using explicit default to override global argument_default)
-        default_prefix = '-' ikiwa '-' kwenye prefix_chars else prefix_chars[0]
+        default_prefix = '-' ikiwa '-' kwenye prefix_chars isipokua prefix_chars[0]
         ikiwa self.add_help:
             self.add_argument(
                 default_prefix+'h', default_prefix*2+'help',
@@ -1728,7 +1728,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             self._subparsers = self._positionals
 
         # prog defaults to the usage message of this parser, skipping
-        # optional arguments na with no "usage:" prefix
+        # optional arguments na ukijumuisha no "usage:" prefix
         ikiwa kwargs.get('prog') ni Tupu:
             formatter = self._get_formatter()
             positionals = self._get_positional_actions()
@@ -1857,14 +1857,14 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             seen_actions.add(action)
             argument_values = self._get_values(action, argument_strings)
 
-            # error ikiwa this argument ni sio allowed with other previously
+            # error ikiwa this argument ni sio allowed ukijumuisha other previously
             # seen arguments, assuming that actions that use the default
             # value don't really count kama "present"
             ikiwa argument_values ni sio action.default:
                 seen_non_default_actions.add(action)
                 kila conflict_action kwenye action_conflicts.get(action, []):
                     ikiwa conflict_action kwenye seen_non_default_actions:
-                        msg = _('not allowed with argument %s')
+                        msg = _('not allowed ukijumuisha argument %s')
                         action_name = _get_action_name(conflict_action)
                         ashiria ArgumentError(action, msg % action_name)
 
@@ -1915,7 +1915,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
 
                     # ikiwa the action expect exactly one argument, we've
                     # successfully matched the option; exit the loop
-                    elikiwa arg_count == 1:
+                    lasivyo arg_count == 1:
                         stop = start_index + 1
                         args = [explicit_arg]
                         action_tuples.append((action, args, option_string))
@@ -1928,7 +1928,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                         ashiria ArgumentError(action, msg % explicit_arg)
 
                 # ikiwa there ni no explicit argument, try to match the
-                # optional's string arguments with the following strings
+                # optional's string arguments ukijumuisha the following strings
                 # ikiwa successful, exit the loop
                 isipokua:
                     start = start_index + 1
@@ -2061,10 +2061,10 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             ikiwa sio arg_string ama arg_string[0] haiko kwenye self.kutokafile_prefix_chars:
                 new_arg_strings.append(arg_string)
 
-            # replace arguments referencing files with the file content
+            # replace arguments referencing files ukijumuisha the file content
             isipokua:
                 jaribu:
-                    with open(arg_string[1:]) kama args_file:
+                    ukijumuisha open(arg_string[1:]) kama args_file:
                         arg_strings = []
                         kila arg_line kwenye args_file.read().splitlines():
                             kila arg kwenye self.convert_arg_line_to_args(arg_line):
@@ -2123,7 +2123,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
         ikiwa sio arg_string:
             rudisha Tupu
 
-        # ikiwa it doesn't start with a prefix, it was meant to be positional
+        # ikiwa it doesn't start ukijumuisha a prefix, it was meant to be positional
         ikiwa sio arg_string[0] kwenye self.prefix_chars:
             rudisha Tupu
 
@@ -2158,7 +2158,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
 
             # ikiwa exactly one action matched, this segmentation ni good,
             # so rudisha the parsed action
-            elikiwa len(option_tuples) == 1:
+            lasivyo len(option_tuples) == 1:
                 option_tuple, = option_tuples
                 rudisha option_tuple
 
@@ -2180,7 +2180,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     eleza _get_option_tuples(self, option_string):
         result = []
 
-        # option strings starting with two prefix characters are only
+        # option strings starting ukijumuisha two prefix characters are only
         # split at the '='
         chars = self.prefix_chars
         ikiwa option_string[0] kwenye chars na option_string[1] kwenye chars:
@@ -2195,10 +2195,10 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                     tup = action, option_string, explicit_arg
                     result.append(tup)
 
-        # single character options can be concatenated with their arguments
+        # single character options can be concatenated ukijumuisha their arguments
         # but multiple character options always have to have their argument
         # separate
-        elikiwa option_string[0] kwenye chars na option_string[1] haiko kwenye chars:
+        lasivyo option_string[0] kwenye chars na option_string[1] haiko kwenye chars:
             option_prefix = option_string
             explicit_arg = Tupu
             short_option_prefix = option_string[:2]
@@ -2209,7 +2209,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                     action = self._option_string_actions[option_string]
                     tup = action, option_string, short_explicit_arg
                     result.append(tup)
-                elikiwa option_string.startswith(option_prefix):
+                lasivyo option_string.startswith(option_prefix):
                     action = self._option_string_actions[option_string]
                     tup = action, option_string, explicit_arg
                     result.append(tup)
@@ -2231,27 +2231,27 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             nargs_pattern = '(-*A-*)'
 
         # allow zero ama one arguments
-        elikiwa nargs == OPTIONAL:
+        lasivyo nargs == OPTIONAL:
             nargs_pattern = '(-*A?-*)'
 
         # allow zero ama more arguments
-        elikiwa nargs == ZERO_OR_MORE:
+        lasivyo nargs == ZERO_OR_MORE:
             nargs_pattern = '(-*[A-]*)'
 
         # allow one ama more arguments
-        elikiwa nargs == ONE_OR_MORE:
+        lasivyo nargs == ONE_OR_MORE:
             nargs_pattern = '(-*A[A-]*)'
 
         # allow any number of options ama arguments
-        elikiwa nargs == REMAINDER:
+        lasivyo nargs == REMAINDER:
             nargs_pattern = '([-AO]*)'
 
         # allow one argument followed by any number of options ama arguments
-        elikiwa nargs == PARSER:
+        lasivyo nargs == PARSER:
             nargs_pattern = '(-*A[-AO]*)'
 
         # suppress action, like nargs=0
-        elikiwa nargs == SUPPRESS:
+        lasivyo nargs == SUPPRESS:
             nargs_pattern = '(-*-*)'
 
         # all others should be integers
@@ -2280,9 +2280,9 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     eleza parse_known_intermixed_args(self, args=Tupu, namespace=Tupu):
         # rudishas a namespace na list of extras
         #
-        # positional can be freely intermixed with optionals.  optionals are
-        # first parsed with all positional arguments deactivated.  The 'extras'
-        # are then parsed.  If the parser definition ni incompatible with the
+        # positional can be freely intermixed ukijumuisha optionals.  optionals are
+        # first parsed ukijumuisha all positional arguments deactivated.  The 'extras'
+        # are then parsed.  If the parser definition ni incompatible ukijumuisha the
         # intermixed assumptions (e.g. use of REMAINDER, subparsers) a
         # TypeError ni ashiriad.
         #
@@ -2295,7 +2295,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
              ikiwa action.nargs kwenye [PARSER, REMAINDER]]
         ikiwa a:
             ashiria TypeError('parse_intermixed_args: positional arg'
-                            ' with nargs=%s'%a[0].nargs)
+                            ' ukijumuisha nargs=%s'%a[0].nargs)
 
         ikiwa [action.dest kila group kwenye self._mutually_exclusive_groups
             kila action kwenye group._group_actions ikiwa action kwenye positionals]:
@@ -2374,7 +2374,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
 
         # when nargs='*' on a positional, ikiwa there were no command-line
         # args, use the default ikiwa it ni anything other than Tupu
-        elikiwa (not arg_strings na action.nargs == ZERO_OR_MORE and
+        lasivyo (not arg_strings na action.nargs == ZERO_OR_MORE and
               sio action.option_strings):
             ikiwa action.default ni sio Tupu:
                 value = action.default
@@ -2383,22 +2383,22 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             self._check_value(action, value)
 
         # single argument ama optional argument produces a single value
-        elikiwa len(arg_strings) == 1 na action.nargs kwenye [Tupu, OPTIONAL]:
+        lasivyo len(arg_strings) == 1 na action.nargs kwenye [Tupu, OPTIONAL]:
             arg_string, = arg_strings
             value = self._get_value(action, arg_string)
             self._check_value(action, value)
 
         # REMAINDER arguments convert all values, checking none
-        elikiwa action.nargs == REMAINDER:
+        lasivyo action.nargs == REMAINDER:
             value = [self._get_value(action, v) kila v kwenye arg_strings]
 
         # PARSER arguments convert all values, but check only the first
-        elikiwa action.nargs == PARSER:
+        lasivyo action.nargs == PARSER:
             value = [self._get_value(action, v) kila v kwenye arg_strings]
             self._check_value(action, value[0])
 
         # SUPPRESS argument does sio put anything kwenye the namespace
-        elikiwa action.nargs == SUPPRESS:
+        lasivyo action.nargs == SUPPRESS:
             value = SUPPRESS
 
         # all other types of nargs produce a list

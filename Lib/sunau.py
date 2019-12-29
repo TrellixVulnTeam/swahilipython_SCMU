@@ -31,7 +31,7 @@ The encoding gives the way kwenye which audio samples are encoded.
 Possible values are listed below.
 The info field currently consists of an ASCII string giving a
 human-readable description of the audio file.  The info field is
-padded with NUL bytes to the header size.
+padded ukijumuisha NUL bytes to the header size.
 
 Usage.
 
@@ -42,7 +42,7 @@ The open file pointer must have methods read(), seek(), na close().
 When the setpos() na rewind() methods are sio used, the seek()
 method ni sio  necessary.
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
         getnchannels()  -- rudishas number of audio channels (1 for
                            mono, 2 kila stereo)
         getsampwidth()  -- rudishas sample width kwenye bytes
@@ -53,17 +53,17 @@ This rudishas an instance of a kundi with the following public methods:
                            compression type ('not compressed' matches 'NONE')
         getparams()     -- rudishas a namedtuple consisting of all of the
                            above kwenye the above order
-        getmarkers()    -- rudishas Tupu (kila compatibility with the
+        getmarkers()    -- rudishas Tupu (kila compatibility ukijumuisha the
                            aifc module)
         getmark(id)     -- ashirias an error since the mark does not
-                           exist (kila compatibility with the aifc module)
+                           exist (kila compatibility ukijumuisha the aifc module)
         readframes(n)   -- rudishas at most n frames of audio
         rewind()        -- rewind to the beginning of the audio stream
         setpos(pos)     -- seek to the specified position
         tell()          -- rudisha the current position
         close()         -- close the instance (make it unusable)
 The position rudishaed by tell() na the position given to setpos()
-are compatible na have nothing to do with the actual position kwenye the
+are compatible na have nothing to do ukijumuisha the actual position kwenye the
 file.
 The close() method ni called automatically when the kundi instance
 is destroyed.
@@ -74,7 +74,7 @@ where file ni either the name of a file ama an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This rudishas an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi ukijumuisha the following public methods:
         setnchannels(n) -- set the number of channels
         setsampwidth(n) -- set the sample width
         setframerate(n) -- set the frame rate
@@ -196,13 +196,13 @@ kundi Au_read:
                   AUDIO_FILE_ENCODING_ALAW_8):
             self._sampwidth = 2
             self._framesize = 1
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
             self._framesize = self._sampwidth = 1
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
             self._framesize = self._sampwidth = 2
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
             self._framesize = self._sampwidth = 3
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
             self._framesize = self._sampwidth = 4
         isipokua:
             ashiria Error('unknown encoding')
@@ -243,7 +243,7 @@ kundi Au_read:
     eleza getcomptype(self):
         ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
             rudisha 'ULAW'
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'ALAW'
         isipokua:
             rudisha 'NONE'
@@ -251,7 +251,7 @@ kundi Au_read:
     eleza getcompname(self):
         ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
             rudisha 'CCITT G.711 u-law'
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'CCITT G.711 A-law'
         isipokua:
             rudisha 'not compressed'
@@ -395,7 +395,7 @@ kundi Au_write:
     eleza getcompname(self):
         ikiwa self._comptype == 'ULAW':
             rudisha 'CCITT G.711 u-law'
-        elikiwa self._comptype == 'ALAW':
+        lasivyo self._comptype == 'ALAW':
             rudisha 'CCITT G.711 A-law'
         isipokua:
             rudisha 'not compressed'
@@ -467,18 +467,18 @@ kundi Au_write:
             ikiwa self._sampwidth == 1:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_8
                 self._framesize = 1
-            elikiwa self._sampwidth == 2:
+            lasivyo self._sampwidth == 2:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_16
                 self._framesize = 2
-            elikiwa self._sampwidth == 3:
+            lasivyo self._sampwidth == 3:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_24
                 self._framesize = 3
-            elikiwa self._sampwidth == 4:
+            lasivyo self._sampwidth == 4:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_32
                 self._framesize = 4
             isipokua:
                 ashiria Error('internal error')
-        elikiwa self._comptype == 'ULAW':
+        lasivyo self._comptype == 'ULAW':
             encoding = AUDIO_FILE_ENCODING_MULAW_8
             self._framesize = 1
         isipokua:
@@ -520,7 +520,7 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Au_read(f)
-    elikiwa mode kwenye ('w', 'wb'):
+    lasivyo mode kwenye ('w', 'wb'):
         rudisha Au_write(f)
     isipokua:
         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")

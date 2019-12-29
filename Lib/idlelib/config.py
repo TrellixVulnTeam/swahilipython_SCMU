@@ -59,13 +59,13 @@ kundi IdleConfParser(ConfigParser):
             rudisha default
         ikiwa type == 'bool':
             rudisha self.getboolean(section, option)
-        elikiwa type == 'int':
+        lasivyo type == 'int':
             rudisha self.getint(section, option)
         isipokua:
             rudisha self.get(section, option, raw=raw)
 
     eleza GetOptionList(self, section):
-        "Return a list of options kila given section, else []."
+        "Return a list of options kila given section, isipokua []."
         ikiwa self.has_section(section):
             rudisha self.options(section)
         isipokua:  #rudisha a default value
@@ -82,7 +82,7 @@ kundi IdleUserConfParser(IdleConfParser):
     """
 
     eleza SetOption(self, section, option, value):
-        """Return Kweli ikiwa option ni added ama changed to value, else Uongo.
+        """Return Kweli ikiwa option ni added ama changed to value, isipokua Uongo.
 
         Add section ikiwa required.  Uongo means option already had value.
         """
@@ -99,7 +99,7 @@ kundi IdleUserConfParser(IdleConfParser):
             rudisha Kweli
 
     eleza RemoveOption(self, section, option):
-        """Return Kweli ikiwa option ni removed kutoka section, else Uongo.
+        """Return Kweli ikiwa option ni removed kutoka section, isipokua Uongo.
 
         Uongo ikiwa either section does sio exist ama did sio have option.
         """
@@ -137,9 +137,9 @@ kundi IdleUserConfParser(IdleConfParser):
                 tatizo OSError:
                     os.unlink(fname)
                     cfgFile = open(fname, 'w')
-                with cfgFile:
+                ukijumuisha cfgFile:
                     self.write(cfgFile)
-            elikiwa os.path.exists(self.file):
+            lasivyo os.path.exists(self.file):
                 os.remove(self.file)
 
 kundi IdleConf:
@@ -166,7 +166,7 @@ kundi IdleConf:
     eleza CreateConfigHandlers(self):
         "Populate default na user config parser dictionaries."
         idledir = os.path.dirname(__file__)
-        self.userdir = userdir = '' ikiwa idlelib.testing else self.GetUserCfgDir()
+        self.userdir = userdir = '' ikiwa idlelib.testing isipokua self.GetUserCfgDir()
         kila cfg_type kwenye self.config_types:
             self.defaultCfg[cfg_type] = IdleConfParser(
                 os.path.join(idledir, f'config-{cfg_type}.def'))
@@ -216,7 +216,7 @@ kundi IdleConf:
         If type ni sio Tupu, rudisha a value of that type.  Also pita raw
         to the config parser.  First try to rudisha a valid value
         (including type) kutoka a user configuration. If that fails, try
-        the default configuration. If that fails, rudisha default, with a
+        the default configuration. If that fails, rudisha default, ukijumuisha a
         default of Tupu.
 
         Warn ikiwa either user ama default configurations have an invalid value.
@@ -263,7 +263,7 @@ kundi IdleConf:
             ashiria InvalidConfigType('Invalid configType specified')
         ikiwa configSet == 'user':
             cfgParser = self.userCfg[configType]
-        elikiwa configSet == 'default':
+        lasivyo configSet == 'default':
             cfgParser=self.defaultCfg[configType]
         isipokua:
             ashiria InvalidConfigSet('Invalid configSet specified')
@@ -276,7 +276,7 @@ kundi IdleConf:
         tkinter color strings kila configuring backgrounds na tags.
         """
         cfg = ('default' ikiwa self.defaultCfg['highlight'].has_section(theme)
-               else 'user')
+               isipokua 'user')
         theme_dict = self.GetThemeDict(cfg, theme)
         fore = theme_dict[element + '-foreground']
         ikiwa element == 'cursor':
@@ -294,7 +294,7 @@ kundi IdleConf:
         """
         ikiwa type == 'user':
             cfgParser = self.userCfg['highlight']
-        elikiwa type == 'default':
+        lasivyo type == 'default':
             cfgParser = self.defaultCfg['highlight']
         isipokua:
             ashiria InvalidTheme('Invalid theme type specified')
@@ -384,7 +384,7 @@ kundi IdleConf:
         wakati older IDLEs will just use name.  When default = Uongo,
         'name2' may still be set, but it ni ignored.
         """
-        cfgname = 'highlight' ikiwa section == 'Theme' else 'keys'
+        cfgname = 'highlight' ikiwa section == 'Theme' isipokua 'keys'
         default = self.GetOption('main', section, 'default',
                                  type='bool', default=Kweli)
         name = ''
@@ -393,16 +393,16 @@ kundi IdleConf:
         ikiwa sio name:
             name = self.GetOption('main', section, 'name', default='')
         ikiwa name:
-            source = self.defaultCfg ikiwa default else self.userCfg
+            source = self.defaultCfg ikiwa default isipokua self.userCfg
             ikiwa source[cfgname].has_section(name):
                 rudisha name
-        rudisha "IDLE Classic" ikiwa section == 'Theme' else self.default_keys()
+        rudisha "IDLE Classic" ikiwa section == 'Theme' isipokua self.default_keys()
 
     @staticmethod
     eleza default_keys():
         ikiwa sys.platform[:3] == 'win':
             rudisha 'IDLE Classic Windows'
-        elikiwa sys.platform == 'darwin':
+        lasivyo sys.platform == 'darwin':
             rudisha 'IDLE Classic OSX'
         isipokua:
             rudisha 'IDLE Modern Unix'
@@ -449,7 +449,7 @@ kundi IdleConf:
             rudisha extns
 
     eleza RemoveKeyBindNames(self, extnNameList):
-        "Return extnNameList with keybinding section names removed."
+        "Return extnNameList ukijumuisha keybinding section names removed."
         rudisha [n kila n kwenye extnNameList ikiwa sio n.endswith(('_bindings', '_cfgBindings'))]
 
     eleza GetExtnNameForEvent(self, virtualEvent):
@@ -505,7 +505,7 @@ kundi IdleConf:
     eleza GetExtensionBindings(self, extensionName):
         """Return dict {extensionName event : active ama defined keybinding}.
 
-        Augment self.GetExtensionKeys(extensionName) with mapping of non-
+        Augment self.GetExtensionKeys(extensionName) ukijumuisha mapping of non-
         configurable events (kutoka default config) to GetOption splits,
         kama kwenye self.__GetRawExtensionKeys.
         """
@@ -534,12 +534,12 @@ kundi IdleConf:
         rudisha binding
 
     eleza GetCurrentKeySet(self):
-        "Return CurrentKeys with 'darwin' modifications."
+        "Return CurrentKeys ukijumuisha 'darwin' modifications."
         result = self.GetKeySet(self.CurrentKeys())
 
         ikiwa sys.platform == "darwin":
             # macOS (OS X) Tk variants do sio support the "Alt"
-            # keyboard modifier.  Replace it with "Option".
+            # keyboard modifier.  Replace it ukijumuisha "Option".
             # TODO (Ned?): the "Option" modifier does sio work properly
             #     kila Cocoa Tk na XQuartz Tk so we should sio use it
             #     kwenye the default 'OSX' keyset.
@@ -579,7 +579,7 @@ kundi IdleConf:
 # TODO make keyBindins a file ama kundi attribute used kila test above
 # na copied kwenye function below.
 
-    former_extension_events = {  #  Those with user-configurable keys.
+    former_extension_events = {  #  Those ukijumuisha user-configurable keys.
         '<<force-open-completions>>', '<<expand-word>>',
         '<<force-open-calltip>>', '<<flash-paren>>', '<<format-paragraph>>',
          '<<run-module>>', '<<check-module>>', '<<zoom-height>>',
@@ -671,7 +671,7 @@ kundi IdleConf:
                     ikiwa binding:
                         keyBindings[event] = binding
                     # Otherwise rudisha default kwenye keyBindings.
-                    elikiwa event haiko kwenye self.former_extension_events:
+                    lasivyo event haiko kwenye self.former_extension_events:
                         warning = (
                             '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
                             ' problem retrieving key binding kila event %r\n'
@@ -695,14 +695,14 @@ kundi IdleConf:
         helpSources = []
         ikiwa configSet == 'user':
             cfgParser = self.userCfg['main']
-        elikiwa configSet == 'default':
+        lasivyo configSet == 'default':
             cfgParser = self.defaultCfg['main']
         isipokua:
             ashiria InvalidConfigSet('Invalid configSet specified')
         options=cfgParser.GetOptionList('HelpFiles')
         kila option kwenye options:
             value=cfgParser.Get('HelpFiles', option, default=';')
-            ikiwa value.find(';') == -1: #malformed config entry with no ';'
+            ikiwa value.find(';') == -1: #malformed config entry ukijumuisha no ';'
                 menuItem = '' #make these empty
                 helpPath = '' #so value won't be added to list
             isipokua: #config entry contains ';' kama expected
@@ -747,7 +747,7 @@ kundi IdleConf:
             ikiwa size <= 0:
                 size = 10  # ikiwa font kwenye pixels, ignore actual size
             bold = actualFont['weight'] == 'bold'
-        rudisha (family, size, 'bold' ikiwa bold else 'normal')
+        rudisha (family, size, 'bold' ikiwa bold isipokua 'normal')
 
     eleza LoadCfgFiles(self):
         "Load all configuration files."

@@ -10,7 +10,7 @@ Todo:
 =====
  * convenience methods kila getting elements na text.
  * more testing
- * bring some of the writer na linearizer code into conformance with this
+ * bring some of the writer na linearizer code into conformance ukijumuisha this
         interface
  * SAX 2 namespaces
 """
@@ -119,7 +119,7 @@ kundi Node(xml.dom.Node):
         ikiwa node.nodeType haiko kwenye self._child_node_types:
             ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(node), repr(self)))
-        elikiwa node.nodeType kwenye _nodeTypes_with_children:
+        lasivyo node.nodeType kwenye _nodeTypes_with_children:
             _clear_id_cache(self)
         ikiwa node.parentNode ni sio Tupu:
             node.parentNode.removeChild(node)
@@ -186,7 +186,7 @@ kundi Node(xml.dom.Node):
                     ikiwa child.nextSibling:
                         child.nextSibling.previousSibling = child.previousSibling
                     child.unlink()
-                elikiwa L na L[-1].nodeType == child.nodeType:
+                lasivyo L na L[-1].nodeType == child.nodeType:
                     # collapse text node
                     node = L[-1]
                     node.data = node.data + child.data
@@ -282,7 +282,7 @@ defproperty(Node, "localName",  doc="Namespace-local name of this node.")
 
 
 eleza _append_child(self, node):
-    # fast path with less checks; usable by DOM builders ikiwa careful
+    # fast path ukijumuisha less checks; usable by DOM builders ikiwa careful
     childNodes = self.childNodes
     ikiwa childNodes:
         last = childNodes[-1]
@@ -740,7 +740,7 @@ kundi Element(Node):
             attr.value = value # also sets nodeValue
             attr.ownerDocument = self.ownerDocument
             self.setAttributeNode(attr)
-        elikiwa value != attr.value:
+        lasivyo value != attr.value:
             attr.value = value
             ikiwa attr.isId:
                 _clear_id_cache(self)
@@ -924,7 +924,7 @@ eleza _set_attribute_node(element, attr):
 
 kundi Childless:
     """Mixin that makes childless-ness easy to implement na avoids
-    the complexity of the Node methods that deal with children.
+    the complexity of the Node methods that deal ukijumuisha children.
     """
     __slots__ = ()
 
@@ -1331,7 +1331,7 @@ kundi DocumentType(Identified, Childless, Node):
         ikiwa self.publicId:
             writer.write("%s  PUBLIC '%s'%s  '%s'"
                          % (newl, self.publicId, newl, self.systemId))
-        elikiwa self.systemId:
+        lasivyo self.systemId:
             writer.write("%s  SYSTEM '%s'" % (newl, self.systemId))
         ikiwa self.internalSubset ni sio Tupu:
             writer.write(" [")
@@ -1427,7 +1427,7 @@ kundi DOMImplementation(DOMImplementationLS):
             # Null the document ni rudishaed without a document element
             # Otherwise ikiwa doctype ama namespaceURI are sio Tupu
             # Then we go back to the above problem
-            ashiria xml.dom.InvalidCharacterErr("Element with no name")
+            ashiria xml.dom.InvalidCharacterErr("Element ukijumuisha no name")
 
         ikiwa add_root_element:
             prefix, localname = _nssplit(qualifiedName)
@@ -1513,7 +1513,7 @@ eleza _clear_id_cache(node):
     ikiwa node.nodeType == Node.DOCUMENT_NODE:
         node._id_cache.clear()
         node._id_search_stack = Tupu
-    elikiwa _in_document(node):
+    lasivyo _in_document(node):
         node.ownerDocument._id_cache.clear()
         node.ownerDocument._id_search_stack= Tupu
 
@@ -1636,7 +1636,7 @@ kundi Document(Node, DocumentLS):
             clone.childNodes.append(childclone)
             ikiwa childclone.nodeType == Node.DOCUMENT_NODE:
                 assert clone.documentElement ni Tupu
-            elikiwa childclone.nodeType == Node.DOCUMENT_TYPE_NODE:
+            lasivyo childclone.nodeType == Node.DOCUMENT_TYPE_NODE:
                 assert clone.doctype ni Tupu
                 clone.doctype = childclone
             childclone.parentNode = clone
@@ -1723,7 +1723,7 @@ kundi Document(Node, DocumentLS):
             # we never searched before, ama the cache has been cleared
             stack = [self.documentElement]
             self._id_search_stack = stack
-        elikiwa sio stack:
+        lasivyo sio stack:
             # Previous search was completed na cache ni still valid;
             # no matching node.
             rudisha Tupu
@@ -1746,21 +1746,21 @@ kundi Document(Node, DocumentLS):
                             self._id_cache[attr.value] = node
                             ikiwa attr.value == id:
                                 result = node
-                            elikiwa sio node._magic_id_nodes:
+                            lasivyo sio node._magic_id_nodes:
                                 koma
-                    elikiwa info.isId(attr.name):
+                    lasivyo info.isId(attr.name):
                         self._id_cache[attr.value] = node
                         ikiwa attr.value == id:
                             result = node
-                        elikiwa sio node._magic_id_nodes:
+                        lasivyo sio node._magic_id_nodes:
                             koma
-                    elikiwa attr._is_id:
+                    lasivyo attr._is_id:
                         self._id_cache[attr.value] = node
                         ikiwa attr.value == id:
                             result = node
-                        elikiwa node._magic_id_nodes == 1:
+                        lasivyo node._magic_id_nodes == 1:
                             koma
-            elikiwa node._magic_id_nodes:
+            lasivyo node._magic_id_nodes:
                 kila attr kwenye node.attributes.values():
                     ikiwa attr._is_id:
                         self._id_cache[attr.value] = node
@@ -1783,7 +1783,7 @@ kundi Document(Node, DocumentLS):
     eleza agizaNode(self, node, deep):
         ikiwa node.nodeType == Node.DOCUMENT_NODE:
             ashiria xml.dom.NotSupportedErr("cannot agiza document nodes")
-        elikiwa node.nodeType == Node.DOCUMENT_TYPE_NODE:
+        lasivyo node.nodeType == Node.DOCUMENT_TYPE_NODE:
             ashiria xml.dom.NotSupportedErr("cannot agiza document type nodes")
         rudisha _clone_node(node, deep, self)
 
@@ -1877,28 +1877,28 @@ eleza _clone_node(node, deep, newOwnerDocument):
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
-    elikiwa node.nodeType == Node.DOCUMENT_FRAGMENT_NODE:
+    lasivyo node.nodeType == Node.DOCUMENT_FRAGMENT_NODE:
         clone = newOwnerDocument.createDocumentFragment()
         ikiwa deep:
             kila child kwenye node.childNodes:
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
-    elikiwa node.nodeType == Node.TEXT_NODE:
+    lasivyo node.nodeType == Node.TEXT_NODE:
         clone = newOwnerDocument.createTextNode(node.data)
-    elikiwa node.nodeType == Node.CDATA_SECTION_NODE:
+    lasivyo node.nodeType == Node.CDATA_SECTION_NODE:
         clone = newOwnerDocument.createCDATASection(node.data)
-    elikiwa node.nodeType == Node.PROCESSING_INSTRUCTION_NODE:
+    lasivyo node.nodeType == Node.PROCESSING_INSTRUCTION_NODE:
         clone = newOwnerDocument.createProcessingInstruction(node.target,
                                                              node.data)
-    elikiwa node.nodeType == Node.COMMENT_NODE:
+    lasivyo node.nodeType == Node.COMMENT_NODE:
         clone = newOwnerDocument.createComment(node.data)
-    elikiwa node.nodeType == Node.ATTRIBUTE_NODE:
+    lasivyo node.nodeType == Node.ATTRIBUTE_NODE:
         clone = newOwnerDocument.createAttributeNS(node.namespaceURI,
                                                    node.nodeName)
         clone.specified = Kweli
         clone.value = node.value
-    elikiwa node.nodeType == Node.DOCUMENT_TYPE_NODE:
+    lasivyo node.nodeType == Node.DOCUMENT_TYPE_NODE:
         assert node.ownerDocument ni sio newOwnerDocument
         operation = xml.dom.UserDataHandler.NODE_IMPORTED
         clone = newOwnerDocument.implementation.createDocumentType(
@@ -1930,7 +1930,7 @@ eleza _clone_node(node, deep, newOwnerDocument):
         ashiria xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
 
     # Check kila _call_user_data_handler() since this could conceivably
-    # used with other DOM implementations (one of the FourThought
+    # used ukijumuisha other DOM implementations (one of the FourThought
     # DOMs, perhaps?).
     ikiwa hasattr(node, '_call_user_data_handler'):
         node._call_user_data_handler(operation, node, clone)

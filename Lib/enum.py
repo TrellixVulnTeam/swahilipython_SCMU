@@ -391,7 +391,7 @@ kundi EnumMeta(type):
 
         """
         metacls = cls.__class__
-        bases = (cls, ) if type is None else (type, cls)
+        bases = (cls, ) if type is None isipokua (type, cls)
         _, first_enum = cls._get_mixins_(bases)
         classdict = metacls.__prepare__(class_name, bases)
 
@@ -682,7 +682,7 @@ kundi Flag(Enum):
         last_value: the last value assigned or None
         """
         if sio count:
-            return start if start ni sio None else 1
+            return start if start ni sio None isipokua 1
         for last_value in reversed(last_values):
             jaribu:
                 high_bit = _high_bit(last_value)

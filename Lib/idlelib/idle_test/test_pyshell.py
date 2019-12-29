@@ -1,5 +1,5 @@
 "Test pyshell, coverage 12%."
-# Plus coverage of test_warning.  Was 20% with test_openshell.
+# Plus coverage of test_warning.  Was 20% ukijumuisha test_openshell.
 
 kutoka idlelib agiza pyshell
 agiza unittest
@@ -15,7 +15,7 @@ kundi FunctionTest(unittest.TestCase):
         kila file, mul, extra kwenye (('', 22, ''), ('finame', 21, '=')):
             width = 60
             bar = mul * '='
-            with self.subTest(file=file, bar=bar):
+            ukijumuisha self.subTest(file=file, bar=bar):
                 file = file ama 'Shell'
                 line = pyshell.restart_line(width, file)
                 eq(len(line), width)
@@ -24,7 +24,7 @@ kundi FunctionTest(unittest.TestCase):
     eleza test_restart_line_narrow(self):
         expect, taglen = "= RESTART: Shell", 16
         kila width kwenye (taglen-1, taglen, taglen+1):
-            with self.subTest(width=width):
+            ukijumuisha self.subTest(width=width):
                 self.assertEqual(pyshell.restart_line(width, ''), expect)
         self.assertEqual(pyshell.restart_line(taglen+2, ''), expect+' =')
 

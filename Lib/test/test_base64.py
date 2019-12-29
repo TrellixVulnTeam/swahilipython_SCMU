@@ -19,11 +19,11 @@ kundi LegacyBase64TestCase(unittest.TestCase):
         self.assertRaises(TypeError, f, int_data)
 
     eleza test_encodestring_warns(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             base64.encodestring(b"www.python.org")
 
     eleza test_decodestring_warns(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             base64.decodestring(b"d3d3LnB5dGhvbi5vcmc=\n")
 
     eleza test_encodebytes(self):
@@ -117,7 +117,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         self.check_multidimensional(base64.b64encode, bytes_data)
 
     eleza check_multidimensional(self, f, data):
-        padding = b"\x00" ikiwa len(data) % 2 else b""
+        padding = b"\x00" ikiwa len(data) % 2 isipokua b""
         bytes_data = data + padding # Make sure cast works
         shape = (len(bytes_data) // 2, 2)
         multidimensional = memoryview(bytes_data).cast('B', shape)
@@ -145,7 +145,7 @@ kundi BaseXYTestCase(unittest.TestCase):
            b"YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXpBQkNE"
            b"RUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NT"
            b"Y3ODkhQCMwXiYqKCk7Ojw+LC4gW117fQ==")
-        # Test with arbitrary alternative characters
+        # Test ukijumuisha arbitrary alternative characters
         eq(base64.b64encode(b'\xd3V\xbeo\xf7\x1d', altchars=b'*$'), b'01a*b$cd')
         eq(base64.b64encode(b'\xd3V\xbeo\xf7\x1d', altchars=bytearray(b'*$')),
            b'01a*b$cd')
@@ -173,7 +173,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.standard_b64encode,
                                b'abcd', b'YWJjZA==')
         self.check_encode_type_errors(base64.standard_b64encode)
-        # Test with 'URL safe' alternative characters
+        # Test ukijumuisha 'URL safe' alternative characters
         eq(base64.urlsafe_b64encode(b'\xd3V\xbeo\xf7\x1d'), b'01a-b_cd')
         # Non-bytes
         self.check_other_types(base64.urlsafe_b64encode,
@@ -204,7 +204,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b64decode, b"YWJj", b"abc")
         self.check_decode_type_errors(base64.b64decode)
 
-        # Test with arbitrary alternative characters
+        # Test ukijumuisha arbitrary alternative characters
         tests_altchars = {(b'01a*b$cd', b'*$'): b'\xd3V\xbeo\xf7\x1d',
                           }
         kila (data, altchars), res kwenye tests_altchars.items():
@@ -224,7 +224,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.standard_b64decode, b"YWJj", b"abc")
         self.check_decode_type_errors(base64.standard_b64decode)
 
-        # Test with 'URL safe' alternative characters
+        # Test ukijumuisha 'URL safe' alternative characters
         tests_urlsafe = {b'01a-b_cd': b'\xd3V\xbeo\xf7\x1d',
                          b'': b'',
                          }
@@ -258,12 +258,12 @@ kundi BaseXYTestCase(unittest.TestCase):
         )
         kila bstr, res kwenye tests:
             kila func kwenye funcs:
-                with self.subTest(bstr=bstr, func=func):
+                ukijumuisha self.subTest(bstr=bstr, func=func):
                     self.assertEqual(func(bstr), res)
                     self.assertEqual(func(bstr.decode('ascii')), res)
-            with self.assertRaises(binascii.Error):
+            ukijumuisha self.assertRaises(binascii.Error):
                 base64.b64decode(bstr, validate=Kweli)
-            with self.assertRaises(binascii.Error):
+            ukijumuisha self.assertRaises(binascii.Error):
                 base64.b64decode(bstr.decode('ascii'), validate=Kweli)
 
         # Normal alphabet characters sio discarded when alternative given
@@ -352,10 +352,10 @@ kundi BaseXYTestCase(unittest.TestCase):
                 ikiwa len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         kila data kwenye tests:
-            with self.subTest(data=data):
-                with self.assertRaises(binascii.Error):
+            ukijumuisha self.subTest(data=data):
+                ukijumuisha self.assertRaises(binascii.Error):
                     base64.b32decode(data)
-                with self.assertRaises(binascii.Error):
+                ukijumuisha self.assertRaises(binascii.Error):
                     base64.b32decode(data.decode('ascii'))
 
     eleza test_b16encode(self):
@@ -591,11 +591,11 @@ kundi BaseXYTestCase(unittest.TestCase):
     eleza test_a85decode_errors(self):
         illegal = (set(range(32)) | set(range(118, 256))) - set(b' \t\n\r\v')
         kila c kwenye illegal:
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            ukijumuisha self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'!!!!' + bytes([c]))
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            ukijumuisha self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'!!!!' + bytes([c]), adobe=Uongo)
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            ukijumuisha self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'<~!!!!' + bytes([c]) + b'~>', adobe=Kweli)
 
         self.assertRaises(ValueError, base64.a85decode,
@@ -628,7 +628,7 @@ kundi BaseXYTestCase(unittest.TestCase):
                   list(b'"\',./:[\\]') + \
                   list(range(128, 256))
         kila c kwenye illegal:
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            ukijumuisha self.assertRaises(ValueError, msg=bytes([c])):
                 base64.b85decode(b'0000' + bytes([c]))
 
         self.assertRaises(ValueError, base64.b85decode, b'|')
@@ -646,7 +646,7 @@ kundi BaseXYTestCase(unittest.TestCase):
                         base64.b85decode,
                         base64.a85decode)
         kila f kwenye decode_funcs:
-            self.assertRaises(ValueError, f, 'with non-ascii \xcb')
+            self.assertRaises(ValueError, f, 'ukijumuisha non-ascii \xcb')
 
     eleza test_ErrorHeritage(self):
         self.assertKweli(issubclass(binascii.Error, ValueError))
@@ -669,19 +669,19 @@ kundi TestMain(unittest.TestCase):
         ))
 
     eleza test_encode_file(self):
-        with open(support.TESTFN, 'wb') kama fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(b'a\xffb\n')
         output = self.get_output('-e', support.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
     eleza test_encode_kutoka_stdin(self):
-        with script_helper.spawn_python('-m', 'base64', '-e') kama proc:
+        ukijumuisha script_helper.spawn_python('-m', 'base64', '-e') kama proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')
         self.assertIsTupu(err)
 
     eleza test_decode(self):
-        with open(support.TESTFN, 'wb') kama fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(b'Yf9iCg==')
         output = self.get_output('-d', support.TESTFN)
         self.assertEqual(output.rstrip(), b'a\xffb')

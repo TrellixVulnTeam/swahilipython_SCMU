@@ -20,8 +20,8 @@ RFC 1738: "Uniform Resource Locators (URL)" by T. Berners-Lee, L. Masinter, M.
 McCahill, December 1994
 
 RFC 3986 ni considered the current standard na any future changes to
-urlparse module should conform with it.  The urlparse module is
-currently sio entirely compliant with this RFC due to defacto
+urlparse module should conform ukijumuisha it.  The urlparse module is
+currently sio entirely compliant ukijumuisha this RFC due to defacto
 scenarios kila parsing, na kila backward compatibility purposes, some
 parsing quirks kutoka older RFCs are retained. The testcases in
 test_urlparse.py provides a good indicator of parsing behavior.
@@ -40,7 +40,7 @@ __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
            "DefragResultBytes", "ParseResultBytes", "SplitResultBytes"]
 
 # A classification of schemes.
-# The empty string classifies URLs with no scheme specified,
+# The empty string classifies URLs ukijumuisha no scheme specified,
 # being the default value rudishaed by “urlsplit” na “urlparse”.
 
 uses_relative = ['', 'ftp', 'http', 'gopher', 'nntp', 'imap',
@@ -77,7 +77,7 @@ scheme_chars = ('abcdefghijklmnopqrstuvwxyz'
                 '0123456789'
                 '+-.')
 
-# XXX: Consider replacing with functools.lru_cache
+# XXX: Consider replacing ukijumuisha functools.lru_cache
 MAX_CACHE_SIZE = 20
 _parse_cache = {}
 
@@ -105,7 +105,7 @@ eleza _encode_result(obj, encoding=_implicit_encoding,
 
 eleza _decode_args(args, encoding=_implicit_encoding,
                        errors=_implicit_errors):
-    rudisha tuple(x.decode(encoding, errors) ikiwa x else '' kila x kwenye args)
+    rudisha tuple(x.decode(encoding, errors) ikiwa x isipokua '' kila x kwenye args)
 
 eleza _coerce_args(*args):
     # Invokes decode ikiwa necessary to create str args
@@ -159,7 +159,7 @@ kundi _NetlocResultMixinBase(object):
             rudisha Tupu
         # Scoped IPv6 address may have zone info, which must sio be lowercased
         # like http://[fe80::822a:a8ff:fe49:470c%tESt]:1234/keys
-        separator = '%' ikiwa isinstance(hostname, str) else b'%'
+        separator = '%' ikiwa isinstance(hostname, str) isipokua b'%'
         hostname, percent, zone = hostname.partition(separator)
         rudisha hostname.lower() + percent + zone
 
@@ -252,7 +252,7 @@ A 2-tuple that contains the url without fragment identifier na the fragment
 identifier kama a separate argument.
 """
 
-_DefragResultBase.url.__doc__ = """The URL with no fragment identifier."""
+_DefragResultBase.url.__doc__ = """The URL ukijumuisha no fragment identifier."""
 
 _DefragResultBase.fragment.__doc__ = """
 Fragment identifier separated kutoka URL, that allows indirect identification of a
@@ -278,7 +278,7 @@ The hierarchical path, such kama the path to a file to download.
 """
 
 _SplitResultBase.query.__doc__ = """
-The query component, that contains non-hierarchical data, that along with data
+The query component, that contains non-hierarchical data, that along ukijumuisha data
 in path component, identifies a resource kwenye the scope of URI's scheme and
 network location.
 """
@@ -474,7 +474,7 @@ eleza urlsplit(url, scheme='', allow_fragments=Kweli):
 eleza urlunparse(components):
     """Put a parsed URL back together again.  This may result kwenye a
     slightly different, but equivalent URL, ikiwa the URL that was parsed
-    originally had redundant delimiters, e.g. a ? with an empty query
+    originally had redundant delimiters, e.g. a ? ukijumuisha an empty query
     (the draft states that these are equivalent)."""
     scheme, netloc, url, params, query, fragment, _coerce_result = (
                                                   _coerce_args(*components))
@@ -486,7 +486,7 @@ eleza urlunsplit(components):
     """Combine the elements of a tuple kama rudishaed by urlsplit() into a
     complete URL kama a string. The data argument can be any five-item iterable.
     This may result kwenye a slightly different, but equivalent URL, ikiwa the URL that
-    was parsed originally had unnecessary delimiters (kila example, a ? with an
+    was parsed originally had unnecessary delimiters (kila example, a ? ukijumuisha an
     empty query; the RFC states that these are equivalent)."""
     scheme, netloc, url, query, fragment, _coerce_result = (
                                           _coerce_args(*components))
@@ -556,7 +556,7 @@ eleza urljoin(base, url, allow_fragments=Kweli):
                 # ignore any .. segments that would otherwise cause an IndexError
                 # when popped kutoka resolved_path ikiwa resolving kila rfc3986
                 pita
-        elikiwa seg == '.':
+        lasivyo seg == '.':
             endelea
         isipokua:
             resolved_path.append(seg)
@@ -626,7 +626,7 @@ eleza unquote(string, encoding='utf-8', errors='replace'):
     encoding na errors parameters specify how to decode percent-encoded
     sequences into Unicode characters, kama accepted by the bytes.decode()
     method.
-    By default, percent-encoded sequences are decoded with UTF-8, na invalid
+    By default, percent-encoded sequences are decoded ukijumuisha UTF-8, na invalid
     sequences are replaced by a placeholder character.
 
     unquote('abc%20def') -> 'abc def'.
@@ -662,7 +662,7 @@ eleza parse_qs(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
             blank values are to be ignored na treated kama ikiwa they were
             sio included.
 
-        strict_parsing: flag indicating what to do with parsing errors.
+        strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
             If true, errors ashiria a ValueError exception.
 
@@ -700,7 +700,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
             strings.  The default false value indicates that blank values
             are to be ignored na treated kama ikiwa they were  sio included.
 
-        strict_parsing: flag indicating what to do with parsing errors. If
+        strict_parsing: flag indicating what to do ukijumuisha parsing errors. If
             false (the default), errors are silently ignored. If true,
             errors ashiria a ValueError exception.
 
@@ -716,7 +716,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
 
     # If max_num_fields ni defined then check that the number of fields
     # ni less than max_num_fields. This prevents a memory exhaustion DOS
-    # attack via post bodies with many fields.
+    # attack via post bodies ukijumuisha many fields.
     ikiwa max_num_fields ni sio Tupu:
         num_fields = 1 + qs.count('&') + qs.count(';')
         ikiwa max_num_fields < num_fields:
@@ -731,7 +731,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
         ikiwa len(nv) != 2:
             ikiwa strict_parsing:
                 ashiria ValueError("bad query field: %r" % (name_value,))
-            # Handle case of a control-name with no equal sign
+            # Handle case of a control-name ukijumuisha no equal sign
             ikiwa keep_blank_values:
                 nv.append('')
             isipokua:
@@ -780,7 +780,7 @@ kundi Quoter(collections.defaultdict):
 
     eleza __missing__(self, b):
         # Handle a cache miss. Store quoted string kwenye cache na rudisha.
-        res = chr(b) ikiwa b kwenye self.safe else '%{:02X}'.format(b)
+        res = chr(b) ikiwa b kwenye self.safe isipokua '%{:02X}'.format(b)
         self[b] = res
         rudisha res
 
@@ -820,7 +820,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
 
     The optional encoding na errors parameters specify how to deal with
     non-ASCII characters, kama accepted by the str.encode method.
-    By default, encoding='utf-8' (characters are encoded with UTF-8), and
+    By default, encoding='utf-8' (characters are encoded ukijumuisha UTF-8), and
     errors='strict' (unsupported characters ashiria a UnicodeEncodeError).
     """
     ikiwa isinstance(string, str):
@@ -839,7 +839,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
     rudisha quote_kutoka_bytes(string, safe)
 
 eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
-    """Like quote(), but also replace ' ' with '+', kama required kila quoting
+    """Like quote(), but also replace ' ' ukijumuisha '+', kama required kila quoting
     HTML form values. Plus signs kwenye the original string are escaped unless
     they are included kwenye safe. It also does sio have safe default to '/'.
     """
@@ -900,7 +900,7 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
         # It's a bother at times that strings na string-like objects are
         # sequences.
         jaribu:
-            # non-sequence items should sio work with len()
+            # non-sequence items should sio work ukijumuisha len()
             # non-empty strings will fail this
             ikiwa len(query) na sio isinstance(query[0], tuple):
                 ashiria TypeError
@@ -936,7 +936,7 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
             ikiwa isinstance(v, bytes):
                 v = quote_via(v, safe)
                 l.append(k + '=' + v)
-            elikiwa isinstance(v, str):
+            lasivyo isinstance(v, str):
                 v = quote_via(v, safe, encoding, errors)
                 l.append(k + '=' + v)
             isipokua:
@@ -1045,7 +1045,7 @@ eleza splituser(host):
 eleza _splituser(host):
     """splituser('user[:pitawd]@host[:port]') --> 'user[:pitawd]', 'host[:port]'."""
     user, delim, host = host.rpartition('@')
-    rudisha (user ikiwa delim else Tupu), host
+    rudisha (user ikiwa delim isipokua Tupu), host
 
 
 eleza splitpitawd(user):
@@ -1058,7 +1058,7 @@ eleza splitpitawd(user):
 eleza _splitpitawd(user):
     """splitpitawd('user:pitawd') -> 'user', 'pitawd'."""
     user, delim, pitawd = user.partition(':')
-    rudisha user, (pitawd ikiwa delim else Tupu)
+    rudisha user, (pitawd ikiwa delim isipokua Tupu)
 
 
 eleza splitport(host):
@@ -1099,7 +1099,7 @@ eleza _splitnport(host, defport=-1):
     host, delim, port = host.rpartition(':')
     ikiwa sio delim:
         host = port
-    elikiwa port:
+    lasivyo port:
         jaribu:
             nport = int(port)
         tatizo ValueError:
@@ -1162,4 +1162,4 @@ eleza splitvalue(attr):
 eleza _splitvalue(attr):
     """splitvalue('attr=value') --> 'attr', 'value'."""
     attr, delim, value = attr.partition('=')
-    rudisha attr, (value ikiwa delim else Tupu)
+    rudisha attr, (value ikiwa delim isipokua Tupu)

@@ -10,14 +10,14 @@ agiza warnings
 kutoka sys agiza *
 
 # different agiza patterns to check that __annotations__ does sio interfere
-# with agiza machinery
+# ukijumuisha agiza machinery
 agiza test.ann_module kama ann_module
 agiza typing
 kutoka collections agiza ChainMap
 kutoka test agiza ann_module2
 agiza test
 
-# These are shared with test_tokenize na other test modules.
+# These are shared ukijumuisha test_tokenize na other test modules.
 #
 # Note: since several test cases filter out floats by looking kila "e" na ".",
 # don't add hexadecimal literals that contain "e" ama "E".
@@ -93,7 +93,7 @@ INVALID_UNDERSCORE_LITERALS = [
     '1e_1',
     '1.4e_1',
     '1.4e_1j',
-    # Complex cases with parens:
+    # Complex cases ukijumuisha parens:
     '(1+1.5_j_)',
     '(1+1.5_j)',
 ]
@@ -134,7 +134,7 @@ kundi TokenTests(unittest.TestCase):
                     x = eval(s)
                 tatizo OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        elikiwa maxsize == 9223372036854775807:
+        lasivyo maxsize == 9223372036854775807:
             self.assertEqual(-9223372036854775807-1, -0o1000000000000000000000)
             self.assertKweli(0o1777777777777777777777 > 0)
             self.assertKweli(0xffffffffffffffff > 0)
@@ -184,7 +184,7 @@ kundi TokenTests(unittest.TestCase):
             self.assertEqual(eval(lit), eval(lit.replace('_', '')))
         kila lit kwenye INVALID_UNDERSCORE_LITERALS:
             self.assertRaises(SyntaxError, eval, lit)
-        # Sanity check: no literal begins with an underscore
+        # Sanity check: no literal begins ukijumuisha an underscore
         self.assertRaises(NameError, eval, "_0")
 
     eleza test_bad_numerical_literals(self):
@@ -257,7 +257,7 @@ the \'lazy\' dog.\n\
     eleza test_eof_error(self):
         samples = ("eleza foo(", "\neleza foo(", "eleza foo(\n")
         kila s kwenye samples:
-            with self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) kama cm:
                 compile(s, "<test>", "exec")
             self.assertIn("unexpected EOF", str(cm.exception))
 
@@ -325,9 +325,9 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza test_var_annot_basic_semantics(self):
         # execution order
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             no_name[does_not_exist]: no_name_again = 1/0
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             no_name[does_not_exist]: 1/0 = 0
         global var_annot_global
 
@@ -343,7 +343,7 @@ kundi GrammarTests(unittest.TestCase):
         eleza fbad():
             x: int
             andika(x)
-        with self.assertRaises(UnboundLocalError):
+        ukijumuisha self.assertRaises(UnboundLocalError):
             fbad()
         eleza f2bad():
             (no_such_global): int
@@ -361,10 +361,10 @@ kundi GrammarTests(unittest.TestCase):
             eleza __init__(self, x):
                 self.x: int = x
         self.assertEqual(C.__annotations__, {'_C__foo': int, 's': str})
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             kundi CBad:
                 no_such_name_defined.attr: int = 0
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             kundi Cbad2(C):
                 x: int
                 x.y: list = []
@@ -379,7 +379,7 @@ kundi GrammarTests(unittest.TestCase):
         self.assertEqual(CC.__annotations__['xx'], 'ANNOT')
 
     eleza test_var_annot_module_semantics(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             andika(test.__annotations__)
         self.assertEqual(ann_module.__annotations__,
                      {1: 2, 'x': int, 'y': str, 'f': typing.Tuple[int, int]})
@@ -391,11 +391,11 @@ kundi GrammarTests(unittest.TestCase):
         # check that functions fail the same way when executed
         # outside of module where they were defined
         kutoka test.ann_module3 agiza f_bad_ann, g_bad_ann, D_bad_ann
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             f_bad_ann()
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             g_bad_ann()
-        with self.assertRaises(NameError):
+        ukijumuisha self.assertRaises(NameError):
             D_bad_ann(5)
 
     eleza test_var_annot_simple_exec(self):
@@ -404,16 +404,16 @@ kundi GrammarTests(unittest.TestCase):
              "__annotations__[1] = 2\n"
              "x: int = 5\n", gns, lns)
         self.assertEqual(lns["__annotations__"], {1: 2, 'x': int})
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             gns['__annotations__']
 
     eleza test_var_annot_custom_maps(self):
-        # tests with custom locals() na __annotations__
+        # tests ukijumuisha custom locals() na __annotations__
         ns = {'__annotations__': CNS()}
         exec('X: int; Z: str = "Z"; (w): complex = 1j', ns)
         self.assertEqual(ns['__annotations__']['x'], int)
         self.assertEqual(ns['__annotations__']['z'], str)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             ns['__annotations__']['w']
         nonloc_ns = {}
         kundi CNS2:
@@ -666,7 +666,7 @@ kundi GrammarTests(unittest.TestCase):
         eleza f(x) -> list: pita
         self.assertEqual(f.__annotations__, {'rudisha': list})
 
-        # test closures with a variety of opargs
+        # test closures ukijumuisha a variety of opargs
         closure = 1
         eleza f(): rudisha closure
         eleza f(x=1): rudisha closure
@@ -733,7 +733,7 @@ kundi GrammarTests(unittest.TestCase):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
         x = 1; pita; toa x
         eleza foo():
-            # verify statements that end with semi-colons
+            # verify statements that end ukijumuisha semi-colons
             x = 1; pita; toa x;
         foo()
 
@@ -770,12 +770,12 @@ kundi GrammarTests(unittest.TestCase):
             custom_msg = "call to '{}'".format(keyword)
             kila case kwenye cases:
                 source = case.format(keyword)
-                with self.subTest(source=source):
-                    with self.assertRaisesRegex(SyntaxError, custom_msg):
+                ukijumuisha self.subTest(source=source):
+                    ukijumuisha self.assertRaisesRegex(SyntaxError, custom_msg):
                         exec(source)
                 source = source.replace("foo", "(foo.)")
-                with self.subTest(source=source):
-                    with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+                ukijumuisha self.subTest(source=source):
+                    ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
                         exec(source)
 
     eleza test_del_stmt(self):
@@ -832,7 +832,7 @@ kundi GrammarTests(unittest.TestCase):
         # arguments to be popped off the stack na the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
         # *must* written kama a function, na the tracking vars *must* be function
-        # arguments with default values. Otherwise, the test will loop na loop.
+        # arguments ukijumuisha default values. Otherwise, the test will loop na loop.
 
         eleza test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
@@ -1163,7 +1163,7 @@ kundi GrammarTests(unittest.TestCase):
             self.fail("'assert Kweli, msg' should sio have "
                       "ashiriad an AssertionError")
 
-    # these tests fail ikiwa python ni run with -O, so check __debug__
+    # these tests fail ikiwa python ni run ukijumuisha -O, so check __debug__
     @unittest.skipUnless(__debug__, "Won't work ikiwa __debug__ ni Uongo")
     eleza testAssert2(self):
         jaribu:
@@ -1182,7 +1182,7 @@ kundi GrammarTests(unittest.TestCase):
 
         self.check_syntax_warning('assert(x, "msg")',
                                   'assertion ni always true')
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             compile('assert x, "msg"', '<testcase>', 'exec')
 
@@ -1196,11 +1196,11 @@ kundi GrammarTests(unittest.TestCase):
         ikiwa 1: pita
         isipokua: pita
         ikiwa 0: pita
-        elikiwa 0: pita
+        lasivyo 0: pita
         ikiwa 0: pita
-        elikiwa 0: pita
-        elikiwa 0: pita
-        elikiwa 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
         isipokua: pita
 
     eleza test_while(self):
@@ -1311,16 +1311,16 @@ kundi GrammarTests(unittest.TestCase):
         ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 kwenye 1 haiko kwenye x ni x ni sio x: pita
 
     eleza test_comparison_is_literal(self):
-        eleza check(test, msg='"is" with a literal'):
+        eleza check(test, msg='"is" ukijumuisha a literal'):
             self.check_syntax_warning(test, msg)
 
         check('x ni 1')
         check('x ni "thing"')
         check('1 ni x')
         check('x ni y ni 1')
-        check('x ni sio 1', '"is not" with a literal')
+        check('x ni sio 1', '"is not" ukijumuisha a literal')
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             compile('x ni Tupu', '<testcase>', 'exec')
             compile('x ni Uongo', '<testcase>', 'exec')
@@ -1400,7 +1400,7 @@ kundi GrammarTests(unittest.TestCase):
         check('[[1, 2] [Tupu]]')
         check('[[1, 2] [...]]')
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             compile('[(lambda x, y: x) (3, 4)]', '<testcase>', 'exec')
             compile('[[1, 2] [i]]', '<testcase>', 'exec')
@@ -1458,7 +1458,7 @@ kundi GrammarTests(unittest.TestCase):
         s = a[-4:-3]
         # A rough test of SF bug 1333982.  http://python.org/sf/1333982
         # The testing here ni fairly incomplete.
-        # Test cases should include: commas with 1 na 2 colons
+        # Test cases should include: commas ukijumuisha 1 na 2 colons
         d = {}
         d[1] = 1
         d[1,] = 2
@@ -1653,17 +1653,17 @@ kundi GrammarTests(unittest.TestCase):
             eleza __exit__(self, *args):
                 pita
 
-        with manager():
+        ukijumuisha manager():
             pita
-        with manager() kama x:
+        ukijumuisha manager() kama x:
             pita
-        with manager() kama (x, y):
+        ukijumuisha manager() kama (x, y):
             pita
-        with manager(), manager():
+        ukijumuisha manager(), manager():
             pita
-        with manager() kama x, manager() kama y:
+        ukijumuisha manager() kama x, manager() kama y:
             pita
-        with manager() kama x, manager():
+        ukijumuisha manager() kama x, manager():
             pita
 
     eleza test_if_else_expr(self):
@@ -1676,22 +1676,22 @@ kundi GrammarTests(unittest.TestCase):
         # the next line ni sio allowed anymore
         #self.assertEqual([ x() kila x kwenye lambda: Kweli, lambda: Uongo ikiwa x() ], [Kweli])
         self.assertEqual([ x() kila x kwenye (lambda: Kweli, lambda: Uongo) ikiwa x() ], [Kweli])
-        self.assertEqual([ x(Uongo) kila x kwenye (lambda x: Uongo ikiwa x else Kweli, lambda x: Kweli ikiwa x else Uongo) ikiwa x(Uongo) ], [Kweli])
-        self.assertEqual((5 ikiwa 1 else _checkeval("check 1", 0)), 5)
-        self.assertEqual((_checkeval("check 2", 0) ikiwa 0 else 5), 5)
-        self.assertEqual((5 na 6 ikiwa 0 else 1), 1)
-        self.assertEqual(((5 na 6) ikiwa 0 else 1), 1)
-        self.assertEqual((5 na (6 ikiwa 1 else 1)), 6)
-        self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 else 3), 3)
-        self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 else _checkeval("check 5", 3)), 1)
-        self.assertEqual((0 ama 5 ikiwa 1 else _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 ikiwa 1 else 1), Uongo)
-        self.assertEqual((not 5 ikiwa 0 else 1), 1)
-        self.assertEqual((6 + 1 ikiwa 1 else 2), 7)
-        self.assertEqual((6 - 1 ikiwa 1 else 2), 5)
-        self.assertEqual((6 * 2 ikiwa 1 else 4), 12)
-        self.assertEqual((6 / 2 ikiwa 1 else 3), 3)
-        self.assertEqual((6 < 4 ikiwa 0 else 2), 2)
+        self.assertEqual([ x(Uongo) kila x kwenye (lambda x: Uongo ikiwa x isipokua Kweli, lambda x: Kweli ikiwa x isipokua Uongo) ikiwa x(Uongo) ], [Kweli])
+        self.assertEqual((5 ikiwa 1 isipokua _checkeval("check 1", 0)), 5)
+        self.assertEqual((_checkeval("check 2", 0) ikiwa 0 isipokua 5), 5)
+        self.assertEqual((5 na 6 ikiwa 0 isipokua 1), 1)
+        self.assertEqual(((5 na 6) ikiwa 0 isipokua 1), 1)
+        self.assertEqual((5 na (6 ikiwa 1 isipokua 1)), 6)
+        self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 isipokua 3), 3)
+        self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 isipokua _checkeval("check 5", 3)), 1)
+        self.assertEqual((0 ama 5 ikiwa 1 isipokua _checkeval("check 6", 3)), 5)
+        self.assertEqual((not 5 ikiwa 1 isipokua 1), Uongo)
+        self.assertEqual((not 5 ikiwa 0 isipokua 1), 1)
+        self.assertEqual((6 + 1 ikiwa 1 isipokua 2), 7)
+        self.assertEqual((6 - 1 ikiwa 1 isipokua 2), 5)
+        self.assertEqual((6 * 2 ikiwa 1 isipokua 4), 12)
+        self.assertEqual((6 / 2 ikiwa 1 isipokua 3), 3)
+        self.assertEqual((6 < 4 ikiwa 0 isipokua 2), 2)
 
     eleza test_paren_evaluation(self):
         self.assertEqual(16 // (4 // 2), 8)
@@ -1758,7 +1758,7 @@ kundi GrammarTests(unittest.TestCase):
                 pita
             ashiria Done
 
-        with self.assertRaises(Done):
+        ukijumuisha self.assertRaises(Done):
             foo().send(Tupu)
 
     eleza test_async_with(self):
@@ -1771,21 +1771,21 @@ kundi GrammarTests(unittest.TestCase):
                 rudisha Uongo
 
         async eleza foo():
-            async with manager():
+            async ukijumuisha manager():
                 pita
-            async with manager() kama x:
+            async ukijumuisha manager() kama x:
                 pita
-            async with manager() kama (x, y):
+            async ukijumuisha manager() kama (x, y):
                 pita
-            async with manager(), manager():
+            async ukijumuisha manager(), manager():
                 pita
-            async with manager() kama x, manager() kama y:
+            async ukijumuisha manager() kama x, manager() kama y:
                 pita
-            async with manager() kama x, manager():
+            async ukijumuisha manager() kama x, manager():
                 pita
             ashiria Done
 
-        with self.assertRaises(Done):
+        ukijumuisha self.assertRaises(Done):
             foo().send(Tupu)
 
 

@@ -53,7 +53,7 @@ Use **kwds notation kila the metakundi keyword.
     Kweli
     >>>
 
-Use a metakundi with a __prepare__ static method.
+Use a metakundi ukijumuisha a __prepare__ static method.
 
     >>> kundi M(type):
     ...    @staticmethod
@@ -186,7 +186,7 @@ Use a metakundi that doesn't derive kutoka type.
     [('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('a', 42), ('b', 24)]
     >>>
 
-And again, with a __prepare__ attribute.
+And again, ukijumuisha a __prepare__ attribute.
 
     >>> eleza prepare(name, bases, **kwds):
     ...     andika("prepare:", name, bases, sorted(kwds.items()))
@@ -215,7 +215,7 @@ The default metakundi must define a __prepare__() method.
     {}
     >>>
 
-Make sure it works with subclassing.
+Make sure it works ukijumuisha subclassing.
 
     >>> kundi M(type):
     ...     @classmethod

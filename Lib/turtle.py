@@ -41,7 +41,7 @@ This module ni an extended reimplementation of turtle.py kutoka the
 Python standard distribution up to Python 2.5. (See: http://www.python.org)
 
 It tries to keep the merits of turtle.py na to be (nearly) 100%
-compatible with it. This means kwenye the first place to enable the
+compatible ukijumuisha it. This means kwenye the first place to enable the
 learning programmer to use all the commands, classes na methods
 interactively when using the module kutoka within IDLE run with
 the -n switch.
@@ -66,15 +66,15 @@ Roughly it has the following features added:
   when kids try to program fancy pictures on their first encounter with
   turtle graphics.
 
-- Turtles now have an undo()-method with configurable undo-buffer.
+- Turtles now have an undo()-method ukijumuisha configurable undo-buffer.
 
 - Some simple commands/methods kila creating event driven programs
   (mouse-, key-, timer-events). Especially useful kila programming games.
 
 - A scrollable Canvas class. The default scrollable Canvas can be
-  extended interactively kama needed wakati playing around with the turtle(s).
+  extended interactively kama needed wakati playing around ukijumuisha the turtle(s).
 
-- A TurtleScreen kundi with methods controlling background color or
+- A TurtleScreen kundi ukijumuisha methods controlling background color or
   background image, window na canvas size na other properties of the
   TurtleScreen.
 
@@ -92,10 +92,10 @@ Roughly it has the following features added:
 - If configured appropriately the module reads kwenye docstrings kutoka a docstring
   dictionary kwenye some different language, supplied separately  na replaces
   the English ones by those read in. There ni a utility function
-  write_docstringdict() to write a dictionary with the original (English)
+  write_docstringdict() to write a dictionary ukijumuisha the original (English)
   docstrings to disc, so it can serve kama a template kila translations.
 
-Behind the scenes there are some features included with possible
+Behind the scenes there are some features included ukijumuisha possible
 extensions kwenye mind. These will be commented na documented elsewhere.
 
 """
@@ -170,7 +170,7 @@ _CFG = {"width" : 0.5,               # Screen
 
 eleza config_dict(filename):
     """Convert content of config-file into dictionary."""
-    with open(filename, "r") kama f:
+    ukijumuisha open(filename, "r") kama f:
         cfglines = f.readlines()
     cfgdict = {}
     kila line kwenye cfglines:
@@ -202,7 +202,7 @@ eleza readconfig(cfgdict):
 
     If there ni a turtle.cfg file kwenye the current working directory,
     read it kutoka there. If this contains an agizaconfig-value,
-    say 'myway', construct filename turtle_mayway.cfg else use
+    say 'myway', construct filename turtle_mayway.cfg isipokua use
     turtle.cfg na read it kutoka the agiza-directory, where
     turtle.py ni located.
     Update configuration dictionary first according to config-file,
@@ -243,7 +243,7 @@ kundi Vec2D(tuple):
        a+b vector addition
        a-b vector subtraction
        a*b inner product
-       k*a na a*k multiplication with scalar
+       k*a na a*k multiplication ukijumuisha scalar
        |a| absolute value of a
        a.rotate(angle) rotation
     """
@@ -577,7 +577,7 @@ kundi TurtleScreenBase(object):
 
     eleza _bgcolor(self, color=Tupu):
         """Set canvas' backgroundcolor ikiwa color ni sio Tupu,
-        else rudisha backgroundcolor."""
+        isipokua rudisha backgroundcolor."""
         ikiwa color ni sio Tupu:
             self.cv.config(bg = color)
             self._update()
@@ -585,7 +585,7 @@ kundi TurtleScreenBase(object):
             rudisha self.cv.cget("bg")
 
     eleza _write(self, pos, txt, align, font, pencolor):
-        """Write txt at pos kwenye canvas with specified font
+        """Write txt at pos kwenye canvas ukijumuisha specified font
         na color.
         Return text item na x-coord of right bottom corner
         of text's bounding box."""
@@ -604,7 +604,7 @@ kundi TurtleScreenBase(object):
 
     eleza _onclick(self, item, fun, num=1, add=Tupu):
         """Bind fun to mouse-click event on turtle.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function ukijumuisha two arguments, the coordinates
         of the clicked point on the canvas.
         num, the number of the mouse-button defaults to 1
         """
@@ -619,7 +619,7 @@ kundi TurtleScreenBase(object):
 
     eleza _onrelease(self, item, fun, num=1, add=Tupu):
         """Bind fun to mouse-button-release event on turtle.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function ukijumuisha two arguments, the coordinates
         of the point on the canvas where mouse button ni released.
         num, the number of the mouse-button defaults to 1
 
@@ -637,8 +637,8 @@ kundi TurtleScreenBase(object):
                              eventfun, add)
 
     eleza _ondrag(self, item, fun, num=1, add=Tupu):
-        """Bind fun to mouse-move-event (with pressed mouse button) on turtle.
-        fun must be a function with two arguments, the coordinates of the
+        """Bind fun to mouse-move-event (ukijumuisha pressed mouse button) on turtle.
+        fun must be a function ukijumuisha two arguments, the coordinates of the
         actual mouse position on the canvas.
         num, the number of the mouse-button defaults to 1
 
@@ -659,7 +659,7 @@ kundi TurtleScreenBase(object):
 
     eleza _onscreenclick(self, fun, num=1, add=Tupu):
         """Bind fun to mouse-click event on canvas.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function ukijumuisha two arguments, the coordinates
         of the clicked point on the canvas.
         num, the number of the mouse-button defaults to 1
 
@@ -880,12 +880,12 @@ kundi Shape(object):
         ikiwa type_ == "polygon":
             ikiwa isinstance(data, list):
                 data = tuple(data)
-        elikiwa type_ == "image":
+        lasivyo type_ == "image":
             ikiwa isinstance(data, str):
                 ikiwa data.lower().endswith(".gif") na isfile(data):
                     data = TurtleScreen._image(data)
-                # else data assumed to be Photoimage
-        elikiwa type_ == "compound":
+                # isipokua data assumed to be Photoimage
+        lasivyo type_ == "compound":
             data = []
         isipokua:
             ashiria TurtleGraphicsError("There ni no shape type %s" % type_)
@@ -1037,8 +1037,8 @@ kundi TurtleScreen(TurtleScreenBase):
         Optional argument:
         mode -- one of the strings 'standard', 'logo' ama 'world'
 
-        Mode 'standard' ni compatible with turtle.py.
-        Mode 'logo' ni compatible with most Logo-Turtle-Graphics.
+        Mode 'standard' ni compatible ukijumuisha turtle.py.
+        Mode 'logo' ni compatible ukijumuisha most Logo-Turtle-Graphics.
         Mode 'world' uses userdefined 'worldcoordinates'. *Attention*: in
         this mode angles appear distorted ikiwa x/y unit-ratio doesn't equal 1.
         If mode ni sio given, rudisha the current mode.
@@ -1134,9 +1134,9 @@ kundi TurtleScreen(TurtleScreenBase):
             isipokua:
                 ashiria TurtleGraphicsError("Bad arguments kila register_shape.\n"
                                           + "Use  help(register_shape)" )
-        elikiwa isinstance(shape, tuple):
+        lasivyo isinstance(shape, tuple):
             shape = Shape("polygon", shape)
-        ## else shape assumed to be Shape-instance
+        ## isipokua shape assumed to be Shape-instance
         self._shapes[name] = shape
 
     eleza _colorstr(self, color):
@@ -1171,7 +1171,7 @@ kundi TurtleScreen(TurtleScreenBase):
             rudisha cstr
         ikiwa len(cstr) == 7:
             cl = [int(cstr[i:i+2], 16) kila i kwenye (1, 3, 5)]
-        elikiwa len(cstr) == 4:
+        lasivyo len(cstr) == 4:
             cl = [16*int(cstr[h], 16) kila h kwenye cstr[1:]]
         isipokua:
             ashiria TurtleGraphicsError("bad colorstring: %s" % cstr)
@@ -1195,7 +1195,7 @@ kundi TurtleScreen(TurtleScreenBase):
             rudisha self._colormode
         ikiwa cmode == 1.0:
             self._colormode = float(cmode)
-        elikiwa cmode == 255:
+        lasivyo cmode == 255:
             self._colormode = int(cmode)
 
     eleza reset(self):
@@ -1350,7 +1350,7 @@ kundi TurtleScreen(TurtleScreenBase):
         """Bind fun to mouse-click event on canvas.
 
         Arguments:
-        fun -- a function with two arguments, the coordinates of the
+        fun -- a function ukijumuisha two arguments, the coordinates of the
                clicked point on the canvas.
         btn -- the number of the mouse-button, defaults to 1
 
@@ -1367,7 +1367,7 @@ kundi TurtleScreen(TurtleScreenBase):
         """Bind fun to key-release event of key.
 
         Arguments:
-        fun -- a function with no arguments
+        fun -- a function ukijumuisha no arguments
         key -- a string: key (e.g. "a") ama key-symbol (e.g. "space")
 
         In order to be able to register key-events, TurtleScreen
@@ -1389,7 +1389,7 @@ kundi TurtleScreen(TurtleScreenBase):
         ikiwa fun ni Tupu:
             ikiwa key kwenye self._keys:
                 self._keys.remove(key)
-        elikiwa key haiko kwenye self._keys:
+        lasivyo key haiko kwenye self._keys:
             self._keys.append(key)
         self._onkeyrelease(fun, key)
 
@@ -1398,7 +1398,7 @@ kundi TurtleScreen(TurtleScreenBase):
         ama to any key-press-event ikiwa no key ni given.
 
         Arguments:
-        fun -- a function with no arguments
+        fun -- a function ukijumuisha no arguments
         key -- a string: key (e.g. "a") ama key-symbol (e.g. "space")
 
         In order to be able to register key-events, TurtleScreen
@@ -1421,7 +1421,7 @@ kundi TurtleScreen(TurtleScreenBase):
         ikiwa fun ni Tupu:
             ikiwa key kwenye self._keys:
                 self._keys.remove(key)
-        elikiwa key ni sio Tupu na key haiko kwenye self._keys:
+        lasivyo key ni sio Tupu na key haiko kwenye self._keys:
             self._keys.append(key)
         self._onkeypress(fun, key)
 
@@ -1441,7 +1441,7 @@ kundi TurtleScreen(TurtleScreenBase):
         """Install a timer, which calls fun after t milliseconds.
 
         Arguments:
-        fun -- a function with no arguments.
+        fun -- a function ukijumuisha no arguments.
         t -- a number >= 0
 
         Example (kila a TurtleScreen instance named screen):
@@ -1851,9 +1851,9 @@ kundi TNavigator(object):
             pos = Vec2D(x, y)
         ikiwa isinstance(x, Vec2D):
             pos = x
-        elikiwa isinstance(x, tuple):
+        lasivyo isinstance(x, tuple):
             pos = Vec2D(*x)
-        elikiwa isinstance(x, TNavigator):
+        lasivyo isinstance(x, TNavigator):
             pos = x._position
         rudisha abs(pos - self._position)
 
@@ -1883,9 +1883,9 @@ kundi TNavigator(object):
             pos = Vec2D(x, y)
         ikiwa isinstance(x, Vec2D):
             pos = x
-        elikiwa isinstance(x, tuple):
+        lasivyo isinstance(x, tuple):
             pos = Vec2D(*x)
-        elikiwa isinstance(x, TNavigator):
+        lasivyo isinstance(x, TNavigator):
             pos = x._position
         x, y = pos - self._position
         result = round(math.atan2(y, x)*180.0/math.pi, 10) % 360.0
@@ -1936,14 +1936,14 @@ kundi TNavigator(object):
         self._rotate(angle)
 
     eleza circle(self, radius, extent = Tupu, steps = Tupu):
-        """ Draw a circle with given radius.
+        """ Draw a circle ukijumuisha given radius.
 
         Arguments:
         radius -- a number
         extent (optional) -- a number
         steps (optional) -- an integer
 
-        Draw a circle with given radius. The center ni radius units left
+        Draw a circle ukijumuisha given radius. The center ni radius units left
         of the turtle; extent - an angle - determines which part of the
         circle ni drawn. If extent ni sio given, draw the entire circle.
         If extent ni sio a full circle, one endpoint of the arc ni the
@@ -2055,7 +2055,7 @@ kundi TPen(object):
                    which are set by shapesize()
           - "noresize" no adaption of the turtle's appearance takes place.
         If no argument ni given, rudisha current resizemode.
-        resizemode("user") ni called by a call of shapesize with arguments.
+        resizemode("user") ni called by a call of shapesize ukijumuisha arguments.
 
 
         Examples (kila a Turtle instance named turtle):
@@ -2167,7 +2167,7 @@ kundi TPen(object):
             rudisha self._speed
         ikiwa speed kwenye speeds:
             speed = speeds[speed]
-        elikiwa 0.5 < speed < 10.5:
+        lasivyo 0.5 < speed < 10.5:
             speed = int(round(speed))
         isipokua:
             speed = 0
@@ -2193,7 +2193,7 @@ kundi TPen(object):
             na analogously, ikiwa the other input format ni used.
 
         If turtleshape ni a polygon, outline na interior of that polygon
-        ni drawn with the newly set colors.
+        ni drawn ukijumuisha the newly set colors.
         For more info see: pencolor, fillcolor
 
         Example (kila a Turtle instance named turtle):
@@ -2209,9 +2209,9 @@ kundi TPen(object):
             l = len(args)
             ikiwa l == 1:
                 pcolor = fcolor = args[0]
-            elikiwa l == 2:
+            lasivyo l == 2:
                 pcolor, fcolor = args
-            elikiwa l == 3:
+            lasivyo l == 3:
                 pcolor = fcolor = args
             pcolor = self._colorstr(pcolor)
             fcolor = self._colorstr(fcolor)
@@ -2239,7 +2239,7 @@ kundi TPen(object):
             are kwenye the range 0..colormode
 
         If turtleshape ni a polygon, the outline of that polygon ni drawn
-        with the newly set pencolor.
+        ukijumuisha the newly set pencolor.
 
         Example (kila a Turtle instance named turtle):
         >>> turtle.pencolor('brown')
@@ -2276,7 +2276,7 @@ kundi TPen(object):
             are kwenye the range 0..colormode
 
         If turtleshape ni a polygon, the interior of that polygon ni drawn
-        with the newly set fillcolor.
+        ukijumuisha the newly set fillcolor.
 
         Example (kila a Turtle instance named turtle):
         >>> turtle.fillcolor('violet')
@@ -2337,12 +2337,12 @@ kundi TPen(object):
         """Return ama set the pen's attributes.
 
         Arguments:
-            pen -- a dictionary with some ama all of the below listed keys.
-            **pendict -- one ama more keyword-arguments with the below
+            pen -- a dictionary ukijumuisha some ama all of the below listed keys.
+            **pendict -- one ama more keyword-arguments ukijumuisha the below
                          listed keys kama keywords.
 
         Return ama set the pen's attributes kwenye a 'pen-dictionary'
-        with the following key/value pairs:
+        ukijumuisha the following key/value pairs:
            "shown"      :   Kweli/Uongo
            "pendown"    :   Kweli/Uongo
            "pencolor"   :   color-string ama color-tuple
@@ -2496,15 +2496,15 @@ kundi _TurtleImage(object):
             rudisha
         ikiwa self._type kwenye ["image", "polygon"]:
             screen._delete(self._item)
-        elikiwa self._type == "compound":
+        lasivyo self._type == "compound":
             kila item kwenye self._item:
                 screen._delete(item)
         self._type = screen._shapes[shapeIndex]._type
         ikiwa self._type == "polygon":
             self._item = screen._createpoly()
-        elikiwa self._type == "image":
+        lasivyo self._type == "image":
             self._item = screen._createimage(screen._shapes["blank"]._data)
-        elikiwa self._type == "compound":
+        lasivyo self._type == "compound":
             self._item = [screen._createpoly() kila item in
                                           screen._shapes[shapeIndex]._data]
 
@@ -2522,11 +2522,11 @@ kundi RawTurtle(TPen, TNavigator):
                  visible=_CFG["visible"]):
         ikiwa isinstance(canvas, _Screen):
             self.screen = canvas
-        elikiwa isinstance(canvas, TurtleScreen):
+        lasivyo isinstance(canvas, TurtleScreen):
             ikiwa canvas haiko kwenye RawTurtle.screens:
                 RawTurtle.screens.append(canvas)
             self.screen = canvas
-        elikiwa isinstance(canvas, (ScrolledCanvas, Canvas)):
+        lasivyo isinstance(canvas, (ScrolledCanvas, Canvas)):
             kila screen kwenye RawTurtle.screens:
                 ikiwa screen.cv == canvas:
                     self.screen = screen
@@ -2656,7 +2656,7 @@ kundi RawTurtle(TPen, TNavigator):
         screen = self.screen
         ikiwa screen._tracing == 0:
             rudisha
-        elikiwa screen._tracing == 1:
+        lasivyo screen._tracing == 1:
             self._update_data()
             self._drawturtle()
             screen._update()                  # TurtleScreenBase
@@ -2715,7 +2715,7 @@ kundi RawTurtle(TPen, TNavigator):
 
         No argument.
 
-        Create na rudisha a clone of the turtle with same position, heading
+        Create na rudisha a clone of the turtle ukijumuisha same position, heading
         na turtle properties.
 
         Example (kila a Turtle instance named mick):
@@ -2741,9 +2741,9 @@ kundi RawTurtle(TPen, TNavigator):
         ttype = screen._shapes[self.turtle.shapeIndex]._type
         ikiwa ttype == "polygon":
             q.turtle._item = screen._createpoly()
-        elikiwa ttype == "image":
+        lasivyo ttype == "image":
             q.turtle._item = screen._createimage(screen._shapes["blank"]._data)
-        elikiwa ttype == "compound":
+        lasivyo ttype == "compound":
             q.turtle._item = [screen._createpoly() kila item in
                               screen._shapes[self.turtle.shapeIndex]._data]
         q.currentLineItem = screen._createline()
@@ -2751,17 +2751,17 @@ kundi RawTurtle(TPen, TNavigator):
         rudisha q
 
     eleza shape(self, name=Tupu):
-        """Set turtle shape to shape with given name / rudisha current shapename.
+        """Set turtle shape to shape ukijumuisha given name / rudisha current shapename.
 
         Optional argument:
         name -- a string, which ni a valid shapename
 
-        Set turtle shape to shape with given name or, ikiwa name ni sio given,
+        Set turtle shape to shape ukijumuisha given name or, ikiwa name ni sio given,
         rudisha name of current shape.
-        Shape with name must exist kwenye the TurtleScreen's shape dictionary.
+        Shape ukijumuisha name must exist kwenye the TurtleScreen's shape dictionary.
         Initially there are the following polygon shapes:
         'arrow', 'turtle', 'circle', 'square', 'triangle', 'classic'.
-        To learn about how to deal with shapes see Screen-method register_shape.
+        To learn about how to deal ukijumuisha shapes see Screen-method register_shape.
 
         Example (kila a Turtle instance named turtle):
         >>> turtle.shape()
@@ -2808,7 +2808,7 @@ kundi RawTurtle(TPen, TNavigator):
                 stretchfactor = stretch_wid, stretch_wid
             isipokua:
                 stretchfactor = stretch_wid, stretch_len
-        elikiwa stretch_len ni sio Tupu:
+        lasivyo stretch_len ni sio Tupu:
             stretchfactor = self._stretchfactor[0], stretch_len
         isipokua:
             stretchfactor = self._stretchfactor
@@ -2976,7 +2976,7 @@ kundi RawTurtle(TPen, TNavigator):
         shape = self.screen._shapes[self.turtle.shapeIndex]
         ikiwa shape._type == "polygon":
             rudisha self._getshapepoly(shape._data, shape._type == "compound")
-        # else rudisha Tupu
+        # isipokua rudisha Tupu
 
     eleza _getshapepoly(self, polygon, compound=Uongo):
         """Calculate transformed shape polygon according to resizemode
@@ -2984,15 +2984,15 @@ kundi RawTurtle(TPen, TNavigator):
         """
         ikiwa self._resizemode == "user" ama compound:
             t11, t12, t21, t22 = self._shapetrafo
-        elikiwa self._resizemode == "auto":
+        lasivyo self._resizemode == "auto":
             l = max(1, self._pensize/5.0)
             t11, t12, t21, t22 = l, 0, 0, l
-        elikiwa self._resizemode == "noresize":
+        lasivyo self._resizemode == "noresize":
             rudisha polygon
         rudisha tuple((t11*x + t12*y, t21*x + t22*y) kila (x, y) kwenye polygon)
 
     eleza _drawturtle(self):
-        """Manages the correct rendering of the turtle with respect to
+        """Manages the correct rendering of the turtle ukijumuisha respect to
         its shape, resizemode, stretch na tilt etc."""
         screen = self.screen
         shape = screen._shapes[self.turtle.shapeIndex]
@@ -3003,15 +3003,15 @@ kundi RawTurtle(TPen, TNavigator):
             tshape = shape._data
             ikiwa ttype == "polygon":
                 ikiwa self._resizemode == "noresize": w = 1
-                elikiwa self._resizemode == "auto": w = self._pensize
+                lasivyo self._resizemode == "auto": w = self._pensize
                 isipokua: w =self._outlinewidth
                 shape = self._polytrafo(self._getshapepoly(tshape))
                 fc, oc = self._fillcolor, self._pencolor
                 screen._drawpoly(titem, shape, fill=fc, outline=oc,
                                                       width=w, top=Kweli)
-            elikiwa ttype == "image":
+            lasivyo ttype == "image":
                 screen._drawimage(titem, self._position, tshape)
-            elikiwa ttype == "compound":
+            lasivyo ttype == "compound":
                 kila item, (poly, fc, oc) kwenye zip(titem, tshape):
                     poly = self._polytrafo(self._getshapepoly(poly, Kweli))
                     screen._drawpoly(item, poly, fill=self._cc(fc),
@@ -3021,10 +3021,10 @@ kundi RawTurtle(TPen, TNavigator):
                 rudisha
             ikiwa ttype == "polygon":
                 screen._drawpoly(titem, ((0, 0), (0, 0), (0, 0)), "", "")
-            elikiwa ttype == "image":
+            lasivyo ttype == "image":
                 screen._drawimage(titem, self._position,
                                           screen._shapes["blank"]._data)
-            elikiwa ttype == "compound":
+            lasivyo ttype == "compound":
                 kila item kwenye titem:
                     screen._drawpoly(item, ((0, 0), (0, 0), (0, 0)), "", "")
             self._hidden_kutoka_screen = Kweli
@@ -3053,16 +3053,16 @@ kundi RawTurtle(TPen, TNavigator):
         ikiwa ttype == "polygon":
             stitem = screen._createpoly()
             ikiwa self._resizemode == "noresize": w = 1
-            elikiwa self._resizemode == "auto": w = self._pensize
+            lasivyo self._resizemode == "auto": w = self._pensize
             isipokua: w =self._outlinewidth
             shape = self._polytrafo(self._getshapepoly(tshape))
             fc, oc = self._fillcolor, self._pencolor
             screen._drawpoly(stitem, shape, fill=fc, outline=oc,
                                                   width=w, top=Kweli)
-        elikiwa ttype == "image":
+        lasivyo ttype == "image":
             stitem = screen._createimage("")
             screen._drawimage(stitem, self._position, tshape)
-        elikiwa ttype == "compound":
+        lasivyo ttype == "compound":
             stitem = []
             kila element kwenye tshape:
                 item = screen._createpoly()
@@ -3099,7 +3099,7 @@ kundi RawTurtle(TPen, TNavigator):
         buf.buffer.insert((buf.ptr+1)%buf.bufsize, [Tupu])
 
     eleza clearstamp(self, stampid):
-        """Delete stamp with given stampid
+        """Delete stamp ukijumuisha given stampid
 
         Argument:
         stampid - an integer, must be rudisha value of previous stamp() call.
@@ -3120,8 +3120,8 @@ kundi RawTurtle(TPen, TNavigator):
         n -- an integer
 
         If n ni Tupu, delete all of pen's stamps,
-        else ikiwa n > 0 delete first n stamps
-        else ikiwa n < 0 delete last n stamps.
+        isipokua ikiwa n > 0 delete first n stamps
+        isipokua ikiwa n < 0 delete last n stamps.
 
         Example (kila a Turtle instance named turtle):
         >>> kila i kwenye range(8):
@@ -3133,7 +3133,7 @@ kundi RawTurtle(TPen, TNavigator):
         """
         ikiwa n ni Tupu:
             toDelete = self.stampItems[:]
-        elikiwa n >= 0:
+        lasivyo n >= 0:
             toDelete = self.stampItems[:n]
         isipokua:
             toDelete = self.stampItems[n:]
@@ -3146,7 +3146,7 @@ kundi RawTurtle(TPen, TNavigator):
         ikiwa pen ni down. All other methods kila turtle movement depend
         on this one.
         """
-        ## Version with undo-stuff
+        ## Version ukijumuisha undo-stuff
         go_modes = ( self._drawing,
                      self._pencolor,
                      self._pensize,
@@ -3255,7 +3255,7 @@ kundi RawTurtle(TPen, TNavigator):
             ikiwa self._fillpath == []:
                 self._fillpath = Tupu
                 andika("Unwahrscheinlich kwenye _undogoto!")
-            elikiwa self._fillpath ni sio Tupu:
+            lasivyo self._fillpath ni sio Tupu:
                 self._fillpath.pop()
         self._update() #count=Kweli)
 
@@ -3349,13 +3349,13 @@ kundi RawTurtle(TPen, TNavigator):
             self._update()
 
     eleza dot(self, size=Tupu, *color):
-        """Draw a dot with diameter size, using color.
+        """Draw a dot ukijumuisha diameter size, using color.
 
         Optional arguments:
         size -- an integer >= 1 (ikiwa given)
         color -- a colorstring ama a numeric color tuple
 
-        Draw a circular dot with diameter size, using color.
+        Draw a circular dot ukijumuisha diameter size, using color.
         If size ni sio given, the maximum of pensize+4 na 2*pensize ni used.
 
         Example (kila a Turtle instance named turtle):
@@ -3417,7 +3417,7 @@ kundi RawTurtle(TPen, TNavigator):
 
         Write text - the string representation of arg - at the current
         turtle position according to align ("left", "center" ama right")
-        na with the given font.
+        na ukijumuisha the given font.
         If move ni Kweli, the pen ni moved to the bottom-right corner
         of the text. By default, move ni Uongo.
 
@@ -3455,7 +3455,7 @@ kundi RawTurtle(TPen, TNavigator):
         No argument.
 
         Stop recording the vertices of a polygon. Current turtle position is
-        last point of polygon. This will be connected with the first point.
+        last point of polygon. This will be connected ukijumuisha the first point.
 
         Example (kila a Turtle instance named turtle):
         >>> turtle.end_poly()
@@ -3524,7 +3524,7 @@ kundi RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-click event on this turtle on canvas.
 
         Arguments:
-        fun --  a function with two arguments, to which will be assigned
+        fun --  a function ukijumuisha two arguments, to which will be assigned
                 the coordinates of the clicked point on the canvas.
         btn --  number of the mouse-button defaults to 1 (left mouse button).
         add --  Kweli ama Uongo. If Kweli, new binding will be added, otherwise
@@ -3545,7 +3545,7 @@ kundi RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-button-release event on this turtle on canvas.
 
         Arguments:
-        fun -- a function with two arguments, to which will be assigned
+        fun -- a function ukijumuisha two arguments, to which will be assigned
                 the coordinates of the clicked point on the canvas.
         btn --  number of the mouse-button defaults to 1 (left mouse button).
 
@@ -3570,7 +3570,7 @@ kundi RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-move event on this turtle on canvas.
 
         Arguments:
-        fun -- a function with two arguments, to which will be assigned
+        fun -- a function ukijumuisha two arguments, to which will be assigned
                the coordinates of the clicked point on the canvas.
         btn -- number of the mouse-button defaults to 1 (left mouse button).
 
@@ -3596,26 +3596,26 @@ kundi RawTurtle(TPen, TNavigator):
             angle, degPAU = data
             self._rotate(-angle*degPAU/self._degreesPerAU)
             dummy = self.undobuffer.pop()
-        elikiwa action == "stamp":
+        lasivyo action == "stamp":
             stitem = data[0]
             self.clearstamp(stitem)
-        elikiwa action == "go":
+        lasivyo action == "go":
             self._undogoto(data)
-        elikiwa action kwenye ["wri", "dot"]:
+        lasivyo action kwenye ["wri", "dot"]:
             item = data[0]
             self.screen._delete(item)
             self.items.remove(item)
-        elikiwa action == "dofill":
+        lasivyo action == "dofill":
             item = data[0]
             self.screen._drawpoly(item, ((0, 0),(0, 0),(0, 0)),
                                   fill="", outline="")
-        elikiwa action == "beginfill":
+        lasivyo action == "beginfill":
             item = data[0]
             self._fillitem = self._fillpath = Tupu
             ikiwa item kwenye self.items:
                 self.screen._delete(item)
                 self.items.remove(item)
-        elikiwa action == "pen":
+        lasivyo action == "pen":
             TPen.pen(self, data[0])
             self.undobuffer.pop()
 
@@ -3657,7 +3657,7 @@ RawPen = RawTurtle
 eleza Screen():
     """Return the singleton screen object.
     If none exists at the moment, create a new one na rudisha it,
-    else rudisha the existing one."""
+    isipokua rudisha the existing one."""
     ikiwa Turtle._screen ni Tupu:
         Turtle._screen = _Screen()
     rudisha Turtle._screen
@@ -3773,7 +3773,7 @@ kundi _Screen(TurtleScreen):
         Bind bye() method to mouseclick on TurtleScreen.
         If "using_IDLE" - value kwenye configuration dictionary ni Uongo
         (default value), enter mainloop.
-        If IDLE with -n switch (no subprocess) ni used, this value should be
+        If IDLE ukijumuisha -n switch (no subprocess) ni used, this value should be
         set to Kweli kwenye turtle.cfg. In this case IDLE's mainloop
         ni active also kila the client script.
 
@@ -3785,7 +3785,7 @@ kundi _Screen(TurtleScreen):
 
         """
         eleza exitGracefully(x, y):
-            """Screen.bye() with two dummy-parameters"""
+            """Screen.bye() ukijumuisha two dummy-parameters"""
             self.bye()
         self.onclick(exitGracefully)
         ikiwa _CFG["using_IDLE"]:
@@ -3838,7 +3838,7 @@ eleza write_docstringdict(filename="turtle_docstringdict"):
         key = "Turtle."+methodname
         docsdict[key] = eval(key).__doc__
 
-    with open("%s.py" % filename,"w") kama f:
+    ukijumuisha open("%s.py" % filename,"w") kama f:
         keys = sorted(x kila x kwenye docsdict
                       ikiwa x.split('.')[1] haiko kwenye _alias_list)
         f.write('docsdict = {\n\n')

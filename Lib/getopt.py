@@ -10,8 +10,8 @@ provides two functions na an exception:
 getopt() -- Parse command line options
 gnu_getopt() -- Like getopt(), but allow option na non-option arguments
 to be intermixed.
-GetoptError -- exception (class) ashiriad with 'opt' attribute, which ni the
-option involved with the exception.
+GetoptError -- exception (class) ashiriad ukijumuisha 'opt' attribute, which ni the
+option involved ukijumuisha the exception.
 """
 
 # Long option support added by Lars Wirzenius <liw@iki.fi>.
@@ -26,9 +26,9 @@ option involved with the exception.
 # - GNU getopt_long_only mechanism
 # - allow the caller to specify ordering
 # - RETURN_IN_ORDER option
-# - GNU extension with '-' kama first character of option string
+# - GNU extension ukijumuisha '-' kama first character of option string
 # - optional arguments, specified by double colons
-# - an option string with a W followed by semicolon should
+# - an option string ukijumuisha a W followed by semicolon should
 #   treat "-W foo" kama "--foo"
 
 __all__ = ["GetoptError","error","getopt","gnu_getopt"]
@@ -60,9 +60,9 @@ eleza getopt(args, shortopts, longopts = []):
     argument list to be parsed, without the leading reference to the
     running program.  Typically, this means "sys.argv[1:]".  shortopts
     ni the string of option letters that the script wants to
-    recognize, with options that require an argument followed by a
+    recognize, ukijumuisha options that require an argument followed by a
     colon (i.e., the same format that Unix getopt() uses).  If
-    specified, longopts ni a list of strings with the names of the
+    specified, longopts ni a list of strings ukijumuisha the names of the
     long options which should be supported.  The leading '--'
     characters should sio be included kwenye the option name.  Options
     which require an argument should be followed by an equal sign
@@ -72,7 +72,7 @@ eleza getopt(args, shortopts, longopts = []):
     (option, value) pairs; the second ni the list of program arguments
     left after the option list was stripped (this ni a trailing slice
     of the first argument).  Each option-and-value pair rudishaed has
-    the option kama its first element, prefixed with a hyphen (e.g.,
+    the option kama its first element, prefixed ukijumuisha a hyphen (e.g.,
     '-x'), na the option argument kama its second element, ama an empty
     string ikiwa the option has no argument.  The options occur kwenye the
     list kwenye the same order kwenye which they were found, thus allowing
@@ -122,7 +122,7 @@ eleza gnu_getopt(args, shortopts, longopts = []):
     ikiwa shortopts.startswith('+'):
         shortopts = shortopts[1:]
         all_options_first = Kweli
-    elikiwa os.environ.get("POSIXLY_CORRECT"):
+    lasivyo os.environ.get("POSIXLY_CORRECT"):
         all_options_first = Kweli
     isipokua:
         all_options_first = Uongo
@@ -134,7 +134,7 @@ eleza gnu_getopt(args, shortopts, longopts = []):
 
         ikiwa args[0][:2] == '--':
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
-        elikiwa args[0][:1] == '-' na args[0] != '-':
+        lasivyo args[0][:1] == '-' na args[0] != '-':
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
         isipokua:
             ikiwa all_options_first:
@@ -160,7 +160,7 @@ eleza do_longs(opts, opt, longopts, args):
             ikiwa sio args:
                 ashiria GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
-    elikiwa optarg ni sio Tupu:
+    lasivyo optarg ni sio Tupu:
         ashiria GetoptError(_('option --%s must sio have an argument') % opt, opt)
     opts.append(('--' + opt, optarg ama ''))
     rudisha opts, args
@@ -175,7 +175,7 @@ eleza long_has_args(opt, longopts):
     # Is there an exact match?
     ikiwa opt kwenye possibilities:
         rudisha Uongo, opt
-    elikiwa opt + '=' kwenye possibilities:
+    lasivyo opt + '=' kwenye possibilities:
         rudisha Kweli, opt
     # No exact match, so better be unique.
     ikiwa len(possibilities) > 1:

@@ -71,7 +71,7 @@ kundi FixFilter(fixer_base.ConditionalFix):
                            results.get("xp").clone())
             new = Node(syms.power, [new] + trailers, prefix="")
 
-        elikiwa "none" kwenye results:
+        lasivyo "none" kwenye results:
             new = ListComp(Name("_f"),
                            Name("_f"),
                            results["seq"].clone(),

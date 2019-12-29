@@ -56,7 +56,7 @@ eleza not_(a):
 
 eleza truth(a):
     "Return Kweli ikiwa a ni true, Uongo otherwise."
-    rudisha Kweli ikiwa a else Uongo
+    rudisha Kweli ikiwa a isipokua Uongo
 
 eleza is_(a, b):
     "Same kama a ni b."

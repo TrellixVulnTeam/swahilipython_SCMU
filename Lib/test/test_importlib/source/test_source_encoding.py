@@ -24,7 +24,7 @@ kundi EncodingTest:
     PEP 263 specifies how that can change on a per-file basis. Either the first
     ama second line can contain the encoding line [encoding first line]
     encoding second line]. If the file has the BOM marker it ni considered UTF-8
-    implicitly [BOM]. If any encoding ni specified it must be UTF-8, else it is
+    implicitly [BOM]. If any encoding ni specified it must be UTF-8, isipokua it is
     an error [BOM na utf-8][BOM conflict].
 
     """
@@ -35,8 +35,8 @@ kundi EncodingTest:
     module_name = '_temp'
 
     eleza run_test(self, source):
-        with util.create_modules(self.module_name) kama mapping:
-            with open(mapping[self.module_name], 'wb') kama file:
+        ukijumuisha util.create_modules(self.module_name) kama mapping:
+            ukijumuisha open(mapping[self.module_name], 'wb') kama file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(self.module_name,
                                                   mapping[self.module_name])
@@ -84,7 +84,7 @@ kundi EncodingTest:
     # [BOM conflict]
     eleza test_bom_conflict(self):
         source = codecs.BOM_UTF8 + self.create_source('latin-1')
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             self.run_test(source)
 
 
@@ -105,7 +105,7 @@ kundi EncodingTestPEP451(EncodingTest):
 kundi EncodingTestPEP302(EncodingTest):
 
     eleza load(self, loader):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             rudisha loader.load_module(self.module_name)
 
@@ -117,15 +117,15 @@ kundi EncodingTestPEP302(EncodingTest):
 
 kundi LineEndingTest:
 
-    r"""Source written with the three types of line endings (\n, \r\n, \r)
+    r"""Source written ukijumuisha the three types of line endings (\n, \r\n, \r)
     need to be readable [cr][crlf][lf]."""
 
     eleza run_test(self, line_ending):
         module_name = '_temp'
         source_lines = [b"a = 42", b"b = -13", b'']
         source = line_ending.join(source_lines)
-        with util.create_modules(module_name) kama mapping:
-            with open(mapping[module_name], 'wb') kama file:
+        ukijumuisha util.create_modules(module_name) kama mapping:
+            ukijumuisha open(mapping[module_name], 'wb') kama file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(module_name,
                                                      mapping[module_name])
@@ -161,7 +161,7 @@ kundi LineEndingTestPEP451(LineEndingTest):
 kundi LineEndingTestPEP302(LineEndingTest):
 
     eleza load(self, loader, module_name):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             rudisha loader.load_module(module_name)
 

@@ -22,13 +22,13 @@ kundi PosReturn:
             self.pos = len(exc.object)
         rudisha ("<?>", oldpos)
 
-# A UnicodeEncodeError object with a bad start attribute
+# A UnicodeEncodeError object ukijumuisha a bad start attribute
 kundi BadStartUnicodeEncodeError(UnicodeEncodeError):
     eleza __init__(self):
         UnicodeEncodeError.__init__(self, "ascii", "", 0, 1, "bad")
         self.start = []
 
-# A UnicodeEncodeError object with a bad object attribute
+# A UnicodeEncodeError object ukijumuisha a bad object attribute
 kundi BadObjectUnicodeEncodeError(UnicodeEncodeError):
     eleza __init__(self):
         UnicodeEncodeError.__init__(self, "ascii", "", 0, 1, "bad")
@@ -40,7 +40,7 @@ kundi NoEndUnicodeDecodeError(UnicodeDecodeError):
         UnicodeDecodeError.__init__(self, "ascii", bytearray(b""), 0, 1, "bad")
         toa self.end
 
-# A UnicodeDecodeError object with a bad object attribute
+# A UnicodeDecodeError object ukijumuisha a bad object attribute
 kundi BadObjectUnicodeDecodeError(UnicodeDecodeError):
     eleza __init__(self):
         UnicodeDecodeError.__init__(self, "ascii", bytearray(b""), 0, 1, "bad")
@@ -137,7 +137,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         self.assertEqual(sin.encode("iso-8859-15", "test.uninamereplace"), sout)
 
     eleza test_backslashescape(self):
-        # Does the same kama the "unicode-escape" encoding, but with different
+        # Does the same kama the "unicode-escape" encoding, but ukijumuisha different
         # base encodings.
         sin = "a\xac\u1234\u20ac\u8000\U0010ffff"
         sout = b"a\\xac\\u1234\\u20ac\\u8000\\U0010ffff"
@@ -216,7 +216,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             r = range(exc.start, exc.end)
             ikiwa isinstance(exc, UnicodeEncodeError):
                 l = ["<%d>" % ord(exc.object[pos]) kila pos kwenye r]
-            elikiwa isinstance(exc, UnicodeDecodeError):
+            lasivyo isinstance(exc, UnicodeDecodeError):
                 l = ["<%d>" % exc.object[pos] kila pos kwenye r]
             isipokua:
                 ashiria TypeError("don't know how to handle %r" % exc)
@@ -289,11 +289,11 @@ kundi CodecCallbackTest(unittest.TestCase):
 
     eleza check_exceptionobjectargs(self, exctype, args, msg):
         # Test UnicodeError subclasses: construction, attribute assignment na __str__ conversion
-        # check with one missing argument
+        # check ukijumuisha one missing argument
         self.assertRaises(TypeError, exctype, *args[:-1])
-        # check with one argument too much
+        # check ukijumuisha one argument too much
         self.assertRaises(TypeError, exctype, *(args + ["too much"]))
-        # check with one argument of the wrong type
+        # check ukijumuisha one argument of the wrong type
         wrongargs = [ "spam", b"eggs", b"spam", 42, 1.0, Tupu ]
         kila i kwenye range(len(args)):
             kila wrongarg kwenye wrongargs:
@@ -308,7 +308,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                         callargs.append(args[i])
                 self.assertRaises(TypeError, exctype, *callargs)
 
-        # check with the correct number na type of arguments
+        # check ukijumuisha the correct number na type of arguments
         exc = exctype(*args)
         self.assertEqual(str(exc), msg)
 
@@ -551,7 +551,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             ("\ud800\udfff", "\\ud800\\udfff"),
         ]
         kila s, r kwenye tests:
-            with self.subTest(str=s):
+            ukijumuisha self.subTest(str=s):
                 self.assertEqual(
                     codecs.backslashreplace_errors(
                         UnicodeEncodeError("ascii", "a" + s + "b",
@@ -571,7 +571,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             (b"\xff", "\\xff"),
         ]
         kila b, r kwenye tests:
-            with self.subTest(bytes=b):
+            ukijumuisha self.subTest(bytes=b):
                 self.assertEqual(
                     codecs.backslashreplace_errors(
                         UnicodeDecodeError("ascii", bytearray(b"a" + b + b"b"),
@@ -617,7 +617,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             ("\ud800\udfff", "\\ud800\\udfff"),
         ]
         kila s, r kwenye tests:
-            with self.subTest(str=s):
+            ukijumuisha self.subTest(str=s):
                 self.assertEqual(
                     codecs.namereplace_errors(
                         UnicodeEncodeError("ascii", "a" + s + "b",
@@ -647,7 +647,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
         # Use the correct exception
         kila s kwenye ("a", "\udc7f", "\udd00"):
-            with self.subTest(str=s):
+            ukijumuisha self.subTest(str=s):
                 self.assertRaises(
                     UnicodeEncodeError,
                     surrogateescape_errors,
@@ -691,7 +691,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
         # Use the correct exception
         kila enc kwenye ("utf-8", "utf-16le", "utf-16be", "utf-32le", "utf-32be"):
-            with self.subTest(encoding=enc):
+            ukijumuisha self.subTest(encoding=enc):
                 self.assertRaises(
                     UnicodeEncodeError,
                     surrogatepita_errors,
@@ -703,7 +703,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                     UnicodeDecodeError(enc, "a".encode(enc), 0, 1, "ouch")
                 )
         kila s kwenye ("\ud800", "\udfff", "\ud800\udfff"):
-            with self.subTest(str=s):
+            ukijumuisha self.subTest(str=s):
                 self.assertRaises(
                     UnicodeEncodeError,
                     surrogatepita_errors,
@@ -727,7 +727,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             ("utf-32be", "\ud800\udfff", b'\x00\x00\xd8\x00\x00\x00\xdf\xff', 4),
         ]
         kila enc, s, b, n kwenye tests:
-            with self.subTest(encoding=enc, str=s, bytes=b):
+            ukijumuisha self.subTest(encoding=enc, str=s, bytes=b):
                 self.assertEqual(
                     surrogatepita_errors(
                         UnicodeEncodeError(enc, "a" + s + "b",
@@ -985,7 +985,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         codecs.register_error("test.replacing", replacing)
 
         kila (encoding, data) kwenye baddata:
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 data.decode(encoding, "test.replacing")
 
         eleza mutating(exc):
@@ -1067,13 +1067,13 @@ kundi CodecCallbackTest(unittest.TestCase):
             kundi FakeUnicodeError(str):
                 __class__ = cls
             kila handler kwenye handlers:
-                with self.subTest(handler=handler, error_class=cls):
+                ukijumuisha self.subTest(handler=handler, error_class=cls):
                     self.assertRaises(TypeError, handler, FakeUnicodeError())
             kundi FakeUnicodeError(Exception):
                 __class__ = cls
             kila handler kwenye handlers:
-                with self.subTest(handler=handler, error_class=cls):
-                    with self.assertRaises((TypeError, FakeUnicodeError)):
+                ukijumuisha self.subTest(handler=handler, error_class=cls):
+                    ukijumuisha self.assertRaises((TypeError, FakeUnicodeError)):
                         handler(FakeUnicodeError())
 
 

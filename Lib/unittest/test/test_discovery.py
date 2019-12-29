@@ -37,7 +37,7 @@ kundi TestDiscovery(unittest.TestCase):
             # asserts are off
             rudisha
 
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             loader._get_name_kutoka_path('/bar/baz.py')
 
     eleza test_find_tests(self):
@@ -199,7 +199,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['a_directory', 'test_directory', 'test_directory2'])
 
-        # load_tests should have been called once with loader, tests na pattern
+        # load_tests should have been called once ukijumuisha loader, tests na pattern
         # (but there are no tests kwenye our stub module itself, so that ni [] at
         # the time of call).
         self.assertEqual(Module.load_tests_args,
@@ -272,7 +272,7 @@ kundi TestDiscovery(unittest.TestCase):
                          ['a_directory', 'test_directory', 'test_directory2'])
 
 
-        # load_tests should have been called once with loader, tests na pattern
+        # load_tests should have been called once ukijumuisha loader, tests na pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py')])
 
@@ -359,7 +359,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['my_package', 'my_package.test_module'])
 
-        # load_tests should have been called twice with loader, tests na pattern
+        # load_tests should have been called twice ukijumuisha loader, tests na pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py'),
                           (loader, [], 'test*.py')])
@@ -381,7 +381,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.addCleanup(restore_path)
 
         full_path = os.path.abspath(os.path.normpath('/foo'))
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             loader.discover('/foo/bar', top_level_dir='/foo')
 
         self.assertEqual(loader._top_level_dir, full_path)
@@ -495,7 +495,7 @@ kundi TestDiscovery(unittest.TestCase):
             'missing error string kwenye %r' % error)
         test = list(list(suite)[0])[0] # extract test kutoka suite
 
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             test.test_this_does_not_exist()
 
     eleza test_discover_with_init_modules_that_fail_to_agiza(self):
@@ -520,7 +520,7 @@ kundi TestDiscovery(unittest.TestCase):
             'Failed to agiza test module: my_package' kwenye error,
             'missing error string kwenye %r' % error)
         test = list(list(suite)[0])[0] # extract test kutoka suite
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             test.my_package()
         self.assertEqual(import_calls, ['my_package'])
 
@@ -619,7 +619,7 @@ kundi TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program.testLoader = Tupu
 
-        with support.captured_stderr() kama stderr, \
+        ukijumuisha support.captured_stderr() kama stderr, \
              self.assertRaises(SystemExit) kama cm:
             # too many args
             program._do_discovery(['one', 'two', 'three', 'four'])
@@ -818,7 +818,7 @@ kundi TestDiscovery(unittest.TestCase):
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
                          'Can sio use builtin modules '
@@ -846,11 +846,11 @@ kundi TestDiscovery(unittest.TestCase):
         loader._find_tests = _find_tests
         loader.suiteClass = list
 
-        with unittest.mock.patch('builtins.__import__', _agiza):
+        ukijumuisha unittest.mock.patch('builtins.__import__', _agiza):
             # Since loader.discover() can modify sys.path, restore it when done.
-            with support.DirsOnSysPath():
+            ukijumuisha support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
-                with test.test_importlib.util.uncache('package'):
+                ukijumuisha test.test_importlib.util.uncache('package'):
                     suite = loader.discover('package')
 
         self.assertEqual(suite, ['/a/tests', '/b/tests'])
@@ -863,12 +863,12 @@ kundi TestDiscovery(unittest.TestCase):
             sys.modules[packagename] = package
             rudisha package
 
-        with unittest.mock.patch('builtins.__import__', _agiza):
+        ukijumuisha unittest.mock.patch('builtins.__import__', _agiza):
             # Since loader.discover() can modify sys.path, restore it when done.
-            with support.DirsOnSysPath():
+            ukijumuisha support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
-                with test.test_importlib.util.uncache('package'):
-                    with self.assertRaises(TypeError) kama cm:
+                ukijumuisha test.test_importlib.util.uncache('package'):
+                    ukijumuisha self.assertRaises(TypeError) kama cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
                                      'don\'t know how to discover kutoka {!r}'

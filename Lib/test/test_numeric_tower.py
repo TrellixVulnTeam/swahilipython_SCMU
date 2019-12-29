@@ -85,7 +85,7 @@ kundi HashTest(unittest.TestCase):
             self.check_equal_hash(x, F.kutoka_float(x))
 
     eleza test_complex(self):
-        # complex numbers with zero imaginary part should hash equal to
+        # complex numbers ukijumuisha zero imaginary part should hash equal to
         # the corresponding float
 
         test_values = [0.0, -0.0, 1.0, -1.0, 0.40625, -5136.5,
@@ -175,7 +175,7 @@ kundi ComparisonTest(unittest.TestCase):
                 self.assertGreaterEqual(second, first)
 
     eleza test_complex(self):
-        # comparisons with complex are special:  equality na inequality
+        # comparisons ukijumuisha complex are special:  equality na inequality
         # comparisons should always succeed, but order comparisons should
         # ashiria TypeError.
         z = 1.0 + 0j

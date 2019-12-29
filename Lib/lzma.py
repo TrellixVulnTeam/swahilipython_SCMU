@@ -76,15 +76,15 @@ kundi LZMAFile(_compression.BaseStream):
 
         When opening a file kila writing, the settings used by the
         compressor can be specified either kama a preset compression
-        level (with the *preset* argument), ama kwenye detail kama a custom
-        filter chain (with the *filters* argument). For FORMAT_XZ and
+        level (ukijumuisha the *preset* argument), ama kwenye detail kama a custom
+        filter chain (ukijumuisha the *filters* argument). For FORMAT_XZ and
         FORMAT_ALONE, the default ni to use the PRESET_DEFAULT preset
         level. For FORMAT_RAW, the caller must always specify a filter
         chain; the raw compressor does sio support preset compression
         levels.
 
         preset (ikiwa provided) should be an integer kwenye the range 0-9,
-        optionally OR-ed with the constant PRESET_EXTREME.
+        optionally OR-ed ukijumuisha the constant PRESET_EXTREME.
 
         filters (ikiwa provided) should be a sequence of dicts. Each dict
         should have an entry kila "id" indicating ID of the filter, plus
@@ -104,7 +104,7 @@ kundi LZMAFile(_compression.BaseStream):
             ikiwa format ni Tupu:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
-        elikiwa mode kwenye ("w", "wb", "a", "ab", "x", "xb"):
+        lasivyo mode kwenye ("w", "wb", "a", "ab", "x", "xb"):
             ikiwa format ni Tupu:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
@@ -120,7 +120,7 @@ kundi LZMAFile(_compression.BaseStream):
             self._fp = builtins.open(filename, mode)
             self._closefp = Kweli
             self._mode = mode_code
-        elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
+        lasivyo hasattr(filename, "read") ama hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         isipokua:
@@ -143,7 +143,7 @@ kundi LZMAFile(_compression.BaseStream):
             ikiwa self._mode == _MODE_READ:
                 self._buffer.close()
                 self._buffer = Tupu
-            elikiwa self._mode == _MODE_WRITE:
+            lasivyo self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = Tupu
         mwishowe:
@@ -282,7 +282,7 @@ eleza open(filename, mode="rb", *,
     encoding, errors na newline arguments must sio be provided.
 
     For text mode, an LZMAFile object ni created, na wrapped kwenye an
-    io.TextIOWrapper instance with the specified encoding, error
+    io.TextIOWrapper instance ukijumuisha the specified encoding, error
     handling behavior, na line ending(s).
 
     """

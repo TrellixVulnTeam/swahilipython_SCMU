@@ -35,7 +35,7 @@ eleza run_async(coro):
         jaribu:
             buffer.append(coro.send(Tupu))
         tatizo StopIteration kama ex:
-            result = ex.args[0] ikiwa ex.args else Tupu
+            result = ex.args[0] ikiwa ex.args isipokua Tupu
             koma
     rudisha buffer, result
 
@@ -54,14 +54,14 @@ eleza run_async__await__(coro):
                 buffer.append(aw.send(Tupu))
             i += 1
         tatizo StopIteration kama ex:
-            result = ex.args[0] ikiwa ex.args else Tupu
+            result = ex.args[0] ikiwa ex.args isipokua Tupu
             koma
     rudisha buffer, result
 
 
 @contextlib.contextmanager
 eleza silence_coro_gc():
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter("ignore")
         tuma
         support.gc_collect()
@@ -367,10 +367,10 @@ kundi AsyncBadSyntaxTest(unittest.TestCase):
                        pita
             """,
             """eleza foo():
-                   async with resource:
+                   async ukijumuisha resource:
                        pita
             """,
-            """async with resource:
+            """async ukijumuisha resource:
                    pita
             """,
             """async kila i kwenye arange(2):
@@ -379,7 +379,7 @@ kundi AsyncBadSyntaxTest(unittest.TestCase):
             ]
 
         kila code kwenye samples:
-            with self.subTest(code=code), self.assertRaises(SyntaxError):
+            ukijumuisha self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
     eleza test_badsyntax_2(self):
@@ -418,11 +418,11 @@ kundi AsyncBadSyntaxTest(unittest.TestCase):
         ]
 
         kila code kwenye samples:
-            with self.subTest(code=code), self.assertRaises(SyntaxError):
+            ukijumuisha self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
     eleza test_badsyntax_3(self):
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             compile("async = 1", "<test>", "exec")
 
     eleza test_badsyntax_4(self):
@@ -472,7 +472,7 @@ kundi AsyncBadSyntaxTest(unittest.TestCase):
         ]
 
         kila code kwenye samples:
-            with self.subTest(code=code), self.assertRaises(SyntaxError):
+            ukijumuisha self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
 
@@ -525,7 +525,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             ashiria StopIteration
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 RuntimeError, "coroutine ashiriad StopIteration"):
 
             run_async(foo())
@@ -546,23 +546,23 @@ kundi CoroutineTest(unittest.TestCase):
         check = lambda: self.assertRaisesRegex(
             TypeError, "'coroutine' object ni sio iterable")
 
-        with check():
+        ukijumuisha check():
             list(coro)
 
-        with check():
+        ukijumuisha check():
             tuple(coro)
 
-        with check():
+        ukijumuisha check():
             sum(coro)
 
-        with check():
+        ukijumuisha check():
             iter(coro)
 
-        with check():
+        ukijumuisha check():
             kila i kwenye coro:
                 pita
 
-        with check():
+        ukijumuisha check():
             [i kila i kwenye coro]
 
         coro.close()
@@ -579,7 +579,7 @@ kundi CoroutineTest(unittest.TestCase):
             TypeError, "'coroutine' object ni sio iterable")
 
         coro = foo()
-        with check():
+        ukijumuisha check():
             kila el kwenye coro:
                 pita
         coro.close()
@@ -603,7 +603,7 @@ kundi CoroutineTest(unittest.TestCase):
         f = foo()
         self.assertEqual(f.send(Tupu), 1)
         self.assertEqual(f.send(Tupu), 2)
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             f.send(Tupu)
 
     eleza test_func_7(self):
@@ -614,7 +614,7 @@ kundi CoroutineTest(unittest.TestCase):
         eleza foo():
             tuma kutoka coro
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "cannot 'tuma kutoka' a coroutine object kwenye "
                 "a non-coroutine generator"):
@@ -638,18 +638,18 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             pita
 
-        with self.assertWarnsRegex(
+        ukijumuisha self.assertWarnsRegex(
                 RuntimeWarning,
                 r"coroutine '.*test_func_9.*foo' was never awaited"):
 
             foo()
             support.gc_collect()
 
-        with self.assertWarnsRegex(
+        ukijumuisha self.assertWarnsRegex(
                 RuntimeWarning,
                 r"coroutine '.*test_func_9.*foo' was never awaited"):
 
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 # See bpo-32703.
                 kila _ kwenye foo():
                     pita
@@ -687,7 +687,7 @@ kundi CoroutineTest(unittest.TestCase):
         coro = foo()
         aw = coro.__await__()
         next(aw)
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             aw.throw(ZeroDivisionError, Tupu, Tupu)
         self.assertEqual(N, 102)
 
@@ -706,7 +706,7 @@ kundi CoroutineTest(unittest.TestCase):
             i = me.send(Tupu)
             await foo
         me = g()
-        with self.assertRaisesRegex(ValueError,
+        ukijumuisha self.assertRaisesRegex(ValueError,
                                     "coroutine already executing"):
             me.send(Tupu)
 
@@ -715,7 +715,7 @@ kundi CoroutineTest(unittest.TestCase):
             pita
 
         coro = g()
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "can't send non-Tupu value to a just-started coroutine"):
             coro.send('spam')
@@ -733,7 +733,7 @@ kundi CoroutineTest(unittest.TestCase):
                 await gen()
         c = coro()
         c.send(Tupu)
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     "coroutine ignored GeneratorExit"):
             c.close()
 
@@ -747,10 +747,10 @@ kundi CoroutineTest(unittest.TestCase):
 
         spammer_coro = spammer()
 
-        with self.assertRaisesRegex(StopIteration, 'spam'):
+        ukijumuisha self.assertRaisesRegex(StopIteration, 'spam'):
             reader(spammer_coro).send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             reader(spammer_coro).send(Tupu)
 
@@ -772,16 +772,16 @@ kundi CoroutineTest(unittest.TestCase):
         reader = read(spammer)
         reader.send(Tupu)
         reader.send(Tupu)
-        with self.assertRaisesRegex(Exception, 'ham'):
+        ukijumuisha self.assertRaisesRegex(Exception, 'ham'):
             reader.throw(Exception('ham'))
 
         reader = read(spammer)
         reader.send(Tupu)
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             reader.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             reader.throw(Exception('wat'))
 
@@ -792,14 +792,14 @@ kundi CoroutineTest(unittest.TestCase):
             rudisha 'spam'
 
         coro = coroutine()
-        with self.assertRaisesRegex(StopIteration, 'spam'):
+        ukijumuisha self.assertRaisesRegex(StopIteration, 'spam'):
             coro.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             coro.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             coro.throw(Exception('wat'))
 
@@ -818,14 +818,14 @@ kundi CoroutineTest(unittest.TestCase):
         await_iter = coro.__await__()
         it = iter(await_iter)
 
-        with self.assertRaisesRegex(StopIteration, 'spam'):
+        ukijumuisha self.assertRaisesRegex(StopIteration, 'spam'):
             it.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             it.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             # Although the iterator protocol requires iterators to
             # ashiria another StopIteration here, we don't want to do
@@ -835,11 +835,11 @@ kundi CoroutineTest(unittest.TestCase):
             # ignoring the call.
             next(it)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
@@ -918,7 +918,7 @@ kundi CoroutineTest(unittest.TestCase):
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_SUSPENDED)
         self.assertEqual(coro_b.cr_await.cr_await.gi_code.co_name, 'a')
 
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             coro_b.send(Tupu)  # complete coroutine
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_CLOSED)
         self.assertIsTupu(coro_b.cr_await)
@@ -941,13 +941,13 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo():
             await 1
-        with self.assertRaisesRegex(TypeError, "object int can.t.*await"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "object int can.t.*await"):
             run_async(foo())
 
     eleza test_await_2(self):
         async eleza foo():
             await []
-        with self.assertRaisesRegex(TypeError, "object list can.t.*await"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "object list can.t.*await"):
             run_async(foo())
 
     eleza test_await_3(self):
@@ -974,7 +974,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             rudisha (await Awaitable())
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "__await__.*rudishaed non-iterator of type"):
 
             run_async(foo())
@@ -1006,7 +1006,7 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo(): rudisha await Awaitable()
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "object Awaitable can't be used kwenye 'await' expression"):
 
             run_async(foo())
@@ -1072,7 +1072,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             rudisha await Awaitable()
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError, r"__await__\(\) rudishaed a coroutine"):
             run_async(foo())
 
@@ -1086,7 +1086,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             rudisha await Awaitable()
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
             TypeError, "__await__.*rudishaed non-iterator of type"):
 
             run_async(foo())
@@ -1117,12 +1117,12 @@ kundi CoroutineTest(unittest.TestCase):
 
         c = coro2()
         c.send(Tupu)
-        with self.assertRaisesRegex(StopIteration, 'spam'):
+        ukijumuisha self.assertRaisesRegex(StopIteration, 'spam'):
             c.send('spam')
 
         c = coro2()
         c.send(Tupu)
-        with self.assertRaises(Marker):
+        ukijumuisha self.assertRaises(Marker):
             c.throw(ZeroDivisionError)
 
     eleza test_await_15(self):
@@ -1139,7 +1139,7 @@ kundi CoroutineTest(unittest.TestCase):
         coro = coroutine()
         coro.send(Tupu)
 
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     "coroutine ni being awaited already"):
             waiter(coro).send(Tupu)
 
@@ -1177,7 +1177,7 @@ kundi CoroutineTest(unittest.TestCase):
 
 
         async eleza foo():
-            async with Manager("A") kama a, Manager("B") kama b:
+            async ukijumuisha Manager("A") kama a, Manager("B") kama b:
                 await AsyncYieldFrom([('managers', a.name, b.name)])
                 1/0
 
@@ -1191,11 +1191,11 @@ kundi CoroutineTest(unittest.TestCase):
         )
 
         async eleza foo():
-            async with Manager("A") kama a, Manager("C") kama c:
+            async ukijumuisha Manager("A") kama a, Manager("C") kama c:
                 await AsyncYieldFrom([('managers', a.name, c.name)])
                 1/0
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             run_async(foo())
 
     eleza test_with_2(self):
@@ -1204,10 +1204,10 @@ kundi CoroutineTest(unittest.TestCase):
                 pita
 
         async eleza foo():
-            async with CM():
+            async ukijumuisha CM():
                 pita
 
-        with self.assertRaisesRegex(AttributeError, '__aexit__'):
+        ukijumuisha self.assertRaisesRegex(AttributeError, '__aexit__'):
             run_async(foo())
 
     eleza test_with_3(self):
@@ -1216,10 +1216,10 @@ kundi CoroutineTest(unittest.TestCase):
                 pita
 
         async eleza foo():
-            async with CM():
+            async ukijumuisha CM():
                 pita
 
-        with self.assertRaisesRegex(AttributeError, '__aenter__'):
+        ukijumuisha self.assertRaisesRegex(AttributeError, '__aenter__'):
             run_async(foo())
 
     eleza test_with_4(self):
@@ -1231,15 +1231,15 @@ kundi CoroutineTest(unittest.TestCase):
                 pita
 
         async eleza foo():
-            async with CM():
+            async ukijumuisha CM():
                 pita
 
-        with self.assertRaisesRegex(AttributeError, '__aexit__'):
+        ukijumuisha self.assertRaisesRegex(AttributeError, '__aexit__'):
             run_async(foo())
 
     eleza test_with_5(self):
         # While this test doesn't make a lot of sense,
-        # it's a regression test kila an early bug with opcodes
+        # it's a regression test kila an early bug ukijumuisha opcodes
         # generation
 
         kundi CM:
@@ -1250,10 +1250,10 @@ kundi CoroutineTest(unittest.TestCase):
                 pita
 
         async eleza func():
-            async with CM():
+            async ukijumuisha CM():
                 assert (1, ) == 1
 
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             run_async(func())
 
     eleza test_with_6(self):
@@ -1265,10 +1265,10 @@ kundi CoroutineTest(unittest.TestCase):
                 rudisha 456
 
         async eleza foo():
-            async with CM():
+            async ukijumuisha CM():
                 pita
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aenter__ "
                 "that does sio implement __await__: int"):
@@ -1283,9 +1283,9 @@ kundi CoroutineTest(unittest.TestCase):
             eleza __aexit__(self, *e):
                 rudisha 444
 
-        # Exit with exception
+        # Exit ukijumuisha exception
         async eleza foo():
-            async with CM():
+            async ukijumuisha CM():
                 1/0
 
         jaribu:
@@ -1314,50 +1314,50 @@ kundi CoroutineTest(unittest.TestCase):
         # Normal exit
         async eleza foo():
             nonlocal CNT
-            async with CM():
+            async ukijumuisha CM():
                 CNT += 1
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aexit__ "
                 "that does sio implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 1)
 
-        # Exit with 'koma'
+        # Exit ukijumuisha 'koma'
         async eleza foo():
             nonlocal CNT
             kila i kwenye range(2):
-                async with CM():
+                async ukijumuisha CM():
                     CNT += 1
                     koma
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aexit__ "
                 "that does sio implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 2)
 
-        # Exit with 'endelea'
+        # Exit ukijumuisha 'endelea'
         async eleza foo():
             nonlocal CNT
             kila i kwenye range(2):
-                async with CM():
+                async ukijumuisha CM():
                     CNT += 1
                     endelea
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aexit__ "
                 "that does sio implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 3)
 
-        # Exit with 'rudisha'
+        # Exit ukijumuisha 'rudisha'
         async eleza foo():
             nonlocal CNT
-            async with CM():
+            async ukijumuisha CM():
                 CNT += 1
                 rudisha
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aexit__ "
                 "that does sio implement __await__: int"):
@@ -1377,10 +1377,10 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal CNT
-            async with CM():
+            async ukijumuisha CM():
                 CNT += 1
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             run_async(foo())
 
         self.assertEqual(CNT, 1)
@@ -1397,8 +1397,8 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal CNT
-            async with CM():
-                async with CM():
+            async ukijumuisha CM():
+                async ukijumuisha CM():
                     ashiria RuntimeError
 
         jaribu:
@@ -1423,7 +1423,7 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal CNT
-            async with CM():
+            async ukijumuisha CM():
                 ashiria RuntimeError
 
         jaribu:
@@ -1445,7 +1445,7 @@ kundi CoroutineTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal CNT
-            async with CM() kama cm:
+            async ukijumuisha CM() kama cm:
                 self.assertIs(cm.__class__, CM)
                 ashiria RuntimeError
 
@@ -1464,11 +1464,11 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza foo():
             nonlocal CNT
             CNT += 1
-            async with CM():
+            async ukijumuisha CM():
                 CNT += 1000
             CNT += 10000
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             run_async(foo())
         self.assertEqual(CNT, 1)
 
@@ -1552,7 +1552,7 @@ kundi CoroutineTest(unittest.TestCase):
             async kila i kwenye tup:
                 andika('never going to happen')
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError, "async for' requires an object.*__aiter__.*tuple"):
 
             run_async(foo())
@@ -1571,7 +1571,7 @@ kundi CoroutineTest(unittest.TestCase):
             async kila i kwenye aiter:
                 andika('never going to happen')
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 r"that does sio implement __anext__"):
 
@@ -1594,7 +1594,7 @@ kundi CoroutineTest(unittest.TestCase):
             async kila i kwenye aiter:
                 andika('never going to happen')
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "async for' received an invalid object.*__anext__.*tuple"):
 
@@ -1637,12 +1637,12 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza main():
             nonlocal I
 
-            async with manager:
+            async ukijumuisha manager:
                 async kila i kwenye iterable:
                     I += 1
             I += 1000
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("error")
             # Test that __aiter__ that rudishas an asynchronous iterator
             # directly does sio throw any warnings.
@@ -1657,12 +1657,12 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza main():
             nonlocal I
 
-            async with Manager():
+            async ukijumuisha Manager():
                 async kila i kwenye Iterable():
                     I += 1
             I += 1000
 
-            async with Manager():
+            async ukijumuisha Manager():
                 async kila i kwenye Iterable():
                     I += 1
             I += 1000
@@ -1675,7 +1675,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza main():
             nonlocal I
 
-            async with Manager():
+            async ukijumuisha Manager():
                 I += 100
                 async kila i kwenye Iterable():
                     I += 1
@@ -1683,7 +1683,7 @@ kundi CoroutineTest(unittest.TestCase):
                     I += 10000000
             I += 1000
 
-            async with Manager():
+            async ukijumuisha Manager():
                 I += 100
                 async kila i kwenye Iterable():
                     I += 1
@@ -1704,7 +1704,7 @@ kundi CoroutineTest(unittest.TestCase):
             async kila i kwenye AI():
                 CNT += 1
             CNT += 10
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             run_async(foo())
         self.assertEqual(CNT, 0)
 
@@ -1718,8 +1718,8 @@ kundi CoroutineTest(unittest.TestCase):
             async kila i kwenye AI():
                 CNT += 1
             CNT += 10
-        with self.assertRaises(ZeroDivisionError):
-            with warnings.catch_warnings():
+        ukijumuisha self.assertRaises(ZeroDivisionError):
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter("error")
                 # Test that ikiwa __aiter__ ashirias an exception it propagates
                 # without any kind of warning.
@@ -1739,7 +1739,7 @@ kundi CoroutineTest(unittest.TestCase):
             async kila _ kwenye F():
                 pita
 
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     'an invalid object kutoka __anext__') kama c:
             main().send(Tupu)
 
@@ -1765,7 +1765,7 @@ kundi CoroutineTest(unittest.TestCase):
                 result.append(i)
             ashiria Done
 
-        with self.assertRaises(Done):
+        ukijumuisha self.assertRaises(Done):
             foo().send(Tupu)
         self.assertEqual(result, [42])
 
@@ -1788,7 +1788,7 @@ kundi CoroutineTest(unittest.TestCase):
                 result.append(i)
             ashiria Done
 
-        with self.assertRaises(Done):
+        ukijumuisha self.assertRaises(Done):
             foo().send(Tupu)
         self.assertEqual(result, [42])
 
@@ -1969,7 +1969,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza run_list():
             rudisha [i async kila i kwenye f()]
 
-        with self.assertRaisesRegex(Exception, 'aaa'):
+        ukijumuisha self.assertRaisesRegex(Exception, 'aaa'):
             run_async(run_list())
 
     eleza test_comp_8(self):
@@ -2004,12 +2004,12 @@ kundi CoroutineTest(unittest.TestCase):
     eleza test_copy(self):
         async eleza func(): pita
         coro = func()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             copy.copy(coro)
 
         aw = coro.__await__()
         jaribu:
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 copy.copy(aw)
         mwishowe:
             aw.close()
@@ -2018,13 +2018,13 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza func(): pita
         coro = func()
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            ukijumuisha self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(coro, proto)
 
         aw = coro.__await__()
         jaribu:
             kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.assertRaises((TypeError, pickle.PicklingError)):
+                ukijumuisha self.assertRaises((TypeError, pickle.PicklingError)):
                     pickle.dumps(aw, proto)
         mwishowe:
             aw.close()
@@ -2032,7 +2032,7 @@ kundi CoroutineTest(unittest.TestCase):
     eleza test_fatal_coro_warning(self):
         # Issue 27811
         async eleza func(): pita
-        with warnings.catch_warnings(), \
+        ukijumuisha warnings.catch_warnings(), \
              support.catch_unraisable_exception() kama cm:
             warnings.filterwarnings("error")
             coro = func()
@@ -2053,7 +2053,7 @@ kundi CoroutineTest(unittest.TestCase):
             tuma 10
 
         async eleza run_for():
-            with self.assertRaises(StopAsyncIteration) kama cm:
+            ukijumuisha self.assertRaises(StopAsyncIteration) kama cm:
                 async kila tgt[0] kwenye source():
                     pita
             self.assertEqual(cm.exception.args, (42,))
@@ -2061,7 +2061,7 @@ kundi CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(run_for()), ([], 'end'))
 
         async eleza run_list():
-            with self.assertRaises(StopAsyncIteration) kama cm:
+            ukijumuisha self.assertRaises(StopAsyncIteration) kama cm:
                 rudisha [0 async kila tgt[0] kwenye source()]
             self.assertEqual(cm.exception.args, (42,))
             rudisha 'end'
@@ -2070,7 +2070,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza run_gen():
             gen = (0 async kila tgt[0] kwenye source())
             a = gen.asend(Tupu)
-            with self.assertRaises(RuntimeError) kama cm:
+            ukijumuisha self.assertRaises(RuntimeError) kama cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
             self.assertEqual(cm.exception.__cause__.args, (42,))
@@ -2085,7 +2085,7 @@ kundi CoroutineTest(unittest.TestCase):
             tuma BadIterable()
 
         async eleza run_for():
-            with self.assertRaises(StopAsyncIteration) kama cm:
+            ukijumuisha self.assertRaises(StopAsyncIteration) kama cm:
                 async kila i, j kwenye badpairs():
                     pita
             self.assertEqual(cm.exception.args, (42,))
@@ -2093,7 +2093,7 @@ kundi CoroutineTest(unittest.TestCase):
         self.assertEqual(run_async(run_for()), ([], 'end'))
 
         async eleza run_list():
-            with self.assertRaises(StopAsyncIteration) kama cm:
+            ukijumuisha self.assertRaises(StopAsyncIteration) kama cm:
                 rudisha [0 async kila i, j kwenye badpairs()]
             self.assertEqual(cm.exception.args, (42,))
             rudisha 'end'
@@ -2102,7 +2102,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza run_gen():
             gen = (0 async kila i, j kwenye badpairs())
             a = gen.asend(Tupu)
-            with self.assertRaises(RuntimeError) kama cm:
+            ukijumuisha self.assertRaises(RuntimeError) kama cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
             self.assertEqual(cm.exception.__cause__.args, (42,))
@@ -2134,7 +2134,7 @@ kundi CoroAsyncIOCompatTest(unittest.TestCase):
                 buffer.append(exc_type.__name__)
 
         async eleza f():
-            async with CM() kama c:
+            async ukijumuisha CM() kama c:
                 await asyncio.sleep(0.01)
                 ashiria MyException
             buffer.append('unreachable')
@@ -2166,14 +2166,14 @@ kundi OriginTrackingTest(unittest.TestCase):
             sys.set_coroutine_origin_tracking_depth(0)
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
 
-            with contextlib.closing(corofn()) kama coro:
+            ukijumuisha contextlib.closing(corofn()) kama coro:
                 self.assertIsTupu(coro.cr_origin)
 
             sys.set_coroutine_origin_tracking_depth(1)
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 1)
 
             fname, lineno = self.here()
-            with contextlib.closing(corofn()) kama coro:
+            ukijumuisha contextlib.closing(corofn()) kama coro:
                 self.assertEqual(coro.cr_origin,
                                  ((fname, lineno + 1, "test_origin_tracking"),))
 
@@ -2184,18 +2184,18 @@ kundi OriginTrackingTest(unittest.TestCase):
                 rudisha (self.here(), corofn())
             fname, lineno = self.here()
             ((nested_fname, nested_lineno), coro) = nested()
-            with contextlib.closing(coro):
+            ukijumuisha contextlib.closing(coro):
                 self.assertEqual(coro.cr_origin,
                                  ((nested_fname, nested_lineno, "nested"),
                                   (fname, lineno + 1, "test_origin_tracking")))
 
             # Check we handle running out of frames correctly
             sys.set_coroutine_origin_tracking_depth(1000)
-            with contextlib.closing(corofn()) kama coro:
+            ukijumuisha contextlib.closing(corofn()) kama coro:
                 self.assertKweli(2 < len(coro.cr_origin) < 1000)
 
             # We can't set depth negative
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 sys.set_coroutine_origin_tracking_depth(-1)
             # And trying leaves it unchanged
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 1000)
@@ -2219,7 +2219,7 @@ kundi OriginTrackingTest(unittest.TestCase):
 
         eleza check(depth, msg):
             sys.set_coroutine_origin_tracking_depth(depth)
-            with self.assertWarns(RuntimeWarning) kama cm:
+            ukijumuisha self.assertWarns(RuntimeWarning) kama cm:
                 a2()
                 support.gc_collect()
             self.assertEqual(msg, str(cm.warning))
@@ -2255,7 +2255,7 @@ kundi OriginTrackingTest(unittest.TestCase):
         orig_wuc = warnings._warn_unawaited_coroutine
         jaribu:
             warnings._warn_unawaited_coroutine = lambda coro: 1/0
-            with support.catch_unraisable_exception() kama cm, \
+            ukijumuisha support.catch_unraisable_exception() kama cm, \
                  support.check_warnings((r'coroutine .* was never awaited',
                                          RuntimeWarning)):
                 # only store repr() to avoid keeping the coroutine alive
@@ -2270,7 +2270,7 @@ kundi OriginTrackingTest(unittest.TestCase):
                 self.assertEqual(cm.unraisable.exc_type, ZeroDivisionError)
 
             toa warnings._warn_unawaited_coroutine
-            with support.check_warnings((r'coroutine .* was never awaited',
+            ukijumuisha support.check_warnings((r'coroutine .* was never awaited',
                                          RuntimeWarning)):
                 corofn()
                 support.gc_collect()
@@ -2324,7 +2324,7 @@ kundi CAPITest(unittest.TestCase):
             future = at(1)
             rudisha (await future)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 TypeError, "__await__.*rudishaed non-iterator of type 'int'"):
             self.assertEqual(foo().send(Tupu), 1)
 

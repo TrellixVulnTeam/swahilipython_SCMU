@@ -264,7 +264,7 @@ kundi TestAsynchatMocked(unittest.TestCase):
         dispatcher.set_socket(sock)
         self.addCleanup(dispatcher.del_channel)
 
-        with unittest.mock.patch.object(dispatcher, 'handle_error') kama error:
+        ukijumuisha unittest.mock.patch.object(dispatcher, 'handle_error') kama error:
             dispatcher.handle_read()
         self.assertUongo(error.called)
 

@@ -253,5 +253,5 @@ kundi Converter(grammar.Grammar):
         kila ilabel, (type, value) kwenye enumerate(self.labels):
             ikiwa type == token.NAME na value ni sio Tupu:
                 self.keywords[value] = ilabel
-            elikiwa value ni Tupu:
+            lasivyo value ni Tupu:
                 self.tokens[type] = ilabel

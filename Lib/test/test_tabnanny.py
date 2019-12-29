@@ -68,7 +68,7 @@ kundi TemporaryPyFile:
         self.dir = directory
 
     eleza __enter__(self):
-        with tempfile.NamedTemporaryFile(
+        ukijumuisha tempfile.NamedTemporaryFile(
             mode='w', dir=self.dir, suffix=".py", delete=Uongo
         ) kama f:
             f.write(self.source_code)
@@ -92,7 +92,7 @@ kundi TestFormatWitnesses(TestCase):
         ]
 
         kila words, expected kwenye tests:
-            with self.subTest(words=words, expected=expected):
+            ukijumuisha self.subTest(words=words, expected=expected):
                 self.assertEqual(tabnanny.format_witnesses(words), expected)
 
 
@@ -109,8 +109,8 @@ kundi TestErrPrint(TestCase):
         ]
 
         kila args, expected kwenye tests:
-            with self.subTest(arguments=args, expected=expected):
-                with captured_stderr() kama stderr:
+            ukijumuisha self.subTest(arguments=args, expected=expected):
+                ukijumuisha captured_stderr() kama stderr:
                     tabnanny.errandika(*args)
                 self.assertEqual(stderr.getvalue() , expected)
 
@@ -132,13 +132,13 @@ kundi TestNannyNag(TestCase):
             line_number = nanny.get_lineno()
             msg = nanny.get_msg()
             line = nanny.get_line()
-            with self.subTest(
+            ukijumuisha self.subTest(
                 line_number=line_number, expected=expected['lineno']
             ):
                 self.assertEqual(expected['lineno'], line_number)
-            with self.subTest(msg=msg, expected=expected['msg']):
+            ukijumuisha self.subTest(msg=msg, expected=expected['msg']):
                 self.assertEqual(expected['msg'], msg)
-            with self.subTest(line=line, expected=expected['line']):
+            ukijumuisha self.subTest(line=line, expected=expected['line']):
                 self.assertEqual(expected['line'], line)
 
 
@@ -157,14 +157,14 @@ kundi TestCheck(TestCase):
         tabnanny.check() captures exceptions na writes to `stdout` and
         `stderr`, asserting standard outputs ni the only way.
         """
-        with captured_stdout() kama stdout, captured_stderr() kama stderr:
+        ukijumuisha captured_stdout() kama stdout, captured_stderr() kama stderr:
             tabnanny.check(dir_or_file)
         self.assertEqual(stdout.getvalue(), out)
         self.assertEqual(stderr.getvalue(), err)
 
     eleza test_correct_file(self):
         """A python source code file without any errors."""
-        with TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
             self.verify_tabnanny_check(file_path)
 
     eleza test_correct_directory_verbose(self):
@@ -174,32 +174,32 @@ kundi TestCheck(TestCase):
         existence of each output lines at `stdout` using `in` operator.
         `verbose` mode of `tabnanny.verbose` asserts `stdout`.
         """
-        with tempfile.TemporaryDirectory() kama tmp_dir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmp_dir:
             lines = [f"{tmp_dir!r}: listing directory\n",]
             file1 = TemporaryPyFile(SOURCE_CODES["error_free"], directory=tmp_dir)
             file2 = TemporaryPyFile(SOURCE_CODES["error_free"], directory=tmp_dir)
-            with file1 kama file1_path, file2 kama file2_path:
+            ukijumuisha file1 kama file1_path, file2 kama file2_path:
                 kila file_path kwenye (file1_path, file2_path):
                     lines.append(f"{file_path!r}: Clean bill of health.\n")
 
                 tabnanny.verbose = 1
-                with captured_stdout() kama stdout, captured_stderr() kama stderr:
+                ukijumuisha captured_stdout() kama stdout, captured_stderr() kama stderr:
                     tabnanny.check(tmp_dir)
                 stdout = stdout.getvalue()
                 kila line kwenye lines:
-                    with self.subTest(line=line):
+                    ukijumuisha self.subTest(line=line):
                         self.assertIn(line, stdout)
                 self.assertEqual(stderr.getvalue(), "")
 
     eleza test_correct_directory(self):
         """Directory which contains few error free python source code files."""
-        with tempfile.TemporaryDirectory() kama tmp_dir:
-            with TemporaryPyFile(SOURCE_CODES["error_free"], directory=tmp_dir):
+        ukijumuisha tempfile.TemporaryDirectory() kama tmp_dir:
+            ukijumuisha TemporaryPyFile(SOURCE_CODES["error_free"], directory=tmp_dir):
                 self.verify_tabnanny_check(tmp_dir)
 
     eleza test_when_wrong_indented(self):
         """A python source code file eligible kila raising `IndentationError`."""
-        with TemporaryPyFile(SOURCE_CODES["wrong_indented"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["wrong_indented"]) kama file_path:
             err = ('unindent does sio match any outer indentation level'
                 ' (<tokenize>, line 3)\n')
             err = f"{file_path!r}: Indentation Error: {err}"
@@ -207,7 +207,7 @@ kundi TestCheck(TestCase):
 
     eleza test_when_tokenize_tokenerror(self):
         """A python source code file eligible kila raising 'tokenize.TokenError'."""
-        with TemporaryPyFile(SOURCE_CODES["incomplete_expression"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["incomplete_expression"]) kama file_path:
             err = "('EOF kwenye multi-line statement', (7, 0))\n"
             err = f"{file_path!r}: Token Error: {err}"
             self.verify_tabnanny_check(file_path, err=err)
@@ -217,7 +217,7 @@ kundi TestCheck(TestCase):
 
         Tests will assert `stdout` after activating `tabnanny.verbose` mode.
         """
-        with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
             out = f"{file_path!r}: *** Line 3: trouble kwenye tab city! ***\n"
             out += "offending line: '\\tandika(\"world\")\\n'\n"
             out += "indent sio equal e.g. at tab size 1\n"
@@ -227,7 +227,7 @@ kundi TestCheck(TestCase):
 
     eleza test_when_nannynag_error(self):
         """A python source code file eligible kila raising `tabnanny.NannyNag`."""
-        with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
             out = f"{file_path} 3 '\\tandika(\"world\")\\n'\n"
             self.verify_tabnanny_check(file_path, out=out)
 
@@ -240,14 +240,14 @@ kundi TestCheck(TestCase):
 
     eleza test_errored_directory(self):
         """Directory containing wrongly indented python source code files."""
-        with tempfile.TemporaryDirectory() kama tmp_dir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmp_dir:
             error_file = TemporaryPyFile(
                 SOURCE_CODES["wrong_indented"], directory=tmp_dir
             )
             code_file = TemporaryPyFile(
                 SOURCE_CODES["error_free"], directory=tmp_dir
             )
-            with error_file kama e_file, code_file kama c_file:
+            ukijumuisha error_file kama e_file, code_file kama c_file:
                 err = ('unindent does sio match any outer indentation level'
                             ' (<tokenize>, line 3)\n')
                 err = f"{e_file!r}: Indentation Error: {err}"
@@ -261,13 +261,13 @@ kundi TestProcessTokens(TestCase):
     eleza test_with_correct_code(self, MockNannyNag):
         """A python source code without any whitespace related problems."""
 
-        with TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
-            with open(file_path) kama f:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
+            ukijumuisha open(file_path) kama f:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
             self.assertUongo(MockNannyNag.called)
 
     eleza test_with_errored_codes_samples(self):
-        """A python source code with whitespace related sampled problems."""
+        """A python source code ukijumuisha whitespace related sampled problems."""
 
         # "tab_space_errored_1": executes block under type == tokenize.INDENT
         #                        at `tabnanny.process_tokens()`.
@@ -276,11 +276,11 @@ kundi TestProcessTokens(TestCase):
         #                        `tabnanny.process_tokens()`.
 
         kila key kwenye ["tab_space_errored_1", "tab_space_errored_2"]:
-            with self.subTest(key=key):
-                with TemporaryPyFile(SOURCE_CODES[key]) kama file_path:
-                    with open(file_path) kama f:
+            ukijumuisha self.subTest(key=key):
+                ukijumuisha TemporaryPyFile(SOURCE_CODES[key]) kama file_path:
+                    ukijumuisha open(file_path) kama f:
                         tokens = tokenize.generate_tokens(f.readline)
-                        with self.assertRaises(tabnanny.NannyNag):
+                        ukijumuisha self.assertRaises(tabnanny.NannyNag):
                             tabnanny.process_tokens(tokens)
 
 
@@ -298,7 +298,7 @@ kundi TestCommandLine(TestCase):
             kila std, output kwenye ((stdout, out), (stderr, err)):
                 _output = output.splitlines()
                 kila _std kwenye std.splitlines():
-                    with self.subTest(std=_std, output=_output):
+                    ukijumuisha self.subTest(std=_std, output=_output):
                         self.assertIn(_std, _output)
         isipokua:
             self.assertListEqual(out.splitlines(), stdout.splitlines())
@@ -306,7 +306,7 @@ kundi TestCommandLine(TestCase):
 
     eleza test_with_errored_file(self):
         """Should displays error when errored python file ni given."""
-        with TemporaryPyFile(SOURCE_CODES["wrong_indented"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["wrong_indented"]) kama file_path:
             stderr  = f"{file_path!r}: Indentation Error: "
             stderr += ('unindent does sio match any outer indentation level'
                     ' (<tokenize>, line 3)')
@@ -314,7 +314,7 @@ kundi TestCommandLine(TestCase):
 
     eleza test_with_error_free_file(self):
         """Should sio display anything ikiwa python file ni correctly indented."""
-        with TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["error_free"]) kama file_path:
             self.validate_cmd(file_path)
 
     eleza test_command_usage(self):
@@ -325,13 +325,13 @@ kundi TestCommandLine(TestCase):
 
     eleza test_quiet_flag(self):
         """Should display less when quite mode ni on."""
-        with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama file_path:
             stdout = f"{file_path}\n"
             self.validate_cmd("-q", file_path, stdout=stdout)
 
     eleza test_verbose_mode(self):
         """Should display more error information ikiwa verbose mode ni on."""
-        with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama path:
             stdout = textwrap.dedent(
                 "offending line: '\\tandika(\"world\")\\n'"
             ).strip()
@@ -339,7 +339,7 @@ kundi TestCommandLine(TestCase):
 
     eleza test_double_verbose_mode(self):
         """Should display detailed error information ikiwa double verbose ni on."""
-        with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama path:
+        ukijumuisha TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) kama path:
             stdout = textwrap.dedent(
                 "offending line: '\\tandika(\"world\")\\n'"
             ).strip()

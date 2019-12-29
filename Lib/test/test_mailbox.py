@@ -39,7 +39,7 @@ kundi TestBase:
         # Delete a file ama delete a directory recursively
         ikiwa os.path.isdir(target):
             support.rmtree(target)
-        elikiwa os.path.exists(target):
+        lasivyo os.path.exists(target):
             support.unlink(target)
 
 
@@ -74,7 +74,7 @@ kundi TestMailbox(TestBase):
         self.assertEqual(len(self._box), 5)
         keys.append(self._box.add(_bytes_sample_message))
         self.assertEqual(len(self._box), 6)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             keys.append(self._box.add(
                 io.TextIOWrapper(io.BytesIO(_bytes_sample_message))))
         self.assertEqual(len(self._box), 7)
@@ -103,7 +103,7 @@ kundi TestMailbox(TestBase):
             'YWwuIE3hciByZW5kZWx06Ww/?=\n\n')
 
     eleza test_add_nonascii_string_header_ashirias(self):
-        with self.assertRaisesRegex(ValueError, "ASCII-only"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "ASCII-only"):
             self._box.add(self._nonascii_msg)
         self._box.flush()
         self.assertEqual(len(self._box), 0)
@@ -113,7 +113,7 @@ kundi TestMailbox(TestBase):
         eleza ashiriar(*args, **kw):
             ashiria Exception("a fake error")
         support.patch(self, email.generator.BytesGenerator, 'flatten', ashiriar)
-        with self.assertRaises(Exception):
+        ukijumuisha self.assertRaises(Exception):
             self._box.add(email.message_kutoka_string("From: Alphöso"))
         self.assertEqual(len(self._box), 0)
         self._box.close()
@@ -135,7 +135,7 @@ kundi TestMailbox(TestBase):
         key = self._box.add(self._non_latin_bin_msg)
         self.assertEqual(self._box.get_bytes(key),
                          self._non_latin_bin_msg)
-        with self._box.get_file(key) kama f:
+        ukijumuisha self._box.get_file(key) kama f:
             self.assertEqual(f.read(),
                              self._non_latin_bin_msg.replace(b'\n',
                                 os.linesep.encode()))
@@ -143,7 +143,7 @@ kundi TestMailbox(TestBase):
                         "Да, они летят.\n")
 
     eleza test_add_binary_file(self):
-        with tempfile.TemporaryFile('wb+') kama f:
+        ukijumuisha tempfile.TemporaryFile('wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             key = self._box.add(f)
@@ -151,7 +151,7 @@ kundi TestMailbox(TestBase):
             _bytes_sample_message.split(b'\n'))
 
     eleza test_add_binary_nonascii_file(self):
-        with tempfile.TemporaryFile('wb+') kama f:
+        ukijumuisha tempfile.TemporaryFile('wb+') kama f:
             f.write(self._non_latin_bin_msg)
             f.seek(0)
             key = self._box.add(f)
@@ -159,22 +159,22 @@ kundi TestMailbox(TestBase):
             self._non_latin_bin_msg.split(b'\n'))
 
     eleza test_add_text_file_warns(self):
-        with tempfile.TemporaryFile('w+') kama f:
+        ukijumuisha tempfile.TemporaryFile('w+') kama f:
             f.write(_sample_message)
             f.seek(0)
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 key = self._box.add(f)
         self.assertEqual(self._box.get_bytes(key).split(b'\n'),
             _bytes_sample_message.split(b'\n'))
 
     eleza test_add_StringIO_warns(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             key = self._box.add(io.StringIO(self._template % "0"))
         self.assertEqual(self._box.get_string(key), self._template % "0")
 
     eleza test_add_nonascii_StringIO_ashirias(self):
-        with self.assertWarns(DeprecationWarning):
-            with self.assertRaisesRegex(ValueError, "ASCII-only"):
+        ukijumuisha self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertRaisesRegex(ValueError, "ASCII-only"):
                 self._box.add(io.StringIO(self._nonascii_msg))
         self.assertEqual(len(self._box), 0)
         self._box.close()
@@ -277,9 +277,9 @@ kundi TestMailbox(TestBase):
         # Get file representations of messages
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(_sample_message)
-        with self._box.get_file(key0) kama file:
+        ukijumuisha self._box.get_file(key0) kama file:
             data0 = file.read()
-        with self._box.get_file(key1) kama file:
+        ukijumuisha self._box.get_file(key1) kama file:
             data1 = file.read()
         self.assertEqual(data0.decode('ascii').replace(os.linesep, '\n'),
                          self._template % 0)
@@ -333,7 +333,7 @@ kundi TestMailbox(TestBase):
             values.append(self._template % i)
         ikiwa do_keys na sio do_values:
             rudishaed_keys = list(method())
-        elikiwa do_values na sio do_keys:
+        lasivyo do_values na sio do_keys:
             rudishaed_values = list(method())
         isipokua:
             rudishaed_keys, rudishaed_values = [], []
@@ -618,7 +618,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(msg_rudishaed.get_flags(), 'FR')
 
     eleza test_set_MM(self):
-        # Set with a MaildirMessage instance
+        # Set ukijumuisha a MaildirMessage instance
         msg0 = mailbox.MaildirMessage(self._template % 0)
         msg0.set_flags('TP')
         key = self._box.add(msg0)
@@ -723,9 +723,9 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         # Remove old files kutoka 'tmp'
         foo_path = os.path.join(self._path, 'tmp', 'foo')
         bar_path = os.path.join(self._path, 'tmp', 'bar')
-        with open(foo_path, 'w') kama f:
+        ukijumuisha open(foo_path, 'w') kama f:
             f.write("@")
-        with open(bar_path, 'w') kama f:
+        ukijumuisha open(bar_path, 'w') kama f:
             f.write("@")
         self._box.clean()
         self.assertKweli(os.path.exists(foo_path))
@@ -859,7 +859,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         # Create a stray directory
         os.mkdir(os.path.join(self._path, 'cur', 'stray-dir'))
 
-        # Check that looping still works with the directory present.
+        # Check that looping still works ukijumuisha the directory present.
         kila msg kwenye self._box:
             pita
 
@@ -983,11 +983,11 @@ kundi _TestMboxMMDF(_TestSingleFile):
             support.unlink(lock_remnant)
 
     eleza assertMailboxEmpty(self):
-        with open(self._path) kama f:
+        ukijumuisha open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza test_get_bytes_kutoka(self):
-        # Get bytes representations of messages with _unixkutoka.
+        # Get bytes representations of messages ukijumuisha _unixkutoka.
         unixkutoka = 'From foo@bar blah\n'
         key0 = self._box.add(unixkutoka + self._template % 0)
         key1 = self._box.add(unixkutoka + _sample_message)
@@ -1001,7 +1001,7 @@ kundi _TestMboxMMDF(_TestSingleFile):
             unixkutoka.encode('ascii') + _bytes_sample_message)
 
     eleza test_get_string_kutoka(self):
-        # Get string representations of messages with _unixkutoka.
+        # Get string representations of messages ukijumuisha _unixkutoka.
         unixkutoka = 'From foo@bar blah\n'
         key0 = self._box.add(unixkutoka + self._template % 0)
         key1 = self._box.add(unixkutoka + _sample_message)
@@ -1015,13 +1015,13 @@ kundi _TestMboxMMDF(_TestSingleFile):
                          (unixkutoka + _sample_message).split('\n'))
 
     eleza test_add_kutoka_string(self):
-        # Add a string starting with 'From ' to the mailbox
+        # Add a string starting ukijumuisha 'From ' to the mailbox
         key = self._box.add('From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_kutoka(), 'foo@bar blah')
         self.assertEqual(self._box[key].get_payload(), '0\n')
 
     eleza test_add_kutoka_bytes(self):
-        # Add a byte string starting with 'From ' to the mailbox
+        # Add a byte string starting ukijumuisha 'From ' to the mailbox
         key = self._box.add(b'From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_kutoka(), 'foo@bar blah')
         self.assertEqual(self._box[key].get_payload(), '0\n')
@@ -1056,7 +1056,7 @@ kundi _TestMboxMMDF(_TestSingleFile):
         self._box._file.seek(0)
         contents = self._box._file.read()
         self._box.close()
-        with open(self._path, 'rb') kama f:
+        ukijumuisha open(self._path, 'rb') kama f:
             self.assertEqual(contents, f.read())
         self._box = self._factory(self._path)
 
@@ -1149,12 +1149,12 @@ kundi TestMbox(_TestMboxMMDF, unittest.TestCase):
     eleza test_message_separator(self):
         # Check there's always a single blank line after each message
         self._box.add('From: foo\n\n0')  # No newline at the end
-        with open(self._path) kama f:
+        ukijumuisha open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
         self._box.add('From: foo\n\n0\n')  # Newline at the end
-        with open(self._path) kama f:
+        ukijumuisha open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
@@ -1304,7 +1304,7 @@ kundi TestBabyl(_TestSingleFile, unittest.TestCase):
     _factory = lambda self, path, factory=Tupu: mailbox.Babyl(path, factory)
 
     eleza assertMailboxEmpty(self):
-        with open(self._path) kama f:
+        ukijumuisha open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza tearDown(self):
@@ -1389,7 +1389,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_file(self):
         # Initialize based on contents of file
-        with open(self._path, 'w+') kama f:
+        ukijumuisha open(self._path, 'w+') kama f:
             f.write(_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1398,7 +1398,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_binary_file(self):
         # Initialize based on contents of binary file
-        with open(self._path, 'wb+') kama f:
+        ukijumuisha open(self._path, 'wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1417,7 +1417,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
         self.assertIsTupu(msg.get_payload())
 
     eleza test_initialize_incorrectly(self):
-        # Initialize with invalid argument
+        # Initialize ukijumuisha invalid argument
         self.assertRaises(TypeError, lambda: self._factory(object()))
 
     eleza test_all_eMM_attribues_exist(self):
@@ -1532,7 +1532,7 @@ kundi _TestMboxMMDFMessage:
         self._check_kutoka(msg)
 
     eleza test_initialize_with_unixkutoka(self):
-        # Initialize with a message that already has a _unixkutoka attribute
+        # Initialize ukijumuisha a message that already has a _unixkutoka attribute
         msg = mailbox.Message(_sample_message)
         msg.set_unixkutoka('From foo@bar blah')
         msg = mailbox.mboxMessage(msg)
@@ -2134,7 +2134,7 @@ kundi MaildirTestCase(unittest.TestCase):
         self._dir = support.TESTFN
         ikiwa os.path.isdir(self._dir):
             support.rmtree(self._dir)
-        elikiwa os.path.isfile(self._dir):
+        lasivyo os.path.isfile(self._dir):
             support.unlink(self._dir)
         os.mkdir(self._dir)
         os.mkdir(os.path.join(self._dir, "cur"))
@@ -2157,7 +2157,7 @@ kundi MaildirTestCase(unittest.TestCase):
         filename = ".".join((str(t), str(pid), "myhostname", "mydomain"))
         tmpname = os.path.join(self._dir, "tmp", filename)
         newname = os.path.join(self._dir, dir, filename)
-        with open(tmpname, "w") kama fp:
+        ukijumuisha open(tmpname, "w") kama fp:
             self._msgfiles.append(tmpname)
             ikiwa mbox:
                 fp.write(FROM_)
@@ -2165,7 +2165,7 @@ kundi MaildirTestCase(unittest.TestCase):
         jaribu:
             os.link(tmpname, newname)
         tatizo (AttributeError, PermissionError):
-            with open(newname, "w") kama fp:
+            ukijumuisha open(newname, "w") kama fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)
         rudisha tmpname
@@ -2214,14 +2214,14 @@ Return-Path: <gkj@gregorykjohnson.com>
 X-Original-To: gkj+person@localhost
 Delivered-To: gkj+person@localhost
 Received: kutoka localhost (localhost [127.0.0.1])
-        by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
+        by andy.gregorykjohnson.com (Postfix) ukijumuisha ESMTP id 356ED9DD17
         kila <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Delivered-To: gkj@sundance.gregorykjohnson.com
 Received: kutoka localhost [127.0.0.1]
-        by localhost with POP3 (fetchmail-6.2.5)
+        by localhost ukijumuisha POP3 (fetchmail-6.2.5)
         kila gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Received: kutoka andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
-        by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
+        by sundance.gregorykjohnson.com (Postfix) ukijumuisha ESMTP id 5B056316746
         kila <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
 Received: by andy.gregorykjohnson.com (Postfix, kutoka userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
@@ -2263,14 +2263,14 @@ _sample_headers = {
     "X-Original-To":"gkj+person@localhost",
     "Delivered-To":"gkj+person@localhost",
     "Received":"""kutoka localhost (localhost [127.0.0.1])
-        by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
+        by andy.gregorykjohnson.com (Postfix) ukijumuisha ESMTP id 356ED9DD17
         kila <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
     "Delivered-To":"gkj@sundance.gregorykjohnson.com",
     "Received":"""kutoka localhost [127.0.0.1]
-        by localhost with POP3 (fetchmail-6.2.5)
+        by localhost ukijumuisha POP3 (fetchmail-6.2.5)
         kila gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
     "Received":"""kutoka andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
-        by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
+        by sundance.gregorykjohnson.com (Postfix) ukijumuisha ESMTP id 5B056316746
         kila <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)""",
     "Received":"""by andy.gregorykjohnson.com (Postfix, kutoka userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)""",

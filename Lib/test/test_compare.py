@@ -98,7 +98,7 @@ kundi ComparisonTest(unittest.TestCase):
             ('__ge__', lambda a, b: a >= b),
         )
         kila name, func kwenye ops:
-            with self.subTest(name):
+            ukijumuisha self.subTest(name):
                 eleza unexpected(*args):
                     self.fail('Unexpected operator method called')
                 kundi C:

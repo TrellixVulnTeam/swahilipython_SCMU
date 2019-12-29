@@ -78,19 +78,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
     # get_encoded_word
 
     eleza test_get_encoded_word_missing_start_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('abc')
 
     eleza test_get_encoded_word_missing_end_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc')
 
     eleza test_get_encoded_word_missing_middle_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc?=')
 
     eleza test_get_encoded_word_invalid_cte(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?utf-8?X?somevalue?=')
 
     eleza test_get_encoded_word_valid_ew(self):
@@ -541,9 +541,9 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(bqs.token_type, 'bare-quoted-string')
 
     eleza test_get_bare_quoted_string_must_start_with_dquote(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_bare_quoted_string('foo"')
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_bare_quoted_string('  "foo"')
 
     eleza test_get_bare_quoted_string_only_quotes(self):
@@ -609,9 +609,9 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(comment.token_type, 'comment')
 
     eleza test_get_comment_must_start_with_paren(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_comment('foo"')
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_comment('  (foo"')
 
     eleza test_get_comment_following_wsp_preserved(self):
@@ -802,7 +802,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(qs.quoted_value, ' "bob"')
 
     eleza test_get_quoted_string_no_quoted_string(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_quoted_string(' (ab) xyz')
 
     eleza test_get_quoted_string_qs_ends_at_noncfws(self):
@@ -855,11 +855,11 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(atom[2].comments, ['a'])
 
     eleza test_get_atom_no_atom(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_atom(' (ab) ')
 
     eleza test_get_atom_no_atom_before_special(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_atom(' (ab) @')
 
     eleza test_get_atom_atom_ends_at_special(self):
@@ -889,19 +889,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             'foo', 'foo', 'foo', [], '')
 
     eleza test_get_dot_atom_text_ashirias_on_leading_dot(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('.foo.bar')
 
     eleza test_get_dot_atom_text_ashirias_on_trailing_dot(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('foo.bar.')
 
     eleza test_get_dot_atom_text_ashirias_on_leading_non_atext(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text(' foo.bar')
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('@foo.bar')
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('"foo.bar"')
 
     eleza test_get_dot_atom_text_trailing_text_preserved(self):
@@ -935,19 +935,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
                 ' foo.bar ', [], '.bing (here) ')
 
     eleza test_get_dot_atom_no_atom_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) ')
 
     eleza test_get_dot_atom_leading_dot_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) .bar')
 
     eleza test_get_dot_atom_two_dots_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom('bar..bang')
 
     eleza test_get_dot_atom_trailing_dot_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) bar.bang. foo')
 
     eleza test_get_dot_atom_rfc2047_atom(self):
@@ -965,7 +965,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
     eleza test_get_word_all_CFWS(self):
         # bpo-29412: Test that we don't ashiria IndexError when parsing CFWS only
         # token.
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_word('(Recipients list suppressed')
 
     eleza test_get_word_qs_tumas_qs(self):
@@ -1023,16 +1023,16 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     eleza test_get_phrase_ending_with_obsolete(self):
         phrase = self._test_get_x(parser.get_phrase,
-            'simple phrase.(with trailing comment):boo',
-            'simple phrase.(with trailing comment)',
+            'simple phrase.(ukijumuisha trailing comment):boo',
+            'simple phrase.(ukijumuisha trailing comment)',
             'simple phrase. ',
             [errors.ObsoleteHeaderDefect]*2,
             ':boo')
         self.assertEqual(len(phrase), 4)
-        self.assertEqual(phrase[3].comments, ['with trailing comment'])
+        self.assertEqual(phrase[3].comments, ['ukijumuisha trailing comment'])
 
     eleza get_phrase_cfws_only_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_phrase(' (foo) ')
 
     # get_local_part
@@ -1136,11 +1136,11 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(local_part.local_part, 'Fred.A.Johnson na  dogs')
 
     eleza test_get_local_part_no_part_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) ')
 
     eleza test_get_local_part_special_instead_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) @python.org')
 
     eleza test_get_local_part_trailing_dot(self):
@@ -1309,15 +1309,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(domain_literal.ip, '127.0.0.1')
 
     eleza test_get_domain_literal_no_start_char_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) ')
 
     eleza test_get_domain_literal_no_start_char_before_special_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) @')
 
     eleza test_get_domain_literal_bad_dtext_char_before_special_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) [abc[@')
 
     # get_domain
@@ -1388,11 +1388,11 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(domain.domain, 'example.com')
 
     eleza test_get_domain_no_non_cfws_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t")
 
     eleza test_get_domain_no_atom_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t, broken")
 
 
@@ -1477,13 +1477,13 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(addr_spec.addr_spec, 'star.a.star@example.com')
 
     eleza test_get_addr_spec_multiple_domains(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@a.star@example.com')
 
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@a@example.com')
 
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@172.17.0.1@example.com')
 
     # get_obs_route
@@ -1509,15 +1509,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(obs_route.domains, ['example.com', 'two.example.com'])
 
     eleza test_get_obs_route_no_route_before_end_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com,')
 
     eleza test_get_obs_route_no_route_before_special_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) [abc],')
 
     eleza test_get_obs_route_no_route_before_special_ashirias2(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com [abc],')
 
     # get_angle_addr
@@ -1647,22 +1647,22 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_no_angle_ashiria(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) ')
 
     eleza test_get_angle_addr_no_angle_before_special_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) , next')
 
     eleza test_get_angle_addr_no_angle_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('bar')
 
     eleza test_get_angle_addr_special_after_angle_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) <, bar')
 
-    # get_display_name  This ni phrase but with a different value.
+    # get_display_name  This ni phrase but ukijumuisha a different value.
 
     eleza test_get_display_name_simple(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -1719,17 +1719,17 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     eleza test_get_display_name_ending_with_obsolete(self):
         display_name = self._test_get_x(parser.get_display_name,
-            'simple phrase.(with trailing comment):boo',
-            'simple phrase.(with trailing comment)',
+            'simple phrase.(ukijumuisha trailing comment):boo',
+            'simple phrase.(ukijumuisha trailing comment)',
             '"simple phrase." ',
             [errors.ObsoleteHeaderDefect]*2,
             ':boo')
         self.assertEqual(len(display_name), 4)
-        self.assertEqual(display_name[3].comments, ['with trailing comment'])
+        self.assertEqual(display_name[3].comments, ['ukijumuisha trailing comment'])
         self.assertEqual(display_name.display_name, 'simple phrase.')
 
     eleza test_get_display_name_for_invalid_address_field(self):
-        # bpo-32178: Test that address fields starting with `:` don't cause
+        # bpo-32178: Test that address fields starting ukijumuisha `:` don't cause
         # IndexError when parsing the display name.
         display_name = self._test_get_x(
             parser.get_display_name,
@@ -1832,15 +1832,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_no_content_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ')
 
     eleza test_get_name_addr_no_content_before_special_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ,')
 
     eleza test_get_name_addr_no_angle_after_display_name_ashirias(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr('foo bar')
 
     # get_mailbox
@@ -2001,7 +2001,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ('"Roy A. Bear"[] dinsdale@example.com,'
                 ' "Fred Flintstone" <dinsdale@test. example.com>'),
             [errors.InvalidHeaderDefect,   # the 'extra' text after the local part
-             errors.InvalidHeaderDefect,   # the local part with no angle-addr
+             errors.InvalidHeaderDefect,   # the local part ukijumuisha no angle-addr
              errors.ObsoleteHeaderDefect,  # period kwenye extra text (example.com)
              errors.ObsoleteHeaderDefect], # (bird) kwenye valid address.
             '')
@@ -2373,7 +2373,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             'ping example.com, next',
             'ping example.com',
             'ping example.com',
-            [errors.InvalidHeaderDefect,    # addr-spec with no domain
+            [errors.InvalidHeaderDefect,    # addr-spec ukijumuisha no domain
              errors.InvalidHeaderDefect,    # invalid local-part
              errors.InvalidHeaderDefect,    # missing .s kwenye local-part
             ],
@@ -2639,7 +2639,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(msg_id.token_type, 'msg-id')
 
     eleza test_get_msg_id_no_angle_start(self):
-        with self.assertRaises(errors.HeaderParseError):
+        ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("msgwithnoankle")
 
     eleza test_get_msg_id_no_angle_end(self):
@@ -2696,7 +2696,7 @@ kundi Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
         # there are duplicate parameter names ama duplicate parts kwenye a split
         # part.  We choose to ignore all duplicate parameters after the first
         # na to take duplicate ama missing rfc 2231 parts kwenye appearance order.
-        # This ni backward compatible with get_param's behavior, but the
+        # This ni backward compatible ukijumuisha get_param's behavior, but the
         # decisions are arbitrary.
 
         'duplicate_key': (
@@ -2900,8 +2900,8 @@ kundi TestFolding(TestEmailBase):
             '=?utf-8?q?H=C3=BCbsch?= Kaktus <beautiful@example.com>,\n'
                 ' =?utf-8?q?bei=C3=9Ft_bei=C3=9Ft?= <biter@example.com>\n')
 
-    # XXX Need tests with comments on various sides of a unicode token,
-    # na with unicode tokens kwenye the comments.  Spaces inside the quotes
+    # XXX Need tests ukijumuisha comments on various sides of a unicode token,
+    # na ukijumuisha unicode tokens kwenye the comments.  Spaces inside the quotes
     # currently don't do the right thing.
 
     eleza test_split_at_whitespace_after_header_before_long_token(self):

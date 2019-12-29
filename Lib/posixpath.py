@@ -72,7 +72,7 @@ eleza join(a, *p):
     """Join two ama more pathname components, inserting '/' kama needed.
     If any component ni an absolute path, all previous path components
     will be discarded.  An empty last part will result kwenye a path that
-    ends with a separator."""
+    ends ukijumuisha a separator."""
     a = os.fspath(a)
     sep = _get_sep(a)
     path = a
@@ -82,7 +82,7 @@ eleza join(a, *p):
         kila b kwenye map(os.fspath, p):
             ikiwa b.startswith(sep):
                 path = b
-            elikiwa sio path ama path.endswith(sep):
+            lasivyo sio path ama path.endswith(sep):
                 path += b
             isipokua:
                 path += sep + b
@@ -216,11 +216,11 @@ eleza ismount(path):
     rudisha Uongo
 
 
-# Expand paths beginning with '~' ama '~user'.
+# Expand paths beginning ukijumuisha '~' ama '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', ama ikiwa the user ama $HOME ni unknown,
+# If the path doesn't begin ukijumuisha '~', ama ikiwa the user ama $HOME ni unknown,
 # the path ni rudishaed unchanged (leaving error reporting to whatever
-# function ni called with the expanded path kama argument).
+# function ni called ukijumuisha the expanded path kama argument).
 # See also module 'glob' kila expansion of *, ? na [...] kwenye pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
@@ -360,7 +360,7 @@ eleza normpath(path):
         ikiwa (comp != dotdot ama (not initial_slashes na sio new_comps) or
              (new_comps na new_comps[-1] == dotdot)):
             new_comps.append(comp)
-        elikiwa new_comps:
+        lasivyo new_comps:
             new_comps.pop()
     comps = new_comps
     path = sep.join(comps)
@@ -518,7 +518,7 @@ eleza commonpath(paths):
                 common = s1[:i]
                 koma
 
-        prefix = sep ikiwa isabs else sep[:0]
+        prefix = sep ikiwa isabs isipokua sep[:0]
         rudisha prefix + sep.join(common)
     tatizo (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)

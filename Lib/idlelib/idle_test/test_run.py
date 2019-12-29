@@ -24,8 +24,8 @@ kundi RunTest(unittest.TestCase):
             jaribu:
                 ashiria ex1
             tatizo UnhashableException:
-                with captured_stderr() kama output:
-                    with mock.patch.object(run,
+                ukijumuisha captured_stderr() kama output:
+                    ukijumuisha mock.patch.object(run,
                                            'cleanup_traceback') kama ct:
                         ct.side_effect = lambda t, e: t
                         run.print_exception()

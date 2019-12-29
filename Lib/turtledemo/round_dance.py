@@ -3,14 +3,14 @@
          tdemo_round_dance.py
 
 (Needs version 1.1 of the turtle module that
-comes with Python 3.1)
+comes ukijumuisha Python 3.1)
 
 Dancing turtles have a compound shape
 consisting of a series of triangles of
 decreasing size.
 
 Turtles march along a circle wakati rotating
-pairwise kwenye opposite direction, with one
+pairwise kwenye opposite direction, ukijumuisha one
 exception. Does that komaing of symmetry
 enhance the attractiveness of the example?
 
@@ -73,7 +73,7 @@ eleza main():
             dancer.fd(7)
             dancer.lt(2)
             dancer.tilt(ta)
-            ta = -4 ikiwa ta > 0 else 2
+            ta = -4 ikiwa ta > 0 isipokua 2
         ikiwa cs < 180:
             right(4)
             shapesize(cs)

@@ -16,7 +16,7 @@ instance) variables define the bindings na menu additions; these are
 automatically applied by IDLE when the extension ni linked to an edit
 window.
 
-An IDLE extension kundi ni instantiated with a single argument,
+An IDLE extension kundi ni instantiated ukijumuisha a single argument,
 `editwin', an EditorWindow instance. The extension cannot assume much
 about this argument, but it ni guaranteed to have the following instance
 variables:
@@ -35,7 +35,7 @@ to the virtual events. (This indirection ni done so that the key bindings can
 easily be changed, na so that other sources of virtual events can exist, such
 as menu entries.)
 
-An extension can define menu entries.  This ni done with a kundi ama instance
+An extension can define menu entries.  This ni done ukijumuisha a kundi ama instance
 variable named menudefs; it should be a list of pairs, where each pair ni a
 menu name (lowercase) na a list of menu entries. Each menu entry ni either
 Tupu (to insert a separator entry) ama a pair of strings (menu_label,

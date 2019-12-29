@@ -30,7 +30,7 @@ kundi ComplexTest(unittest.TestCase):
 
     eleza assertCloseAbs(self, x, y, eps=1e-9):
         """Return true iff floats x na y "are close"."""
-        # put the one with larger magnitude second
+        # put the one ukijumuisha larger magnitude second
         ikiwa abs(x) > abs(y):
             x, y = y, x
         ikiwa y == 0:
@@ -43,8 +43,8 @@ kundi ComplexTest(unittest.TestCase):
     eleza assertFloatsAreIdentical(self, x, y):
         """assert that floats x na y are identical, kwenye the sense that:
         (1) both x na y are nans, or
-        (2) both x na y are infinities, with the same sign, or
-        (3) both x na y are zeros, with the same sign, or
+        (2) both x na y are infinities, ukijumuisha the same sign, or
+        (3) both x na y are zeros, ukijumuisha the same sign, or
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -53,11 +53,11 @@ kundi ComplexTest(unittest.TestCase):
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) na isnan(y):
                 rudisha
-        elikiwa x == y:
+        lasivyo x == y:
             ikiwa x != 0.0:
                 rudisha
             # both zero; check that signs match
-            elikiwa copysign(1.0, x) == copysign(1.0, y):
+            lasivyo copysign(1.0, x) == copysign(1.0, y):
                 rudisha
             isipokua:
                 msg += ': zeros have different signs'
@@ -300,7 +300,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(TypeError, complex, "1", "1")
         self.assertRaises(TypeError, complex, 1, "1")
 
-        # SF bug 543840:  complex(string) accepts strings with \0
+        # SF bug 543840:  complex(string) accepts strings ukijumuisha \0
         # Fixed kwenye 2.3.
         self.assertRaises(ValueError, complex, '1+1j\0j')
 
@@ -391,7 +391,7 @@ kundi ComplexTest(unittest.TestCase):
                 rudisha 42j
 
         kundi complex1(complex):
-            """Test usage of __complex__() with a __new__() method"""
+            """Test usage of __complex__() ukijumuisha a __new__() method"""
             eleza __new__(self, value=0j):
                 rudisha complex.__new__(self, 2*value)
             eleza __complex__(self):
@@ -404,7 +404,7 @@ kundi ComplexTest(unittest.TestCase):
                 rudisha Tupu
 
         self.assertEqual(complex(complex0(1j)), 42j)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(complex(complex1(1j)), 2j)
         self.assertRaises(TypeError, complex, complex2(1j))
 
@@ -414,7 +414,7 @@ kundi ComplexTest(unittest.TestCase):
             pita
         kila x kwenye 0.0, -0.0, INF, -INF, NAN:
             kila y kwenye 0.0, -0.0, INF, -INF, NAN:
-                with self.subTest(x=x, y=y):
+                ukijumuisha self.subTest(x=x, y=y):
                     z = complex(x, y)
                     self.assertFloatsAreIdentical(z.real, x)
                     self.assertFloatsAreIdentical(z.imag, y)
@@ -537,7 +537,7 @@ kundi ComplexTest(unittest.TestCase):
         z1 = -7j
         z2 = -1e1000j
         # Note: In versions of Python < 3.2, a negated imaginary literal
-        # accidentally ended up with real part 0.0 instead of -0.0, thanks to a
+        # accidentally ended up ukijumuisha real part 0.0 instead of -0.0, thanks to a
         # modification during CST -> AST translation (see issue #9011).  That's
         # fixed kwenye Python 3.2.
         self.assertFloatsAreIdentical(z0.real, -0.0)
@@ -656,7 +656,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(format(1.1+1.1j, 'g'), '1.1+1.1j')
         self.assertEqual(format(1.1+1.1j, '#g'), '1.10000+1.10000j')
 
-        # Alternate doesn't make a difference kila these, they format the same with ama without it
+        # Alternate doesn't make a difference kila these, they format the same ukijumuisha ama without it
         self.assertEqual(format(1+1j, '.1e'),  '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '#.1e'), '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '.1f'),  '1.0+1.0j')

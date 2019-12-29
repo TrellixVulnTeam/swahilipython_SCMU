@@ -72,9 +72,9 @@ eleza arbitrary_address(family):
     '''
     ikiwa family == 'AF_INET':
         rudisha ('localhost', 0)
-    elikiwa family == 'AF_UNIX':
+    lasivyo family == 'AF_UNIX':
         rudisha tempfile.mktemp(prefix='listener-', dir=util.get_temp_dir())
-    elikiwa family == 'AF_PIPE':
+    lasivyo family == 'AF_PIPE':
         rudisha tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
                                (os.getpid(), next(_mmap_counter)), dir="")
     isipokua:
@@ -100,9 +100,9 @@ eleza address_type(address):
     '''
     ikiwa type(address) == tuple:
         rudisha 'AF_INET'
-    elikiwa type(address) ni str na address.startswith('\\\\'):
+    lasivyo type(address) ni str na address.startswith('\\\\'):
         rudisha 'AF_PIPE'
-    elikiwa type(address) ni str:
+    lasivyo type(address) ni str:
         rudisha 'AF_UNIX'
     isipokua:
         ashiria ValueError('address type of %r unrecognized' % address)
@@ -193,9 +193,9 @@ kundi _ConnectionBase:
             ashiria ValueError("buffer length < offset")
         ikiwa size ni Tupu:
             size = n - offset
-        elikiwa size < 0:
+        lasivyo size < 0:
             ashiria ValueError("size ni negative")
-        elikiwa offset + size > n:
+        lasivyo offset + size > n:
             ashiria ValueError("buffer length < offset + size")
         self._send_bytes(m[offset:offset + size])
 
@@ -225,13 +225,13 @@ kundi _ConnectionBase:
         """
         self._check_closed()
         self._check_readable()
-        with memoryview(buf) kama m:
+        ukijumuisha memoryview(buf) kama m:
             # Get bytesize of arbitrary buffer
             itemsize = m.itemsize
             bytesize = itemsize * len(m)
             ikiwa offset < 0:
                 ashiria ValueError("negative offset")
-            elikiwa offset > bytesize:
+            lasivyo offset > bytesize:
                 ashiria ValueError("offset too large")
             result = self._recv_bytes()
             size = result.tell()
@@ -269,7 +269,7 @@ ikiwa _winapi:
         """
         Connection kundi based on a Windows named pipe.
         Overlapped I/O ni used, so the handles must have been created
-        with FILE_FLAG_OVERLAPPED.
+        ukijumuisha FILE_FLAG_OVERLAPPED.
         """
         _got_empty_message = Uongo
 
@@ -296,7 +296,7 @@ ikiwa _winapi:
                 self._got_empty_message = Uongo
                 rudisha io.BytesIO()
             isipokua:
-                bsize = 128 ikiwa maxsize ni Tupu else min(maxsize, 128)
+                bsize = 128 ikiwa maxsize ni Tupu isipokua min(maxsize, 128)
                 jaribu:
                     ov, err = _winapi.ReadFile(self._handle, bsize,
                                                 overlapped=Kweli)
@@ -314,7 +314,7 @@ ikiwa _winapi:
                             f = io.BytesIO()
                             f.write(ov.getbuffer())
                             rudisha f
-                        elikiwa err == _winapi.ERROR_MORE_DATA:
+                        lasivyo err == _winapi.ERROR_MORE_DATA:
                             rudisha self._get_more_data(ov, maxsize)
                 tatizo OSError kama e:
                     ikiwa e.winerror == _winapi.ERROR_BROKEN_PIPE:
@@ -396,7 +396,7 @@ kundi Connection(_ConnectionBase):
             self._send(header)
             self._send(buf)
         isipokua:
-            # For wire compatibility with 3.7 na lower
+            # For wire compatibility ukijumuisha 3.7 na lower
             header = struct.pack("!i", n)
             ikiwa n > 16384:
                 # The payload ni large so Nagle's algorithm won't be triggered
@@ -624,7 +624,7 @@ eleza SocketClient(address):
     Return a connection object connected to the socket given by `address`
     '''
     family = address_type(address)
-    with socket.socket( getattr(socket, family) ) kama s:
+    ukijumuisha socket.socket( getattr(socket, family) ) kama s:
         s.setblocking(Kweli)
         s.connect(address)
         rudisha Connection(s.detach())
@@ -644,7 +644,7 @@ ikiwa sys.platform == 'win32':
             self._handle_queue = [self._new_handle(first=Kweli)]
 
             self._last_accepted = Tupu
-            util.sub_debug('listener created with address=%r', self._address)
+            util.sub_debug('listener created ukijumuisha address=%r', self._address)
             self.close = util.Finalize(
                 self, PipeListener._finalize_pipe_listener,
                 args=(self._handle_queue, self._address), exitpriority=0
@@ -687,7 +687,7 @@ ikiwa sys.platform == 'win32':
 
         @staticmethod
         eleza _finalize_pipe_listener(queue, address):
-            util.sub_debug('closing listener with address=%r', address)
+            util.sub_debug('closing listener ukijumuisha address=%r', address)
             kila handle kwenye queue:
                 _winapi.CloseHandle(handle)
 
@@ -810,9 +810,9 @@ ikiwa sys.platform == 'win32':
             res = _winapi.WaitForMultipleObjects(L, Uongo, timeout)
             ikiwa res == WAIT_TIMEOUT:
                 koma
-            elikiwa WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
+            lasivyo WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
                 res -= WAIT_OBJECT_0
-            elikiwa WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
+            lasivyo WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
                 res -= WAIT_ABANDONED_0
             isipokua:
                 ashiria RuntimeError('Should sio get here')
@@ -831,7 +831,7 @@ ikiwa sys.platform == 'win32':
         '''
         ikiwa timeout ni Tupu:
             timeout = INFINITE
-        elikiwa timeout < 0:
+        lasivyo timeout < 0:
             timeout = 0
         isipokua:
             timeout = int(timeout * 1000 + 0.5)
@@ -919,7 +919,7 @@ isipokua:
 
         Returns list of those objects kwenye object_list which are ready/readable.
         '''
-        with _WaitSelector() kama selector:
+        ukijumuisha _WaitSelector() kama selector:
             kila obj kwenye object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
@@ -943,7 +943,7 @@ isipokua:
 ikiwa sys.platform == 'win32':
     eleza reduce_connection(conn):
         handle = conn.fileno()
-        with socket.kutokafd(handle, socket.AF_INET, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.kutokafd(handle, socket.AF_INET, socket.SOCK_STREAM) kama s:
             kutoka . agiza resource_sharer
             ds = resource_sharer.DupSocket(s)
             rudisha rebuild_connection, (ds, conn.readable, conn.writable)
@@ -953,8 +953,8 @@ ikiwa sys.platform == 'win32':
     reduction.register(Connection, reduce_connection)
 
     eleza reduce_pipe_connection(conn):
-        access = ((_winapi.FILE_GENERIC_READ ikiwa conn.readable else 0) |
-                  (_winapi.FILE_GENERIC_WRITE ikiwa conn.writable else 0))
+        access = ((_winapi.FILE_GENERIC_READ ikiwa conn.readable isipokua 0) |
+                  (_winapi.FILE_GENERIC_WRITE ikiwa conn.writable isipokua 0))
         dh = reduction.DupHandle(conn.fileno(), access)
         rudisha rebuild_pipe_connection, (dh, conn.readable, conn.writable)
     eleza rebuild_pipe_connection(dh, readable, writable):

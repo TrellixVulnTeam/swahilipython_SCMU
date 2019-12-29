@@ -59,7 +59,7 @@ kundi ResourceTracker(object):
 
         This can be run kutoka any process.  Usually a child process will use
         the resource created by its parent.'''
-        with self._lock:
+        ukijumuisha self._lock:
             ikiwa self._fd ni sio Tupu:
                 # resource tracker was launched before, ni it still running?
                 ikiwa self._check_alive():
@@ -130,11 +130,11 @@ kundi ResourceTracker(object):
             rudisha Kweli
 
     eleza register(self, name, rtype):
-        '''Register name of resource with resource tracker.'''
+        '''Register name of resource ukijumuisha resource tracker.'''
         self._send('REGISTER', name, rtype)
 
     eleza unregister(self, name, rtype):
-        '''Unregister name of resource with resource tracker.'''
+        '''Unregister name of resource ukijumuisha resource tracker.'''
         self._send('UNREGISTER', name, rtype)
 
     eleza _send(self, cmd, name, rtype):
@@ -172,7 +172,7 @@ eleza main(fd):
     cache = {rtype: set() kila rtype kwenye _CLEANUP_FUNCS.keys()}
     jaribu:
         # keep track of registered/unregistered resources
-        with open(fd, 'rb') kama f:
+        ukijumuisha open(fd, 'rb') kama f:
             kila line kwenye f:
                 jaribu:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
@@ -184,9 +184,9 @@ eleza main(fd):
 
                     ikiwa cmd == 'REGISTER':
                         cache[rtype].add(name)
-                    elikiwa cmd == 'UNREGISTER':
+                    lasivyo cmd == 'UNREGISTER':
                         cache[rtype].remove(name)
-                    elikiwa cmd == 'PROBE':
+                    lasivyo cmd == 'PROBE':
                         pita
                     isipokua:
                         ashiria RuntimeError('unrecognized command %r' % cmd)

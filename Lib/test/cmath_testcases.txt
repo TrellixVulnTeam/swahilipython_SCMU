@@ -39,13 +39,13 @@
 --
 -- Flags may appear kwenye any order.
 --
--- Lines beginning with '--' (like this one) start a comment, na are
+-- Lines beginning ukijumuisha '--' (like this one) start a comment, na are
 -- ignored.  Blank lines, ama lines containing only whitespace, are also
 -- ignored.
 
--- The majority of the values below were computed with the help of
+-- The majority of the values below were computed ukijumuisha the help of
 -- version 2.3 of the MPFR library kila multiple-precision
--- floating-point computations with correct rounding.  All output
+-- floating-point computations ukijumuisha correct rounding.  All output
 -- values kwenye this file are (modulo yet-to-be-discovered bugs)
 -- correctly rounded, provided that each input na output decimal
 -- floating-point value below ni interpreted kama a representation of
@@ -53,9 +53,9 @@
 -- MPFR homepage at http://www.mpfr.org kila more information about the
 -- MPFR project.
 
--- A minority of the test cases were generated with the help of
+-- A minority of the test cases were generated ukijumuisha the help of
 -- mpmath 0.19 at 100 bit accuracy (http://mpmath.org) to improve
--- coverage of real functions with real-valued arguments. These are
+-- coverage of real functions ukijumuisha real-valued arguments. These are
 -- used kwenye test.test_math.MathTests.test_testfile, kama well kama in
 -- test_cmath.
 
@@ -1584,7 +1584,7 @@ sqrt1036 sqrt nan -2.3 -> nan nan
 -- suffer correspondingly.
 --
 -- Similarly, kila cos, sin na tan we limit tests to arguments
--- with relatively small real part.
+-- ukijumuisha relatively small real part.
 
 
 -------------------------------

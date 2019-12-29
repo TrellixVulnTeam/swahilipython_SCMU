@@ -66,9 +66,9 @@ kundi ClearTest(unittest.TestCase):
             1/0
         tatizo ZeroDivisionError kama e:
             f = e.__traceback__.tb_frame
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             f.clear()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             f.f_back.clear()
 
     eleza test_clear_executing_generator(self):
@@ -80,9 +80,9 @@ kundi ClearTest(unittest.TestCase):
                 1/0
             tatizo ZeroDivisionError kama e:
                 f = e.__traceback__.tb_frame
-                with self.assertRaises(RuntimeError):
+                ukijumuisha self.assertRaises(RuntimeError):
                     f.clear()
-                with self.assertRaises(RuntimeError):
+                ukijumuisha self.assertRaises(RuntimeError):
                     f.f_back.clear()
                 tuma f
             mwishowe:
@@ -97,7 +97,7 @@ kundi ClearTest(unittest.TestCase):
     @support.cpython_only
     eleza test_clear_refcycles(self):
         # .clear() doesn't leave any refcycle behind
-        with support.disable_gc():
+        ukijumuisha support.disable_gc():
             kundi C:
                 pita
             c = C()
@@ -158,7 +158,7 @@ kundi FrameAttrsTest(unittest.TestCase):
 
     eleza test_f_lineno_del_segfault(self):
         f, _, _ = self.make_frames()
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa f.f_lineno
 
 

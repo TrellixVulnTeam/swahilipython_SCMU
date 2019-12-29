@@ -41,7 +41,7 @@ eleza _sphinx_version():
     release += '%s' % (micro,)
     ikiwa level == 'candidate':
         release += 'rc%s' % (serial,)
-    elikiwa level != 'final':
+    lasivyo level != 'final':
         release += '%s%s' % (level[0], serial)
     rudisha release
 
@@ -84,12 +84,12 @@ kundi EditorWindow(object):
                     basepath = '/usr/share/doc/'  # standard location
                     dochome = os.path.join(basepath, pyver,
                                            'Doc', 'index.html')
-            elikiwa sys.platform[:3] == 'win':
+            lasivyo sys.platform[:3] == 'win':
                 chmfile = os.path.join(sys.base_prefix, 'Doc',
                                        'Python%s.chm' % _sphinx_version())
                 ikiwa os.path.isfile(chmfile):
                     dochome = chmfile
-            elikiwa sys.platform == 'darwin':
+            lasivyo sys.platform == 'darwin':
                 # documentation may be stored inside a python framework
                 dochome = os.path.join(sys.base_prefix,
                         'Resources/English.lproj/Documentation/index.html')
@@ -217,7 +217,7 @@ kundi EditorWindow(object):
         self.set_width()
 
         # usetabs true  -> literal tab characters are used by indent and
-        #                  dedent cmds, possibly mixed with spaces if
+        #                  dedent cmds, possibly mixed ukijumuisha spaces if
         #                  indentwidth ni sio a multiple of tabwidth,
         #                  which will cause Tabnanny to nag!
         #         false -> tab characters are converted to spaces by indent
@@ -544,7 +544,7 @@ kundi EditorWindow(object):
         tatizo TclError:
             rudisha 'disabled'
         isipokua:
-            rudisha 'normal' ikiwa indx else 'disabled'
+            rudisha 'normal' ikiwa indx isipokua 'disabled'
 
     eleza rmenu_check_paste(self):
         jaribu:
@@ -556,19 +556,19 @@ kundi EditorWindow(object):
 
     eleza about_dialog(self, event=Tupu):
         "Handle Help 'About IDLE' event."
-        # Synchronize with macosx.overrideRootMenu.about_dialog.
+        # Synchronize ukijumuisha macosx.overrideRootMenu.about_dialog.
         help_about.AboutDialog(self.top)
         rudisha "koma"
 
     eleza config_dialog(self, event=Tupu):
         "Handle Options 'Configure IDLE' event."
-        # Synchronize with macosx.overrideRootMenu.config_dialog.
+        # Synchronize ukijumuisha macosx.overrideRootMenu.config_dialog.
         configdialog.ConfigDialog(self.top,'Settings')
         rudisha "koma"
 
     eleza help_dialog(self, event=Tupu):
         "Handle Help 'IDLE Help' event."
-        # Synchronize with macosx.overrideRootMenu.help_dialog.
+        # Synchronize ukijumuisha macosx.overrideRootMenu.help_dialog.
         ikiwa self.root:
             parent = self.root
         isipokua:
@@ -893,7 +893,7 @@ kundi EditorWindow(object):
         self.menudict['help'] = helpmenu
 
     eleza __extra_help_callback(self, helpfile):
-        "Create a callback with the helpfile value frozen at definition time"
+        "Create a callback ukijumuisha the helpfile value frozen at definition time"
         eleza display_extra_help(helpfile=helpfile):
             ikiwa sio helpfile.startswith(('www', 'http')):
                 helpfile = os.path.normpath(helpfile)
@@ -913,7 +913,7 @@ kundi EditorWindow(object):
         rf_list = []
         file_path = self.recent_files_path
         ikiwa file_path na os.path.exists(file_path):
-            with open(file_path, 'r',
+            ukijumuisha open(file_path, 'r',
                       encoding='utf_8', errors='replace') kama rf_list_file:
                 rf_list = rf_list_file.readlines()
         ikiwa new_file:
@@ -931,7 +931,7 @@ kundi EditorWindow(object):
         rf_list = rf_list[0:len(ulchars)]
         ikiwa file_path:
             jaribu:
-                with open(file_path, 'w',
+                ukijumuisha open(file_path, 'w',
                           encoding='utf_8', errors='replace') kama rf_file:
                     rf_file.writelines(rf_list)
             tatizo OSError kama err:
@@ -963,9 +963,9 @@ kundi EditorWindow(object):
         long = self.long_title()
         ikiwa short na long:
             title = short + " - " + long + _py_version
-        elikiwa short:
+        lasivyo short:
             title = short
-        elikiwa long:
+        lasivyo long:
             title = long
         isipokua:
             title = "untitled"
@@ -987,7 +987,7 @@ kundi EditorWindow(object):
 
     eleza short_title(self):
         filename = self.io.filename
-        rudisha os.path.basename(filename) ikiwa filename else "untitled"
+        rudisha os.path.basename(filename) ikiwa filename isipokua "untitled"
 
     eleza long_title(self):
         rudisha self.io.filename ama ""
@@ -1183,7 +1183,7 @@ kundi EditorWindow(object):
     eleza get_var_obj(self, name, vartype=Tupu):
         var = self.tkinter_vars.get(name)
         ikiwa sio var na vartype:
-            # create a Tkinter variable object with self.text kama master:
+            # create a Tkinter variable object ukijumuisha self.text kama master:
             self.tkinter_vars[name] = var = vartype(self.text)
         rudisha var
 
@@ -1292,7 +1292,7 @@ kundi EditorWindow(object):
     eleza smart_indent_event(self, event):
         # ikiwa intraline selection:
         #     delete it
-        # elikiwa multiline selection:
+        # lasivyo multiline selection:
         #     do indent-region
         # isipokua:
         #     indent one level
@@ -1386,21 +1386,21 @@ kundi EditorWindow(object):
                 ikiwa c == pyparse.C_STRING_FIRST_LINE:
                     # after the first line of a string; do sio indent at all
                     pita
-                elikiwa c == pyparse.C_STRING_NEXT_LINES:
+                lasivyo c == pyparse.C_STRING_NEXT_LINES:
                     # inside a string which started before this line;
                     # just mimic the current indent
                     text.insert("insert", indent)
-                elikiwa c == pyparse.C_BRACKET:
-                    # line up with the first (ikiwa any) element of the
-                    # last open bracket structure; else indent one
-                    # level beyond the indent of the line with the
+                lasivyo c == pyparse.C_BRACKET:
+                    # line up ukijumuisha the first (ikiwa any) element of the
+                    # last open bracket structure; isipokua indent one
+                    # level beyond the indent of the line ukijumuisha the
                     # last open bracket
                     self.reindent_to(y.compute_bracket_indent())
-                elikiwa c == pyparse.C_BACKSLASH:
+                lasivyo c == pyparse.C_BACKSLASH:
                     # ikiwa more than one line kwenye this stmt already, just
-                    # mimic the current indent; else ikiwa initial line
+                    # mimic the current indent; isipokua ikiwa initial line
                     # has a start on an assignment stmt, indent to
-                    # beyond leftmost =; else to beyond first chunk of
+                    # beyond leftmost =; isipokua to beyond first chunk of
                     # non-whitespace on initial line
                     ikiwa y.get_num_lines_in_stmt() > 1:
                         text.insert("insert", indent)
@@ -1417,7 +1417,7 @@ kundi EditorWindow(object):
             text.insert("insert", indent)
             ikiwa y.is_block_opener():
                 self.smart_indent_event(event)
-            elikiwa indent na y.is_block_closer():
+            lasivyo indent na y.is_block_closer():
                 self.smart_backspace_event(event)
             rudisha "koma"
         mwishowe:
@@ -1425,7 +1425,7 @@ kundi EditorWindow(object):
             text.undo_block_stop()
 
     # Our editwin provides an is_char_in_string function that works
-    # with a Tk text index, but PyParse only knows about offsets into
+    # ukijumuisha a Tk text index, but PyParse only knows about offsets into
     # a string. This builds a function kila PyParse that accepts an
     # offset.
 
@@ -1535,9 +1535,9 @@ kundi IndentSearcher(object):
                    OPENERS=('class', 'def', 'for', 'if', 'try', 'while')):
         ikiwa self.finished:
             pita
-        elikiwa type == NAME na token kwenye OPENERS:
+        lasivyo type == NAME na token kwenye OPENERS:
             self.blkopenline = line
-        elikiwa type == INDENT na self.blkopenline:
+        lasivyo type == INDENT na self.blkopenline:
             self.indentedline = line
             self.finished = 1
 
@@ -1576,7 +1576,7 @@ keynames = {
 
 eleza get_accelerator(keydefs, eventname):
     keylist = keydefs.get(eventname)
-    # issue10940: temporary workaround to prevent hang with OS X Cocoa Tk 8.5
+    # issue10940: temporary workaround to prevent hang ukijumuisha OS X Cocoa Tk 8.5
     # ikiwa sio keylist:
     ikiwa (not keylist) ama (macosx.isCocoaTk() na eventname kwenye {
                             "<<open-module>>",

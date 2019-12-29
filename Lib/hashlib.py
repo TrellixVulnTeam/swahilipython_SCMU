@@ -25,8 +25,8 @@ Choose your hash function wisely.  Some have known collision weaknesses.
 sha384 na sha512 will be slow on 32 bit platforms.
 
 Hash objects have these methods:
- - update(data): Update the hash object with the bytes kwenye data. Repeated calls
-                 are equivalent to a single call with the concatenation of all
+ - update(data): Update the hash object ukijumuisha the bytes kwenye data. Repeated calls
+                 are equivalent to a single call ukijumuisha the concatenation of all
                  the arguments.
  - digest():     Return the digest of the bytes pitaed to the update() method
                  so far kama a bytes object.
@@ -85,28 +85,28 @@ eleza __get_builtin_constructor(name):
         ikiwa name kwenye {'SHA1', 'sha1'}:
             agiza _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
-        elikiwa name kwenye {'MD5', 'md5'}:
+        lasivyo name kwenye {'MD5', 'md5'}:
             agiza _md5
             cache['MD5'] = cache['md5'] = _md5.md5
-        elikiwa name kwenye {'SHA256', 'sha256', 'SHA224', 'sha224'}:
+        lasivyo name kwenye {'SHA256', 'sha256', 'SHA224', 'sha224'}:
             agiza _sha256
             cache['SHA224'] = cache['sha224'] = _sha256.sha224
             cache['SHA256'] = cache['sha256'] = _sha256.sha256
-        elikiwa name kwenye {'SHA512', 'sha512', 'SHA384', 'sha384'}:
+        lasivyo name kwenye {'SHA512', 'sha512', 'SHA384', 'sha384'}:
             agiza _sha512
             cache['SHA384'] = cache['sha384'] = _sha512.sha384
             cache['SHA512'] = cache['sha512'] = _sha512.sha512
-        elikiwa name kwenye {'blake2b', 'blake2s'}:
+        lasivyo name kwenye {'blake2b', 'blake2s'}:
             agiza _blake2
             cache['blake2b'] = _blake2.blake2b
             cache['blake2s'] = _blake2.blake2s
-        elikiwa name kwenye {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
+        lasivyo name kwenye {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
             agiza _sha3
             cache['sha3_224'] = _sha3.sha3_224
             cache['sha3_256'] = _sha3.sha3_256
             cache['sha3_384'] = _sha3.sha3_384
             cache['sha3_512'] = _sha3.sha3_512
-        elikiwa name kwenye {'shake_128', 'shake_256'}:
+        lasivyo name kwenye {'shake_128', 'shake_256'}:
             agiza _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
@@ -137,7 +137,7 @@ eleza __get_openssl_constructor(name):
 
 eleza __py_new(name, data=b'', **kwargs):
     """new(name, data=b'', **kwargs) - Return a new hashing object using the
-    named algorithm; optionally initialized with data (which must be
+    named algorithm; optionally initialized ukijumuisha data (which must be
     a bytes-like object).
     """
     rudisha __get_builtin_constructor(name)(data, **kwargs)
@@ -145,11 +145,11 @@ eleza __py_new(name, data=b'', **kwargs):
 
 eleza __hash_new(name, data=b'', **kwargs):
     """new(name, data=b'') - Return a new hashing object using the named algorithm;
-    optionally initialized with data (which must be a bytes-like object).
+    optionally initialized ukijumuisha data (which must be a bytes-like object).
     """
     ikiwa name kwenye __block_openssl_constructor:
         # Prefer our blake2 na sha3 implementation
-        # OpenSSL 1.1.0 comes with a limited implementation of blake2b/s.
+        # OpenSSL 1.1.0 comes ukijumuisha a limited implementation of blake2b/s.
         # It does neither support keyed blake2 nor advanced features like
         # salt, personal, tree hashing ama SSE.
         rudisha __get_builtin_constructor(name)(data, **kwargs)
@@ -174,7 +174,7 @@ tatizo ImportError:
     __get_hash = __get_builtin_constructor
 
 jaribu:
-    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ with HMAC na SHA
+    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ ukijumuisha HMAC na SHA
     kutoka _hashlib agiza pbkdf2_hmac
 tatizo ImportError:
     _trans_5C = bytes((x ^ 0x5C) kila x kwenye range(256))

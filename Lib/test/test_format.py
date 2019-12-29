@@ -36,7 +36,7 @@ eleza testformat(formatstr, args, output=Tupu, limit=Tupu, overflowok=Uongo):
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly kila floating point format tests kila which an exact match
         # can't be guaranteed due to rounding na representation errors)
-        elikiwa output na limit ni sio Tupu na (
+        lasivyo output na limit ni sio Tupu na (
                 len(result)!=len(output) ama result[:limit]!=output[:limit]):
             ikiwa verbose:
                 andika('no')
@@ -463,13 +463,13 @@ kundi FormatTest(unittest.TestCase):
         f = 1.2
         self.assertEqual(format(f, ".0f"), "1")
         self.assertEqual(format(f, ".3f"), "1.200")
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             format(f, ".%sf" % (sys.maxsize + 1))
 
         c = complex(f)
         self.assertEqual(format(c, ".0f"), "1+0j")
         self.assertEqual(format(c, ".3f"), "1.200+0.000j")
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             format(c, ".%sf" % (sys.maxsize + 1))
 
     @support.cpython_only
@@ -477,11 +477,11 @@ kundi FormatTest(unittest.TestCase):
         kutoka _testcapi agiza INT_MAX
 
         f = 1.2
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             format(f, ".%sf" % (INT_MAX + 1))
 
         c = complex(f)
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             format(c, ".%sf" % (INT_MAX + 1))
 
 

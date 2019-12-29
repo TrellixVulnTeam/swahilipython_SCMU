@@ -4,7 +4,7 @@ XXX TO DO:
 
 - reparse when source changed (maybe just a button would be OK?)
     (or recheck on window popup)
-- add popup menu with more options (e.g. doc strings, base classes, agizas)
+- add popup menu ukijumuisha more options (e.g. doc strings, base classes, agizas)
 - add base classes to kundi browser tree
 - finish removing limitation to x.py files (ModuleBrowserTreeItem)
 """
@@ -28,7 +28,7 @@ eleza transform_children(child_dict, modname=Tupu):
 
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
-    Augment kundi names with bases.
+    Augment kundi names ukijumuisha bases.
     The insertion order of the dictionary ni assumed to have been kwenye line
     number order, so sorting ni sio necessary.
 
@@ -76,7 +76,7 @@ kundi ModuleBrowser:
 
         Instance variables:
             name: Module name.
-            file: Full path na module with .py extension.  Used in
+            file: Full path na module ukijumuisha .py extension.  Used in
                 creating ModuleBrowserTreeItem kama the rootnode for
                 the tree na subsequently kwenye the children.
         """
@@ -96,7 +96,7 @@ kundi ModuleBrowser:
         global file_open
         root = self.master
         flist = (pyshell.flist ikiwa sio (self._htest ama self._utest)
-                 else pyshell.PyShellFileList(root))
+                 isipokua pyshell.PyShellFileList(root))
         file_open = flist.open
         pyclbr._modules.clear()
 
@@ -221,7 +221,7 @@ kundi ChildBrowserTreeItem(TreeItem):
                 kila obj kwenye transform_children(self.obj.children)]
 
     eleza OnDoubleClick(self):
-        "Open module with file_open na position to lineno."
+        "Open module ukijumuisha file_open na position to lineno."
         jaribu:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)

@@ -193,7 +193,7 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
 
     # Run the test WSGI server in a separate thread in order sio to
     # interfere with event handling in the main thread
-    server_class = server_ssl_cls if use_ssl else server_cls
+    server_class = server_ssl_cls if use_ssl isipokua server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
     httpd.set_app(app)
     httpd.address = httpd.server_address

@@ -28,7 +28,7 @@ eleza abstractmethod(funcobj):
 kundi abstractclassmethod(classmethod):
     """A decorator indicating abstract classmethods.
 
-    Deprecated, use 'classmethod' with 'abstractmethod' instead.
+    Deprecated, use 'classmethod' ukijumuisha 'abstractmethod' instead.
     """
 
     __isabstractmethod__ = Kweli
@@ -41,7 +41,7 @@ kundi abstractclassmethod(classmethod):
 kundi abstractstaticmethod(staticmethod):
     """A decorator indicating abstract staticmethods.
 
-    Deprecated, use 'staticmethod' with 'abstractmethod' instead.
+    Deprecated, use 'staticmethod' ukijumuisha 'abstractmethod' instead.
     """
 
     __isabstractmethod__ = Kweli
@@ -54,7 +54,7 @@ kundi abstractstaticmethod(staticmethod):
 kundi abstractproperty(property):
     """A decorator indicating abstract properties.
 
-    Deprecated, use 'property' with 'abstractmethod' instead.
+    Deprecated, use 'property' ukijumuisha 'abstractmethod' instead.
     """
 
     __isabstractmethod__ = Kweli

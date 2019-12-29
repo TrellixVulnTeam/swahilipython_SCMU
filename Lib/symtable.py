@@ -239,7 +239,7 @@ kundi Symbol(object):
 
 ikiwa __name__ == "__main__":
     agiza os, sys
-    with open(sys.argv[0]) kama f:
+    ukijumuisha open(sys.argv[0]) kama f:
         src = f.read()
     mod = symtable(src, os.path.split(sys.argv[0])[1], "exec")
     kila ident kwenye mod.get_identifiers():

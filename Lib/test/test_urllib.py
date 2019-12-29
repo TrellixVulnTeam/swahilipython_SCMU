@@ -38,7 +38,7 @@ eleza urlopen(url, data=Tupu, proxies=Tupu):
     global _urlopener
     ikiwa proxies ni sio Tupu:
         opener = urllib.request.FancyURLopener(proxies=proxies)
-    elikiwa sio _urlopener:
+    lasivyo sio _urlopener:
         opener = FancyURLopener()
         _urlopener = opener
     isipokua:
@@ -50,7 +50,7 @@ eleza urlopen(url, data=Tupu, proxies=Tupu):
 
 
 eleza FancyURLopener():
-    with support.check_warnings(
+    ukijumuisha support.check_warnings(
             ('FancyURLopener style of invoking requests ni deprecated.',
             DeprecationWarning)):
         rudisha urllib.request.FancyURLopener()
@@ -236,7 +236,7 @@ kundi ProxyTests(unittest.TestCase):
         proxies = urllib.request.getproxies_environment()
         # getproxies_environment use lowered case truncated (no '_proxy') keys
         self.assertEqual('localhost', proxies['no'])
-        # List of no_proxies with space.
+        # List of no_proxies ukijumuisha space.
         self.env.set('NO_PROXY', 'localhost, anotherdomain.com, newdomain.com:1234')
         self.assertKweli(urllib.request.proxy_bypita_environment('anotherdomain.com'))
         self.assertKweli(urllib.request.proxy_bypita_environment('anotherdomain.com:8888'))
@@ -275,14 +275,14 @@ kundi ProxyTests_withOrderedEnv(unittest.TestCase):
     eleza setUp(self):
         # We need to test conditions, where variable order _is_ significant
         self._saved_env = os.environ
-        # Monkey patch os.environ, start with empty fake environment
+        # Monkey patch os.environ, start ukijumuisha empty fake environment
         os.environ = collections.OrderedDict()
 
     eleza tearDown(self):
         os.environ = self._saved_env
 
     eleza test_getproxies_environment_prefer_lowercase(self):
-        # Test lowercase preference with removal
+        # Test lowercase preference ukijumuisha removal
         os.environ['no_proxy'] = ''
         os.environ['No_Proxy'] = 'localhost'
         self.assertUongo(urllib.request.proxy_bypita_environment('localhost'))
@@ -299,7 +299,7 @@ kundi ProxyTests_withOrderedEnv(unittest.TestCase):
         self.assertKweli(urllib.request.proxy_bypita_environment('my.proxy:1234'))
         self.assertUongo(urllib.request.proxy_bypita_environment('my.proxy'))
         self.assertUongo(urllib.request.proxy_bypita_environment('arbitrary'))
-        # Test lowercase preference with replacement
+        # Test lowercase preference ukijumuisha replacement
         os.environ['http_proxy'] = 'http://somewhere:3128'
         os.environ['Http_Proxy'] = 'http://somewhereisipokua:3128'
         proxies = urllib.request.getproxies_environment()
@@ -353,10 +353,10 @@ kundi urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
                 # above attempts at injection within the url _path_ safe.
                 escaped_char_repr = repr(char).replace('\\', r'\\')
                 InvalidURL = http.client.InvalidURL
-                with self.assertRaisesRegex(
+                ukijumuisha self.assertRaisesRegex(
                     InvalidURL, f"contain control.*{escaped_char_repr}"):
                     urllib.request.urlopen(f"http:{schemeless_url}")
-                with self.assertRaisesRegex(
+                ukijumuisha self.assertRaisesRegex(
                     InvalidURL, f"contain control.*{escaped_char_repr}"):
                     urllib.request.urlopen(f"https:{schemeless_url}")
                 # This code path quotes the URL so there ni no injection.
@@ -378,10 +378,10 @@ kundi urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
             # calls urllib.parse.quote() on the URL which makes all of the
             # above attempts at injection within the url _path_ safe.
             InvalidURL = http.client.InvalidURL
-            with self.assertRaisesRegex(
+            ukijumuisha self.assertRaisesRegex(
                 InvalidURL, r"contain control.*\\r.*(found at least . .)"):
                 urllib.request.urlopen(f"http:{schemeless_url}")
-            with self.assertRaisesRegex(InvalidURL, r"contain control.*\\n"):
+            ukijumuisha self.assertRaisesRegex(InvalidURL, r"contain control.*\\n"):
                 urllib.request.urlopen(f"https:{schemeless_url}")
             # This code path quotes the URL so there ni no injection.
             resp = urlopen(f"http:{schemeless_url}")
@@ -426,7 +426,7 @@ Content-Type: text/html; charset=iso-8859-1
 ''', mock_close=Kweli)
         jaribu:
             msg = "Redirection to url 'file:"
-            with self.assertRaisesRegex(urllib.error.HTTPError, msg):
+            ukijumuisha self.assertRaisesRegex(urllib.error.HTTPError, msg):
                 urlopen("http://python.org/")
         mwishowe:
             self.unfakehttp()
@@ -456,7 +456,7 @@ Connection: close
 
     eleza test_missing_localfile(self):
         # Test kila #10836
-        with self.assertRaises(urllib.error.URLError) kama e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen('file://localhost/a/file/which/doesnot/exists.py')
         self.assertKweli(e.exception.filename)
         self.assertKweli(e.exception.reason)
@@ -466,24 +466,24 @@ Connection: close
         tmp_fileurl = 'file://localhost/' + tmp_file.replace(os.path.sep, '/')
         jaribu:
             self.assertKweli(os.path.exists(tmp_file))
-            with urlopen(tmp_fileurl) kama fobj:
+            ukijumuisha urlopen(tmp_fileurl) kama fobj:
                 self.assertKweli(fobj)
         mwishowe:
             os.close(fd)
             os.unlink(tmp_file)
         self.assertUongo(os.path.exists(tmp_file))
-        with self.assertRaises(urllib.error.URLError):
+        ukijumuisha self.assertRaises(urllib.error.URLError):
             urlopen(tmp_fileurl)
 
     eleza test_ftp_nohost(self):
         test_ftp_url = 'ftp:///path'
-        with self.assertRaises(urllib.error.URLError) kama e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen(test_ftp_url)
         self.assertUongo(e.exception.filename)
         self.assertKweli(e.exception.reason)
 
     eleza test_ftp_nonexisting(self):
-        with self.assertRaises(urllib.error.URLError) kama e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen('ftp://localhost/a/file/which/doesnot/exists.py')
         self.assertUongo(e.exception.filename)
         self.assertKweli(e.exception.reason)
@@ -528,14 +528,14 @@ Connection: close
             self.unfakehttp()
 
     eleza test_URLopener_deprecation(self):
-        with support.check_warnings(('',DeprecationWarning)):
+        ukijumuisha support.check_warnings(('',DeprecationWarning)):
             urllib.request.URLopener()
 
     @unittest.skipUnless(ssl, "ssl module required")
     eleza test_cafile_and_context(self):
         context = ssl.create_default_context()
-        with support.check_warnings(('', DeprecationWarning)):
-            with self.assertRaises(ValueError):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
+            ukijumuisha self.assertRaises(ValueError):
                 urllib.request.urlopen(
                     "https://localhost", cafile="/nonexistent/path", context=context
                 )
@@ -547,7 +547,7 @@ kundi urlopen_DataTests(unittest.TestCase):
     eleza setUp(self):
         # text containing URL special- na unicode-characters
         self.text = "test data URLs :;,%=& \u00f6 \u00c4 "
-        # 2x1 pixel RGB PNG image with one black na one white pixel
+        # 2x1 pixel RGB PNG image ukijumuisha one black na one white pixel
         self.image = (
             b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x02\x00\x00\x00'
             b'\x01\x08\x02\x00\x00\x00{@\xe8\xdd\x00\x00\x00\x01sRGB\x00\xae'
@@ -772,7 +772,7 @@ FF
         eleza _reporthook(par1, par2, par3):
             pita
 
-        with self.assertRaises(urllib.error.ContentTooShortError):
+        ukijumuisha self.assertRaises(urllib.error.ContentTooShortError):
             jaribu:
                 urllib.request.urlretrieve(support.TEST_HTTP_URL,
                                            reporthook=_reporthook)
@@ -789,7 +789,7 @@ Content-Type: text/html; charset=iso-8859-1
 
 FF
 ''')
-        with self.assertRaises(urllib.error.ContentTooShortError):
+        ukijumuisha self.assertRaises(urllib.error.ContentTooShortError):
             jaribu:
                 urllib.request.urlretrieve(support.TEST_HTTP_URL)
             mwishowe:
@@ -920,10 +920,10 @@ kundi QuotingTests(unittest.TestCase):
                          'alpha%2Bbeta+gamma')
         self.assertEqual(urllib.parse.quote_plus('alpha+beta gamma', '+'),
                          'alpha+beta+gamma')
-        # Test with bytes
+        # Test ukijumuisha bytes
         self.assertEqual(urllib.parse.quote_plus(b'alpha+beta gamma'),
                          'alpha%2Bbeta+gamma')
-        # Test with safe bytes
+        # Test ukijumuisha safe bytes
         self.assertEqual(urllib.parse.quote_plus('alpha+beta gamma', b'+'),
                          'alpha+beta+gamma')
 
@@ -950,11 +950,11 @@ kundi QuotingTests(unittest.TestCase):
         result = urllib.parse.quote(given)
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Characters kwenye Latin-1 range, encoded by with Tupu (default)
+        # Characters kwenye Latin-1 range, encoded by ukijumuisha Tupu (default)
         result = urllib.parse.quote(given, encoding=Tupu, errors=Tupu)
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Characters kwenye Latin-1 range, encoded with Latin-1
+        # Characters kwenye Latin-1 range, encoded ukijumuisha Latin-1
         given = "\xa2\xd8ab\xff"
         expect = "%A2%D8ab%FF"
         result = urllib.parse.quote(given, encoding="latin-1")
@@ -966,18 +966,18 @@ kundi QuotingTests(unittest.TestCase):
         result = urllib.parse.quote(given)
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Characters kwenye BMP, encoded with Latin-1
+        # Characters kwenye BMP, encoded ukijumuisha Latin-1
         given = "\u6f22\u5b57"
         self.assertRaises(UnicodeEncodeError, urllib.parse.quote, given,
                                     encoding="latin-1")
-        # Characters kwenye BMP, encoded with Latin-1, with replace error handling
+        # Characters kwenye BMP, encoded ukijumuisha Latin-1, ukijumuisha replace error handling
         given = "\u6f22\u5b57"
         expect = "%3F%3F"                   # "??"
         result = urllib.parse.quote(given, encoding="latin-1",
                                     errors="replace")
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Characters kwenye BMP, Latin-1, with xmlcharref error handling
+        # Characters kwenye BMP, Latin-1, ukijumuisha xmlcharref error handling
         given = "\u6f22\u5b57"
         expect = "%26%2328450%3B%26%2323383%3B"     # "&#28450;&#23383;"
         result = urllib.parse.quote(given, encoding="latin-1",
@@ -1030,7 +1030,7 @@ kundi UnquotingTests(unittest.TestCase):
                          "%s" % result)
         self.assertRaises((TypeError, AttributeError), urllib.parse.unquote, Tupu)
         self.assertRaises((TypeError, AttributeError), urllib.parse.unquote, ())
-        with support.check_warnings(('', BytesWarning), quiet=Kweli):
+        ukijumuisha support.check_warnings(('', BytesWarning), quiet=Kweli):
             self.assertRaises((TypeError, AttributeError), urllib.parse.unquote, b'')
 
     eleza test_unquoting_badpercent(self):
@@ -1109,7 +1109,7 @@ kundi UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
-        # Test on a string with unescaped non-ASCII characters
+        # Test on a string ukijumuisha unescaped non-ASCII characters
         # (Technically an invalid URI; expect those characters to be UTF-8
         # encoded).
         result = urllib.parse.unquote_to_bytes("\u6f22%C3%BC")
@@ -1117,14 +1117,14 @@ kundi UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
-        # Test with a bytes kama input
+        # Test ukijumuisha a bytes kama input
         given = b'%A2%D8ab%FF'
         expect = b'\xa2\xd8ab\xff'
         result = urllib.parse.unquote_to_bytes(given)
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
-        # Test with a bytes kama input, with unescaped non-ASCII bytes
+        # Test ukijumuisha a bytes kama input, ukijumuisha unescaped non-ASCII bytes
         # (Technically an invalid URI; expect those bytes to be preserved)
         given = b'%A2\xd8ab%FF'
         expect = b'\xa2\xd8ab\xff'
@@ -1134,44 +1134,44 @@ kundi UnquotingTests(unittest.TestCase):
                          % (expect, result))
 
     eleza test_unquote_with_unicode(self):
-        # Characters kwenye the Latin-1 range, encoded with UTF-8
+        # Characters kwenye the Latin-1 range, encoded ukijumuisha UTF-8
         given = 'br%C3%BCckner_sapporo_20050930.doc'
         expect = 'br\u00fcckner_sapporo_20050930.doc'
         result = urllib.parse.unquote(given)
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
-        # Characters kwenye the Latin-1 range, encoded with Tupu (default)
+        # Characters kwenye the Latin-1 range, encoded ukijumuisha Tupu (default)
         result = urllib.parse.unquote(given, encoding=Tupu, errors=Tupu)
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-        # Characters kwenye the Latin-1 range, encoded with Latin-1
+        # Characters kwenye the Latin-1 range, encoded ukijumuisha Latin-1
         result = urllib.parse.unquote('br%FCckner_sapporo_20050930.doc',
                                       encoding="latin-1")
         expect = 'br\u00fcckner_sapporo_20050930.doc'
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-        # Characters kwenye BMP, encoded with UTF-8
+        # Characters kwenye BMP, encoded ukijumuisha UTF-8
         given = "%E6%BC%A2%E5%AD%97"
         expect = "\u6f22\u5b57"             # "Kanji"
         result = urllib.parse.unquote(given)
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-        # Decode with UTF-8, invalid sequence
+        # Decode ukijumuisha UTF-8, invalid sequence
         given = "%F3%B1"
         expect = "\ufffd"                   # Replacement character
         result = urllib.parse.unquote(given)
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-        # Decode with UTF-8, invalid sequence, replace errors
+        # Decode ukijumuisha UTF-8, invalid sequence, replace errors
         result = urllib.parse.unquote(given, errors="replace")
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-        # Decode with UTF-8, invalid sequence, ignoring errors
+        # Decode ukijumuisha UTF-8, invalid sequence, ignoring errors
         given = "%F3%B1"
         expect = ""
         result = urllib.parse.unquote(given, errors="ignore")
@@ -1277,7 +1277,7 @@ kundi urlencode_Tests(unittest.TestCase):
                          urllib.parse.urlencode({"a": data}, Kweli))
 
     eleza test_urlencode_encoding(self):
-        # ASCII encoding. Expect %3F with errors="replace'
+        # ASCII encoding. Expect %3F ukijumuisha errors="replace'
         given = (('\u00a0', '\u00c1'),)
         expect = '%3F=%3F'
         result = urllib.parse.urlencode(given, encoding="ASCII", errors="replace")
@@ -1296,7 +1296,7 @@ kundi urlencode_Tests(unittest.TestCase):
         self.assertEqual(expect, result)
 
     eleza test_urlencode_encoding_doseq(self):
-        # ASCII Encoding. Expect %3F with errors="replace'
+        # ASCII Encoding. Expect %3F ukijumuisha errors="replace'
         given = (('\u00a0', '\u00c1'),)
         expect = '%3F=%3F'
         result = urllib.parse.urlencode(given, doseq=Kweli,
@@ -1461,7 +1461,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
         kundi DummyURLopener(urllib.request.URLopener):
             eleza open_spam(self, url):
                 rudisha url
-        with support.check_warnings(
+        ukijumuisha support.check_warnings(
                 ('DummyURLopener style of invoking requests ni deprecated.',
                 DeprecationWarning)):
             self.assertEqual(DummyURLopener().open(
@@ -1474,7 +1474,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 
     @support.ignore_warnings(category=DeprecationWarning)
     eleza test_urlopener_retrieve_file(self):
-        with support.temp_dir() kama tmpdir:
+        ukijumuisha support.temp_dir() kama tmpdir:
             fd, tmpfile = tempfile.mkstemp(dir=tmpdir)
             os.close(fd)
             fileurl = "file:" + urllib.request.pathname2url(tmpfile)
@@ -1506,7 +1506,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 
 # Just commented them out.
 # Can't really tell why keep failing kwenye windows na sparc.
-# Everywhere else they work ok, but on those machines, sometimes
+# Everywhere isipokua they work ok, but on those machines, sometimes
 # fail kwenye one of the tests, sometimes kwenye other. I have a linux, and
 # the tests go ok.
 # If anybody has one of the problematic environments, please help!

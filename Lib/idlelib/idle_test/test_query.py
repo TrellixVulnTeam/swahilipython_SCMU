@@ -158,7 +158,7 @@ kundi HelpsourceBrowsefileTest(unittest.TestCase):
                 ('', lambda a,b,c: __file__, __file__),
                 ('htest', lambda a,b,c:'', 'htest'),
                 ('htest', lambda a,b,c: __file__, __file__)):
-            with self.subTest():
+            ukijumuisha self.subTest():
                 dialog.pathvar.set(path)
                 dialog.askfilename = func
                 dialog.browse_file()
@@ -195,7 +195,7 @@ kundi HelpsourcePathokTest(unittest.TestCase):
         dialog = self.Dummy_HelpSource('')
         Equal = self.assertEqual
         kila url kwenye 'www.py.org', 'http://py.org':
-            with self.subTest():
+            ukijumuisha self.subTest():
                 dialog.path.set(url)
                 self.assertEqual(dialog.path_ok(), url)
                 self.assertEqual(dialog.path_error['text'], '')
@@ -203,7 +203,7 @@ kundi HelpsourcePathokTest(unittest.TestCase):
     eleza test_path_ok_file(self):
         dialog = self.Dummy_HelpSource('')
         kila platform, prefix kwenye ('darwin', 'file://'), ('other', ''):
-            with self.subTest():
+            ukijumuisha self.subTest():
                 query.platform = platform
                 dialog.path.set(__file__)
                 self.assertEqual(dialog.path_ok(), prefix + __file__)
@@ -228,7 +228,7 @@ kundi HelpsourceEntryokTest(unittest.TestCase):
                                    (Tupu, 'doc.txt', Tupu),
                                    ('doc', Tupu, Tupu),
                                    ('doc', 'doc.txt', ('doc', 'doc.txt'))):
-            with self.subTest():
+            ukijumuisha self.subTest():
                 dialog.name, dialog.path = name, path
                 self.assertEqual(dialog.entry_ok(), result)
 
@@ -278,7 +278,7 @@ kundi CustomRunEntryokTest(unittest.TestCase):
             dialog.restartvar.set(restart)
             kila cli_args, result kwenye ((Tupu, Tupu),
                                      (['my arg'], (['my arg'], restart))):
-                with self.subTest(restart=restart, cli_args=cli_args):
+                ukijumuisha self.subTest(restart=restart, cli_args=cli_args):
                     dialog.cli_args = cli_args
                     self.assertEqual(dialog.entry_ok(), result)
 
@@ -378,7 +378,7 @@ kundi HelpsourceGuiTest(unittest.TestCase):
         Equal(dialog.entry.get(), '__test__')
         Equal(dialog.path.get(), __file__)
         dialog.button_ok.invoke()
-        prefix = "file://" ikiwa sys.platform == 'darwin' else ''
+        prefix = "file://" ikiwa sys.platform == 'darwin' isipokua ''
         Equal(dialog.result, ('__test__', prefix + __file__))
         root.destroy()
 

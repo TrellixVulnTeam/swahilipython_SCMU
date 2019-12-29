@@ -111,7 +111,7 @@ eleza _path_isdir(path):
 eleza _path_isabs(path):
     """Replacement kila os.path.isabs.
 
-    Considers a Windows drive-relative path (no drive, but starts with slash) to
+    Considers a Windows drive-relative path (no drive, but starts ukijumuisha slash) to
     still be "absolute".
     """
     rudisha path.startswith(path_separators) ama path[1:3] kwenye _pathseps_with_colon
@@ -128,7 +128,7 @@ eleza _write_atomic(path, data, mode=0o666):
     jaribu:
         # We first write data to a temporary file, na then use os.replace() to
         # perform an atomic rename.
-        with _io.FileIO(fd, 'wb') kama file:
+        ukijumuisha _io.FileIO(fd, 'wb') kama file:
             file.write(data)
         _os.replace(path_tmp, path)
     tatizo OSError:
@@ -155,14 +155,14 @@ _code_type = type(_write_atomic.__code__)
 # The current working scheme ni to increment the previous value by
 # 10.
 #
-# Starting with the adoption of PEP 3147 kwenye Python 3.2, every bump kwenye magic
+# Starting ukijumuisha the adoption of PEP 3147 kwenye Python 3.2, every bump kwenye magic
 # number also includes a new "magic tag", i.e. a human readable string used
 # to represent the magic number kwenye __pycache__ directories.  When you change
 # the magic number, you must also set a new unique magic tag.  Generally this
 # can be named after the Python major version of the magic number bump, but
 # it can really be anything, kama long kama it's different than anything else
 # that's come before.  The tags are included kwenye the following table, starting
-# with Python 3.2a0.
+# ukijumuisha Python 3.2a0.
 #
 # Known values:
 #  Python 1.5:   20121
@@ -187,7 +187,7 @@ _code_type = type(_write_atomic.__code__)
 #     Python 2.5a0: 62092 (changed WITH_CLEANUP opcode)
 #     Python 2.5b3: 62101 (fix wrong code: kila x, kwenye ...)
 #     Python 2.5b3: 62111 (fix wrong code: x += tuma)
-#     Python 2.5c1: 62121 (fix wrong lnotab with kila loops and
+#     Python 2.5c1: 62121 (fix wrong lnotab ukijumuisha kila loops and
 #                          storing constants that should have been removed)
 #     Python 2.5c2: 62131 (fix wrong code: kila x, kwenye ... kwenye listcomp/genexp)
 #     Python 2.6a0: 62151 (peephole optimizations na STORE_MAP opcode)
@@ -315,14 +315,14 @@ eleza cache_kutoka_source(path, debug_override=Tupu, *, optimization=Tupu):
         ikiwa optimization ni sio Tupu:
             message = 'debug_override ama optimization must be set to Tupu'
             ashiria TypeError(message)
-        optimization = '' ikiwa debug_override else 1
+        optimization = '' ikiwa debug_override isipokua 1
     path = _os.fspath(path)
     head, tail = _path_split(path)
     base, sep, rest = tail.rpartition('.')
     tag = sys.implementation.cache_tag
     ikiwa tag ni Tupu:
         ashiria NotImplementedError('sys.implementation.cache_tag ni Tupu')
-    almost_filename = ''.join([(base ikiwa base else rest), sep, tag])
+    almost_filename = ''.join([(base ikiwa base isipokua rest), sep, tag])
     ikiwa optimization ni Tupu:
         ikiwa sys.flags.optimize == 0:
             optimization = ''
@@ -389,11 +389,11 @@ eleza source_kutoka_cache(path):
     dot_count = pycache_filename.count('.')
     ikiwa dot_count haiko kwenye {2, 3}:
         ashiria ValueError(f'expected only 2 ama 3 dots kwenye {pycache_filename!r}')
-    elikiwa dot_count == 3:
+    lasivyo dot_count == 3:
         optimization = pycache_filename.rsplit('.', 2)[-2]
         ikiwa sio optimization.startswith(_OPT):
             ashiria ValueError("optimization portion of filename does sio start "
-                             f"with {_OPT!r}")
+                             f"ukijumuisha {_OPT!r}")
         opt_level = optimization[len(_OPT):]
         ikiwa sio opt_level.isalnum():
             ashiria ValueError(f"optimization level {optimization!r} ni sio an "
@@ -418,7 +418,7 @@ eleza _get_sourcefile(bytecode_path):
         source_path = source_kutoka_cache(bytecode_path)
     tatizo (NotImplementedError, ValueError):
         source_path = bytecode_path[:-1]
-    rudisha source_path ikiwa _path_isfile(source_path) else bytecode_path
+    rudisha source_path ikiwa _path_isfile(source_path) isipokua bytecode_path
 
 
 eleza _get_cached(filename):
@@ -427,7 +427,7 @@ eleza _get_cached(filename):
             rudisha cache_kutoka_source(filename)
         tatizo NotImplementedError:
             pita
-    elikiwa filename.endswith(tuple(BYTECODE_SUFFIXES)):
+    lasivyo filename.endswith(tuple(BYTECODE_SUFFIXES)):
         rudisha filename
     isipokua:
         rudisha Tupu
@@ -456,7 +456,7 @@ eleza _check_name(method):
     eleza _check_name_wrapper(self, name=Tupu, *args, **kwargs):
         ikiwa name ni Tupu:
             name = self.name
-        elikiwa self.name != name:
+        lasivyo self.name != name:
             ashiria ImportError('loader kila %s cannot handle %s' %
                                 (self.name, name), name=name)
         rudisha method(self, name, *args, **kwargs)
@@ -722,7 +722,7 @@ kundi WindowsRegistryFinder:
         key = registry_key.format(fullname=fullname,
                                   sys_version='%d.%d' % sys.version_info[:2])
         jaribu:
-            with cls._open_registry(key) kama hkey:
+            ukijumuisha cls._open_registry(key) kama hkey:
                 filepath = _winreg.QueryValue(hkey, '')
         tatizo OSError:
             rudisha Tupu
@@ -969,10 +969,10 @@ kundi FileLoader:
     eleza get_data(self, path):
         """Return the data kutoka path kama raw bytes."""
         ikiwa isinstance(self, (SourceLoader, ExtensionFileLoader)):
-            with _io.open_code(str(path)) kama file:
+            ukijumuisha _io.open_code(str(path)) kama file:
                 rudisha file.read()
         isipokua:
-            with _io.FileIO(path, 'r') kama file:
+            ukijumuisha _io.FileIO(path, 'r') kama file:
                 rudisha file.read()
 
     # ResourceReader ABC API.
@@ -1081,7 +1081,7 @@ kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
 
     """Loader kila extension modules.
 
-    The constructor ni designed to work with FileFinder.
+    The constructor ni designed to work ukijumuisha FileFinder.
 
     """
 
@@ -1228,7 +1228,7 @@ kundi _NamespaceLoader:
 
         """
         # The agiza system never calls this method.
-        _bootstrap._verbose_message('namespace module loaded with path {!r}',
+        _bootstrap._verbose_message('namespace module loaded ukijumuisha path {!r}',
                                     self._path)
         rudisha _bootstrap._load_module_shim(self, fullname)
 
@@ -1246,7 +1246,7 @@ kundi PathFinder:
         kila name, finder kwenye list(sys.path_importer_cache.items()):
             ikiwa finder ni Tupu:
                 toa sys.path_importer_cache[name]
-            elikiwa hasattr(finder, 'invalidate_caches'):
+            lasivyo hasattr(finder, 'invalidate_caches'):
                 finder.invalidate_caches()
 
     @classmethod
@@ -1342,7 +1342,7 @@ kundi PathFinder:
         spec = cls._get_spec(fullname, path, target)
         ikiwa spec ni Tupu:
             rudisha Tupu
-        elikiwa spec.loader ni Tupu:
+        lasivyo spec.loader ni Tupu:
             namespace_path = spec.submodule_search_locations
             ikiwa namespace_path:
                 # We found at least one namespace path.  Return a spec which
@@ -1386,13 +1386,13 @@ kundi FileFinder:
 
     """File-based finder.
 
-    Interactions with the file system are cached kila performance, being
+    Interactions ukijumuisha the file system are cached kila performance, being
     refreshed when the directory the finder ni handling has been modified.
 
     """
 
     eleza __init__(self, path, *loader_details):
-        """Initialize with the path to search on na a variable number of
+        """Initialize ukijumuisha the path to search on na a variable number of
         2-tuples containing the loader na the file suffixes the loader
         recognizes."""
         loaders = []
@@ -1490,7 +1490,7 @@ kundi FileFinder:
         ikiwa sio sys.platform.startswith('win'):
             self._path_cache = set(contents)
         isipokua:
-            # Windows users can agiza modules with case-insensitive file
+            # Windows users can agiza modules ukijumuisha case-insensitive file
             # suffixes (kila legacy reasons). Make the suffix lowercase here
             # so it's done once instead of kila every agiza. This ni safe as
             # the specified suffixes to check against are always specified kwenye a
@@ -1538,7 +1538,7 @@ eleza _fix_up_module(ns, name, pathname, cpathname=Tupu):
     ikiwa sio loader:
         ikiwa spec:
             loader = spec.loader
-        elikiwa pathname == cpathname:
+        lasivyo pathname == cpathname:
             loader = SourcelessFileLoader(name, pathname)
         isipokua:
             loader = SourceFileLoader(name, pathname)

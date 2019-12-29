@@ -12,7 +12,7 @@ at the top of your script.  The optional arguments to enable() are:
     format      - 'text' ama 'html' controls the output format
 
 By default, tracebacks are displayed but sio saved, the context ni 5 lines
-and the output format ni 'html' (kila backwards compatibility with the
+and the output format ni 'html' (kila backwards compatibility ukijumuisha the
 original use of this module)
 
 Alternatively, ikiwa you have caught an exception na want cgitb to display it
@@ -90,7 +90,7 @@ eleza scanvars(reader, frame, locals):
             isipokua:
                 where, value = lookup(token, frame, locals)
                 vars.append((token, where, value))
-        elikiwa token == '.':
+        lasivyo token == '.':
             prefix += lasttoken + '.'
             parent = value
         isipokua:
@@ -157,7 +157,7 @@ function calls leading up to the error, kwenye the order they occurred.</p>'''
             ikiwa value ni sio __UNDEF__:
                 ikiwa where kwenye ('global', 'builtin'):
                     name = ('<em>%s</em> ' % where) + strong(name)
-                elikiwa where == 'local':
+                lasivyo where == 'local':
                     name = strong(name)
                 isipokua:
                     name = where + strong(name.split('.')[-1])
@@ -234,7 +234,7 @@ function calls leading up to the error, kwenye the order they occurred.
             done[name] = 1
             ikiwa value ni sio __UNDEF__:
                 ikiwa where == 'global': name = 'global ' + name
-                elikiwa where != 'local': name = where + name.split('.')[-1]
+                lasivyo where != 'local': name = where + name.split('.')[-1]
                 dump.append('%s = %s' % (name, pydoc.text.repr(value)))
             isipokua:
                 dump.append(name + ' undefined')
@@ -296,7 +296,7 @@ kundi Hook:
             (fd, path) = tempfile.mkstemp(suffix=suffix, dir=self.logdir)
 
             jaribu:
-                with os.fdopen(fd, 'w') kama file:
+                ukijumuisha os.fdopen(fd, 'w') kama file:
                     file.write(doc)
                 msg = '%s contains the description of this error.' % path
             except:

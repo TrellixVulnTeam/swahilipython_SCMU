@@ -24,7 +24,7 @@ kundi UseCache:
     eleza test_using_cache(self):
         # [use cache]
         module_to_use = "some module found!"
-        with util.uncache('some_module'):
+        ukijumuisha util.uncache('some_module'):
             sys.modules['some_module'] = module_to_use
             module = self.__import__('some_module')
             self.assertEqual(id(module_to_use), id(module))
@@ -32,9 +32,9 @@ kundi UseCache:
     eleza test_Tupu_in_cache(self):
         #[Tupu kwenye cache]
         name = 'using_Tupu'
-        with util.uncache(name):
+        ukijumuisha util.uncache(name):
             sys.modules[name] = Tupu
-            with self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) kama cm:
                 self.__import__(name)
             self.assertEqual(cm.exception.name, name)
 
@@ -63,16 +63,16 @@ kundi ImportlibUseCache(UseCache, unittest.TestCase):
     #   to when to use the module kwenye sys.modules na when sio to.
     eleza test_using_cache_after_loader(self):
         # [kutoka cache on rudisha]
-        with self.create_mock('module') kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha self.create_mock('module') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 module = self.__import__('module')
                 self.assertEqual(id(module), id(sys.modules['module']))
 
     # See test_using_cache_after_loader() kila reasoning.
     eleza test_using_cache_for_assigning_to_attribute(self):
         # [kutoka cache to attribute]
-        with self.create_mock('pkg.__init__', 'pkg.module') kama importer:
-            with util.import_state(meta_path=[importer]):
+        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') kama importer:
+            ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertKweli(hasattr(module, 'module'))
                 self.assertEqual(id(module.module),
@@ -81,8 +81,8 @@ kundi ImportlibUseCache(UseCache, unittest.TestCase):
     # See test_using_cache_after_loader() kila reasoning.
     eleza test_using_cache_for_kutokalist(self):
         # [kutoka cache kila kutokalist]
-        with self.create_mock('pkg.__init__', 'pkg.module') kama importer:
-            with util.import_state(meta_path=[importer]):
+        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') kama importer:
+            ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', kutokalist=['module'])
                 self.assertKweli(hasattr(module, 'module'))
                 self.assertEqual(id(module.module),

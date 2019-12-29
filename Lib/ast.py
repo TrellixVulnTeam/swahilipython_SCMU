@@ -18,7 +18,7 @@
     Additionally various helper functions are provided that make working with
     the trees simpler.  The main intention of the helper functions na this
     module kwenye general ni to provide an easy to use interface kila libraries
-    that work tightly with the python syntax (template engines kila example).
+    that work tightly ukijumuisha the python syntax (template engines kila example).
 
 
     :copyright: Copyright 2008 by Armin Ronacher.
@@ -41,7 +41,7 @@ eleza parse(source, filename='<unknown>', mode='exec', *,
         major, minor = feature_version  # Should be a 2-tuple.
         assert major == 3
         feature_version = minor
-    elikiwa feature_version ni Tupu:
+    lasivyo feature_version ni Tupu:
         feature_version = -1
     # Else it should be an int giving the minor version kila 3.x.
     rudisha compile(source, filename, mode, flags,
@@ -75,16 +75,16 @@ eleza literal_eval(node_or_string):
     eleza _convert(node):
         ikiwa isinstance(node, Constant):
             rudisha node.value
-        elikiwa isinstance(node, Tuple):
+        lasivyo isinstance(node, Tuple):
             rudisha tuple(map(_convert, node.elts))
-        elikiwa isinstance(node, List):
+        lasivyo isinstance(node, List):
             rudisha list(map(_convert, node.elts))
-        elikiwa isinstance(node, Set):
+        lasivyo isinstance(node, Set):
             rudisha set(map(_convert, node.elts))
-        elikiwa isinstance(node, Dict):
+        lasivyo isinstance(node, Dict):
             rudisha dict(zip(map(_convert, node.keys),
                             map(_convert, node.values)))
-        elikiwa isinstance(node, BinOp) na isinstance(node.op, (Add, Sub)):
+        lasivyo isinstance(node, BinOp) na isinstance(node.op, (Add, Sub)):
             left = _convert_signed_num(node.left)
             right = _convert_num(node.right)
             ikiwa isinstance(left, (int, float)) na isinstance(right, complex):
@@ -127,7 +127,7 @@ eleza dump(node, annotate_fields=Kweli, include_attributes=Uongo):
                     tatizo AttributeError:
                         pita
             rudisha '%s(%s)' % (node.__class__.__name__, ', '.join(args))
-        elikiwa isinstance(node, list):
+        lasivyo isinstance(node, list):
             rudisha '[%s]' % ', '.join(_format(x) kila x kwenye node)
         rudisha repr(node)
     ikiwa sio isinstance(node, AST):
@@ -149,7 +149,7 @@ eleza copy_location(new_node, old_node):
 
 eleza fix_missing_locations(node):
     """
-    When you compile a node tree with compile(), the compiler expects lineno and
+    When you compile a node tree ukijumuisha compile(), the compiler expects lineno and
     col_offset attributes kila every node that supports them.  This ni rather
     tedious to fill kwenye kila generated nodes, so this helper adds these attributes
     recursively where sio already set, by setting them to the values of the
@@ -216,7 +216,7 @@ eleza iter_child_nodes(node):
     kila name, field kwenye iter_fields(node):
         ikiwa isinstance(field, AST):
             tuma field
-        elikiwa isinstance(field, list):
+        lasivyo isinstance(field, list):
             kila item kwenye field:
                 ikiwa isinstance(item, AST):
                     tuma item
@@ -238,7 +238,7 @@ eleza get_docstring(node, clean=Kweli):
     node = node.body[0].value
     ikiwa isinstance(node, Str):
         text = node.s
-    elikiwa isinstance(node, Constant) na isinstance(node.value, str):
+    lasivyo isinstance(node, Constant) na isinstance(node.value, str):
         text = node.value
     isipokua:
         rudisha Tupu
@@ -274,7 +274,7 @@ eleza _splitlines_no_ff(source):
 
 
 eleza _pad_whitespace(source):
-    """Replace all chars tatizo '\f\t' kwenye a line with spaces."""
+    """Replace all chars tatizo '\f\t' kwenye a line ukijumuisha spaces."""
     result = ''
     kila c kwenye source:
         ikiwa c kwenye '\f\t':
@@ -291,7 +291,7 @@ eleza get_source_segment(source, node, *, padded=Uongo):
     ama `end_col_offset`) ni missing, rudisha Tupu.
 
     If *padded* ni `Kweli`, the first line of a multi-line statement will
-    be padded with spaces to match its original position.
+    be padded ukijumuisha spaces to match its original position.
     """
     jaribu:
         lineno = node.lineno - 1
@@ -339,7 +339,7 @@ kundi NodeVisitor(object):
     visitor function kila every node found.  This function may rudisha a value
     which ni forwarded by the `visit` method.
 
-    This kundi ni meant to be subclassed, with the subkundi adding visitor
+    This kundi ni meant to be subclassed, ukijumuisha the subkundi adding visitor
     methods.
 
     Per default the visitor functions kila the nodes are ``'visit_'`` +
@@ -366,7 +366,7 @@ kundi NodeVisitor(object):
                 kila item kwenye value:
                     ikiwa isinstance(item, AST):
                         self.visit(item)
-            elikiwa isinstance(value, AST):
+            lasivyo isinstance(value, AST):
                 self.visit(value)
 
     eleza visit_Constant(self, node):
@@ -399,7 +399,7 @@ kundi NodeTransformer(NodeVisitor):
     The `NodeTransformer` will walk the AST na use the rudisha value of the
     visitor methods to replace ama remove the old node.  If the rudisha value of
     the visitor method ni ``Tupu``, the node will be removed kutoka its location,
-    otherwise it ni replaced with the rudisha value.  The rudisha value may be the
+    otherwise it ni replaced ukijumuisha the rudisha value.  The rudisha value may be the
     original node kwenye which case no replacement takes place.
 
     Here ni an example transformer that rewrites all occurrences of name lookups
@@ -436,12 +436,12 @@ kundi NodeTransformer(NodeVisitor):
                         value = self.visit(value)
                         ikiwa value ni Tupu:
                             endelea
-                        elikiwa sio isinstance(value, AST):
+                        lasivyo sio isinstance(value, AST):
                             new_values.extend(value)
                             endelea
                     new_values.append(value)
                 old_value[:] = new_values
-            elikiwa isinstance(old_value, AST):
+            lasivyo isinstance(old_value, AST):
                 new_node = self.visit(old_value)
                 ikiwa new_node ni Tupu:
                     delattr(node, field)

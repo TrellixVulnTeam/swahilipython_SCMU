@@ -33,7 +33,7 @@ eleza signal_alarm(n):
     ikiwa hasattr(signal, 'alarm'):
         signal.alarm(n)
 
-# Remember real select() to avoid interferences with mocking
+# Remember real select() to avoid interferences ukijumuisha mocking
 _real_select = select.select
 
 eleza receive(sock, n, timeout=20):
@@ -157,7 +157,7 @@ kundi SocketServerTest(unittest.TestCase):
         ikiwa verbose: andika("done")
 
     eleza stream_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.socket(proto, socket.SOCK_STREAM) kama s:
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
@@ -167,7 +167,7 @@ kundi SocketServerTest(unittest.TestCase):
             self.assertEqual(buf, TEST_STR)
 
     eleza dgram_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_DGRAM) kama s:
+        ukijumuisha socket.socket(proto, socket.SOCK_DGRAM) kama s:
             ikiwa HAVE_UNIX_SOCKETS na proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
@@ -189,7 +189,7 @@ kundi SocketServerTest(unittest.TestCase):
 
     @requires_forking
     eleza test_ForkingTCPServer(self):
-        with simple_subprocess(self):
+        ukijumuisha simple_subprocess(self):
             self.run_server(socketserver.ForkingTCPServer,
                             socketserver.StreamRequestHandler,
                             self.stream_examine)
@@ -209,7 +209,7 @@ kundi SocketServerTest(unittest.TestCase):
     @requires_unix_sockets
     @requires_forking
     eleza test_ForkingUnixStreamServer(self):
-        with simple_subprocess(self):
+        ukijumuisha simple_subprocess(self):
             self.run_server(ForkingUnixStreamServer,
                             socketserver.StreamRequestHandler,
                             self.stream_examine)
@@ -226,7 +226,7 @@ kundi SocketServerTest(unittest.TestCase):
 
     @requires_forking
     eleza test_ForkingUDPServer(self):
-        with simple_subprocess(self):
+        ukijumuisha simple_subprocess(self):
             self.run_server(socketserver.ForkingUDPServer,
                             socketserver.DatagramRequestHandler,
                             self.dgram_examine)
@@ -282,12 +282,12 @@ kundi SocketServerTest(unittest.TestCase):
         # Create many servers kila which bind() will fail, to see ikiwa this result
         # kwenye FD exhaustion.
         kila i kwenye range(1024):
-            with self.assertRaises(OverflowError):
+            ukijumuisha self.assertRaises(OverflowError):
                 socketserver.TCPServer((HOST, -1),
                                        socketserver.StreamRequestHandler)
 
     eleza test_context_manager(self):
-        with socketserver.TCPServer((HOST, 0),
+        ukijumuisha socketserver.TCPServer((HOST, 0),
                                     socketserver.StreamRequestHandler) kama server:
             pita
         self.assertEqual(-1, server.socket.fileno())
@@ -306,7 +306,7 @@ kundi ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Kweli)
 
     eleza test_sync_not_handled(self):
-        with self.assertRaises(SystemExit):
+        ukijumuisha self.assertRaises(SystemExit):
             BaseErrorTestServer(SystemExit)
         self.check_result(handled=Uongo)
 
@@ -329,7 +329,7 @@ kundi ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Uongo)
 
     eleza check_result(self, handled):
-        with open(test.support.TESTFN) kama log:
+        ukijumuisha open(test.support.TESTFN) kama log:
             expected = 'Handler called\n' + 'Error handled\n' * handled
             self.assertEqual(log.read(), expected)
 
@@ -338,7 +338,7 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
     eleza __init__(self, exception):
         self.exception = exception
         super().__init__((HOST, 0), BadHandler)
-        with socket.create_connection(self.server_address):
+        ukijumuisha socket.create_connection(self.server_address):
             pita
         jaribu:
             self.handle_request()
@@ -347,7 +347,7 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
         self.wait_done()
 
     eleza handle_error(self, request, client_address):
-        with open(test.support.TESTFN, 'a') kama log:
+        ukijumuisha open(test.support.TESTFN, 'a') kama log:
             log.write('Error handled\n')
 
     eleza wait_done(self):
@@ -356,7 +356,7 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
 
 kundi BadHandler(socketserver.BaseRequestHandler):
     eleza handle(self):
-        with open(test.support.TESTFN, 'a') kama log:
+        ukijumuisha open(test.support.TESTFN, 'a') kama log:
             log.write('Handler called\n')
         ashiria self.server.exception('Test error')
 
@@ -392,7 +392,7 @@ kundi SocketWriterTest(unittest.TestCase):
         self.addCleanup(server.server_close)
         s = socket.socket(
             server.address_family, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-        with s:
+        ukijumuisha s:
             s.connect(server.server_address)
         server.handle_request()
         self.assertIsInstance(server.wfile, io.BufferedIOBase)
@@ -427,7 +427,7 @@ kundi SocketWriterTest(unittest.TestCase):
         eleza run_client():
             s = socket.socket(server.address_family, socket.SOCK_STREAM,
                 socket.IPPROTO_TCP)
-            with s, s.makefile('rb') kama reader:
+            ukijumuisha s, s.makefile('rb') kama reader:
                 s.connect(server.server_address)
                 nonlocal response1
                 response1 = reader.readline()

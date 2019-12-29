@@ -15,7 +15,7 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 ikiwa sys.flags.optimize >= 2:
-    ashiria unittest.SkipTest("Cannot test docstrings with -O2")
+    ashiria unittest.SkipTest("Cannot test docstrings ukijumuisha -O2")
 
 kundi C(object):
     """Class C.
@@ -115,7 +115,7 @@ eleza test_main():
         ashiria support.TestFailed("expected %d tests to run, sio %d" %
                                       (EXPECTED, t))
 
-# Pollute the namespace with a bunch of imported functions na classes,
+# Pollute the namespace ukijumuisha a bunch of imported functions na classes,
 # to make sure they don't get tested.
 kutoka doctest agiza *
 

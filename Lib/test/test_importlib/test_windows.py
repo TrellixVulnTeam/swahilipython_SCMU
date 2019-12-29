@@ -42,7 +42,7 @@ eleza setup_module(machinery, name, path=Tupu):
     key = root.format(fullname=name,
                       sys_version='%d.%d' % sys.version_info[:2])
     jaribu:
-        with temp_module(name, "a = 1") kama location:
+        ukijumuisha temp_module(name, "a = 1") kama location:
             subkey = CreateKey(HKEY_CURRENT_USER, key)
             ikiwa path ni Tupu:
                 path = location + ".py"
@@ -69,14 +69,14 @@ kundi WindowsRegistryFinderTests:
         self.assertIs(loader, Tupu)
 
     eleza test_module_found(self):
-        with setup_module(self.machinery, self.test_module):
+        ukijumuisha setup_module(self.machinery, self.test_module):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
             self.assertIsNot(loader, Tupu)
             self.assertIsNot(spec, Tupu)
 
     eleza test_module_not_found(self):
-        with setup_module(self.machinery, self.test_module, path="."):
+        ukijumuisha setup_module(self.machinery, self.test_module, path="."):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
             self.assertIsTupu(loader)

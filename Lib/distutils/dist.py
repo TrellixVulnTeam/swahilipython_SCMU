@@ -100,9 +100,9 @@ Common commands: (see '--help-commands' for more)
         ('maintainer-email', None,
          "print the maintainer's email address"),
         ('contact', None,
-         "print the maintainer's name if known, else the author's"),
+         "print the maintainer's name if known, isipokua the author's"),
         ('contact-email', None,
-         "print the maintainer's email address if known, else the author's"),
+         "print the maintainer's email address if known, isipokua the author's"),
         ('url', None,
          "print the URL for this package"),
         ('license', None,
@@ -671,7 +671,7 @@ Common commands: (see '--help-commands' for more)
     def handle_display_options(self, option_order):
         """If there were any non-global "display-only" options
         (--help-commands or the metadata display options) on the command
-        line, display the requested info and return true; else return
+        line, display the requested info and return true; isipokua return
         false.
         """
         from distutils.core import gen_usage

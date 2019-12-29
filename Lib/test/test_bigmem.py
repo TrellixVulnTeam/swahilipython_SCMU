@@ -2,10 +2,10 @@
 
 These tests try to exercise the 32-bit boundary that ni sometimes, if
 rarely, exceeded kwenye practice, but almost never tested.  They are really only
-meaningful on 64-bit builds on machines with a *lot* of memory, but the
-tests are always run, usually with very low memory limits to make sure the
+meaningful on 64-bit builds on machines ukijumuisha a *lot* of memory, but the
+tests are always run, usually ukijumuisha very low memory limits to make sure the
 tests themselves don't suffer kutoka bitrot.  To run them kila real, pita a
-high memory limit to regrtest, with the -M option.
+high memory limit to regrtest, ukijumuisha the -M option.
 """
 
 kutoka test agiza support
@@ -25,7 +25,7 @@ agiza sys
 # test wouldn't be very useful) na a memuse of 1 (one byte per size-unit,
 # ikiwa it allocates only one big string at a time.)
 #
-# When run with a memory limit set, both decorators skip tests that need
+# When run ukijumuisha a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
 # always pita minsize kama size, even ikiwa there ni much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
@@ -50,7 +50,7 @@ agiza sys
 #    2. That way, int-wrapping problems are more easily detected.
 #
 #  - Despite the bigmemtest decorator, all tests will actually be called
-#    with a much smaller number too, kwenye the normal test run (5Kb currently.)
+#    ukijumuisha a much smaller number too, kwenye the normal test run (5Kb currently.)
 #    This ni so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
 #    pitaed-in 'size', na don't rely on the size being very large. Also,
@@ -64,7 +64,7 @@ agiza sys
 ascii_char_size = 1
 ucs2_char_size = 2
 ucs4_char_size = 4
-pointer_size = 4 ikiwa sys.maxsize < 2**32 else 8
+pointer_size = 4 ikiwa sys.maxsize < 2**32 isipokua 8
 
 
 kundi BaseStrTest:
@@ -473,7 +473,7 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
-    # This test ni meaningful even with size < 2G, kama long kama the
+    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
     # doubled string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_concat(self, size):
@@ -484,7 +484,7 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size * 2)
         self.assertEqual(s.count(_('.')), size * 2)
 
-    # This test ni meaningful even with size < 2G, kama long kama the
+    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
     # repeated string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_repeat(self, size):

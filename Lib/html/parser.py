@@ -72,12 +72,12 @@ kundi HTMLParser(_markupbase.ParserBase):
     Start tags are handled by calling self.handle_starttag() or
     self.handle_startendtag(); end tags by self.handle_endtag().  The
     data between tags ni pitaed kutoka the parser to the derived class
-    by calling self.handle_data() with the data kama argument (the data
+    by calling self.handle_data() ukijumuisha the data kama argument (the data
     may be split up kwenye arbitrary chunks).  If convert_charrefs is
     Kweli the character references are converted automatically to the
     corresponding Unicode character (and self.handle_data() ni no
     longer split kwenye chunks), otherwise they are pitaed by calling
-    self.handle_entityref() ama self.handle_charref() with the string
+    self.handle_entityref() ama self.handle_charref() ukijumuisha the string
     containing respectively the named ama numeric reference kama the
     argument.
     """
@@ -104,7 +104,7 @@ kundi HTMLParser(_markupbase.ParserBase):
     eleza feed(self, data):
         r"""Feed data to the parser.
 
-        Call this kama often kama you want, with kama little ama kama much text
+        Call this kama often kama you want, ukijumuisha kama little ama kama much text
         kama you want (may include '\n').
         """
         self.rawdata = self.rawdata + data
@@ -165,19 +165,19 @@ kundi HTMLParser(_markupbase.ParserBase):
                     self.handle_data(rawdata[i:j])
             i = self.updatepos(i, j)
             ikiwa i == n: koma
-            startswith = rawdata.startswith
+            startsukijumuisha = rawdata.startswith
             ikiwa startswith('<', i):
                 ikiwa starttagopen.match(rawdata, i): # < + letter
                     k = self.parse_starttag(i)
-                elikiwa startswith("</", i):
+                lasivyo startswith("</", i):
                     k = self.parse_endtag(i)
-                elikiwa startswith("<!--", i):
+                lasivyo startswith("<!--", i):
                     k = self.parse_comment(i)
-                elikiwa startswith("<?", i):
+                lasivyo startswith("<?", i):
                     k = self.parse_pi(i)
-                elikiwa startswith("<!", i):
+                lasivyo startswith("<!", i):
                     k = self.parse_html_declaration(i)
-                elikiwa (i + 1) < n:
+                lasivyo (i + 1) < n:
                     self.handle_data("<")
                     k = i + 1
                 isipokua:
@@ -197,7 +197,7 @@ kundi HTMLParser(_markupbase.ParserBase):
                     isipokua:
                         self.handle_data(rawdata[i:k])
                 i = self.updatepos(i, k)
-            elikiwa startswith("&#", i):
+            lasivyo startswith("&#", i):
                 match = charref.match(rawdata, i)
                 ikiwa match:
                     name = match.group()[2:-1]
@@ -212,7 +212,7 @@ kundi HTMLParser(_markupbase.ParserBase):
                         self.handle_data(rawdata[i:i+2])
                         i = self.updatepos(i, i+2)
                     koma
-            elikiwa startswith('&', i):
+            lasivyo startswith('&', i):
                 match = entityref.match(rawdata, i)
                 ikiwa match:
                     name = match.group(1)
@@ -232,9 +232,9 @@ kundi HTMLParser(_markupbase.ParserBase):
                         i = self.updatepos(i, i + 1)
                     # incomplete
                     koma
-                elikiwa (i + 1) < n:
+                lasivyo (i + 1) < n:
                     # sio the end of the buffer, na can't be confused
-                    # with some other construct
+                    # ukijumuisha some other construct
                     self.handle_data("&")
                     i = self.updatepos(i, i + 1)
                 isipokua:
@@ -260,9 +260,9 @@ kundi HTMLParser(_markupbase.ParserBase):
         ikiwa rawdata[i:i+4] == '<!--':
             # this case ni actually already handled kwenye goahead()
             rudisha self.parse_comment(i)
-        elikiwa rawdata[i:i+3] == '<![':
+        lasivyo rawdata[i:i+3] == '<![':
             rudisha self.parse_marked_section(i)
-        elikiwa rawdata[i:i+9].lower() == '<!doctype':
+        lasivyo rawdata[i:i+9].lower() == '<!doctype':
             # find the closing >
             gtpos = rawdata.find('>', i+9)
             ikiwa gtpos == -1:
@@ -319,7 +319,7 @@ kundi HTMLParser(_markupbase.ParserBase):
             attrname, rest, attrvalue = m.group(1, 2, 3)
             ikiwa sio rest:
                 attrvalue = Tupu
-            elikiwa attrvalue[:1] == '\'' == attrvalue[-1:] ama \
+            lasivyo attrvalue[:1] == '\'' == attrvalue[-1:] ama \
                  attrvalue[:1] == '"' == attrvalue[-1:]:
                 attrvalue = attrvalue[1:-1]
             ikiwa attrvalue:
@@ -363,7 +363,7 @@ kundi HTMLParser(_markupbase.ParserBase):
                 ikiwa rawdata.startswith("/", j):
                     # buffer boundary
                     rudisha -1
-                # else bogus input
+                # isipokua bogus input
                 ikiwa j > i:
                     rudisha j
                 isipokua:

@@ -225,7 +225,7 @@ eleza _parse_makefile(filename, vars=Tupu):
     done = {}
     notdone = {}
 
-    with open(filename, errors="surrogateescape") kama f:
+    ukijumuisha open(filename, errors="surrogateescape") kama f:
         lines = f.readlines()
 
     kila line kwenye lines:
@@ -252,7 +252,7 @@ eleza _parse_makefile(filename, vars=Tupu):
     # do variable interpolation here
     variables = list(notdone.keys())
 
-    # Variables with a 'PY_' prefix kwenye the makefile. These need to
+    # Variables ukijumuisha a 'PY_' prefix kwenye the makefile. These need to
     # be made available without that prefix through sysconfig.
     # Special care ni needed to ensure that variable expansion works, even
     # ikiwa the expansion uses the name without a prefix.
@@ -264,27 +264,27 @@ eleza _parse_makefile(filename, vars=Tupu):
             m1 = _findvar1_rx.search(value)
             m2 = _findvar2_rx.search(value)
             ikiwa m1 na m2:
-                m = m1 ikiwa m1.start() < m2.start() else m2
+                m = m1 ikiwa m1.start() < m2.start() isipokua m2
             isipokua:
-                m = m1 ikiwa m1 else m2
+                m = m1 ikiwa m1 isipokua m2
             ikiwa m ni sio Tupu:
                 n = m.group(1)
                 found = Kweli
                 ikiwa n kwenye done:
                     item = str(done[n])
-                elikiwa n kwenye notdone:
+                lasivyo n kwenye notdone:
                     # get it on a subsequent round
                     found = Uongo
-                elikiwa n kwenye os.environ:
+                lasivyo n kwenye os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
 
-                elikiwa n kwenye renamed_variables:
+                lasivyo n kwenye renamed_variables:
                     ikiwa (name.startswith('PY_') and
                         name[3:] kwenye renamed_variables):
                         item = ""
 
-                    elikiwa 'PY_' + n kwenye notdone:
+                    lasivyo 'PY_' + n kwenye notdone:
                         found = Uongo
 
                     isipokua:
@@ -368,7 +368,7 @@ eleza _generate_posix_vars():
     # load the installed pyconfig.h:
     config_h = get_config_h_filename()
     jaribu:
-        with open(config_h) kama f:
+        ukijumuisha open(config_h) kama f:
             parse_config_h(f, vars)
     tatizo OSError kama e:
         msg = "invalid Python installation: unable to open %s" % config_h
@@ -381,7 +381,7 @@ eleza _generate_posix_vars():
     ikiwa _PYTHON_BUILD:
         vars['BLDSHARED'] = vars['LDSHARED']
 
-    # There's a chicken-and-egg situation on OS X with regards to the
+    # There's a chicken-and-egg situation on OS X ukijumuisha regards to the
     # _sysconfigdata module after the changes introduced by #15298:
     # get_config_vars() ni called by get_platform() kama part of the
     # `make pybuilddir.txt` target -- which ni a precursor to the
@@ -389,7 +389,7 @@ eleza _generate_posix_vars():
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to agiza _sysconfigdata, which we won't have built yet.  In order
     # kila _init_posix() to work, ikiwa we're on Darwin, just mock up the
-    # _sysconfigdata module manually na populate it with the build vars.
+    # _sysconfigdata module manually na populate it ukijumuisha the build vars.
     # This ni more than sufficient kila ensuring the subsequent call to
     # get_platform() succeeds.
     name = _get_sysconfigdata_name()
@@ -405,14 +405,14 @@ eleza _generate_posix_vars():
     os.makedirs(pybuilddir, exist_ok=Kweli)
     destfile = os.path.join(pybuilddir, name + '.py')
 
-    with open(destfile, 'w', encoding='utf8') kama f:
+    ukijumuisha open(destfile, 'w', encoding='utf8') kama f:
         f.write('# system configuration generated na used by'
                 ' the sysconfig module\n')
         f.write('build_time_vars = ')
         pprint.pandika(vars, stream=f)
 
     # Create file used kila sys.path fixup -- see Modules/getpath.c
-    with open('pybuilddir.txt', 'w', encoding='utf8') kama f:
+    ukijumuisha open('pybuilddir.txt', 'w', encoding='utf8') kama f:
         f.write(pybuilddir)
 
 eleza _init_posix(vars):
@@ -654,7 +654,7 @@ eleza get_platform():
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         rudisha  "%s-%s" % (osname, machine)
-    elikiwa osname[:5] == "sunos":
+    lasivyo osname[:5] == "sunos":
         ikiwa release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
             release = "%d.%s" % (int(release[0]) - 3, release[2:])
@@ -664,16 +664,16 @@ eleza get_platform():
             bitness = {2147483647:"32bit", 9223372036854775807:"64bit"}
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
-    elikiwa osname[:3] == "aix":
+    lasivyo osname[:3] == "aix":
         rudisha "%s-%s.%s" % (osname, version, release)
-    elikiwa osname[:6] == "cygwin":
+    lasivyo osname[:6] == "cygwin":
         osname = "cygwin"
         agiza re
         rel_re = re.compile(r'[\d.]+')
         m = rel_re.match(release)
         ikiwa m:
             release = m.group()
-    elikiwa osname[:6] == "darwin":
+    lasivyo osname[:6] == "darwin":
         agiza _osx_support
         osname, release, machine = _osx_support.get_platform_osx(
                                             get_config_vars(),

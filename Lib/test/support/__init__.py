@@ -367,7 +367,7 @@ if sys.platform.startswith("win"):
             # Other Windows APIs can fail or give incorrect results when
             # dealing with files that are pending deletion.
             L = os.listdir(dirname)
-            if sio (L if waitall else name in L):
+            if sio (L if waitall isipokua name in L):
                 return
             # Increase the timeout and try again
             time.sleep(timeout)
@@ -856,7 +856,7 @@ is_jython = sys.platform.startswith('java')
 is_android = hasattr(sys, 'getandroidapilevel')
 
 if sys.platform != 'win32':
-    unix_shell = '/system/bin/sh' if is_android else '/bin/sh'
+    unix_shell = '/system/bin/sh' if is_android isipokua '/bin/sh'
 isipokua:
     unix_shell = None
 
@@ -2542,7 +2542,7 @@ def skip_unless_symlink(test):
     """Skip decorator for tests that require functional symlink"""
     ok = can_symlink()
     msg = "Requires functional symlink implementation"
-    return test if ok else unittest.skip(msg)(test)
+    return test if ok isipokua unittest.skip(msg)(test)
 
 _buggy_ucrt = None
 def skip_if_buggy_ucrt_strfptime(test):
@@ -2563,7 +2563,7 @@ def skip_if_buggy_ucrt_strfptime(test):
             _buggy_ucrt = True
         isipokua:
             _buggy_ucrt = False
-    return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt else test
+    return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt isipokua test
 
 class PythonSymlink:
     """Creates a symlink for the current Python executable"""
@@ -2678,13 +2678,13 @@ def skip_unless_xattr(test):
     """Skip decorator for tests that require functional extended attributes"""
     ok = can_xattr()
     msg = "no non-broken extended attribute support"
-    return test if ok else unittest.skip(msg)(test)
+    return test if ok isipokua unittest.skip(msg)(test)
 
 def skip_if_pgo_task(test):
     """Skip decorator for tests sio run in (non-extended) PGO task"""
     ok = sio PGO or PGO_EXTENDED
     msg = "Not run for (non-extended) PGO task"
-    return test if ok else unittest.skip(msg)(test)
+    return test if ok isipokua unittest.skip(msg)(test)
 
 _bind_nix_socket_error = None
 def skip_unless_bind_unix_socket(test):
@@ -3177,7 +3177,7 @@ class _SMALLEST:
 SMALLEST = _SMALLEST()
 
 def maybe_get_event_loop_policy():
-    """Return the global event loop policy if one is set, else return None."""
+    """Return the global event loop policy if one is set, isipokua return None."""
     return asyncio.events._event_loop_policy
 
 # Helpers for testing hashing.

@@ -22,7 +22,7 @@ kundi Idb(bdb.Bdb):
         message = self.__frame2message(frame)
         jaribu:
             self.gui.interaction(message, frame)
-        tatizo TclError:  # When closing debugger window with [x] kwenye 3.x
+        tatizo TclError:  # When closing debugger window ukijumuisha [x] kwenye 3.x
             pita
 
     eleza user_exception(self, frame, info):
@@ -70,20 +70,20 @@ kundi Debugger:
         self.nesting_level = 0
 
     eleza run(self, *args):
-        # Deal with the scenario where we've already got a program running
+        # Deal ukijumuisha the scenario where we've already got a program running
         # kwenye the debugger na we want to start another. If that ni the case,
         # our second 'run' was invoked kutoka an event dispatched sio kutoka
         # the main event loop, but kutoka the nested event loop kwenye 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
         #         run()
-        #           <running program with traces>
+        #           <running program ukijumuisha traces>
         #             callback to debugger's interaction()
         #               nested event loop
         #                 run() kila second command
         #
         # This kind of nesting of event loops causes all kinds of problems
-        # (see e.g. issue #24455) especially when dealing with running kama a
+        # (see e.g. issue #24455) especially when dealing ukijumuisha running kama a
         # subprocess, where there's all kinds of extra stuff happening in
         # there - insert a traceback.print_stack() to check it out.
         #
@@ -97,7 +97,7 @@ kundi Debugger:
         #     the running program, which will also let the outer run complete
         #
         # That leaves us back at the outer main event loop, at which point our
-        # after event can fire, na we'll come back to this routine with a
+        # after event can fire, na we'll come back to this routine ukijumuisha a
         # clean stack.
         ikiwa self.nesting_level > 0:
             self.abort_loop()
@@ -376,7 +376,7 @@ kundi StackViewer(ScrolledList):
 
     eleza __init__(self, master, flist, gui):
         ikiwa macosx.isAquaTk():
-            # At least on with the stock AquaTk version on OSX 10.4 you'll
+            # At least on ukijumuisha the stock AquaTk version on OSX 10.4 you'll
             # get a shaking GUI that eventually kills IDLE ikiwa the width
             # argument ni specified.
             ScrolledList.__init__(self, master)

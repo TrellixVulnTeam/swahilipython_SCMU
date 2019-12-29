@@ -12,26 +12,26 @@ kutoka test agiza support
 
 
 eleza without_source_date_epoch(fxn):
-    """Runs function with SOURCE_DATE_EPOCH unset."""
+    """Runs function ukijumuisha SOURCE_DATE_EPOCH unset."""
     @functools.wraps(fxn)
     eleza wrapper(*args, **kwargs):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.unset('SOURCE_DATE_EPOCH')
             rudisha fxn(*args, **kwargs)
     rudisha wrapper
 
 
 eleza with_source_date_epoch(fxn):
-    """Runs function with SOURCE_DATE_EPOCH set."""
+    """Runs function ukijumuisha SOURCE_DATE_EPOCH set."""
     @functools.wraps(fxn)
     eleza wrapper(*args, **kwargs):
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['SOURCE_DATE_EPOCH'] = '123456789'
             rudisha fxn(*args, **kwargs)
     rudisha wrapper
 
 
-# Run tests with SOURCE_DATE_EPOCH set ama unset explicitly.
+# Run tests ukijumuisha SOURCE_DATE_EPOCH set ama unset explicitly.
 kundi SourceDateEpochTestMeta(type(unittest.TestCase)):
     eleza __new__(mcls, name, bases, dct, *, source_date_epoch):
         cls = super().__new__(mcls, name, bases, dct)
@@ -63,7 +63,7 @@ kundi PyCompileTestsBase:
         drive = os.path.splitdrive(self.source_path)[0]
         ikiwa drive:
             os.chdir(drive)
-        with open(self.source_path, 'w') kama file:
+        ukijumuisha open(self.source_path, 'w') kama file:
             file.write('x = 123\n')
 
     eleza tearDown(self):
@@ -85,7 +85,7 @@ kundi PyCompileTestsBase:
             self.skipTest('need to be able to create a symlink kila a file')
         isipokua:
             assert os.path.islink(self.pyc_path)
-            with self.assertRaises(FileExistsError):
+            ukijumuisha self.assertRaises(FileExistsError):
                 py_compile.compile(self.source_path, self.pyc_path)
 
     @unittest.skipIf(not os.path.exists(os.devnull) ama os.path.isfile(os.devnull),
@@ -93,7 +93,7 @@ kundi PyCompileTestsBase:
     eleza test_do_not_overwrite_nonregular_files(self):
         # In the face of a cfile argument being a non-regular file, bail out.
         # Issue #17222
-        with self.assertRaises(FileExistsError):
+        ukijumuisha self.assertRaises(FileExistsError):
             py_compile.compile(self.source_path, os.devnull)
 
     eleza test_cache_path(self):
@@ -101,7 +101,7 @@ kundi PyCompileTestsBase:
         self.assertKweli(os.path.exists(self.cache_path))
 
     eleza test_cwd(self):
-        with support.change_cwd(self.directory):
+        ukijumuisha support.change_cwd(self.directory):
             py_compile.compile(os.path.basename(self.source_path),
                                os.path.basename(self.pyc_path))
         self.assertKweli(os.path.exists(self.pyc_path))
@@ -118,20 +118,20 @@ kundi PyCompileTestsBase:
     @unittest.skipIf(os.name == 'nt',
                      'cannot control directory permissions on Windows')
     eleza test_exceptions_propagate(self):
-        # Make sure that exceptions ashiriad thanks to issues with writing
+        # Make sure that exceptions ashiriad thanks to issues ukijumuisha writing
         # bytecode.
         # http://bugs.python.org/issue17244
         mode = os.stat(self.directory)
         os.chmod(self.directory, stat.S_IREAD)
         jaribu:
-            with self.assertRaises(IOError):
+            ukijumuisha self.assertRaises(IOError):
                 py_compile.compile(self.source_path, self.pyc_path)
         mwishowe:
             os.chmod(self.directory, mode.st_mode)
 
     eleza test_bad_coding(self):
         bad_coding = os.path.join(os.path.dirname(__file__), 'bad_coding2.py')
-        with support.captured_stderr():
+        ukijumuisha support.captured_stderr():
             self.assertIsTupu(py_compile.compile(bad_coding, doashiria=Uongo))
         self.assertUongo(os.path.exists(
             importlib.util.cache_kutoka_source(bad_coding)))
@@ -140,7 +140,7 @@ kundi PyCompileTestsBase:
         py_compile.compile(self.source_path, self.pyc_path)
         self.assertKweli(os.path.exists(self.pyc_path))
         self.assertUongo(os.path.exists(self.cache_path))
-        with open(self.pyc_path, 'rb') kama fp:
+        ukijumuisha open(self.pyc_path, 'rb') kama fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         ikiwa os.environ.get('SOURCE_DATE_EPOCH'):
@@ -150,7 +150,7 @@ kundi PyCompileTestsBase:
 
         self.assertEqual(flags, expected_flags)
 
-    @unittest.skipIf(sys.flags.optimize > 0, 'test does sio work with -O')
+    @unittest.skipIf(sys.flags.optimize > 0, 'test does sio work ukijumuisha -O')
     eleza test_double_dot_no_clobber(self):
         # http://bugs.python.org/issue22966
         # py_compile foo.bar.py -> __pycache__/foo.cpython-34.pyc
@@ -164,7 +164,7 @@ kundi PyCompileTestsBase:
             os.path.join(
                 '__pycache__',
                 'foo.bar.{}.pyc'.format(sys.implementation.cache_tag)))
-        with open(weird_path, 'w') kama file:
+        ukijumuisha open(weird_path, 'w') kama file:
             file.write('x = 123\n')
         py_compile.compile(weird_path)
         self.assertKweli(os.path.exists(cache_path))
@@ -179,7 +179,7 @@ kundi PyCompileTestsBase:
             self.source_path,
             invalidation_mode=py_compile.PycInvalidationMode.CHECKED_HASH,
         )
-        with open(self.cache_path, 'rb') kama fp:
+        ukijumuisha open(self.cache_path, 'rb') kama fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         self.assertEqual(flags, 0b11)
@@ -187,18 +187,18 @@ kundi PyCompileTestsBase:
             self.source_path,
             invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH,
         )
-        with open(self.cache_path, 'rb') kama fp:
+        ukijumuisha open(self.cache_path, 'rb') kama fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         self.assertEqual(flags, 0b1)
 
     eleza test_quiet(self):
         bad_coding = os.path.join(os.path.dirname(__file__), 'bad_coding2.py')
-        with support.captured_stderr() kama stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             self.assertIsTupu(py_compile.compile(bad_coding, doashiria=Uongo, quiet=2))
             self.assertIsTupu(py_compile.compile(bad_coding, doashiria=Kweli, quiet=2))
             self.assertEqual(stderr.getvalue(), '')
-            with self.assertRaises(py_compile.PyCompileError):
+            ukijumuisha self.assertRaises(py_compile.PyCompileError):
                 py_compile.compile(bad_coding, doashiria=Kweli, quiet=1)
 
 

@@ -56,7 +56,7 @@ kundi AutoFileTests:
             self.assertRaises(TypeError, self.f.readinto, a)
 
     eleza testWritelinesUserList(self):
-        # verify writelines with instance sequence
+        # verify writelines ukijumuisha instance sequence
         l = UserList([b'1', b'2'])
         self.f.writelines(l)
         self.f.close()
@@ -65,16 +65,16 @@ kundi AutoFileTests:
         self.assertEqual(buf, b'12')
 
     eleza testWritelinesIntegers(self):
-        # verify writelines with integers
+        # verify writelines ukijumuisha integers
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
 
     eleza testWritelinesIntegersUserList(self):
-        # verify writelines with integers kwenye UserList
+        # verify writelines ukijumuisha integers kwenye UserList
         l = UserList([1,2,3])
         self.assertRaises(TypeError, self.f.writelines, l)
 
     eleza testWritelinesNonString(self):
-        # verify writelines with non-string object
+        # verify writelines ukijumuisha non-string object
         kundi NonString:
             pita
 
@@ -185,16 +185,16 @@ kundi OtherFileTests:
 
     eleza testSetBufferSize(self):
         # make sure that explicitly setting the buffer size doesn't cause
-        # misbehaviour especially with repeated close() calls
+        # misbehaviour especially ukijumuisha repeated close() calls
         kila s kwenye (-1, 0, 512):
-            with support.check_no_warnings(self,
+            ukijumuisha support.check_no_warnings(self,
                                            message='line buffering',
                                            category=RuntimeWarning):
                 self._checkBufferSize(s)
 
         # test that attempts to use line buffering kwenye binary mode cause
         # a warning
-        with self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
+        ukijumuisha self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
             self._checkBufferSize(1)
 
     eleza testTruncateOnWindows(self):
@@ -271,39 +271,39 @@ kundi OtherFileTests:
         jaribu:
             line = f.readline()
         tatizo ValueError:
-            self.fail("readline() after next() with supposedly empty "
+            self.fail("readline() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
-            self.fail("readline() after next() with empty buffer "
+            self.fail("readline() after next() ukijumuisha empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
         buf = array("b", b"\x00" * len(testline))
         jaribu:
             f.readinto(buf)
         tatizo ValueError:
-            self.fail("readinto() after next() with supposedly empty "
+            self.fail("readinto() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
         ikiwa line != testline:
-            self.fail("readinto() after next() with empty buffer "
+            self.fail("readinto() after next() ukijumuisha empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
 
         testline = testlines.pop(0)
         jaribu:
             line = f.read(len(testline))
         tatizo ValueError:
-            self.fail("read() after next() with supposedly empty "
+            self.fail("read() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
-            self.fail("read() after next() with empty buffer "
+            self.fail("read() after next() ukijumuisha empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         jaribu:
             lines = f.readlines()
         tatizo ValueError:
-            self.fail("readlines() after next() with supposedly empty "
+            self.fail("readlines() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa lines != testlines:
-            self.fail("readlines() after next() with empty buffer "
+            self.fail("readlines() after next() ukijumuisha empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         f.close()
 

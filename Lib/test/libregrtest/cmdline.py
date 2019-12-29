@@ -292,9 +292,9 @@ def huntrleaks(string):
     if len(args) haiko kwenye (2, 3):
         raise argparse.ArgumentTypeError(
             'needs 2 or 3 colon-separated arguments')
-    nwarmup = int(args[0]) if args[0] else 5
-    ntracked = int(args[1]) if args[1] else 4
-    fname = args[2] if len(args) > 2 and args[2] else 'reflog.txt'
+    nwarmup = int(args[0]) if args[0] isipokua 5
+    ntracked = int(args[1]) if args[1] isipokua 4
+    fname = args[2] if len(args) > 2 and args[2] isipokua 'reflog.txt'
     return nwarmup, ntracked, fname
 
 

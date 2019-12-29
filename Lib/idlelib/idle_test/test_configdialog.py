@@ -1,6 +1,6 @@
 """Test configdialog, coverage 94%.
 
-Half the kundi creates dialog, half works with user customizations.
+Half the kundi creates dialog, half works ukijumuisha user customizations.
 """
 kutoka idlelib agiza configdialog
 kutoka test.support agiza requires
@@ -14,7 +14,7 @@ kutoka idlelib.configdialog agiza idleConf, changes, tracers
 
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
-# Use solution kutoka test_config: empty parsers with no filename.
+# Use solution kutoka test_config: empty parsers ukijumuisha no filename.
 usercfg = idleConf.userCfg
 testcfg = {
     'main': config.IdleUserConfParser(''),
@@ -267,7 +267,7 @@ kundi HighPageTest(unittest.TestCase):
         d = self.page
         eq = self.assertEqual
 
-        # Use builtin theme with no user themes created.
+        # Use builtin theme ukijumuisha no user themes created.
         idleConf.CurrentTheme = mock.Mock(rudisha_value='IDLE Classic')
         d.load_theme_cfg()
         self.assertKweli(d.theme_source.get())
@@ -279,7 +279,7 @@ kundi HighPageTest(unittest.TestCase):
         eq(d.paint_theme_sample.called, 1)
         eq(d.set_highlight_target.called, 1)
 
-        # Builtin theme with non-empty user theme list.
+        # Builtin theme ukijumuisha non-empty user theme list.
         idleConf.SetOption('highlight', 'test1', 'option', 'value')
         idleConf.SetOption('highlight', 'test2', 'option2', 'value2')
         d.load_theme_cfg()
@@ -618,7 +618,7 @@ kundi HighPageTest(unittest.TestCase):
         page.create_new(theme)
         page.set_color_sample.called = 0
 
-        # Base theme with nothing kwenye `changes`.
+        # Base theme ukijumuisha nothing kwenye `changes`.
         page.paint_theme_sample()
         new_console = {'foreground': 'blue',
                        'background': 'yellow',}
@@ -712,7 +712,7 @@ kundi KeysPageTest(unittest.TestCase):
         d = self.page
         eq = self.assertEqual
 
-        # Use builtin keyset with no user keysets created.
+        # Use builtin keyset ukijumuisha no user keysets created.
         idleConf.CurrentKeys = mock.Mock(rudisha_value='IDLE Classic OSX')
         d.load_key_cfg()
         self.assertKweli(d.keyset_source.get())
@@ -724,7 +724,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 1)
         eq(d.load_keys_list.args, ('IDLE Classic OSX', ))
 
-        # Builtin keyset with non-empty user keyset list.
+        # Builtin keyset ukijumuisha non-empty user keyset list.
         idleConf.SetOption('keys', 'test1', 'option', 'value')
         idleConf.SetOption('keys', 'test2', 'option2', 'value2')
         d.load_key_cfg()
@@ -1195,7 +1195,7 @@ kundi GenPageTest(unittest.TestCase):
         self.assertUongo(d.upc.called)
 
     eleza test_set_add_delete_state(self):
-        # Call with 0 items, 1 unselected item, 1 selected item.
+        # Call ukijumuisha 0 items, 1 unselected item, 1 selected item.
         eq = self.assertEqual
         d = self.page
         toa d.set_add_delete_state  # Unmask method.
@@ -1219,7 +1219,7 @@ kundi GenPageTest(unittest.TestCase):
         d.set_add_delete_state = Func()  # Mask method.
 
     eleza test_helplist_item_add(self):
-        # Call without na twice with HelpSource result.
+        # Call without na twice ukijumuisha HelpSource result.
         # Double call enables check on order.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
@@ -1247,7 +1247,7 @@ kundi GenPageTest(unittest.TestCase):
         configdialog.HelpSource = orig_helpsource
 
     eleza test_helplist_item_edit(self):
-        # Call without na with HelpSource change.
+        # Call without na ukijumuisha HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
         hs = configdialog.HelpSource = Func(rudisha_self=Kweli)

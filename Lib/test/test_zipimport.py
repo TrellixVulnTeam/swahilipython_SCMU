@@ -102,7 +102,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 dname = os.path.dirname(path)
                 ikiwa sio os.path.isdir(dname):
                     os.makedirs(dname)
-                with open(path, 'wb') kama fp:
+                ukijumuisha open(path, 'wb') kama fp:
                     fp.write(data)
 
     eleza makeZip(self, files, zipName=TEMP_ZIP, **kw):
@@ -111,7 +111,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # key 'stuff' exists kwenye kw it ni prepended to the archive.
         self.addCleanup(support.unlink, zipName)
 
-        with ZipFile(zipName, "w") kama z:
+        ukijumuisha ZipFile(zipName, "w") kama z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
@@ -123,9 +123,9 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         stuff = kw.get("stuff", Tupu)
         ikiwa stuff ni sio Tupu:
             # Prepend 'stuff' to the start of the zipfile
-            with open(zipName, "rb") kama f:
+            ukijumuisha open(zipName, "rb") kama f:
                 data = f.read()
-            with open(zipName, "wb") kama f:
+            ukijumuisha open(zipName, "wb") kama f:
                 f.write(stuff)
                 f.write(data)
 
@@ -423,7 +423,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  "spam" + pyc_ext: (NOW, test_pyc)}
 
         self.addCleanup(support.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
@@ -477,7 +477,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  packdir2 + TESTMOD + pyc_ext: (NOW, test_pyc)}
 
         self.addCleanup(support.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
@@ -521,7 +521,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     eleza testGetData(self):
         self.addCleanup(support.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
             z.compression = self.compression
             name = "testdata.dat"
             data = bytes(x kila x kwenye range(256))
@@ -633,7 +633,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     eleza testUnencodable(self):
         filename = support.TESTFN_UNENCODABLE + ".zip"
         self.addCleanup(support.unlink, filename)
-        with ZipFile(filename, "w") kama z:
+        ukijumuisha ZipFile(filename, "w") kama z:
             zinfo = ZipInfo(TESTMOD + ".py", time.localtime(NOW))
             zinfo.compress_type = self.compression
             z.writestr(zinfo, test_src)
@@ -642,16 +642,16 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     eleza testBytesPath(self):
         filename = support.TESTFN + ".zip"
         self.addCleanup(support.unlink, filename)
-        with ZipFile(filename, "w") kama z:
+        ukijumuisha ZipFile(filename, "w") kama z:
             zinfo = ZipInfo(TESTMOD + ".py", time.localtime(NOW))
             zinfo.compress_type = self.compression
             z.writestr(zinfo, test_src)
 
         zipagiza.zipimporter(filename)
         zipagiza.zipimporter(os.fsencode(filename))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             zipagiza.zipimporter(bytearray(os.fsencode(filename)))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             zipagiza.zipimporter(memoryview(os.fsencode(filename)))
 
     eleza testComment(self):
@@ -703,7 +703,7 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
         jaribu:
             os.close(fd)
 
-            with self.assertRaises(zipagiza.ZipImportError) kama cm:
+            ukijumuisha self.assertRaises(zipagiza.ZipImportError) kama cm:
                 zipagiza.zipimporter(TESTMOD)
         mwishowe:
             # If we leave "the read-only bit" set on Windows, nothing can

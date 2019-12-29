@@ -215,7 +215,7 @@ kundi TestKQueue(unittest.TestCase):
         kq.control([ev], 0)
         # sio a list
         kq.control((ev,), 0)
-        # __len__ ni sio consistent with __iter__
+        # __len__ ni sio consistent ukijumuisha __iter__
         kundi BadList:
             eleza __len__(self):
                 rudisha 0
@@ -248,7 +248,7 @@ kundi TestKQueue(unittest.TestCase):
         # close() can be called more than once
         kqueue.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail ukijumuisha ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, kqueue.control, Tupu, 4)
 
     eleza test_fd_non_inheritable(self):

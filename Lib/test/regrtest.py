@@ -3,7 +3,7 @@
 """
 Script to run Python regression tests.
 
-Run this script with -h ama --help kila documentation.
+Run this script ukijumuisha -h ama --help kila documentation.
 """
 
 # We agiza importlib *ASAP* kwenye order to test #15386

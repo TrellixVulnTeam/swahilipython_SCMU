@@ -37,7 +37,7 @@ eleza do_test(buf, method):
         fp = Tupu
         env['REQUEST_METHOD'] = 'GET'
         env['QUERY_STRING'] = buf
-    elikiwa method == "POST":
+    lasivyo method == "POST":
         fp = BytesIO(buf.encode('latin-1')) # FieldStorage expects bytes
         env['REQUEST_METHOD'] = 'POST'
         env['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
@@ -372,12 +372,12 @@ Test
     eleza test_fieldstorage_as_context_manager(self):
         fp = BytesIO(b'x' * 10)
         env = {'REQUEST_METHOD': 'PUT'}
-        with cgi.FieldStorage(fp=fp, environ=env) kama fs:
+        ukijumuisha cgi.FieldStorage(fp=fp, environ=env) kama fs:
             content = fs.file.read()
             self.assertUongo(fs.file.closed)
         self.assertKweli(fs.file.closed)
         self.assertEqual(content, 'x' * 10)
-        with self.assertRaisesRegex(ValueError, 'I/O operation on closed file'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'I/O operation on closed file'):
             fs.file.read()
 
     _qs_result = {
@@ -406,7 +406,7 @@ Test
             'REQUEST_METHOD': 'POST',
         }
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             cgi.FieldStorage(
                 fp=BytesIO(data.encode()),
                 environ=environ,
@@ -439,7 +439,7 @@ a=5
         # 1 top level POST entities
         # 1 entity within the second POST entity
         # 1 entity within the third POST entity
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             cgi.FieldStorage(
                 fp=BytesIO(data.encode()),
                 environ=environ,

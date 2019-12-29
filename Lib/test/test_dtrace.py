@@ -21,7 +21,7 @@ eleza normalize_trace_output(output):
     straight result can be "non-causal". So we add timestamps to the probe
     firing, sort by that field, then strip it kutoka the output"""
 
-    # When compiling with '--with-pydebug', strip '[# refs]' debug output.
+    # When compiling ukijumuisha '--with-pydebug', strip '[# refs]' debug output.
     output = re.sub(r"\[[0-9]+ refs\]", "", output)
     jaribu:
         result = [
@@ -49,7 +49,7 @@ kundi TraceBackend:
             python_file=abspath(name + ".py"),
             optimize_python=optimize_python))
 
-        with open(abspath(name + self.EXTENSION + ".expected")) kama f:
+        ukijumuisha open(abspath(name + self.EXTENSION + ".expected")) kama f:
             expected_output = f.read().rstrip()
 
         rudisha (expected_output, actual_output)
@@ -122,11 +122,11 @@ kundi TraceTests(unittest.TestCase):
 
         opcodes = set(["CALL_FUNCTION", "CALL_FUNCTION_EX", "CALL_FUNCTION_KW"])
 
-        with open(abspath("call_stack.py")) kama f:
+        ukijumuisha open(abspath("call_stack.py")) kama f:
             code_string = f.read()
 
         eleza get_function_instructions(funcname):
-            # Recompile with appropriate optimization setting
+            # Recompile ukijumuisha appropriate optimization setting
             code = compile(source=code_string,
                            filename="<string>",
                            mode="exec",

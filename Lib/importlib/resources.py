@@ -102,7 +102,7 @@ eleza open_binary(package: Package, resource: Resource) -> BinaryIO:
         loader = cast(ResourceLoader, package.__spec__.loader)
         data = Tupu
         ikiwa hasattr(package.__spec__.loader, 'get_data'):
-            with suppress(OSError):
+            ukijumuisha suppress(OSError):
                 data = loader.get_data(full_path)
         ikiwa data ni Tupu:
             package_name = package.__spec__.name
@@ -136,7 +136,7 @@ eleza open_text(package: Package,
         loader = cast(ResourceLoader, package.__spec__.loader)
         data = Tupu
         ikiwa hasattr(package.__spec__.loader, 'get_data'):
-            with suppress(OSError):
+            ukijumuisha suppress(OSError):
                 data = loader.get_data(full_path)
         ikiwa data ni Tupu:
             package_name = package.__spec__.name
@@ -151,7 +151,7 @@ eleza read_binary(package: Package, resource: Resource) -> bytes:
     """Return the binary contents of the resource."""
     resource = _normalize_path(resource)
     package = _get_package(package)
-    with open_binary(package, resource) kama fp:
+    ukijumuisha open_binary(package, resource) kama fp:
         rudisha fp.read()
 
 
@@ -166,7 +166,7 @@ eleza read_text(package: Package,
     """
     resource = _normalize_path(resource)
     package = _get_package(package)
-    with open_text(package, resource, encoding, errors) kama fp:
+    ukijumuisha open_text(package, resource, encoding, errors) kama fp:
         rudisha fp.read()
 
 
@@ -198,7 +198,7 @@ eleza path(package: Package, resource: Resource) -> Iterator[Path]:
     ikiwa file_path.exists():
         tuma file_path
     isipokua:
-        with open_binary(package, resource) kama fp:
+        ukijumuisha open_binary(package, resource) kama fp:
             data = fp.read()
         # Not using tempfile.NamedTemporaryFile kama it leads to deeper 'try'
         # blocks due to the need to close the temporary file to work on
@@ -252,7 +252,7 @@ eleza contents(package: Package) -> Iterable[str]:
     # Is the package a namespace package?  By definition, namespace packages
     # cannot have resources.  We could use _check_location() na catch the
     # exception, but that's extra work, so just inline the check.
-    elikiwa package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
+    lasivyo package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
         rudisha ()
     isipokua:
         package_directory = Path(package.__spec__.origin).parent

@@ -11,7 +11,7 @@ An imho quite elegant na concise
 implementation using a tower class, which
 is derived kutoka the built-in type list.
 
-Discs are turtles with shape "square", but
+Discs are turtles ukijumuisha shape "square", but
 stretched to rectangles by shapesize()
  ---------------------------------------
        To exit press STOP button

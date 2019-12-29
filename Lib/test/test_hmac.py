@@ -12,7 +12,7 @@ kutoka test.support agiza requires_hashdigest
 eleza ignore_warning(func):
     @functools.wraps(func)
     eleza wrapper(*args, **kwargs):
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings("ignore",
                                     category=DeprecationWarning)
             rudisha func(*args, **kwargs)
@@ -44,7 +44,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                 hmac.digest(key, data, digest='md5'),
                 binascii.unhexlify(digest)
             )
-            with unittest.mock.patch('hmac._openssl_md_meths', {}):
+            ukijumuisha unittest.mock.patch('hmac._openssl_md_meths', {}):
                 self.assertEqual(
                     hmac.digest(key, data, digest='md5'),
                     binascii.unhexlify(digest)
@@ -155,7 +155,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                 binascii.unhexlify(hexdigests[hashfunc])
             )
 
-            with unittest.mock.patch('hmac._openssl_md_meths', {}):
+            ukijumuisha unittest.mock.patch('hmac._openssl_md_meths', {}):
                 self.assertEqual(
                     hmac.digest(key, data, digest=hashfunc),
                     binascii.unhexlify(hexdigests[hashfunc])
@@ -300,19 +300,19 @@ kundi TestVectorsTestCase(unittest.TestCase):
             eleza digest(self):
                 rudisha self._x.digest()
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', RuntimeWarning)
-            with self.assertRaises(RuntimeWarning):
+            ukijumuisha self.assertRaises(RuntimeWarning):
                 hmac.HMAC(b'a', b'b', digestmod=MockCrazyHash)
                 self.fail('Expected warning about missing block_size')
 
             MockCrazyHash.block_size = 1
-            with self.assertRaises(RuntimeWarning):
+            ukijumuisha self.assertRaises(RuntimeWarning):
                 hmac.HMAC(b'a', b'b', digestmod=MockCrazyHash)
                 self.fail('Expected warning about small block_size')
 
     eleza test_with_digestmod_no_default(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             key = b"\x0b" * 16
             data = b"Hi There"
             hmac.HMAC(key, data, digestmod=Tupu)
@@ -336,23 +336,23 @@ kundi ConstructorTestCase(unittest.TestCase):
     eleza test_with_str_key(self):
         # Pass a key of type str, which ni an error, because it expects a key
         # of type bytes
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             h = hmac.HMAC("key", digestmod='sha256')
 
     @requires_hashdigest('sha256')
     eleza test_dot_new_with_str_key(self):
         # Pass a key of type str, which ni an error, because it expects a key
         # of type bytes
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             h = hmac.new("key", digestmod='sha256')
 
     @requires_hashdigest('sha256')
     eleza test_withtext(self):
-        # Constructor call with text.
+        # Constructor call ukijumuisha text.
         jaribu:
             h = hmac.HMAC(b"key", b"hash this!", digestmod='sha256')
         tatizo Exception:
-            self.fail("Constructor call with text argument ashiriad exception.")
+            self.fail("Constructor call ukijumuisha text argument ashiriad exception.")
         self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
@@ -361,7 +361,7 @@ kundi ConstructorTestCase(unittest.TestCase):
             h = hmac.HMAC(bytearray(b"key"), bytearray(b"hash this!"),
                           digestmod="sha256")
         tatizo Exception:
-            self.fail("Constructor call with bytearray arguments ashiriad exception.")
+            self.fail("Constructor call ukijumuisha bytearray arguments ashiriad exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
@@ -369,16 +369,16 @@ kundi ConstructorTestCase(unittest.TestCase):
         jaribu:
             h = hmac.HMAC(b"key", memoryview(b"hash this!"), digestmod="sha256")
         tatizo Exception:
-            self.fail("Constructor call with memoryview msg ashiriad exception.")
+            self.fail("Constructor call ukijumuisha memoryview msg ashiriad exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
     eleza test_withmodule(self):
-        # Constructor call with text na digest module.
+        # Constructor call ukijumuisha text na digest module.
         jaribu:
             h = hmac.HMAC(b"key", b"", hashlib.sha256)
         tatizo Exception:
-            self.fail("Constructor call with hashlib.sha256 ashiriad exception.")
+            self.fail("Constructor call ukijumuisha hashlib.sha256 ashiriad exception.")
 
 
 kundi SanityTestCase(unittest.TestCase):

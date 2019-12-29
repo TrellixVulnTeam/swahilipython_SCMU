@@ -39,7 +39,7 @@ eleza get_tk_patchlevel():
 kundi TkinterTest(unittest.TestCase):
 
     eleza testFlattenLen(self):
-        # flatten(<object with no length>)
+        # flatten(<object ukijumuisha no length>)
         self.assertRaises(TypeError, _tkinter._flatten, Kweli)
 
 
@@ -190,7 +190,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza testEvalFile(self):
         tcl = self.interp
-        with open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') kama f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""set a 1
             set b 2
@@ -203,7 +203,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza test_evalfile_null_in_result(self):
         tcl = self.interp
-        with open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') kama f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""
             set a "a\0b"
@@ -241,7 +241,7 @@ kundi TclTest(unittest.TestCase):
         ikiwa sio os.path.exists(unc_name):
             ashiria unittest.SkipTest('Cannot connect to UNC Path')
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.unset("TCL_LIBRARY")
             stdout = subprocess.check_output(
                     [unc_name, '-c', 'agiza tkinter; andika(tkinter)'])
@@ -425,8 +425,8 @@ kundi TclTest(unittest.TestCase):
         eleza pitaValue(value):
             rudisha self.interp.call('set', '_', value)
 
-        self.assertEqual(pitaValue(Kweli), Kweli ikiwa self.wantobjects else '1')
-        self.assertEqual(pitaValue(Uongo), Uongo ikiwa self.wantobjects else '0')
+        self.assertEqual(pitaValue(Kweli), Kweli ikiwa self.wantobjects isipokua '1')
+        self.assertEqual(pitaValue(Uongo), Uongo ikiwa self.wantobjects isipokua '0')
         self.assertEqual(pitaValue('string'), 'string')
         self.assertEqual(pitaValue('string\u20ac'), 'string\u20ac')
         self.assertEqual(pitaValue('string\U0001f4bb'), 'string\U0001f4bb')
@@ -436,13 +436,13 @@ kundi TclTest(unittest.TestCase):
         self.assertEqual(pitaValue('str\x00ing\U0001f4bb'),
                          'str\x00ing\U0001f4bb')
         self.assertEqual(pitaValue(b'str\x00ing'),
-                         b'str\x00ing' ikiwa self.wantobjects else 'str\x00ing')
+                         b'str\x00ing' ikiwa self.wantobjects isipokua 'str\x00ing')
         self.assertEqual(pitaValue(b'str\xc0\x80ing'),
-                         b'str\xc0\x80ing' ikiwa self.wantobjects else 'str\xc0\x80ing')
+                         b'str\xc0\x80ing' ikiwa self.wantobjects isipokua 'str\xc0\x80ing')
         self.assertEqual(pitaValue(b'str\xbding'),
-                         b'str\xbding' ikiwa self.wantobjects else 'str\xbding')
+                         b'str\xbding' ikiwa self.wantobjects isipokua 'str\xbding')
         kila i kwenye self.get_integers():
-            self.assertEqual(pitaValue(i), i ikiwa self.wantobjects else str(i))
+            self.assertEqual(pitaValue(i), i ikiwa self.wantobjects isipokua str(i))
         ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
             self.assertEqual(pitaValue(2**1000), str(2**1000))
         kila f kwenye (0.0, 1.0, -1.0, 1/3,
@@ -462,9 +462,9 @@ kundi TclTest(unittest.TestCase):
             self.assertEqual(float(pitaValue(-float('inf'))), -float('inf'))
             # XXX NaN representation can be sio parsable by float()
         self.assertEqual(pitaValue((1, '2', (3.4,))),
-                         (1, '2', (3.4,)) ikiwa self.wantobjects else '1 2 3.4')
+                         (1, '2', (3.4,)) ikiwa self.wantobjects isipokua '1 2 3.4')
         self.assertEqual(pitaValue(['a', ['b', 'c']]),
-                         ('a', ('b', 'c')) ikiwa self.wantobjects else 'a {b c}')
+                         ('a', ('b', 'c')) ikiwa self.wantobjects isipokua 'a {b c}')
 
     eleza test_user_command(self):
         result = Tupu
@@ -641,7 +641,7 @@ kundi TclTest(unittest.TestCase):
         arg = tcl.call('list',
                         '-a', (1, 2, 3), '-something', 'foo', 'status', ())
         self.assertEqual(splitdict(tcl, arg),
-            {'a': (1, 2, 3) ikiwa self.wantobjects else '1 2 3',
+            {'a': (1, 2, 3) ikiwa self.wantobjects isipokua '1 2 3',
              'something': 'foo', 'status': ''})
 
         ikiwa tcl_version >= (8, 5):

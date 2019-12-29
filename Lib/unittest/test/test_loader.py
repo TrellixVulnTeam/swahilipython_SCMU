@@ -175,7 +175,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
 
     # Check that loadTestsFromModule honors (or not) a module
-    # with a load_tests function.
+    # ukijumuisha a load_tests function.
     @warningregistry
     eleza test_loadTestsFromModule__load_tests(self):
         m = types.ModuleType('m')
@@ -198,7 +198,7 @@ kundi Test_TestLoader(unittest.TestCase):
         # With Python 3.5, the undocumented na unofficial use_load_tests is
         # ignored (and deprecated).
         load_tests_args = []
-        with warnings.catch_warnings(record=Uongo):
+        ukijumuisha warnings.catch_warnings(record=Uongo):
             warnings.simplefilter('ignore')
             suite = loader.loadTestsFromModule(m, use_load_tests=Uongo)
         self.assertEqual(load_tests_args, [loader, suite, Tupu])
@@ -220,7 +220,7 @@ kundi Test_TestLoader(unittest.TestCase):
         # The method still works.
         loader = unittest.TestLoader()
         # use_load_tests=Kweli kama a positional argument.
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always')
             suite = loader.loadTestsFromModule(m, Uongo)
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -248,7 +248,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m.load_tests = load_tests
         # The method still works.
         loader = unittest.TestLoader()
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always')
             suite = loader.loadTestsFromModule(m, use_load_tests=Uongo)
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -275,7 +275,7 @@ kundi Test_TestLoader(unittest.TestCase):
             rudisha tests
         m.load_tests = load_tests
         loader = unittest.TestLoader()
-        with self.assertRaises(TypeError) kama cm, \
+        ukijumuisha self.assertRaises(TypeError) kama cm, \
              warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always')
             loader.loadTestsFromModule(m, Uongo, 'testme.*')
@@ -304,9 +304,9 @@ kundi Test_TestLoader(unittest.TestCase):
             rudisha tests
         m.load_tests = load_tests
         loader = unittest.TestLoader()
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            with self.assertRaises(TypeError) kama cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 loader.loadTestsFromModule(
                     m, use_load_tests=Uongo, very_bad=Kweli, worse=Uongo)
         self.assertEqual(type(cm.exception), TypeError)
@@ -741,7 +741,7 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza check_deferred_error(self, loader, suite):
         """Helper function kila checking that errors kwenye loading are reported.
 
-        :param loader: A loader with some errors.
+        :param loader: A loader ukijumuisha some errors.
         :param suite: A suite that should have a late bound error.
         :rudisha: The first error message kutoka the loader na the test object
             kutoka the suite.
@@ -802,7 +802,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # within a test case class, ama a callable object which rudishas a
     # TestCase ama TestSuite instance."
     #
-    # What happens when presented with an impossible module name?
+    # What happens when presented ukijumuisha an impossible module name?
     eleza test_loadTestsFromNames__malformed_name(self):
         loader = unittest.TestLoader()
 
@@ -899,7 +899,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens when faced with the empty string?
+    # What happens when faced ukijumuisha the empty string?
     #
     # XXX This currently ashirias AttributeError, though ValueError ni probably
     # more appropriate
@@ -921,7 +921,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens when presented with an impossible attribute name?
+    # What happens when presented ukijumuisha an impossible attribute name?
     eleza test_loadTestsFromNames__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
@@ -1260,7 +1260,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # patterns should be included.
     #
     # For backwards compatibility reasons (see bpo-32071), the check may only
-    # touch a TestCase's attribute ikiwa it starts with the test method prefix.
+    # touch a TestCase's attribute ikiwa it starts ukijumuisha the test method prefix.
     eleza test_getTestCaseNames__testNamePatterns__attribute_access_regression(self):
         kundi Trap:
             eleza __get__(*ignored):
@@ -1475,7 +1475,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The default value ni the built-in cmp() function"
     # Since cmp ni now defunct, we simply verify that the results
-    # occur kwenye the same order kama they would with the default sort.
+    # occur kwenye the same order kama they would ukijumuisha the default sort.
     eleza test_sortTestMethodsUsing__default_value(self):
         loader = unittest.TestLoader()
 

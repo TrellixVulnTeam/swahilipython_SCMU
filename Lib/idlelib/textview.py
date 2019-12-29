@@ -30,7 +30,7 @@ kundi AutoHideScrollbar(Scrollbar):
 
 
 kundi ScrollableTextFrame(Frame):
-    """Display text with scrollbar(s)."""
+    """Display text ukijumuisha scrollbar(s)."""
 
     eleza __init__(self, master, wrap=NONE, **kwargs):
         """Create a frame kila Textview.
@@ -73,7 +73,7 @@ kundi ScrollableTextFrame(Frame):
 kundi ViewFrame(Frame):
     "Display TextFrame na Close button."
     eleza __init__(self, parent, contents, wrap='word'):
-        """Create a frame kila viewing text with a "Close" button.
+        """Create a frame kila viewing text ukijumuisha a "Close" button.
 
         parent - parent widget kila this frame
         contents - text to display
@@ -108,9 +108,9 @@ kundi ViewWindow(Toplevel):
 
     eleza __init__(self, parent, title, contents, modal=Kweli, wrap=WORD,
                  *, _htest=Uongo, _utest=Uongo):
-        """Show the given text kwenye a scrollable window with a 'close' button.
+        """Show the given text kwenye a scrollable window ukijumuisha a 'close' button.
 
-        If modal ni left Kweli, users cannot interact with other windows
+        If modal ni left Kweli, users cannot interact ukijumuisha other windows
         until the textview window ni closed.
 
         parent - parent of this dialog
@@ -124,7 +124,7 @@ kundi ViewWindow(Toplevel):
         self['borderwidth'] = 5
         # Place dialog below parent ikiwa running htest.
         x = parent.winfo_rootx() + 10
-        y = parent.winfo_rooty() + (10 ikiwa sio _htest else 100)
+        y = parent.winfo_rooty() + (10 ikiwa sio _htest isipokua 100)
         self.geometry(f'=750x500+{x}+{y}')
 
         self.title(title)
@@ -155,7 +155,7 @@ eleza view_text(parent, title, contents, modal=Kweli, wrap='word', _utest=Uongo)
     title - string which ni the title of popup dialog
     contents - text to display kwenye this dialog
     wrap - type of text wrapping to use ('word', 'char' ama 'none')
-    modal - controls ikiwa users can interact with other windows wakati this
+    modal - controls ikiwa users can interact ukijumuisha other windows wakati this
             dialog ni displayed
     _utest - bool; controls wait_window on unittest
     """
@@ -167,10 +167,10 @@ eleza view_file(parent, title, filename, encoding, modal=Kweli, wrap='word',
     """Create text viewer kila text kwenye filename.
 
     Return error message ikiwa file cannot be read.  Otherwise calls view_text
-    with contents of the file.
+    ukijumuisha contents of the file.
     """
     jaribu:
-        with open(filename, 'r', encoding=encoding) kama file:
+        ukijumuisha open(filename, 'r', encoding=encoding) kama file:
             contents = file.read()
     tatizo OSError:
         showerror(title='File Load Error',

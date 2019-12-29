@@ -80,17 +80,17 @@ kundi _AsCompletedWaiter(_Waiter):
         self.lock = threading.Lock()
 
     eleza add_result(self, future):
-        with self.lock:
+        ukijumuisha self.lock:
             super(_AsCompletedWaiter, self).add_result(future)
             self.event.set()
 
     eleza add_exception(self, future):
-        with self.lock:
+        ukijumuisha self.lock:
             super(_AsCompletedWaiter, self).add_exception(future)
             self.event.set()
 
     eleza add_cancelled(self, future):
-        with self.lock:
+        ukijumuisha self.lock:
             super(_AsCompletedWaiter, self).add_cancelled(future)
             self.event.set()
 
@@ -119,7 +119,7 @@ kundi _AllCompletedWaiter(_Waiter):
         super().__init__()
 
     eleza _decrement_pending_calls(self):
-        with self.lock:
+        ukijumuisha self.lock:
             self.num_pending_calls -= 1
             ikiwa sio self.num_pending_calls:
                 self.event.set()
@@ -156,7 +156,7 @@ kundi _AcquireFutures(object):
 eleza _create_and_install_waiters(fs, rudisha_when):
     ikiwa rudisha_when == _AS_COMPLETED:
         waiter = _AsCompletedWaiter()
-    elikiwa rudisha_when == FIRST_COMPLETED:
+    lasivyo rudisha_when == FIRST_COMPLETED:
         waiter = _FirstCompletedWaiter()
     isipokua:
         pending_count = sum(
@@ -164,7 +164,7 @@ eleza _create_and_install_waiters(fs, rudisha_when):
 
         ikiwa rudisha_when == FIRST_EXCEPTION:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=Kweli)
-        elikiwa rudisha_when == ALL_COMPLETED:
+        lasivyo rudisha_when == ALL_COMPLETED:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=Uongo)
         isipokua:
             ashiria ValueError("Invalid rudisha condition: %r" % rudisha_when)
@@ -190,7 +190,7 @@ eleza _tuma_finished_futures(fs, waiter, ref_collect):
         f = fs[-1]
         kila futures_set kwenye ref_collect:
             futures_set.remove(f)
-        with f._condition:
+        ukijumuisha f._condition:
             f._waiters.remove(waiter)
         toa f
         # Careful sio to keep a reference to the popped value
@@ -220,7 +220,7 @@ eleza as_completed(fs, timeout=Tupu):
 
     fs = set(fs)
     total_futures = len(fs)
-    with _AcquireFutures(fs):
+    ukijumuisha _AcquireFutures(fs):
         finished = set(
                 f kila f kwenye fs
                 ikiwa f._state kwenye [CANCELLED_AND_NOTIFIED, FINISHED])
@@ -243,7 +243,7 @@ eleza as_completed(fs, timeout=Tupu):
 
             waiter.event.wait(wait_timeout)
 
-            with waiter.lock:
+            ukijumuisha waiter.lock:
                 finished = waiter.finished_futures
                 waiter.finished_futures = []
                 waiter.event.clear()
@@ -256,7 +256,7 @@ eleza as_completed(fs, timeout=Tupu):
     mwishowe:
         # Remove waiter kutoka unfinished futures
         kila f kwenye fs:
-            with f._condition:
+            ukijumuisha f._condition:
                 f._waiters.remove(waiter)
 
 DoneAndNotDoneFutures = collections.namedtuple(
@@ -285,14 +285,14 @@ eleza wait(fs, timeout=Tupu, rudisha_when=ALL_COMPLETED):
         completed. The second set, named 'not_done', contains uncompleted
         futures.
     """
-    with _AcquireFutures(fs):
+    ukijumuisha _AcquireFutures(fs):
         done = set(f kila f kwenye fs
                    ikiwa f._state kwenye [CANCELLED_AND_NOTIFIED, FINISHED])
         not_done = set(fs) - done
 
         ikiwa (rudisha_when == FIRST_COMPLETED) na done:
             rudisha DoneAndNotDoneFutures(done, not_done)
-        elikiwa (rudisha_when == FIRST_EXCEPTION) na done:
+        lasivyo (rudisha_when == FIRST_EXCEPTION) na done:
             ikiwa any(f kila f kwenye done
                    ikiwa sio f.cancelled() na f.exception() ni sio Tupu):
                 rudisha DoneAndNotDoneFutures(done, not_done)
@@ -304,7 +304,7 @@ eleza wait(fs, timeout=Tupu, rudisha_when=ALL_COMPLETED):
 
     waiter.event.wait(timeout)
     kila f kwenye fs:
-        with f._condition:
+        ukijumuisha f._condition:
             f._waiters.remove(waiter)
 
     done.update(waiter.finished_futures)
@@ -330,7 +330,7 @@ kundi Future(object):
                 LOGGER.exception('exception calling callback kila %r', self)
 
     eleza __repr__(self):
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state == FINISHED:
                 ikiwa self._exception:
                     rudisha '<%s at %#x state=%s ashiriad %s>' % (
@@ -355,7 +355,7 @@ kundi Future(object):
         Returns Kweli ikiwa the future was cancelled, Uongo otherwise. A future
         cannot be cancelled ikiwa it ni running ama has already completed.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state kwenye [RUNNING, FINISHED]:
                 rudisha Uongo
 
@@ -370,17 +370,17 @@ kundi Future(object):
 
     eleza cancelled(self):
         """Return Kweli ikiwa the future was cancelled."""
-        with self._condition:
+        ukijumuisha self._condition:
             rudisha self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED]
 
     eleza running(self):
         """Return Kweli ikiwa the future ni currently executing."""
-        with self._condition:
+        ukijumuisha self._condition:
             rudisha self._state == RUNNING
 
     eleza done(self):
         """Return Kweli of the future was cancelled ama finished executing."""
-        with self._condition:
+        ukijumuisha self._condition:
             rudisha self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]
 
     eleza __get_result(self):
@@ -393,14 +393,14 @@ kundi Future(object):
         """Attaches a callable that will be called when the future finishes.
 
         Args:
-            fn: A callable that will be called with this future kama its only
+            fn: A callable that will be called ukijumuisha this future kama its only
                 argument when the future completes ama ni cancelled. The callable
                 will always be called by a thread kwenye the same process kwenye which
                 it was added. If the future has already completed ama been
                 cancelled then the callable will be called immediately. These
                 callables are called kwenye the order that they were added.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state haiko kwenye [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
                 self._done_callbacks.append(fn)
                 rudisha
@@ -425,17 +425,17 @@ kundi Future(object):
                 timeout.
             Exception: If the call ashiriad then that exception will be ashiriad.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 ashiria CancelledError()
-            elikiwa self._state == FINISHED:
+            lasivyo self._state == FINISHED:
                 rudisha self.__get_result()
 
             self._condition.wait(timeout)
 
             ikiwa self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 ashiria CancelledError()
-            elikiwa self._state == FINISHED:
+            lasivyo self._state == FINISHED:
                 rudisha self.__get_result()
             isipokua:
                 ashiria TimeoutError()
@@ -458,17 +458,17 @@ kundi Future(object):
                 timeout.
         """
 
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 ashiria CancelledError()
-            elikiwa self._state == FINISHED:
+            lasivyo self._state == FINISHED:
                 rudisha self._exception
 
             self._condition.wait(timeout)
 
             ikiwa self._state kwenye [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 ashiria CancelledError()
-            elikiwa self._state == FINISHED:
+            lasivyo self._state == FINISHED:
                 rudisha self._exception
             isipokua:
                 ashiria TimeoutError()
@@ -487,7 +487,7 @@ kundi Future(object):
         (future calls to running() will rudisha Kweli) na Kweli ni rudishaed.
 
         This method should be called by Executor implementations before
-        executing the work associated with this future. If this method rudishas
+        executing the work associated ukijumuisha this future. If this method rudishas
         Uongo then the work should sio be executed.
 
         Returns:
@@ -497,7 +497,7 @@ kundi Future(object):
             RuntimeError: ikiwa this method was already called ama ikiwa set_result()
                 ama set_exception() was called.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state == CANCELLED:
                 self._state = CANCELLED_AND_NOTIFIED
                 kila waiter kwenye self._waiters:
@@ -505,7 +505,7 @@ kundi Future(object):
                 # self._condition.notify_all() ni sio necessary because
                 # self.cancel() triggers a notification.
                 rudisha Uongo
-            elikiwa self._state == PENDING:
+            lasivyo self._state == PENDING:
                 self._state = RUNNING
                 rudisha Kweli
             isipokua:
@@ -515,11 +515,11 @@ kundi Future(object):
                 ashiria RuntimeError('Future kwenye unexpected state')
 
     eleza set_result(self, result):
-        """Sets the rudisha value of work associated with the future.
+        """Sets the rudisha value of work associated ukijumuisha the future.
 
         Should only be used by Executor implementations na unit tests.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state kwenye {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 ashiria InvalidStateError('{}: {!r}'.format(self._state, self))
             self._result = result
@@ -534,7 +534,7 @@ kundi Future(object):
 
         Should only be used by Executor implementations na unit tests.
         """
-        with self._condition:
+        ukijumuisha self._condition:
             ikiwa self._state kwenye {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 ashiria InvalidStateError('{}: {!r}'.format(self._state, self))
             self._exception = exception
@@ -548,7 +548,7 @@ kundi Executor(object):
     """This ni an abstract base kundi kila concrete asynchronous executors."""
 
     eleza submit(*args, **kwargs):
-        """Submits a callable to be executed with the given arguments.
+        """Submits a callable to be executed ukijumuisha the given arguments.
 
         Schedules the callable to be executed kama fn(*args, **kwargs) na rudishas
         a Future instance representing the execution of the callable.
@@ -558,10 +558,10 @@ kundi Executor(object):
         """
         ikiwa len(args) >= 2:
             pita
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor 'submit' of 'Executor' object "
                             "needs an argument")
-        elikiwa 'fn' kwenye kwargs:
+        lasivyo 'fn' kwenye kwargs:
             agiza warnings
             warnings.warn("Passing 'fn' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
@@ -617,7 +617,7 @@ kundi Executor(object):
         rudisha result_iterator()
 
     eleza shutdown(self, wait=Kweli):
-        """Clean-up the resources associated with the Executor.
+        """Clean-up the resources associated ukijumuisha the Executor.
 
         It ni safe to call this method several times. Otherwise, no other
         methods can be called after this one.

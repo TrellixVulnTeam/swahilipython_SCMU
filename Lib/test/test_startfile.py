@@ -1,7 +1,7 @@
 # Ridiculously simple test of the os.startfile function kila Windows.
 #
 # empty.vbs ni an empty file (tatizo kila a comment), which does
-# nothing when run with cscript ama wscript.
+# nothing when run ukijumuisha cscript ama wscript.
 #
 # A possible improvement would be to have empty.vbs do something that
 # we can detect here, to make sure that sio only the os.startfile()
@@ -27,7 +27,7 @@ kundi TestCase(unittest.TestCase):
         # we're sio about to delete. If we're running under -j, that
         # means the test harness provided directory isn't a safe option.
         # See http://bugs.python.org/issue15526 kila more details
-        with support.change_cwd(path.dirname(sys.executable)):
+        ukijumuisha support.change_cwd(path.dirname(sys.executable)):
             empty = path.join(path.dirname(__file__), "empty.vbs")
             startfile(empty)
             startfile(empty, "open")

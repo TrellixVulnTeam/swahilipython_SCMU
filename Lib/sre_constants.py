@@ -212,14 +212,14 @@ SRE_FLAG_ASCII = 256 # use ascii "locale"
 # flags kila INFO primitive
 SRE_INFO_PREFIX = 1 # has prefix
 SRE_INFO_LITERAL = 2 # entire pattern ni literal (given by prefix)
-SRE_INFO_CHARSET = 4 # pattern starts with character kutoka given set
+SRE_INFO_CHARSET = 4 # pattern starts ukijumuisha character kutoka given set
 
 ikiwa __name__ == "__main__":
     eleza dump(f, d, prefix):
         items = sorted(d)
         kila item kwenye items:
             f.write("#define %s_%s %d\n" % (prefix, item, item))
-    with open("sre_constants.h", "w") kama f:
+    ukijumuisha open("sre_constants.h", "w") kama f:
         f.write("""\
 /*
  * Secret Labs' Regular Expression Engine

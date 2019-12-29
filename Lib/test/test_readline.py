@@ -100,7 +100,7 @@ kundi TestHistoryManipulation (unittest.TestCase):
 
         # test 'no such file' behaviour
         os.unlink(hfilename)
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             readline.append_history_file(1, hfilename)
 
         # write_history_file can create the target
@@ -173,7 +173,7 @@ inserted = "[\xEFnserted]"
 macro = "|t\xEB[after]"
 set_pre_input_hook = getattr(readline, "set_pre_input_hook", Tupu)
 ikiwa is_editline ama sio set_pre_input_hook:
-    # The insert_line() call via pre_input_hook() does nothing with Editline,
+    # The insert_line() call via pre_input_hook() does nothing ukijumuisha Editline,
     # so include the extra text that would have been inserted here
     macro = inserted + macro
 
@@ -245,13 +245,13 @@ andika("history", ascii(readline.get_history_item(1)))
                      "editline history size configuration ni broken")
     eleza test_history_size(self):
         history_size = 10
-        with temp_dir() kama test_dir:
+        ukijumuisha temp_dir() kama test_dir:
             inputrc = os.path.join(test_dir, "inputrc")
-            with open(inputrc, "wb") kama f:
+            ukijumuisha open(inputrc, "wb") kama f:
                 f.write(b"set history-size %d\n" % history_size)
 
             history_file = os.path.join(test_dir, "history")
-            with open(history_file, "wb") kama f:
+            ukijumuisha open(history_file, "wb") kama f:
                 # history_size * 2 items crashes readline
                 data = b"".join(b"item %d\n" % i
                                 kila i kwenye range(history_size * 2))
@@ -273,7 +273,7 @@ readline.write_history_file(history_file)
 
             run_pty(script, input=b"last input\r", env=env)
 
-            with open(history_file, "rb") kama f:
+            ukijumuisha open(history_file, "rb") kama f:
                 lines = f.readlines()
             self.assertEqual(len(lines), history_size)
             self.assertEqual(lines[-1].strip(), b"last input")
@@ -286,7 +286,7 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
     args = (sys.executable, '-c', script)
     proc = subprocess.Popen(args, stdin=slave, stdout=slave, stderr=slave, env=env)
     os.close(slave)
-    with ExitStack() kama cleanup:
+    ukijumuisha ExitStack() kama cleanup:
         cleanup.enter_context(proc)
         eleza terminate(proc):
             jaribu:
@@ -297,10 +297,10 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
         # Avoid using DefaultSelector na PollSelector. Kqueue() does not
-        # work with pseudo-terminals on OS X < 10.9 (Issue 20365) na Open
-        # BSD (Issue 20667). Poll() does sio work with OS X 10.6 ama 10.4
+        # work ukijumuisha pseudo-terminals on OS X < 10.9 (Issue 20365) na Open
+        # BSD (Issue 20667). Poll() does sio work ukijumuisha OS X 10.6 ama 10.4
         # either (Issue 20472). Hopefully the file descriptor ni low enough
-        # to use with select().
+        # to use ukijumuisha select().
         sel = cleanup.enter_context(selectors.SelectSelector())
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
         os.set_blocking(master, Uongo)

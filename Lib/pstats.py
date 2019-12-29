@@ -8,7 +8,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may sio use this file tatizo kwenye compliance with the License.
+# you may sio use this file tatizo kwenye compliance ukijumuisha the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -112,15 +112,15 @@ kundi Stats:
             self.get_top_level_stats()
         tatizo Exception:
             andika("Invalid timing data %s" %
-                  (self.files[-1] ikiwa self.files else ''), file=self.stream)
+                  (self.files[-1] ikiwa self.files isipokua ''), file=self.stream)
             ashiria
 
     eleza load_stats(self, arg):
         ikiwa arg ni Tupu:
             self.stats = {}
             rudisha
-        elikiwa isinstance(arg, str):
-            with open(arg, 'rb') kama f:
+        lasivyo isinstance(arg, str):
+            ukijumuisha open(arg, 'rb') kama f:
                 self.stats = marshal.load(f)
             jaribu:
                 file_stats = os.stat(arg)
@@ -128,7 +128,7 @@ kundi Stats:
             except:  # kwenye case this ni sio unix
                 pita
             self.files = [arg]
-        elikiwa hasattr(arg, 'create_stats'):
+        lasivyo hasattr(arg, 'create_stats'):
             arg.create_stats()
             self.stats = arg.stats
             arg.stats = {}
@@ -175,11 +175,11 @@ kundi Stats:
 
     eleza dump_stats(self, filename):
         """Write the profile data to a file we know how to load back."""
-        with open(filename, 'wb') kama f:
+        ukijumuisha open(filename, 'wb') kama f:
             marshal.dump(self.stats, f)
 
     # list the tuple indices na directions kila sorting,
-    # along with some printable description
+    # along ukijumuisha some printable description
     sort_arg_dict_default = {
               "calls"     : (((1,-1),              ), "call count"),
               "ncalls"    : (((1,-1),              ), "call count"),
@@ -220,12 +220,12 @@ kundi Stats:
             self.fcn_list = 0
             rudisha self
         ikiwa len(field) == 1 na isinstance(field[0], int):
-            # Be compatible with old profiler
+            # Be compatible ukijumuisha old profiler
             field = [ {-1: "stdname",
                        0:  "calls",
                        1:  "time",
                        2:  "cumulative"}[field[0]] ]
-        elikiwa len(field) >= 2:
+        lasivyo len(field) >= 2:
             kila arg kwenye field[1:]:
                 ikiwa type(arg) != type(field[0]):
                     ashiria TypeError("Can't have mixed argument type")
@@ -324,7 +324,7 @@ kundi Stats:
             ikiwa isinstance(sel, float) na 0.0 <= sel < 1.0:
                 count = int(count * sel + .5)
                 new_list = list[:count]
-            elikiwa isinstance(sel, int) na 0 <= sel < count:
+            lasivyo isinstance(sel, int) na 0 <= sel < count:
                 count = sel
                 new_list = list[:count]
         ikiwa len(list) != len(new_list):
@@ -601,7 +601,7 @@ ikiwa __name__ == '__main__':
             andika("* An integer maximum number of entries to print.", file=self.stream)
             andika("* A decimal fractional number between 0 na 1, controlling", file=self.stream)
             andika("  what fraction of selected entries to print.", file=self.stream)
-            andika("* A regular expression; only entries with function names", file=self.stream)
+            andika("* A regular expression; only entries ukijumuisha function names", file=self.stream)
             andika("  that match it are printed.", file=self.stream)
 
         eleza do_add(self, line):
@@ -650,7 +650,7 @@ ikiwa __name__ == '__main__':
                     andika(err.__class__.__name__ + ':', err, file=self.stream)
                     rudisha
                 self.prompt = line + "% "
-            elikiwa len(self.prompt) > 2:
+            lasivyo len(self.prompt) > 2:
                 line = self.prompt[:-2]
                 self.do_read(line)
             isipokua:

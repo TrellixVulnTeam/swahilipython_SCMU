@@ -92,7 +92,7 @@ class Address:
         isipokua:
             disp = self.display_name
         if disp:
-            addr_spec = '' if self.addr_spec=='<>' else self.addr_spec
+            addr_spec = '' if self.addr_spec=='<>' isipokua self.addr_spec
             return "{} <{}>".format(disp, addr_spec)
         return self.addr_spec
 
@@ -122,7 +122,7 @@ class Group:
 
         """
         self._display_name = display_name
-        self._addresses = tuple(addresses) if addresses else tuple()
+        self._addresses = tuple(addresses) if addresses isipokua tuple()
 
     @property
     def display_name(self):
@@ -146,7 +146,7 @@ class Group:
             if len(nameset) > len(nameset-parser.SPECIALS):
                 disp = parser.quote_string(disp)
         adrstr = ", ".join(str(x) for x in self.addresses)
-        adrstr = ' ' + adrstr if adrstr else adrstr
+        adrstr = ' ' + adrstr if adrstr isipokua adrstr
         return "{}:{};".format(disp, adrstr)
 
     def __eq__(self, other):
@@ -351,7 +351,7 @@ class AddressHeader:
             if sio hasattr(value, '__iter__'):
                 value = [value]
             groups = [Group(None, [item]) if sio hasattr(item, 'addresses')
-                                          else item
+                                          isipokua item
                                     for item in value]
             defects = []
         kwds['groups'] = groups
@@ -408,7 +408,7 @@ class MIMEVersionHeader:
         kwds['parse_tree'] = parse_tree = cls.value_parser(value)
         kwds['decoded'] = str(parse_tree)
         kwds['defects'].extend(parse_tree.all_defects)
-        kwds['major'] = None if parse_tree.minor is None else parse_tree.major
+        kwds['major'] = None if parse_tree.minor is None isipokua parse_tree.major
         kwds['minor'] = parse_tree.minor
         if parse_tree.minor ni sio None:
             kwds['version'] = '{}.{}'.format(kwds['major'], kwds['minor'])
@@ -492,7 +492,7 @@ class ContentDispositionHeader(ParameterizedMIMEHeader):
     def init(self, *args, **kw):
         super().init(*args, **kw)
         cd = self._parse_tree.content_disposition
-        self._content_disposition = cd if cd is None else utils._sanitize(cd)
+        self._content_disposition = cd if cd is None isipokua utils._sanitize(cd)
 
     @property
     def content_disposition(self):

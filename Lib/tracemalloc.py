@@ -401,7 +401,7 @@ kundi Snapshot:
         """
         Write the snapshot into a file.
         """
-        with open(filename, "wb") kama fp:
+        ukijumuisha open(filename, "wb") kama fp:
             pickle.dump(self, fp, pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
@@ -409,7 +409,7 @@ kundi Snapshot:
         """
         Load a snapshot kutoka a file.
         """
-        with open(filename, "rb") kama fp:
+        ukijumuisha open(filename, "rb") kama fp:
             rudisha pickle.load(fp)
 
     eleza _filter_trace(self, include_filters, exclude_filters, trace):
@@ -425,9 +425,9 @@ kundi Snapshot:
 
     eleza filter_traces(self, filters):
         """
-        Create a new Snapshot instance with a filtered traces sequence, filters
+        Create a new Snapshot instance ukijumuisha a filtered traces sequence, filters
         ni a list of Filter ama DomainFilter instances.  If filters ni an empty
-        list, rudisha a new Snapshot instance with a copy of the traces.
+        list, rudisha a new Snapshot instance ukijumuisha a copy of the traces.
         """
         ikiwa sio isinstance(filters, Iterable):
             ashiria TypeError("filters must be a list of filters, sio %s"
@@ -453,7 +453,7 @@ kundi Snapshot:
             ashiria ValueError("unknown key_type: %r" % (key_type,))
         ikiwa cumulative na key_type haiko kwenye ('lineno', 'filename'):
             ashiria ValueError("cumulative mode cannot by used "
-                             "with key type %r" % key_type)
+                             "ukijumuisha key type %r" % key_type)
 
         stats = {}
         tracebacks = {}
@@ -465,7 +465,7 @@ kundi Snapshot:
                 tatizo KeyError:
                     ikiwa key_type == 'traceback':
                         frames = trace_traceback
-                    elikiwa key_type == 'lineno':
+                    lasivyo key_type == 'lineno':
                         frames = trace_traceback[:1]
                     isipokua: # key_type == 'filename':
                         frames = ((trace_traceback[0][0], 0),)
@@ -511,7 +511,7 @@ kundi Snapshot:
 
     eleza compare_to(self, old_snapshot, key_type, cumulative=Uongo):
         """
-        Compute the differences with an old snapshot old_snapshot. Get
+        Compute the differences ukijumuisha an old snapshot old_snapshot. Get
         statistics kama a sorted list of StatisticDiff instances, grouped by
         group_by.
         """

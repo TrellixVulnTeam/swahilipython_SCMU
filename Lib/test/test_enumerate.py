@@ -26,7 +26,7 @@ kundi I:
         rudisha v
 
 kundi Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined ukijumuisha a generator'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -130,7 +130,7 @@ kundi EnumerateTestCase(unittest.TestCase, PickleTest):
     @support.cpython_only
     eleza test_tuple_reuse(self):
         # Tests an implementation detail where tuple ni reused
-        # whenever nothing else holds a reference to it
+        # whenever nothing isipokua holds a reference to it
         self.assertEqual(len(set(map(id, list(enumerate(self.seq))))), len(self.seq))
         self.assertEqual(len(set(map(id, enumerate(self.seq)))), min(1,len(self.seq)))
 

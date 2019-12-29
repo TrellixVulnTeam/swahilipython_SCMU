@@ -85,7 +85,7 @@ kundi _ModuleLock:
         _blocking_on[tid] = self
         jaribu:
             wakati Kweli:
-                with self.lock:
+                ukijumuisha self.lock:
                     ikiwa self.count == 0 ama self.owner == tid:
                         self.owner = tid
                         self.count += 1
@@ -102,7 +102,7 @@ kundi _ModuleLock:
 
     eleza release(self):
         tid = _thread.get_ident()
-        with self.lock:
+        ukijumuisha self.lock:
             ikiwa self.owner != tid:
                 ashiria RuntimeError('cannot release un-acquired lock')
             assert self.count > 0
@@ -210,7 +210,7 @@ eleza _lock_unlock_module(name):
 # Frame stripping magic ###############################################
 eleza _call_with_frames_removed(f, *args, **kwds):
     """remove_importlib_frames kwenye agiza.c will always remove sequences
-    of importlib frames that end with a call to this function
+    of importlib frames that end ukijumuisha a call to this function
 
     Use it instead of a normal call kwenye places where including the importlib
     frames introduces unwanted noise into the traceback (e.g. when executing
@@ -306,7 +306,7 @@ kundi ModuleSpec:
     """The specification kila a module, used kila loading.
 
     A module's spec ni the source kila information about the module.  For
-    data associated with the module, including source, use the spec's
+    data associated ukijumuisha the module, including source, use the spec's
     loader.
 
     `name` ni the absolute name of the module.  `loader` ni the loader
@@ -345,7 +345,7 @@ kundi ModuleSpec:
         self.loader = loader
         self.origin = origin
         self.loader_state = loader_state
-        self.submodule_search_locations = [] ikiwa is_package else Tupu
+        self.submodule_search_locations = [] ikiwa is_package isipokua Tupu
 
         # file-location attributes
         self._set_fileattr = Uongo
@@ -412,7 +412,7 @@ eleza spec_kutoka_loader(name, loader, *, origin=Tupu, is_package=Tupu):
 
         ikiwa is_package ni Tupu:
             rudisha spec_kutoka_file_location(name, loader=loader)
-        search = [] ikiwa is_package else Tupu
+        search = [] ikiwa is_package isipokua Tupu
         rudisha spec_kutoka_file_location(name, loader=loader,
                                        submodule_search_locations=search)
 
@@ -468,7 +468,7 @@ eleza _spec_kutoka_module(module, loader=Tupu, origin=Tupu):
         submodule_search_locations = Tupu
 
     spec = ModuleSpec(name, loader, origin=origin)
-    spec._set_fileattr = Uongo ikiwa location ni Tupu else Kweli
+    spec._set_fileattr = Uongo ikiwa location ni Tupu isipokua Kweli
     spec.cached = cached
     spec.submodule_search_locations = submodule_search_locations
     rudisha spec
@@ -554,7 +554,7 @@ eleza module_kutoka_spec(spec):
         # If create_module() rudishas `Tupu` then it means default
         # module creation should be used.
         module = spec.loader.create_module(spec)
-    elikiwa hasattr(spec.loader, 'exec_module'):
+    lasivyo hasattr(spec.loader, 'exec_module'):
         ashiria ImportError('loaders that define exec_module() '
                           'must also define create_module()')
     ikiwa module ni Tupu:
@@ -566,7 +566,7 @@ eleza module_kutoka_spec(spec):
 eleza _module_repr_kutoka_spec(spec):
     """Return the repr to use kila the module."""
     # We mostly replicate _module_repr() using the spec attributes.
-    name = '?' ikiwa spec.name ni Tupu else spec.name
+    name = '?' ikiwa spec.name ni Tupu isipokua spec.name
     ikiwa spec.origin ni Tupu:
         ikiwa spec.loader ni Tupu:
             rudisha '<module {!r}>'.format(name)
@@ -583,7 +583,7 @@ eleza _module_repr_kutoka_spec(spec):
 eleza _exec(spec, module):
     """Execute the spec's specified module kwenye an existing module's namespace."""
     name = spec.name
-    with _ModuleLockManager(name):
+    ukijumuisha _ModuleLockManager(name):
         ikiwa sys.modules.get(name) ni sio module:
             msg = 'module {!r} haiko kwenye sys.modules'.format(name)
             ashiria ImportError(msg, name=name)
@@ -698,7 +698,7 @@ eleza _load(spec):
     clobbered.
 
     """
-    with _ModuleLockManager(spec.name):
+    ukijumuisha _ModuleLockManager(spec.name):
         rudisha _load_unlocked(spec)
 
 
@@ -741,7 +741,7 @@ kundi BuiltinImporter:
 
         """
         spec = cls.find_spec(fullname, path)
-        rudisha spec.loader ikiwa spec ni sio Tupu else Tupu
+        rudisha spec.loader ikiwa spec ni sio Tupu isipokua Tupu
 
     @classmethod
     eleza create_module(self, spec):
@@ -811,7 +811,7 @@ kundi FrozenImporter:
         This method ni deprecated.  Use find_spec() instead.
 
         """
-        rudisha cls ikiwa _imp.is_frozen(fullname) else Tupu
+        rudisha cls ikiwa _imp.is_frozen(fullname) isipokua Tupu
 
     @classmethod
     eleza create_module(cls, spec):
@@ -875,7 +875,7 @@ eleza _resolve_name(name, package, level):
     ikiwa len(bits) < level:
         ashiria ValueError('attempted relative agiza beyond top-level package')
     base = bits[0]
-    rudisha '{}.{}'.format(base, name) ikiwa name else base
+    rudisha '{}.{}'.format(base, name) ikiwa name isipokua base
 
 
 eleza _find_spec_legacy(finder, name, path):
@@ -903,7 +903,7 @@ eleza _find_spec(name, path, target=Tupu):
     # sys.modules provides one.
     is_reload = name kwenye sys.modules
     kila finder kwenye meta_path:
-        with _ImportLockContext():
+        ukijumuisha _ImportLockContext():
             jaribu:
                 find_spec = finder.find_spec
             tatizo AttributeError:
@@ -943,8 +943,8 @@ eleza _sanity_check(name, package, level):
     ikiwa level > 0:
         ikiwa sio isinstance(package, str):
             ashiria TypeError('__package__ sio set to a string')
-        elikiwa sio package:
-            ashiria ImportError('attempted relative agiza with no known parent '
+        lasivyo sio package:
+            ashiria ImportError('attempted relative agiza ukijumuisha no known parent '
                               'package')
     ikiwa sio name na level == 0:
         ashiria ValueError('Empty module name')
@@ -985,7 +985,7 @@ _NEEDS_LOADING = object()
 
 eleza _find_and_load(name, import_):
     """Find na load the module."""
-    with _ModuleLockManager(name):
+    ukijumuisha _ModuleLockManager(name):
         module = sys.modules.get(name, _NEEDS_LOADING)
         ikiwa module ni _NEEDS_LOADING:
             rudisha _find_and_load_unlocked(name, import_)
@@ -1032,11 +1032,11 @@ eleza _handle_kutokalist(module, kutokalist, import_, *, recursive=Uongo):
                 where = "``kutoka list''"
             ashiria TypeError(f"Item kwenye {where} must be str, "
                             f"not {type(x).__name__}")
-        elikiwa x == '*':
+        lasivyo x == '*':
             ikiwa sio recursive na hasattr(module, '__all__'):
                 _handle_kutokalist(module, module.__all__, import_,
                                  recursive=Kweli)
-        elikiwa sio hasattr(module, x):
+        lasivyo sio hasattr(module, x):
             kutoka_name = '{}.{}'.format(module.__name__, x)
             jaribu:
                 _call_with_frames_removed(import_, kutoka_name)
@@ -1066,7 +1066,7 @@ eleza _calc___package__(globals):
                            f"({package!r} != {spec.parent!r})",
                            ImportWarning, stacklevel=3)
         rudisha package
-    elikiwa spec ni sio Tupu:
+    lasivyo spec ni sio Tupu:
         rudisha spec.parent
     isipokua:
         _warnings.warn("can't resolve package kutoka __spec__ ama __package__, "
@@ -1092,7 +1092,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, kutokalist=(), level=0):
     ikiwa level == 0:
         module = _gcd_agiza(name)
     isipokua:
-        globals_ = globals ikiwa globals ni sio Tupu else {}
+        globals_ = globals ikiwa globals ni sio Tupu isipokua {}
         package = _calc___package__(globals_)
         module = _gcd_agiza(name, package, level)
     ikiwa sio kutokalist:
@@ -1100,7 +1100,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, kutokalist=(), level=0):
         # that 'name' may be relative.
         ikiwa level == 0:
             rudisha _gcd_agiza(name.partition('.')[0])
-        elikiwa sio name:
+        lasivyo sio name:
             rudisha module
         isipokua:
             # Figure out where to slice the module's name up to the first dot
@@ -1109,7 +1109,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, kutokalist=(), level=0):
             # Slice end needs to be positive to alleviate need to special-case
             # when ``'.' haiko kwenye name``.
             rudisha sys.modules[module.__name__[:len(module.__name__)-cut_off]]
-    elikiwa hasattr(module, '__path__'):
+    lasivyo hasattr(module, '__path__'):
         rudisha _handle_kutokalist(module, kutokalist, _gcd_agiza)
     isipokua:
         rudisha module
@@ -1140,7 +1140,7 @@ eleza _setup(sys_module, _imp_module):
         ikiwa isinstance(module, module_type):
             ikiwa name kwenye sys.builtin_module_names:
                 loader = BuiltinImporter
-            elikiwa _imp.is_frozen(name):
+            lasivyo _imp.is_frozen(name):
                 loader = FrozenImporter
             isipokua:
                 endelea

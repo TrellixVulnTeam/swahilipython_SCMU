@@ -119,7 +119,7 @@ SIGNED_CERTFILE_ECC_HOSTNAME = 'localhost-ecc'
 
 # Same certificate kama pycacert.pem, but without extra text kwenye file
 SIGNING_CA = data_file("capath", "ceff1710.0")
-# cert with all kinds of subject alt names
+# cert ukijumuisha all kinds of subject alt names
 ALLSANFILE = data_file("allsans.pem")
 IDNSANSFILE = data_file("idnsans.pem")
 
@@ -305,7 +305,7 @@ eleza testing_context(server_cert=SIGNED_CERTFILE):
     """
     ikiwa server_cert == SIGNED_CERTFILE:
         hostname = SIGNED_CERTFILE_HOSTNAME
-    elikiwa server_cert == SIGNED_CERTFILE2:
+    lasivyo server_cert == SIGNED_CERTFILE2:
         hostname = SIGNED_CERTFILE2_HOSTNAME
     isipokua:
         ashiria ValueError(server_cert)
@@ -344,8 +344,8 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertEqual(ssl.PROTOCOL_TLS, ssl.PROTOCOL_SSLv23)
 
     eleza test_private_init(self):
-        with self.assertRaisesRegex(TypeError, "public constructor"):
-            with socket.socket() kama s:
+        ukijumuisha self.assertRaisesRegex(TypeError, "public constructor"):
+            ukijumuisha socket.socket() kama s:
                 ssl.SSLSocket(s)
 
     eleza test_str_for_enums(self):
@@ -518,7 +518,7 @@ kundi BasicSocketTests(unittest.TestCase):
         )
 
     eleza test_DER_to_PEM(self):
-        with open(CAFILE_CACERT, 'r') kama f:
+        ukijumuisha open(CAFILE_CACERT, 'r') kama f:
             pem = f.read()
         d1 = ssl.PEM_cert_to_DER_cert(pem)
         p2 = ssl.DER_cert_to_PEM_cert(d1)
@@ -567,7 +567,7 @@ kundi BasicSocketTests(unittest.TestCase):
         s = socket.socket(socket.AF_INET)
         ss = test_wrap_socket(s)
         wr = weakref.ref(ss)
-        with support.check_warnings(("", ResourceWarning)):
+        ukijumuisha support.check_warnings(("", ResourceWarning)):
             toa ss
         self.assertEqual(wr(), Tupu)
 
@@ -575,7 +575,7 @@ kundi BasicSocketTests(unittest.TestCase):
         # Methods on an unconnected SSLSocket propagate the original
         # OSError ashiria by the underlying socket object.
         s = socket.socket(socket.AF_INET)
-        with test_wrap_socket(s) kama ss:
+        ukijumuisha test_wrap_socket(s) kama ss:
             self.assertRaises(OSError, ss.recv, 1)
             self.assertRaises(OSError, ss.recv_into, bytearray(b'x'))
             self.assertRaises(OSError, ss.recvkutoka, 1)
@@ -595,7 +595,7 @@ kundi BasicSocketTests(unittest.TestCase):
         kila timeout kwenye (Tupu, 0.0, 5.0):
             s = socket.socket(socket.AF_INET)
             s.settimeout(timeout)
-            with test_wrap_socket(s) kama ss:
+            ukijumuisha test_wrap_socket(s) kama ss:
                 self.assertEqual(timeout, ss.gettimeout())
 
     eleza test_errors_sslwrap(self):
@@ -609,20 +609,20 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertRaisesRegex(ValueError,
                         "certfile must be specified kila server-side operations",
                          ssl.wrap_socket, sock, server_side=Kweli, certfile="")
-        with ssl.wrap_socket(sock, server_side=Kweli, certfile=CERTFILE) kama s:
+        ukijumuisha ssl.wrap_socket(sock, server_side=Kweli, certfile=CERTFILE) kama s:
             self.assertRaisesRegex(ValueError, "can't connect kwenye server-side mode",
                                      s.connect, (HOST, 8080))
-        with self.assertRaises(OSError) kama cm:
-            with socket.socket() kama sock:
+        ukijumuisha self.assertRaises(OSError) kama cm:
+            ukijumuisha socket.socket() kama sock:
                 ssl.wrap_socket(sock, certfile=NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        with self.assertRaises(OSError) kama cm:
-            with socket.socket() kama sock:
+        ukijumuisha self.assertRaises(OSError) kama cm:
+            ukijumuisha socket.socket() kama sock:
                 ssl.wrap_socket(sock,
                     certfile=CERTFILE, keyfile=NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        with self.assertRaises(OSError) kama cm:
-            with socket.socket() kama sock:
+        ukijumuisha self.assertRaises(OSError) kama cm:
+            ukijumuisha socket.socket() kama sock:
                 ssl.wrap_socket(sock,
                     certfile=NONEXISTINGCERT, keyfile=NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
@@ -633,20 +633,20 @@ kundi BasicSocketTests(unittest.TestCase):
                                    certfile)
         sock = socket.socket()
         self.addCleanup(sock.close)
-        with self.assertRaises(ssl.SSLError):
+        ukijumuisha self.assertRaises(ssl.SSLError):
             test_wrap_socket(sock,
                              certfile=certfile)
 
     eleza test_empty_cert(self):
-        """Wrapping with an empty cert file"""
+        """Wrapping ukijumuisha an empty cert file"""
         self.bad_cert_test("nullcert.pem")
 
     eleza test_malformed_cert(self):
-        """Wrapping with a badly formatted certificate (syntax error)"""
+        """Wrapping ukijumuisha a badly formatted certificate (syntax error)"""
         self.bad_cert_test("badcert.pem")
 
     eleza test_malformed_key(self):
-        """Wrapping with a badly formatted key (syntax error)"""
+        """Wrapping ukijumuisha a badly formatted key (syntax error)"""
         self.bad_cert_test("badkey.pem")
 
     eleza test_match_hostname(self):
@@ -689,7 +689,7 @@ kundi BasicSocketTests(unittest.TestCase):
         fail(cert, 'example.org')
         fail(cert, 'null.python.org')
 
-        # error cases with wildcards
+        # error cases ukijumuisha wildcards
         cert = {'subject': ((('commonName', '*.*.a.com'),),)}
         fail(cert, 'bar.foo.a.com')
         fail(cert, 'a.com')
@@ -808,38 +808,38 @@ kundi BasicSocketTests(unittest.TestCase):
         # Issue #17980: avoid denials of service by refusing more than one
         # wildcard per fragment.
         cert = {'subject': ((('commonName', 'a*b.example.com'),),)}
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 "partial wildcards kwenye leftmost label are sio supported"):
             ssl.match_hostname(cert, 'axxb.example.com')
 
         cert = {'subject': ((('commonName', 'www.*.example.com'),),)}
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 "wildcard can only be present kwenye the leftmost label"):
             ssl.match_hostname(cert, 'www.sub.example.com')
 
         cert = {'subject': ((('commonName', 'a*b*.example.com'),),)}
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 "too many wildcards"):
             ssl.match_hostname(cert, 'axxbxxc.example.com')
 
         cert = {'subject': ((('commonName', '*'),),)}
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 "sole wildcard without additional labels are sio support"):
             ssl.match_hostname(cert, 'host')
 
         cert = {'subject': ((('commonName', '*.com'),),)}
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 r"hostname 'com' doesn't match '\*.com'"):
             ssl.match_hostname(cert, 'com')
 
         # extra checks kila _inet_paton()
         kila invalid kwenye ['1', '', '1.2.3', '256.0.0.1', '127.0.0.1/24']:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 ssl._inet_paton(invalid)
         kila ipaddr kwenye ['127.0.0.1', '192.168.0.1']:
             self.assertKweli(ssl._inet_paton(ipaddr))
@@ -850,7 +850,7 @@ kundi BasicSocketTests(unittest.TestCase):
     eleza test_server_side(self):
         # server_hostname doesn't work kila server sockets
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        with socket.socket() kama sock:
+        ukijumuisha socket.socket() kama sock:
             self.assertRaises(ValueError, ctx.wrap_socket, sock, Kweli,
                               server_hostname="some.hostname")
 
@@ -859,8 +859,8 @@ kundi BasicSocketTests(unittest.TestCase):
         s = socket.create_server(('127.0.0.1', 0))
         c = socket.socket(socket.AF_INET)
         c.connect(s.getsockname())
-        with test_wrap_socket(c, do_handshake_on_connect=Uongo) kama ss:
-            with self.assertRaises(ValueError):
+        ukijumuisha test_wrap_socket(c, do_handshake_on_connect=Uongo) kama ss:
+            ukijumuisha self.assertRaises(ValueError):
                 ss.get_channel_binding("unknown-type")
         s.close()
 
@@ -869,17 +869,17 @@ kundi BasicSocketTests(unittest.TestCase):
     eleza test_tls_unique_channel_binding(self):
         # unconnected should rudisha Tupu kila known type
         s = socket.socket(socket.AF_INET)
-        with test_wrap_socket(s) kama ss:
+        ukijumuisha test_wrap_socket(s) kama ss:
             self.assertIsTupu(ss.get_channel_binding("tls-unique"))
         # the same kila server-side
         s = socket.socket(socket.AF_INET)
-        with test_wrap_socket(s, server_side=Kweli, certfile=CERTFILE) kama ss:
+        ukijumuisha test_wrap_socket(s, server_side=Kweli, certfile=CERTFILE) kama ss:
             self.assertIsTupu(ss.get_channel_binding("tls-unique"))
 
     eleza test_dealloc_warn(self):
         ss = test_wrap_socket(socket.socket(socket.AF_INET))
         r = repr(ss)
-        with self.assertWarns(ResourceWarning) kama cm:
+        ukijumuisha self.assertWarns(ResourceWarning) kama cm:
             ss = Tupu
             support.gc_collect()
         self.assertIn(r, str(cm.warning.args[0]))
@@ -889,7 +889,7 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertEqual(len(paths), 6)
         self.assertIsInstance(paths, ssl.DefaultVerifyPaths)
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["SSL_CERT_DIR"] = CAPATH
             env["SSL_CERT_FILE"] = CERTFILE
             paths = ssl.get_default_verify_paths()
@@ -953,7 +953,7 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertEqual(val, expected)
         self.assertIsInstance(val, ssl._ASN1Object)
         self.assertRaises(ValueError, ssl._ASN1Object.kutokanid, -1)
-        with self.assertRaisesRegex(ValueError, "unknown NID 100000"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "unknown NID 100000"):
             ssl._ASN1Object.kutokanid(100000)
         kila i kwenye range(1000):
             jaribu:
@@ -972,7 +972,7 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertEqual(ssl._ASN1Object.kutokaname('serverAuth'), expected)
         self.assertEqual(ssl._ASN1Object.kutokaname('1.3.6.1.5.5.7.3.1'),
                          expected)
-        with self.assertRaisesRegex(ValueError, "unknown object 'serverauth'"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "unknown object 'serverauth'"):
             ssl._ASN1Object.kutokaname('serverauth')
 
     eleza test_purpose_enum(self):
@@ -995,11 +995,11 @@ kundi BasicSocketTests(unittest.TestCase):
     eleza test_unsupported_dtls(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.addCleanup(s.close)
-        with self.assertRaises(NotImplementedError) kama cx:
+        ukijumuisha self.assertRaises(NotImplementedError) kama cx:
             test_wrap_socket(s, cert_reqs=ssl.CERT_NONE)
         self.assertEqual(str(cx.exception), "only stream sockets are supported")
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        with self.assertRaises(NotImplementedError) kama cx:
+        ukijumuisha self.assertRaises(NotImplementedError) kama cx:
             ctx.wrap_socket(s)
         self.assertEqual(str(cx.exception), "only stream sockets are supported")
 
@@ -1007,7 +1007,7 @@ kundi BasicSocketTests(unittest.TestCase):
         self.assertEqual(ssl.cert_time_to_seconds(timestring), timestamp)
 
     eleza cert_time_fail(self, timestring):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ssl.cert_time_to_seconds(timestring)
 
     @unittest.skipUnless(utc_offset(),
@@ -1045,7 +1045,7 @@ kundi BasicSocketTests(unittest.TestCase):
         self.cert_time_ok("Jan  5 09:34:59 2018 GMT", 1515144899)
         #  allow 60th second (even ikiwa it ni sio a leap second)
         self.cert_time_ok("Jan  5 09:34:60 2018 GMT", 1515144900)
-        #  allow 2nd leap second kila compatibility with time.strptime()
+        #  allow 2nd leap second kila compatibility ukijumuisha time.strptime()
         self.cert_time_ok("Jan  5 09:34:61 2018 GMT", 1515144901)
         self.cert_time_fail("Jan  5 09:34:62 2018 GMT")  # invalid seconds
 
@@ -1104,7 +1104,7 @@ kundi ContextTests(unittest.TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.set_ciphers("ALL")
         ctx.set_ciphers("DEFAULT")
-        with self.assertRaisesRegex(ssl.SSLError, "No cipher can be selected"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "No cipher can be selected"):
             ctx.set_ciphers("^$:,;?*'dorothyx")
 
     @unittest.skipUnless(PY_SSL_DEFAULT_CIPHERS == 1,
@@ -1146,7 +1146,7 @@ kundi ContextTests(unittest.TestCase):
             # Ubuntu has OP_NO_SSLv3 forced on by default
             self.assertEqual(0, ctx.options & ~ssl.OP_NO_SSLv3)
         isipokua:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 ctx.options = 0
 
     eleza test_verify_mode_protocol(self):
@@ -1159,9 +1159,9 @@ kundi ContextTests(unittest.TestCase):
         self.assertEqual(ctx.verify_mode, ssl.CERT_REQUIRED)
         ctx.verify_mode = ssl.CERT_NONE
         self.assertEqual(ctx.verify_mode, ssl.CERT_NONE)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ctx.verify_mode = Tupu
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.verify_mode = 42
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -1183,7 +1183,7 @@ kundi ContextTests(unittest.TestCase):
             ctx.hostname_checks_common_name = Kweli
             self.assertKweli(ctx.hostname_checks_common_name)
         isipokua:
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 ctx.hostname_checks_common_name = Kweli
 
     @requires_minimum_version
@@ -1243,7 +1243,7 @@ kundi ContextTests(unittest.TestCase):
             {ssl.TLSVersion.TLSv1_2, ssl.TLSVersion.TLSv1_3}
         )
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.minimum_version = 42
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_1)
@@ -1254,9 +1254,9 @@ kundi ContextTests(unittest.TestCase):
         self.assertEqual(
             ctx.maximum_version, ssl.TLSVersion.MAXIMUM_SUPPORTED
         )
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.minimum_version = ssl.TLSVersion.MINIMUM_SUPPORTED
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.maximum_version = ssl.TLSVersion.TLSv1
 
 
@@ -1277,7 +1277,7 @@ kundi ContextTests(unittest.TestCase):
         ctx.verify_flags = ssl.VERIFY_CRL_CHECK_LEAF | ssl.VERIFY_X509_STRICT
         self.assertEqual(ctx.verify_flags,
                          ssl.VERIFY_CRL_CHECK_LEAF | ssl.VERIFY_X509_STRICT)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ctx.verify_flags = Tupu
 
     eleza test_load_cert_chain(self):
@@ -1286,27 +1286,27 @@ kundi ContextTests(unittest.TestCase):
         ctx.load_cert_chain(CERTFILE, keyfile=Tupu)
         ctx.load_cert_chain(CERTFILE, keyfile=CERTFILE)
         self.assertRaises(TypeError, ctx.load_cert_chain, keyfile=CERTFILE)
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             ctx.load_cert_chain(NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_cert_chain(BADCERT)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_cert_chain(EMPTYCERT)
         # Separate key na cert
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         ctx.load_cert_chain(ONLYCERT, ONLYKEY)
         ctx.load_cert_chain(certfile=ONLYCERT, keyfile=ONLYKEY)
         ctx.load_cert_chain(certfile=BYTES_ONLYCERT, keyfile=BYTES_ONLYKEY)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_cert_chain(ONLYCERT)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_cert_chain(ONLYKEY)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_cert_chain(certfile=ONLYKEY, keyfile=ONLYCERT)
         # Mismatching key na cert
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        with self.assertRaisesRegex(ssl.SSLError, "key values mismatch"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "key values mismatch"):
             ctx.load_cert_chain(CAFILE_CACERT, ONLYKEY)
         # Password protected key na cert
         ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=KEY_PASSWORD)
@@ -1317,11 +1317,11 @@ kundi ContextTests(unittest.TestCase):
         ctx.load_cert_chain(ONLYCERT, ONLYKEY_PROTECTED, KEY_PASSWORD.encode())
         ctx.load_cert_chain(ONLYCERT, ONLYKEY_PROTECTED,
                             bytearray(KEY_PASSWORD.encode()))
-        with self.assertRaisesRegex(TypeError, "should be a string"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "should be a string"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=Kweli)
-        with self.assertRaises(ssl.SSLError):
+        ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword="badpita")
-        with self.assertRaisesRegex(ValueError, "cannot be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
             # openssl has a fixed limit on the pitaword buffer.
             # PEM_BUFSIZE ni generally set to 1kb.
             # Return a string larger than this.
@@ -1352,13 +1352,13 @@ kundi ContextTests(unittest.TestCase):
         ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=GetPassCallable())
         ctx.load_cert_chain(CERTFILE_PROTECTED,
                             pitaword=GetPassCallable().getpita)
-        with self.assertRaises(ssl.SSLError):
+        ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_badpita)
-        with self.assertRaisesRegex(ValueError, "cannot be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_huge)
-        with self.assertRaisesRegex(TypeError, "must rudisha a string"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "must rudisha a string"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_bad_type)
-        with self.assertRaisesRegex(Exception, "getpita error"):
+        ukijumuisha self.assertRaisesRegex(Exception, "getpita error"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_exception)
         # Make sure the pitaword function isn't called ikiwa it isn't needed
         ctx.load_cert_chain(CERTFILE, pitaword=getpita_exception)
@@ -1371,10 +1371,10 @@ kundi ContextTests(unittest.TestCase):
         ctx.load_verify_locations(cafile=BYTES_CERTFILE, capath=Tupu)
         self.assertRaises(TypeError, ctx.load_verify_locations)
         self.assertRaises(TypeError, ctx.load_verify_locations, Tupu, Tupu, Tupu)
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             ctx.load_verify_locations(NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        with self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "PEM lib"):
             ctx.load_verify_locations(BADCERT)
         ctx.load_verify_locations(CERTFILE, CAPATH)
         ctx.load_verify_locations(CERTFILE, capath=BYTES_CAPATH)
@@ -1384,10 +1384,10 @@ kundi ContextTests(unittest.TestCase):
 
     eleza test_load_verify_cadata(self):
         # test cadata
-        with open(CAFILE_CACERT) kama f:
+        ukijumuisha open(CAFILE_CACERT) kama f:
             cacert_pem = f.read()
         cacert_der = ssl.PEM_cert_to_DER_cert(cacert_pem)
-        with open(CAFILE_NEURONIO) kama f:
+        ukijumuisha open(CAFILE_NEURONIO) kama f:
             neuronio_pem = f.read()
         neuronio_der = ssl.PEM_cert_to_DER_cert(neuronio_pem)
 
@@ -1408,7 +1408,7 @@ kundi ContextTests(unittest.TestCase):
         ctx.load_verify_locations(cadata=combined)
         self.assertEqual(ctx.cert_store_stats()["x509_ca"], 2)
 
-        # with junk around the certs
+        # ukijumuisha junk around the certs
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         combined = ["head", cacert_pem, "other", neuronio_pem, "again",
                     neuronio_pem, "tail"]
@@ -1434,9 +1434,9 @@ kundi ContextTests(unittest.TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         self.assertRaises(TypeError, ctx.load_verify_locations, cadata=object)
 
-        with self.assertRaisesRegex(ssl.SSLError, "no start line"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "no start line"):
             ctx.load_verify_locations(cadata="broken")
-        with self.assertRaisesRegex(ssl.SSLError, "not enough data"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "not enough data"):
             ctx.load_verify_locations(cadata=b"broken")
 
 
@@ -1447,10 +1447,10 @@ kundi ContextTests(unittest.TestCase):
             ctx.load_dh_params(BYTES_DHFILE)
         self.assertRaises(TypeError, ctx.load_dh_params)
         self.assertRaises(TypeError, ctx.load_dh_params, Tupu)
-        with self.assertRaises(FileNotFoundError) kama cm:
+        ukijumuisha self.assertRaises(FileNotFoundError) kama cm:
             ctx.load_dh_params(NONEXISTINGCERT)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        with self.assertRaises(ssl.SSLError) kama cm:
+        ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
             ctx.load_dh_params(CERTFILE)
 
     eleza test_session_stats(self):
@@ -1551,7 +1551,7 @@ kundi ContextTests(unittest.TestCase):
                           (('emailAddress', 'support@cacert.org'),)),
               'version': 3}])
 
-        with open(CAFILE_CACERT) kama f:
+        ukijumuisha open(CAFILE_CACERT) kama f:
             pem = f.read()
         der = ssl.PEM_cert_to_DER_cert(pem)
         self.assertEqual(ctx.get_ca_certs(Kweli), [der])
@@ -1575,7 +1575,7 @@ kundi ContextTests(unittest.TestCase):
     @unittest.skipIf(IS_LIBRESSL, "LibreSSL doesn't support env vars")
     eleza test_load_default_certs_env(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["SSL_CERT_DIR"] = CAPATH
             env["SSL_CERT_FILE"] = CERTFILE
             ctx.load_default_certs()
@@ -1589,7 +1589,7 @@ kundi ContextTests(unittest.TestCase):
         stats = ctx.cert_store_stats()
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["SSL_CERT_DIR"] = CAPATH
             env["SSL_CERT_FILE"] = CERTFILE
             ctx.load_default_certs()
@@ -1619,7 +1619,7 @@ kundi ContextTests(unittest.TestCase):
         self.assertKweli(ctx.check_hostname)
         self._assert_context_options(ctx)
 
-        with open(SIGNING_CA) kama f:
+        ukijumuisha open(SIGNING_CA) kama f:
             cadata = f.read()
         ctx = ssl.create_default_context(cafile=SIGNING_CA, capath=CAPATH,
                                          cadata=cadata)
@@ -1692,8 +1692,8 @@ kundi ContextTests(unittest.TestCase):
         self.assertKweli(ctx.check_hostname)
         self.assertEqual(ctx.verify_mode, ssl.CERT_OPTIONAL)
 
-        # Cannot set CERT_NONE with check_hostname enabled
-        with self.assertRaises(ValueError):
+        # Cannot set CERT_NONE ukijumuisha check_hostname enabled
+        ukijumuisha self.assertRaises(ValueError):
             ctx.verify_mode = ssl.CERT_NONE
         ctx.check_hostname = Uongo
         self.assertUongo(ctx.check_hostname)
@@ -1722,7 +1722,7 @@ kundi ContextTests(unittest.TestCase):
         ctx.sslsocket_kundi = MySSLSocket
         ctx.sslobject_kundi = MySSLObject
 
-        with ctx.wrap_socket(socket.socket(), server_side=Kweli) kama sock:
+        ukijumuisha ctx.wrap_socket(socket.socket(), server_side=Kweli) kama sock:
             self.assertIsInstance(sock, MySSLSocket)
         obj = ctx.wrap_bio(ssl.MemoryBIO(), ssl.MemoryBIO())
         self.assertIsInstance(obj, MySSLObject)
@@ -1735,14 +1735,14 @@ kundi ContextTests(unittest.TestCase):
         self.assertEqual(ctx.num_tickets, 1)
         ctx.num_tickets = 0
         self.assertEqual(ctx.num_tickets, 0)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.num_tickets = -1
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ctx.num_tickets = Tupu
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         self.assertEqual(ctx.num_tickets, 2)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.num_tickets = 1
 
 
@@ -1761,7 +1761,7 @@ kundi SSLErrorTests(unittest.TestCase):
     eleza test_lib_reason(self):
         # Test the library na reason attributes
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        with self.assertRaises(ssl.SSLError) kama cm:
+        ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
             ctx.load_dh_params(CERTFILE)
         self.assertEqual(cm.exception.library, 'PEM')
         self.assertEqual(cm.exception.reason, 'NO_START_LINE')
@@ -1774,11 +1774,11 @@ kundi SSLErrorTests(unittest.TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.check_hostname = Uongo
         ctx.verify_mode = ssl.CERT_NONE
-        with socket.create_server(("127.0.0.1", 0)) kama s:
+        ukijumuisha socket.create_server(("127.0.0.1", 0)) kama s:
             c = socket.create_connection(s.getsockname())
             c.setblocking(Uongo)
-            with ctx.wrap_socket(c, Uongo, do_handshake_on_connect=Uongo) kama c:
-                with self.assertRaises(ssl.SSLWantReadError) kama cm:
+            ukijumuisha ctx.wrap_socket(c, Uongo, do_handshake_on_connect=Uongo) kama c:
+                ukijumuisha self.assertRaises(ssl.SSLWantReadError) kama cm:
                     c.do_handshake()
                 s = str(cm.exception)
                 self.assertKweli(s.startswith("The operation did sio complete (read)"), s)
@@ -1788,13 +1788,13 @@ kundi SSLErrorTests(unittest.TestCase):
 
     eleza test_bad_server_hostname(self):
         ctx = ssl.create_default_context()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.wrap_bio(ssl.MemoryBIO(), ssl.MemoryBIO(),
                          server_hostname="")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             ctx.wrap_bio(ssl.MemoryBIO(), ssl.MemoryBIO(),
                          server_hostname=".example.org")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ctx.wrap_bio(ssl.MemoryBIO(), ssl.MemoryBIO(),
                          server_hostname="example.org\x00evil.com")
 
@@ -1865,7 +1865,7 @@ kundi MemoryBIOTests(unittest.TestCase):
 kundi SSLObjectTests(unittest.TestCase):
     eleza test_private_init(self):
         bio = ssl.MemoryBIO()
-        with self.assertRaisesRegex(TypeError, "public constructor"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "public constructor"):
             ssl.SSLObject(bio, bio)
 
     eleza test_unwrap(self):
@@ -1897,7 +1897,7 @@ kundi SSLObjectTests(unittest.TestCase):
 
         # Now ikiwa we unwrap one side unilaterally, it should send close-notify
         # na ashiria WantReadError:
-        with self.assertRaises(ssl.SSLWantReadError):
+        ukijumuisha self.assertRaises(ssl.SSLWantReadError):
             client.unwrap()
 
         # But server.unwrap() does sio ashiria, because it reads the client's
@@ -1920,14 +1920,14 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         self.addCleanup(server.__exit__, Tupu, Tupu, Tupu)
 
     eleza test_connect(self):
-        with test_wrap_socket(socket.socket(socket.AF_INET),
+        ukijumuisha test_wrap_socket(socket.socket(socket.AF_INET),
                             cert_reqs=ssl.CERT_NONE) kama s:
             s.connect(self.server_addr)
             self.assertEqual({}, s.getpeercert())
             self.assertUongo(s.server_side)
 
         # this should succeed because we specify the root cert
-        with test_wrap_socket(socket.socket(socket.AF_INET),
+        ukijumuisha test_wrap_socket(socket.socket(socket.AF_INET),
                             cert_reqs=ssl.CERT_REQUIRED,
                             ca_certs=SIGNING_CA) kama s:
             s.connect(self.server_addr)
@@ -1980,19 +1980,19 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         self.assertKweli(s.getpeercert())
 
     eleza test_connect_with_context(self):
-        # Same kama test_connect, but with a separately created context
+        # Same kama test_connect, but ukijumuisha a separately created context
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             self.assertEqual({}, s.getpeercert())
-        # Same with a server hostname
-        with ctx.wrap_socket(socket.socket(socket.AF_INET),
+        # Same ukijumuisha a server hostname
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET),
                             server_hostname="dummy") kama s:
             s.connect(self.server_addr)
         ctx.verify_mode = ssl.CERT_REQUIRED
         # This should succeed because we specify the root cert
         ctx.load_verify_locations(SIGNING_CA)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
             self.assertKweli(cert)
@@ -2017,45 +2017,45 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
         ctx.verify_mode = ssl.CERT_REQUIRED
         ctx.load_verify_locations(capath=CAPATH)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
             self.assertKweli(cert)
 
-        # Same with a bytes `capath` argument
+        # Same ukijumuisha a bytes `capath` argument
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
         ctx.verify_mode = ssl.CERT_REQUIRED
         ctx.load_verify_locations(capath=BYTES_CAPATH)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
             self.assertKweli(cert)
 
     eleza test_connect_cadata(self):
-        with open(SIGNING_CA) kama f:
+        ukijumuisha open(SIGNING_CA) kama f:
             pem = f.read()
         der = ssl.PEM_cert_to_DER_cert(pem)
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
         ctx.verify_mode = ssl.CERT_REQUIRED
         ctx.load_verify_locations(cadata=pem)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
             self.assertKweli(cert)
 
-        # same with DER
+        # same ukijumuisha DER
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
         ctx.verify_mode = ssl.CERT_REQUIRED
         ctx.load_verify_locations(cadata=der)
-        with ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET)) kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
             self.assertKweli(cert)
 
     @unittest.skipIf(os.name == "nt", "Can't use a socket kama a file under Windows")
     eleza test_makefile_close(self):
-        # Issue #5238: creating a file-like object with makefile() shouldn't
-        # delay closing the underlying "real socket" (here tested with its
+        # Issue #5238: creating a file-like object ukijumuisha makefile() shouldn't
+        # delay closing the underlying "real socket" (here tested ukijumuisha its
         # file descriptor, hence skipping the test under Windows).
         ss = test_wrap_socket(socket.socket(socket.AF_INET))
         ss.connect(self.server_addr)
@@ -2067,7 +2067,7 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         # Closing the SSL socket should close the fd too
         ss.close()
         gc.collect()
-        with self.assertRaises(OSError) kama e:
+        ukijumuisha self.assertRaises(OSError) kama e:
             os.read(fd, 0)
         self.assertEqual(e.exception.errno, errno.EBADF)
 
@@ -2101,15 +2101,15 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         _test_get_server_certificate_fail(self, *self.server_addr)
 
     eleza test_ciphers(self):
-        with test_wrap_socket(socket.socket(socket.AF_INET),
+        ukijumuisha test_wrap_socket(socket.socket(socket.AF_INET),
                              cert_reqs=ssl.CERT_NONE, ciphers="ALL") kama s:
             s.connect(self.server_addr)
-        with test_wrap_socket(socket.socket(socket.AF_INET),
+        ukijumuisha test_wrap_socket(socket.socket(socket.AF_INET),
                              cert_reqs=ssl.CERT_NONE, ciphers="DEFAULT") kama s:
             s.connect(self.server_addr)
         # Error checking can happen at instantiation ama when connecting
-        with self.assertRaisesRegex(ssl.SSLError, "No cipher can be selected"):
-            with socket.socket(socket.AF_INET) kama sock:
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "No cipher can be selected"):
+            ukijumuisha socket.socket(socket.AF_INET) kama sock:
                 s = test_wrap_socket(sock,
                                     cert_reqs=ssl.CERT_NONE, ciphers="^$:,;?*'dorothyx")
                 s.connect(self.server_addr)
@@ -2119,7 +2119,7 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.load_verify_locations(capath=CAPATH)
         self.assertEqual(ctx.get_ca_certs(), [])
-        with ctx.wrap_socket(socket.socket(socket.AF_INET),
+        ukijumuisha ctx.wrap_socket(socket.socket(socket.AF_INET),
                              server_hostname='localhost') kama s:
             s.connect(self.server_addr)
             cert = s.getpeercert()
@@ -2134,7 +2134,7 @@ kundi SimpleBackgroundTests(unittest.TestCase):
         ctx2 = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx2.load_verify_locations(capath=CAPATH)
         s = socket.socket(socket.AF_INET)
-        with ctx1.wrap_socket(s, server_hostname='localhost') kama ss:
+        ukijumuisha ctx1.wrap_socket(s, server_hostname='localhost') kama ss:
             ss.connect(self.server_addr)
             self.assertIs(ss.context, ctx1)
             self.assertIs(ss._sslobj.context, ctx1)
@@ -2168,7 +2168,7 @@ kundi SimpleBackgroundTests(unittest.TestCase):
             # data kutoka the socket na put it kwenye the incoming BIO.
             ikiwa errno ni Tupu:
                 koma
-            elikiwa errno == ssl.SSL_ERROR_WANT_READ:
+            lasivyo errno == ssl.SSL_ERROR_WANT_READ:
                 buf = sock.recv(32768)
                 ikiwa buf:
                     incoming.write(buf)
@@ -2235,7 +2235,7 @@ kundi NetworkedTests(unittest.TestCase):
     eleza test_timeout_connect_ex(self):
         # Issue #12065: on a timeout, connect_ex() should rudisha the original
         # errno (mimicking the behaviour of non-SSL sockets).
-        with support.transient_internet(REMOTE_HOST):
+        ukijumuisha support.transient_internet(REMOTE_HOST):
             s = test_wrap_socket(socket.socket(socket.AF_INET),
                                 cert_reqs=ssl.CERT_REQUIRED,
                                 do_handshake_on_connect=Uongo)
@@ -2248,7 +2248,7 @@ kundi NetworkedTests(unittest.TestCase):
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'Needs IPv6')
     eleza test_get_server_certificate_ipv6(self):
-        with support.transient_internet('ipv6.google.com'):
+        ukijumuisha support.transient_internet('ipv6.google.com'):
             _test_get_server_certificate(self, 'ipv6.google.com', 443)
             _test_get_server_certificate_fail(self, 'ipv6.google.com', 443)
 
@@ -2282,7 +2282,7 @@ kundi ThreadedEchoServer(threading.Thread):
     kundi ConnectionHandler(threading.Thread):
 
         """A mildly complicated class, because we want it to work both
-        with na without the SSL wrapper around the socket connection, so
+        ukijumuisha na without the SSL wrapper around the socket connection, so
         that we can test the STARTTLS functionality."""
 
         eleza __init__(self, server, connsock, addr):
@@ -2319,7 +2319,7 @@ kundi ThreadedEchoServer(threading.Thread):
                 self.close()
                 rudisha Uongo
             tatizo (ssl.SSLError, OSError) kama e:
-                # OSError may occur with wrong protocols, e.g. both
+                # OSError may occur ukijumuisha wrong protocols, e.g. both
                 # sides use PROTOCOL_TLS_SERVER.
                 #
                 # XXX Various errors can have happened here, kila example
@@ -2387,24 +2387,24 @@ kundi ThreadedEchoServer(threading.Thread):
                         tatizo OSError:
                             # Many tests shut the TCP connection down
                             # without an SSL shutdown. This causes
-                            # unwrap() to ashiria OSError with errno=0!
+                            # unwrap() to ashiria OSError ukijumuisha errno=0!
                             pita
                         isipokua:
                             self.sslconn = Tupu
                         self.close()
-                    elikiwa stripped == b'over':
+                    lasivyo stripped == b'over':
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: client closed connection\n")
                         self.close()
                         rudisha
-                    elikiwa (self.server.starttls_server and
+                    lasivyo (self.server.starttls_server and
                           stripped == b'STARTTLS'):
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: read STARTTLS kutoka client, sending OK...\n")
                         self.write(b"OK\n")
                         ikiwa sio self.wrap_conn():
                             rudisha
-                    elikiwa (self.server.starttls_server na self.sslconn
+                    lasivyo (self.server.starttls_server na self.sslconn
                           na stripped == b'ENDTLS'):
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: read ENDTLS kutoka client, sending OK...\n")
@@ -2413,12 +2413,12 @@ kundi ThreadedEchoServer(threading.Thread):
                         self.sslconn = Tupu
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: connection ni now unencrypted...\n")
-                    elikiwa stripped == b'CB tls-unique':
+                    lasivyo stripped == b'CB tls-unique':
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: read CB tls-unique kutoka client, sending our CB data...\n")
                         data = self.sslconn.get_channel_binding("tls-unique")
                         self.write(repr(data).encode("us-ascii") + b"\n")
-                    elikiwa stripped == b'PHA':
+                    lasivyo stripped == b'PHA':
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: initiating post handshake auth\n")
                         jaribu:
@@ -2427,12 +2427,12 @@ kundi ThreadedEchoServer(threading.Thread):
                             self.write(repr(e).encode("us-ascii") + b"\n")
                         isipokua:
                             self.write(b"OK\n")
-                    elikiwa stripped == b'HASCERT':
+                    lasivyo stripped == b'HASCERT':
                         ikiwa self.sslconn.getpeercert() ni sio Tupu:
                             self.write(b'TRUE\n')
                         isipokua:
                             self.write(b'FALSE\n')
-                    elikiwa stripped == b'GETCERT':
+                    lasivyo stripped == b'GETCERT':
                         cert = self.sslconn.getpeercert()
                         self.write(repr(cert).encode("us-ascii") + b"\n")
                     isipokua:
@@ -2457,7 +2457,7 @@ kundi ThreadedEchoServer(threading.Thread):
                     # PEER_DID_NOT_RETURN_A_CERTIFICATE exception
                     # before the 'tlsv13 alert certificate required' exception.
                     # If the server ni stopped when PEER_DID_NOT_RETURN_A_CERTIFICATE
-                    # ni received test_pha_required_nocert fails with ConnectionResetError
+                    # ni received test_pha_required_nocert fails ukijumuisha ConnectionResetError
                     # because the underlying socket ni closed
                     ikiwa 'PEER_DID_NOT_RETURN_A_CERTIFICATE' == err.reason:
                         ikiwa self.server.chatty na support.verbose:
@@ -2484,9 +2484,9 @@ kundi ThreadedEchoServer(threading.Thread):
         isipokua:
             self.context = ssl.SSLContext(ssl_version
                                           ikiwa ssl_version ni sio Tupu
-                                          else ssl.PROTOCOL_TLS_SERVER)
+                                          isipokua ssl.PROTOCOL_TLS_SERVER)
             self.context.verify_mode = (certreqs ikiwa certreqs ni sio Tupu
-                                        else ssl.CERT_NONE)
+                                        isipokua ssl.CERT_NONE)
             ikiwa cacerts:
                 self.context.load_verify_locations(cacerts)
             ikiwa certificate:
@@ -2683,8 +2683,8 @@ eleza server_params_test(client_context, server_context, indata=b"FOO\n",
     server = ThreadedEchoServer(context=server_context,
                                 chatty=chatty,
                                 connectionchatty=Uongo)
-    with server:
-        with client_context.wrap_socket(socket.socket(),
+    ukijumuisha server:
+        ukijumuisha client_context.wrap_socket(socket.socket(),
                 server_hostname=sni_name, session=session) kama s:
             s.connect((HOST, server.port))
             kila arg kwenye [indata, bytearray(indata), memoryview(indata)]:
@@ -2784,10 +2784,10 @@ eleza try_protocol_combo(server_protocol, client_protocol, expect_success,
     isipokua:
         ikiwa sio expect_success:
             ashiria AssertionError(
-                "Client protocol %s succeeded with server protocol %s!"
+                "Client protocol %s succeeded ukijumuisha server protocol %s!"
                 % (ssl.get_protocol_name(client_protocol),
                    ssl.get_protocol_name(server_protocol)))
-        elikiwa (expect_success ni sio Kweli
+        lasivyo (expect_success ni sio Kweli
               na expect_success != stats['version']):
             ashiria AssertionError("version mismatch: expected %r, got %r"
                                  % (expect_success, stats['version']))
@@ -2804,7 +2804,7 @@ kundi ThreadedTests(unittest.TestCase):
                 endelea
             ikiwa sio has_tls_protocol(protocol):
                 endelea
-            with self.subTest(protocol=ssl._PROTOCOL_NAMES[protocol]):
+            ukijumuisha self.subTest(protocol=ssl._PROTOCOL_NAMES[protocol]):
                 context = ssl.SSLContext(protocol)
                 context.load_cert_chain(CERTFILE)
                 server_params_test(context, context,
@@ -2812,15 +2812,15 @@ kundi ThreadedTests(unittest.TestCase):
 
         client_context, server_context, hostname = testing_context()
 
-        with self.subTest(client=ssl.PROTOCOL_TLS_CLIENT, server=ssl.PROTOCOL_TLS_SERVER):
+        ukijumuisha self.subTest(client=ssl.PROTOCOL_TLS_CLIENT, server=ssl.PROTOCOL_TLS_SERVER):
             server_params_test(client_context=client_context,
                                server_context=server_context,
                                chatty=Kweli, connectionchatty=Kweli,
                                sni_name=hostname)
 
         client_context.check_hostname = Uongo
-        with self.subTest(client=ssl.PROTOCOL_TLS_SERVER, server=ssl.PROTOCOL_TLS_CLIENT):
-            with self.assertRaises(ssl.SSLError) kama e:
+        ukijumuisha self.subTest(client=ssl.PROTOCOL_TLS_SERVER, server=ssl.PROTOCOL_TLS_CLIENT):
+            ukijumuisha self.assertRaises(ssl.SSLError) kama e:
                 server_params_test(client_context=server_context,
                                    server_context=client_context,
                                    chatty=Kweli, connectionchatty=Kweli,
@@ -2828,16 +2828,16 @@ kundi ThreadedTests(unittest.TestCase):
             self.assertIn('called a function you should sio call',
                           str(e.exception))
 
-        with self.subTest(client=ssl.PROTOCOL_TLS_SERVER, server=ssl.PROTOCOL_TLS_SERVER):
-            with self.assertRaises(ssl.SSLError) kama e:
+        ukijumuisha self.subTest(client=ssl.PROTOCOL_TLS_SERVER, server=ssl.PROTOCOL_TLS_SERVER):
+            ukijumuisha self.assertRaises(ssl.SSLError) kama e:
                 server_params_test(client_context=server_context,
                                    server_context=server_context,
                                    chatty=Kweli, connectionchatty=Kweli)
             self.assertIn('called a function you should sio call',
                           str(e.exception))
 
-        with self.subTest(client=ssl.PROTOCOL_TLS_CLIENT, server=ssl.PROTOCOL_TLS_CLIENT):
-            with self.assertRaises(ssl.SSLError) kama e:
+        ukijumuisha self.subTest(client=ssl.PROTOCOL_TLS_CLIENT, server=ssl.PROTOCOL_TLS_CLIENT):
+            ukijumuisha self.assertRaises(ssl.SSLError) kama e:
                 server_params_test(client_context=server_context,
                                    server_context=client_context,
                                    chatty=Kweli, connectionchatty=Kweli)
@@ -2850,14 +2850,14 @@ kundi ThreadedTests(unittest.TestCase):
 
         client_context, server_context, hostname = testing_context()
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             do_handshake_on_connect=Uongo,
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 # getpeercert() ashiria ValueError wakati the handshake isn't
                 # done.
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     s.getpeercert()
                 s.do_handshake()
                 cert = s.getpeercert()
@@ -2893,8 +2893,8 @@ kundi ThreadedTests(unittest.TestCase):
 
         # VERIFY_DEFAULT should pita
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 cert = s.getpeercert()
@@ -2904,10 +2904,10 @@ kundi ThreadedTests(unittest.TestCase):
         client_context.verify_flags |= ssl.VERIFY_CRL_CHECK_LEAF
 
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
-                with self.assertRaisesRegex(ssl.SSLError,
+                ukijumuisha self.assertRaisesRegex(ssl.SSLError,
                                             "certificate verify failed"):
                     s.connect((HOST, server.port))
 
@@ -2915,8 +2915,8 @@ kundi ThreadedTests(unittest.TestCase):
         client_context.load_verify_locations(CRLFILE)
 
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 cert = s.getpeercert()
@@ -2930,8 +2930,8 @@ kundi ThreadedTests(unittest.TestCase):
 
         # correct hostname should verify
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 cert = s.getpeercert()
@@ -2939,19 +2939,19 @@ kundi ThreadedTests(unittest.TestCase):
 
         # incorrect hostname should ashiria an exception
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname="invalid") kama s:
-                with self.assertRaisesRegex(
+                ukijumuisha self.assertRaisesRegex(
                         ssl.CertificateError,
                         "Hostname mismatch, certificate ni sio valid kila 'invalid'."):
                     s.connect((HOST, server.port))
 
         # missing server_hostname arg should cause an exception, too
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with socket.socket() kama s:
-                with self.assertRaisesRegex(ValueError,
+        ukijumuisha server:
+            ukijumuisha socket.socket() kama s:
+                ukijumuisha self.assertRaisesRegex(ValueError,
                                             "check_hostname requires server_hostname"):
                     client_context.wrap_socket(s)
 
@@ -2967,8 +2967,8 @@ kundi ThreadedTests(unittest.TestCase):
 
         # correct hostname should verify
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 cert = s.getpeercert()
@@ -2993,8 +2993,8 @@ kundi ThreadedTests(unittest.TestCase):
 
         # correct hostname should verify
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 cert = s.getpeercert()
@@ -3041,8 +3041,8 @@ kundi ThreadedTests(unittest.TestCase):
         ]
         kila server_hostname, expected_hostname kwenye idn_hostnames:
             server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-            with server:
-                with context.wrap_socket(socket.socket(),
+            ukijumuisha server:
+                ukijumuisha context.wrap_socket(socket.socket(),
                                          server_hostname=server_hostname) kama s:
                     self.assertEqual(s.server_hostname, expected_hostname)
                     s.connect((HOST, server.port))
@@ -3052,17 +3052,17 @@ kundi ThreadedTests(unittest.TestCase):
 
         # incorrect hostname should ashiria an exception
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha context.wrap_socket(socket.socket(),
                                      server_hostname="python.example.org") kama s:
-                with self.assertRaises(ssl.CertificateError):
+                ukijumuisha self.assertRaises(ssl.CertificateError):
                     s.connect((HOST, server.port))
 
     eleza test_wrong_cert_tls12(self):
         """Connecting when the server rejects the client's certificate
 
-        Launch a server with CERT_REQUIRED, na check that trying to
-        connect to it with a wrong client certificate fails.
+        Launch a server ukijumuisha CERT_REQUIRED, na check that trying to
+        connect to it ukijumuisha a wrong client certificate fails.
         """
         client_context, server_context, hostname = testing_context()
         # load client cert that ni sio signed by trusted CA
@@ -3076,7 +3076,7 @@ kundi ThreadedTests(unittest.TestCase):
             context=server_context, chatty=Kweli, connectionchatty=Kweli,
         )
 
-        with server, \
+        ukijumuisha server, \
                 client_context.wrap_socket(socket.socket(),
                                            server_hostname=hostname) kama s:
             jaribu:
@@ -3107,7 +3107,7 @@ kundi ThreadedTests(unittest.TestCase):
         server = ThreadedEchoServer(
             context=server_context, chatty=Kweli, connectionchatty=Kweli,
         )
-        with server, \
+        ukijumuisha server, \
              client_context.wrap_socket(socket.socket(),
                                         server_hostname=hostname) kama s:
             # TLS 1.3 perform client cert exchange after handshake
@@ -3150,7 +3150,7 @@ kundi ThreadedTests(unittest.TestCase):
 
         eleza connector():
             listener_ready.wait()
-            with socket.socket() kama c:
+            ukijumuisha socket.socket() kama c:
                 c.connect((HOST, port))
                 listener_gone.wait()
                 jaribu:
@@ -3177,8 +3177,8 @@ kundi ThreadedTests(unittest.TestCase):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 
         server = ThreadedEchoServer(context=server_context, chatty=Kweli)
-        with server:
-            with context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha context.wrap_socket(socket.socket(),
                                      server_hostname=SIGNED_CERTFILE_HOSTNAME) kama s:
                 jaribu:
                     s.connect((HOST, server.port))
@@ -3192,7 +3192,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     @requires_tls_version('SSLv2')
     eleza test_protocol_sslv2(self):
-        """Connecting to an SSLv2 server with various client options"""
+        """Connecting to an SSLv2 server ukijumuisha various client options"""
         ikiwa support.verbose:
             sys.stdout.write("\n")
         try_protocol_combo(ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_SSLv2, Kweli)
@@ -3202,7 +3202,7 @@ kundi ThreadedTests(unittest.TestCase):
         ikiwa has_tls_version('SSLv3'):
             try_protocol_combo(ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_SSLv3, Uongo)
         try_protocol_combo(ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_TLSv1, Uongo)
-        # SSLv23 client with specific SSL options
+        # SSLv23 client ukijumuisha specific SSL options
         ikiwa no_sslv2_implies_sslv3_hello():
             # No SSLv2 => client will use an SSLv3 hello on recent OpenSSLs
             try_protocol_combo(ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_TLS, Uongo,
@@ -3213,7 +3213,7 @@ kundi ThreadedTests(unittest.TestCase):
                            client_options=ssl.OP_NO_TLSv1)
 
     eleza test_PROTOCOL_TLS(self):
-        """Connecting to an SSLv23 server with various client options"""
+        """Connecting to an SSLv23 server ukijumuisha various client options"""
         ikiwa support.verbose:
             sys.stdout.write("\n")
         ikiwa has_tls_version('SSLv2'):
@@ -3243,7 +3243,7 @@ kundi ThreadedTests(unittest.TestCase):
         ikiwa has_tls_version('TLSv1'):
             try_protocol_combo(ssl.PROTOCOL_TLS, ssl.PROTOCOL_TLSv1, 'TLSv1', ssl.CERT_REQUIRED)
 
-        # Server with specific SSL options
+        # Server ukijumuisha specific SSL options
         ikiwa has_tls_version('SSLv3'):
             try_protocol_combo(ssl.PROTOCOL_TLS, ssl.PROTOCOL_SSLv3, Uongo,
                            server_options=ssl.OP_NO_SSLv3)
@@ -3256,7 +3256,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     @requires_tls_version('SSLv3')
     eleza test_protocol_sslv3(self):
-        """Connecting to an SSLv3 server with various client options"""
+        """Connecting to an SSLv3 server ukijumuisha various client options"""
         ikiwa support.verbose:
             sys.stdout.write("\n")
         try_protocol_combo(ssl.PROTOCOL_SSLv3, ssl.PROTOCOL_SSLv3, 'SSLv3')
@@ -3274,7 +3274,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     @requires_tls_version('TLSv1')
     eleza test_protocol_tlsv1(self):
-        """Connecting to a TLSv1 server with various client options"""
+        """Connecting to a TLSv1 server ukijumuisha various client options"""
         ikiwa support.verbose:
             sys.stdout.write("\n")
         try_protocol_combo(ssl.PROTOCOL_TLSv1, ssl.PROTOCOL_TLSv1, 'TLSv1')
@@ -3289,7 +3289,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     @requires_tls_version('TLSv1_1')
     eleza test_protocol_tlsv1_1(self):
-        """Connecting to a TLSv1.1 server with various client options.
+        """Connecting to a TLSv1.1 server ukijumuisha various client options.
            Testing against older TLS versions."""
         ikiwa support.verbose:
             sys.stdout.write("\n")
@@ -3307,7 +3307,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     @requires_tls_version('TLSv1_2')
     eleza test_protocol_tlsv1_2(self):
-        """Connecting to a TLSv1.2 server with various client options.
+        """Connecting to a TLSv1.2 server ukijumuisha various client options.
            Testing against older TLS versions."""
         ikiwa support.verbose:
             sys.stdout.write("\n")
@@ -3336,7 +3336,7 @@ kundi ThreadedTests(unittest.TestCase):
                                     chatty=Kweli,
                                     connectionchatty=Kweli)
         wrapped = Uongo
-        with server:
+        ukijumuisha server:
             s = socket.socket()
             s.setblocking(1)
             s.connect((HOST, server.port))
@@ -3361,7 +3361,7 @@ kundi ThreadedTests(unittest.TestCase):
                             % msg)
                     conn = test_wrap_socket(s)
                     wrapped = Kweli
-                elikiwa indata == b"ENDTLS" na msg.startswith(b"ok"):
+                lasivyo indata == b"ENDTLS" na msg.startswith(b"ok"):
                     # ENDTLS ok, switch back to clear text
                     ikiwa support.verbose:
                         sys.stdout.write(
@@ -3390,7 +3390,7 @@ kundi ThreadedTests(unittest.TestCase):
         # try to connect
         ikiwa support.verbose:
             sys.stdout.write('\n')
-        with open(CERTFILE, 'rb') kama f:
+        ukijumuisha open(CERTFILE, 'rb') kama f:
             d1 = f.read()
         d2 = ''
         # now fetch the same data kutoka the HTTPS server
@@ -3417,7 +3417,7 @@ kundi ThreadedTests(unittest.TestCase):
 
         indata = b"FOO\n"
         server = AsyncoreEchoServer(CERTFILE)
-        with server:
+        ukijumuisha server:
             s = test_wrap_socket(socket.socket())
             s.connect(('127.0.0.1', server.port))
             ikiwa support.verbose:
@@ -3450,7 +3450,7 @@ kundi ThreadedTests(unittest.TestCase):
                                     cacerts=CERTFILE,
                                     chatty=Kweli,
                                     connectionchatty=Uongo)
-        with server:
+        ukijumuisha server:
             s = test_wrap_socket(socket.socket(),
                                 server_side=Uongo,
                                 certfile=CERTFILE,
@@ -3489,12 +3489,12 @@ kundi ThreadedTests(unittest.TestCase):
                 indata = (data_prefix + meth_name).encode('ascii')
                 jaribu:
                     ret = send_meth(indata, *args)
-                    msg = "sending with {}".format(meth_name)
+                    msg = "sending ukijumuisha {}".format(meth_name)
                     self.assertEqual(ret, ret_val_meth(indata), msg=msg)
                     outdata = s.read()
                     ikiwa outdata != indata.lower():
                         self.fail(
-                            "While sending with <<{name:s}>> bad data "
+                            "While sending ukijumuisha <<{name:s}>> bad data "
                             "<<{outdata:r}>> ({nout:d}) received; "
                             "expected <<{indata:r}>> ({nin:d})\n".format(
                                 name=meth_name, outdata=outdata[:20],
@@ -3505,12 +3505,12 @@ kundi ThreadedTests(unittest.TestCase):
                 tatizo ValueError kama e:
                     ikiwa expect_success:
                         self.fail(
-                            "Failed to send with method <<{name:s}>>; "
+                            "Failed to send ukijumuisha method <<{name:s}>>; "
                             "expected to succeed.\n".format(name=meth_name)
                         )
                     ikiwa sio str(e).startswith(meth_name):
                         self.fail(
-                            "Method <<{name:s}>> failed with unexpected "
+                            "Method <<{name:s}>> failed ukijumuisha unexpected "
                             "exception message: {exp:s}\n".format(
                                 name=meth_name, exp=e
                             )
@@ -3523,7 +3523,7 @@ kundi ThreadedTests(unittest.TestCase):
                     outdata = recv_meth(*args)
                     ikiwa outdata != indata.lower():
                         self.fail(
-                            "While receiving with <<{name:s}>> bad data "
+                            "While receiving ukijumuisha <<{name:s}>> bad data "
                             "<<{outdata:r}>> ({nout:d}) received; "
                             "expected <<{indata:r}>> ({nin:d})\n".format(
                                 name=meth_name, outdata=outdata[:20],
@@ -3534,12 +3534,12 @@ kundi ThreadedTests(unittest.TestCase):
                 tatizo ValueError kama e:
                     ikiwa expect_success:
                         self.fail(
-                            "Failed to receive with method <<{name:s}>>; "
+                            "Failed to receive ukijumuisha method <<{name:s}>>; "
                             "expected to succeed.\n".format(name=meth_name)
                         )
                     ikiwa sio str(e).startswith(meth_name):
                         self.fail(
-                            "Method <<{name:s}>> failed with unexpected "
+                            "Method <<{name:s}>> failed ukijumuisha unexpected "
                             "exception message: {exp:s}\n".format(
                                 name=meth_name, exp=e
                             )
@@ -3603,7 +3603,7 @@ kundi ThreadedTests(unittest.TestCase):
                                     cacerts=CERTFILE,
                                     chatty=Kweli,
                                     connectionchatty=Uongo)
-        with server:
+        ukijumuisha server:
             s = test_wrap_socket(socket.socket(),
                                 server_side=Uongo,
                                 certfile=CERTFILE,
@@ -3718,15 +3718,15 @@ kundi ThreadedTests(unittest.TestCase):
 
     eleza test_getpeercert_enotconn(self):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        with context.wrap_socket(socket.socket()) kama sock:
-            with self.assertRaises(OSError) kama cm:
+        ukijumuisha context.wrap_socket(socket.socket()) kama sock:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 sock.getpeercert()
             self.assertEqual(cm.exception.errno, errno.ENOTCONN)
 
     eleza test_do_handshake_enotconn(self):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        with context.wrap_socket(socket.socket()) kama sock:
-            with self.assertRaises(OSError) kama cm:
+        ukijumuisha context.wrap_socket(socket.socket()) kama sock:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 sock.do_handshake()
             self.assertEqual(cm.exception.errno, errno.ENOTCONN)
 
@@ -3737,10 +3737,10 @@ kundi ThreadedTests(unittest.TestCase):
         # Force different suites on client na server
         client_context.set_ciphers("AES128")
         server_context.set_ciphers("AES256")
-        with ThreadedEchoServer(context=server_context) kama server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha ThreadedEchoServer(context=server_context) kama server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
-                with self.assertRaises(OSError):
+                ukijumuisha self.assertRaises(OSError):
                     s.connect((HOST, server.port))
         self.assertIn("no shared cipher", server.conn_errors[0])
 
@@ -3752,16 +3752,16 @@ kundi ThreadedTests(unittest.TestCase):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.check_hostname = Uongo
         context.verify_mode = ssl.CERT_NONE
-        with ThreadedEchoServer(CERTFILE,
+        ukijumuisha ThreadedEchoServer(CERTFILE,
                                 ssl_version=ssl.PROTOCOL_TLS_SERVER,
                                 chatty=Uongo) kama server:
-            with context.wrap_socket(socket.socket()) kama s:
+            ukijumuisha context.wrap_socket(socket.socket()) kama s:
                 self.assertIs(s.version(), Tupu)
                 self.assertIs(s._sslobj, Tupu)
                 s.connect((HOST, server.port))
                 ikiwa IS_OPENSSL_1_1_1 na has_tls_version('TLSv1_3'):
                     self.assertEqual(s.version(), 'TLSv1.3')
-                elikiwa ssl.OPENSSL_VERSION_INFO >= (1, 0, 2):
+                lasivyo ssl.OPENSSL_VERSION_INFO >= (1, 0, 2):
                     self.assertEqual(s.version(), 'TLSv1.2')
                 isipokua:  # 0.9.8 to 1.0.1
                     self.assertIn(s.version(), ('TLSv1', 'TLSv1.2'))
@@ -3775,8 +3775,8 @@ kundi ThreadedTests(unittest.TestCase):
         context.options |= (
             ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1 | ssl.OP_NO_TLSv1_2
         )
-        with ThreadedEchoServer(context=context) kama server:
-            with context.wrap_socket(socket.socket()) kama s:
+        ukijumuisha ThreadedEchoServer(context=context) kama server:
+            ukijumuisha context.wrap_socket(socket.socket()) kama s:
                 s.connect((HOST, server.port))
                 self.assertIn(s.cipher()[0], {
                     'TLS_AES_256_GCM_SHA384',
@@ -3796,8 +3796,8 @@ kundi ThreadedTests(unittest.TestCase):
         server_context.minimum_version = ssl.TLSVersion.TLSv1_2
         server_context.maximum_version = ssl.TLSVersion.TLSv1_2
 
-        with ThreadedEchoServer(context=server_context) kama server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha ThreadedEchoServer(context=server_context) kama server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 self.assertEqual(s.version(), 'TLSv1.2')
@@ -3812,8 +3812,8 @@ kundi ThreadedTests(unittest.TestCase):
         server_context.minimum_version = ssl.TLSVersion.TLSv1
         server_context.maximum_version = ssl.TLSVersion.TLSv1_1
 
-        with ThreadedEchoServer(context=server_context) kama server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha ThreadedEchoServer(context=server_context) kama server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 self.assertEqual(s.version(), 'TLSv1.1')
@@ -3827,10 +3827,10 @@ kundi ThreadedTests(unittest.TestCase):
         server_context.minimum_version = ssl.TLSVersion.TLSv1_2
         client_context.maximum_version = ssl.TLSVersion.TLSv1
         client_context.minimum_version = ssl.TLSVersion.TLSv1
-        with ThreadedEchoServer(context=server_context) kama server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha ThreadedEchoServer(context=server_context) kama server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
-                with self.assertRaises(ssl.SSLError) kama e:
+                ukijumuisha self.assertRaises(ssl.SSLError) kama e:
                     s.connect((HOST, server.port))
                 self.assertIn("alert", str(e.exception))
 
@@ -3841,8 +3841,8 @@ kundi ThreadedTests(unittest.TestCase):
         server_context.minimum_version = ssl.TLSVersion.SSLv3
         client_context.minimum_version = ssl.TLSVersion.SSLv3
         client_context.maximum_version = ssl.TLSVersion.SSLv3
-        with ThreadedEchoServer(context=server_context) kama server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha ThreadedEchoServer(context=server_context) kama server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 self.assertEqual(s.version(), 'SSLv3')
@@ -3862,8 +3862,8 @@ kundi ThreadedTests(unittest.TestCase):
         # automatically.
         ikiwa ssl.OPENSSL_VERSION_INFO < (1, 0, 0):
             context.set_ciphers("ECCdraft:ECDH")
-        with ThreadedEchoServer(context=context) kama server:
-            with context.wrap_socket(socket.socket()) kama s:
+        ukijumuisha ThreadedEchoServer(context=context) kama server:
+            ukijumuisha context.wrap_socket(socket.socket()) kama s:
                 s.connect((HOST, server.port))
                 self.assertIn("ECDH", s.cipher()[0])
 
@@ -3880,8 +3880,8 @@ kundi ThreadedTests(unittest.TestCase):
                                     chatty=Kweli,
                                     connectionchatty=Uongo)
 
-        with server:
-            with client_context.wrap_socket(
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(
                     socket.socket(),
                     server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
@@ -3898,14 +3898,14 @@ kundi ThreadedTests(unittest.TestCase):
                 isipokua:
                     self.assertEqual(len(cb_data), 12)  # Kweli kila TLSv1
 
-                # na compare with the peers version
+                # na compare ukijumuisha the peers version
                 s.write(b"CB tls-unique\n")
                 peer_data_repr = s.read().strip()
                 self.assertEqual(peer_data_repr,
                                  repr(cb_data).encode("us-ascii"))
 
             # now, again
-            with client_context.wrap_socket(
+            ukijumuisha client_context.wrap_socket(
                     socket.socket(),
                     server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
@@ -3948,7 +3948,7 @@ kundi ThreadedTests(unittest.TestCase):
         self.assertIs(stats['compression'], Tupu)
 
     eleza test_dh_params(self):
-        # Check we can get a connection with ephemeral Diffie-Hellman
+        # Check we can get a connection ukijumuisha ephemeral Diffie-Hellman
         client_context, server_context, hostname = testing_context()
         # test scenario needs TLS <= 1.2
         client_context.options |= ssl.OP_NO_TLSv1_3
@@ -4056,7 +4056,7 @@ kundi ThreadedTests(unittest.TestCase):
                 self.assertEqual(client_result, expected,
                                  msg % (client_result, "client"))
                 server_result = stats['server_alpn_protocols'][-1] \
-                    ikiwa len(stats['server_alpn_protocols']) else 'nothing'
+                    ikiwa len(stats['server_alpn_protocols']) isipokua 'nothing'
                 self.assertEqual(server_result, expected,
                                  msg % (server_result, "server"))
 
@@ -4091,7 +4091,7 @@ kundi ThreadedTests(unittest.TestCase):
             client_result = stats['client_npn_protocol']
             self.assertEqual(client_result, expected, msg % (client_result, "client"))
             server_result = stats['server_npn_protocols'][-1] \
-                ikiwa len(stats['server_npn_protocols']) else 'nothing'
+                ikiwa len(stats['server_npn_protocols']) isipokua 'nothing'
             self.assertEqual(server_result, expected, msg % (server_result, "server"))
 
     eleza sni_contexts(self):
@@ -4130,7 +4130,7 @@ kundi ThreadedTests(unittest.TestCase):
         self.check_common_name(stats, 'fakehostname')
 
         calls = []
-        # The callback ni called with server_name=Tupu
+        # The callback ni called ukijumuisha server_name=Tupu
         stats = server_params_test(client_context, server_context,
                                    chatty=Kweli,
                                    sni_name=Tupu)
@@ -4156,7 +4156,7 @@ kundi ThreadedTests(unittest.TestCase):
         eleza cb_rudishaing_alert(ssl_sock, server_name, initial_context):
             rudisha ssl.ALERT_DESCRIPTION_ACCESS_DENIED
         server_context.set_servername_callback(cb_rudishaing_alert)
-        with self.assertRaises(ssl.SSLError) kama cm:
+        ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
             stats = server_params_test(client_context, server_context,
                                        chatty=Uongo,
                                        sni_name='supermessage')
@@ -4164,15 +4164,15 @@ kundi ThreadedTests(unittest.TestCase):
 
     @needs_sni
     eleza test_sni_callback_raising(self):
-        # Raising fails the connection with a TLS handshake failure alert.
+        # Raising fails the connection ukijumuisha a TLS handshake failure alert.
         server_context, other_context, client_context = self.sni_contexts()
 
         eleza cb_raising(ssl_sock, server_name, initial_context):
             1/0
         server_context.set_servername_callback(cb_raising)
 
-        with support.catch_unraisable_exception() kama catch:
-            with self.assertRaises(ssl.SSLError) kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama catch:
+            ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
                 stats = server_params_test(client_context, server_context,
                                            chatty=Uongo,
                                            sni_name='supermessage')
@@ -4184,15 +4184,15 @@ kundi ThreadedTests(unittest.TestCase):
     @needs_sni
     eleza test_sni_callback_wrong_rudisha_type(self):
         # Returning the wrong rudisha type terminates the TLS connection
-        # with an internal error alert.
+        # ukijumuisha an internal error alert.
         server_context, other_context, client_context = self.sni_contexts()
 
         eleza cb_wrong_rudisha_type(ssl_sock, server_name, initial_context):
             rudisha "foo"
         server_context.set_servername_callback(cb_wrong_rudisha_type)
 
-        with support.catch_unraisable_exception() kama catch:
-            with self.assertRaises(ssl.SSLError) kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama catch:
+            ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
                 stats = server_params_test(client_context, server_context,
                                            chatty=Uongo,
                                            sni_name='supermessage')
@@ -4223,7 +4223,7 @@ kundi ThreadedTests(unittest.TestCase):
         client_context, server_context, hostname = testing_context()
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
 
-        with server:
+        ukijumuisha server:
             s = client_context.wrap_socket(socket.socket(),
                                            server_hostname=hostname)
             s.connect((HOST, server.port))
@@ -4234,7 +4234,7 @@ kundi ThreadedTests(unittest.TestCase):
 
     eleza test_sendfile(self):
         TEST_DATA = b"x" * 512
-        with open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(TEST_DATA)
         self.addCleanup(support.unlink, support.TESTFN)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS)
@@ -4242,16 +4242,16 @@ kundi ThreadedTests(unittest.TestCase):
         context.load_verify_locations(SIGNING_CA)
         context.load_cert_chain(SIGNED_CERTFILE)
         server = ThreadedEchoServer(context=context, chatty=Uongo)
-        with server:
-            with context.wrap_socket(socket.socket()) kama s:
+        ukijumuisha server:
+            ukijumuisha context.wrap_socket(socket.socket()) kama s:
                 s.connect((HOST, server.port))
-                with open(support.TESTFN, 'rb') kama file:
+                ukijumuisha open(support.TESTFN, 'rb') kama file:
                     s.sendfile(file)
                     self.assertEqual(s.recv(1024), TEST_DATA)
 
     eleza test_session(self):
         client_context, server_context, hostname = testing_context()
-        # TODO: sessions aren't compatible with TLSv1.3 yet
+        # TODO: sessions aren't compatible ukijumuisha TLSv1.3 yet
         client_context.options |= ssl.OP_NO_TLSv1_3
 
         # first connection without session
@@ -4311,13 +4311,13 @@ kundi ThreadedTests(unittest.TestCase):
         client_context, server_context, hostname = testing_context()
         client_context2, _, _ = testing_context()
 
-        # TODO: session reuse does sio work with TLSv1.3
+        # TODO: session reuse does sio work ukijumuisha TLSv1.3
         client_context.options |= ssl.OP_NO_TLSv1_3
         client_context2.options |= ssl.OP_NO_TLSv1_3
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 # session ni Tupu before handshake
                 self.assertEqual(s.session, Tupu)
@@ -4325,20 +4325,20 @@ kundi ThreadedTests(unittest.TestCase):
                 s.connect((HOST, server.port))
                 session = s.session
                 self.assertKweli(session)
-                with self.assertRaises(TypeError) kama e:
+                ukijumuisha self.assertRaises(TypeError) kama e:
                     s.session = object
                 self.assertEqual(str(e.exception), 'Value ni sio a SSLSession.')
 
-            with client_context.wrap_socket(socket.socket(),
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 # cannot set session after handshake
-                with self.assertRaises(ValueError) kama e:
+                ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                 self.assertEqual(str(e.exception),
                                  'Cannot set session after handshake.')
 
-            with client_context.wrap_socket(socket.socket(),
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 # can set session before handshake na before the
                 # connection was established
@@ -4348,10 +4348,10 @@ kundi ThreadedTests(unittest.TestCase):
                 self.assertEqual(s.session, session)
                 self.assertEqual(s.session_reused, Kweli)
 
-            with client_context2.wrap_socket(socket.socket(),
+            ukijumuisha client_context2.wrap_socket(socket.socket(),
                                              server_hostname=hostname) kama s:
-                # cannot re-use session with a different SSLContext
-                with self.assertRaises(ValueError) kama e:
+                # cannot re-use session ukijumuisha a different SSLContext
+                ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                     s.connect((HOST, server.port))
                 self.assertEqual(str(e.exception),
@@ -4392,8 +4392,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         client_context.load_cert_chain(SIGNED_CERTFILE)
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 s.write(b'HASCERT')
@@ -4417,10 +4417,10 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
 
         # Ignore expected SSLError kwenye ConnectionHandler of ThreadedEchoServer
         # (it ni only ashiriad sometimes on Windows)
-        with support.catch_threading_exception() kama cm:
+        ukijumuisha support.catch_threading_exception() kama cm:
             server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-            with server:
-                with client_context.wrap_socket(socket.socket(),
+            ukijumuisha server:
+                ukijumuisha client_context.wrap_socket(socket.socket(),
                                                 server_hostname=hostname) kama s:
                     s.connect((HOST, server.port))
                     s.write(b'PHA')
@@ -4429,7 +4429,7 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
                     # send empty Certificate + Finish
                     s.write(b'HASCERT')
                     # receive alert
-                    with self.assertRaisesRegex(
+                    ukijumuisha self.assertRaisesRegex(
                             ssl.SSLError,
                             'tlsv13 alert certificate required'):
                         s.recv(1024)
@@ -4447,8 +4447,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         # check CERT_OPTIONAL
         server_context.verify_mode = ssl.CERT_OPTIONAL
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 s.write(b'HASCERT')
@@ -4468,8 +4468,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         client_context.post_handshake_auth = Kweli
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 s.write(b'HASCERT')
@@ -4487,11 +4487,11 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         client_context.load_cert_chain(SIGNED_CERTFILE)
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
-                with self.assertRaisesRegex(ssl.SSLError, 'not server'):
+                ukijumuisha self.assertRaisesRegex(ssl.SSLError, 'not server'):
                     s.verify_client_post_handshake()
                 s.write(b'PHA')
                 self.assertIn(b'extension sio received', s.recv(1024))
@@ -4504,8 +4504,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         client_context.load_cert_chain(SIGNED_CERTFILE)
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 s.write(b'HASCERT')
@@ -4525,8 +4525,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         client_context.load_cert_chain(SIGNED_CERTFILE)
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 # PHA fails kila TLS != 1.3
@@ -4551,8 +4551,8 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
         server_context.verify_mode = ssl.CERT_REQUIRED
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
                 s.write(b'HASCERT')
@@ -4567,12 +4567,12 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
 
 HAS_KEYLOG = hasattr(ssl.SSLContext, 'keylog_filename')
 requires_keylog = unittest.skipUnless(
-    HAS_KEYLOG, 'test requires OpenSSL 1.1.1 with keylog callback')
+    HAS_KEYLOG, 'test requires OpenSSL 1.1.1 ukijumuisha keylog callback')
 
 kundi TestSSLDebug(unittest.TestCase):
 
     eleza keylog_lines(self, fname=support.TESTFN):
-        with open(fname) kama f:
+        ukijumuisha open(fname) kama f:
             rudisha len(list(f))
 
     @requires_keylog
@@ -4590,12 +4590,12 @@ kundi TestSSLDebug(unittest.TestCase):
         ctx.keylog_filename = Tupu
         self.assertEqual(ctx.keylog_filename, Tupu)
 
-        with self.assertRaises((IsADirectoryError, PermissionError)):
+        ukijumuisha self.assertRaises((IsADirectoryError, PermissionError)):
             # Windows ashirias PermissionError
             ctx.keylog_filename = os.path.dirname(
                 os.path.abspath(support.TESTFN))
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ctx.keylog_filename = 1
 
     @requires_keylog
@@ -4605,8 +4605,8 @@ kundi TestSSLDebug(unittest.TestCase):
 
         client_context.keylog_filename = support.TESTFN
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
         # header, 5 lines kila TLS 1.3
@@ -4615,8 +4615,8 @@ kundi TestSSLDebug(unittest.TestCase):
         client_context.keylog_filename = Tupu
         server_context.keylog_filename = support.TESTFN
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
         self.assertGreaterEqual(self.keylog_lines(), 11)
@@ -4624,8 +4624,8 @@ kundi TestSSLDebug(unittest.TestCase):
         client_context.keylog_filename = support.TESTFN
         server_context.keylog_filename = support.TESTFN
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
         self.assertGreaterEqual(self.keylog_lines(), 21)
@@ -4635,10 +4635,10 @@ kundi TestSSLDebug(unittest.TestCase):
 
     @requires_keylog
     @unittest.skipIf(sys.flags.ignore_environment,
-                     "test ni sio compatible with ignore_environment")
+                     "test ni sio compatible ukijumuisha ignore_environment")
     eleza test_keylog_env(self):
         self.addCleanup(support.unlink, support.TESTFN)
-        with unittest.mock.patch.dict(os.environ):
+        ukijumuisha unittest.mock.patch.dict(os.environ):
             os.environ['SSLKEYLOGFILE'] = support.TESTFN
             self.assertEqual(os.environ['SSLKEYLOGFILE'], support.TESTFN)
 
@@ -4660,7 +4660,7 @@ kundi TestSSLDebug(unittest.TestCase):
         self.assertIs(client_context._msg_callback, Tupu)
         client_context._msg_callback = msg_cb
         self.assertIs(client_context._msg_callback, msg_cb)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             client_context._msg_callback = object()
 
     eleza test_msg_callback_tls12(self):
@@ -4678,8 +4678,8 @@ kundi TestSSLDebug(unittest.TestCase):
         client_context._msg_callback = msg_cb
 
         server = ThreadedEchoServer(context=server_context, chatty=Uongo)
-        with server:
-            with client_context.wrap_socket(socket.socket(),
+        ukijumuisha server:
+            ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
 
@@ -4708,7 +4708,7 @@ eleza test_main(verbose=Uongo):
                 koma
         isipokua:
             plat = repr(platform.platform())
-        andika("test_ssl: testing with %r %r" %
+        andika("test_ssl: testing ukijumuisha %r %r" %
             (ssl.OPENSSL_VERSION, ssl.OPENSSL_VERSION_INFO))
         andika("          under %s" % plat)
         andika("          HAS_SNI = %r" % ssl.HAS_SNI)

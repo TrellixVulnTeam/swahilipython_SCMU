@@ -153,17 +153,17 @@ kundi AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
 
     eleza test_close_opened_files_on_error(self):
         non_aifc_file = findfile('pluck-pcm8.wav', subdir='audiodata')
-        with check_no_resource_warning(self):
-            with self.assertRaises(aifc.Error):
-                # Try opening a non-AIFC file, with the expectation that
+        ukijumuisha check_no_resource_warning(self):
+            ukijumuisha self.assertRaises(aifc.Error):
+                # Try opening a non-AIFC file, ukijumuisha the expectation that
                 # `aifc.open` will fail (without raising a ResourceWarning)
                 self.f = aifc.open(non_aifc_file, 'rb')
 
             # Aifc_write.initfp() won't ashiria kwenye normal case.  But some errors
             # (e.g. MemoryError, KeyboardInterrupt, etc..) can happen.
-            with mock.patch.object(aifc.Aifc_write, 'initfp',
+            ukijumuisha mock.patch.object(aifc.Aifc_write, 'initfp',
                                    side_effect=RuntimeError):
-                with self.assertRaises(RuntimeError):
+                ukijumuisha self.assertRaises(RuntimeError):
                     self.fout = aifc.open(TESTFN, 'wb')
 
     eleza test_params_added(self):
@@ -247,11 +247,11 @@ kundi AIFCLowLevelTest(unittest.TestCase):
 
     eleza test_write_long_string_ashirias(self):
         f = io.BytesIO()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             aifc._write_string(f, b'too long' * 255)
 
     eleza test_wrong_open_mode(self):
-        with self.assertRaises(aifc.Error):
+        ukijumuisha self.assertRaises(aifc.Error):
             aifc.open(TESTFN, 'wrong_mode')
 
     eleza test_read_wrong_form(self):
@@ -269,7 +269,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
         b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
-        with self.assertRaisesRegex(aifc.Error, 'COMM chunk and/or SSND chunk'
+        ukijumuisha self.assertRaisesRegex(aifc.Error, 'COMM chunk and/or SSND chunk'
                                                 ' missing'):
             aifc.open(io.BytesIO(b))
 
@@ -287,7 +287,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                        0x4000 | 12, 11025<<18, 0)
             b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
             b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-            with self.assertRaisesRegex(aifc.Error, 'bad # of channels'):
+            ukijumuisha self.assertRaisesRegex(aifc.Error, 'bad # of channels'):
                 aifc.open(io.BytesIO(b))
 
     eleza test_read_wrong_sample_width(self):
@@ -297,7 +297,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                        0x4000 | 12, 11025<<18, 0)
             b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
             b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-            with self.assertRaisesRegex(aifc.Error, 'bad sample width'):
+            ukijumuisha self.assertRaisesRegex(aifc.Error, 'bad sample width'):
                 aifc.open(io.BytesIO(b))
 
     eleza test_read_wrong_marks(self):
@@ -306,7 +306,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
         b += b'MARK' + struct.pack('>LhB', 3, 1, 1)
-        with self.assertWarns(UserWarning) kama cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: MARK chunk contains '
                                           'only 0 markers instead of 1')
@@ -318,7 +318,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 4) + b'even' + b'\x00'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        with self.assertWarns(UserWarning) kama cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'even')
@@ -329,7 +329,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 3) + b'odd'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        with self.assertWarns(UserWarning) kama cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'odd')

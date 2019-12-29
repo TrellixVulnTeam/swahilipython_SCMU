@@ -36,7 +36,7 @@ eleza main():
     outfile = options.outfile
     sort_keys = options.sort_keys
     json_lines = options.json_lines
-    with infile, outfile:
+    ukijumuisha infile, outfile:
         jaribu:
             ikiwa json_lines:
                 objs = (json.loads(line) kila line kwenye infile)

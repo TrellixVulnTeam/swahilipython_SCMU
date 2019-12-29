@@ -59,7 +59,7 @@ kundi zipimporter:
 
     # Split the "subdirectory" kutoka the Zip archive path, lookup a matching
     # entry in sys.path_importer_cache, fetch the file directory kutoka there
-    # if found, or else read it kutoka the archive.
+    # if found, or isipokua read it kutoka the archive.
     def __init__(self, path):
         if sio isinstance(path, str):
             agiza os

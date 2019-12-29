@@ -22,7 +22,7 @@ kundi Test_iskeyword(unittest.TestCase):
 
     eleza test_all_keywords_fail_to_be_used_as_names(self):
         kila key kwenye keyword.kwlist:
-            with self.assertRaises(SyntaxError):
+            ukijumuisha self.assertRaises(SyntaxError):
                 exec(f"{key} = 42")
 
     eleza test_async_and_await_are_keywords(self):

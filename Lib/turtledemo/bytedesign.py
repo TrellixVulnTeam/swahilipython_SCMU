@@ -7,7 +7,7 @@ An example adapted kutoka the example-suite
 of PythonCard's turtle graphics.
 
 It's based on an article kwenye BYTE magazine
-Problem Solving with Logo: Using Turtle
+Problem Solving ukijumuisha Logo: Using Turtle
 Graphics to Redraw a Design
 November 1982, p. 118 - 134
 

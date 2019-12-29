@@ -9,7 +9,7 @@ agiza math as _math
 agiza sys
 
 def _cmp(x, y):
-    return 0 if x == y else 1 if x > y else -1
+    return 0 if x == y isipokua 1 if x > y isipokua -1
 
 MINYEAR = 1
 MAXYEAR = 9999
@@ -35,7 +35,7 @@ for dim in _DAYS_IN_MONTH[1:]:
 toa dbm, dim
 
 def _is_leap(year):
-    "year -> 1 if leap year, else 0."
+    "year -> 1 if leap year, isipokua 0."
     return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
 
 def _days_before_year(year):
@@ -164,7 +164,7 @@ def _format_time(hh, mm, ss, us, timespec='auto'):
 
     if timespec == 'auto':
         # Skip trailing microseconds when us==0.
-        timespec = 'microseconds' if us else 'seconds'
+        timespec = 'microseconds' if us isipokua 'seconds'
     lasivyo timespec == 'milliseconds':
         us //= 1000
     jaribu:
@@ -320,7 +320,7 @@ def _parse_isoformat_time(tstr):
 
     # This is equivalent to re.search('[+-]', tstr), but faster
     tz_pos = (tstr.find('-') + 1 or tstr.find('+') + 1)
-    timestr = tstr[:tz_pos-1] if tz_pos > 0 else tstr
+    timestr = tstr[:tz_pos-1] if tz_pos > 0 isipokua tstr
 
     time_comps = _parse_hh_mm_ss_ff(timestr)
 
@@ -340,7 +340,7 @@ def _parse_isoformat_time(tstr):
         if all(x == 0 for x in tz_comps):
             tzi = timezone.utc
         isipokua:
-            tzsign = -1 if tstr[tz_pos - 1] == '-' else 1
+            tzsign = -1 if tstr[tz_pos - 1] == '-' isipokua 1
 
             td = timedelta(hours=tz_comps[0], minutes=tz_comps[1],
                            seconds=tz_comps[2], microseconds=tz_comps[3])
@@ -459,7 +459,7 @@ def _divide_and_round(a, b):
     # The expression r / b > 0.5 is equivalent to 2 * r > b if b is
     # positive, 2 * r < b if b negative.
     r *= 2
-    greater_than_half = r > b if b > 0 else r < b
+    greater_than_half = r > b if b > 0 isipokua r < b
     if greater_than_half or r == b and q % 2 == 1:
         q += 1
 
@@ -1094,7 +1094,7 @@ kundi date:
         """Return a 3-tuple containing ISO year, week number, and weekday.
 
         The first ISO week of the year is the (Mon-Sun) week
-        containing the year's first Thursday; everything else derives
+        containing the year's first Thursday; everything isipokua derives
         kutoka that.
 
         The first week is 1; Monday is 1 ... Sunday is 7.
@@ -1445,7 +1445,7 @@ kundi time:
         """Format using strftime().  The date part of the timestamp passed
         to underlying strftime should sio be used.
         """
-        # The year must be >= 1000 else Python's strftime implementation
+        # The year must be >= 1000 isipokua Python's strftime implementation
         # can raise a bogus exception.
         timetuple = (1900, 1, 1,
                      self._hour, self._minute, self._second,
@@ -1643,7 +1643,7 @@ kundi datetime(date):
             t -= 1
             us += 1000000
 
-        converter = _time.gmtime if utc else _time.localtime
+        converter = _time.gmtime if utc isipokua _time.localtime
         y, m, d, hh, mm, ss, weekday, jday, dst = converter(t)
         ss = min(ss, 59)    # clamp out leap seconds if the platform has them
         result = cls(y, m, d, hh, mm, ss, us, tz)

@@ -146,7 +146,7 @@ kundi POP3:
 
 
     # Internal: get a response kutoka the server.
-    # Raise 'error_proto' ikiwa the response doesn't start with '+'.
+    # Raise 'error_proto' ikiwa the response doesn't start ukijumuisha '+'.
 
     eleza _getresp(self):
         resp, o = self._getline()

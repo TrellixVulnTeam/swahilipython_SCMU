@@ -4,7 +4,7 @@
 #  This ni a simple little module I wrote to make life easier.  I didn't
 #  see anything quite like it kwenye the library, though I may have overlooked
 #  something.  I wrote this when I was trying to read some heavily nested
-#  tuples with fairly non-descriptive content.  This ni modeled very much
+#  tuples ukijumuisha fairly non-descriptive content.  This ni modeled very much
 #  after Lisp/Scheme - style pretty-printing of lists.  If you find it
 #  useful, thank small children who sleep at night.
 
@@ -176,7 +176,7 @@ kundi PrettyPrinter:
                 p(self, object, stream, indent, allowance, context, level + 1)
                 toa context[objid]
                 rudisha
-            elikiwa isinstance(object, dict):
+            lasivyo isinstance(object, dict):
                 context[objid] = 1
                 self._pprint_dict(object, stream, indent, allowance,
                                   context, level + 1)
@@ -226,7 +226,7 @@ kundi PrettyPrinter:
 
     eleza _pprint_tuple(self, object, stream, indent, allowance, context, level):
         stream.write('(')
-        endchar = ',)' ikiwa len(object) == 1 else ')'
+        endchar = ',)' ikiwa len(object) == 1 isipokua ')'
         self._format_items(object, stream, indent, allowance + len(endchar),
                            context, level)
         stream.write(endchar)
@@ -354,7 +354,7 @@ kundi PrettyPrinter:
             write(rep)
             write(': ')
             self._format(ent, stream, indent + len(rep) + 2,
-                         allowance ikiwa last else 1,
+                         allowance ikiwa last isipokua 1,
                          context, level)
             ikiwa sio last:
                 write(delimnl)
@@ -397,7 +397,7 @@ kundi PrettyPrinter:
             write(delim)
             delim = delimnl
             self._format(ent, stream, indent,
-                         allowance ikiwa last else 1,
+                         allowance ikiwa last isipokua 1,
                          context, level)
 
     eleza _repr(self, object, context, level):
@@ -539,7 +539,7 @@ eleza _safe_repr(object, context, maxlevels, level, sort_dicts):
             ikiwa sio object:
                 rudisha "[]", Kweli, Uongo
             format = "[%s]"
-        elikiwa len(object) == 1:
+        lasivyo len(object) == 1:
             format = "(%s,)"
         isipokua:
             ikiwa sio object:
@@ -573,7 +573,7 @@ _builtin_scalars = frozenset({str, bytes, bytearray, int, float, complex,
                               bool, type(Tupu)})
 
 eleza _recursion(object):
-    rudisha ("<Recursion on %s with id=%s>"
+    rudisha ("<Recursion on %s ukijumuisha id=%s>"
             % (type(object).__name__, id(object)))
 
 

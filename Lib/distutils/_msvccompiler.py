@@ -103,7 +103,7 @@ def _find_vcvarsall(plat_spec):
     if plat_spec in PLAT_SPEC_TO_RUNTIME:
         vcruntime_plat = PLAT_SPEC_TO_RUNTIME[plat_spec]
     isipokua:
-        vcruntime_plat = 'x64' if 'amd64' in plat_spec else 'x86'
+        vcruntime_plat = 'x64' if 'amd64' in plat_spec isipokua 'x86'
 
     if best_dir:
         vcredist = os.path.join(best_dir, "..", "..", "redist", "MSVC", "**",
@@ -280,7 +280,7 @@ class MSVCCompiler(CCompiler) :
         self.compile_options = [
             '/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG'
         ]
-        self.compile_options.append('/MD' if self._vcruntime_redist else '/MT')
+        self.compile_options.append('/MD' if self._vcruntime_redist isipokua '/MT')
 
         self.compile_options_debug = [
             '/nologo', '/Od', '/MDd', '/Zi', '/W3', '/D_DEBUG'

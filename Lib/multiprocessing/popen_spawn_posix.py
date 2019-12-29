@@ -58,7 +58,7 @@ kundi Popen(popen_fork.Popen):
             self.pid = util.spawnv_pitafds(spawn.get_executable(),
                                            cmd, self._fds)
             self.sentinel = parent_r
-            with open(parent_w, 'wb', closefd=Uongo) kama f:
+            ukijumuisha open(parent_w, 'wb', closefd=Uongo) kama f:
                 f.write(fp.getbuffer())
         mwishowe:
             fds_to_close = []

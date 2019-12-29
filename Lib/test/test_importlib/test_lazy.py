@@ -31,7 +31,7 @@ kundi LazyLoaderFactoryTests(unittest.TestCase):
 
     eleza test_validation(self):
         # No exec_module(), no lazy loading.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             util.LazyLoader.factory(object)
 
 
@@ -55,7 +55,7 @@ kundi TestingImporter(abc.MetaPathFinder, abc.Loader):
 kundi LazyLoaderTests(unittest.TestCase):
 
     eleza test_init(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             # Classes that don't define exec_module() trigger TypeError.
             util.LazyLoader(object)
 
@@ -79,8 +79,8 @@ kundi LazyLoaderTests(unittest.TestCase):
         # End-to-end test to verify the load ni kwenye fact lazy.
         importer = TestingImporter()
         assert importer.loaded ni Tupu
-        with test_util.uncache(importer.module_name):
-            with test_util.import_state(meta_path=[importer]):
+        ukijumuisha test_util.uncache(importer.module_name):
+            ukijumuisha test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)
         self.assertIsTupu(importer.loaded)
         # Trigger load.
@@ -126,15 +126,15 @@ kundi LazyLoaderTests(unittest.TestCase):
         self.assertUongo(hasattr(module, '__name__'))
 
     eleza test_module_substitution_error(self):
-        with test_util.uncache(TestingImporter.module_name):
+        ukijumuisha test_util.uncache(TestingImporter.module_name):
             fresh_module = types.ModuleType(TestingImporter.module_name)
             sys.modules[TestingImporter.module_name] = fresh_module
             module = self.new_module()
-            with self.assertRaisesRegex(ValueError, "substituted"):
+            ukijumuisha self.assertRaisesRegex(ValueError, "substituted"):
                 module.__name__
 
     eleza test_module_already_in_sys(self):
-        with test_util.uncache(TestingImporter.module_name):
+        ukijumuisha test_util.uncache(TestingImporter.module_name):
             module = self.new_module()
             sys.modules[TestingImporter.module_name] = module
             # Force the load; just care that no exception ni ashiriad.

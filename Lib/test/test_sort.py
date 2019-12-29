@@ -268,7 +268,7 @@ eleza check_against_PyObject_RichCompareBool(self, L):
     ## which holds kila all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
-    ## with the naive implementation, even ikiwa changes are made to any of the
+    ## ukijumuisha the naive implementation, even ikiwa changes are made to any of the
     ## richcompares.
     ##
     ## This function tests sorting kila three lists (it randomly shuffles each one):
@@ -324,12 +324,12 @@ kundi TestOptimizedCompares(unittest.TestCase):
 
         L = [WackyList1([WackyComparator(i), i]) kila i kwenye range(10)]
         elem = L[-1]
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             L.sort()
 
         L = [WackyList1([WackyComparator(i), i]) kila i kwenye range(10)]
         elem = L[-1]
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             [(x,) kila x kwenye L].sort()
 
         # The following test ni also by ppperry. It ensures that

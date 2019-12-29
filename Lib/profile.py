@@ -12,7 +12,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may sio use this file tatizo kwenye compliance with the License.
+# you may sio use this file tatizo kwenye compliance ukijumuisha the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -36,7 +36,7 @@ __all__ = ["run", "runctx", "Profile"]
 #       global i_count
 #       i_count = i_count + 1
 #       rudisha i_count
-#itimes = integer_timer # replace with C coded timer rudishaing integers
+#itimes = integer_timer # replace ukijumuisha C coded timer rudishaing integers
 
 kundi _Utils:
     """Support kundi kila utility functions which are shared by
@@ -334,7 +334,7 @@ kundi Profile:
         }
 
 
-    # The next few functions play with self.cmd. By carefully preloading
+    # The next few functions play ukijumuisha self.cmd. By carefully preloading
     # our parallel stack, we can force the profiled result to include
     # an arbitrary string kama the name of the calling function.
     # We use self.cmd kama that string, na the resulting stats look
@@ -389,7 +389,7 @@ kundi Profile:
                   print_stats()
 
     eleza dump_stats(self, file):
-        with open(file, 'wb') kama f:
+        ukijumuisha open(file, 'wb') kama f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
@@ -428,10 +428,10 @@ kundi Profile:
     eleza runcall(*args, **kw):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
+        lasivyo sio args:
             ashiria TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        elikiwa 'func' kwenye kw:
+        lasivyo 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
@@ -461,12 +461,12 @@ kundi Profile:
     #
     # Note that this difference ni only significant ikiwa there are a lot of
     # events, na relatively little user code per event.  For example,
-    # code with small functions will typically benefit kutoka having the
+    # code ukijumuisha small functions will typically benefit kutoka having the
     # profiler calibrated kila the current platform.  This *could* be
     # done on the fly during init() time, but it ni sio worth the
     # effort.  Also note that ikiwa too large a value specified, then
     # execution time on some functions will actually appear kama a
-    # negative number.  It ni *normal* kila some functions (with very
+    # negative number.  It ni *normal* kila some functions (ukijumuisha very
     # low call counts) to have such negative stats, even ikiwa the
     # calibration figure ni "correct."
     #
@@ -504,7 +504,7 @@ kundi Profile:
     eleza _calibrate_inner(self, m, verbose):
         get_time = self.get_time
 
-        # Set up a test case to be run with na without profiling.  Include
+        # Set up a test case to be run ukijumuisha na without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
         # Do sio ashiria any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
@@ -528,7 +528,7 @@ kundi Profile:
         ikiwa verbose:
             andika("elapsed time without profiling =", elapsed_noprofile)
 
-        # elapsed_profile <- time f(m) takes with profiling.  The difference
+        # elapsed_profile <- time f(m) takes ukijumuisha profiling.  The difference
         # ni profiling overhead, only some of which the profiler subtracts
         # out on its own.
         p = Profile()
@@ -537,7 +537,7 @@ kundi Profile:
         t1 = get_time()
         elapsed_profile = t1 - t0
         ikiwa verbose:
-            andika("elapsed time with profiling =", elapsed_profile)
+            andika("elapsed time ukijumuisha profiling =", elapsed_profile)
 
         # reported_time <- "CPU seconds" the profiler charged to f na f1.
         total_calls = 0.0
@@ -598,7 +598,7 @@ eleza main():
         isipokua:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            with open(progname, 'rb') kama fp:
+            ukijumuisha open(progname, 'rb') kama fp:
                 code = compile(fp.read(), progname, 'exec')
             globs = {
                 '__file__': progname,

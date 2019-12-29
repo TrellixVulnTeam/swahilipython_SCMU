@@ -442,7 +442,7 @@ byte_compile(files, optimize=%r, force=%r,
             #   cfile - byte-compiled file
             #   dfile - purported source filename (same as 'file' by default)
             if optimize >= 0:
-                opt = '' if optimize == 0 else optimize
+                opt = '' if optimize == 0 isipokua optimize
                 cfile = importlib.util.cache_from_source(
                     file, optimization=opt)
             isipokua:

@@ -15,7 +15,7 @@ kundi FinderTests(abc.FinderTests):
         importer = self.machinery.FileFinder(util.EXTENSIONS.path,
                                             (self.machinery.ExtensionFileLoader,
                                              self.machinery.EXTENSION_SUFFIXES))
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             rudisha importer.find_module(fullname)
 

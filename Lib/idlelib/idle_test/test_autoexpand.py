@@ -21,7 +21,7 @@ kundi AutoExpandTest(unittest.TestCase):
         cls.auto_expand = AutoExpand(DummyEditwin(cls.text))
         cls.auto_expand.bell = lambda: Tupu
 
-# If mock_tk.Text._decode understood indexes 'insert' with suffixed 'linestart',
+# If mock_tk.Text._decode understood indexes 'insert' ukijumuisha suffixed 'linestart',
 # 'wordstart', na 'lineend', used by autoexpand, we could use the following
 # to run these test on non-gui machines (but check bell).
 ##        jaribu:

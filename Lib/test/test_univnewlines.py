@@ -46,7 +46,7 @@ kundi TestGenericUnivNewlines:
         data = self.DATA
         ikiwa "b" kwenye self.WRITEMODE:
             data = data.encode("ascii")
-        with self.open(support.TESTFN, self.WRITEMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.WRITEMODE) kama fp:
             fp.write(data)
 
     eleza tearDown(self):
@@ -56,19 +56,19 @@ kundi TestGenericUnivNewlines:
             pita
 
     eleza test_read(self):
-        with self.open(support.TESTFN, self.READMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.READMODE) kama fp:
             data = fp.read()
         self.assertEqual(data, DATA_LF)
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     eleza test_readlines(self):
-        with self.open(support.TESTFN, self.READMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.READMODE) kama fp:
             data = fp.readlines()
         self.assertEqual(data, DATA_SPLIT)
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     eleza test_readline(self):
-        with self.open(support.TESTFN, self.READMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.READMODE) kama fp:
             data = []
             d = fp.readline()
             wakati d:
@@ -78,7 +78,7 @@ kundi TestGenericUnivNewlines:
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     eleza test_seek(self):
-        with self.open(support.TESTFN, self.READMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.READMODE) kama fp:
             fp.readline()
             pos = fp.tell()
             data = fp.readlines()
@@ -105,7 +105,7 @@ kundi TestCRLFNewlines(TestGenericUnivNewlines):
     DATA = DATA_CRLF
 
     eleza test_tell(self):
-        with self.open(support.TESTFN, self.READMODE) kama fp:
+        ukijumuisha self.open(support.TESTFN, self.READMODE) kama fp:
             self.assertEqual(repr(fp.newlines), repr(Tupu))
             data = fp.readline()
             pos = fp.tell()

@@ -30,7 +30,7 @@ _mmap_counter = itertools.count()
 
 
 eleza pipe(*, duplex=Uongo, overlapped=(Kweli, Kweli), bufsize=BUFSIZE):
-    """Like os.pipe() but with overlapped support na using handles sio fds."""
+    """Like os.pipe() but ukijumuisha overlapped support na using handles sio fds."""
     address = tempfile.mktemp(
         prefix=r'\\.\pipe\python-pipe-{:d}-{:d}-'.format(
             os.getpid(), next(_mmap_counter)))
@@ -145,7 +145,7 @@ kundi Popen(subprocess.Popen):
         ikiwa stderr == PIPE:
             stderr_rh, stderr_wh = pipe(overlapped=(Kweli, Uongo))
             stderr_wfd = msvcrt.open_osfhandle(stderr_wh, 0)
-        elikiwa stderr == STDOUT:
+        lasivyo stderr == STDOUT:
             stderr_wfd = stdout_wfd
         isipokua:
             stderr_wfd = stderr

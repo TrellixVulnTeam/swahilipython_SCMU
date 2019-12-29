@@ -132,7 +132,7 @@ kundi GeneralTests(unittest.TestCase):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(1)
-        with support.captured_stderr() kama stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             smtp.connect(HOST, self.port)
         smtp.close()
         expected = re.compile(r"^connect:", re.MULTILINE)
@@ -142,7 +142,7 @@ kundi GeneralTests(unittest.TestCase):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(2)
-        with support.captured_stderr() kama stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             smtp.connect(HOST, self.port)
         smtp.close()
         expected = re.compile(r"^\d{2}:\d{2}:\d{2}\.\d{6} connect: ",
@@ -185,7 +185,7 @@ eleza debugging_server(serv, serv_evt, client_evt):
 MSG_BEGIN = '---------- MESSAGE FOLLOWS ----------\n'
 MSG_END = '------------ END MESSAGE ------------\n'
 
-# NOTE: Some SMTP objects kwenye the tests below are created with a non-default
+# NOTE: Some SMTP objects kwenye the tests below are created ukijumuisha a non-default
 # local_hostname argument to the constructor, since (on some systems) the FQDN
 # lookup caused by the default local_hostname sometimes takes so long that the
 # test server times out, causing the test to fail.
@@ -326,7 +326,7 @@ kundi DebuggingServerTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         smtp.sendmail('John', 'Sally', m)
-        # XXX(nnorwitz): this test ni flaky na dies with a bad file descriptor
+        # XXX(nnorwitz): this test ni flaky na dies ukijumuisha a bad file descriptor
         # kwenye asyncore.  This sleep might help, but should really be fixed
         # properly by using an Event variable.
         time.sleep(0.01)
@@ -581,7 +581,7 @@ kundi DebuggingServerTests(unittest.TestCase):
         m['Resent-From'] = 'Martha <my_mom@great.cooker.com>, Jeff'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             smtp.send_message(m)
         smtp.close()
 
@@ -608,7 +608,7 @@ kundi NonConnectingTests(unittest.TestCase):
         # check that sock attribute ni present outside of a connect() call
         # (regression test, the previous behavior ashiriad an
         #  AttributeError: 'SMTP' object has no attribute 'sock')
-        with smtplib.SMTP() kama smtp:
+        ukijumuisha smtplib.SMTP() kama smtp:
             self.assertIsTupu(smtp.sock)
 
 
@@ -760,7 +760,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
                       ' authentication mechanism {!r}'.format(auth_object_name))
             rudisha
         self.smtp_state = self.AUTH
-        self.auth_object(args[1] ikiwa len(args) == 2 else Tupu)
+        self.auth_object(args[1] ikiwa len(args) == 2 isipokua Tupu)
 
     eleza _authenticated(self, user, valid):
         ikiwa valid:
@@ -790,7 +790,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
         ikiwa arg ni Tupu:
             # base64 encoded 'Username:'
             self.push('334 VXNlcm5hbWU6')
-        elikiwa sio hasattr(self, '_auth_login_user'):
+        lasivyo sio hasattr(self, '_auth_login_user'):
             self._auth_login_user = self._decode_base64(arg)
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
@@ -910,7 +910,7 @@ kundi SimSMTPServer(smtpd.SMTPServer):
 
 
 # Test various SMTP & ESMTP commands/behaviors that require a simulated server
-# (i.e., something with more features than DebuggingServer)
+# (i.e., something ukijumuisha more features than DebuggingServer)
 kundi SMTPSimTests(unittest.TestCase):
 
     eleza setUp(self):
@@ -1038,7 +1038,7 @@ kundi SMTPSimTests(unittest.TestCase):
         kila mechanism kwenye supported:
             self.serv.add_feature("AUTH {}".format(mechanism))
         kila mechanism kwenye supported:
-            with self.subTest(mechanism=mechanism):
+            ukijumuisha self.subTest(mechanism=mechanism):
                 smtp = smtplib.SMTP(HOST, self.port,
                                     local_hostname='localhost', timeout=15)
                 smtp.ehlo('foo')
@@ -1064,17 +1064,17 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp.quit()
 
     eleza test_with_statement(self):
-        with smtplib.SMTP(HOST, self.port) kama smtp:
+        ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
             code, message = smtp.noop()
             self.assertEqual(code, 250)
         self.assertRaises(smtplib.SMTPServerDisconnected, smtp.send, b'foo')
-        with smtplib.SMTP(HOST, self.port) kama smtp:
+        ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
             smtp.close()
         self.assertRaises(smtplib.SMTPServerDisconnected, smtp.send, b'foo')
 
     eleza test_with_statement_QUIT_failure(self):
-        with self.assertRaises(smtplib.SMTPResponseException) kama error:
-            with smtplib.SMTP(HOST, self.port) kama smtp:
+        ukijumuisha self.assertRaises(smtplib.SMTPResponseException) kama error:
+            ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
                 smtp.noop()
                 self.serv._SMTPchannel.quit_response = '421 QUIT FAILED'
         self.assertEqual(error.exception.smtp_code, 421)
@@ -1089,7 +1089,7 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '451 Requested action aborted'
         self.serv._SMTPchannel.disconnect = Kweli
-        with self.assertRaises(smtplib.SMTPSenderRefused):
+        ukijumuisha self.assertRaises(smtplib.SMTPSenderRefused):
             smtp.sendmail('John', 'Sally', 'test message')
         self.assertIsTupu(smtp.sock)
 
@@ -1098,7 +1098,7 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '421 closing connection'
-        with self.assertRaises(smtplib.SMTPSenderRefused):
+        ukijumuisha self.assertRaises(smtplib.SMTPSenderRefused):
             smtp.sendmail('John', 'Sally', 'test message')
         self.assertIsTupu(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
@@ -1107,7 +1107,7 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.rcpt_response = ['250 accepted', '421 closing']
-        with self.assertRaises(smtplib.SMTPRecipientsRefused) kama r:
+        ukijumuisha self.assertRaises(smtplib.SMTPRecipientsRefused) kama r:
             smtp.sendmail('John', ['Sally', 'Frank', 'George'], 'test message')
         self.assertIsTupu(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
@@ -1123,7 +1123,7 @@ kundi SMTPSimTests(unittest.TestCase):
         self.serv.channel_kundi = MySimSMTPChannel
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
-        with self.assertRaises(smtplib.SMTPDataError):
+        ukijumuisha self.assertRaises(smtplib.SMTPDataError):
             smtp.sendmail('John@foo.org', ['Sally@foo.org'], 'test message')
         self.assertIsTupu(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rcpt_count, 0)
@@ -1160,7 +1160,7 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
-        with self.assertRaises(smtplib.SMTPNotSupportedError):
+        ukijumuisha self.assertRaises(smtplib.SMTPNotSupportedError):
             smtp.send_message(msg)
 
     eleza test_name_field_not_included_in_envelop_addresses(self):
@@ -1286,7 +1286,7 @@ kundi SMTPUTF8SimTests(unittest.TestCase):
         msg['To'] = 'Dinsdale'
         msg['Subject'] = 'Nudge nudge, wink, wink \u1F609'
         # XXX I don't know why I need two \n's here, but this ni an existing
-        # bug (ikiwa it ni one) na sio a problem with the new functionality.
+        # bug (ikiwa it ni one) na sio a problem ukijumuisha the new functionality.
         msg.set_content("oh là là, know what I mean, know what I mean?\n\n")
         # XXX smtpd converts received /r/n to /n, so we can't easily test that
         # we are successfully sending /r/n :(.
@@ -1322,7 +1322,7 @@ kundi SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
         args = arg.split()
         ikiwa args[0].lower() == 'plain':
             ikiwa len(args) == 2:
-                # AUTH PLAIN <initial-response> with the response base 64
+                # AUTH PLAIN <initial-response> ukijumuisha the response base 64
                 # encoded.  Hard code the expected response kila the test.
                 ikiwa args[1] == EXPECTED_RESPONSE:
                     self.push('235 Ok')

@@ -12,7 +12,7 @@ kutoka test agiza support
 eleza to_tuple(t):
     ikiwa t ni Tupu ama isinstance(t, (str, int, complex)):
         rudisha t
-    elikiwa isinstance(t, list):
+    lasivyo isinstance(t, list):
         rudisha [to_tuple(e) kila e kwenye t]
     result = [t.__class__.__name__]
     ikiwa hasattr(t, 'lineno') na hasattr(t, 'col_offset'):
@@ -33,21 +33,21 @@ exec_tests = [
     "'module docstring'",
     # FunctionDef
     "eleza f(): pita",
-    # FunctionDef with docstring
+    # FunctionDef ukijumuisha docstring
     "eleza f(): 'function docstring'",
-    # FunctionDef with arg
+    # FunctionDef ukijumuisha arg
     "eleza f(a): pita",
-    # FunctionDef with arg na default value
+    # FunctionDef ukijumuisha arg na default value
     "eleza f(a=0): pita",
-    # FunctionDef with varargs
+    # FunctionDef ukijumuisha varargs
     "eleza f(*args): pita",
-    # FunctionDef with kwargs
+    # FunctionDef ukijumuisha kwargs
     "eleza f(**kwargs): pita",
-    # FunctionDef with all kind of args na docstring
+    # FunctionDef ukijumuisha all kind of args na docstring
     "eleza f(a, b=1, c=Tupu, d=[], e={}, *args, f=42, **kwargs): 'doc kila f()'",
     # ClassDef
     "kundi C:pita",
-    # ClassDef with docstring
+    # ClassDef ukijumuisha docstring
     "kundi C: 'docstring kila kundi C'",
     # ClassDef, new style class
     "kundi C(object): pita",
@@ -69,8 +69,8 @@ exec_tests = [
     # If
     "ikiwa v:pita",
     # With
-    "with x kama y: pita",
-    "with x kama y, z kama q: pita",
+    "ukijumuisha x kama y: pita",
+    "ukijumuisha x kama y, z kama q: pita",
     # Raise
     "ashiria Exception('string')",
     # TryExcept
@@ -93,7 +93,7 @@ exec_tests = [
     "kila v kwenye v:koma",
     # Continue
     "kila v kwenye v:endelea",
-    # kila statements with naked tuples (see http://bugs.python.org/issue6704)
+    # kila statements ukijumuisha naked tuples (see http://bugs.python.org/issue6704)
     "kila a,b kwenye c: pita",
     "kila (a,b) kwenye c: pita",
     "kila [a,b] kwenye c: pita",
@@ -111,18 +111,18 @@ exec_tests = [
     )""",
     # dictcomp
     "{a : b kila w kwenye x kila m kwenye p ikiwa g}",
-    # dictcomp with naked tuple
+    # dictcomp ukijumuisha naked tuple
     "{a : b kila v,w kwenye x}",
     # setcomp
     "{r kila l kwenye x ikiwa g}",
-    # setcomp with naked tuple
+    # setcomp ukijumuisha naked tuple
     "{r kila l,m kwenye x}",
     # AsyncFunctionDef
     "async eleza f():\n 'async function'\n await something()",
     # AsyncFor
     "async eleza f():\n async kila e kwenye i: 1\n isipokua: 2",
     # AsyncWith
-    "async eleza f():\n async with a kama b: 1",
+    "async eleza f():\n async ukijumuisha a kama b: 1",
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
@@ -134,7 +134,7 @@ exec_tests = [
     "@deco1\n@deco2()\nasync eleza f(): pita",
     # Decorated ClassDef
     "@deco1\n@deco2()\nkundi C: pita",
-    # Decorator with generator argument
+    # Decorator ukijumuisha generator argument
     "@deco(a kila a kwenye b)\neleza f(): pita",
     # Simple assignment expression
     "(a := 1)",
@@ -143,7 +143,7 @@ exec_tests = [
     "eleza f(a, /, c, d, e): pita",
     "eleza f(a, /, c, *, d, e): pita",
     "eleza f(a, /, c, *, d, e, **kwargs): pita",
-    # Positional-only arguments with defaults
+    # Positional-only arguments ukijumuisha defaults
     "eleza f(a=1, /,): pita",
     "eleza f(a=1, /, b=2, c=4): pita",
     "eleza f(a=1, /, b=2, *, c=4): pita",
@@ -154,8 +154,8 @@ exec_tests = [
 ]
 
 # These are compiled through "single"
-# because of overlap with "eval", it just tests what
-# can't be tested with "eval"
+# because of overlap ukijumuisha "eval", it just tests what
+# can't be tested ukijumuisha "eval"
 single_tests = [
     "1+2"
 ]
@@ -189,7 +189,7 @@ eval_tests = [
   "[a kila b kwenye c ikiwa d]",
   # GeneratorExp
   "(a kila b kwenye c ikiwa d)",
-  # Comprehensions with multiple kila targets
+  # Comprehensions ukijumuisha multiple kila targets
   "[(a,b) kila a,b kwenye c]",
   "[(a,b) kila (a,b) kwenye c]",
   "[(a,b) kila [a,b] kwenye c]",
@@ -205,7 +205,7 @@ eval_tests = [
   "1 < 2 < 3",
   # Call
   "f(1,2,c=3,*d,**e)",
-  # Call with a generator argument
+  # Call ukijumuisha a generator argument
   "f(a kila a kwenye b)",
   # Num
   "10",
@@ -252,7 +252,7 @@ kundi AST_Tests(unittest.TestCase):
                     first_pos = (value[0].lineno, value[0].col_offset)
                 kila child kwenye value:
                     self._assertKweliorder(child, first_pos)
-            elikiwa value ni sio Tupu:
+            lasivyo value ni sio Tupu:
                 self._assertKweliorder(value, parent_pos)
 
     eleza test_AST_objects(self):
@@ -262,10 +262,10 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(x.foobar, 42)
         self.assertEqual(x.__dict__["foobar"], 42)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.vararg
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             # "_ast.AST constructor takes 0 positional arguments"
             ast.AST(2)
 
@@ -285,11 +285,11 @@ kundi AST_Tests(unittest.TestCase):
                                     (single_tests, single_results, "single"),
                                     (eval_tests, eval_results, "eval")):
             kila i, o kwenye zip(input, output):
-                with self.subTest(action="parsing", input=i):
+                ukijumuisha self.subTest(action="parsing", input=i):
                     ast_tree = compile(i, "?", kind, ast.PyCF_ONLY_AST)
                     self.assertEqual(to_tuple(ast_tree), o)
                     self._assertKweliorder(ast_tree, (0, 0))
-                with self.subTest(action="compiling", input=i, kind=kind):
+                ukijumuisha self.subTest(action="compiling", input=i, kind=kind):
                     compile(ast_tree, "?", kind)
 
     eleza test_ast_validation(self):
@@ -335,7 +335,7 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(x._fields, ('posonlyargs', 'args', 'vararg', 'kwonlyargs',
                                      'kw_defaults', 'kwarg', 'defaults'))
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.vararg
 
         x = ast.arguments(*range(1, 8))
@@ -351,20 +351,20 @@ kundi AST_Tests(unittest.TestCase):
         x = ast.Num()
         self.assertEqual(x._fields, ('value', 'kind'))
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.value
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.n
 
         x = ast.Num(42)
         self.assertEqual(x.value, 42)
         self.assertEqual(x.n, 42)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.lineno
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             x.foobar
 
         x = ast.Num(lineno=2)
@@ -548,14 +548,14 @@ kundi AST_Tests(unittest.TestCase):
     eleza test_invalid_sum(self):
         pos = dict(lineno=2, col_offset=3)
         m = ast.Module([ast.Expr(ast.expr(**pos), **pos)], [])
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("but got <_ast.expr", str(cm.exception))
 
     eleza test_invalid_identitifer(self):
         m = ast.Module([ast.Expr(ast.Name(42, ast.Load()))], [])
         ast.fix_missing_locations(m)
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("identifier must be of type str", str(cm.exception))
 
@@ -563,7 +563,7 @@ kundi AST_Tests(unittest.TestCase):
         # Issue 16546: tuma kutoka value ni sio optional.
         empty_tuma_kutoka = ast.parse("eleza f():\n tuma kutoka g()")
         empty_tuma_kutoka.body[0].body[0].value.value = Tupu
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             compile(empty_tuma_kutoka, "<test>", "exec")
         self.assertIn("field value ni required", str(cm.exception))
 
@@ -574,7 +574,7 @@ kundi AST_Tests(unittest.TestCase):
         agiza unicodedata
         eleza bad_normalize(*args):
             rudisha Tupu
-        with support.swap_attr(unicodedata, 'normalize', bad_normalize):
+        ukijumuisha support.swap_attr(unicodedata, 'normalize', bad_normalize):
             self.assertRaises(TypeError, ast.parse, '\u03D5')
 
     eleza test_issue18374_binop_col_offset(self):
@@ -620,7 +620,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
         jaribu:
             1/0
         tatizo Exception:
-            with self.assertRaises(SyntaxError) kama e:
+            ukijumuisha self.assertRaises(SyntaxError) kama e:
                 ast.literal_eval(r"'\U'")
             self.assertIsNotTupu(e.exception.__context__)
 
@@ -839,13 +839,13 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertRaises(ValueError, ast.literal_eval, '-(3+6j)')
 
     eleza test_bad_integer(self):
-        # issue13436: Bad error message with invalid numeric values
+        # issue13436: Bad error message ukijumuisha invalid numeric values
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
                                level=Tupu,
                                lineno=Tupu, col_offset=Tupu)]
         mod = ast.Module(body, [])
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             compile(mod, 'test', 'exec')
         self.assertIn("invalid integer value: Tupu", str(cm.exception))
 
@@ -869,7 +869,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         ikiwa msg ni Tupu:
             compile(mod, "<test>", mode)
         isipokua:
-            with self.assertRaises(exc) kama cm:
+            ukijumuisha self.assertRaises(exc) kama cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
 
@@ -1022,7 +1022,7 @@ kundi ASTValidatorTests(unittest.TestCase):
 
     eleza test_ashiria(self):
         r = ast.Raise(Tupu, ast.Num(3))
-        self.stmt(r, "Raise with cause but no exception")
+        self.stmt(r, "Raise ukijumuisha cause but no exception")
         r = ast.Raise(ast.Name("x", ast.Store()), Tupu)
         self.stmt(r, "must have Load context")
         r = ast.Raise(ast.Num(4), ast.Name("x", ast.Store()))
@@ -1113,7 +1113,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.expr(s, "must have Load context")
 
     eleza _check_comprehension(self, fac):
-        self.expr(fac([]), "comprehension with no generators")
+        self.expr(fac([]), "comprehension ukijumuisha no generators")
         g = ast.comprehension(ast.Name("x", ast.Load()),
                               ast.Name("x", ast.Load()), [], 0)
         self.expr(fac([g]), "must have Store context")
@@ -1246,9 +1246,9 @@ kundi ASTValidatorTests(unittest.TestCase):
         tests = [fn kila fn kwenye os.listdir(stdlib) ikiwa fn.endswith(".py")]
         tests.extend(["test/test_grammar.py", "test/test_unpack_ex.py"])
         kila module kwenye tests:
-            with self.subTest(module):
+            ukijumuisha self.subTest(module):
                 fn = os.path.join(stdlib, module)
-                with open(fn, "r", encoding="utf-8") kama fp:
+                ukijumuisha open(fn, "r", encoding="utf-8") kama fp:
                     source = fp.read()
                 mod = ast.parse(source, fn)
                 compile(mod, fn, "exec")
@@ -1272,14 +1272,14 @@ kundi ConstantTests(unittest.TestCase):
         rudisha ns['x']
 
     eleza test_validation(self):
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             self.compile_constant([1, 2, 3])
         self.assertEqual(str(cm.exception),
                          "got an invalid type kwenye Constant: list")
 
     eleza test_singletons(self):
         kila const kwenye (Tupu, Uongo, Kweli, Ellipsis, b'', frozenset()):
-            with self.subTest(const=const):
+            ukijumuisha self.subTest(const=const):
                 value = self.compile_constant(const)
                 self.assertIs(value, const)
 
@@ -1294,7 +1294,7 @@ kundi ConstantTests(unittest.TestCase):
                   tuple("tuple"), frozenset("frozenset"),
                   nested_tuple, nested_frozenset)
         kila value kwenye values:
-            with self.subTest(value=value):
+            ukijumuisha self.subTest(value=value):
                 result = self.compile_constant(value)
                 self.assertEqual(result, value)
 
@@ -1306,7 +1306,7 @@ kundi ConstantTests(unittest.TestCase):
         ast.copy_location(new_target, target)
         tree.body[0].targets[0] = new_target
 
-        with self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             compile(tree, "string", "exec")
         self.assertEqual(str(cm.exception),
                          "expression which can't be assigned "
@@ -1345,7 +1345,7 @@ kundi ConstantTests(unittest.TestCase):
         self.assertEqual(self.get_load_const(tree),
                          consts)
 
-        # Replace expression nodes with constants
+        # Replace expression nodes ukijumuisha constants
         kila assign, const kwenye zip(tree.body, consts):
             assert isinstance(assign, ast.Assign), ast.dump(assign)
             new_node = ast.Constant(value=const)
@@ -1484,7 +1484,7 @@ kundi EndPositionTests(unittest.TestCase):
 
             ikiwa one():
                 x = Tupu
-            elikiwa other():
+            lasivyo other():
                 y = Tupu
             isipokua:
                 z = Tupu
@@ -1717,7 +1717,7 @@ kundi NodeVisitorTests(unittest.TestCase):
             '''))
         visitor = Visitor()
         log = []
-        with warnings.catch_warnings(record=Kweli) kama wlog:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama wlog:
             warnings.filterwarnings('always', '', PendingDeprecationWarning)
             visitor.visit(mod)
         self.assertEqual(log, [

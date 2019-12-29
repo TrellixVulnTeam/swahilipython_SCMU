@@ -43,7 +43,7 @@ kundi TestSupport(unittest.TestCase):
         self.assertNotIn("sched", sys.modules)
 
     eleza test_unlink(self):
-        with open(TESTFN, "w") kama f:
+        ukijumuisha open(TESTFN, "w") kama f:
             pita
         support.unlink(TESTFN)
         self.assertUongo(os.path.exists(TESTFN))
@@ -56,26 +56,26 @@ kundi TestSupport(unittest.TestCase):
         os.mkdir(subdirpath)
         support.rmtree(dirpath)
         self.assertUongo(os.path.exists(dirpath))
-        with support.swap_attr(support, 'verbose', 0):
+        ukijumuisha support.swap_attr(support, 'verbose', 0):
             support.rmtree(dirpath)
 
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os.chmod(dirpath, stat.S_IRUSR|stat.S_IXUSR)
-        with support.swap_attr(support, 'verbose', 0):
+        ukijumuisha support.swap_attr(support, 'verbose', 0):
             support.rmtree(dirpath)
         self.assertUongo(os.path.exists(dirpath))
 
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os.chmod(dirpath, 0)
-        with support.swap_attr(support, 'verbose', 0):
+        ukijumuisha support.swap_attr(support, 'verbose', 0):
             support.rmtree(dirpath)
         self.assertUongo(os.path.exists(dirpath))
 
     eleza test_forget(self):
         mod_filename = TESTFN + '.py'
-        with open(mod_filename, 'w') kama f:
+        ukijumuisha open(mod_filename, 'w') kama f:
             andika('foo = 1', file=f)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
@@ -115,7 +115,7 @@ kundi TestSupport(unittest.TestCase):
         jaribu:
             path = os.path.join(parent_dir, 'temp')
             self.assertUongo(os.path.isdir(path))
-            with support.temp_dir(path) kama temp_path:
+            ukijumuisha support.temp_dir(path) kama temp_path:
                 self.assertEqual(temp_path, path)
                 self.assertKweli(os.path.isdir(path))
             self.assertUongo(os.path.isdir(path))
@@ -124,14 +124,14 @@ kundi TestSupport(unittest.TestCase):
 
     eleza test_temp_dir__path_none(self):
         """Test pitaing no path."""
-        with support.temp_dir() kama temp_path:
+        ukijumuisha support.temp_dir() kama temp_path:
             self.assertKweli(os.path.isdir(temp_path))
         self.assertUongo(os.path.isdir(temp_path))
 
     eleza test_temp_dir__existing_dir__quiet_default(self):
         """Test pitaing a directory that already exists."""
         eleza call_temp_dir(path):
-            with support.temp_dir(path) kama temp_path:
+            ukijumuisha support.temp_dir(path) kama temp_path:
                 ashiria Exception("should sio get here")
 
         path = tempfile.mkdtemp()
@@ -145,13 +145,13 @@ kundi TestSupport(unittest.TestCase):
             shutil.rmtree(path)
 
     eleza test_temp_dir__existing_dir__quiet_true(self):
-        """Test pitaing a directory that already exists with quiet=Kweli."""
+        """Test pitaing a directory that already exists ukijumuisha quiet=Kweli."""
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
 
         jaribu:
-            with support.check_warnings() kama recorder:
-                with support.temp_dir(path, quiet=Kweli) kama temp_path:
+            ukijumuisha support.check_warnings() kama recorder:
+                ukijumuisha support.temp_dir(path, quiet=Kweli) kama temp_path:
                     self.assertEqual(path, temp_path)
                 warnings = [str(w.message) kila w kwenye recorder.warnings]
             # Make sure temp_dir did sio delete the original directory.
@@ -173,7 +173,7 @@ kundi TestSupport(unittest.TestCase):
         script_helper.assert_python_ok("-c", textwrap.dedent("""
             agiza os
             kutoka test agiza support
-            with support.temp_cwd() kama temp_path:
+            ukijumuisha support.temp_cwd() kama temp_path:
                 pid = os.fork()
                 ikiwa pid != 0:
                     # parent process (child has pid == 0)
@@ -181,7 +181,7 @@ kundi TestSupport(unittest.TestCase):
                     # wait kila the child to terminate
                     (pid, status) = os.waitpid(pid, 0)
                     ikiwa status != 0:
-                        ashiria AssertionError(f"Child process failed with exit "
+                        ashiria AssertionError(f"Child process failed ukijumuisha exit "
                                              f"status indication 0x{status:x}.")
 
                     # Make sure that temp_path ni still present. When the child
@@ -197,8 +197,8 @@ kundi TestSupport(unittest.TestCase):
     eleza test_change_cwd(self):
         original_cwd = os.getcwd()
 
-        with support.temp_dir() kama temp_path:
-            with support.change_cwd(temp_path) kama new_cwd:
+        ukijumuisha support.temp_dir() kama temp_path:
+            ukijumuisha support.change_cwd(temp_path) kama new_cwd:
                 self.assertEqual(new_cwd, temp_path)
                 self.assertEqual(os.getcwd(), new_cwd)
 
@@ -209,10 +209,10 @@ kundi TestSupport(unittest.TestCase):
         original_cwd = os.getcwd()
 
         eleza call_change_cwd(path):
-            with support.change_cwd(path) kama new_cwd:
+            ukijumuisha support.change_cwd(path) kama new_cwd:
                 ashiria Exception("should sio get here")
 
-        with support.temp_dir() kama parent_dir:
+        ukijumuisha support.temp_dir() kama parent_dir:
             non_existent_dir = os.path.join(parent_dir, 'does_not_exist')
             self.assertRaises(FileNotFoundError, call_change_cwd,
                               non_existent_dir)
@@ -220,13 +220,13 @@ kundi TestSupport(unittest.TestCase):
         self.assertEqual(os.getcwd(), original_cwd)
 
     eleza test_change_cwd__non_existent_dir__quiet_true(self):
-        """Test pitaing a non-existent directory with quiet=Kweli."""
+        """Test pitaing a non-existent directory ukijumuisha quiet=Kweli."""
         original_cwd = os.getcwd()
 
-        with support.temp_dir() kama parent_dir:
+        ukijumuisha support.temp_dir() kama parent_dir:
             bad_dir = os.path.join(parent_dir, 'does_not_exist')
-            with support.check_warnings() kama recorder:
-                with support.change_cwd(bad_dir, quiet=Kweli) kama new_cwd:
+            ukijumuisha support.check_warnings() kama recorder:
+                ukijumuisha support.change_cwd(bad_dir, quiet=Kweli) kama new_cwd:
                     self.assertEqual(new_cwd, original_cwd)
                     self.assertEqual(os.getcwd(), new_cwd)
                 warnings = [str(w.message) kila w kwenye recorder.warnings]
@@ -243,8 +243,8 @@ kundi TestSupport(unittest.TestCase):
     eleza test_change_cwd__chdir_warning(self):
         """Check the warning message when os.chdir() fails."""
         path = TESTFN + '_does_not_exist'
-        with support.check_warnings() kama recorder:
-            with support.change_cwd(path=path, quiet=Kweli):
+        ukijumuisha support.check_warnings() kama recorder:
+            ukijumuisha support.change_cwd(path=path, quiet=Kweli):
                 pita
             messages = [str(w.message) kila w kwenye recorder.warnings]
 
@@ -259,7 +259,7 @@ kundi TestSupport(unittest.TestCase):
 
     eleza test_temp_cwd(self):
         here = os.getcwd()
-        with support.temp_cwd(name=TESTFN):
+        ukijumuisha support.temp_cwd(name=TESTFN):
             self.assertEqual(os.path.basename(os.getcwd()), TESTFN)
         self.assertUongo(os.path.exists(TESTFN))
         self.assertEqual(os.getcwd(), here)
@@ -268,7 +268,7 @@ kundi TestSupport(unittest.TestCase):
     eleza test_temp_cwd__name_none(self):
         """Test pitaing Tupu to temp_cwd()."""
         original_cwd = os.getcwd()
-        with support.temp_cwd(name=Tupu) kama new_cwd:
+        ukijumuisha support.temp_cwd(name=Tupu) kama new_cwd:
             self.assertNotEqual(new_cwd, original_cwd)
             self.assertKweli(os.path.isdir(new_cwd))
             self.assertEqual(os.getcwd(), new_cwd)
@@ -279,39 +279,39 @@ kundi TestSupport(unittest.TestCase):
 
     eleza test_make_bad_fd(self):
         fd = support.make_bad_fd()
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             os.write(fd, b"foo")
         self.assertEqual(cm.exception.errno, errno.EBADF)
 
     eleza test_check_syntax_error(self):
         support.check_syntax_error(self, "eleza class", lineno=1, offset=5)
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             support.check_syntax_error(self, "x=1")
 
     eleza test_CleanImport(self):
         agiza importlib
-        with support.CleanImport("asyncore"):
+        ukijumuisha support.CleanImport("asyncore"):
             importlib.import_module("asyncore")
 
     eleza test_DirsOnSysPath(self):
-        with support.DirsOnSysPath('foo', 'bar'):
+        ukijumuisha support.DirsOnSysPath('foo', 'bar'):
             self.assertIn("foo", sys.path)
             self.assertIn("bar", sys.path)
         self.assertNotIn("foo", sys.path)
         self.assertNotIn("bar", sys.path)
 
     eleza test_captured_stdout(self):
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             andika("hello")
         self.assertEqual(stdout.getvalue(), "hello\n")
 
     eleza test_captured_stderr(self):
-        with support.captured_stderr() kama stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             andika("hello", file=sys.stderr)
         self.assertEqual(stderr.getvalue(), "hello\n")
 
     eleza test_captured_stdin(self):
-        with support.captured_stdin() kama stdin:
+        ukijumuisha support.captured_stdin() kama stdin:
             stdin.write('hello\n')
             stdin.seek(0)
             # call test code that consumes kutoka sys.stdin
@@ -329,29 +329,29 @@ kundi TestSupport(unittest.TestCase):
             pita
         obj = Obj()
         obj.x = 1
-        with support.swap_attr(obj, "x", 5) kama x:
+        ukijumuisha support.swap_attr(obj, "x", 5) kama x:
             self.assertEqual(obj.x, 5)
             self.assertEqual(x, 1)
         self.assertEqual(obj.x, 1)
-        with support.swap_attr(obj, "y", 5) kama y:
+        ukijumuisha support.swap_attr(obj, "y", 5) kama y:
             self.assertEqual(obj.y, 5)
             self.assertIsTupu(y)
         self.assertUongo(hasattr(obj, 'y'))
-        with support.swap_attr(obj, "y", 5):
+        ukijumuisha support.swap_attr(obj, "y", 5):
             toa obj.y
         self.assertUongo(hasattr(obj, 'y'))
 
     eleza test_swap_item(self):
         D = {"x":1}
-        with support.swap_item(D, "x", 5) kama x:
+        ukijumuisha support.swap_item(D, "x", 5) kama x:
             self.assertEqual(D["x"], 5)
             self.assertEqual(x, 1)
         self.assertEqual(D["x"], 1)
-        with support.swap_item(D, "y", 5) kama y:
+        ukijumuisha support.swap_item(D, "y", 5) kama y:
             self.assertEqual(D["y"], 5)
             self.assertIsTupu(y)
         self.assertNotIn("y", D)
-        with support.swap_item(D, "y", 5):
+        ukijumuisha support.swap_item(D, "y", 5):
             toa D["y"]
         self.assertNotIn("y", D)
 
@@ -433,7 +433,7 @@ kundi TestSupport(unittest.TestCase):
                 ikiwa time.monotonic() > deadline:
                     self.fail("timeout")
 
-                with contextlib.redirect_stderr(stderr):
+                ukijumuisha contextlib.redirect_stderr(stderr):
                     support.reap_children()
 
                 # Use environment_altered to check ikiwa reap_children() found
@@ -498,7 +498,7 @@ kundi TestSupport(unittest.TestCase):
             ['-X', 'tracemalloc'],
             ['-X', 'tracemalloc=3'],
         ):
-            with self.subTest(opts=opts):
+            ukijumuisha self.subTest(opts=opts):
                 self.check_options(opts, 'args_kutoka_interpreter_flags')
 
         self.check_options(['-I', '-E', '-s'], 'args_kutoka_interpreter_flags',
@@ -513,7 +513,7 @@ kundi TestSupport(unittest.TestCase):
             ['-OO'],
             ['-OOOO'],
         ):
-            with self.subTest(opts=opts):
+            ukijumuisha self.subTest(opts=opts):
                 self.check_options(opts, 'optim_args_kutoka_interpreter_flags')
 
     eleza test_match_test(self):
@@ -527,7 +527,7 @@ kundi TestSupport(unittest.TestCase):
         test_access = Test('test.test_os.FileTests.test_access')
         test_chdir = Test('test.test_os.Win32ErrorTests.test_chdir')
 
-        with support.swap_attr(support, '_match_test_func', Tupu):
+        ukijumuisha support.swap_attr(support, '_match_test_func', Tupu):
             # match all
             support.set_match_tests([])
             self.assertKweli(support.match_test(test_access))

@@ -23,7 +23,7 @@ kundi LargeFileTest:
         isipokua:
             mode = 'w+b'
 
-        with self.open(TESTFN, mode) kama f:
+        ukijumuisha self.open(TESTFN, mode) kama f:
             current_size = os.fstat(f.fileno())[stat.ST_SIZE]
             ikiwa current_size == size+1:
                 rudisha
@@ -39,18 +39,18 @@ kundi LargeFileTest:
 
     @classmethod
     eleza tearDownClass(cls):
-        with cls.open(TESTFN, 'wb'):
+        ukijumuisha cls.open(TESTFN, 'wb'):
             pita
         ikiwa sio os.stat(TESTFN)[stat.ST_SIZE] == 0:
             ashiria cls.failureException('File was sio truncated by opening '
-                                       'with mode "wb"')
+                                       'ukijumuisha mode "wb"')
 
     # _pyio.FileIO.readall() uses a temporary bytearray then casted to bytes,
     # so memuse=2 ni needed
     @bigmemtest(size=size, memuse=2, dry_run=Uongo)
     eleza test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does sio fail.
-        with self.open(TESTFN, "rb") kama f:
+        ukijumuisha self.open(TESTFN, "rb") kama f:
             self.assertEqual(len(f.read()), size + 1)
             self.assertEqual(f.tell(), size + 1)
 
@@ -58,7 +58,7 @@ kundi LargeFileTest:
         self.assertEqual(os.stat(TESTFN)[stat.ST_SIZE], size+1)
 
     eleza test_seek_read(self):
-        with self.open(TESTFN, 'rb') kama f:
+        ukijumuisha self.open(TESTFN, 'rb') kama f:
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(1), b'z')
             self.assertEqual(f.tell(), 1)
@@ -89,7 +89,7 @@ kundi LargeFileTest:
             self.assertEqual(f.tell(), 1)
 
     eleza test_lseek(self):
-        with self.open(TESTFN, 'rb') kama f:
+        ukijumuisha self.open(TESTFN, 'rb') kama f:
             self.assertEqual(os.lseek(f.fileno(), 0, 0), 0)
             self.assertEqual(os.lseek(f.fileno(), 42, 0), 42)
             self.assertEqual(os.lseek(f.fileno(), 42, 1), 84)
@@ -102,20 +102,20 @@ kundi LargeFileTest:
             self.assertEqual(f.read(1), b'a')
 
     eleza test_truncate(self):
-        with self.open(TESTFN, 'r+b') kama f:
+        ukijumuisha self.open(TESTFN, 'r+b') kama f:
             ikiwa sio hasattr(f, 'truncate'):
                 ashiria unittest.SkipTest("open().truncate() sio available "
                                         "on this system")
             f.seek(0, 2)
-            # else we've lost track of the true size
+            # isipokua we've lost track of the true size
             self.assertEqual(f.tell(), size+1)
-            # Cut it back via seek + truncate with no argument.
+            # Cut it back via seek + truncate ukijumuisha no argument.
             newsize = size - 10
             f.seek(newsize)
             f.truncate()
-            self.assertEqual(f.tell(), newsize)  # else pointer moved
+            self.assertEqual(f.tell(), newsize)  # isipokua pointer moved
             f.seek(0, 2)
-            self.assertEqual(f.tell(), newsize)  # else wasn't truncated
+            self.assertEqual(f.tell(), newsize)  # isipokua wasn't truncated
             # Ensure that truncate(smaller than true size) shrinks
             # the file.
             newsize -= 1
@@ -128,15 +128,15 @@ kundi LargeFileTest:
             # across platform; cut it waaaaay back
             f.seek(0)
             f.truncate(1)
-            self.assertEqual(f.tell(), 0)       # else pointer moved
+            self.assertEqual(f.tell(), 0)       # isipokua pointer moved
             f.seek(0)
-            self.assertEqual(len(f.read()), 1)  # else wasn't truncated
+            self.assertEqual(len(f.read()), 1)  # isipokua wasn't truncated
 
     eleza test_seekable(self):
         # Issue #5016; seekable() can rudisha Uongo when the current position
         # ni negative when truncated to an int.
         kila pos kwenye (2**31-1, 2**31, 2**31+1):
-            with self.open(TESTFN, 'rb') kama f:
+            ukijumuisha self.open(TESTFN, 'rb') kama f:
                 f.seek(pos)
                 self.assertKweli(f.seekable())
 

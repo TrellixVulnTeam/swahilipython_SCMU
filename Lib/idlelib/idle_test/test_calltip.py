@@ -56,7 +56,7 @@ kundi Get_argspecTest(unittest.TestCase):
         # Python kundi that inherits builtin methods
         kundi List(list): "List() doc"
 
-        # Simulate builtin with no docstring kila default tip test
+        # Simulate builtin ukijumuisha no docstring kila default tip test
         kundi SB:  __call__ = Tupu
 
         ikiwa List.__doc__ ni sio Tupu:
@@ -128,7 +128,7 @@ non-overlapping occurrences o...''')
                "bbbbbbbbbbbbbbbbbbbbbb')"
 
         kila func,doc kwenye [(foo, sfoo), (bar, sbar), (baz, sbaz)]:
-            with self.subTest(func=func, doc=doc):
+            ukijumuisha self.subTest(func=func, doc=doc):
                 self.assertEqual(get_spec(func), doc)
 
     eleza test_docline_truncation(self):
@@ -147,7 +147,7 @@ non-overlapping occurrences o...''')
 bytes(iterable_of_ints) -> bytes
 bytes(string, encoding[, errors]) -> bytes
 bytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer
-bytes(int) -> bytes object of size given by the parameter initialized with null bytes
+bytes(int) -> bytes object of size given by the parameter initialized ukijumuisha null bytes
 bytes() -> empty bytes object''')
 
         # Test more than max lines
@@ -167,26 +167,26 @@ bytes() -> empty bytes object''')
         eleza t5(a, b=Tupu, *args, **kw): 'doc'
         t5.tip = "(a, b=Tupu, *args, **kw)"
 
-        doc = '\ndoc' ikiwa t1.__doc__ ni sio Tupu else ''
+        doc = '\ndoc' ikiwa t1.__doc__ ni sio Tupu isipokua ''
         kila func kwenye (t1, t2, t3, t4, t5, TC):
-            with self.subTest(func=func):
+            ukijumuisha self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     eleza test_methods(self):
-        doc = '\ndoc' ikiwa TC.__doc__ ni sio Tupu else ''
+        doc = '\ndoc' ikiwa TC.__doc__ ni sio Tupu isipokua ''
         kila meth kwenye (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
-            with self.subTest(meth=meth):
+            ukijumuisha self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
         self.assertEqual(get_spec(TC.cm), "(a)" + doc)
         self.assertEqual(get_spec(TC.sm), "(b)" + doc)
 
     eleza test_bound_methods(self):
         # test that first parameter ni correctly removed kutoka argspec
-        doc = '\ndoc' ikiwa TC.__doc__ ni sio Tupu else ''
+        doc = '\ndoc' ikiwa TC.__doc__ ni sio Tupu isipokua ''
         kila meth, mtip  kwenye ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
-            with self.subTest(meth=meth, mtip=mtip):
+            ukijumuisha self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip + doc)
 
     eleza test_starred_parameter(self):
@@ -195,7 +195,7 @@ bytes() -> empty bytes object''')
             eleza m1(*args): pita
         c = C()
         kila meth, mtip  kwenye ((C.m1, '(*args)'), (c.m1, "(*args)"),):
-            with self.subTest(meth=meth, mtip=mtip):
+            ukijumuisha self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     eleza test_invalid_method_get_spec(self):
@@ -216,7 +216,7 @@ bytes() -> empty bytes object''')
 
     eleza test_no_docstring(self):
         kila meth, mtip kwenye ((TC.nd, "(self)"), (tc.nd, "()")):
-            with self.subTest(meth=meth, mtip=mtip):
+            ukijumuisha self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     eleza test_attribute_exception(self):
@@ -233,12 +233,12 @@ bytes() -> empty bytes object''')
         kila meth, mtip  kwenye ((NoCall, default_tip), (CallA, default_tip),
                             (NoCall(), ''), (CallA(), '(a, b, c)'),
                             (CallB(), '(ci)')):
-            with self.subTest(meth=meth, mtip=mtip):
+            ukijumuisha self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     eleza test_non_callables(self):
         kila obj kwenye (0, 0.0, '0', b'0', [], {}):
-            with self.subTest(obj=obj):
+            ukijumuisha self.subTest(obj=obj):
                 self.assertEqual(get_spec(obj), '')
 
 

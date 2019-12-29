@@ -87,7 +87,7 @@ kundi GetKeysDialog(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    ikiwa sio _htest else 150)
+                    ikiwa sio _htest isipokua 150)
                 ) )  # Center dialog over parent (or below htest box).
         ikiwa sio _utest:
             self.deiconify()  # Geometry set, unhide.
@@ -285,17 +285,17 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        elikiwa (not modifiers
+        lasivyo (not modifiers
               na final_key haiko kwenye FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
-        elikiwa (modifiers == ['Shift']) \
+        lasivyo (modifiers == ['Shift']) \
                  na (final_key sio in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may sio be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        elikiwa keys kwenye key_sequences:
+        lasivyo keys kwenye key_sequences:
             msg = 'This key combination ni already kwenye use.'
             self.showerror(title=title, parent=self, message=msg)
         isipokua:
@@ -303,7 +303,7 @@ kundi GetKeysDialog(Toplevel):
         rudisha Uongo
 
     eleza bind_ok(self, keys):
-        "Return Kweli ikiwa Tcl accepts the new keys else show message."
+        "Return Kweli ikiwa Tcl accepts the new keys isipokua show message."
         jaribu:
             binding = self.bind(keys, lambda: Tupu)
         tatizo TclError kama err:

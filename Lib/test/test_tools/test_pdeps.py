@@ -17,14 +17,14 @@ kundi PdepsTests(unittest.TestCase):
 
     eleza test_process_errors(self):
         # Issue #14492: m_agiza.match(line) can be Tupu.
-        with tempfile.TemporaryDirectory() kama tmpdir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
             fn = os.path.join(tmpdir, 'foo')
-            with open(fn, 'w') kama stream:
+            ukijumuisha open(fn, 'w') kama stream:
                 stream.write("#!/this/will/fail")
             self.pdeps.process(fn, {})
 
     eleza test_inverse_attribute_error(self):
-        # Issue #14492: this used to fail with an AttributeError.
+        # Issue #14492: this used to fail ukijumuisha an AttributeError.
         self.pdeps.inverse({'a': []})
 
 

@@ -503,10 +503,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[0]) && PyBytes_GET_SIZE(args[0]) == 1) {
         a = PyBytes_AS_STRING(args[0])[0];
     }
-    else ikiwa (PyByteArray_Check(args[0]) && PyByteArray_GET_SIZE(args[0]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[0]) && PyByteArray_GET_SIZE(args[0]) == 1) {
         a = PyByteArray_AS_STRING(args[0])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 1", "a byte string of length 1", args[0]);
         goto exit;
     }
@@ -516,10 +516,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[1]) && PyBytes_GET_SIZE(args[1]) == 1) {
         b = PyBytes_AS_STRING(args[1])[0];
     }
-    else ikiwa (PyByteArray_Check(args[1]) && PyByteArray_GET_SIZE(args[1]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[1]) && PyByteArray_GET_SIZE(args[1]) == 1) {
         b = PyByteArray_AS_STRING(args[1])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 2", "a byte string of length 1", args[1]);
         goto exit;
     }
@@ -529,10 +529,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[2]) && PyBytes_GET_SIZE(args[2]) == 1) {
         c = PyBytes_AS_STRING(args[2])[0];
     }
-    else ikiwa (PyByteArray_Check(args[2]) && PyByteArray_GET_SIZE(args[2]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[2]) && PyByteArray_GET_SIZE(args[2]) == 1) {
         c = PyByteArray_AS_STRING(args[2])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 3", "a byte string of length 1", args[2]);
         goto exit;
     }
@@ -542,10 +542,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[3]) && PyBytes_GET_SIZE(args[3]) == 1) {
         d = PyBytes_AS_STRING(args[3])[0];
     }
-    else ikiwa (PyByteArray_Check(args[3]) && PyByteArray_GET_SIZE(args[3]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[3]) && PyByteArray_GET_SIZE(args[3]) == 1) {
         d = PyByteArray_AS_STRING(args[3])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 4", "a byte string of length 1", args[3]);
         goto exit;
     }
@@ -555,10 +555,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[4]) && PyBytes_GET_SIZE(args[4]) == 1) {
         e = PyBytes_AS_STRING(args[4])[0];
     }
-    else ikiwa (PyByteArray_Check(args[4]) && PyByteArray_GET_SIZE(args[4]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[4]) && PyByteArray_GET_SIZE(args[4]) == 1) {
         e = PyByteArray_AS_STRING(args[4])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 5", "a byte string of length 1", args[4]);
         goto exit;
     }
@@ -568,10 +568,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[5]) && PyBytes_GET_SIZE(args[5]) == 1) {
         f = PyBytes_AS_STRING(args[5])[0];
     }
-    else ikiwa (PyByteArray_Check(args[5]) && PyByteArray_GET_SIZE(args[5]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[5]) && PyByteArray_GET_SIZE(args[5]) == 1) {
         f = PyByteArray_AS_STRING(args[5])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 6", "a byte string of length 1", args[5]);
         goto exit;
     }
@@ -581,10 +581,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[6]) && PyBytes_GET_SIZE(args[6]) == 1) {
         g = PyBytes_AS_STRING(args[6])[0];
     }
-    else ikiwa (PyByteArray_Check(args[6]) && PyByteArray_GET_SIZE(args[6]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[6]) && PyByteArray_GET_SIZE(args[6]) == 1) {
         g = PyByteArray_AS_STRING(args[6])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 7", "a byte string of length 1", args[6]);
         goto exit;
     }
@@ -594,10 +594,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[7]) && PyBytes_GET_SIZE(args[7]) == 1) {
         h = PyBytes_AS_STRING(args[7])[0];
     }
-    else ikiwa (PyByteArray_Check(args[7]) && PyByteArray_GET_SIZE(args[7]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[7]) && PyByteArray_GET_SIZE(args[7]) == 1) {
         h = PyByteArray_AS_STRING(args[7])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 8", "a byte string of length 1", args[7]);
         goto exit;
     }
@@ -607,10 +607,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[8]) && PyBytes_GET_SIZE(args[8]) == 1) {
         i = PyBytes_AS_STRING(args[8])[0];
     }
-    else ikiwa (PyByteArray_Check(args[8]) && PyByteArray_GET_SIZE(args[8]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[8]) && PyByteArray_GET_SIZE(args[8]) == 1) {
         i = PyByteArray_AS_STRING(args[8])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 9", "a byte string of length 1", args[8]);
         goto exit;
     }
@@ -620,10 +620,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[9]) && PyBytes_GET_SIZE(args[9]) == 1) {
         j = PyBytes_AS_STRING(args[9])[0];
     }
-    else ikiwa (PyByteArray_Check(args[9]) && PyByteArray_GET_SIZE(args[9]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[9]) && PyByteArray_GET_SIZE(args[9]) == 1) {
         j = PyByteArray_AS_STRING(args[9])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 10", "a byte string of length 1", args[9]);
         goto exit;
     }
@@ -633,10 +633,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[10]) && PyBytes_GET_SIZE(args[10]) == 1) {
         k = PyBytes_AS_STRING(args[10])[0];
     }
-    else ikiwa (PyByteArray_Check(args[10]) && PyByteArray_GET_SIZE(args[10]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[10]) && PyByteArray_GET_SIZE(args[10]) == 1) {
         k = PyByteArray_AS_STRING(args[10])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 11", "a byte string of length 1", args[10]);
         goto exit;
     }
@@ -646,10 +646,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[11]) && PyBytes_GET_SIZE(args[11]) == 1) {
         l = PyBytes_AS_STRING(args[11])[0];
     }
-    else ikiwa (PyByteArray_Check(args[11]) && PyByteArray_GET_SIZE(args[11]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[11]) && PyByteArray_GET_SIZE(args[11]) == 1) {
         l = PyByteArray_AS_STRING(args[11])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 12", "a byte string of length 1", args[11]);
         goto exit;
     }
@@ -659,10 +659,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[12]) && PyBytes_GET_SIZE(args[12]) == 1) {
         m = PyBytes_AS_STRING(args[12])[0];
     }
-    else ikiwa (PyByteArray_Check(args[12]) && PyByteArray_GET_SIZE(args[12]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[12]) && PyByteArray_GET_SIZE(args[12]) == 1) {
         m = PyByteArray_AS_STRING(args[12])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 13", "a byte string of length 1", args[12]);
         goto exit;
     }
@@ -672,10 +672,10 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyBytes_Check(args[13]) && PyBytes_GET_SIZE(args[13]) == 1) {
         n = PyBytes_AS_STRING(args[13])[0];
     }
-    else ikiwa (PyByteArray_Check(args[13]) && PyByteArray_GET_SIZE(args[13]) == 1) {
+    isipokua ikiwa (PyByteArray_Check(args[13]) && PyByteArray_GET_SIZE(args[13]) == 1) {
         n = PyByteArray_AS_STRING(args[13])[0];
     }
-    else {
+    isipokua {
         _PyArg_BadArgument("test_char_converter", "argument 14", "a byte string of length 1", args[13]);
         goto exit;
     }
@@ -739,17 +739,17 @@ test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t
         ikiwa (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        else ikiwa (ival < 0) {
+        isipokua ikiwa (ival < 0) {
             PyErr_SetString(PyExc_OverflowError,
                             "unsigned byte integer ni less than minimum");
             goto exit;
         }
-        else ikiwa (ival > UCHAR_MAX) {
+        isipokua ikiwa (ival > UCHAR_MAX) {
             PyErr_SetString(PyExc_OverflowError,
                             "unsigned byte integer ni greater than maximum");
             goto exit;
         }
-        else {
+        isipokua {
             a = (unsigned char) ival;
         }
     }
@@ -766,17 +766,17 @@ test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t
         ikiwa (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        else ikiwa (ival < 0) {
+        isipokua ikiwa (ival < 0) {
             PyErr_SetString(PyExc_OverflowError,
                             "unsigned byte integer ni less than minimum");
             goto exit;
         }
-        else ikiwa (ival > UCHAR_MAX) {
+        isipokua ikiwa (ival > UCHAR_MAX) {
             PyErr_SetString(PyExc_OverflowError,
                             "unsigned byte integer ni greater than maximum");
             goto exit;
         }
-        else {
+        isipokua {
             b = (unsigned char) ival;
         }
     }
@@ -793,7 +793,7 @@ test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t
         ikiwa (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        else {
+        isipokua {
             c = (unsigned char) ival;
         }
     }
@@ -851,17 +851,17 @@ test_short_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         ikiwa (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        else ikiwa (ival < SHRT_MIN) {
+        isipokua ikiwa (ival < SHRT_MIN) {
             PyErr_SetString(PyExc_OverflowError,
                             "signed short integer ni less than minimum");
             goto exit;
         }
-        else ikiwa (ival > SHRT_MAX) {
+        isipokua ikiwa (ival > SHRT_MAX) {
             PyErr_SetString(PyExc_OverflowError,
                             "signed short integer ni greater than maximum");
             goto exit;
         }
-        else {
+        isipokua {
             a = (short) ival;
         }
     }

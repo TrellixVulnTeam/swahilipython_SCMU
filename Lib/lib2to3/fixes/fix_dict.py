@@ -73,7 +73,7 @@ kundi FixDict(fixer_base.BaseFix):
         new = pytree.Node(syms.power, args)
         ikiwa sio (special ama isview):
             new.prefix = ""
-            new = Call(Name("iter" ikiwa isiter else "list"), [new])
+            new = Call(Name("iter" ikiwa isiter isipokua "list"), [new])
         ikiwa tail:
             new = pytree.Node(syms.power, [new] + tail)
         new.prefix = node.prefix

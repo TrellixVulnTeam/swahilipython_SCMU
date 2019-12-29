@@ -33,16 +33,16 @@ eleza py_make_scanner(context):
 
         ikiwa nextchar == '"':
             rudisha parse_string(string, idx + 1, strict)
-        elikiwa nextchar == '{':
+        lasivyo nextchar == '{':
             rudisha parse_object((string, idx + 1), strict,
                 _scan_once, object_hook, object_pairs_hook, memo)
-        elikiwa nextchar == '[':
+        lasivyo nextchar == '[':
             rudisha parse_array((string, idx + 1), _scan_once)
-        elikiwa nextchar == 'n' na string[idx:idx + 4] == 'null':
+        lasivyo nextchar == 'n' na string[idx:idx + 4] == 'null':
             rudisha Tupu, idx + 4
-        elikiwa nextchar == 't' na string[idx:idx + 4] == 'true':
+        lasivyo nextchar == 't' na string[idx:idx + 4] == 'true':
             rudisha Kweli, idx + 4
-        elikiwa nextchar == 'f' na string[idx:idx + 5] == 'false':
+        lasivyo nextchar == 'f' na string[idx:idx + 5] == 'false':
             rudisha Uongo, idx + 5
 
         m = match_number(string, idx)
@@ -53,11 +53,11 @@ eleza py_make_scanner(context):
             isipokua:
                 res = parse_int(integer)
             rudisha res, m.end()
-        elikiwa nextchar == 'N' na string[idx:idx + 3] == 'NaN':
+        lasivyo nextchar == 'N' na string[idx:idx + 3] == 'NaN':
             rudisha parse_constant('NaN'), idx + 3
-        elikiwa nextchar == 'I' na string[idx:idx + 8] == 'Infinity':
+        lasivyo nextchar == 'I' na string[idx:idx + 8] == 'Infinity':
             rudisha parse_constant('Infinity'), idx + 8
-        elikiwa nextchar == '-' na string[idx:idx + 9] == '-Infinity':
+        lasivyo nextchar == '-' na string[idx:idx + 9] == '-Infinity':
             rudisha parse_constant('-Infinity'), idx + 9
         isipokua:
             ashiria StopIteration(idx)

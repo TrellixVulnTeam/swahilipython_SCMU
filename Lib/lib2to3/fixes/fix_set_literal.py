@@ -49,5 +49,5 @@ kundi FixSetLiteral(fixer_base.BaseFix):
             n.remove()
             maker.children[-1].prefix = n.prefix
 
-        # Finally, replace the set call with our shiny new literal.
+        # Finally, replace the set call ukijumuisha our shiny new literal.
         rudisha maker

@@ -67,7 +67,7 @@ kundi ProfileTest(unittest.TestCase):
 
     eleza test_calling_conventions(self):
         # Issue #5330: profile na cProfile wouldn't report C functions called
-        # with keyword arguments. We test all calling conventions.
+        # ukijumuisha keyword arguments. We test all calling conventions.
         stmts = [
             "max([0])",
             "max([0], key=int)",
@@ -87,13 +87,13 @@ kundi ProfileTest(unittest.TestCase):
                 "Profiling {0!r} didn't report max:\n{1}".format(stmt, res))
 
     eleza test_run(self):
-        with silent():
+        ukijumuisha silent():
             self.profilermodule.run("int('1')")
         self.profilermodule.run("int('1')", filename=TESTFN)
         self.assertKweli(os.path.exists(TESTFN))
 
     eleza test_runctx(self):
-        with silent():
+        ukijumuisha silent():
             self.profilermodule.runctx("testfunc()", globals(), locals())
         self.profilermodule.runctx("testfunc()", globals(), locals(),
                                   filename=TESTFN)
@@ -118,13 +118,13 @@ eleza regenerate_expected_output(filename, cls):
     results = cls.do_profiling()
 
     newfile = []
-    with open(filename, 'r') kama f:
+    ukijumuisha open(filename, 'r') kama f:
         kila line kwenye f:
             newfile.append(line)
             ikiwa line.startswith('#--cut'):
                 koma
 
-    with open(filename, 'w') kama f:
+    ukijumuisha open(filename, 'w') kama f:
         f.writelines(newfile)
         f.write("_ProfileOutput = {}\n")
         kila i, method kwenye enumerate(cls.methodnames):

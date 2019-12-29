@@ -17,7 +17,7 @@ eleza skip_if_missing():
         ashiria unittest.SkipTest('scripts directory could sio be found')
 
 eleza import_tool(toolname):
-    with support.DirsOnSysPath(scriptsdir):
+    ukijumuisha support.DirsOnSysPath(scriptsdir):
         rudisha importlib.import_module(toolname)
 
 eleza load_tests(*args):

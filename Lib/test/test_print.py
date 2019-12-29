@@ -45,8 +45,8 @@ kundi TestPrint(unittest.TestCase):
 
     eleza check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
-        # Capture sys.stdout kwenye a StringIO.  Call print with args,
-        # na with sep, end, na file, ikiwa they're defined.  Result
+        # Capture sys.stdout kwenye a StringIO.  Call print ukijumuisha args,
+        # na ukijumuisha sep, end, na file, ikiwa they're defined.  Result
         # must match expected.
 
         # Look up the actual function to call, based on ikiwa sep, end,
@@ -55,7 +55,7 @@ kundi TestPrint(unittest.TestCase):
                        end ni sio NotDefined,
                        file ni sio NotDefined)]
 
-        with support.captured_stdout() kama t:
+        ukijumuisha support.captured_stdout() kama t:
             fn(args, sep, end, file)
 
         self.assertEqual(t.getvalue(), expected)
@@ -137,21 +137,21 @@ kundi TestPy2MigrationHint(unittest.TestCase):
 
     eleza test_normal_string(self):
         python2_print_str = 'print "Hello World"'
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
     eleza test_string_with_soft_space(self):
         python2_print_str = 'print "Hello World",'
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
 
     eleza test_string_with_excessive_whitespace(self):
         python2_print_str = 'print  "Hello World", '
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
@@ -160,7 +160,7 @@ kundi TestPy2MigrationHint(unittest.TestCase):
         python2_print_str = '''ikiwa 1:
             print "Hello World"
         '''
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
@@ -170,39 +170,39 @@ kundi TestPy2MigrationHint(unittest.TestCase):
     # and/or followed by a semicolon
     eleza test_string_with_semicolon(self):
         python2_print_str = 'print p;'
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika(p)', str(context.exception))
 
     eleza test_string_in_loop_on_same_line(self):
         python2_print_str = 'kila i kwenye s: print i'
-        with self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika(i)', str(context.exception))
 
     eleza test_stream_redirection_hint_for_py2_migration(self):
         # Test correct hint produced kila Py2 redirection syntax
-        with self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) kama context:
             print >> sys.stderr, "message"
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test correct hint ni produced kwenye the case where RHS implements
         # __rrshift__ but rudishas NotImplemented
-        with self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) kama context:
             print >> 42
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test stream redirection hint ni specific to print
-        with self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) kama context:
             max >> sys.stderr
         self.assertNotIn('Did you mean ', str(context.exception))
 
         # Test stream redirection hint ni specific to rshift
-        with self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) kama context:
             print << sys.stderr
         self.assertNotIn('Did you mean', str(context.exception))
 

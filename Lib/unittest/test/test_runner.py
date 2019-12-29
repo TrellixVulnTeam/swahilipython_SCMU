@@ -254,7 +254,7 @@ kundi TestClassCleanup(unittest.TestCase):
 
         TestableTest.addClassCleanup(cleanup1)
         TestableTest.addClassCleanup(cleanup2)
-        with self.assertRaises(Exception) kama e:
+        ukijumuisha self.assertRaises(Exception) kama e:
             TestableTest.doClassCleanups()
             self.assertEqual(e, 'cleanup1')
 
@@ -398,7 +398,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                          [(module_cleanup_good, (1, 2, 3),
                            dict(four='hello', five='goodbye')),
                           (module_cleanup_bad, (), {})])
-        with self.assertRaises(Exception) kama e:
+        ukijumuisha self.assertRaises(Exception) kama e:
             unittest.case.doModuleCleanups()
         self.assertEqual(str(e.exception), 'CleanUpExc')
         self.assertEqual(unittest.case._module_cleanups, [])
@@ -410,9 +410,9 @@ kundi TestModuleCleanUp(unittest.TestCase):
 
         kundi Module(object):
             unittest.addModuleCleanup(cleanup, 1, 2, function='hello')
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 unittest.addModuleCleanup(function=cleanup, arg='hello')
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 unittest.addModuleCleanup()
         unittest.case.doModuleCleanups()
         self.assertEqual(cleanups,
@@ -571,14 +571,14 @@ kundi TestModuleCleanUp(unittest.TestCase):
             @classmethod
             eleza setUpClass(cls):
                 cls.addClassCleanup(cleanup, 1, 2, function=3, cls=4)
-                with self.assertRaises(TypeError):
+                ukijumuisha self.assertRaises(TypeError):
                     cls.addClassCleanup(function=cleanup, arg='hello')
             eleza testNothing(self):
                 pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             TestableTest.addClassCleanup()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             unittest.TestCase.addCleanup(cls=TestableTest(), function=cleanup)
         runTests(TestableTest)
         self.assertEqual(cleanups,
@@ -592,14 +592,14 @@ kundi TestModuleCleanUp(unittest.TestCase):
         kundi TestableTest(unittest.TestCase):
             eleza setUp(self2):
                 self2.addCleanup(cleanup, 1, 2, function=3, self=4)
-                with self.assertWarns(DeprecationWarning):
+                ukijumuisha self.assertWarns(DeprecationWarning):
                     self2.addCleanup(function=cleanup, arg='hello')
             eleza testNothing(self):
                 pita
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             TestableTest().addCleanup()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             unittest.TestCase.addCleanup(self=TestableTest(), function=cleanup)
         runTests(TestableTest)
         self.assertEqual(cleanups,
@@ -951,7 +951,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
 
         # no args -> all the warnings are printed, unittest warnings only once
         p = subprocess.Popen([sys.executable, '-E', '_test_warnings.py'], **opts)
-        with p:
+        ukijumuisha p:
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
         # check that the total number of warnings kwenye the output ni correct
@@ -973,7 +973,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
         # kwenye all these cases no warnings are printed
         kila args kwenye args_list:
             p = subprocess.Popen(args, **opts)
-            with p:
+            ukijumuisha p:
                 out, err = get_parse_out_err(p)
             self.assertIn(b'OK', err)
             self.assertEqual(len(out), 0)
@@ -983,7 +983,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
         #                                     unittest warnings only once
         p = subprocess.Popen([sys.executable, '_test_warnings.py', 'always'],
                              **opts)
-        with p:
+        ukijumuisha p:
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
         self.assertEqual(len(out), 14)

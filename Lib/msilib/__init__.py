@@ -53,13 +53,13 @@ kundi Table:
                     tname="CHAR(%d)" % size
                 isipokua:
                     tname="CHAR"
-            elikiwa dtype == type_short:
+            lasivyo dtype == type_short:
                 assert size==2
                 tname = "SHORT"
-            elikiwa dtype == type_long:
+            lasivyo dtype == type_long:
                 assert size==4
                 tname="LONG"
-            elikiwa dtype == type_binary:
+            lasivyo dtype == type_binary:
                 assert size==0
                 tname="OBJECT"
             isipokua:
@@ -106,11 +106,11 @@ eleza add_data(db, table, values):
             field = value[i]
             ikiwa isinstance(field, int):
                 r.SetInteger(i+1,field)
-            elikiwa isinstance(field, str):
+            lasivyo isinstance(field, str):
                 r.SetString(i+1,field)
-            elikiwa field ni Tupu:
+            lasivyo field ni Tupu:
                 pita
-            elikiwa isinstance(field, Binary):
+            lasivyo isinstance(field, Binary):
                 r.SetStream(i+1, field.name)
             isipokua:
                 ashiria TypeError("Unsupported type %s" % field.__class__.__name__)
@@ -175,7 +175,7 @@ eleza add_tables(db, module):
 
 eleza make_id(str):
     identifier_chars = string.ascii_letters + string.digits + "._"
-    str = "".join([c ikiwa c kwenye identifier_chars else "_" kila c kwenye str])
+    str = "".join([c ikiwa c kwenye identifier_chars isipokua "_" kila c kwenye str])
     ikiwa str[0] kwenye (string.digits + "."):
         str = "_" + str
     assert re.match("^[A-Za-z_][A-Za-z0-9_.]*$", str), "FILE"+str

@@ -31,7 +31,7 @@ kundi Finder(metaclass=abc.ABCMeta):
 
     """Legacy abstract base kundi kila agiza finders.
 
-    It may be subclassed kila compatibility with legacy third party
+    It may be subclassed kila compatibility ukijumuisha legacy third party
     reimplementations of the agiza system.  Otherwise, finder
     implementations should derive kutoka the more specific MetaPathFinder
     ama PathEntryFinder ABCs.
@@ -73,7 +73,7 @@ kundi MetaPathFinder(Finder):
         ikiwa sio hasattr(self, 'find_spec'):
             rudisha Tupu
         found = self.find_spec(fullname, path)
-        rudisha found.loader ikiwa found ni sio Tupu else Tupu
+        rudisha found.loader ikiwa found ni sio Tupu isipokua Tupu
 
     eleza invalidate_caches(self):
         """An optional method kila clearing the finder's cache, ikiwa any.
@@ -348,7 +348,7 @@ kundi ResourceReader(metaclass=abc.ABCMeta):
 
     Loaders that support resource reading are expected to implement
     the ``get_resource_reader(fullname)`` method na have it either rudisha Tupu
-    ama an object compatible with this ABC.
+    ama an object compatible ukijumuisha this ABC.
     """
 
     @abc.abstractmethod

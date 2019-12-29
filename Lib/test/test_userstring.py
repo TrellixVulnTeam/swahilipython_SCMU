@@ -15,12 +15,12 @@ kundi UserStringTest(
     type2test = UserString
 
     # Overwrite the three testing methods, because UserString
-    # can't cope with arguments propagated to UserString
-    # (and we don't test with subclasses)
+    # can't cope ukijumuisha arguments propagated to UserString
+    # (and we don't test ukijumuisha subclasses)
     eleza checkequal(self, result, object, methodname, *args, **kwargs):
         result = self.fixtype(result)
         object = self.fixtype(object)
-        # we don't fix the arguments, because UserString can't cope with it
+        # we don't fix the arguments, because UserString can't cope ukijumuisha it
         realresult = getattr(object, methodname)(*args, **kwargs)
         self.assertEqual(
             result,
@@ -29,14 +29,14 @@ kundi UserStringTest(
 
     eleza checkashirias(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
-        # we don't fix the arguments, because UserString can't cope with it
-        with self.assertRaises(exc) kama cm:
+        # we don't fix the arguments, because UserString can't cope ukijumuisha it
+        ukijumuisha self.assertRaises(exc) kama cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
     eleza checkcall(self, object, methodname, *args):
         object = self.fixtype(object)
-        # we don't fix the arguments, because UserString can't cope with it
+        # we don't fix the arguments, because UserString can't cope ukijumuisha it
         getattr(object, methodname)(*args)
 
     eleza test_rmod(self):

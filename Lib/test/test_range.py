@@ -8,7 +8,7 @@ agiza itertools
 # pure Python implementations (3 args only), kila comparison
 eleza pyrange(start, stop, step):
     ikiwa (start - stop) // step < 0:
-        # replace stop with next element kwenye the sequence of integers
+        # replace stop ukijumuisha next element kwenye the sequence of integers
         # that are congruent to start modulo step.
         stop += (start - stop) % step
         wakati start != stop:
@@ -32,10 +32,10 @@ kundi RangeTest(unittest.TestCase):
         kila i, (x, y) kwenye enumerate(pairs):
             ikiwa x == y:
                 endelea
-            elikiwa x == sentinel:
+            lasivyo x == sentinel:
                 self.fail('{}: iterator ended unexpectedly '
                           'at position {}; expected {}'.format(test_id, i, y))
-            elikiwa y == sentinel:
+            lasivyo y == sentinel:
                 self.fail('{}: unexpected excess element {} at '
                           'position {}'.format(test_id, x, i))
             isipokua:
@@ -110,7 +110,7 @@ kundi RangeTest(unittest.TestCase):
         self.assertEqual(len(list(x)), 4)
         self.assertKweli(x)
 
-        # Now test range() with longs
+        # Now test range() ukijumuisha longs
         kila x kwenye [range(-2**100),
                   range(0, -2**100),
                   range(0, 2**100, -1)]:
@@ -170,9 +170,9 @@ kundi RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+idx)
         self.assertEqual(x[idx:idx+1][0], a+idx)
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[expected_len]
 
         a = 0
@@ -188,9 +188,9 @@ kundi RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+idx)
         self.assertEqual(x[idx:idx+1][0], a+idx)
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[expected_len]
 
         a = 0
@@ -207,9 +207,9 @@ kundi RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+(idx*c))
         self.assertEqual(x[idx:idx+1][0], a+(idx*c))
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[expected_len]
 
         a = sys.maxsize**10
@@ -226,9 +226,9 @@ kundi RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+(idx*c))
         self.assertEqual(x[idx:idx+1][0], a+(idx*c))
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             x[expected_len]
 
     eleza test_invalid_invocation(self):
@@ -299,7 +299,7 @@ kundi RangeTest(unittest.TestCase):
         bignum = 2*sys.maxsize
         smallnum = 42
 
-        # User-defined kundi with an __index__ method
+        # User-defined kundi ukijumuisha an __index__ method
         kundi I:
             eleza __init__(self, n):
                 self.n = int(n)
@@ -308,13 +308,13 @@ kundi RangeTest(unittest.TestCase):
         self.assertEqual(list(range(I(bignum), I(bignum + 1))), [bignum])
         self.assertEqual(list(range(I(smallnum), I(smallnum + 1))), [smallnum])
 
-        # User-defined kundi with a failing __index__ method
+        # User-defined kundi ukijumuisha a failing __index__ method
         kundi IX:
             eleza __index__(self):
                 ashiria RuntimeError
         self.assertRaises(RuntimeError, range, IX())
 
-        # User-defined kundi with an invalid __index__ method
+        # User-defined kundi ukijumuisha an invalid __index__ method
         kundi IN:
             eleza __index__(self):
                 rudisha "not a number"
@@ -324,10 +324,10 @@ kundi RangeTest(unittest.TestCase):
         # Test use of user-defined classes kwenye slice indices.
         self.assertEqual(range(10)[:I(5)], range(5))
 
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             range(0, 10)[:IX()]
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range(0, 10)[:IN()]
 
     eleza test_count(self):
@@ -362,7 +362,7 @@ kundi RangeTest(unittest.TestCase):
                      (13, 21, 3), (-2, 2, 2), (2**65, 2**65+2)]
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             kila t kwenye testcases:
-                with self.subTest(proto=proto, test=t):
+                ukijumuisha self.subTest(proto=proto, test=t):
                     r = range(*t)
                     self.assertEqual(list(pickle.loads(pickle.dumps(r, proto))),
                                      list(r))
@@ -419,7 +419,7 @@ kundi RangeTest(unittest.TestCase):
         # This used to ashiria a "SystemError: NULL result without error"
         # because the range validation step was eating the exception
         # before NULL was rudishaed.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range([], 1, -1)
 
     eleza test_types(self):
@@ -625,13 +625,13 @@ kundi RangeTest(unittest.TestCase):
                             range(2**200, 2**201 + 1, 2**100))
 
         # Order comparisons are sio implemented kila ranges.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range(0) < range(0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range(0) > range(0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range(0) <= range(0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             range(0) >= range(0)
 
 
@@ -650,18 +650,18 @@ kundi RangeTest(unittest.TestCase):
         self.assertEqual(rangeobj.stop, stop)
         self.assertEqual(rangeobj.step, step)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             rangeobj.start = 0
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             rangeobj.stop = 10
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             rangeobj.step = 1
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa rangeobj.start
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa rangeobj.stop
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa rangeobj.step
 
 ikiwa __name__ == "__main__":

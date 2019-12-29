@@ -99,7 +99,7 @@ kundi async_chat(asyncore.dispatcher):
         """
         ikiwa isinstance(term, str) na self.use_encoding:
             term = bytes(term, self.encoding)
-        elikiwa isinstance(term, int) na term < 0:
+        lasivyo isinstance(term, int) na term < 0:
             ashiria ValueError('the number of received bytes must be positive')
         self.terminator = term
 
@@ -128,7 +128,7 @@ kundi async_chat(asyncore.dispatcher):
         # Continue to search kila self.terminator kwenye self.ac_in_buffer,
         # wakati calling self.collect_incoming_data.  The wakati loop
         # ni necessary because we might read several data+terminator
-        # combos with a single recv(4096).
+        # combos ukijumuisha a single recv(4096).
 
         wakati self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
@@ -137,7 +137,7 @@ kundi async_chat(asyncore.dispatcher):
                 # no terminator, collect it all
                 self.collect_incoming_data(self.ac_in_buffer)
                 self.ac_in_buffer = b''
-            elikiwa isinstance(terminator, int):
+            lasivyo isinstance(terminator, int):
                 # numeric terminator
                 n = terminator
                 ikiwa lb < n:
@@ -293,7 +293,7 @@ kundi simple_producer:
 # f_p_a_e("qwertydkjf", "\r\n") => 0
 # f_p_a_e("qwerty\r\n", "\r\n") => <undefined>
 
-# this could maybe be made faster with a computed regex?
+# this could maybe be made faster ukijumuisha a computed regex?
 # [answer: no; circa Python-2.0, Jan 2001]
 # new python:   28961/s
 # old python:   18307/s

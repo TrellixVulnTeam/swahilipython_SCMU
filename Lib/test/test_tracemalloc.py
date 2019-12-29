@@ -269,14 +269,14 @@ kundi TestTracemallocEnabled(unittest.TestCase):
 
         # tracemalloc must be tracing memory allocations to take a snapshot
         tracemalloc.stop()
-        with self.assertRaises(RuntimeError) kama cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             tracemalloc.take_snapshot()
         self.assertEqual(str(cm.exception),
                          "the tracemalloc module must be tracing memory "
                          "allocations to take a snapshot")
 
     eleza test_snapshot_save_attr(self):
-        # take a snapshot with a new attribute
+        # take a snapshot ukijumuisha a new attribute
         snapshot = tracemalloc.take_snapshot()
         snapshot.test_attr = "new"
         snapshot.dump(support.TESTFN)
@@ -323,7 +323,7 @@ kundi TestSnapshot(unittest.TestCase):
     eleza test_create_snapshot(self):
         raw_traces = [(0, 5, (('a.py', 2),))]
 
-        with contextlib.ExitStack() kama stack:
+        ukijumuisha contextlib.ExitStack() kama stack:
             stack.enter_context(patch.object(tracemalloc, 'is_tracing',
                                              rudisha_value=Kweli))
             stack.enter_context(patch.object(tracemalloc, 'get_traceback_limit',
@@ -594,7 +594,7 @@ kundi TestSnapshot(unittest.TestCase):
         snapshot, snapshot2 = create_snapshots()
         eleza getline(filename, lineno):
             rudisha '  <%s, %s>' % (filename, lineno)
-        with unittest.mock.patch('tracemalloc.linecache.getline',
+        ukijumuisha unittest.mock.patch('tracemalloc.linecache.getline',
                                  side_effect=getline):
             tb = snapshot.traces[0].traceback
             self.assertEqual(tb.format(),
@@ -672,7 +672,7 @@ kundi TestFilters(unittest.TestCase):
         self.assertKweli(f._match_frame("12356", 5))
         self.assertKweli(f._match_frame("12356", 10))
 
-        # filter with line number > 0
+        # filter ukijumuisha line number > 0
         f = tracemalloc.Filter(Kweli, "abc", 5)
         self.assertUongo(f._match_frame("abc", 0))
         self.assertKweli(f._match_frame("abc", 5))
@@ -689,7 +689,7 @@ kundi TestFilters(unittest.TestCase):
         self.assertKweli(f._match_frame("12356", 5))
         self.assertKweli(f._match_frame("12356", 10))
 
-        # filter with line number 0
+        # filter ukijumuisha line number 0
         f = tracemalloc.Filter(Kweli, "abc", 0)
         self.assertKweli(f._match_frame("abc", 0))
         self.assertUongo(f._match_frame("abc", 5))
@@ -753,7 +753,7 @@ kundi TestFilters(unittest.TestCase):
         self.assertUongo(fnmatch('abcdd', 'a*c*e'))
         self.assertUongo(fnmatch('abcbdefef', 'a*bd*eg'))
 
-        # replace .pyc suffix with .py
+        # replace .pyc suffix ukijumuisha .py
         self.assertKweli(fnmatch('a.pyc', 'a.py'))
         self.assertKweli(fnmatch('a.py', 'a.pyc'))
 
@@ -876,7 +876,7 @@ kundi TestCommandLine(unittest.TestCase):
         self.assertEqual(stdout, b'10')
 
     eleza check_env_var_invalid(self, nframe):
-        with support.SuppressCrashReport():
+        ukijumuisha support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(
                 '-c', 'pita',
                 PYTHONTRACEMALLOC=str(nframe))
@@ -890,7 +890,7 @@ kundi TestCommandLine(unittest.TestCase):
 
     eleza test_env_var_invalid(self):
         kila nframe kwenye INVALID_NFRAME:
-            with self.subTest(nframe=nframe):
+            ukijumuisha self.subTest(nframe=nframe):
                 self.check_env_var_invalid(nframe)
 
     eleza test_sys_xoptions(self):
@@ -899,7 +899,7 @@ kundi TestCommandLine(unittest.TestCase):
             ('tracemalloc=1', 1),
             ('tracemalloc=15', 15),
         ):
-            with self.subTest(xoptions=xoptions, nframe=nframe):
+            ukijumuisha self.subTest(xoptions=xoptions, nframe=nframe):
                 code = 'agiza tracemalloc; andika(tracemalloc.get_traceback_limit())'
                 ok, stdout, stderr = assert_python_ok('-X', xoptions, '-c', code)
                 stdout = stdout.rstrip()
@@ -907,7 +907,7 @@ kundi TestCommandLine(unittest.TestCase):
 
     eleza check_sys_xoptions_invalid(self, nframe):
         args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pita')
-        with support.SuppressCrashReport():
+        ukijumuisha support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
         ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
@@ -918,12 +918,12 @@ kundi TestCommandLine(unittest.TestCase):
 
     eleza test_sys_xoptions_invalid(self):
         kila nframe kwenye INVALID_NFRAME:
-            with self.subTest(nframe=nframe):
+            ukijumuisha self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
     @unittest.skipIf(_testcapi ni Tupu, 'need _testcapi')
     eleza test_pymem_alloc0(self):
-        # Issue #21639: Check that PyMem_Malloc(0) with tracemalloc enabled
+        # Issue #21639: Check that PyMem_Malloc(0) ukijumuisha tracemalloc enabled
         # does sio crash.
         code = 'agiza _testcapi; _testcapi.test_pymem_alloc0(); 1'
         assert_python_ok('-X', 'tracemalloc', '-c', code)
@@ -999,7 +999,7 @@ kundi TestCAPI(unittest.TestCase):
         self.track()
 
         # calling _PyTraceMalloc_Track() must remove the old trace na add
-        # a new trace with the new traceback
+        # a new trace ukijumuisha the new traceback
         frames = self.track(nframe=nframe)
         self.assertEqual(self.get_traceback(),
                          tracemalloc.Traceback(frames))
@@ -1024,7 +1024,7 @@ kundi TestCAPI(unittest.TestCase):
         tracemalloc.start()
         tracemalloc.stop()
 
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.track()
         self.assertIsTupu(self.get_traceback())
 
@@ -1033,7 +1033,7 @@ kundi TestCAPI(unittest.TestCase):
         self.track()
 
         tracemalloc.stop()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.untrack()
 
 

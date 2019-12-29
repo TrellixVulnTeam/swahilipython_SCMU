@@ -8,7 +8,7 @@ kutoka test agiza support
 kutoka test.support agiza script_helper
 agiza unittest
 agiza warnings
-with warnings.catch_warnings():
+ukijumuisha warnings.catch_warnings():
     warnings.simplefilter('ignore', DeprecationWarning)
     agiza imp
 agiza _imp
@@ -70,18 +70,18 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_find_module_encoding(self):
         kila mod, encoding, _ kwenye self.test_strings:
-            with imp.find_module('module_' + mod, self.test_path)[0] kama fd:
+            ukijumuisha imp.find_module('module_' + mod, self.test_path)[0] kama fd:
                 self.assertEqual(fd.encoding, encoding)
 
         path = [os.path.dirname(__file__)]
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             imp.find_module('badsyntax_pep3120', path)
 
     eleza test_issue1267(self):
         kila mod, encoding, _ kwenye self.test_strings:
             fp, filename, info  = imp.find_module('module_' + mod,
                                                   self.test_path)
-            with fp:
+            ukijumuisha fp:
                 self.assertNotEqual(fp, Tupu)
                 self.assertEqual(fp.encoding, encoding)
                 self.assertEqual(fp.tell(), 0)
@@ -89,7 +89,7 @@ kundi ImportTests(unittest.TestCase):
                                  % encoding)
 
         fp, filename, info = imp.find_module("tokenize")
-        with fp:
+        ukijumuisha fp:
             self.assertNotEqual(fp, Tupu)
             self.assertEqual(fp.encoding, "utf-8")
             self.assertEqual(fp.tell(), 0)
@@ -100,7 +100,7 @@ kundi ImportTests(unittest.TestCase):
         temp_mod_name = 'test_imp_helper'
         sys.path.insert(0, '.')
         jaribu:
-            with open(temp_mod_name + '.py', 'w') kama file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
                 file.write("# coding: cp1252\nu = 'test.test_imp'\n")
             file, filename, info = imp.find_module(temp_mod_name)
             file.close()
@@ -145,7 +145,7 @@ kundi ImportTests(unittest.TestCase):
             special_char = known_locales.get(fs_encoding)
 
         ikiwa sio special_char:
-            self.skipTest("can't run this test with %s kama filesystem encoding"
+            self.skipTest("can't run this test ukijumuisha %s kama filesystem encoding"
                           % fs_encoding)
         decoded_char = special_char.decode(fs_encoding)
         temp_mod_name = 'test_imp_helper_' + decoded_char
@@ -155,10 +155,10 @@ kundi ImportTests(unittest.TestCase):
             # ikiwa the curdir ni haiko kwenye sys.path the test fails when run with
             # ./python ./Lib/test/regrtest.py test_imp
             sys.path.insert(0, os.curdir)
-            with open(temp_mod_name + '.py', 'w') kama file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
                 file.write('a = 1\n')
             file, filename, info = imp.find_module(temp_mod_name)
-            with file:
+            ukijumuisha file:
                 self.assertIsNotTupu(file)
                 self.assertKweli(filename[:-3].endswith(temp_mod_name))
                 self.assertEqual(info[0], '.py')
@@ -168,12 +168,12 @@ kundi ImportTests(unittest.TestCase):
                 mod = imp.load_module(temp_mod_name, file, filename, info)
                 self.assertEqual(mod.a, 1)
 
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore')
                 mod = imp.load_source(temp_mod_name, temp_mod_name + '.py')
             self.assertEqual(mod.a, 1)
 
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore')
                 ikiwa sio sys.dont_write_bytecode:
                     mod = imp.load_compiled(
@@ -183,9 +183,9 @@ kundi ImportTests(unittest.TestCase):
 
             ikiwa sio os.path.exists(test_package_name):
                 os.mkdir(test_package_name)
-            with open(init_file_name, 'w') kama file:
+            ukijumuisha open(init_file_name, 'w') kama file:
                 file.write('b = 2\n')
-            with warnings.catch_warnings():
+            ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore')
                 package = imp.load_package(test_package_name, test_package_name)
             self.assertEqual(package.b, 2)
@@ -213,7 +213,7 @@ kundi ImportTests(unittest.TestCase):
         # workaround
         orig_path = os.path
         orig_getenv = os.getenv
-        with support.EnvironmentVarGuard():
+        ukijumuisha support.EnvironmentVarGuard():
             x = imp.find_module("os")
             self.addCleanup(x[0].close)
             new_os = imp.load_module("os", *x)
@@ -245,7 +245,7 @@ kundi ImportTests(unittest.TestCase):
         self.assertEqual(mod0.__name__, m)
         self.assertEqual(mod1.__name__, '_testagizamultiple_foo')
         self.assertEqual(mod2.__name__, '_testagizamultiple_bar')
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             imp.load_dynamic('nonexistent', pathname)
 
     @requires_load_dynamic
@@ -255,7 +255,7 @@ kundi ImportTests(unittest.TestCase):
         # attributes on agiza failures of extensions on Windows.
         path = 'bogus file path'
         name = 'extension'
-        with self.assertRaises(ImportError) kama err:
+        ukijumuisha self.assertRaises(ImportError) kama err:
             imp.load_dynamic(name, path)
         self.assertIn(path, err.exception.path)
         self.assertEqual(name, err.exception.name)
@@ -299,7 +299,7 @@ kundi ImportTests(unittest.TestCase):
     @unittest.skipIf(sys.dont_write_bytecode,
         "test meaningful only when writing bytecode")
     eleza test_bug7732(self):
-        with support.temp_cwd():
+        ukijumuisha support.temp_cwd():
             source = support.TESTFN + '.py'
             os.mkdir(source)
             self.assertRaisesRegex(ImportError, '^No module',
@@ -317,8 +317,8 @@ kundi ImportTests(unittest.TestCase):
         # sys.modules[name] attributes like __loader___
         modname = f"tmp{__name__}"
         mod = type(sys.modules[__name__])(modname)
-        with support.swap_item(sys.modules, modname, mod):
-            with self.assertRaisesRegex(ValueError, 'embedded null'):
+        ukijumuisha support.swap_item(sys.modules, modname, mod):
+            ukijumuisha self.assertRaisesRegex(ValueError, 'embedded null'):
                 imp.load_source(modname, __file__ + "\0")
 
     @support.cpython_only
@@ -329,7 +329,7 @@ kundi ImportTests(unittest.TestCase):
         kundi BadSpec:
             name = Tupu
             origin = 'foo'
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             create_dynamic(BadSpec())
 
     eleza test_issue_35321(self):
@@ -364,8 +364,8 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_find_and_load_checked_pyc(self):
         # issue 34056
-        with support.temp_cwd():
-            with open('mymod.py', 'wb') kama fp:
+        ukijumuisha support.temp_cwd():
+            ukijumuisha open('mymod.py', 'wb') kama fp:
                 fp.write(b'x = 42\n')
             py_compile.compile(
                 'mymod.py',
@@ -390,17 +390,17 @@ kundi ReloadTests(unittest.TestCase):
         # state after reversion. Reinitialising the module contents
         # na just reverting os.environ to its previous state ni an OK
         # workaround
-        with support.EnvironmentVarGuard():
+        ukijumuisha support.EnvironmentVarGuard():
             agiza os
             imp.reload(os)
 
     eleza test_extension(self):
-        with support.CleanImport('time'):
+        ukijumuisha support.CleanImport('time'):
             agiza time
             imp.reload(time)
 
     eleza test_builtin(self):
-        with support.CleanImport('marshal'):
+        ukijumuisha support.CleanImport('marshal'):
             agiza marshal
             imp.reload(marshal)
 
@@ -411,7 +411,7 @@ kundi ReloadTests(unittest.TestCase):
         eleza cleanup():
             sys.modules['html'] = html
         self.addCleanup(cleanup)
-        with self.assertRaisesRegex(ImportError, 'html'):
+        ukijumuisha self.assertRaisesRegex(ImportError, 'html'):
             imp.reload(parser)
 
 

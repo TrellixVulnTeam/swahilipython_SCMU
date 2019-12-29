@@ -81,11 +81,11 @@ kundi BottomMatcher(object):
             rudisha end_nodes
 
     eleza run(self, leaves):
-        """The main interface with the bottom matcher. The tree is
+        """The main interface ukijumuisha the bottom matcher. The tree is
         traversed kutoka the bottom using the constructed
         automaton. Nodes are only checked once kama the tree is
         retraversed. When the automaton fails, we give it one more
-        shot(in case the above tree matches kama a whole with the
+        shot(in case the above tree matches kama a whole ukijumuisha the
         rejected leaf), then we koma kila the next leaf. There ni the
         special case of multiple arguments(see code comments) where we
         recheck the nodes
@@ -94,7 +94,7 @@ kundi BottomMatcher(object):
            The leaves of the AST tree to be matched
 
         Returns:
-           A dictionary of node matches with fixers kama the keys
+           A dictionary of node matches ukijumuisha fixers kama the keys
         """
         current_ac_node = self.root
         results = defaultdict(list)

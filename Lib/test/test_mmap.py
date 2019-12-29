@@ -123,9 +123,9 @@ kundi MmapTests(unittest.TestCase):
     eleza test_access_parameter(self):
         # Test kila "access" keyword parameter
         mapsize = 10
-        with open(TESTFN, "wb") kama fp:
+        ukijumuisha open(TESTFN, "wb") kama fp:
             fp.write(b"a"*mapsize)
-        with open(TESTFN, "rb") kama f:
+        ukijumuisha open(TESTFN, "rb") kama f:
             m = mmap.mmap(f.fileno(), mapsize, access=mmap.ACCESS_READ)
             self.assertEqual(m[:], b'a'*mapsize, "Readonly memory map data incorrect.")
 
@@ -172,12 +172,12 @@ kundi MmapTests(unittest.TestCase):
                 pita
             isipokua:
                 self.fail("Able to resize readonly memory map")
-            with open(TESTFN, "rb") kama fp:
+            ukijumuisha open(TESTFN, "rb") kama fp:
                 self.assertEqual(fp.read(), b'a'*mapsize,
                                  "Readonly memory map data file was modified")
 
-        # Opening mmap with size too big
-        with open(TESTFN, "r+b") kama f:
+        # Opening mmap ukijumuisha size too big
+        ukijumuisha open(TESTFN, "r+b") kama f:
             jaribu:
                 m = mmap.mmap(f.fileno(), mapsize+1)
             tatizo ValueError:
@@ -186,19 +186,19 @@ kundi MmapTests(unittest.TestCase):
                 # later tests assume that the length hasn't changed.  We need to
                 # repair that.
                 ikiwa sys.platform.startswith('win'):
-                    self.fail("Opening mmap with size+1 should work on Windows.")
+                    self.fail("Opening mmap ukijumuisha size+1 should work on Windows.")
             isipokua:
                 # we expect a ValueError on Unix, but sio on Windows
                 ikiwa sio sys.platform.startswith('win'):
-                    self.fail("Opening mmap with size+1 should ashiria ValueError.")
+                    self.fail("Opening mmap ukijumuisha size+1 should ashiria ValueError.")
                 m.close()
             ikiwa sys.platform.startswith('win'):
                 # Repair damage kutoka the resizing test.
-                with open(TESTFN, 'r+b') kama f:
+                ukijumuisha open(TESTFN, 'r+b') kama f:
                     f.truncate(mapsize)
 
-        # Opening mmap with access=ACCESS_WRITE
-        with open(TESTFN, "r+b") kama f:
+        # Opening mmap ukijumuisha access=ACCESS_WRITE
+        ukijumuisha open(TESTFN, "r+b") kama f:
             m = mmap.mmap(f.fileno(), mapsize, access=mmap.ACCESS_WRITE)
             # Modifying write-through memory map
             m[:] = b'c'*mapsize
@@ -206,20 +206,20 @@ kundi MmapTests(unittest.TestCase):
                    "Write-through memory map memory sio updated properly.")
             m.flush()
             m.close()
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             stuff = f.read()
         self.assertEqual(stuff, b'c'*mapsize,
                "Write-through memory map data file sio updated properly.")
 
-        # Opening mmap with access=ACCESS_COPY
-        with open(TESTFN, "r+b") kama f:
+        # Opening mmap ukijumuisha access=ACCESS_COPY
+        ukijumuisha open(TESTFN, "r+b") kama f:
             m = mmap.mmap(f.fileno(), mapsize, access=mmap.ACCESS_COPY)
             # Modifying copy-on-write memory map
             m[:] = b'd'*mapsize
             self.assertEqual(m[:], b'd' * mapsize,
                              "Copy-on-write memory map data sio written correctly.")
             m.flush()
-            with open(TESTFN, "rb") kama fp:
+            ukijumuisha open(TESTFN, "rb") kama fp:
                 self.assertEqual(fp.read(), b'c'*mapsize,
                                  "Copy-on-write test data file should sio be modified.")
             # Ensuring copy-on-write maps cannot be resized
@@ -227,19 +227,19 @@ kundi MmapTests(unittest.TestCase):
             m.close()
 
         # Ensuring invalid access parameter ashirias exception
-        with open(TESTFN, "r+b") kama f:
+        ukijumuisha open(TESTFN, "r+b") kama f:
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize, access=4)
 
         ikiwa os.name == "posix":
             # Try incompatible flags, prot na access parameters.
-            with open(TESTFN, "r+b") kama f:
+            ukijumuisha open(TESTFN, "r+b") kama f:
                 self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize,
                                   flags=mmap.MAP_PRIVATE,
                                   prot=mmap.PROT_READ, access=mmap.ACCESS_WRITE)
 
-            # Try writing with PROT_EXEC na without PROT_WRITE
+            # Try writing ukijumuisha PROT_EXEC na without PROT_WRITE
             prot = mmap.PROT_READ | getattr(mmap, 'PROT_EXEC', 0)
-            with open(TESTFN, "r+b") kama f:
+            ukijumuisha open(TESTFN, "r+b") kama f:
                 m = mmap.mmap(f.fileno(), mapsize, prot=prot)
                 self.assertRaises(TypeError, m.write, b"abcdef")
                 self.assertRaises(TypeError, m.write_byte, 0)
@@ -251,8 +251,8 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_tougher_find(self):
         # Do a tougher .find() test.  SF bug 515943 pointed out that, kwenye 2.2,
-        # searching kila data with embedded \0 bytes didn't work.
-        with open(TESTFN, 'wb+') kama f:
+        # searching kila data ukijumuisha embedded \0 bytes didn't work.
+        ukijumuisha open(TESTFN, 'wb+') kama f:
 
             data = b'aabaac\x00deef\x00\x00aa\x00'
             n = len(data)
@@ -269,7 +269,7 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_find_end(self):
         # test the new 'end' parameter works kama expected
-        with open(TESTFN, 'wb+') kama f:
+        ukijumuisha open(TESTFN, 'wb+') kama f:
             data = b'one two ones'
             n = len(data)
             f.write(data)
@@ -287,7 +287,7 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_rfind(self):
         # test the new 'end' parameter works kama expected
-        with open(TESTFN, 'wb+') kama f:
+        ukijumuisha open(TESTFN, 'wb+') kama f:
             data = b'one two ones'
             n = len(data)
             f.write(data)
@@ -305,49 +305,49 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_double_close(self):
         # make sure a double close doesn't crash on Solaris (Bug# 665913)
-        with open(TESTFN, 'wb+') kama f:
+        ukijumuisha open(TESTFN, 'wb+') kama f:
             f.write(2**16 * b'a') # Arbitrary character
 
-        with open(TESTFN, 'rb') kama f:
+        ukijumuisha open(TESTFN, 'rb') kama f:
             mf = mmap.mmap(f.fileno(), 2**16, access=mmap.ACCESS_READ)
             mf.close()
             mf.close()
 
     eleza test_entire_file(self):
         # test mapping of entire file by pitaing 0 kila map length
-        with open(TESTFN, "wb+") kama f:
+        ukijumuisha open(TESTFN, "wb+") kama f:
             f.write(2**16 * b'm') # Arbitrary character
 
-        with open(TESTFN, "rb+") kama f, \
+        ukijumuisha open(TESTFN, "rb+") kama f, \
              mmap.mmap(f.fileno(), 0) kama mf:
             self.assertEqual(len(mf), 2**16, "Map size should equal file size.")
             self.assertEqual(mf.read(2**16), 2**16 * b"m")
 
     eleza test_length_0_offset(self):
         # Issue #10916: test mapping of remainder of file by pitaing 0 for
-        # map length with an offset doesn't cause a segfault.
+        # map length ukijumuisha an offset doesn't cause a segfault.
         # NOTE: allocation granularity ni currently 65536 under Win64,
         # na therefore the minimum offset alignment.
-        with open(TESTFN, "wb") kama f:
+        ukijumuisha open(TESTFN, "wb") kama f:
             f.write((65536 * 2) * b'm') # Arbitrary character
 
-        with open(TESTFN, "rb") kama f:
-            with mmap.mmap(f.fileno(), 0, offset=65536, access=mmap.ACCESS_READ) kama mf:
+        ukijumuisha open(TESTFN, "rb") kama f:
+            ukijumuisha mmap.mmap(f.fileno(), 0, offset=65536, access=mmap.ACCESS_READ) kama mf:
                 self.assertRaises(IndexError, mf.__getitem__, 80000)
 
     eleza test_length_0_large_offset(self):
         # Issue #10959: test mapping of a file by pitaing 0 for
-        # map length with a large offset doesn't cause a segfault.
-        with open(TESTFN, "wb") kama f:
+        # map length ukijumuisha a large offset doesn't cause a segfault.
+        ukijumuisha open(TESTFN, "wb") kama f:
             f.write(115699 * b'm') # Arbitrary character
 
-        with open(TESTFN, "w+b") kama f:
+        ukijumuisha open(TESTFN, "w+b") kama f:
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), 0,
                               offset=2147418112)
 
     eleza test_move(self):
         # make move works everywhere (64-bit format problem earlier)
-        with open(TESTFN, 'wb+') kama f:
+        ukijumuisha open(TESTFN, 'wb+') kama f:
 
             f.write(b"ABCDEabcde") # Arbitrary character
             f.flush()
@@ -435,7 +435,7 @@ kundi MmapTests(unittest.TestCase):
         self.assertRaises(TypeError, m.read, [1, 2, 3])
 
     eleza test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing ukijumuisha list slicing.
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
         m[:] = s
@@ -449,7 +449,7 @@ kundi MmapTests(unittest.TestCase):
                                      s[start:stop:step])
 
     eleza test_extended_set_del_slice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing ukijumuisha list slicing.
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
         indices = (0, Tupu, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
@@ -461,7 +461,7 @@ kundi MmapTests(unittest.TestCase):
                     self.assertEqual(m[:], s)
                     L = list(s)
                     # Make sure we have a slice of exactly the right length,
-                    # but with different data.
+                    # but ukijumuisha different data.
                     data = L[start:stop:step]
                     data = bytes(reversed(data))
                     L[start:stop:step] = data
@@ -479,7 +479,7 @@ kundi MmapTests(unittest.TestCase):
     eleza test_empty_file (self):
         f = open (TESTFN, 'w+b')
         f.close()
-        with open(TESTFN, "rb") kama f :
+        ukijumuisha open(TESTFN, "rb") kama f :
             self.assertRaisesRegex(ValueError,
                                    "cannot mmap an empty file",
                                    mmap.mmap, f.fileno(), 0,
@@ -551,9 +551,9 @@ kundi MmapTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(mmap, 'PROT_READ'), "needs mmap.PROT_READ")
     eleza test_prot_readonly(self):
         mapsize = 10
-        with open(TESTFN, "wb") kama fp:
+        ukijumuisha open(TESTFN, "wb") kama fp:
             fp.write(b"a"*mapsize)
-        with open(TESTFN, "rb") kama f:
+        ukijumuisha open(TESTFN, "rb") kama f:
             m = mmap.mmap(f.fileno(), mapsize, prot=mmap.PROT_READ)
             self.assertRaises(TypeError, m.write, "foo")
 
@@ -562,9 +562,9 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_io_methods(self):
         data = b"0123456789"
-        with open(TESTFN, "wb") kama fp:
+        ukijumuisha open(TESTFN, "wb") kama fp:
             fp.write(b"x"*len(data))
-        with open(TESTFN, "r+b") kama f:
+        ukijumuisha open(TESTFN, "r+b") kama f:
             m = mmap.mmap(f.fileno(), len(data))
         # Test write_byte()
         kila i kwenye range(len(data)):
@@ -649,7 +649,7 @@ kundi MmapTests(unittest.TestCase):
         m.close()
 
         # Should sio crash (Issue 5385)
-        with open(TESTFN, "wb") kama fp:
+        ukijumuisha open(TESTFN, "wb") kama fp:
             fp.write(b"x"*10)
         f = open(TESTFN, "r+b")
         m = mmap.mmap(f.fileno(), 0)
@@ -671,20 +671,20 @@ kundi MmapTests(unittest.TestCase):
         # parameters to _get_osfhandle.
         s = socket.socket()
         jaribu:
-            with self.assertRaises(OSError):
+            ukijumuisha self.assertRaises(OSError):
                 m = mmap.mmap(s.fileno(), 10)
         mwishowe:
             s.close()
 
     eleza test_context_manager(self):
-        with mmap.mmap(-1, 10) kama m:
+        ukijumuisha mmap.mmap(-1, 10) kama m:
             self.assertUongo(m.closed)
         self.assertKweli(m.closed)
 
     eleza test_context_manager_exception(self):
         # Test that the OSError gets pitaed through
-        with self.assertRaises(Exception) kama exc:
-            with mmap.mmap(-1, 10) kama m:
+        ukijumuisha self.assertRaises(Exception) kama exc:
+            ukijumuisha mmap.mmap(-1, 10) kama m:
                 ashiria OSError
         self.assertIsInstance(exc.exception, OSError,
                               "wrong exception ashiriad kwenye context manager")
@@ -722,9 +722,9 @@ kundi MmapTests(unittest.TestCase):
 
     eleza test_concat_repeat_exception(self):
         m = mmap.mmap(-1, 16)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             m + m
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             m * 2
 
     eleza test_flush_rudisha_value(self):
@@ -745,13 +745,13 @@ kundi MmapTests(unittest.TestCase):
         size = 2 * PAGESIZE
         m = mmap.mmap(-1, size)
 
-        with self.assertRaisesRegex(ValueError, "madvise start out of bounds"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "madvise start out of bounds"):
             m.madvise(mmap.MADV_NORMAL, size)
-        with self.assertRaisesRegex(ValueError, "madvise start out of bounds"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "madvise start out of bounds"):
             m.madvise(mmap.MADV_NORMAL, -1)
-        with self.assertRaisesRegex(ValueError, "madvise length invalid"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "madvise length invalid"):
             m.madvise(mmap.MADV_NORMAL, 0, -1)
-        with self.assertRaisesRegex(OverflowError, "madvise length too large"):
+        ukijumuisha self.assertRaisesRegex(OverflowError, "madvise length too large"):
             m.madvise(mmap.MADV_NORMAL, PAGESIZE, sys.maxsize)
         self.assertEqual(m.madvise(mmap.MADV_NORMAL), Tupu)
         self.assertEqual(m.madvise(mmap.MADV_NORMAL, PAGESIZE), Tupu)
@@ -786,30 +786,30 @@ kundi LargeMmapTests(unittest.TestCase):
         rudisha f
 
     eleza test_large_offset(self):
-        with self._make_test_file(0x14FFFFFFF, b" ") kama f:
-            with mmap.mmap(f.fileno(), 0, offset=0x140000000, access=mmap.ACCESS_READ) kama m:
+        ukijumuisha self._make_test_file(0x14FFFFFFF, b" ") kama f:
+            ukijumuisha mmap.mmap(f.fileno(), 0, offset=0x140000000, access=mmap.ACCESS_READ) kama m:
                 self.assertEqual(m[0xFFFFFFF], 32)
 
     eleza test_large_filesize(self):
-        with self._make_test_file(0x17FFFFFFF, b" ") kama f:
+        ukijumuisha self._make_test_file(0x17FFFFFFF, b" ") kama f:
             ikiwa sys.maxsize < 0x180000000:
                 # On 32 bit platforms the file ni larger than sys.maxsize so
                 # mapping the whole file should fail -- Issue #16743
-                with self.assertRaises(OverflowError):
+                ukijumuisha self.assertRaises(OverflowError):
                     mmap.mmap(f.fileno(), 0x180000000, access=mmap.ACCESS_READ)
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
-            with mmap.mmap(f.fileno(), 0x10000, access=mmap.ACCESS_READ) kama m:
+            ukijumuisha mmap.mmap(f.fileno(), 0x10000, access=mmap.ACCESS_READ) kama m:
                 self.assertEqual(m.size(), 0x180000000)
 
-    # Issue 11277: mmap() with large (~4 GiB) sparse files crashes on OS X.
+    # Issue 11277: mmap() ukijumuisha large (~4 GiB) sparse files crashes on OS X.
 
     eleza _test_around_boundary(self, boundary):
         tail = b'  DEARdear  '
         start = boundary - len(tail) // 2
         end = start + len(tail)
-        with self._make_test_file(start, tail) kama f:
-            with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) kama m:
+        ukijumuisha self._make_test_file(start, tail) kama f:
+            ukijumuisha mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) kama m:
                 self.assertEqual(m[start:end], tail)
 
     @unittest.skipUnless(sys.maxsize > _4G, "test cannot run on 32-bit systems")

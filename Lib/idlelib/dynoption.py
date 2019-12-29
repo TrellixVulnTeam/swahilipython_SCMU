@@ -23,7 +23,7 @@ kundi DynOptionMenu(OptionMenu):
 
     eleza SetMenu(self,valueList,value=Tupu):
         """
-        clear na reload the menu with a new set of options.
+        clear na reload the menu ukijumuisha a new set of options.
         valueList - list of new options
         value - initial value to set the optionmenu's menubutton to
         """

@@ -30,7 +30,7 @@ kundi APITests(
         assert re.match(self.version_pattern, pkg_version)
 
     eleza test_for_name_does_not_exist(self):
-        with self.assertRaises(PackageNotFoundError):
+        ukijumuisha self.assertRaises(PackageNotFoundError):
             distribution('does-not-exist')
 
     eleza test_for_top_level(self):

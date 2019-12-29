@@ -28,16 +28,16 @@ kundi PullDOMTestCase(unittest.TestCase):
         """Minimal test of DOMEventStream.parse()"""
 
         # This just tests that parsing kutoka a stream works. Actual parser
-        # semantics are tested using parseString with a more focused XML
+        # semantics are tested using parseString ukijumuisha a more focused XML
         # fragment.
 
-        # Test with a filename:
+        # Test ukijumuisha a filename:
         handler = pulldom.parse(tstfile)
         self.addCleanup(handler.stream.close)
         list(handler)
 
-        # Test with a file object:
-        with open(tstfile, "rb") kama fin:
+        # Test ukijumuisha a file object:
+        ukijumuisha open(tstfile, "rb") kama fin:
             list(pulldom.parse(fin))
 
     eleza test_parse_semantics(self):
@@ -128,7 +128,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         next(items) # Skip character data
         evt, node = next(items)
         self.assertEqual(node.tagName, "html")
-        with self.assertRaises(StopIteration):
+        ukijumuisha self.assertRaises(StopIteration):
             next(items)
         items.clear()
         self.assertIsTupu(items.parser)
@@ -162,7 +162,7 @@ kundi PullDOMTestCase(unittest.TestCase):
 
     eleza test_getitem_deprecation(self):
         parser = pulldom.parseString(SMALL_SAMPLE)
-        with self.assertWarnsRegex(DeprecationWarning,
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
             # This should have rudishaed 'END_ELEMENT'.
             self.assertEqual(parser[-1][0], pulldom.START_DOCUMENT)
@@ -307,7 +307,7 @@ kundi SAX2DOMTestCase(unittest.TestCase):
 
     eleza test_basic(self):
         """Ensure SAX2DOM can parse kutoka a stream."""
-        with io.StringIO(SMALL_SAMPLE) kama fin:
+        ukijumuisha io.StringIO(SMALL_SAMPLE) kama fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             kila evt, node kwenye sd:

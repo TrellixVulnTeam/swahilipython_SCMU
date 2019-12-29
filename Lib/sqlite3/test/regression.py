@@ -104,7 +104,7 @@ kundi RegressionTests(unittest.TestCase):
 
     eleza CheckWorkaroundForBuggySqliteTransferBindings(self):
         """
-        pysqlite would crash with older SQLite versions unless
+        pysqlite would crash ukijumuisha older SQLite versions unless
         a workaround ni implemented.
         """
         self.con.execute("create table foo(bar)")
@@ -113,7 +113,7 @@ kundi RegressionTests(unittest.TestCase):
 
     eleza CheckEmptyStatement(self):
         """
-        pysqlite used to segfault with SQLite versions 3.5.x. These rudisha NULL
+        pysqlite used to segfault ukijumuisha SQLite versions 3.5.x. These rudisha NULL
         kila "no-operation" statements
         """
         self.con.execute("")
@@ -136,10 +136,10 @@ kundi RegressionTests(unittest.TestCase):
     eleza CheckErrorMsgDecodeError(self):
         # When porting the module to Python 3.0, the error message about
         # decoding errors disappeared. This verifies they're back again.
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
-        msg = "Could sio decode to UTF-8 column 'colname' with text 'xxx"
+        msg = "Could sio decode to UTF-8 column 'colname' ukijumuisha text 'xxx"
         self.assertIn(msg, str(cm.exception))
 
     eleza CheckRegisterAdapter(self):
@@ -159,7 +159,7 @@ kundi RegressionTests(unittest.TestCase):
         con = sqlite.connect(":memory:")
         con.isolation_level = Tupu
         kila level kwenye "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
-            with self.subTest(level=level):
+            ukijumuisha self.subTest(level=level):
                 con.isolation_level = level
                 con.isolation_level = level.lower()
                 con.isolation_level = level.capitalize()
@@ -173,8 +173,8 @@ kundi RegressionTests(unittest.TestCase):
             ("IMMEDIATE\0EXCLUSIVE", ValueError), ("\xe9", ValueError),
         ]
         kila value, exc kwenye pairs:
-            with self.subTest(level=value):
-                with self.assertRaises(exc):
+            ukijumuisha self.subTest(level=value):
+                ukijumuisha self.assertRaises(exc):
                     con.isolation_level = value
                 self.assertEqual(con.isolation_level, "DEFERRED")
 
@@ -189,15 +189,15 @@ kundi RegressionTests(unittest.TestCase):
 
         con = sqlite.connect(":memory:")
         cur = Cursor(con)
-        with self.assertRaises(sqlite.ProgrammingError):
+        ukijumuisha self.assertRaises(sqlite.ProgrammingError):
             cur.execute("select 4+5").fetchall()
-        with self.assertRaisesRegex(sqlite.ProgrammingError,
+        ukijumuisha self.assertRaisesRegex(sqlite.ProgrammingError,
                                     r'^Base Cursor\.__init__ sio called\.$'):
             cur.close()
 
     eleza CheckStrSubclass(self):
         """
-        The Python 3.0 port of the module didn't cope with values of subclasses of str.
+        The Python 3.0 port of the module didn't cope ukijumuisha values of subclasses of str.
         """
         kundi MyStr(str): pita
         self.con.execute("select ?", (MyStr("abc"),))
@@ -212,7 +212,7 @@ kundi RegressionTests(unittest.TestCase):
                 pita
 
         con = Connection(":memory:")
-        with self.assertRaises(sqlite.ProgrammingError):
+        ukijumuisha self.assertRaises(sqlite.ProgrammingError):
             cur = con.cursor()
 
     eleza CheckCursorRegistration(self):
@@ -234,7 +234,7 @@ kundi RegressionTests(unittest.TestCase):
         cur.executemany("insert into foo(x) values (?)", [(3,), (4,), (5,)])
         cur.execute("select x kutoka foo")
         con.rollback()
-        with self.assertRaises(sqlite.InterfaceError):
+        ukijumuisha self.assertRaises(sqlite.InterfaceError):
             cur.fetchall()
 
     eleza CheckAutoCommit(self):
@@ -259,7 +259,7 @@ kundi RegressionTests(unittest.TestCase):
 
     eleza CheckConnectionCall(self):
         """
-        Call a connection with a non-string SQL request: check error handling
+        Call a connection ukijumuisha a non-string SQL request: check error handling
         of the statement constructor.
         """
         self.assertRaises(sqlite.Warning, self.con, 1)
@@ -288,7 +288,7 @@ kundi RegressionTests(unittest.TestCase):
             cur.execute("insert into a (bar) values (?)", (1,))
             tuma 1
 
-        with self.assertRaises(sqlite.ProgrammingError):
+        ukijumuisha self.assertRaises(sqlite.ProgrammingError):
             cur.executemany("insert into b (baz) values (?)",
                             ((i,) kila i kwenye foo()))
 
@@ -296,7 +296,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         http://bugs.python.org/issue14720
 
-        The microsecond parsing of convert_timestamp() should pad with zeros,
+        The microsecond parsing of convert_timestamp() should pad ukijumuisha zeros,
         since the microsecond string "456" actually represents "456000".
         """
 
@@ -352,14 +352,14 @@ kundi RegressionTests(unittest.TestCase):
 
         counter = 0
         kila i, row kwenye enumerate(con.execute("select c kutoka t")):
-            with self.subTest(i=i, row=row):
+            ukijumuisha self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
                 ikiwa counter == 0:
                     self.assertEqual(row[0], 0)
-                elikiwa counter == 1:
+                lasivyo counter == 1:
                     self.assertEqual(row[0], 1)
-                elikiwa counter == 2:
+                lasivyo counter == 2:
                     self.assertEqual(row[0], 2)
                 counter += 1
         self.assertEqual(counter, 3, "should have rudishaed exactly three rows")
@@ -381,7 +381,7 @@ kundi RegressionTests(unittest.TestCase):
         support.gc_collect()
 
     eleza CheckDelIsolation_levelSegfault(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa self.con.isolation_level
 
     eleza CheckBpo37347(self):

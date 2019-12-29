@@ -21,7 +21,7 @@ requires_getformat = unittest.skipUnless(have_getformat,
 requires_setformat = unittest.skipUnless(hasattr(float, "__setformat__"),
                                          "requires __setformat__")
 
-#locate file with float format test values
+#locate file ukijumuisha float format test values
 test_dir = os.path.dirname(__file__) ama os.curdir
 format_testfile = os.path.join(test_dir, 'formatfloat_testcases.txt')
 
@@ -109,9 +109,9 @@ kundi GeneralFloatCases(unittest.TestCase):
 
         kila f kwenye factories:
             x = f(b" 3.14  ")
-            with self.subTest(type(x)):
+            ukijumuisha self.subTest(type(x)):
                 self.assertEqual(float(x), 3.14)
-                with self.assertRaisesRegex(ValueError, "could sio convert"):
+                ukijumuisha self.assertRaisesRegex(ValueError, "could sio convert"):
                     float(f(b'A' * 0x10))
 
     eleza test_float_memoryview(self):
@@ -123,7 +123,7 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     eleza test_error_message(self):
         eleza check(s):
-            with self.assertRaises(ValueError, msg='float(%r)' % (s,)) kama cm:
+            ukijumuisha self.assertRaises(ValueError, msg='float(%r)' % (s,)) kama cm:
                 float(s)
             self.assertEqual(str(cm.exception),
                 'could sio convert string to float: %r' % (s,))
@@ -139,7 +139,7 @@ kundi GeneralFloatCases(unittest.TestCase):
         check('123\x00')
         check('123\x00 245')
         check('123\x00245')
-        # byte string with embedded NUL
+        # byte string ukijumuisha embedded NUL
         check(b'123\x00')
         # non-UTF-8 byte string
         check(b'123\xa0')
@@ -200,7 +200,7 @@ kundi GeneralFloatCases(unittest.TestCase):
 
         self.assertEqual(float(Foo1()), 42.)
         self.assertEqual(float(Foo2()), 42.)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(float(Foo3(21)), 42.)
         self.assertRaises(TypeError, float, Foo4(42))
         self.assertEqual(float(FooStr('8')), 9.)
@@ -214,13 +214,13 @@ kundi GeneralFloatCases(unittest.TestCase):
         kundi F:
             eleza __float__(self):
                 rudisha OtherFloatSubclass(42.)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(float(F()), 42.)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertIs(type(float(F())), float)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(FloatSubclass(F()), 42.)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertIs(type(FloatSubclass(F())), FloatSubclass)
 
         kundi MyIndex:
@@ -239,7 +239,7 @@ kundi GeneralFloatCases(unittest.TestCase):
         self.assertRaises(TypeError, float, MyInt())
 
     eleza test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             float(x='3.14')
 
     eleza test_is_integer(self):
@@ -500,7 +500,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(2.0, 2.0), 4.0)
 
             # 1 ** large na -1 ** large; some libms apparently
-            # have problems with these
+            # have problems ukijumuisha these
             self.assertEqualAndEqualSign(pow_op(1.0, -1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, 1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, -1e100), 1.0)
@@ -559,7 +559,7 @@ kundi FormatFunctionsTestCase(unittest.TestCase):
             ikiwa self.save_formats[t] == 'IEEE, big-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, little-endian')
-            elikiwa self.save_formats[t] == 'IEEE, little-endian':
+            lasivyo self.save_formats[t] == 'IEEE, little-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, big-endian')
             isipokua:
@@ -698,7 +698,7 @@ kundi FormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_format_testfile(self):
-        with open(format_testfile) kama testfile:
+        ukijumuisha open(format_testfile) kama testfile:
             kila line kwenye testfile:
                 ikiwa line.startswith('--'):
                     endelea
@@ -737,7 +737,7 @@ kundi FormatTestCase(unittest.TestCase):
 
 kundi ReprTestCase(unittest.TestCase):
     eleza test_repr(self):
-        with open(os.path.join(os.path.split(__file__)[0],
+        ukijumuisha open(os.path.join(os.path.split(__file__)[0],
                   'floating_points.txt')) kama floats_file:
             kila line kwenye floats_file:
                 line = line.strip()
@@ -880,7 +880,7 @@ kundi RoundTestCase(unittest.TestCase):
         # Test formatting of nans na infs.
 
         eleza test(fmt, value, expected):
-            # Test with both % na format().
+            # Test ukijumuisha both % na format().
             self.assertEqual(fmt % value, expected, fmt)
             fmt = fmt[1:] # strip off the %
             self.assertEqual(format(value, fmt), expected, fmt)
@@ -915,7 +915,7 @@ kundi RoundTestCase(unittest.TestCase):
             self.assertIsInstance(x, int)
 
 
-# Beginning with Python 2.6 float has cross platform compatible
+# Beginning ukijumuisha Python 2.6 float has cross platform compatible
 # ways to create na represent inf na nan
 kundi InfNanTest(unittest.TestCase):
     eleza test_inf_kutoka_str(self):
@@ -1033,7 +1033,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) == isnan(y):
                 rudisha
-        elikiwa x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
+        lasivyo x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
             rudisha
         self.fail('%r sio identical to %r' % (x, y))
 
@@ -1139,7 +1139,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         TINY = self.TINY;
         EPS = self.EPS;
 
-        # two spellings of infinity, with optional signs; case-insensitive
+        # two spellings of infinity, ukijumuisha optional signs; case-insensitive
         self.identical(kutokaHex('inf'), INF)
         self.identical(kutokaHex('+Inf'), INF)
         self.identical(kutokaHex('-INF'), -INF)
@@ -1149,7 +1149,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         self.identical(kutokaHex('-infinity'), -INF)
         self.identical(kutokaHex('-iNFiNitY'), -INF)
 
-        # nans with optional sign; case insensitive
+        # nans ukijumuisha optional sign; case insensitive
         self.identical(kutokaHex('nan'), NAN)
         self.identical(kutokaHex('+NaN'), NAN)
         self.identical(kutokaHex('-NaN'), NAN)

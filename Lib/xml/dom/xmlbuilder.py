@@ -360,7 +360,7 @@ kundi DocumentLS:
     eleza saveXML(self, snode):
         ikiwa snode ni Tupu:
             snode = self
-        elikiwa snode.ownerDocument ni sio self:
+        lasivyo snode.ownerDocument ni sio self:
             ashiria xml.dom.WrongDocumentErr()
         rudisha snode.toxml()
 

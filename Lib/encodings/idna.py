@@ -64,7 +64,7 @@ eleza ToASCII(label):
         # Step 1: try ASCII
         label = label.encode("ascii")
     tatizo UnicodeError:
-        pass
+        pita
     isipokua:
         # Skip to step 3: UseSTD3ASCIIRules is false, so
         # Skip to step 8.
@@ -80,7 +80,7 @@ eleza ToASCII(label):
     jaribu:
         label = label.encode("ascii")
     tatizo UnicodeError:
-        pass
+        pita
     isipokua:
         # Skip to step 8.
         if 0 < len(label) < 64:
@@ -105,13 +105,13 @@ eleza ToASCII(label):
 eleza ToUnicode(label):
     # Step 1: Check for ASCII
     if isinstance(label, bytes):
-        pure_ascii = True
+        pure_ascii = Kweli
     isipokua:
         jaribu:
             label = label.encode("ascii")
-            pure_ascii = True
+            pure_ascii = Kweli
         tatizo UnicodeError:
-            pure_ascii = False
+            pure_ascii = Uongo
     if sio pure_ascii:
         # Step 2: Perform nameprep
         label = nameprep(label)
@@ -156,7 +156,7 @@ kundi Codec(codecs.Codec):
         jaribu:
             result = input.encode('ascii')
         tatizo UnicodeEncodeError:
-            pass
+            pita
         isipokua:
             # ASCII name: fast path
             labels = result.split(b'.')
@@ -199,7 +199,7 @@ kundi Codec(codecs.Codec):
             jaribu:
                 rudisha input.decode('ascii'), len(input)
             tatizo UnicodeDecodeError:
-                pass
+                pita
 
         labels = input.split(b".")
 
@@ -290,10 +290,10 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         rudisha (result, size)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

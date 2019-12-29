@@ -70,7 +70,7 @@ kundi UUTest(unittest.TestCase):
         out = io.BytesIO()
         uu.encode(inp, out, "t1", backtick=Kweli)
         self.assertEqual(out.getvalue(), encodedtextwrapped(0o666, "t1", Kweli))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             uu.encode(inp, out, "t1", 0o644, Kweli)
 
     eleza test_decode(self):
@@ -125,13 +125,13 @@ kundi UUTest(unittest.TestCase):
         plaintext = b"\x33"  # 00110011
 
         kila encodedtext kwenye encodedtext1, encodedtext2:
-            with self.subTest("uu.decode()"):
+            ukijumuisha self.subTest("uu.decode()"):
                 inp = io.BytesIO(encodedtext)
                 out = io.BytesIO()
                 uu.decode(inp, out, quiet=Kweli)
                 self.assertEqual(out.getvalue(), plaintext)
 
-            with self.subTest("uu_codec"):
+            ukijumuisha self.subTest("uu_codec"):
                 agiza codecs
                 decoded = codecs.decode(encodedtext, "uu_codec")
                 self.assertEqual(decoded, plaintext)
@@ -171,65 +171,65 @@ kundi UUFileTest(unittest.TestCase):
         self.addCleanup(support.unlink, self.tmpout)
 
     eleza test_encode(self):
-        with open(self.tmpin, 'wb') kama fin:
+        ukijumuisha open(self.tmpin, 'wb') kama fin:
             fin.write(plaintext)
 
-        with open(self.tmpin, 'rb') kama fin:
-            with open(self.tmpout, 'wb') kama fout:
+        ukijumuisha open(self.tmpin, 'rb') kama fin:
+            ukijumuisha open(self.tmpout, 'wb') kama fout:
                 uu.encode(fin, fout, self.tmpin, mode=0o644)
 
-        with open(self.tmpout, 'rb') kama fout:
+        ukijumuisha open(self.tmpout, 'rb') kama fout:
             s = fout.read()
         self.assertEqual(s, encodedtextwrapped(0o644, self.tmpin))
 
         # in_file na out_file kama filenames
         uu.encode(self.tmpin, self.tmpout, self.tmpin, mode=0o644)
-        with open(self.tmpout, 'rb') kama fout:
+        ukijumuisha open(self.tmpout, 'rb') kama fout:
             s = fout.read()
         self.assertEqual(s, encodedtextwrapped(0o644, self.tmpin))
 
     eleza test_decode(self):
-        with open(self.tmpin, 'wb') kama f:
+        ukijumuisha open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
-        with open(self.tmpin, 'rb') kama f:
+        ukijumuisha open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
-        with open(self.tmpout, 'rb') kama f:
+        ukijumuisha open(self.tmpout, 'rb') kama f:
             s = f.read()
         self.assertEqual(s, plaintext)
         # XXX ni there an xp way to verify the mode?
 
     eleza test_decode_filename(self):
-        with open(self.tmpin, 'wb') kama f:
+        ukijumuisha open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
         uu.decode(self.tmpin)
 
-        with open(self.tmpout, 'rb') kama f:
+        ukijumuisha open(self.tmpout, 'rb') kama f:
             s = f.read()
         self.assertEqual(s, plaintext)
 
     eleza test_decodetwice(self):
         # Verify that decode() will refuse to overwrite an existing file
-        with open(self.tmpin, 'wb') kama f:
+        ukijumuisha open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
-        with open(self.tmpin, 'rb') kama f:
+        ukijumuisha open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
-        with open(self.tmpin, 'rb') kama f:
+        ukijumuisha open(self.tmpin, 'rb') kama f:
             self.assertRaises(uu.Error, uu.decode, f)
 
     eleza test_decode_mode(self):
         # Verify that decode() will set the given mode kila the out_file
         expected_mode = 0o444
-        with open(self.tmpin, 'wb') kama f:
+        ukijumuisha open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(expected_mode, self.tmpout))
 
         # make file writable again, so it can be removed (Windows only)
         self.addCleanup(os.chmod, self.tmpout, expected_mode | stat.S_IWRITE)
 
-        with open(self.tmpin, 'rb') kama f:
+        ukijumuisha open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
         self.assertEqual(

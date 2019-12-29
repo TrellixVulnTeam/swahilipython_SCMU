@@ -105,7 +105,7 @@ kundi SAXParseException(SAXException):
 kundi SAXNotRecognizedException(SAXException):
     """Exception kundi kila an unrecognized identifier.
 
-    An XMLReader will ashiria this exception when it ni confronted with an
+    An XMLReader will ashiria this exception when it ni confronted ukijumuisha an
     unrecognized feature ama property. SAX applications na extensions may
     use this kundi kila similar purposes."""
 

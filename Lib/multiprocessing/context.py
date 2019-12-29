@@ -47,7 +47,7 @@ kundi BaseContext(object):
             rudisha num
 
     eleza Manager(self):
-        '''Returns a manager associated with a running server process
+        '''Returns a manager associated ukijumuisha a running server process
 
         The managers methods such kama `Lock()`, `Condition()` na `Queue()`
         can be used to create shared objects.
@@ -203,7 +203,7 @@ kundi BaseContext(object):
     @property
     eleza reducer(self):
         '''Controls how objects will be reduced to a form that can be
-        shared with other processes.'''
+        shared ukijumuisha other processes.'''
         rudisha globals().get('reduction')
 
     @reducer.setter

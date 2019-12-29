@@ -1245,7 +1245,7 @@ class Misc:
         Each item in the list consists of a visual name (see winfo_visual), a
         depth and if includeids is true is given also the X identifier."""
         data = self.tk.call('winfo', 'visualsavailable', self._w,
-                            'includeids' if includeids else None)
+                            'includeids' if includeids isipokua None)
         data = [self.tk.splitlist(x) for x in self.tk.splitlist(data)]
         return [self.__winfo_parseitem(x) for x in data]
 

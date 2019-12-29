@@ -327,7 +327,7 @@ class bdist_msi(Command):
         registry for each version of Python.
 
         Properties TARGETDIRX.Y will be set from PYTHON.USER.X.Y if defined,
-        else from PYTHON.MACHINE.X.Y.
+        isipokua from PYTHON.MACHINE.X.Y.
 
         Properties PYTHONX.Y will be set to TARGETDIRX.Y\\python.exe"""
 

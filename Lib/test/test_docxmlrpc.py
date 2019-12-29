@@ -41,8 +41,8 @@ eleza make_server():
 
         eleza add(x, y):
             """Add two instances together. This follows PEP008, but has nothing
-            to do with RFC1952. Case should matter: pEp008 na rFC1952.  Things
-            that start with http na ftp should be auto-linked, too:
+            to do ukijumuisha RFC1952. Case should matter: pEp008 na rFC1952.  Things
+            that start ukijumuisha http na ftp should be auto-linked, too:
             http://google.com.
             """
             rudisha x + y
@@ -119,10 +119,10 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_autolinking(self):
         """Test that the server correctly automatically wraps references to
-        PEPS na RFCs with links, na that it linkifies text starting with
+        PEPS na RFCs ukijumuisha links, na that it linkifies text starting with
         http ama ftp protocol prefixes.
 
         The documentation kila the "add" method contains the test material.
@@ -143,7 +143,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'http://google.com</a>.</tt></dd></dl>'), response)
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_system_methods(self):
         """Test the presence of three consecutive system.* methods.
 

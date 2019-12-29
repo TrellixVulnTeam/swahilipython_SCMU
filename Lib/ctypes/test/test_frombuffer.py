@@ -31,7 +31,7 @@ class Test(unittest.TestCase):
         a.pop()
         x = (c_int * 16).from_buffer(a)
 
-        self.assertIn(a, [obj.obj if isinstance(obj, memoryview) else obj
+        self.assertIn(a, [obj.obj if isinstance(obj, memoryview) isipokua obj
                           for obj in x._objects.values()])
 
         expected = x[:]

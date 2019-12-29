@@ -244,7 +244,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
         Immediately after this method ni called, Task.cancelled() will
         sio rudisha Kweli (unless the task was already cancelled).  A
         task will be marked kama cancelled when the wrapped coroutine
-        terminates with a CancelledError exception (even ikiwa cancel()
+        terminates ukijumuisha a CancelledError exception (even ikiwa cancel()
         was sio called).
         """
         self._log_traceback = Uongo
@@ -304,7 +304,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                         f'{result!r} attached to a different loop')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
-                elikiwa blocking:
+                lasivyo blocking:
                     ikiwa result ni self:
                         new_exc = RuntimeError(
                             f'Task cannot await on itself: {self!r}')
@@ -321,22 +321,22 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                 isipokua:
                     new_exc = RuntimeError(
                         f'tuma was used instead of tuma kutoka '
-                        f'in task {self!r} with {result!r}')
+                        f'in task {self!r} ukijumuisha {result!r}')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
 
-            elikiwa result ni Tupu:
+            lasivyo result ni Tupu:
                 # Bare tuma relinquishes control kila one event loop iteration.
                 self._loop.call_soon(self.__step, context=self._context)
-            elikiwa inspect.isgenerator(result):
+            lasivyo inspect.isgenerator(result):
                 # Yielding a generator ni just wrong.
                 new_exc = RuntimeError(
                     f'tuma was used instead of tuma kutoka kila '
-                    f'generator kwenye task {self!r} with {result!r}')
+                    f'generator kwenye task {self!r} ukijumuisha {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
             isipokua:
-                # Yielding something else ni an error.
+                # Yielding something isipokua ni an error.
                 new_exc = RuntimeError(f'Task got bad tuma: {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
@@ -432,7 +432,7 @@ eleza _release_waiter(waiter, *args):
 
 
 async eleza wait_for(fut, timeout, *, loop=Tupu):
-    """Wait kila the single Future ama coroutine to complete, with timeout.
+    """Wait kila the single Future ama coroutine to complete, ukijumuisha timeout.
 
     Coroutine will be wrapped kwenye Task.
 
@@ -662,12 +662,12 @@ eleza ensure_future(coro_or_future, *, loop=Tupu):
         ikiwa task._source_traceback:
             toa task._source_traceback[-1]
         rudisha task
-    elikiwa futures.isfuture(coro_or_future):
+    lasivyo futures.isfuture(coro_or_future):
         ikiwa loop ni sio Tupu na loop ni sio futures._get_loop(coro_or_future):
             ashiria ValueError('The future belongs to a different loop than '
                              'the one specified kama the loop argument')
         rudisha coro_or_future
-    elikiwa inspect.isawaitable(coro_or_future):
+    lasivyo inspect.isawaitable(coro_or_future):
         rudisha ensure_future(_wrap_awaitable(coro_or_future), loop=loop)
     isipokua:
         ashiria TypeError('An asyncio.Future, a coroutine ama an awaitable ni '
@@ -678,7 +678,7 @@ eleza ensure_future(coro_or_future, *, loop=Tupu):
 eleza _wrap_awaitable(awaitable):
     """Helper kila asyncio.ensure_future().
 
-    Wraps awaitable (an object with __await__) into a coroutine
+    Wraps awaitable (an object ukijumuisha __await__) into a coroutine
     that will later be wrapped kwenye a Task by ensure_future().
     """
     rudisha (tuma kutoka awaitable.__await__())
@@ -846,7 +846,7 @@ eleza shield(arg, *, loop=Tupu):
     this will still cancel shield().
 
     If you want to completely ignore cancellation (not recommended)
-    you can combine shield() with a try/tatizo clause, kama follows:
+    you can combine shield() ukijumuisha a try/tatizo clause, kama follows:
 
         jaribu:
             res = await shield(something())

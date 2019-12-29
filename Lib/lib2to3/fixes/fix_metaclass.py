@@ -32,7 +32,7 @@ eleza has_metaclass(parent):
     kila node kwenye parent.children:
         ikiwa node.type == syms.suite:
             rudisha has_metaclass(node)
-        elikiwa node.type == syms.simple_stmt na node.children:
+        lasivyo node.type == syms.simple_stmt na node.children:
             expr_node = node.children[0]
             ikiwa expr_node.type == syms.expr_stmt na expr_node.children:
                 left_side = expr_node.children[0]
@@ -121,7 +121,7 @@ eleza find_metas(cls_node):
 
 
 eleza fixup_indent(suite):
-    """ If an INDENT ni followed by a thing with a prefix then nuke the prefix
+    """ If an INDENT ni followed by a thing ukijumuisha a prefix then nuke the prefix
         Otherwise we get kwenye trouble when removing __metaclass__ at suite start
     """
     kids = suite.children[::-1]
@@ -174,12 +174,12 @@ kundi FixMetaclass(fixer_base.BaseFix):
                 parent = node.children[3].clone()
                 arglist = Node(syms.arglist, [parent])
                 node.set_child(3, arglist)
-        elikiwa len(node.children) == 6:
+        lasivyo len(node.children) == 6:
             # Node(classdef, ['class', 'name', '(',  ')', ':', suite])
             #                 0        1       2     3    4    5
             arglist = Node(syms.arglist, [])
             node.insert_child(3, arglist)
-        elikiwa len(node.children) == 4:
+        lasivyo len(node.children) == 4:
             # Node(classdef, ['class', 'name', ':', suite])
             #                 0        1       2    3
             arglist = Node(syms.arglist, [])
@@ -219,7 +219,7 @@ kundi FixMetaclass(fixer_base.BaseFix):
             node.append_child(pita_leaf)
             node.append_child(Leaf(token.NEWLINE, '\n'))
 
-        elikiwa len(suite.children) > 1 na \
+        lasivyo len(suite.children) > 1 na \
                  (suite.children[-2].type == token.INDENT and
                   suite.children[-1].type == token.DEDENT):
             # there was only one line kwenye the kundi body na it was __metaclass__

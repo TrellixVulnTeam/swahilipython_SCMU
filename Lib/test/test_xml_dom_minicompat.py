@@ -18,9 +18,9 @@ kundi EmptyNodeListTestCase(unittest.TestCase):
         self.assertIsTupu(node_list.item(0))
         self.assertIsTupu(node_list.item(-1)) # invalid item
 
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             node_list[0]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             node_list[-1]
 
     eleza test_emptynodelist_length(self):
@@ -28,7 +28,7 @@ kundi EmptyNodeListTestCase(unittest.TestCase):
         # Reading
         self.assertEqual(node_list.length, 0)
         # Writing
-        with self.assertRaises(xml.dom.NoModificationAllowedErr):
+        ukijumuisha self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
     eleza test_emptynodelist___add__(self):
@@ -51,12 +51,12 @@ kundi NodeListTestCase(unittest.TestCase):
         self.assertIsTupu(node_list.item(0))
         self.assertIsTupu(node_list.item(-1))
 
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             node_list[0]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             node_list[-1]
 
-        # Now, use a NodeList with items.
+        # Now, use a NodeList ukijumuisha items.
         node_list.append(111)
         node_list.append(999)
 
@@ -71,7 +71,7 @@ kundi NodeListTestCase(unittest.TestCase):
         # Reading
         self.assertEqual(node_list.length, 2)
         # Writing
-        with self.assertRaises(xml.dom.NoModificationAllowedErr):
+        ukijumuisha self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
     eleza test_nodelist___add__(self):

@@ -467,7 +467,7 @@ kundi ScopeTests(unittest.TestCase):
 
     eleza testLocalsClass(self):
         # This test verifies that calling locals() does sio pollute
-        # the local namespace of the kundi with free variables.  Old
+        # the local namespace of the kundi ukijumuisha free variables.  Old
         # versions of Python had a bug, where a free variable being
         # pitaed through a kundi namespace would be inserted into
         # locals() by locals() ama exec ama a trace function.

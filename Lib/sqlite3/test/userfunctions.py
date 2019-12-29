@@ -163,7 +163,7 @@ kundi FunctionTests(unittest.TestCase):
         self.con.close()
 
     eleza CheckFuncErrorOnCreate(self):
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.con.create_function("bla", -100, lambda x: 2*x)
 
     eleza CheckFuncRefCount(self):
@@ -229,7 +229,7 @@ kundi FunctionTests(unittest.TestCase):
 
     eleza CheckFuncException(self):
         cur = self.con.cursor()
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select ashiriaexception()")
             cur.fetchone()
         self.assertEqual(str(cm.exception), 'user-defined function ashiriad exception')
@@ -291,11 +291,11 @@ kundi FunctionTests(unittest.TestCase):
 
     @unittest.skipIf(sqlite.sqlite_version_info >= (3, 8, 3), "SQLite < 3.8.3 needed")
     eleza CheckFuncDeterministicNotSupported(self):
-        with self.assertRaises(sqlite.NotSupportedError):
+        ukijumuisha self.assertRaises(sqlite.NotSupportedError):
             self.con.create_function("deterministic", 0, int, deterministic=Kweli)
 
     eleza CheckFuncDeterministicKeywordOnly(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.con.create_function("deterministic", 0, int, Kweli)
 
 
@@ -330,39 +330,39 @@ kundi AggregateTests(unittest.TestCase):
         pita
 
     eleza CheckAggrErrorOnCreate(self):
-        with self.assertRaises(sqlite.OperationalError):
+        ukijumuisha self.assertRaises(sqlite.OperationalError):
             self.con.create_function("bla", -100, AggrSum)
 
     eleza CheckAggrNoStep(self):
         cur = self.con.cursor()
-        with self.assertRaises(AttributeError) kama cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             cur.execute("select nostep(t) kutoka test")
         self.assertEqual(str(cm.exception), "'AggrNoStep' object has no attribute 'step'")
 
     eleza CheckAggrNoFinalize(self):
         cur = self.con.cursor()
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select nofinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method ashiriad error")
 
     eleza CheckAggrExceptionInInit(self):
         cur = self.con.cursor()
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excInit(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method ashiriad error")
 
     eleza CheckAggrExceptionInStep(self):
         cur = self.con.cursor()
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excStep(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method ashiriad error")
 
     eleza CheckAggrExceptionInFinalize(self):
         cur = self.con.cursor()
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excFinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method ashiriad error")
@@ -438,12 +438,12 @@ kundi AuthorizerTests(unittest.TestCase):
         pita
 
     eleza test_table_access(self):
-        with self.assertRaises(sqlite.DatabaseError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
             self.con.execute("select * kutoka t2")
         self.assertIn('prohibited', str(cm.exception))
 
     eleza test_column_access(self):
-        with self.assertRaises(sqlite.DatabaseError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
             self.con.execute("select c2 kutoka t1")
         self.assertIn('prohibited', str(cm.exception))
 

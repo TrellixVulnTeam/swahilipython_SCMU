@@ -14,7 +14,7 @@ kundi _InterruptHandler(object):
             ikiwa default_handler == signal.SIG_DFL:
                 # Pretend it's signal.default_int_handler instead.
                 default_handler = signal.default_int_handler
-            elikiwa default_handler == signal.SIG_IGN:
+            lasivyo default_handler == signal.SIG_IGN:
                 # Not quite the same thing kama SIG_IGN, but the closest we
                 # can make it: do nothing.
                 eleza default_handler(unused_signum, unused_frame):

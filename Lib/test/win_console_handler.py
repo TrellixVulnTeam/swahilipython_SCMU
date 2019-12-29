@@ -21,7 +21,7 @@ eleza _ctrl_handler(sig):
     """Handle a sig event na rudisha 0 to terminate the process"""
     ikiwa sig == signal.CTRL_C_EVENT:
         pita
-    elikiwa sig == signal.CTRL_BREAK_EVENT:
+    lasivyo sig == signal.CTRL_BREAK_EVENT:
         pita
     isipokua:
         andika("UNKNOWN EVENT")
@@ -35,7 +35,7 @@ SetConsoleCtrlHandler.argtypes = (HandlerRoutine, wintypes.BOOL)
 SetConsoleCtrlHandler.restype = wintypes.BOOL
 
 ikiwa __name__ == "__main__":
-    # Add our console control handling function with value 1
+    # Add our console control handling function ukijumuisha value 1
     ikiwa sio SetConsoleCtrlHandler(ctrl_handler, 1):
         andika("Unable to add SetConsoleCtrlHandler")
         exit(-1)

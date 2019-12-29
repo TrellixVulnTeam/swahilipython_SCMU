@@ -113,7 +113,7 @@ eleza FromImport(package_name, name_leafs):
         kutoka package agiza name_leafs"""
     # XXX: May sio handle dotted agizas properly (eg, package_name='foo.bar')
     #assert package_name == '.' ama '.' haiko kwenye package_name, "FromImport has "\
-    #       "not been tested with dotted package names -- use at your own "\
+    #       "not been tested ukijumuisha dotted package names -- use at your own "\
     #       "peril!"
 
     kila leaf kwenye name_leafs:
@@ -370,10 +370,10 @@ eleza find_binding(name, node, package=Tupu):
                 rudisha child
             n = find_binding(name, make_suite(child.children[-1]), package)
             ikiwa n: ret = n
-        elikiwa child.type kwenye (syms.if_stmt, syms.while_stmt):
+        lasivyo child.type kwenye (syms.if_stmt, syms.while_stmt):
             n = find_binding(name, make_suite(child.children[-1]), package)
             ikiwa n: ret = n
-        elikiwa child.type == syms.try_stmt:
+        lasivyo child.type == syms.try_stmt:
             n = find_binding(name, make_suite(child.children[2]), package)
             ikiwa n:
                 ret = n
@@ -383,13 +383,13 @@ eleza find_binding(name, node, package=Tupu):
                         # i+3 ni the colon, i+4 ni the suite
                         n = find_binding(name, make_suite(child.children[i+4]), package)
                         ikiwa n: ret = n
-        elikiwa child.type kwenye _def_syms na child.children[1].value == name:
+        lasivyo child.type kwenye _def_syms na child.children[1].value == name:
             ret = child
-        elikiwa _is_import_binding(child, name, package):
+        lasivyo _is_import_binding(child, name, package):
             ret = child
-        elikiwa child.type == syms.simple_stmt:
+        lasivyo child.type == syms.simple_stmt:
             ret = find_binding(name, child, package)
-        elikiwa child.type == syms.expr_stmt:
+        lasivyo child.type == syms.expr_stmt:
             ikiwa _find(name, child.children[0]):
                 ret = child
 
@@ -407,7 +407,7 @@ eleza _find(name, node):
         node = nodes.pop()
         ikiwa node.type > 256 na node.type haiko kwenye _block_syms:
             nodes.extend(node.children)
-        elikiwa node.type == token.NAME na node.value == name:
+        lasivyo node.type == token.NAME na node.value == name:
             rudisha node
     rudisha Tupu
 
@@ -423,15 +423,15 @@ eleza _is_import_binding(node, name, package=Tupu):
                 ikiwa child.type == syms.dotted_as_name:
                     ikiwa child.children[2].value == name:
                         rudisha node
-                elikiwa child.type == token.NAME na child.value == name:
+                lasivyo child.type == token.NAME na child.value == name:
                     rudisha node
-        elikiwa imp.type == syms.dotted_as_name:
+        lasivyo imp.type == syms.dotted_as_name:
             last = imp.children[-1]
             ikiwa last.type == token.NAME na last.value == name:
                 rudisha node
-        elikiwa imp.type == token.NAME na imp.value == name:
+        lasivyo imp.type == token.NAME na imp.value == name:
             rudisha node
-    elikiwa node.type == syms.import_kutoka:
+    lasivyo node.type == syms.import_kutoka:
         # str(...) ni used to make life easier here, because
         # kutoka a.b agiza parses to ['agiza', ['a', '.', 'b'], ...]
         ikiwa package na str(node.children[1]).strip() != package:
@@ -440,14 +440,14 @@ eleza _is_import_binding(node, name, package=Tupu):
         ikiwa package na _find("as", n):
             # See test_kutoka_import_as kila explanation
             rudisha Tupu
-        elikiwa n.type == syms.import_as_names na _find(name, n):
+        lasivyo n.type == syms.import_as_names na _find(name, n):
             rudisha node
-        elikiwa n.type == syms.import_as_name:
+        lasivyo n.type == syms.import_as_name:
             child = n.children[2]
             ikiwa child.type == token.NAME na child.value == name:
                 rudisha node
-        elikiwa n.type == token.NAME na n.value == name:
+        lasivyo n.type == token.NAME na n.value == name:
             rudisha node
-        elikiwa package na n.type == token.STAR:
+        lasivyo package na n.type == token.STAR:
             rudisha node
     rudisha Tupu

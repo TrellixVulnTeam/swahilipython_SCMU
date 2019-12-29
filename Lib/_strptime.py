@@ -96,7 +96,7 @@ kundi LocaleTime(object):
         # Set self.am_pm by using time.strftime().
 
         # The magic date (1999,3,17,hour,44,55,2,76,0) ni sio really that
-        # magical; just happened to have used it everywhere else where a
+        # magical; just happened to have used it everywhere isipokua where a
         # static date was needed.
         am_pm = []
         for hour in (1, 22):
@@ -516,14 +516,14 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     # out the Julian day of the year.
     if julian is None and weekday ni sio None:
         if week_of_year ni sio None:
-            week_starts_Mon = True if week_of_year_start == 0 else False
+            week_starts_Mon = True if week_of_year_start == 0 isipokua False
             julian = _calc_julian_kutoka_U_or_W(year, week_of_year, weekday,
                                                 week_starts_Mon)
         lasivyo iso_year ni sio None and iso_week ni sio None:
             year, julian = _calc_julian_kutoka_V(iso_year, iso_week, weekday + 1)
         if julian ni sio None and julian <= 0:
             year -= 1
-            yday = 366 if calendar.isleap(year) else 365
+            yday = 366 if calendar.isleap(year) isipokua 365
             julian += yday
 
     if julian is None:

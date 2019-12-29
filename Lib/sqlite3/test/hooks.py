@@ -29,18 +29,18 @@ kutoka test.support agiza TESTFN, unlink
 kundi CollationTests(unittest.TestCase):
     eleza CheckCreateCollationNotString(self):
         con = sqlite.connect(":memory:")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             con.create_collation(Tupu, lambda x, y: (x > y) - (x < y))
 
     eleza CheckCreateCollationNotCallable(self):
         con = sqlite.connect(":memory:")
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
     eleza CheckCreateCollationNotAscii(self):
         con = sqlite.connect(":memory:")
-        with self.assertRaises(sqlite.ProgrammingError):
+        ukijumuisha self.assertRaises(sqlite.ProgrammingError):
             con.create_collation("collä", lambda x, y: (x > y) - (x < y))
 
     eleza CheckCreateCollationBadUpper(self):
@@ -83,7 +83,7 @@ kundi CollationTests(unittest.TestCase):
                          msg='the expected order was sio rudishaed')
 
         con.create_collation("mycoll", Tupu)
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             result = con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
@@ -128,7 +128,7 @@ kundi CollationTests(unittest.TestCase):
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", Tupu)
-        with self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             con.execute("select 'a' kama x union select 'b' kama x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 

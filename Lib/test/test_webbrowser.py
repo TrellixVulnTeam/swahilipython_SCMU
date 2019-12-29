@@ -23,10 +23,10 @@ kundi PopenMock(mock.MagicMock):
 kundi CommandTestMixin:
 
     eleza _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along with arguments and
+        """Given a web browser instance method name along ukijumuisha arguments and
         keywords kila same (which defaults to the single argument URL), creates
         a browser instance kutoka the kundi pointed to by self.browser, calls the
-        indicated instance method with the indicated arguments, na compares
+        indicated instance method ukijumuisha the indicated arguments, na compares
         the resulting options na arguments pitaed to Popen by the browser
         instance against the 'options' na 'args' lists.  Options are compared
         kwenye a position independent fashion, na the arguments are compared in
@@ -288,7 +288,7 @@ kundi ImportTest(unittest.TestCase):
         self.assertIsTupu(webbrowser._tryorder)
         self.assertUongo(webbrowser._browsers)
 
-        with self.assertRaises(webbrowser.Error):
+        ukijumuisha self.assertRaises(webbrowser.Error):
             webbrowser.get('fakebrowser')
         self.assertIsNotTupu(webbrowser._tryorder)
 
@@ -304,7 +304,7 @@ kundi ImportTest(unittest.TestCase):
             browser = webbrowser.get().name
         tatizo (webbrowser.Error, AttributeError) kama err:
             self.skipTest(str(err))
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = browser
             webbrowser = support.import_fresh_module('webbrowser')
             webbrowser.get()
@@ -317,12 +317,12 @@ kundi ImportTest(unittest.TestCase):
         tatizo (webbrowser.Error, AttributeError, IndexError) kama err:
             self.skipTest(str(err))
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = least_preferred_browser
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, least_preferred_browser)
 
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = sys.executable
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, sys.executable)

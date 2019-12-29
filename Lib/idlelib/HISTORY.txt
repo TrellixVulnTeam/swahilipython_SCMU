@@ -13,17 +13,17 @@ What's New kwenye IDLEfork 0.8.1?
 - New tarball released kama a result of the 'revitalisation' of the IDLEfork
   project.
 
-- This release requires python 2.1 ama better. Compatibility with earlier
+- This release requires python 2.1 ama better. Compatibility ukijumuisha earlier
   versions of python (especially ancient ones like 1.5x) ni no longer a
   priority kwenye IDLEfork development.
 
-- This release ni based on a merging of the earlier IDLE fork work with current
-  cvs IDLE (post IDLE version 0.8), with some minor additional coding by Kurt
+- This release ni based on a merging of the earlier IDLE fork work ukijumuisha current
+  cvs IDLE (post IDLE version 0.8), ukijumuisha some minor additional coding by Kurt
   B. Kaiser na Stephen M. Gava.
 
 - This release ni basically functional but also contains some known komaages,
-  particularly with running things kutoka the shell window. Also the debugger is
-  sio working, but I believe this was the case with the previous IDLE fork
+  particularly ukijumuisha running things kutoka the shell window. Also the debugger is
+  sio working, but I believe this was the case ukijumuisha the previous IDLE fork
   release (0.7.1) kama well.
 
 - This release ni being made now to mark the point at which IDLEfork is
@@ -44,7 +44,7 @@ What's New kwenye IDLEfork 0.7.1?
 - First project tarball released.
 
 - This was the first release of IDLE fork, which at this stage was a
-  combination of IDLE 0.5 na the VPython idle fork, with additional changes
+  combination of IDLE 0.5 na the VPython idle fork, ukijumuisha additional changes
   coded by David Scherer, Peter Schneider-Kamp na Nicholas Riley.
 
 
@@ -69,7 +69,7 @@ IDLEfork 0.7.1 - 29 May 2000
     OnDemandOutputWindow kwenye IDLE.  It supports executing unnamed programs
     (through a temporary file).  It does sio yet support debugging.
 
-  - When running programs with ExecBinding, tracebacks will be clipped to
+  - When running programs ukijumuisha ExecBinding, tracebacks will be clipped to
     exclude system modules.  If, however, a system module calls back into the
     user program, that part of the traceback will be shown.
 
@@ -78,7 +78,7 @@ IDLEfork 0.7.1 - 29 May 2000
     scroll_clear() operation which ni used to hide the output of a previous run
     by scrolling it out of the window.
 
-  - Startup behavior has been changed.  By default IDLE starts up with just a
+  - Startup behavior has been changed.  By default IDLE starts up ukijumuisha just a
     blank editor window, rather than an interactive window.  Opening a file in
     such a blank window replaces the (nonexistent) contents of that window
     instead of creating another window.  Because of the need to have a
@@ -112,12 +112,12 @@ IDLEfork 0.7.1 - 29 May 2000
   filelist.py            ( hook kila "open kwenye same window" )
   formatparagraph.py     ( bindings tweaked )
   idle.bat               ( removed absolute pathname )
-  idle.pyw               ( weird bug due to agiza with same name? )
+  idle.pyw               ( weird bug due to agiza ukijumuisha same name? )
   iobinding.py           ( open kwenye same window, EOL convention )
   keydefs.py             ( bindings tweaked )
   outputwindow.py        ( readline, scroll_clear, etc )
   pyshell.py             ( changed startup behavior )
-  readme.txt             ( <Recursion on file with id=1234567> )
+  readme.txt             ( <Recursion on file ukijumuisha id=1234567> )
 
 
 
@@ -136,9 +136,9 @@ IDLE has the following features:
 - coded kwenye 100% pure Python, using the Tkinter GUI toolkit (i.e. Tcl/Tk)
 
 - cross-platform: works on Windows na Unix (on the Mac, there are
-currently problems with Tcl/Tk)
+currently problems ukijumuisha Tcl/Tk)
 
-- multi-window text editor with multiple undo, Python colorizing
+- multi-window text editor ukijumuisha multiple undo, Python colorizing
 and many other features, e.g. smart indent na call tips
 
 - Python shell window (a.k.a. interactive interpreter)
@@ -157,9 +157,9 @@ Command line arguments: files pitaed on the command line are executed,
 not opened kila editing, unless you give the -e command line option.
 Try "./idle.py -h" to see other command line options.
 
-IDLE requires Python 1.5.2, so it ni currently only usable with a
+IDLE requires Python 1.5.2, so it ni currently only usable ukijumuisha a
 Python 1.5.2 distribution.  (An older version of IDLE ni distributed
-with Python 1.5.2; you can drop this version on top of it.)
+ukijumuisha Python 1.5.2; you can drop this version on top of it.)
 
 COPYRIGHT
 
@@ -219,7 +219,7 @@ New kwenye IDLE 0.3 (2/17/99)
 
 Most agizaant changes:
 
-- Enabled support kila running a module, with ama without the debugger.
+- Enabled support kila running a module, ukijumuisha ama without the debugger.
 Output goes to a new window.  Pressing F5 kwenye a module ni effectively a
 reload of that module; Control-F5 loads it under the debugger.
 
@@ -227,7 +227,7 @@ reload of that module; Control-F5 loads it under the debugger.
 menu update itself whenever a window ni opened ama closed.
 
 - Menu items can now be have a checkbox (when the menu label starts
-with "!"); use this kila the Debugger na "Auto-open stack viewer"
+ukijumuisha "!"); use this kila the Debugger na "Auto-open stack viewer"
 (was: JIT stack viewer) menu items.
 
 - Added a Quit button to the Debugger API.
@@ -267,7 +267,7 @@ The command to open the Python shell window ni now kwenye the File menu.
 
 Edit menu:
 
-New Find dialog with more options; replace dialog; find kwenye files dialog.
+New Find dialog ukijumuisha more options; replace dialog; find kwenye files dialog.
 
 Commands to tabify ama untabify a region.
 
@@ -291,6 +291,6 @@ even edit it ikiwa you like.
 
 
 
-IDLE 0.1 was distributed with the Python 1.5.2b1 release on 12/22/98.
+IDLE 0.1 was distributed ukijumuisha the Python 1.5.2b1 release on 12/22/98.
 
 ======================================================================

@@ -72,10 +72,10 @@ kundi EventCollectorExtra(EventCollector):
 kundi EventCollectorCharrefs(EventCollector):
 
     eleza handle_charref(self, data):
-        self.fail('This should never be called with convert_charrefs=Kweli')
+        self.fail('This should never be called ukijumuisha convert_charrefs=Kweli')
 
     eleza handle_entityref(self, data):
-        self.fail('This should never be called with convert_charrefs=Kweli')
+        self.fail('This should never be called ukijumuisha convert_charrefs=Kweli')
 
 
 kundi TestCaseBase(unittest.TestCase):
@@ -376,7 +376,7 @@ text
         kila x kwenye range(1, len(html)):
             self._run_check(html[:x], [('data', html[:x])],
                             collector=collector())
-        # check a string with no charrefs
+        # check a string ukijumuisha no charrefs
         self._run_check('no charrefs here', [('data', 'no charrefs here')],
                         collector=collector())
 
@@ -576,7 +576,7 @@ text
     eleza test_unescape_method(self):
         kutoka html agiza unescape
         p = self.get_collector()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             s = '&quot;&#34;&#x22;&quot&#34&#x22&#bad;'
             self.assertEqual(p.unescape(s), unescape(s))
 

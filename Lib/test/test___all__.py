@@ -15,7 +15,7 @@ kundi AllTest(unittest.TestCase):
 
     eleza check_all(self, modname):
         names = {}
-        with support.check_warnings(
+        ukijumuisha support.check_warnings(
             (".* (module|package)", DeprecationWarning),
             ("", ResourceWarning),
             quiet=Kweli):
@@ -29,8 +29,8 @@ kundi AllTest(unittest.TestCase):
         ikiwa sio hasattr(sys.modules[modname], "__all__"):
             ashiria NoAll(modname)
         names = {}
-        with self.subTest(module=modname):
-            with support.check_warnings(
+        ukijumuisha self.subTest(module=modname):
+            ukijumuisha support.check_warnings(
                 ("", DeprecationWarning),
                 ("", ResourceWarning),
                 quiet=Kweli):
@@ -96,7 +96,7 @@ kundi AllTest(unittest.TestCase):
             jaribu:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
-                with open(path, "rb") kama f:
+                ukijumuisha open(path, "rb") kama f:
                     ikiwa b"__all__" haiko kwenye f.read():
                         ashiria NoAll(modname)
                     self.check_all(modname)

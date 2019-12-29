@@ -52,13 +52,13 @@ kundi TestDecodeB(TestEmailBase):
 kundi TestDecode(TestEmailBase):
 
     eleza test_wrong_format_input_ashirias(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _ew.decode('=?badone?=')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _ew.decode('=?')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             _ew.decode('')
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             _ew.decode('=?utf-8?X?somevalue?=')
 
     eleza _test(self, source, result, charset='us-ascii', lang='', defects=[]):

@@ -9,7 +9,7 @@ sort, selection sort na quicksort.
 
 Shelfs are implemented using builtin lists.
 
-Blocks are turtles with shape "square", but
+Blocks are turtles ukijumuisha shape "square", but
 stretched to rectangles by shapesize()
  ---------------------------------------
        To exit press space button

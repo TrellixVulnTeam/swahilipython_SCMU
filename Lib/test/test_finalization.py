@@ -21,7 +21,7 @@ kutoka test agiza support
 
 kundi NonGCSimpleBase:
     """
-    The base kundi kila all the objects under test, equipped with various
+    The base kundi kila all the objects under test, equipped ukijumuisha various
     testing features.
     """
 
@@ -49,7 +49,7 @@ kundi NonGCSimpleBase:
         """
         A context manager to use around all finalization tests.
         """
-        with support.disable_gc():
+        ukijumuisha support.disable_gc():
             cls.del_calls.clear()
             cls.tp_del_calls.clear()
             NonGCSimpleBase._cleaning = Uongo
@@ -149,7 +149,7 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
     """
 
     eleza test_simple(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = Simple()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -163,7 +163,7 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
             self.assert_survivors([])
 
     eleza test_simple_resurrect(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = SimpleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -179,7 +179,7 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
         self.assertIs(wr(), Tupu)
 
     eleza test_non_gc(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = NonGC()
             self.assertUongo(gc.is_tracked(s))
             ids = [id(s)]
@@ -192,7 +192,7 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
             self.assert_survivors([])
 
     eleza test_non_gc_resurrect(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = NonGCResurrector()
             self.assertUongo(gc.is_tracked(s))
             ids = [id(s)]
@@ -238,7 +238,7 @@ kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
     """
 
     eleza test_simple(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = SimpleSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -253,7 +253,7 @@ kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
 
     eleza test_simple_resurrect(self):
         # Test that __del__ can resurrect the object being finalized.
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = SelfCycleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -272,9 +272,9 @@ kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             self.assertIs(wr(), Tupu)
 
     eleza test_simple_suicide(self):
-        # Test the GC ni able to deal with an object that kills its last
+        # Test the GC ni able to deal ukijumuisha an object that kills its last
         # reference during __del__.
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = SuicidalSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -345,7 +345,7 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
 
     eleza check_non_resurrecting_chain(self, classes):
         N = len(classes)
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             nodes = self.build_chain(classes)
             ids = [id(s) kila s kwenye nodes]
             wrs = [weakref.ref(s) kila s kwenye nodes]
@@ -359,7 +359,7 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
 
     eleza check_resurrecting_chain(self, classes):
         N = len(classes)
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             nodes = self.build_chain(classes)
             N = len(nodes)
             ids = [id(s) kila s kwenye nodes]
@@ -452,7 +452,7 @@ kundi LegacySelfCycle(SelfCycleBase, LegacyBase):
 @support.cpython_only
 kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
     """
-    Test finalization of objects with a tp_del.
+    Test finalization of objects ukijumuisha a tp_del.
     """
 
     eleza tearDown(self):
@@ -463,7 +463,7 @@ kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
         super().tearDown()
 
     eleza test_legacy(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = Legacy()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -478,7 +478,7 @@ kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
             self.assert_tp_del_calls(ids)
 
     eleza test_legacy_resurrect(self):
-        with SimpleBase.test():
+        ukijumuisha SimpleBase.test():
             s = LegacyResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -497,8 +497,8 @@ kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
         self.assertIs(wr(), Tupu)
 
     eleza test_legacy_self_cycle(self):
-        # Self-cycles with legacy finalizers end up kwenye gc.garbage.
-        with SimpleBase.test():
+        # Self-cycles ukijumuisha legacy finalizers end up kwenye gc.garbage.
+        ukijumuisha SimpleBase.test():
             s = LegacySelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)

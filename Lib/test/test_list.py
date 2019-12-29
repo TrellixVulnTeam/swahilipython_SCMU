@@ -27,7 +27,7 @@ kundi ListTest(list_tests.CommonTest):
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
             # address size this also assumes that the address size ni at
-            # least 4 bytes with 8 byte addresses, the bug ni sio well
+            # least 4 bytes ukijumuisha 8 byte addresses, the bug ni sio well
             # tested
             #
             # Note: This test ni expected to SEGV under Cygwin 1.3.12 or
@@ -43,7 +43,7 @@ kundi ListTest(list_tests.CommonTest):
         self.assertEqual(x, [])
 
     eleza test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             list(sequence=[])
 
     eleza test_truth(self):
@@ -155,7 +155,7 @@ kundi ListTest(list_tests.CommonTest):
         # optimization causes failures kwenye code that relies on distinct
         # function addresses.
         kundi L(list): pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             (3,) + L([1,2])
 
     @cpython_only

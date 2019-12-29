@@ -28,7 +28,7 @@ eleza search_function(encoding):
         rudisha (42, 42) # no unicode
     ikiwa encoding=="test.unicode1":
         rudisha (encode1, decode1, Tupu, Tupu)
-    elikiwa encoding=="test.unicode2":
+    lasivyo encoding=="test.unicode2":
         rudisha (encode2, decode2, Tupu, Tupu)
     isipokua:
         rudisha Tupu
@@ -37,7 +37,7 @@ codecs.register(search_function)
 eleza duplicate_string(text):
     """
     Try to get a fresh clone of the specified text:
-    new object with a reference count of 1.
+    new object ukijumuisha a reference count of 1.
 
     This ni a best-effort: latin1 single letters na the empty
     string ('') are singletons na cannot be cloned.
@@ -61,7 +61,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertKweli(type(realresult) ni type(result))
 
         # ikiwa the original ni rudishaed make sure that
-        # this doesn't happen with subclasses
+        # this doesn't happen ukijumuisha subclasses
         ikiwa realresult ni object:
             kundi usub(str):
                 eleza __repr__(self):
@@ -309,7 +309,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertRaises(ValueError, ('\u0102' * 100).rindex, '\U00100304\u0102')
 
     eleza test_maketrans_translate(self):
-        # these work with plain translate()
+        # these work ukijumuisha plain translate()
         self.checkequalnofix('bbbc', 'abababc', 'translate',
                              {ord('a'): Tupu})
         self.checkequalnofix('iiic', 'abababc', 'translate',
@@ -331,7 +331,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.checkequalnofix('xyzzy', 'abdcdcbdddd', 'translate', tbl)
 
         # various tests switching kutoka ASCII to latin1 ama the opposite;
-        # same length, remove a letter, ama replace with a longer string.
+        # same length, remove a letter, ama replace ukijumuisha a longer string.
         self.assertEqual("[a]".translate(str.maketrans('a', 'X')),
                          "[X]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'X'})),
@@ -502,7 +502,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertIs(text.replace(pattern, pattern), text)
 
     eleza test_bytes_comparison(self):
-        with support.check_warnings():
+        ukijumuisha support.check_warnings():
             warnings.simplefilter('ignore', BytesWarning)
             self.assertEqual('abc' == b'abc', Uongo)
             self.assertEqual('abc' != b'abc', Kweli)
@@ -976,21 +976,21 @@ kundi UnicodeTest(string_tests.CommonTest,
             eleza __format__(self, spec):
                 rudisha str(self.x)
 
-        # kundi with __str__, but no __format__
+        # kundi ukijumuisha __str__, but no __format__
         kundi E:
             eleza __init__(self, x):
                 self.x = x
             eleza __str__(self):
                 rudisha 'E(' + self.x + ')'
 
-        # kundi with __repr__, but no __format__ ama __str__
+        # kundi ukijumuisha __repr__, but no __format__ ama __str__
         kundi F:
             eleza __init__(self, x):
                 self.x = x
             eleza __repr__(self):
                 rudisha 'F(' + self.x + ')'
 
-        # kundi with __format__ that forwards to string, kila some format_spec's
+        # kundi ukijumuisha __format__ that forwards to string, kila some format_spec's
         kundi G:
             eleza __init__(self, x):
                 self.x = x
@@ -1303,17 +1303,17 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_format_huge_precision(self):
         format_string = ".{}f".format(sys.maxsize + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format(2.34, format_string)
 
     eleza test_format_huge_width(self):
         format_string = "{}f".format(sys.maxsize + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format(2.34, format_string)
 
     eleza test_format_huge_item_number(self):
         format_string = "{{{}:.6f}}".format(sys.maxsize + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format_string.format(2.34)
 
     eleza test_format_auto_numbering(self):
@@ -1467,11 +1467,11 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_formatting_huge_precision(self):
         format_string = "%.{}f".format(sys.maxsize + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format_string % 2.34
 
     eleza test_issue28598_strsubclass_rhs(self):
-        # A subkundi of str with an __rmod__ method should be able to hook
+        # A subkundi of str ukijumuisha an __rmod__ method should be able to hook
         # into the % operator
         kundi SubclassedStr(str):
             eleza __rmod__(self, other):
@@ -1483,17 +1483,17 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_formatting_huge_precision_c_limits(self):
         kutoka _testcapi agiza INT_MAX
         format_string = "%.{}f".format(INT_MAX + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format_string % 2.34
 
     eleza test_formatting_huge_width(self):
         format_string = "%{}f".format(sys.maxsize + 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             result = format_string % 2.34
 
     eleza test_startswith_endswith_errors(self):
         kila meth kwenye ('foo'.startswith, 'foo'.endswith):
-            with self.assertRaises(TypeError) kama cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 meth(['f'])
             exc = str(cm.exception)
             self.assertIn('str', exc)
@@ -1501,7 +1501,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     @support.run_with_locale('LC_ALL', 'de_DE', 'fr_FR')
     eleza test_format_float(self):
-        # should sio format with a comma, but always with C locale
+        # should sio format ukijumuisha a comma, but always ukijumuisha C locale
         self.assertEqual('1.0', '%.1f' % 1.0)
 
     eleza test_constructor(self):
@@ -1641,7 +1641,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         kila c kwenye set_o:
             self.assertEqual(c.encode('ascii').decode('utf7'), c)
 
-        with self.assertRaisesRegex(UnicodeDecodeError,
+        ukijumuisha self.assertRaisesRegex(UnicodeDecodeError,
                                     'ill-formed sequence'):
             b'+@'.decode('utf-7')
 
@@ -1762,12 +1762,12 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xc1', FFFD),
             (b'\xc1\xc0', FFFD*2),
             (b'\xc0\xc1', FFFD*2),
-            # with start byte of a 2-byte sequence
+            # ukijumuisha start byte of a 2-byte sequence
             (b'\xc2', FFFD), # only the start byte
             (b'\xc2\xc2', FFFD*2), # 2 start bytes
             (b'\xc2\xc2\xc2', FFFD*3), # 3 start bytes
             (b'\xc2\x41', FFFD+'A'), # invalid continuation byte
-            # with start byte of a 3-byte sequence
+            # ukijumuisha start byte of a 3-byte sequence
             (b'\xe1', FFFD), # only the start byte
             (b'\xe1\xe1', FFFD*2), # 2 start bytes
             (b'\xe1\xe1\xe1', FFFD*3), # 3 start bytes
@@ -1779,7 +1779,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xe1\x80\x41', FFFD+'A'), # only 1 valid continuation byte
             (b'\xe1\x80\xe1\x41', FFFD*2+'A'), # 1 valid na the other invalid
             (b'\xe1\x41\xe1\x80', FFFD+'A'+FFFD), # 1 invalid na the other valid
-            # with start byte of a 4-byte sequence
+            # ukijumuisha start byte of a 4-byte sequence
             (b'\xf1', FFFD), # only the start byte
             (b'\xf1\xf1', FFFD*2), # 2 start bytes
             (b'\xf1\xf1\xf1', FFFD*3), # 3 start bytes
@@ -1798,7 +1798,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xf1\x41\x80\xf1', FFFD+'A'+FFFD*2),
             (b'\xf1\xf1\x80\x41', FFFD*2+'A'),
             (b'\xf1\x41\xf1\xf1', FFFD+'A'+FFFD*2),
-            # with invalid start byte of a 4-byte sequence (rfc2279)
+            # ukijumuisha invalid start byte of a 4-byte sequence (rfc2279)
             (b'\xf5', FFFD), # only the start byte
             (b'\xf5\xf5', FFFD*2), # 2 start bytes
             (b'\xf5\x80', FFFD*2), # only 1 continuation byte
@@ -1807,13 +1807,13 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xf5\x80\x41', FFFD*2+'A'), #  1 valid cb na 1 invalid
             (b'\xf5\x80\x41\xf5', FFFD*2+'A'+FFFD),
             (b'\xf5\x41\x80\x80\x41', FFFD+'A'+FFFD*2+'A'),
-            # with invalid start byte of a 5-byte sequence (rfc2279)
+            # ukijumuisha invalid start byte of a 5-byte sequence (rfc2279)
             (b'\xf8', FFFD), # only the start byte
             (b'\xf8\xf8', FFFD*2), # 2 start bytes
             (b'\xf8\x80', FFFD*2), # only one continuation byte
             (b'\xf8\x80\x41', FFFD*2 + 'A'), # 1 valid cb na 1 invalid
-            (b'\xf8\x80\x80\x80\x80', FFFD*5), # invalid 5 bytes seq with 5 bytes
-            # with invalid start byte of a 6-byte sequence (rfc2279)
+            (b'\xf8\x80\x80\x80\x80', FFFD*5), # invalid 5 bytes seq ukijumuisha 5 bytes
+            # ukijumuisha invalid start byte of a 6-byte sequence (rfc2279)
             (b'\xfc', FFFD), # only the start byte
             (b'\xfc\xfc', FFFD*2), # 2 start bytes
             (b'\xfc\x80\x80', FFFD*3), # only 2 continuation bytes
@@ -1841,7 +1841,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         'strict' ni used, rudishas res when 'replace' ni used, na that doesn't
         rudisha anything when 'ignore' ni used.
         """
-        with self.assertRaises(UnicodeDecodeError) kama cm:
+        ukijumuisha self.assertRaises(UnicodeDecodeError) kama cm:
             seq.decode('utf-8')
         exc = cm.exception
 
@@ -1858,7 +1858,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         """
         Test that an 'invalid start byte' error ni ashiriad when the first byte
         ni haiko kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, or
-        4-bytes sequence. The invalid start byte ni replaced with a single
+        4-bytes sequence. The invalid start byte ni replaced ukijumuisha a single
         U+FFFD when errors='replace'.
         E.g. <80> ni a continuation byte na can appear only after a start byte.
         """
@@ -1871,7 +1871,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         """
         Test that an 'unexpected end of data' error ni ashiriad when the string
         ends after a start byte of a 2-, 3-, ama 4-bytes sequence without having
-        enough continuation bytes.  The incomplete sequence ni replaced with a
+        enough continuation bytes.  The incomplete sequence ni replaced ukijumuisha a
         single U+FFFD when errors='replace'.
         E.g. kwenye the sequence <F3 80 80>, F3 ni the start byte of a 4-bytes
         sequence, but it's followed by only 2 valid continuation bytes na the
@@ -1922,7 +1922,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         errors='replace', ikiwa the first continuation byte ni valid, the first
         two bytes (start byte + 1st cb) are replaced by a single U+FFFD na the
         third byte ni handled separately, otherwise only the start byte is
-        replaced with a U+FFFD na the other continuation bytes are handled
+        replaced ukijumuisha a U+FFFD na the other continuation bytes are handled
         separately.
         E.g. kwenye the sequence <E1 80 41>, E1 ni the start byte of a 3-bytes
         sequence, 80 ni a valid continuation byte, but 41 ni sio a valid cb
@@ -1978,7 +1978,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         Test that an 'invalid continuation byte' error ni ashiriad when the
         continuation byte(s) of a 4-bytes sequence are invalid.  When
         errors='replace',the start byte na all the following valid
-        continuation bytes are replaced with a single U+FFFD, na all the bytes
+        continuation bytes are replaced ukijumuisha a single U+FFFD, na all the bytes
         starting kutoka the first invalid continuation bytes (included) are
         handled separately.
         E.g. kwenye the sequence <E1 80 41>, E1 ni the start byte of a 3-bytes
@@ -2131,7 +2131,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
         # Roundtrip safety kila non-BMP (just a few chars)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             u = '\U00010001\U00020002\U00030003\U00040004\U00050005'
             kila encoding kwenye ('utf-8', 'utf-16', 'utf-16-le', 'utf-16-be',
                              'raw_unicode_escape', 'unicode_escape'):
@@ -2311,7 +2311,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             ikiwa code < 0x100:
                 char_size = 1  # sizeof(Py_UCS1)
                 struct_size = ascii_struct_size
-            elikiwa code < 0x10000:
+            lasivyo code < 0x10000:
                 char_size = 2  # sizeof(Py_UCS2)
                 struct_size = compact_struct_size
             isipokua:
@@ -2463,7 +2463,7 @@ kundi CAPITest(unittest.TestCase):
 
         eleza PyUnicode_FromFormat(format, *args):
             cargs = tuple(
-                py_object(arg) ikiwa isinstance(arg, str) else arg
+                py_object(arg) ikiwa isinstance(arg, str) isipokua arg
                 kila arg kwenye args)
             rudisha _PyUnicode_FromFormat(format, *cargs)
 
@@ -2487,7 +2487,7 @@ kundi CAPITest(unittest.TestCase):
                      b'%c', c_int(0xabcd))
         check_format('\U0010ffff',
                      b'%c', c_int(0x10ffff))
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             PyUnicode_FromFormat(b'%c', c_int(0x110000))
         # Issue #18183
         check_format('\U00010000\U00100000',
@@ -2528,7 +2528,7 @@ kundi CAPITest(unittest.TestCase):
                      b'%.5V', Tupu, 'abc[\u20ac]'.encode('utf8'))
 
         # following tests comes kutoka #7330
-        # test width modifier na precision modifier with %S
+        # test width modifier na precision modifier ukijumuisha %S
         check_format("repr=  abc",
                      b'repr=%5S', 'abc')
         check_format("repr=ab",
@@ -2536,7 +2536,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2S', 'abc')
 
-        # test width modifier na precision modifier with %R
+        # test width modifier na precision modifier ukijumuisha %R
         check_format("repr=   'abc'",
                      b'repr=%8R', 'abc')
         check_format("repr='ab",
@@ -2544,7 +2544,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3R', 'abc')
 
-        # test width modifier na precision modifier with %A
+        # test width modifier na precision modifier ukijumuisha %A
         check_format("repr=   'abc'",
                      b'repr=%8A', 'abc')
         check_format("repr='ab",
@@ -2552,7 +2552,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3A', 'abc')
 
-        # test width modifier na precision modifier with %s
+        # test width modifier na precision modifier ukijumuisha %s
         check_format("repr=  abc",
                      b'repr=%5s', b'abc')
         check_format("repr=ab",
@@ -2560,7 +2560,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2s', b'abc')
 
-        # test width modifier na precision modifier with %U
+        # test width modifier na precision modifier ukijumuisha %U
         check_format("repr=  abc",
                      b'repr=%5U', 'abc')
         check_format("repr=ab",
@@ -2568,7 +2568,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2U', 'abc')
 
-        # test width modifier na precision modifier with %V
+        # test width modifier na precision modifier ukijumuisha %V
         check_format("repr=  abc",
                      b'repr=%5V', 'abc', b'123')
         check_format("repr=ab",
@@ -2864,7 +2864,7 @@ kundi CAPITest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_pep393_utf8_caching_bug(self):
-        # Issue #25709: Problem with string concatenation na utf-8 cache
+        # Issue #25709: Problem ukijumuisha string concatenation na utf-8 cache
         kutoka _testcapi agiza getargs_s_hash
         kila k kwenye 0x24, 0xa4, 0x20ac, 0x1f40d:
             s = ''
@@ -2872,7 +2872,7 @@ kundi CAPITest(unittest.TestCase):
                 # Due to CPython specific optimization the 's' string can be
                 # resized in-place.
                 s += chr(k)
-                # Parsing with the "s#" format code calls indirectly
+                # Parsing ukijumuisha the "s#" format code calls indirectly
                 # PyUnicode_AsUTF8AndSize() which creates the UTF-8
                 # encoded string cached kwenye the Unicode object.
                 self.assertEqual(getargs_s_hash(s), chr(k).encode() * (i + 1))

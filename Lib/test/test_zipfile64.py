@@ -31,12 +31,12 @@ kundi TestsWithSourceFile(unittest.TestCase):
         self.data = '\n'.join(line_gen).encode('ascii')
 
         # And write it to a file.
-        with open(TESTFN, "wb") kama fp:
+        ukijumuisha open(TESTFN, "wb") kama fp:
             fp.write(self.data)
 
     eleza zipTest(self, f, compression):
         # Create the ZIP archive.
-        with zipfile.ZipFile(f, "w", compression) kama zipfp:
+        ukijumuisha zipfile.ZipFile(f, "w", compression) kama zipfp:
 
             # It will contain enough copies of self.data to reach about 6 GiB of
             # raw data to store.
@@ -54,7 +54,7 @@ kundi TestsWithSourceFile(unittest.TestCase):
                     sys.__stdout__.flush()
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) kama zipfp:
+        ukijumuisha zipfile.ZipFile(f, "r", compression) kama zipfp:
             kila num kwenye range(filecount):
                 self.assertEqual(zipfp.read("testfn%d" % num), self.data)
                 # Print still working message since this test can be really slow
@@ -68,7 +68,7 @@ kundi TestsWithSourceFile(unittest.TestCase):
     eleza testStored(self):
         # Try the temp file first.  If we do TESTFN2 first, then it hogs
         # gigabytes of disk space kila the duration of the test.
-        with TemporaryFile() kama f:
+        ukijumuisha TemporaryFile() kama f:
             self.zipTest(f, zipfile.ZIP_STORED)
             self.assertUongo(f.closed)
         self.zipTest(TESTFN2, zipfile.ZIP_STORED)
@@ -77,7 +77,7 @@ kundi TestsWithSourceFile(unittest.TestCase):
     eleza testDeflated(self):
         # Try the temp file first.  If we do TESTFN2 first, then it hogs
         # gigabytes of disk space kila the duration of the test.
-        with TemporaryFile() kama f:
+        ukijumuisha TemporaryFile() kama f:
             self.zipTest(f, zipfile.ZIP_DEFLATED)
             self.assertUongo(f.closed)
         self.zipTest(TESTFN2, zipfile.ZIP_DEFLATED)
@@ -92,38 +92,38 @@ kundi OtherTests(unittest.TestCase):
     eleza testMoreThan64kFiles(self):
         # This test checks that more than 64k files can be added to an archive,
         # na that the resulting archive can be read properly by ZipFile
-        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=Kweli) kama zipf:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="w", allowZip64=Kweli) kama zipf:
             zipf.debug = 100
             numfiles = (1 << 16) * 3//2
             kila i kwenye range(numfiles):
                 zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
             self.assertEqual(len(zipf.namelist()), numfiles)
 
-        with zipfile.ZipFile(TESTFN, mode="r") kama zipf2:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="r") kama zipf2:
             self.assertEqual(len(zipf2.namelist()), numfiles)
             kila i kwenye range(numfiles):
                 content = zipf2.read("foo%08d" % i).decode('ascii')
                 self.assertEqual(content, "%d" % (i**3 % 57))
 
     eleza testMoreThan64kFilesAppend(self):
-        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=Uongo) kama zipf:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="w", allowZip64=Uongo) kama zipf:
             zipf.debug = 100
             numfiles = (1 << 16) - 1
             kila i kwenye range(numfiles):
                 zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
             self.assertEqual(len(zipf.namelist()), numfiles)
-            with self.assertRaises(zipfile.LargeZipFile):
+            ukijumuisha self.assertRaises(zipfile.LargeZipFile):
                 zipf.writestr("foo%08d" % numfiles, b'')
             self.assertEqual(len(zipf.namelist()), numfiles)
 
-        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=Uongo) kama zipf:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="a", allowZip64=Uongo) kama zipf:
             zipf.debug = 100
             self.assertEqual(len(zipf.namelist()), numfiles)
-            with self.assertRaises(zipfile.LargeZipFile):
+            ukijumuisha self.assertRaises(zipfile.LargeZipFile):
                 zipf.writestr("foo%08d" % numfiles, b'')
             self.assertEqual(len(zipf.namelist()), numfiles)
 
-        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=Kweli) kama zipf:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="a", allowZip64=Kweli) kama zipf:
             zipf.debug = 100
             self.assertEqual(len(zipf.namelist()), numfiles)
             numfiles2 = (1 << 16) * 3//2
@@ -131,7 +131,7 @@ kundi OtherTests(unittest.TestCase):
                 zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
             self.assertEqual(len(zipf.namelist()), numfiles2)
 
-        with zipfile.ZipFile(TESTFN, mode="r") kama zipf2:
+        ukijumuisha zipfile.ZipFile(TESTFN, mode="r") kama zipf2:
             self.assertEqual(len(zipf2.namelist()), numfiles2)
             kila i kwenye range(numfiles2):
                 content = zipf2.read("foo%08d" % i).decode('ascii')

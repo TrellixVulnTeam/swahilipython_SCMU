@@ -16,7 +16,7 @@ dialog, kwenye which case the callable ni the corresponding class.  Or the
 Toplevel may contain the widget to be tested ama set up a context in
 which a test widget ni invoked.  In this latter case, the callable ni a
 wrapper function that sets up the Toplevel na other objects.  Wrapper
-function names, such kama _editor_window', should start with '_'.
+function names, such kama _editor_window', should start ukijumuisha '_'.
 
 
 End the module with
@@ -43,7 +43,7 @@ exclude_lines =
 
 
 To run any X, this file must contain a matching instance of the
-following template, with X.__name__ prepended to '_spec'.
+following template, ukijumuisha X.__name__ prepended to '_spec'.
 When all tests are run, the prefix ni use to get X.
 
 _spec = {
@@ -53,7 +53,7 @@ _spec = {
     }
 
 file (no .py): run() agizas file.py.
-kwds: augmented with {'parent':root} na pitaed to X kama **kwds.
+kwds: augmented ukijumuisha {'parent':root} na pitaed to X kama **kwds.
 title: an example kwd; some widgets need this, delete ikiwa not.
 msg: master window hints about testing the widget.
 
@@ -62,7 +62,7 @@ Modules na classes sio being tested at the moment:
 pyshell.PyShellEditorWindow
 debugger.Debugger
 autocomplete_w.AutoCompleteWindow
-outwin.OutputWindow (indirectly being tested with grep test)
+outwin.OutputWindow (indirectly being tested ukijumuisha grep test)
 '''
 
 agiza idlelib.pyshell  # Set Windows DPI awareness before Tk().
@@ -94,7 +94,7 @@ _calltip_window_spec = {
 _module_browser_spec = {
     'file': 'browser',
     'kwds': {},
-    'msg': "Inspect names of module, class(with superkundi ikiwa "
+    'msg': "Inspect names of module, class(ukijumuisha superkundi ikiwa "
            "applicable), methods na functions.\nToggle nested items.\n"
            "Double clicking on items prints a traceback kila an exception "
            "that ni ignored."
@@ -113,10 +113,10 @@ CustomRun_spec = {
     'file': 'query',
     'kwds': {'title': 'Customize query.py Run',
              '_htest': Kweli},
-    'msg': "Enter with <Return> ama [Run].  Print valid entry to Shell\n"
+    'msg': "Enter ukijumuisha <Return> ama [Run].  Print valid entry to Shell\n"
            "Arguments are parsed into a list\n"
            "Mode ni currently restart Kweli ama Uongo\n"
-           "Close dialog with valid entry, <Escape>, [Cancel], [X]"
+           "Close dialog ukijumuisha valid entry, <Escape>, [Cancel], [X]"
     }
 
 ConfigDialog_spec = {
@@ -162,7 +162,7 @@ GetKeysDialog_spec = {
     'msg': "Test kila different key modifier sequences.\n"
            "<nothing> ni invalid.\n"
            "No modifier key ni invalid.\n"
-           "Shift key with [a-z],[0-9], function key, move key, tab, space "
+           "Shift key ukijumuisha [a-z],[0-9], function key, move key, tab, space "
            "is invalid.\nNo validity checking ikiwa advanced key binding "
            "entry ni used."
     }
@@ -188,7 +188,7 @@ HelpSource_spec = {
            "'', > than 30 chars, na 'abc' are invalid menu item names.\n"
            "'' na file does sio exist are invalid path items.\n"
            "Any url ('www...', 'http...') ni accepted.\n"
-           "Test Browse with na without path, kama cannot unittest.\n"
+           "Test Browse ukijumuisha na without path, kama cannot unittest.\n"
            "[Ok] ama <Return> prints valid entry to shell\n"
            "[Cancel] ama <Escape> prints Tupu to shell"
     }
@@ -212,7 +212,7 @@ _linenumbers_drag_scrolling_spec = {
     'msg': textwrap.dedent("""\
         1. Click on the line numbers na drag down below the edge of the
         window, moving the mouse a bit na then leaving it there kila a while.
-        The text na line numbers should gradually scroll down, with the
+        The text na line numbers should gradually scroll down, ukijumuisha the
         selection updated continuously.
 
         2. With the lines still selected, click on a line number above the
@@ -220,7 +220,7 @@ _linenumbers_drag_scrolling_spec = {
         selected.
 
         3. Repeat step #1, dragging to above the window. The text na line
-        numbers should gradually scroll up, with the selection updated
+        numbers should gradually scroll up, ukijumuisha the selection updated
         continuously.
 
         4. Repeat step #2, clicking a line number below the selection."""),
@@ -277,9 +277,9 @@ Query_spec = {
              'message': 'Enter something',
              'text0': 'Go',
              '_htest': Kweli},
-    'msg': "Enter with <Return> ama [Ok].  Print valid entry to Shell\n"
+    'msg': "Enter ukijumuisha <Return> ama [Ok].  Print valid entry to Shell\n"
            "Blank line, after stripping, ni ignored\n"
-           "Close dialog with valid entry, <Escape>, [Cancel], [X]"
+           "Close dialog ukijumuisha valid entry, <Escape>, [Cancel], [X]"
     }
 
 
@@ -334,7 +334,7 @@ _tooltip_spec = {
     'file': 'tooltip',
     'kwds': {},
     'msg': "Place mouse cursor over both the buttons\n"
-           "A tooltip should appear with some text."
+           "A tooltip should appear ukijumuisha some text."
     }
 
 _tree_widget_spec = {

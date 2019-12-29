@@ -22,7 +22,7 @@ eleza _showwarnmsg_impl(msg):
     ikiwa file ni Tupu:
         file = sys.stderr
         ikiwa file ni Tupu:
-            # sys.stderr ni Tupu when run with pythonw.exe:
+            # sys.stderr ni Tupu when run ukijumuisha pythonw.exe:
             # warnings get lost
             rudisha
     text = _formatwarnmsg(msg)
@@ -85,7 +85,7 @@ eleza _formatwarnmsg_impl(msg):
                 ikiwa line:
                     line = line.strip()
                     s += '    %s\n' % line
-        elikiwa sio tracing:
+        lasivyo sio tracing:
             s += (f'{category}: Enable tracemalloc to get the object '
                   f'allocation traceback\n')
     rudisha s
@@ -379,15 +379,15 @@ eleza warn_explicit(message, category, filename, lineno,
         ikiwa onceregistry.get(oncekey):
             rudisha
         onceregistry[oncekey] = 1
-    elikiwa action == "always":
+    lasivyo action == "always":
         pita
-    elikiwa action == "module":
+    lasivyo action == "module":
         registry[key] = 1
         altkey = (text, category, 0)
         ikiwa registry.get(altkey):
             rudisha
         registry[altkey] = 1
-    elikiwa action == "default":
+    lasivyo action == "default":
         registry[key] = 1
     isipokua:
         # Unrecognized actions are errors
@@ -413,7 +413,7 @@ kundi WarningMessage(object):
         self.file = file
         self.line = line
         self.source = source
-        self._category_name = category.__name__ ikiwa category else Tupu
+        self._category_name = category.__name__ ikiwa category isipokua Tupu
 
     eleza __str__(self):
         rudisha ("{message : %r, category : %r, filename : %r, lineno : %s, "
@@ -442,12 +442,12 @@ kundi catch_warnings(object):
         """Specify whether to record warnings na ikiwa an alternative module
         should be used other than sys.modules['warnings'].
 
-        For compatibility with Python 3.0, please consider all arguments to be
+        For compatibility ukijumuisha Python 3.0, please consider all arguments to be
         keyword-only.
 
         """
         self._record = record
-        self._module = sys.modules['warnings'] ikiwa module ni Tupu else module
+        self._module = sys.modules['warnings'] ikiwa module ni Tupu isipokua module
         self._entered = Uongo
 
     eleza __repr__(self):

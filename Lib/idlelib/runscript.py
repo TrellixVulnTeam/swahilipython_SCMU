@@ -57,7 +57,7 @@ kundi ScriptBinding:
 
     eleza tabnanny(self, filename):
         # XXX: tabnanny should work on binary files kama well
-        with tokenize.open(filename) kama f:
+        ukijumuisha tokenize.open(filename) kama f:
             jaribu:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
             tatizo tokenize.TokenError kama msg:
@@ -77,7 +77,7 @@ kundi ScriptBinding:
         self.shell = shell = self.flist.open_shell()
         saved_stream = shell.get_warning_stream()
         shell.set_warning_stream(shell.stderr)
-        with open(filename, 'rb') kama f:
+        ukijumuisha open(filename, 'rb') kama f:
             source = f.read()
         ikiwa b'\r' kwenye source:
             source = source.replace(b'\r\n', b'\n')
@@ -143,7 +143,7 @@ kundi ScriptBinding:
                                  cli_args=self.cli_args).result
             ikiwa sio run_args:  # User cancelled.
                 rudisha 'koma'
-        self.cli_args, restart = run_args ikiwa customize else ([], Kweli)
+        self.cli_args, restart = run_args ikiwa customize isipokua ([], Kweli)
         interp = self.shell.interp
         ikiwa pyshell.use_subprocess na restart:
             interp.restart_subprocess(

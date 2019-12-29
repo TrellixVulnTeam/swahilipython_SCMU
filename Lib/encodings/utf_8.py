@@ -13,10 +13,10 @@ agiza codecs
 encode = codecs.utf_8_encode
 
 eleza decode(input, errors='strict'):
-    rudisha codecs.utf_8_decode(input, errors, True)
+    rudisha codecs.utf_8_decode(input, errors, Kweli)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha codecs.utf_8_encode(input, self.errors)[0]
 
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):

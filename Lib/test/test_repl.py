@@ -9,13 +9,13 @@ kutoka test.support agiza cpython_only, SuppressCrashReport
 kutoka test.support.script_helper agiza kill_python
 
 eleza spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
-    """Run the Python REPL with the given arguments.
+    """Run the Python REPL ukijumuisha the given arguments.
 
     kw ni extra keyword args to pita to subprocess.Popen. Returns a Popen
     object.
     """
 
-    # To run the REPL without using a terminal, spawn python with the command
+    # To run the REPL without using a terminal, spawn python ukijumuisha the command
     # line option '-i' na the process name set to '<stdin>'.
     # The directory of argv[0] must match the directory of the Python
     # executable kila the Popen() call to python to succeed kama the directory
@@ -51,7 +51,7 @@ kundi TestInteractiveInterpreter(unittest.TestCase):
         user_input = dedent(user_input)
         user_input = user_input.encode()
         p = spawn_repl()
-        with SuppressCrashReport():
+        ukijumuisha SuppressCrashReport():
             p.stdin.write(user_input)
         output = kill_python(p)
         self.assertIn(b'After the exception.', output)

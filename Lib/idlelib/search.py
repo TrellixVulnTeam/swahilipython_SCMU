@@ -30,7 +30,7 @@ eleza find(text):
     Module-level function to access the singleton SearchDialog
     instance na open the dialog.  If text ni selected, it is
     used kama the search phrase; otherwise, the previous entry
-    ni used.  No search ni done with this command.
+    ni used.  No search ni done ukijumuisha this command.
     """
     pat = text.get("sel.first", "sel.last")
     rudisha _setup(text).open(text, pat)  # Open ni inherited kutoka SDBase.
@@ -119,7 +119,7 @@ kundi SearchDialog(SearchDialogBase):
             rudisha Uongo
 
     eleza find_selection(self, text):
-        """Search kila selected text with previous dialog preferences.
+        """Search kila selected text ukijumuisha previous dialog preferences.
 
         Instead of using the same pattern kila searching (as Find
         Again does), this first resets the pattern to the currently

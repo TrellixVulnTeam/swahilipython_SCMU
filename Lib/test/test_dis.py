@@ -319,14 +319,14 @@ dis_fstring = """\
               4 LOAD_CONST               1 (' ')
               6 LOAD_FAST                1 (b)
               8 LOAD_CONST               2 ('4')
-             10 FORMAT_VALUE             4 (with format)
+             10 FORMAT_VALUE             4 (ukijumuisha format)
              12 LOAD_CONST               1 (' ')
              14 LOAD_FAST                2 (c)
              16 FORMAT_VALUE             2 (repr)
              18 LOAD_CONST               1 (' ')
              20 LOAD_FAST                3 (d)
              22 LOAD_CONST               2 ('4')
-             24 FORMAT_VALUE             6 (repr, with format)
+             24 FORMAT_VALUE             6 (repr, ukijumuisha format)
              26 BUILD_STRING             7
              28 RETURN_VALUE
 """ % (_fstring.__code__.co_firstlineno + 1,)
@@ -408,7 +408,7 @@ kundi DisTests(unittest.TestCase):
     eleza get_disassembly(self, func, lasti=-1, wrapper=Kweli, **kwargs):
         # We want to test the default printing behaviour, sio the file arg
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        ukijumuisha contextlib.redirect_stdout(output):
             ikiwa wrapper:
                 dis.dis(func, **kwargs)
             isipokua:
@@ -444,7 +444,7 @@ kundi DisTests(unittest.TestCase):
             ikiwa opname kwenye ('BUILD_MAP_UNPACK_WITH_CALL',
                           'BUILD_TUPLE_UNPACK_WITH_CALL'):
                 endelea
-            with self.subTest(opname=opname):
+            ukijumuisha self.subTest(opname=opname):
                 width = dis._OPNAME_WIDTH
                 ikiwa opcode < dis.HAVE_ARGUMENT:
                     width += 1 + dis._OPARG_WIDTH
@@ -458,7 +458,7 @@ kundi DisTests(unittest.TestCase):
 
     eleza test_bug_1333982(self):
         # This one ni checking bytecodes generated kila an `assert` statement,
-        # so fails ikiwa the tests are run with -O.  Skip this test then.
+        # so fails ikiwa the tests are run ukijumuisha -O.  Skip this test then.
         ikiwa sio __debug__:
             self.skipTest('need asserts, run without -O')
 
@@ -629,7 +629,7 @@ Names:
    1: _get_code_object
 Variable names:
    0: x""" % (('Formatted details of methods, functions, ama code.',)
-              ikiwa sys.flags.optimize < 2 else (Tupu,))
+              ikiwa sys.flags.optimize < 2 isipokua (Tupu,))
 
 @staticmethod
 eleza tricky(a, b, /, x, y, z=Kweli, *args, c, d, e=[], **kwds):
@@ -743,7 +743,7 @@ Names:
 async eleza async_def():
     await 1
     async kila a kwenye b: pita
-    async with c kama d: pita
+    async ukijumuisha c kama d: pita
 
 code_info_async_eleza = """\
 Name:              async_def
@@ -783,7 +783,7 @@ kundi CodeInfoTests(unittest.TestCase):
     eleza test_show_code(self):
         self.maxDiff = 1000
         kila x, expected kwenye self.test_pairs:
-            with captured_stdout() kama output:
+            ukijumuisha captured_stdout() kama output:
                 dis.show_code(x)
             self.assertRegex(output.getvalue(), expected+"\n")
             output = io.StringIO()
@@ -817,7 +817,7 @@ eleza jumpy():
         ikiwa i > 6:
             koma
     isipokua:
-        andika("I can haz else clause?")
+        andika("I can haz isipokua clause?")
     wakati i:
         andika(i)
         i -= 1
@@ -832,7 +832,7 @@ eleza jumpy():
     tatizo ZeroDivisionError:
         andika("Here we go, here we go, here we go...")
     isipokua:
-        with i kama dodgy:
+        ukijumuisha i kama dodgy:
             andika("Never reach this")
     mwishowe:
         andika("OK, now we're done")
@@ -949,7 +949,7 @@ expected_opinfo_jumpy = [
   Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=40, starts_line=Tupu, is_jump_target=Uongo),
   Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=8, argval=8, argrepr='', offset=42, starts_line=Tupu, is_jump_target=Uongo),
   Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=44, starts_line=10, is_jump_target=Kweli),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='I can haz else clause?', argrepr="'I can haz else clause?'", offset=46, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='I can haz isipokua clause?', argrepr="'I can haz isipokua clause?'", offset=46, starts_line=Tupu, is_jump_target=Uongo),
   Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=48, starts_line=Tupu, is_jump_target=Uongo),
   Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=50, starts_line=Tupu, is_jump_target=Uongo),
   Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=52, starts_line=11, is_jump_target=Kweli),
@@ -1045,13 +1045,13 @@ kundi InstructionTests(BytecodeTestCase):
         self.assertEqual(list(actual), expected_opinfo_outer)
 
     eleza test_nested(self):
-        with captured_stdout():
+        ukijumuisha captured_stdout():
             f = outer()
         actual = dis.get_instructions(f, first_line=expected_f_line)
         self.assertEqual(list(actual), expected_opinfo_f)
 
     eleza test_doubly_nested(self):
-        with captured_stdout():
+        ukijumuisha captured_stdout():
             inner = outer()()
         actual = dis.get_instructions(inner, first_line=expected_inner_line)
         self.assertEqual(list(actual), expected_opinfo_inner)
@@ -1064,9 +1064,9 @@ kundi InstructionTests(BytecodeTestCase):
 # the object oriented API
 kundi BytecodeTests(unittest.TestCase):
     eleza test_instantiation(self):
-        # Test with function, method, code string na code object
+        # Test ukijumuisha function, method, code string na code object
         kila obj kwenye [_f, _C(1).__init__, "a=1", _f.__code__]:
-            with self.subTest(obj=obj):
+            ukijumuisha self.subTest(obj=obj):
                 b = dis.Bytecode(obj)
                 self.assertIsInstance(b.codeobj, types.CodeType)
 
@@ -1074,7 +1074,7 @@ kundi BytecodeTests(unittest.TestCase):
 
     eleza test_iteration(self):
         kila obj kwenye [_f, _C(1).__init__, "a=1", _f.__code__]:
-            with self.subTest(obj=obj):
+            ukijumuisha self.subTest(obj=obj):
                 via_object = list(dis.Bytecode(obj))
                 via_generator = list(dis.get_instructions(obj))
                 self.assertEqual(via_object, via_generator)

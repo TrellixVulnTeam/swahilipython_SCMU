@@ -53,7 +53,7 @@ _extension_details()
 
 eleza import_importlib(module_name):
     """Import a module kutoka importlib both w/ na w/o _frozen_importlib."""
-    fresh = ('importlib',) ikiwa '.' kwenye module_name else ()
+    fresh = ('importlib',) ikiwa '.' kwenye module_name isipokua ()
     frozen = support.import_fresh_module(module_name)
     source = support.import_fresh_module(module_name, fresh=fresh,
                                          blocked=('_frozen_importlib', '_frozen_importlib_external'))
@@ -65,7 +65,7 @@ eleza specialize_class(cls, kind, base=Tupu, **kwargs):
     # That would clean up the test modules a bit more.
     ikiwa base ni Tupu:
         base = unittest.TestCase
-    elikiwa sio isinstance(base, type):
+    lasivyo sio isinstance(base, type):
         base = base[kind]
     name = '{}_{}'.format(kind, cls.__name__)
     bases = (cls, base)
@@ -113,7 +113,7 @@ eleza case_insensitive_tests(test):
 
 eleza submodule(parent, name, pkg_dir, content=''):
     path = os.path.join(pkg_dir, name + '.py')
-    with open(path, 'w') kama subfile:
+    ukijumuisha open(path, 'w') kama subfile:
         subfile.write(content)
     rudisha '{}.{}'.format(parent, name), path
 
@@ -147,9 +147,9 @@ eleza uncache(*names):
 @contextlib.contextmanager
 eleza temp_module(name, content='', *, pkg=Uongo):
     conflicts = [n kila n kwenye sys.modules ikiwa n.partition('.')[0] == name]
-    with support.temp_cwd(Tupu) kama cwd:
-        with uncache(name, *conflicts):
-            with support.DirsOnSysPath(cwd):
+    ukijumuisha support.temp_cwd(Tupu) kama cwd:
+        ukijumuisha uncache(name, *conflicts):
+            ukijumuisha support.DirsOnSysPath(cwd):
                 invalidate_caches()
 
                 location = os.path.join(cwd, name)
@@ -163,7 +163,7 @@ eleza temp_module(name, content='', *, pkg=Uongo):
                         content = ''
                 ikiwa content ni sio Tupu:
                     # sio a namespace package
-                    with open(modpath, 'w') kama modfile:
+                    ukijumuisha open(modpath, 'w') kama modfile:
                         modfile.write(content)
                 tuma location
 
@@ -201,7 +201,7 @@ eleza import_state(**kwargs):
 
 kundi _ImporterMock:
 
-    """Base kundi to help with creating importer mocks."""
+    """Base kundi to help ukijumuisha creating importer mocks."""
 
     eleza __init__(self, *names, module_code={}):
         self.modules = {}
@@ -213,7 +213,7 @@ kundi _ImporterMock:
                 import_name = name[:-len('.__init__')]
             ikiwa '.' haiko kwenye name:
                 package = Tupu
-            elikiwa import_name == name:
+            lasivyo import_name == name:
                 package = name.rsplit('.', 1)[0]
             isipokua:
                 package = import_name
@@ -332,7 +332,7 @@ eleza temporary_pycache_prefix(prefix):
 
 @contextlib.contextmanager
 eleza create_modules(*names):
-    """Temporarily create each named module with an attribute (named 'attr')
+    """Temporarily create each named module ukijumuisha an attribute (named 'attr')
     that contains the name pitaed into the context manager that caused the
     creation of the module.
 
@@ -371,7 +371,7 @@ eleza create_modules(*names):
                     os.mkdir(file_path)
                     created_paths.append(file_path)
             file_path = os.path.join(file_path, name_parts[-1] + '.py')
-            with open(file_path, 'w') kama file:
+            ukijumuisha open(file_path, 'w') kama file:
                 file.write(source.format(name))
             created_paths.append(file_path)
             mapping[name] = file_path
@@ -484,12 +484,12 @@ kundi CommonResourceTests(abc.ABC):
         # An absolute path ni a ValueError.
         path = Path(__file__)
         full_path = path.parent/'utf-8.file'
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.execute(data01, full_path)
 
     eleza test_relative_path(self):
         # A reative path ni a ValueError.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.execute(data01, '../data01/utf-8.file')
 
     eleza test_agizaing_module_as_side_effect(self):
@@ -499,12 +499,12 @@ kundi CommonResourceTests(abc.ABC):
 
     eleza test_non_package_by_name(self):
         # The anchor package cannot be a module.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.execute(__name__, 'utf-8.file')
 
     eleza test_non_package_by_package(self):
         # The anchor package cannot be a module.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             module = sys.modules['test.test_importlib.util']
             self.execute(module, 'utf-8.file')
 
@@ -526,7 +526,7 @@ kundi CommonResourceTests(abc.ABC):
     eleza test_useless_loader(self):
         package = create_package(file=FileNotFoundError(),
                                  path=FileNotFoundError())
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             self.execute(package, 'utf-8.file')
 
 

@@ -22,7 +22,7 @@ kundi BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
         assert re.match(self.version_pattern, dist.version)
 
     eleza test_for_name_does_not_exist(self):
-        with self.assertRaises(PackageNotFoundError):
+        ukijumuisha self.assertRaises(PackageNotFoundError):
             Distribution.kutoka_name('does-not-exist')
 
     eleza test_new_style_classes(self):
@@ -33,7 +33,7 @@ kundi ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     eleza test_import_nonexistent_module(self):
         # Ensure that the MetadataPathFinder does sio crash an agiza of a
         # non-existent module.
-        with self.assertRaises(ImportError):
+        ukijumuisha self.assertRaises(ImportError):
             importlib.import_module('does_not_exist')
 
     eleza test_resolve(self):
@@ -60,19 +60,19 @@ kundi NameNormalizationTests(
     @staticmethod
     eleza pkg_with_dashes(site_dir):
         """
-        Create minimal metadata kila a package with dashes
+        Create minimal metadata kila a package ukijumuisha dashes
         kwenye the name (and thus underscores kwenye the filename).
         """
         metadata_dir = site_dir / 'my_pkg.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w') kama strm:
+        ukijumuisha metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'my-pkg'
 
     eleza test_dashes_in_dist_name_found_as_underscores(self):
         """
-        For a package with a dash kwenye the name, the dist-info metadata
+        For a package ukijumuisha a dash kwenye the name, the dist-info metadata
         uses underscores kwenye the name. Ensure the metadata loads.
         """
         pkg_name = self.pkg_with_dashes(self.site_dir)
@@ -81,19 +81,19 @@ kundi NameNormalizationTests(
     @staticmethod
     eleza pkg_with_mixed_case(site_dir):
         """
-        Create minimal metadata kila a package with mixed case
+        Create minimal metadata kila a package ukijumuisha mixed case
         kwenye the name.
         """
         metadata_dir = site_dir / 'CherryPy.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w') kama strm:
+        ukijumuisha metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'CherryPy'
 
     eleza test_dist_name_found_as_any_case(self):
         """
-        Ensure the metadata loads when queried with any case.
+        Ensure the metadata loads when queried ukijumuisha any case.
         """
         pkg_name = self.pkg_with_mixed_case(self.site_dir)
         assert version(pkg_name) == '1.0'
@@ -105,13 +105,13 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     eleza pkg_with_non_ascii_description(site_dir):
         """
-        Create minimal metadata kila a package with non-ASCII in
+        Create minimal metadata kila a package ukijumuisha non-ASCII in
         the description.
         """
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w', encoding='utf-8') kama fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
             fp.write('Description: pôrˈtend\n')
         rudisha 'portend'
 
@@ -124,7 +124,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w', encoding='utf-8') kama fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
             fp.write(textwrap.dedent("""
                 Name: portend
 
@@ -163,7 +163,7 @@ kundi DiscoveryTests(fixtures.EggInfoPkg,
             )
 
     eleza test_invalid_usage(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             list(distributions(context='something', name='else'))
 
 
@@ -171,13 +171,13 @@ kundi DirectoryTest(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     eleza test_egg_info(self):
         # make an `EGG-INFO` directory that's unrelated
         self.site_dir.joinpath('EGG-INFO').mkdir()
-        # used to crash with `IsADirectoryError`
-        with self.assertRaises(PackageNotFoundError):
+        # used to crash ukijumuisha `IsADirectoryError`
+        ukijumuisha self.assertRaises(PackageNotFoundError):
             version('unknown-package')
 
     eleza test_egg(self):
         egg = self.site_dir.joinpath('foo-3.6.egg')
         egg.mkdir()
-        with self.add_sys_path(egg):
-            with self.assertRaises(PackageNotFoundError):
+        ukijumuisha self.add_sys_path(egg):
+            ukijumuisha self.assertRaises(PackageNotFoundError):
                 version('foo')

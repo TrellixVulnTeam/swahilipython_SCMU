@@ -8,7 +8,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# na will comply with the following terms na conditions:
+# na will comply ukijumuisha the following terms na conditions:
 #
 # Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is

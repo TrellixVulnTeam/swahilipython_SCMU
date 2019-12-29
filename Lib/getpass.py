@@ -1,6 +1,6 @@
 """Utilities to get a pitaword and/or the current user name.
 
-getpita(prompt[, stream]) - Prompt kila a pitaword, with echo turned off.
+getpita(prompt[, stream]) - Prompt kila a pitaword, ukijumuisha echo turned off.
 getuser() - Get the user name kutoka the environment ama pitaword database.
 
 GetPassWarning - This UserWarning ni issued when getpita() cannot prevent
@@ -27,7 +27,7 @@ kundi GetPassWarning(UserWarning): pita
 
 
 eleza unix_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila a pitaword, with echo turned off.
+    """Prompt kila a pitaword, ukijumuisha echo turned off.
 
     Args:
       prompt: Written on stream to ask kila the input.  Default: 'Password: '
@@ -42,7 +42,7 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
     Always restores terminal settings before rudishaing.
     """
     pitawd = Tupu
-    with contextlib.ExitStack() kama stack:
+    ukijumuisha contextlib.ExitStack() kama stack:
         jaribu:
             # Always try reading na writing directly on the tty first.
             fd = os.open('/dev/tty', os.O_RDWR|os.O_NOCTTY)
@@ -95,7 +95,7 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
 
 
 eleza win_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila pitaword with echo off, using Windows getch()."""
+    """Prompt kila pitaword ukijumuisha echo off, using Windows getch()."""
     ikiwa sys.stdin ni sio sys.__stdin__:
         rudisha fallback_getpita(prompt, stream)
 

@@ -4,7 +4,7 @@ agiza ssl
 agiza pprint
 agiza threading
 agiza urllib.parse
-# Rename HTTPServer to _HTTPServer so kama to avoid confusion with HTTPSServer.
+# Rename HTTPServer to _HTTPServer so kama to avoid confusion ukijumuisha HTTPSServer.
 kutoka http.server agiza (HTTPServer kama _HTTPServer,
     SimpleHTTPRequestHandler, BaseHTTPRequestHandler)
 
@@ -30,7 +30,7 @@ kundi HTTPSServer(_HTTPServer):
                  self.server_port))
 
     eleza get_request(self):
-        # override this to wrap socket with SSL
+        # override this to wrap socket ukijumuisha SSL
         jaribu:
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=Kweli)

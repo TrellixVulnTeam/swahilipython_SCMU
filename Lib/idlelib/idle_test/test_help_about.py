@@ -56,7 +56,7 @@ kundi LiveDialogTest(unittest.TestCase):
                           (dialog.py_credits, credits, 'credits')]
 
         kila button, printer, name kwenye button_sources:
-            with self.subTest(name=name):
+            ukijumuisha self.subTest(name=name):
                 printer._Printer__setup()
                 button.invoke()
                 get = dialog._current_textview.viewframe.textframe.text.get
@@ -75,11 +75,11 @@ kundi LiveDialogTest(unittest.TestCase):
                           (self.dialog.idle_credits, 'CREDITS.txt', 'credits')]
 
         kila button, filename, name kwenye button_sources:
-            with  self.subTest(name=name):
+            ukijumuisha  self.subTest(name=name):
                 button.invoke()
                 fn = findfile(filename, subdir='idlelib')
                 get = dialog._current_textview.viewframe.textframe.text.get
-                with open(fn, encoding='utf-8') kama f:
+                ukijumuisha open(fn, encoding='utf-8') kama f:
                     self.assertEqual(f.readline().strip(), get('1.0', '1.end'))
                     f.readline()
                     self.assertEqual(f.readline().strip(), get('3.0', '3.end'))
@@ -130,7 +130,7 @@ kundi CloseTest(unittest.TestCase):
     eleza test_close(self):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
         self.dialog.button_ok.invoke()
-        with self.assertRaises(TclError):
+        ukijumuisha self.assertRaises(TclError):
             self.dialog.winfo_class()
 
 
@@ -147,7 +147,7 @@ kundi Dummy_about_dialog():
 kundi DisplayFileTest(unittest.TestCase):
     """Test functions that display files.
 
-    While somewhat redundant with gui-based test_file_dialog,
+    While somewhat redundant ukijumuisha gui-based test_file_dialog,
     these unit tests run on all buildbots, sio just a few.
     """
     dialog = Dummy_about_dialog()
@@ -172,7 +172,7 @@ kundi DisplayFileTest(unittest.TestCase):
                         self.dialog.idle_news):
             self.error.message = ''
             self.view.called = Uongo
-            with self.subTest(handler=handler):
+            ukijumuisha self.subTest(handler=handler):
                 handler()
                 self.assertEqual(self.error.message, '')
                 self.assertEqual(self.view.called, Kweli)

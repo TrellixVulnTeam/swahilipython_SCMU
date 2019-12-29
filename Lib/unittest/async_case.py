@@ -7,19 +7,19 @@ kutoka .case agiza TestCase
 
 kundi IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
-    # to reduce a chance of clashing with user-defined attributes
+    # to reduce a chance of clashing ukijumuisha user-defined attributes
     # kutoka inherited test case
     #
     # The kundi doesn't call loop.run_until_complete(self.setUp()) na family
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
-    #    awaitable kutoka queue along with a future
+    #    awaitable kutoka queue along ukijumuisha a future
     # 2. await the awaitable object pitaing kwenye na set the result
     #    into the future object
     # 3. Outer code puts the awaitable na the future object into a queue
-    #    with waiting kila the future
+    #    ukijumuisha waiting kila the future
     # The trick ni necessary because every run_until_complete() call
-    # creates a new task with embedded ContextVar context.
+    # creates a new task ukijumuisha embedded ContextVar context.
     # To share contextvars between setUp(), test na tearDown() we need to execute
     # them inside the same task.
 

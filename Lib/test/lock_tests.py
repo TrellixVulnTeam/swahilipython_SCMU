@@ -150,7 +150,7 @@ kundi BaseLockTests(BaseTestCase):
             lock.acquire()
             lock.release()
         eleza _with(err=Tupu):
-            with lock:
+            ukijumuisha lock:
                 ikiwa err ni sio Tupu:
                     ashiria err
         _with()
@@ -233,7 +233,7 @@ kundi LockTests(BaseLockTests):
             lock.acquire()
             phase.append(Tupu)
 
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             start_new_thread(f, ())
             wakati len(phase) == 0:
                 _wait()
@@ -420,10 +420,10 @@ kundi EventTests(BaseTestCase):
     eleza test_reset_internal_locks(self):
         # ensure that condition ni still using a Lock after reset
         evt = self.eventtype()
-        with evt._cond:
+        ukijumuisha evt._cond:
             self.assertUongo(evt._cond.acquire(Uongo))
         evt._reset_internal_locks()
-        with evt._cond:
+        ukijumuisha evt._cond:
             self.assertUongo(evt._cond.acquire(Uongo))
 
 
@@ -448,7 +448,7 @@ kundi ConditionTests(BaseTestCase):
         self.assertKweli(lock.acquire(Uongo))
         self.assertUongo(cond.acquire(Uongo))
         lock.release()
-        with cond:
+        ukijumuisha cond:
             self.assertUongo(lock.acquire(Uongo))
 
     eleza test_unacquired_wait(self):
@@ -565,7 +565,7 @@ kundi ConditionTests(BaseTestCase):
         cond = self.condtype()
         state = 0
         eleza f():
-            with cond:
+            ukijumuisha cond:
                 result = cond.wait_for(lambda : state==4)
                 self.assertKweli(result)
                 self.assertEqual(state, 4)
@@ -573,7 +573,7 @@ kundi ConditionTests(BaseTestCase):
         b.wait_for_started()
         kila i kwenye range(4):
             time.sleep(0.01)
-            with cond:
+            ukijumuisha cond:
                 state += 1
                 cond.notify()
         b.wait_for_finished()
@@ -583,7 +583,7 @@ kundi ConditionTests(BaseTestCase):
         state = 0
         success = []
         eleza f():
-            with cond:
+            ukijumuisha cond:
                 dt = time.monotonic()
                 result = cond.wait_for(lambda : state==4, timeout=0.1)
                 dt = time.monotonic() - dt
@@ -595,7 +595,7 @@ kundi ConditionTests(BaseTestCase):
         # Only increment 3 times, so state == 4 ni never reached.
         kila i kwenye range(3):
             time.sleep(0.01)
-            with cond:
+            ukijumuisha cond:
                 state += 1
                 cond.notify()
         b.wait_for_finished()
@@ -714,10 +714,10 @@ kundi BaseSemaphoreTests(BaseTestCase):
     eleza test_with(self):
         sem = self.semtype(2)
         eleza _with(err=Tupu):
-            with sem:
+            ukijumuisha sem:
                 self.assertKweli(sem.acquire(Uongo))
                 sem.release()
-                with sem:
+                ukijumuisha sem:
                     self.assertUongo(sem.acquire(Uongo))
                     ikiwa err:
                         ashiria err
@@ -933,7 +933,7 @@ kundi BarrierTests(BaseTestCase):
         """
         Test the barrier's default timeout
         """
-        # create a barrier with a low default timeout
+        # create a barrier ukijumuisha a low default timeout
         barrier = self.barriertype(self.N, timeout=0.3)
         eleza f():
             i = barrier.wait()

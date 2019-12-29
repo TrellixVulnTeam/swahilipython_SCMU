@@ -180,7 +180,7 @@ kundi ExceptionTests(unittest.TestCase):
 
     eleza testSyntaxErrorOffset(self):
         eleza check(src, lineno, offset):
-            with self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) kama cm:
                 compile(src, '<fragment>', 'exec')
             self.assertEqual(cm.exception.lineno, lineno)
             self.assertEqual(cm.exception.offset, offset)
@@ -324,7 +324,7 @@ kundi ExceptionTests(unittest.TestCase):
         ctypes = import_module('ctypes')
         # this error code has no message, Python formats it kama hexadecimal
         code = 3765269347
-        with self.assertRaisesRegex(OSError, 'Windows Error 0x%x' % code):
+        ukijumuisha self.assertRaisesRegex(OSError, 'Windows Error 0x%x' % code):
             ctypes.pythonapi.PyErr_SetFromWindowsErr(code)
 
     eleza testAttributes(self):
@@ -590,7 +590,7 @@ kundi ExceptionTests(unittest.TestCase):
             local_ref = obj
             ashiria MyException(obj)
 
-        # Qualified "except" with "as"
+        # Qualified "except" ukijumuisha "as"
         obj = MyObj()
         wr = weakref.ref(obj)
         jaribu:
@@ -623,7 +623,7 @@ kundi ExceptionTests(unittest.TestCase):
         obj = wr()
         self.assertIsTupu(obj)
 
-        # "except" with premature block leave
+        # "except" ukijumuisha premature block leave
         obj = MyObj()
         wr = weakref.ref(obj)
         kila i kwenye [0]:
@@ -683,7 +683,7 @@ kundi ExceptionTests(unittest.TestCase):
                 rudisha Kweli
         obj = MyObj()
         wr = weakref.ref(obj)
-        with Context():
+        ukijumuisha Context():
             inner_raising_func()
         obj = Tupu
         ikiwa check_impl_detail(cpython=Uongo):
@@ -786,7 +786,7 @@ kundi ExceptionTests(unittest.TestCase):
         jaribu:
             next(it)
             # We can't check it immediately, but wakati next() rudishas
-            # with an exception, it shouldn't have restored the old
+            # ukijumuisha an exception, it shouldn't have restored the old
             # exception state (TypeError).
         tatizo ZeroDivisionError kama e:
             self.assertIs(sys.exc_info()[1], e)
@@ -948,7 +948,7 @@ kundi ExceptionTests(unittest.TestCase):
         kundi MyException(Exception, metaclass=Meta):
             pita
 
-        with captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() kama stderr:
             jaribu:
                 ashiria KeyError()
             tatizo MyException kama e:
@@ -1022,7 +1022,7 @@ kundi ExceptionTests(unittest.TestCase):
                 andika('Done.')
         """ % __file__
         rc, out, err = script_helper.assert_python_failure("-Wd", "-c", code)
-        # Check that the program does sio fail with SIGABRT.
+        # Check that the program does sio fail ukijumuisha SIGABRT.
         self.assertEqual(rc, 1)
         self.assertIn(b'RecursionError', err)
         self.assertIn(b'ResourceWarning', err)
@@ -1064,7 +1064,7 @@ kundi ExceptionTests(unittest.TestCase):
                     C()
             recurse(16)
         """
-        with SuppressCrashReport():
+        ukijumuisha SuppressCrashReport():
             rc, out, err = script_helper.assert_python_failure("-c", code)
             self.assertIn(b'Fatal Python error: Cannot recover kutoka '
                           b'MemoryErrors wakati normalizing exceptions.', err)
@@ -1103,16 +1103,16 @@ kundi ExceptionTests(unittest.TestCase):
         self.assertKweli(issubclass(error1, Exception))
         self.assertIsTupu(error1.__doc__)
 
-        # test with given docstring
+        # test ukijumuisha given docstring
         error2 = _testcapi.make_exception_with_doc("_testcapi.error2", doc2)
         self.assertEqual(error2.__doc__, doc2)
 
-        # test with explicit base (without docstring)
+        # test ukijumuisha explicit base (without docstring)
         error3 = _testcapi.make_exception_with_doc("_testcapi.error3",
                                                    base=error2)
         self.assertKweli(issubclass(error3, error2))
 
-        # test with explicit base tuple
+        # test ukijumuisha explicit base tuple
         kundi C(object):
             pita
         error4 = _testcapi.make_exception_with_doc("_testcapi.error4", doc4,
@@ -1121,7 +1121,7 @@ kundi ExceptionTests(unittest.TestCase):
         self.assertKweli(issubclass(error4, C))
         self.assertEqual(error4.__doc__, doc4)
 
-        # test with explicit dictionary
+        # test ukijumuisha explicit dictionary
         error5 = _testcapi.make_exception_with_doc("_testcapi.error5", "",
                                                    error4, {'a': 1})
         self.assertKweli(issubclass(error5, error4))
@@ -1152,7 +1152,7 @@ kundi ExceptionTests(unittest.TestCase):
 
     @no_tracing
     eleza test_recursion_error_cleanup(self):
-        # Same test kama above, but with "recursion exceeded" errors
+        # Same test kama above, but ukijumuisha "recursion exceeded" errors
         kundi C:
             pita
         wr = Tupu
@@ -1172,7 +1172,7 @@ kundi ExceptionTests(unittest.TestCase):
 
     eleza test_errno_ENOTDIR(self):
         # Issue #12802: "not a directory" errors are ENOTDIR even on Windows
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             os.listdir(__file__)
         self.assertEqual(cm.exception.errno, errno.ENOTDIR, cm.exception)
 
@@ -1185,7 +1185,7 @@ kundi ExceptionTests(unittest.TestCase):
                 ashiria exc
 
         obj = BrokenDel()
-        with support.catch_unraisable_exception() kama cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             toa obj
 
             self.assertEqual(cm.unraisable.object, BrokenDel.__del__)
@@ -1194,13 +1194,13 @@ kundi ExceptionTests(unittest.TestCase):
     eleza test_unhandled(self):
         # Check kila sensible reporting of unhandled exceptions
         kila exc_type kwenye (ValueError, BrokenStrException):
-            with self.subTest(exc_type):
+            ukijumuisha self.subTest(exc_type):
                 jaribu:
                     exc = exc_type("test message")
                     # The following line ni included kwenye the traceback report:
                     ashiria exc
                 tatizo exc_type:
-                    with captured_stderr() kama stderr:
+                    ukijumuisha captured_stderr() kama stderr:
                         sys.__excepthook__(*sys.exc_info())
                 report = stderr.getvalue()
                 self.assertIn("test_exceptions.py", report)
@@ -1249,7 +1249,7 @@ kundi ExceptionTests(unittest.TestCase):
 
         coro = main()
         coro.send(Tupu)
-        with self.assertRaises(MainError):
+        ukijumuisha self.assertRaises(MainError):
             coro.throw(SubError())
 
     eleza test_generator_doesnt_retain_old_exc2(self):
@@ -1277,7 +1277,7 @@ kundi ExceptionTests(unittest.TestCase):
             ashiria
             tuma 2
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             i = g()
             jaribu:
                 1/0
@@ -1307,19 +1307,19 @@ kundi ImportErrorTests(unittest.TestCase):
         self.assertEqual(exc.path, 'somepath')
 
         msg = "'invalid' ni an invalid keyword argument kila ImportError"
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             ImportError('test', invalid='keyword')
 
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             ImportError('test', name='name', invalid='keyword')
 
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             ImportError('test', path='path', invalid='keyword')
 
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             ImportError(invalid='keyword')
 
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             ImportError('test', invalid='keyword', another=Kweli)
 
     eleza test_reset_attributes(self):
@@ -1338,7 +1338,7 @@ kundi ImportErrorTests(unittest.TestCase):
 
     eleza test_non_str_argument(self):
         # Issue #15778
-        with check_warnings(('', BytesWarning), quiet=Kweli):
+        ukijumuisha check_warnings(('', BytesWarning), quiet=Kweli):
             arg = b'abc'
             exc = ImportError(arg)
             self.assertEqual(str(arg), str(exc))

@@ -80,16 +80,16 @@ kundi TooltipBase(object):
 
 
 kundi OnHoverTooltipBase(TooltipBase):
-    """abstract base kundi kila tooltips, with delayed on-hover display"""
+    """abstract base kundi kila tooltips, ukijumuisha delayed on-hover display"""
 
     eleza __init__(self, anchor_widget, hover_delay=1000):
-        """Create a tooltip with a mouse hover delay.
+        """Create a tooltip ukijumuisha a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, kwenye milliseconds
 
         Note that a widget will only be shown when showtip() ni called,
-        e.g. after hovering over the anchor widget with the mouse kila enough
+        e.g. after hovering over the anchor widget ukijumuisha the mouse kila enough
         time.
         """
         super(OnHoverTooltipBase, self).__init__(anchor_widget)
@@ -145,13 +145,13 @@ kundi OnHoverTooltipBase(TooltipBase):
 kundi Hovertip(OnHoverTooltipBase):
     "A tooltip that pops up when a mouse hovers over an anchor widget."
     eleza __init__(self, anchor_widget, text, hover_delay=1000):
-        """Create a text tooltip with a mouse hover delay.
+        """Create a text tooltip ukijumuisha a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, kwenye milliseconds
 
         Note that a widget will only be shown when showtip() ni called,
-        e.g. after hovering over the anchor widget with the mouse kila enough
+        e.g. after hovering over the anchor widget ukijumuisha the mouse kila enough
         time.
         """
         super(Hovertip, self).__init__(anchor_widget, hover_delay=hover_delay)

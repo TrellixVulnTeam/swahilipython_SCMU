@@ -22,24 +22,24 @@ kundi Codec(codecs.Codec):
     decode = codecs.charmap_decode
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza __init__(self, errors='strict', mapping=None):
+    eleza __init__(self, errors='strict', mapping=Tupu):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.mapping = mapping
 
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         rudisha codecs.charmap_encode(input, self.errors, self.mapping)[0]
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza __init__(self, errors='strict', mapping=None):
+    eleza __init__(self, errors='strict', mapping=Tupu):
         codecs.IncrementalDecoder.__init__(self, errors)
         self.mapping = mapping
 
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         rudisha codecs.charmap_decode(input, self.errors, self.mapping)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
 
-    eleza __init__(self,stream,errors='strict',mapping=None):
+    eleza __init__(self,stream,errors='strict',mapping=Tupu):
         codecs.StreamWriter.__init__(self,stream,errors)
         self.mapping = mapping
 
@@ -48,7 +48,7 @@ kundi StreamWriter(Codec,codecs.StreamWriter):
 
 kundi StreamReader(Codec,codecs.StreamReader):
 
-    eleza __init__(self,stream,errors='strict',mapping=None):
+    eleza __init__(self,stream,errors='strict',mapping=Tupu):
         codecs.StreamReader.__init__(self,stream,errors)
         self.mapping = mapping
 

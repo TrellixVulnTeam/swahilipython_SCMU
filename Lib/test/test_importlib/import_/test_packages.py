@@ -9,15 +9,15 @@ kundi ParentModuleTests:
     """Importing a submodule should agiza the parent modules."""
 
     eleza test_import_parent(self):
-        with util.mock_spec('pkg.__init__', 'pkg.module') kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha util.mock_spec('pkg.__init__', 'pkg.module') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 module = self.__import__('pkg.module')
                 self.assertIn('pkg', sys.modules)
 
     eleza test_bad_parent(self):
-        with util.mock_spec('pkg.module') kama mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises(ImportError) kama cm:
+        ukijumuisha util.mock_spec('pkg.module') kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
+                ukijumuisha self.assertRaises(ImportError) kama cm:
                     self.__import__('pkg.module')
                 self.assertEqual(cm.exception.name, 'pkg')
 
@@ -27,13 +27,13 @@ kundi ParentModuleTests:
             1/0
         mock = util.mock_spec('pkg.__init__', 'pkg.module',
                                  module_code={'pkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises(ZeroDivisionError):
+        ukijumuisha mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
+                ukijumuisha self.assertRaises(ZeroDivisionError):
                     self.__import__('pkg')
                 self.assertNotIn('pkg', sys.modules)
                 self.assertIn('pkg.module', sys.modules)
-                with self.assertRaises(ZeroDivisionError):
+                ukijumuisha self.assertRaises(ZeroDivisionError):
                     self.__import__('pkg.module')
                 self.assertNotIn('pkg', sys.modules)
                 self.assertIn('pkg.module', sys.modules)
@@ -44,14 +44,14 @@ kundi ParentModuleTests:
             1/0
         mock = util.mock_spec('pkg.__init__', 'pkg.module',
                                  module_code={'pkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+        ukijumuisha mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
+                ukijumuisha self.assertRaises((ZeroDivisionError, ImportError)):
                     # This ashirias ImportError on the "kutoka . agiza module"
                     # line, sio sure why.
                     self.__import__('pkg')
                 self.assertNotIn('pkg', sys.modules)
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+                ukijumuisha self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.module')
                 self.assertNotIn('pkg', sys.modules)
                 # XXX Uongo
@@ -64,14 +64,14 @@ kundi ParentModuleTests:
         mock = util.mock_spec('pkg.__init__', 'pkg.subpkg.__init__',
                                  'pkg.subpkg.module',
                                  module_code={'pkg.subpkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+        ukijumuisha mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
+                ukijumuisha self.assertRaises((ZeroDivisionError, ImportError)):
                     # This ashirias ImportError on the "kutoka ..subpkg agiza module"
                     # line, sio sure why.
                     self.__import__('pkg.subpkg')
                 self.assertNotIn('pkg.subpkg', sys.modules)
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+                ukijumuisha self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.subpkg.module')
                 self.assertNotIn('pkg.subpkg', sys.modules)
                 # XXX Uongo
@@ -80,7 +80,7 @@ kundi ParentModuleTests:
     eleza test_module_not_package(self):
         # Try to agiza a submodule kutoka a non-package should ashiria ImportError.
         assert sio hasattr(sys, '__path__')
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.__import__('sys.no_submodules_here')
         self.assertEqual(cm.exception.name, 'sys.no_submodules_here')
 
@@ -93,8 +93,8 @@ kundi ParentModuleTests:
             sys.modules[subname] = 'total bunk'
         mock_spec = util.mock_spec('mod',
                                          module_code={'mod': module_injection})
-        with mock_spec kama mock:
-            with util.import_state(meta_path=[mock]):
+        ukijumuisha mock_spec kama mock:
+            ukijumuisha util.import_state(meta_path=[mock]):
                 jaribu:
                     submodule = self.__import__(subname)
                 mwishowe:

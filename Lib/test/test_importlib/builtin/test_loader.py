@@ -28,7 +28,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_module(self):
         # Common case.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             module = self.load_module(util.BUILTINS.good_name)
             self.verify(module)
 
@@ -40,7 +40,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_module_reuse(self):
         # Test that the same module ni used kwenye a reload.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             module1 = self.load_module(util.BUILTINS.good_name)
             module2 = self.load_module(util.BUILTINS.good_name)
             self.assertIs(module1, module2)
@@ -48,7 +48,7 @@ kundi LoaderTests(abc.LoaderTests):
     eleza test_unloadable(self):
         name = 'dssdsdfff'
         assert name haiko kwenye sys.builtin_module_names
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -57,10 +57,10 @@ kundi LoaderTests(abc.LoaderTests):
         # still fail.
         module_name = 'builtin_reload_test'
         assert module_name haiko kwenye sys.builtin_module_names
-        with util.uncache(module_name):
+        ukijumuisha util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module(module_name)
         self.assertEqual(cm.exception.name, module_name)
 
@@ -95,7 +95,7 @@ kundi InspectLoaderTests:
         # Modules sio built-in should ashiria ImportError.
         kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
-        with self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             method(util.BUILTINS.bad_name)
 
 

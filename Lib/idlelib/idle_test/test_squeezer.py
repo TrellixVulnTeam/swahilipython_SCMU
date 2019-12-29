@@ -42,19 +42,19 @@ kundi CountLinesTest(unittest.TestCase):
         )
 
     eleza test_count_empty(self):
-        """Test with an empty string."""
+        """Test ukijumuisha an empty string."""
         self.assertEqual(count_lines_with_wrapping(""), 0)
 
     eleza test_count_begins_with_empty_line(self):
-        """Test with a string which begins with a newline."""
+        """Test ukijumuisha a string which begins ukijumuisha a newline."""
         self.assertEqual(count_lines_with_wrapping("\ntext"), 2)
 
     eleza test_count_ends_with_empty_line(self):
-        """Test with a string which ends with a newline."""
+        """Test ukijumuisha a string which ends ukijumuisha a newline."""
         self.assertEqual(count_lines_with_wrapping("text\n"), 1)
 
     eleza test_count_several_lines(self):
-        """Test with several lines of text."""
+        """Test ukijumuisha several lines of text."""
         self.assertEqual(count_lines_with_wrapping("1\n2\n3\n"), 3)
 
     eleza test_empty_lines(self):
@@ -95,7 +95,7 @@ kundi SqueezerTest(unittest.TestCase):
         rudisha editwin
 
     eleza make_squeezer_instance(self, editor_window=Tupu):
-        """Create an actual Squeezer instance with a mock EditorWindow."""
+        """Create an actual Squeezer instance ukijumuisha a mock EditorWindow."""
         ikiwa editor_window ni Tupu:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
@@ -116,7 +116,7 @@ kundi SqueezerTest(unittest.TestCase):
                         configType, section, option, prev_val)
 
     eleza test_count_lines(self):
-        """Test Squeezer.count_lines() with various inputs."""
+        """Test Squeezer.count_lines() ukijumuisha various inputs."""
         editwin = self.make_mock_editor_window()
         squeezer = self.make_squeezer_instance(editwin)
 
@@ -130,11 +130,11 @@ kundi SqueezerTest(unittest.TestCase):
             (r"'aa\t' * 21", 80, 3),
             (r"'aa\t' * 20", 40, 4),
         ]:
-            with self.subTest(text_code=text_code,
+            ukijumuisha self.subTest(text_code=text_code,
                               line_width=line_width,
                               expected=expected):
                 text = eval(text_code)
-                with patch.object(editwin, 'width', line_width):
+                ukijumuisha patch.object(editwin, 'width', line_width):
                     self.assertEqual(squeezer.count_lines(text), expected)
 
     eleza test_init(self):
@@ -335,10 +335,10 @@ kundi ExpandingButtonTest(unittest.TestCase):
 
         # Check that the mouse events are bound.
         self.assertIn('<Double-Button-1>', expandingbutton.bind())
-        right_button_code = '<Button-%s>' % ('2' ikiwa macosx.isAquaTk() else '3')
+        right_button_code = '<Button-%s>' % ('2' ikiwa macosx.isAquaTk() isipokua '3')
         self.assertIn(right_button_code, expandingbutton.bind())
 
-        # Check that ToolTip was called once, with appropriate values.
+        # Check that ToolTip was called once, ukijumuisha appropriate values.
         self.assertEqual(MockHovertip.call_count, 1)
         MockHovertip.assert_called_with(expandingbutton, ANY, hover_delay=ANY)
 
@@ -397,7 +397,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         expandingbutton.base_text = expandingbutton.text
 
         # Patch the message box module to always rudisha Uongo.
-        with patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
+        ukijumuisha patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
             mock_msgbox.askokcancel.rudisha_value = Uongo
             mock_msgbox.askyesno.rudisha_value = Uongo
             # Trigger the expand event.
@@ -408,7 +408,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
         # Patch the message box module to always rudisha Kweli.
-        with patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
+        ukijumuisha patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
             mock_msgbox.askokcancel.rudisha_value = Kweli
             mock_msgbox.askyesno.rudisha_value = Kweli
             # Trigger the expand event.
@@ -420,8 +420,8 @@ kundi ExpandingButtonTest(unittest.TestCase):
 
     eleza test_copy(self):
         """Test the copy event."""
-        # Testing with the actual clipboard proved problematic, so this
-        # test replaces the clipboard manipulation functions with mocks
+        # Testing ukijumuisha the actual clipboard proved problematic, so this
+        # test replaces the clipboard manipulation functions ukijumuisha mocks
         # na checks that they are called appropriately.
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
@@ -444,7 +444,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
         expandingbutton.selection_own = Mock()
 
-        with patch('idlelib.squeezer.view_text', autospec=view_text)\
+        ukijumuisha patch('idlelib.squeezer.view_text', autospec=view_text)\
                 kama mock_view_text:
             # Trigger the view event.
             expandingbutton.view(event=Mock())
@@ -459,7 +459,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         """Test the context menu."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
-        with patch('tkinter.Menu') kama mock_Menu:
+        ukijumuisha patch('tkinter.Menu') kama mock_Menu:
             mock_menu = Mock()
             mock_Menu.rudisha_value = mock_menu
             mock_event = Mock()

@@ -26,7 +26,7 @@ kundi PollTests(unittest.TestCase):
 
     eleza test_poll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe na test that poll works with them.
+        # Create a bunch of pipe na test that poll works ukijumuisha them.
 
         p = select.poll()
 
@@ -83,7 +83,7 @@ kundi PollTests(unittest.TestCase):
         r = p.poll()
         self.assertEqual(r[0], (FD, select.POLLNVAL))
 
-        with open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             fd = f.fileno()
             p = select.poll()
             p.register(f)
@@ -137,7 +137,7 @@ kundi PollTests(unittest.TestCase):
                     self.fail('error: pipe seems to be closed, but still rudishas data')
                 endelea
 
-            elikiwa flags & select.POLLIN:
+            lasivyo flags & select.POLLIN:
                 line = p.readline()
                 ikiwa sio line:
                     koma

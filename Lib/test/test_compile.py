@@ -196,7 +196,7 @@ ikiwa 1:
             all_one_bits = '0xffffffff'
             self.assertEqual(eval(all_one_bits), 4294967295)
             self.assertEqual(eval("-" + all_one_bits), -4294967295)
-        elikiwa sys.maxsize == 9223372036854775807:
+        lasivyo sys.maxsize == 9223372036854775807:
             # 64-bit machine
             all_one_bits = '0xffffffffffffffff'
             self.assertEqual(eval(all_one_bits), 18446744073709551615)
@@ -224,7 +224,7 @@ ikiwa 1:
                     self.assertIsInstance(variable, int)
 
     eleza test_sequence_unpacking_error(self):
-        # Verify sequence packing/unpacking with "or".  SF bug #757818
+        # Verify sequence packing/unpacking ukijumuisha "or".  SF bug #757818
         i,j = (1, -1) ama (-1, 1)
         self.assertEqual(i, 1)
         self.assertEqual(j, -1)
@@ -425,7 +425,7 @@ ikiwa 1:
         fname = __file__
         ikiwa fname.lower().endswith('pyc'):
             fname = fname[:-1]
-        with open(fname, 'r') kama f:
+        ukijumuisha open(fname, 'r') kama f:
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
@@ -444,7 +444,7 @@ ikiwa 1:
             # the code object's filename comes kutoka the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
-        # ashiria exception when node type doesn't match with compile mode
+        # ashiria exception when node type doesn't match ukijumuisha compile mode
         co1 = compile('andika(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
@@ -472,7 +472,7 @@ ikiwa 1:
             code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
         kila filename kwenye bytearray(b'file.py'), memoryview(b'file.py'):
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
         self.assertRaises(TypeError, compile, 'pita', list(b'file.py'), 'exec')
@@ -514,9 +514,9 @@ ikiwa 1:
     eleza test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
-        with tempfile.TemporaryDirectory() kama tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") kama fp:
+            ukijumuisha open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
@@ -524,9 +524,9 @@ ikiwa 1:
     eleza test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
-        with tempfile.TemporaryDirectory() kama tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") kama fp:
+            ukijumuisha open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
@@ -549,7 +549,7 @@ ikiwa 1:
             broken = prefix + repeated * fail_depth
             details = "Compiling ({!r} + {!r} * {})".format(
                          prefix, repeated, fail_depth)
-            with self.assertRaises(RecursionError, msg=details):
+            ukijumuisha self.assertRaises(RecursionError, msg=details):
                 self.compile_single(broken)
 
         check_limit("a", "()")
@@ -560,9 +560,9 @@ ikiwa 1:
     eleza test_null_terminated(self):
         # The source code ni null-terminated internally, but bytes-like
         # objects are accepted, which could be sio terminated.
-        with self.assertRaisesRegex(ValueError, "cannot contain null"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot contain null"):
             compile("123\x00", "<dummy>", "eval")
-        with self.assertRaisesRegex(ValueError, "cannot contain null"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot contain null"):
             compile(memoryview(b"123\x00"), "<dummy>", "eval")
         code = compile(memoryview(b"123\x00")[1:-1], "<dummy>", "eval")
         self.assertEqual(eval(code), 23)
@@ -643,7 +643,7 @@ ikiwa 1:
         # The above function definition will trigger the out of bounds
         # bug kwenye the peephole optimizer kama it scans opcodes past the
         # RETURN_VALUE opcode.  This does sio always crash an interpreter.
-        # When you build with the clang memory sanitizer it reliably aborts.
+        # When you build ukijumuisha the clang memory sanitizer it reliably aborts.
         self.assertEqual(
             'RETURN_VALUE',
             list(dis.get_instructions(unused_code_at_end))[-1].opname)
@@ -759,7 +759,7 @@ kundi TestExpressionStackSize(unittest.TestCase):
         self.check_stack_size("x < " * self.N + "x")
 
     eleza test_if_else(self):
-        self.check_stack_size("x ikiwa x else " * self.N + "x")
+        self.check_stack_size("x ikiwa x isipokua " * self.N + "x")
 
     eleza test_binop(self):
         self.check_stack_size("x + " * self.N + "x")
@@ -789,7 +789,7 @@ kundi TestStackSizeStability(unittest.TestCase):
             agiza dis, io
             out = io.StringIO()
             dis.dis(compile_snippet(1), file=out)
-            self.fail("stack sizes diverge with # of consecutive snippets: "
+            self.fail("stack sizes diverge ukijumuisha # of consecutive snippets: "
                       "%s\n%s\n%s" % (sizes, snippet, out.getvalue()))
 
     eleza test_if(self):
@@ -803,7 +803,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             ikiwa x:
                 a
-            elikiwa y:
+            lasivyo y:
                 b
             isipokua:
                 c
@@ -856,7 +856,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_with(self):
         snippet = """
-            with x kama y:
+            ukijumuisha x kama y:
                 a
             """
         self.check_stack_size(snippet)
@@ -891,7 +891,7 @@ kundi TestStackSizeStability(unittest.TestCase):
             kila x kwenye y:
                 ikiwa z:
                     koma
-                elikiwa u:
+                lasivyo u:
                     endelea
                 isipokua:
                     a
@@ -906,7 +906,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 jaribu:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -925,7 +925,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 mwishowe:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -942,7 +942,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 except:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -954,10 +954,10 @@ kundi TestStackSizeStability(unittest.TestCase):
     eleza test_for_koma_endelea_inside_with_block(self):
         snippet = """
             kila x kwenye y:
-                with c:
+                ukijumuisha c:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -1004,7 +1004,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_rudisha_inside_with_block(self):
         snippet = """
-            with c:
+            ukijumuisha c:
                 ikiwa z:
                     rudisha
                 isipokua:
@@ -1014,7 +1014,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_async_with(self):
         snippet = """
-            async with x kama y:
+            async ukijumuisha x kama y:
                 a
             """
         self.check_stack_size(snippet, async_=Kweli)
@@ -1038,10 +1038,10 @@ kundi TestStackSizeStability(unittest.TestCase):
     eleza test_for_koma_endelea_inside_async_with_block(self):
         snippet = """
             kila x kwenye y:
-                async with c:
+                async ukijumuisha c:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -1052,7 +1052,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_rudisha_inside_async_with_block(self):
         snippet = """
-            async with c:
+            async ukijumuisha c:
                 ikiwa z:
                     rudisha
                 isipokua:

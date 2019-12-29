@@ -184,7 +184,7 @@ kundi StructTest(unittest.TestCase):
                     self.signed = Kweli
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
-                elikiwa self.code kwenye tuple('BHILQN'):
+                lasivyo self.code kwenye tuple('BHILQN'):
                     self.signed = Uongo
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
@@ -263,7 +263,7 @@ kundi StructTest(unittest.TestCase):
                     eleza __int__(self):
                         rudisha 42
 
-                # Objects with an '__index__' method should be allowed
+                # Objects ukijumuisha an '__index__' method should be allowed
                 # to pack kama integers.  That ni assuming the implemented
                 # '__index__' method rudishas an 'int'.
                 kundi Indexable(object):
@@ -274,7 +274,7 @@ kundi StructTest(unittest.TestCase):
                         rudisha self._value
 
                 # If the '__index__' method ashirias a type error, then
-                # '__int__' should be used with a deprecation warning.
+                # '__int__' should be used ukijumuisha a deprecation warning.
                 kundi BadIndex(object):
                     eleza __index__(self):
                         ashiria TypeError
@@ -305,7 +305,7 @@ kundi StructTest(unittest.TestCase):
                         struct.pack(format, obj)
                     except:
                         self.fail("integer code pack failed on object "
-                                  "with '__index__' method")
+                                  "ukijumuisha '__index__' method")
 
                 # Check kila bogus values kutoka '__index__'.
                 kila obj kwenye (Indexable(b'a'), Indexable('b'), Indexable(Tupu),
@@ -322,7 +322,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_nN_code(self):
         # n na N don't exist kwenye standard sizes
         eleza assertStructError(func, *args, **kwargs):
-            with self.assertRaises(struct.error) kama cm:
+            ukijumuisha self.assertRaises(struct.error) kama cm:
                 func(*args, **kwargs)
             self.assertIn("bad char kwenye struct format", str(cm.exception))
         kila code kwenye 'nN':
@@ -361,7 +361,7 @@ kundi StructTest(unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, na 32, with unpacked = 1, 2, and
+            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, and
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)
@@ -427,7 +427,7 @@ kundi StructTest(unittest.TestCase):
         kutoka_buf = writable_buf.tobytes()[:len(test_string)]
         self.assertEqual(kutoka_buf, test_string)
 
-        # Test with offset.
+        # Test ukijumuisha offset.
         s.pack_into(writable_buf, 10, test_string)
         kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
         self.assertEqual(kutoka_buf, test_string[:10] + test_string)
@@ -455,7 +455,7 @@ kundi StructTest(unittest.TestCase):
         kutoka_buf = writable_buf.tobytes()[:len(test_string)]
         self.assertEqual(kutoka_buf, test_string)
 
-        # Test with offset.
+        # Test ukijumuisha offset.
         pack_into(writable_buf, 10, test_string)
         kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
         self.assertEqual(kutoka_buf, test_string[:10] + test_string)
@@ -534,7 +534,7 @@ kundi StructTest(unittest.TestCase):
         self.assertRaises(struct.error, struct.pack_into, '12345', store, 0)
         self.assertRaises(struct.error, struct.unpack_kutoka, '12345', store, 0)
 
-        # Format lists with trailing count spec should result kwenye an error
+        # Format lists ukijumuisha trailing count spec should result kwenye an error
         self.assertRaises(struct.error, struct.pack, 'c12345', 'x')
         self.assertRaises(struct.error, struct.unpack, 'c12345', b'x')
         self.assertRaises(struct.error, struct.pack_into, 'c12345', store, 0,
@@ -553,7 +553,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_Struct_reinitialization(self):
         # Issue 9422: there was a memory leak when reinitializing a
         # Struct instance.  This test can be used to detect the leak
-        # when running with regrtest -L.
+        # when running ukijumuisha regrtest -L.
         s = struct.Struct('i')
         s.__init__('ii')
 
@@ -584,7 +584,7 @@ kundi StructTest(unittest.TestCase):
             r'bytes kila packing 1 bytes at offset 5 '
             r'\(actual buffer size ni 1\)'
         )
-        with self.assertRaisesRegex(struct.error, regex1):
+        ukijumuisha self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('b', bytearray(1), 5, 1)
 
         regex2 = (
@@ -592,27 +592,27 @@ kundi StructTest(unittest.TestCase):
             r'bytes kila unpacking 1 bytes at offset 5 '
             r'\(actual buffer size ni 1\)'
         )
-        with self.assertRaisesRegex(struct.error, regex2):
+        ukijumuisha self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_kutoka('b', bytearray(1), 5)
 
     eleza test_boundary_error_message_with_negative_offset(self):
         byte_list = bytearray(10)
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 r'no space to pack 4 bytes at offset -2'):
             struct.pack_into('<I', byte_list, -2, 123)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 'offset -11 out of range kila 10-byte buffer'):
             struct.pack_into('<B', byte_list, -11, 123)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 r'not enough data to unpack 4 bytes at offset -2'):
             struct.unpack_kutoka('<I', byte_list, -2)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 "offset -11 out of range kila 10-byte buffer"):
             struct.unpack_kutoka('<B', byte_list, -11)
@@ -624,7 +624,7 @@ kundi StructTest(unittest.TestCase):
             r' bytes kila packing 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size ni 10\)'
         )
-        with self.assertRaisesRegex(struct.error, regex1):
+        ukijumuisha self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('<I', bytearray(10), sys.maxsize, 1)
 
         regex2 = (
@@ -632,14 +632,14 @@ kundi StructTest(unittest.TestCase):
             r' bytes kila unpacking 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size ni 10\)'
         )
-        with self.assertRaisesRegex(struct.error, regex2):
+        ukijumuisha self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_kutoka('<I', bytearray(10), sys.maxsize)
 
     eleza test_issue29802(self):
         # When the second argument of struct.unpack() was of wrong type
         # the Struct object was decrefed twice na the reference to
         # deallocated object was left kwenye a cache.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             struct.unpack('b', 0)
         # Shouldn't crash.
         self.assertEqual(struct.unpack('b', b'a'), (b'a'[0],))
@@ -668,15 +668,15 @@ kundi UnpackIteratorTest(unittest.TestCase):
         it = s.iter_unpack(b"1234567")
         _check_iterator(it)
         # Wrong bytes length
-        with self.assertRaises(struct.error):
+        ukijumuisha self.assertRaises(struct.error):
             s.iter_unpack(b"123456")
-        with self.assertRaises(struct.error):
+        ukijumuisha self.assertRaises(struct.error):
             s.iter_unpack(b"12345678")
         # Zero-length struct
         s = struct.Struct('>')
-        with self.assertRaises(struct.error):
+        ukijumuisha self.assertRaises(struct.error):
             s.iter_unpack(b"")
-        with self.assertRaises(struct.error):
+        ukijumuisha self.assertRaises(struct.error):
             s.iter_unpack(b"12")
 
     eleza test_iterate(self):

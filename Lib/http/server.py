@@ -13,7 +13,7 @@ Notes on CGIHTTPRequestHandler
 This kundi implements GET na POST requests to cgi-bin scripts.
 
 If the os.fork() function ni sio present (e.g. on Windows),
-subprocess.Popen() ni used kama a fallback, with slightly altered semantics.
+subprocess.Popen() ni used kama a fallback, ukijumuisha slightly altered semantics.
 
 In all cases, the implementation ni intentionally naive -- all
 requests are executed synchronously.
@@ -171,10 +171,10 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     <path> ni a string containing path information kila the request,
     na <version> should be the string "HTTP/1.0" ama "HTTP/1.1".
     <path> ni encoded using the URL encoding scheme (using %xx to signify
-    the ASCII character with hex code xx).
+    the ASCII character ukijumuisha hex code xx).
 
     The specification specifies that lines are separated by CRLF but
-    kila compatibility with the widest range of clients recommends
+    kila compatibility ukijumuisha the widest range of clients recommends
     servers also handle LF.  Similarly, whitespace kwenye the request line
     ni treated sensibly (allowing multiple spaces between components
     na allowing trailing whitespace).
@@ -211,7 +211,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     function specific to the request type (<command>).  Specifically,
     a request SPAM will be handled by a method do_SPAM().  If no
     such method exists the server sends an error response to the
-    client.  If it exists, it ni called with no arguments:
+    client.  If it exists, it ni called ukijumuisha no arguments:
 
     do_SPAM()
 
@@ -352,7 +352,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         conntype = self.headers.get('Connection', "")
         ikiwa conntype.lower() == 'close':
             self.close_connection = Kweli
-        elikiwa (conntype.lower() == 'keep-alive' and
+        lasivyo (conntype.lower() == 'keep-alive' and
               self.protocol_version >= "HTTP/1.1"):
             self.close_connection = Uongo
         # Examine the headers na look kila an Expect directive
@@ -365,12 +365,12 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         rudisha Kweli
 
     eleza handle_expect_100(self):
-        """Decide what to do with an "Expect: 100-endelea" header.
+        """Decide what to do ukijumuisha an "Expect: 100-endelea" header.
 
         If the client ni expecting a 100 Continue response, we must
-        respond with either a 100 Continue ama a final response before
+        respond ukijumuisha either a 100 Continue ama a final response before
         waiting kila the request body. The default ni to always respond
-        with a 100 Continue. You can behave differently (kila example,
+        ukijumuisha a 100 Continue. You can behave differently (kila example,
         reject unauthorized requests) by overriding this method.
 
         This method should either rudisha Kweli (possibly after sending
@@ -484,7 +484,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Add the response header to the headers buffer na log the
         response code.
 
-        Also send two standard headers with the server software
+        Also send two standard headers ukijumuisha the server software
         version na the current date.
 
         """
@@ -518,7 +518,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         ikiwa keyword.lower() == 'connection':
             ikiwa value.lower() == 'close':
                 self.close_connection = Kweli
-            elikiwa value.lower() == 'keep-alive':
+            lasivyo value.lower() == 'keep-alive':
                 self.close_connection = Uongo
 
     eleza end_headers(self):
@@ -626,7 +626,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
 kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
-    """Simple HTTP request handler with GET na HEAD commands.
+    """Simple HTTP request handler ukijumuisha GET na HEAD commands.
 
     This serves files kutoka the current directory na any of its
     subdirectories.  The MIME type kila files ni determined by
@@ -696,7 +696,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         # The test kila this was added kwenye test_httpserver.py
         # However, some OS platforms accept a trailingSlash kama a filename
         # See discussion on python-dev na Issue34711 regarding
-        # parseing na rejection of filenames with a trailing slash
+        # parseing na rejection of filenames ukijumuisha a trailing slash
         ikiwa path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File sio found")
             rudisha Tupu
@@ -720,7 +720,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     pita
                 isipokua:
                     ikiwa ims.tzinfo ni Tupu:
-                        # obsolete format with no timezone, cf.
+                        # obsolete format ukijumuisha no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
                     ikiwa ims.tzinfo ni datetime.timezone.utc:
@@ -789,7 +789,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 linkname = name + "/"
             ikiwa os.path.islink(fullname):
                 displayname = name + "@"
-                # Note: a link to a directory displays with @ na links with /
+                # Note: a link to a directory displays ukijumuisha @ na links ukijumuisha /
             r.append('<li><a href="%s">%s</a></li>'
                     % (urllib.parse.quote(linkname,
                                           errors='surrogatepita'),
@@ -839,9 +839,9 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Copy all data between two file objects.
 
         The SOURCE argument ni a file object open kila reading
-        (or anything with a read() method) na the DESTINATION
+        (or anything ukijumuisha a read() method) na the DESTINATION
         argument ni a file object open kila writing (or
-        anything with a write() method).
+        anything ukijumuisha a write() method).
 
         The only reason kila overriding this would be to change
         the block size ama perhaps to replace newlines by CRLF
@@ -897,7 +897,7 @@ eleza _url_collapse_path(path):
     The utility of this function ni limited to is_cgi method na helps
     preventing some security attacks.
 
-    Returns: The reconstituted URL, which will always start with a '/'.
+    Returns: The reconstituted URL, which will always start ukijumuisha a '/'.
 
     Raises: IndexError ikiwa too many '..' occur within the path.
 
@@ -913,7 +913,7 @@ eleza _url_collapse_path(path):
     kila part kwenye path_parts[:-1]:
         ikiwa part == '..':
             head_parts.pop() # IndexError ikiwa more '..' than prior parts
-        elikiwa part na part != '.':
+        lasivyo part na part != '.':
             head_parts.append( part )
     ikiwa path_parts:
         tail_part = path_parts.pop()
@@ -921,7 +921,7 @@ eleza _url_collapse_path(path):
             ikiwa tail_part == '..':
                 head_parts.pop()
                 tail_part = ''
-            elikiwa tail_part == '.':
+            lasivyo tail_part == '.':
                 tail_part = ''
     isipokua:
         tail_part = ''
@@ -961,7 +961,7 @@ eleza executable(path):
 
 kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
 
-    """Complete HTTP server with GET, HEAD na POST commands.
+    """Complete HTTP server ukijumuisha GET, HEAD na POST commands.
 
     GET na HEAD also support running CGI scripts.
 
@@ -1008,7 +1008,7 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         self.path was rejected kama invalid na act accordingly.
 
         The default implementation tests whether the normalized url
-        path begins with one of the strings kwenye self.cgi_directories
+        path begins ukijumuisha one of the strings kwenye self.cgi_directories
         (and the next character ni a '/' ama the end of the string).
 
         """
@@ -1245,9 +1245,9 @@ eleza test(HandlerClass=BaseHTTPRequestHandler,
     ServerClass.address_family, addr = _get_best_family(bind, port)
 
     HandlerClass.protocol_version = protocol
-    with ServerClass(addr, HandlerClass) kama httpd:
+    ukijumuisha ServerClass(addr, HandlerClass) kama httpd:
         host, port = httpd.socket.getsockname()[:2]
-        url_host = f'[{host}]' ikiwa ':' kwenye host else host
+        url_host = f'[{host}]' ikiwa ':' kwenye host isipokua host
         andika(
             f"Serving HTTP on {host} port {port} "
             f"(http://{url_host}:{port}/) ..."

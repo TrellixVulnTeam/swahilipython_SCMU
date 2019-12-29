@@ -31,7 +31,7 @@ eleza format_list(extracted_list):
     extract_tb() ama extract_stack(), rudisha a list of strings ready
     kila printing.
 
-    Each string kwenye the resulting list corresponds to the item with the
+    Each string kwenye the resulting list corresponds to the item ukijumuisha the
     same index kwenye the argument list.  Each string ends kwenye a newline;
     the strings may contain internal newlines kama well, kila those items
     whose source text line ni sio Tupu.
@@ -47,7 +47,7 @@ eleza print_tb(tb, limit=Tupu, file=Tupu):
 
     If 'limit' ni omitted ama Tupu, all entries are printed.  If 'file'
     ni omitted ama Tupu, the output goes to sys.stderr; otherwise
-    'file' should be an open file ama file-like object with a write()
+    'file' should be an open file ama file-like object ukijumuisha a write()
     method.
     """
     print_list(extract_tb(tb, limit=limit), file=file)
@@ -66,7 +66,7 @@ eleza extract_tb(tb, limit=Tupu):
     pre-processed stack trace entry ni a FrameSummary object
     containing attributes filename, lineno, name, na line
     representing the information that ni usually printed kila a stack
-    trace.  The line ni a string with leading na trailing
+    trace.  The line ni a string ukijumuisha leading na trailing
     whitespace stripped; ikiwa the source ni sio available it ni Tupu.
     """
     rudisha StackSummary.extract(walk_tb(tb), limit=limit)
@@ -92,11 +92,11 @@ eleza print_exception(etype, value, tb, limit=Tupu, file=Tupu, chain=Kweli):
     call last):"; (2) it prints the exception type na value after the
     stack trace; (3) ikiwa type ni SyntaxError na value has the
     appropriate format, it prints the line where the syntax error
-    occurred with a caret on the next line indicating the approximate
+    occurred ukijumuisha a caret on the next line indicating the approximate
     position of the error.
     """
     # format_exception has ignored etype kila some time, na code such kama cgitb
-    # pitaes kwenye bogus values kama a result. For compatibility with such code we
+    # pitaes kwenye bogus values kama a result. For compatibility ukijumuisha such code we
     # ignore it here (rather than kwenye the new TracebackException API).
     ikiwa file ni Tupu:
         file = sys.stderr
@@ -115,7 +115,7 @@ eleza format_exception(etype, value, tb, limit=Tupu, chain=Kweli):
     printed kama does print_exception().
     """
     # format_exception has ignored etype kila some time, na code such kama cgitb
-    # pitaes kwenye bogus values kama a result. For compatibility with such code we
+    # pitaes kwenye bogus values kama a result. For compatibility ukijumuisha such code we
     # ignore it here (rather than kwenye the new TracebackException API).
     rudisha list(TracebackException(
         type(value), value, tb, limit=limit).format(chain=chain))
@@ -257,7 +257,7 @@ kundi FrameSummary:
         self._line = line
         ikiwa lookup_line:
             self.line
-        self.locals = {k: repr(v) kila k, v kwenye locals.items()} ikiwa locals else Tupu
+        self.locals = {k: repr(v) kila k, v kwenye locals.items()} ikiwa locals isipokua Tupu
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, FrameSummary):
@@ -293,7 +293,7 @@ eleza walk_stack(f):
     """Walk a stack tumaing the frame na line number kila each frame.
 
     This will follow f.f_back kutoka the given frame. If no frame ni given, the
-    current stack ni used. Usually used with StackSummary.extract.
+    current stack ni used. Usually used ukijumuisha StackSummary.extract.
     """
     ikiwa f ni Tupu:
         f = sys._getframe().f_back.f_back
@@ -306,7 +306,7 @@ eleza walk_tb(tb):
     """Walk a traceback tumaing the frame na line number kila each frame.
 
     This will follow tb.tb_next (and thus ni kwenye the opposite order to
-    walk_stack). Usually used with StackSummary.extract.
+    walk_stack). Usually used ukijumuisha StackSummary.extract.
     """
     wakati tb ni sio Tupu:
         tuma tb.tb_frame, tb.tb_lineno
@@ -391,7 +391,7 @@ kundi StackSummary(list):
         Returns a list of strings ready kila printing.  Each string kwenye the
         resulting list corresponds to a single frame kutoka the stack.
         Each string ends kwenye a newline; the strings may contain internal
-        newlines kama well, kila those items with source text lines.
+        newlines kama well, kila those items ukijumuisha source text lines.
 
         For long sequences of the same frame na line, the first few
         repetitions are shown, followed by a summary line stating the exact
@@ -410,7 +410,7 @@ kundi StackSummary(list):
                     count -= _RECURSIVE_CUTOFF
                     result.append(
                         f'  [Previous line repeated {count} more '
-                        f'time{"s" ikiwa count > 1 else ""}]\n'
+                        f'time{"s" ikiwa count > 1 isipokua ""}]\n'
                     )
                 last_file = frame.filename
                 last_line = frame.lineno
@@ -432,7 +432,7 @@ kundi StackSummary(list):
             count -= _RECURSIVE_CUTOFF
             result.append(
                 f'  [Previous line repeated {count} more '
-                f'time{"s" ikiwa count > 1 else ""}]\n'
+                f'time{"s" ikiwa count > 1 isipokua ""}]\n'
             )
         rudisha result
 
@@ -468,14 +468,14 @@ kundi TracebackException:
     eleza __init__(self, exc_type, exc_value, exc_traceback, *, limit=Tupu,
             lookup_lines=Kweli, capture_locals=Uongo, _seen=Tupu):
         # NB: we need to accept exc_traceback, exc_value, exc_traceback to
-        # permit backwards compat with the existing API, otherwise we
+        # permit backwards compat ukijumuisha the existing API, otherwise we
         # need stub thunk objects just to glue it together.
         # Handle loops kwenye __cause__ ama __context__.
         ikiwa _seen ni Tupu:
             _seen = set()
         _seen.add(id(exc_value))
         # Gracefully handle (the way Python 2.4 na earlier did) the case of
-        # being called with no type ama value (Tupu, Tupu, Tupu).
+        # being called ukijumuisha no type ama value (Tupu, Tupu, Tupu).
         ikiwa (exc_value na exc_value.__cause__ ni sio Tupu
             na id(exc_value.__cause__) haiko kwenye _seen):
             cause = TracebackException(
@@ -504,7 +504,7 @@ kundi TracebackException:
         self.__cause__ = cause
         self.__context__ = context
         self.__suppress_context__ = \
-            exc_value.__suppress_context__ ikiwa exc_value else Uongo
+            exc_value.__suppress_context__ ikiwa exc_value isipokua Uongo
         # TODO: locals.
         self.stack = StackSummary.extract(
             walk_tb(exc_traceback), limit=limit, lookup_lines=lookup_lines,
@@ -604,7 +604,7 @@ kundi TracebackException:
             ikiwa self.__cause__ ni sio Tupu:
                 tuma kutoka self.__cause__.format(chain=chain)
                 tuma _cause_message
-            elikiwa (self.__context__ ni sio Tupu and
+            lasivyo (self.__context__ ni sio Tupu and
                 sio self.__suppress_context__):
                 tuma kutoka self.__context__.format(chain=chain)
                 tuma _context_message

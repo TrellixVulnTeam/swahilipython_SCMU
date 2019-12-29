@@ -54,7 +54,7 @@ eleza read_environ():
 
                 # On IIS, the HTTP request will be decoded kama UTF-8 kama long
                 # kama the input ni a valid UTF-8 sequence. Otherwise it is
-                # decoded using the system code page (mbcs), with no way to
+                # decoded using the system code page (mbcs), ukijumuisha no way to
                 # detect this has happened. Because UTF-8 ni the more likely
                 # encoding, na mbcs ni inherently unreliable (an mbcs string
                 # that happens to be valid UTF-8 will sio be decoded kama mbcs)
@@ -64,13 +64,13 @@ eleza read_environ():
 
                 # Apache mod_cgi writes bytes-as-unicode (as ikiwa ISO-8859-1) direct
                 # to the Unicode environ. No modification needed.
-                elikiwa software.startswith('apache/'):
+                lasivyo software.startswith('apache/'):
                     pita
 
                 # Python 3's http.server.CGIHTTPRequestHandler decodes
                 # using the urllib.unquote default of UTF-8, amongst other
                 # issues.
-                elikiwa (
+                lasivyo (
                     software.startswith('simplehttp/')
                     na 'python/3' kwenye software
                 ):
@@ -78,7 +78,7 @@ eleza read_environ():
 
                 # For other servers, guess that they have written bytes to
                 # the environ using stdio byte-oriented interfaces, ending up
-                # with the system code page.
+                # ukijumuisha the system code page.
                 isipokua:
                     v = v.encode(enc, 'replace').decode('iso-8859-1')
 
@@ -119,7 +119,7 @@ kundi BaseHandler:
     error_headers = [('Content-Type','text/plain')]
     error_body = b"A server error occurred.  Please contact the administrator."
 
-    # State variables (don't mess with these)
+    # State variables (don't mess ukijumuisha these)
     status = result = Tupu
     headers_sent = Uongo
     headers = Tupu
@@ -232,7 +232,7 @@ kundi BaseHandler:
                     ashiria exc_info[0](exc_info[1]).with_traceback(exc_info[2])
             mwishowe:
                 exc_info = Tupu        # avoid dangling circular ref
-        elikiwa self.headers ni sio Tupu:
+        lasivyo self.headers ni sio Tupu:
             ashiria AssertionError("Headers already set!")
 
         self.status = status
@@ -282,7 +282,7 @@ kundi BaseHandler:
         ikiwa sio self.status:
             ashiria AssertionError("write() before start_response()")
 
-        elikiwa sio self.headers_sent:
+        lasivyo sio self.headers_sent:
             # Before the first output, send the stored headers
             self.bytes_sent = len(data)    # make sure we know content-length
             self.send_headers()
@@ -432,7 +432,7 @@ kundi BaseHandler:
 
 
 kundi SimpleHandler(BaseHandler):
-    """Handler that's just initialized with streams, environment, etc.
+    """Handler that's just initialized ukijumuisha streams, environment, etc.
 
     This handler subkundi ni intended kila synchronous HTTP/1.0 origin servers,
     na handles sending the entire response output, given the correct inputs.
@@ -536,7 +536,7 @@ kundi CGIHandler(BaseCGIHandler):
 
 
 kundi IISCGIHandler(BaseCGIHandler):
-    """CGI-based invocation with workaround kila IIS path bug
+    """CGI-based invocation ukijumuisha workaround kila IIS path bug
 
     This handler should be used kwenye preference to CGIHandler when deploying on
     Microsoft IIS without having set the config allowPathInfo option (IIS>=7)
@@ -554,7 +554,7 @@ kundi IISCGIHandler(BaseCGIHandler):
     # rarely used na ni sio guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script
     # mappings, many of which koma when exposed to the PATH_TRANSLATED bug.
-    # For this reason IIS<7 ni almost never deployed with the fix. (Even IIS7
+    # For this reason IIS<7 ni almost never deployed ukijumuisha the fix. (Even IIS7
     # rarely uses it because there ni still no UI kila it.)
 
     # There ni no way kila CGI code to tell whether the option was set, so a

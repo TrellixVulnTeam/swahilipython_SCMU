@@ -15,7 +15,7 @@ class TestGeneratorBase:
     policy = policy.default
 
     def msgmaker(self, msg, policy=None):
-        policy = self.policy if policy is None else policy
+        policy = self.policy if policy is None isipokua policy
         return self.msgfunc(msg, policy=policy)
 
     refold_long_expected = {
@@ -154,7 +154,7 @@ class TestGeneratorBase:
             (policy.default.clone(mangle_from_=True), True),
             )
         for p, mangle in variants:
-            expected = source.replace('From ', '>From ') if mangle else source
+            expected = source.replace('From ', '>From ') if mangle isipokua source
             with self.subTest(policy=p, mangle_from_=mangle):
                 msg = self.msgmaker(self.typ(source))
                 s = self.ioclass()

@@ -50,7 +50,7 @@ kundi ZipAppTest(unittest.TestCase):
         target = io.BytesIO()
         zipapp.create_archive(str(source), target)
         target.seek(0)
-        with zipfile.ZipFile(target, 'r') kama z:
+        ukijumuisha zipfile.ZipFile(target, 'r') kama z:
             self.assertIn('foo/', z.namelist())
             self.assertIn('bar/', z.namelist())
 
@@ -67,7 +67,7 @@ kundi ZipAppTest(unittest.TestCase):
         target = self.tmpdir / 'source.pyz'
 
         zipapp.create_archive(source, target, filter=skip_pyc_files)
-        with zipfile.ZipFile(target, 'r') kama z:
+        ukijumuisha zipfile.ZipFile(target, 'r') kama z:
             self.assertIn('__main__.py', z.namelist())
             self.assertIn('test.py', z.namelist())
             self.assertNotIn('test.pyc', z.namelist())
@@ -87,7 +87,7 @@ kundi ZipAppTest(unittest.TestCase):
         target = self.tmpdir / 'source.pyz'
 
         zipapp.create_archive(source, target, filter=skip_dummy_dir)
-        with zipfile.ZipFile(target, 'r') kama z:
+        ukijumuisha zipfile.ZipFile(target, 'r') kama z:
             self.assertEqual(len(z.namelist()), 2)
             self.assertIn('__main__.py', z.namelist())
             self.assertIn('test.py', z.namelist())
@@ -111,27 +111,27 @@ kundi ZipAppTest(unittest.TestCase):
         target = self.tmpdir / 'source.pyz'
 
         zipapp.create_archive(source, target, compressed=Kweli)
-        with zipfile.ZipFile(target, 'r') kama z:
+        ukijumuisha zipfile.ZipFile(target, 'r') kama z:
             kila name kwenye ('__main__.py', 'test.py'):
                 self.assertEqual(z.getinfo(name).compress_type,
                                  zipfile.ZIP_DEFLATED)
 
     eleza test_no_main(self):
-        # Test that packing a directory with no __main__.py fails.
+        # Test that packing a directory ukijumuisha no __main__.py fails.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / 'foo.py').touch()
         target = self.tmpdir / 'source.pyz'
-        with self.assertRaises(zipapp.ZipAppError):
+        ukijumuisha self.assertRaises(zipapp.ZipAppError):
             zipapp.create_archive(str(source), str(target))
 
     eleza test_main_and_main_py(self):
-        # Test that supplying a main argument with __main__.py fails.
+        # Test that supplying a main argument ukijumuisha __main__.py fails.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
-        with self.assertRaises(zipapp.ZipAppError):
+        ukijumuisha self.assertRaises(zipapp.ZipAppError):
             zipapp.create_archive(str(source), str(target), main='pkg.mod:fn')
 
     eleza test_main_written(self):
@@ -141,14 +141,14 @@ kundi ZipAppTest(unittest.TestCase):
         (source / 'foo.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target), main='pkg.mod:fn')
-        with zipfile.ZipFile(str(target), 'r') kama z:
+        ukijumuisha zipfile.ZipFile(str(target), 'r') kama z:
             self.assertIn('__main__.py', z.namelist())
             self.assertIn(b'pkg.mod.fn()', z.read('__main__.py'))
 
     eleza test_main_only_written_once(self):
         # Test that we don't write multiple __main__.py files.
         # The initial implementation had this bug; zip files allow
-        # multiple entries with the same name
+        # multiple entries ukijumuisha the same name
         source = self.tmpdir / 'source'
         source.mkdir()
         # Write 2 files, kama the original bug wrote __main__.py
@@ -159,7 +159,7 @@ kundi ZipAppTest(unittest.TestCase):
         (source / 'bar.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target), main='pkg.mod:fn')
-        with zipfile.ZipFile(str(target), 'r') kama z:
+        ukijumuisha zipfile.ZipFile(str(target), 'r') kama z:
             self.assertEqual(1, z.namelist().count('__main__.py'))
 
     eleza test_main_validation(self):
@@ -172,8 +172,8 @@ kundi ZipAppTest(unittest.TestCase):
             '.a:b', 'a:b.', 'a:.b', 'a:silly name'
         ]
         kila main kwenye problems:
-            with self.subTest(main=main):
-                with self.assertRaises(zipapp.ZipAppError):
+            ukijumuisha self.subTest(main=main):
+                ukijumuisha self.assertRaises(zipapp.ZipAppError):
                     zipapp.create_archive(str(source), str(target), main=main)
 
     eleza test_default_no_shebang(self):
@@ -183,18 +183,18 @@ kundi ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target))
-        with target.open('rb') kama f:
+        ukijumuisha target.open('rb') kama f:
             self.assertNotEqual(f.read(2), b'#!')
 
     eleza test_custom_interpreter(self):
-        # Test that a shebang line with a custom interpreter ni written
+        # Test that a shebang line ukijumuisha a custom interpreter ni written
         # correctly.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target), interpreter='python')
-        with target.open('rb') kama f:
+        ukijumuisha target.open('rb') kama f:
             self.assertEqual(f.read(2), b'#!')
             self.assertEqual(b'python\n', f.readline())
 
@@ -295,14 +295,14 @@ kundi ZipAppTest(unittest.TestCase):
         target.seek(0)
         zipapp.create_archive(target, new_target, interpreter=Tupu)
         new_target.seek(0)
-        with zipfile.ZipFile(new_target, 'r') kama z:
+        ukijumuisha zipfile.ZipFile(new_target, 'r') kama z:
             self.assertEqual(set(z.namelist()), {'__main__.py'})
 
-    # (Unix only) tests that archives with shebang lines are made executable
+    # (Unix only) tests that archives ukijumuisha shebang lines are made executable
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows does sio support an executable bit')
     eleza test_shebang_is_executable(self):
-        # Test that an archive with a shebang line ni made executable.
+        # Test that an archive ukijumuisha a shebang line ni made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -313,7 +313,7 @@ kundi ZipAppTest(unittest.TestCase):
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows does sio support an executable bit')
     eleza test_no_shebang_is_not_executable(self):
-        # Test that an archive with no shebang line ni sio made executable.
+        # Test that an archive ukijumuisha no shebang line ni sio made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -332,7 +332,7 @@ kundi ZipAppCmdlineTest(unittest.TestCase):
         self.tmpdir = pathlib.Path(tmpdir.name)
 
     eleza make_archive(self):
-        # Test that an archive with no shebang line ni sio made executable.
+        # Test that an archive ukijumuisha no shebang line ni sio made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -363,9 +363,9 @@ kundi ZipAppCmdlineTest(unittest.TestCase):
         original = self.make_archive()
         target = self.tmpdir / 'target.pyz'
         args = [str(original), '-o', str(original)]
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             zipapp.main(args)
-        # Program should exit with a non-zero rudisha code.
+        # Program should exit ukijumuisha a non-zero rudisha code.
         self.assertKweli(cm.exception.code)
 
     eleza test_cmdline_copy_change_main(self):
@@ -373,9 +373,9 @@ kundi ZipAppCmdlineTest(unittest.TestCase):
         original = self.make_archive()
         target = self.tmpdir / 'target.pyz'
         args = [str(original), '-o', str(target), '-m', 'foo:bar']
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             zipapp.main(args)
-        # Program should exit with a non-zero rudisha code.
+        # Program should exit ukijumuisha a non-zero rudisha code.
         self.assertKweli(cm.exception.code)
 
     @patch('sys.stdout', new_callable=io.StringIO)
@@ -383,9 +383,9 @@ kundi ZipAppCmdlineTest(unittest.TestCase):
         # Test the output of the info command.
         target = self.make_archive()
         args = [str(target), '--info']
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             zipapp.main(args)
-        # Program should exit with a zero rudisha code.
+        # Program should exit ukijumuisha a zero rudisha code.
         self.assertEqual(cm.exception.code, 0)
         self.assertEqual(mock_stdout.getvalue(), "Interpreter: <none>\n")
 
@@ -393,9 +393,9 @@ kundi ZipAppCmdlineTest(unittest.TestCase):
         # Test the info command fails when the archive does sio exist.
         target = self.tmpdir / 'dummy.pyz'
         args = [str(target), '--info']
-        with self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) kama cm:
             zipapp.main(args)
-        # Program should exit with a non-zero rudisha code.
+        # Program should exit ukijumuisha a non-zero rudisha code.
         self.assertKweli(cm.exception.code)
 
 

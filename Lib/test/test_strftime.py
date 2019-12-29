@@ -18,7 +18,7 @@ eleza fixasctime(s):
 
 eleza escapestr(text, ampm):
     """
-    Escape text to deal with possible locale values that have regex
+    Escape text to deal ukijumuisha possible locale values that have regex
     syntax wakati allowing regex syntax used kila comparison.
     """
     new_text = re.escape(text)
@@ -48,7 +48,7 @@ kundi StrftimeTest(unittest.TestCase):
             self.tz = ''
 
         ikiwa now[3] > 12: self.clock12 = now[3] - 12
-        elikiwa now[3] > 0: self.clock12 = now[3]
+        lasivyo now[3] > 0: self.clock12 = now[3]
         isipokua: self.clock12 = 12
 
         self.now = now
@@ -108,7 +108,7 @@ kundi StrftimeTest(unittest.TestCase):
             # %x see below
             ('%X', '%02d:%02d:%02d' % (now[3], now[4], now[5]), '%H:%M:%S'),
             ('%y', '%02d' % (now[0]%100), 'year without century'),
-            ('%Y', '%d' % now[0], 'year with century'),
+            ('%Y', '%d' % now[0], 'year ukijumuisha century'),
             # %Z see below
             ('%%', '%', 'single percent sign'),
         )
@@ -168,7 +168,7 @@ kundi StrftimeTest(unittest.TestCase):
             ikiwa re.match(escapestr(e[1], self.ampm), result):
                 ikiwa support.verbose:
                     andika("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
-            elikiwa sio result ama result[0] == '%':
+            lasivyo sio result ama result[0] == '%':
                 ikiwa support.verbose:
                     andika("Does sio appear to support '%s' format (%s)" % \
                            (e[0], e[2]))
@@ -181,7 +181,7 @@ kundi StrftimeTest(unittest.TestCase):
 
 kundi Y1900Tests(unittest.TestCase):
     """A limitation of the MS C runtime library ni that it crashes if
-    a date before 1900 ni pitaed with a format string containing "%y"
+    a date before 1900 ni pitaed ukijumuisha a format string containing "%y"
     """
 
     eleza test_y_before_1900(self):
@@ -189,7 +189,7 @@ kundi Y1900Tests(unittest.TestCase):
         t = (1899, 1, 1, 0, 0, 0, 0, 0, 0)
         ikiwa (sys.platform == "win32"
         ama sys.platform.startswith(("aix", "sunos", "solaris"))):
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 time.strftime("%y", t)
         isipokua:
             self.assertEqual(time.strftime("%y", t), "99")

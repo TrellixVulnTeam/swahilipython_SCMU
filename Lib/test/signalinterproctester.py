@@ -54,23 +54,23 @@ kundi InterProcessSignalTests(unittest.TestCase):
         # Let the sub-processes know who to send signals to.
         pid = str(os.getpid())
 
-        with self.subprocess_send_signal(pid, "SIGHUP") kama child:
+        ukijumuisha self.subprocess_send_signal(pid, "SIGHUP") kama child:
             self.wait_signal(child, 'SIGHUP')
         self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 0,
                                             'SIGALRM': 0})
 
-        with self.assertRaises(SIGUSR1Exception):
-            with self.subprocess_send_signal(pid, "SIGUSR1") kama child:
+        ukijumuisha self.assertRaises(SIGUSR1Exception):
+            ukijumuisha self.subprocess_send_signal(pid, "SIGUSR1") kama child:
                 self.wait_signal(child, 'SIGUSR1')
         self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 1,
                                             'SIGALRM': 0})
 
-        with self.subprocess_send_signal(pid, "SIGUSR2") kama child:
+        ukijumuisha self.subprocess_send_signal(pid, "SIGUSR2") kama child:
             # Nothing should happen: SIGUSR2 ni ignored
             child.wait()
 
         jaribu:
-            with self.assertRaises(KeyboardInterrupt):
+            ukijumuisha self.assertRaises(KeyboardInterrupt):
                 signal.alarm(1)
                 self.wait_signal(Tupu, 'SIGALRM')
             self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 1,

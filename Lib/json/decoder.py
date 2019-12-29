@@ -18,7 +18,7 @@ NegInf = float('-inf')
 
 
 kundi JSONDecodeError(ValueError):
-    """Subkundi of ValueError with the following additional properties:
+    """Subkundi of ValueError ukijumuisha the following additional properties:
 
     msg: The unformatted error message
     doc: The JSON document being parsed
@@ -92,7 +92,7 @@ eleza py_scanstring(s, end, strict=Kweli,
         # ama a backslash denoting that an escape sequence follows
         ikiwa terminator == '"':
             koma
-        elikiwa terminator != '\\':
+        lasivyo terminator != '\\':
             ikiwa strict:
                 #msg = "Invalid control character %r at" % (terminator,)
                 msg = "Invalid control character {0!r} at".format(terminator)
@@ -159,7 +159,7 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             ikiwa object_hook ni sio Tupu:
                 pairs = object_hook(pairs)
             rudisha pairs, end + 1
-        elikiwa nextchar != '"':
+        lasivyo nextchar != '"':
             ashiria JSONDecodeError(
                 "Expecting property name enclosed kwenye double quotes", s, end)
     end += 1
@@ -198,7 +198,7 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
 
         ikiwa nextchar == '}':
             koma
-        elikiwa nextchar != ',':
+        lasivyo nextchar != ',':
             ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         end = _w(s, end).end()
         nextchar = s[end:end + 1]
@@ -238,7 +238,7 @@ eleza JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
         end += 1
         ikiwa nextchar == ']':
             koma
-        elikiwa nextchar != ',':
+        lasivyo nextchar != ',':
             ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         jaribu:
             ikiwa s[end] kwenye _ws:
@@ -284,36 +284,36 @@ kundi JSONDecoder(object):
     eleza __init__(self, *, object_hook=Tupu, parse_float=Tupu,
             parse_int=Tupu, parse_constant=Tupu, strict=Kweli,
             object_pairs_hook=Tupu):
-        """``object_hook``, ikiwa specified, will be called with the result
+        """``object_hook``, ikiwa specified, will be called ukijumuisha the result
         of every JSON object decoded na its rudisha value will be used in
         place of the given ``dict``.  This can be used to provide custom
         deserializations (e.g. to support JSON-RPC kundi hinting).
 
-        ``object_pairs_hook``, ikiwa specified will be called with the result of
-        every JSON object decoded with an ordered list of pairs.  The rudisha
+        ``object_pairs_hook``, ikiwa specified will be called ukijumuisha the result of
+        every JSON object decoded ukijumuisha an ordered list of pairs.  The rudisha
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
         This feature can be used to implement custom decoders.
         If ``object_hook`` ni also defined, the ``object_pairs_hook`` takes
         priority.
 
-        ``parse_float``, ikiwa specified, will be called with the string
+        ``parse_float``, ikiwa specified, will be called ukijumuisha the string
         of every JSON float to be decoded. By default this ni equivalent to
         float(num_str). This can be used to use another datatype ama parser
         kila JSON floats (e.g. decimal.Decimal).
 
-        ``parse_int``, ikiwa specified, will be called with the string
+        ``parse_int``, ikiwa specified, will be called ukijumuisha the string
         of every JSON int to be decoded. By default this ni equivalent to
         int(num_str). This can be used to use another datatype ama parser
         kila JSON integers (e.g. float).
 
-        ``parse_constant``, ikiwa specified, will be called with one of the
+        ``parse_constant``, ikiwa specified, will be called ukijumuisha one of the
         following strings: -Infinity, Infinity, NaN.
         This can be used to ashiria an exception ikiwa invalid JSON numbers
         are encountered.
 
         If ``strict`` ni false (true ni the default), then control
         characters will be allowed inside strings.  Control characters in
-        this context are those with character codes kwenye the 0-31 range,
+        this context are those ukijumuisha character codes kwenye the 0-31 range,
         including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` na ``'\\0'``.
         """
         self.object_hook = object_hook

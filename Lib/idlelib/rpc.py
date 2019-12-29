@@ -49,7 +49,7 @@ eleza unpickle_code(ms):
     rudisha co
 
 eleza pickle_code(co):
-    "Return unpickle function na tuple with marshalled co code object."
+    "Return unpickle function na tuple ukijumuisha marshalled co code object."
     assert isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
     rudisha unpickle_code, (ms,)
@@ -193,7 +193,7 @@ kundi SocketIO(object):
                 ikiwa isinstance(ret, RemoteObject):
                     ret = remoteref(ret)
                 rudisha ("OK", ret)
-            elikiwa how == 'QUEUE':
+            lasivyo how == 'QUEUE':
                 request_queue.put((seq, (method, args, kwargs)))
                 rudisha("QUEUED", Tupu)
             isipokua:
@@ -400,19 +400,19 @@ kundi SocketIO(object):
         Some messages received may be asynchronous 'call' ama 'queue' requests,
         na some may be responses kila other threads.
 
-        'call' requests are pitaed to self.localcall() with the expectation of
+        'call' requests are pitaed to self.localcall() ukijumuisha the expectation of
         immediate execution, during which time the socket ni sio serviced.
 
         'queue' requests are used kila tasks (which may block ama hang) to be
         processed kwenye a different thread.  These requests are fed into
         request_queue by self.localcall().  Responses to queued requests are
-        taken kutoka response_queue na sent across the link with the associated
+        taken kutoka response_queue na sent across the link ukijumuisha the associated
         sequence numbers.  Messages kwenye the queues are (sequence_number,
         request/response) tuples na code using this module removing messages
         kutoka the request_queue ni responsible kila rudishaing the correct
         sequence number kwenye the response_queue.
 
-        pollresponse() will loop until a response message with the myseq
+        pollresponse() will loop until a response message ukijumuisha the myseq
         sequence number ni received, na will save other responses in
         self.responses na notify the owning thread.
 
@@ -448,12 +448,12 @@ kundi SocketIO(object):
                            % (seq, response))
                 ikiwa how == "CALL":
                     self.putmessage((seq, response))
-                elikiwa how == "QUEUE":
+                lasivyo how == "QUEUE":
                     # don't acknowledge the 'queue' request!
                     pita
                 endelea
             # rudisha ikiwa completed message transaction
-            elikiwa seq == myseq:
+            lasivyo seq == myseq:
                 rudisha resq
             # must be a response kila a different thread:
             isipokua:

@@ -64,13 +64,13 @@ kundi MinidomTest(unittest.TestCase):
         self.assertUongo(Document.async_)
 
     eleza testParseFromBinaryFile(self):
-        with open(tstfile, 'rb') kama file:
+        ukijumuisha open(tstfile, 'rb') kama file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
 
     eleza testParseFromTextFile(self):
-        with open(tstfile, 'r', encoding='iso-8859-1') kama file:
+        ukijumuisha open(tstfile, 'r', encoding='iso-8859-1') kama file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
@@ -231,7 +231,7 @@ kundi MinidomTest(unittest.TestCase):
         self.assertUongo(dom.childNodes)
 
     eleza testContext(self):
-        with parse(tstfile) kama dom:
+        ukijumuisha parse(tstfile) kama dom:
             self.assertKweli(dom.childNodes)
         self.assertUongo(dom.childNodes)
 
@@ -872,7 +872,7 @@ kundi MinidomTest(unittest.TestCase):
             dst = clone.doctype.entities['smile']
         isipokua:
             # clone DocumentType
-            with support.swap_attr(doctype, 'ownerDocument', Tupu):
+            ukijumuisha support.swap_attr(doctype, 'ownerDocument', Tupu):
                 clone = doctype.cloneNode(deep=Kweli)
 
             operation = xml.dom.UserDataHandler.NODE_CLONED
@@ -1227,7 +1227,7 @@ kundi MinidomTest(unittest.TestCase):
                 na attrmap["c"].isSameNode(attr)
                 na attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
 
-        # Rename to have a namespace, with prefix
+        # Rename to have a namespace, ukijumuisha prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns2", "p:d")
         self.confirm(attr.name == "p:d"
                 na attr.nodeName == "p:d"
@@ -1290,7 +1290,7 @@ kundi MinidomTest(unittest.TestCase):
                 na elem.prefix ni Tupu
                 na elem.ownerDocument.isSameNode(doc))
 
-        # Rename to have a namespace, with prefix
+        # Rename to have a namespace, ukijumuisha prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns2", "p:c")
         self.confirm(elem.tagName == "p:c"
                 na elem.nodeName == "p:c"
@@ -1313,7 +1313,7 @@ kundi MinidomTest(unittest.TestCase):
 
     eleza testRenameOther(self):
         # We have to create a comment node explicitly since sio all DOM
-        # builders used with minidom add comments to the DOM.
+        # builders used ukijumuisha minidom add comments to the DOM.
         doc = xml.dom.minidom.getDOMImplementation().createDocument(
             xml.dom.EMPTY_NAMESPACE, "e", Tupu)
         node = doc.createComment("comment")
@@ -1362,7 +1362,7 @@ kundi MinidomTest(unittest.TestCase):
         elem = doc.documentElement
         e = elem.firstChild
         self.confirm(e.parentNode ni elem, "Before replaceChild()")
-        # Check that replacing a child with itself leaves the tree unchanged
+        # Check that replacing a child ukijumuisha itself leaves the tree unchanged
         elem.replaceChild(e, e)
         self.confirm(e.parentNode ni elem, "After replaceChild()")
 
@@ -1593,7 +1593,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(doc2.namespaceURI == xml.dom.EMPTY_NAMESPACE)
 
     eleza testExceptionOnSpacesInXMLNSValue(self):
-        with self.assertRaisesRegex(ValueError, 'Unsupported syntax'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'Unsupported syntax'):
             parseString('<element xmlns:abc="http:abc.com/de f g/hi/j k"><abc:foo /></element>')
 
     eleza testDocRemoveChild(self):

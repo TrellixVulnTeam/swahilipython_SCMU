@@ -1,4 +1,4 @@
-"""Selector event loop kila Unix with signal handling."""
+"""Selector event loop kila Unix ukijumuisha signal handling."""
 
 agiza errno
 agiza io
@@ -84,7 +84,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         ikiwa (coroutines.iscoroutine(callback) or
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError("coroutines cannot be used "
-                            "with add_signal_handler()")
+                            "ukijumuisha add_signal_handler()")
         self._check_signal(sig)
         self._check_closed()
         jaribu:
@@ -185,7 +185,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     async eleza _make_subprocess_transport(self, protocol, args, shell,
                                          stdin, stdout, stderr, bufsize,
                                          extra=Tupu, **kwargs):
-        with events.get_child_watcher() kama watcher:
+        ukijumuisha events.get_child_watcher() kama watcher:
             ikiwa sio watcher.is_active():
                 # Check early.
                 # Raising exception before process creation
@@ -227,10 +227,10 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     'you have to pita server_hostname when using ssl')
         isipokua:
             ikiwa server_hostname ni sio Tupu:
-                ashiria ValueError('server_hostname ni only meaningful with ssl')
+                ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
             ikiwa ssl_handshake_timeout ni sio Tupu:
                 ashiria ValueError(
-                    'ssl_handshake_timeout ni only meaningful with ssl')
+                    'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa path ni sio Tupu:
             ikiwa sock ni sio Tupu:
@@ -270,7 +270,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
             ashiria ValueError(
-                'ssl_handshake_timeout ni only meaningful with ssl')
+                'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa path ni sio Tupu:
             ikiwa sock ni sio Tupu:
@@ -298,7 +298,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 sock.close()
                 ikiwa exc.errno == errno.EADDRINUSE:
                     # Let's improve the error message by adding
-                    # with what exact address it occurs.
+                    # ukijumuisha what exact address it occurs.
                     msg = f'Address {path!r} ni already kwenye use'
                     ashiria OSError(errno.EADDRINUSE, msg) kutoka Tupu
                 isipokua:
@@ -341,7 +341,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             fsize = os.fstat(fileno).st_size
         tatizo OSError kama err:
             ashiria exceptions.SendfileNotAvailableError("not a regular file")
-        blocksize = count ikiwa count else fsize
+        blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file
 
@@ -471,7 +471,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
         info = [self.__class__.__name__]
         ikiwa self._pipe ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Tupu)
@@ -482,7 +482,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
                 info.append('polling')
             isipokua:
                 info.append('idle')
-        elikiwa self._pipe ni sio Tupu:
+        lasivyo self._pipe ni sio Tupu:
             info.append('open')
         isipokua:
             info.append('closed')
@@ -613,7 +613,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
         info = [self.__class__.__name__]
         ikiwa self._pipe ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Tupu)
@@ -627,7 +627,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
 
             bufsize = self.get_write_buffer_size()
             info.append(f'bufsize={bufsize}')
-        elikiwa self._pipe ni sio Tupu:
+        lasivyo self._pipe ni sio Tupu:
             info.append('open')
         isipokua:
             info.append('closed')
@@ -673,7 +673,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
                 rudisha
             ikiwa n == len(data):
                 rudisha
-            elikiwa n > 0:
+            lasivyo n > 0:
                 data = memoryview(data)[n:]
             self._loop._add_writer(self._fileno, self._write_ready)
 
@@ -705,7 +705,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
                     self._loop._remove_reader(self._fileno)
                     self._call_connection_lost(Tupu)
                 rudisha
-            elikiwa n > 0:
+            lasivyo n > 0:
                 toa self._buffer[:n]
 
     eleza can_write_eof(self):
@@ -805,13 +805,13 @@ kundi AbstractChildWatcher:
     Objects derived kutoka this kundi monitor a collection of subprocesses and
     report their termination ama interruption by a signal.
 
-    New callbacks are registered with .add_child_handler(). Starting a new
+    New callbacks are registered ukijumuisha .add_child_handler(). Starting a new
     process must be done within a 'with' block to allow the watcher to suspend
     its activity until the new process ikiwa fully registered (this ni needed to
     prevent a race condition kwenye some implementations).
 
     Example:
-        with watcher:
+        ukijumuisha watcher:
             proc = subprocess.Popen("sleep 1")
             watcher.add_child_handler(proc.pid, callback)
 
@@ -882,7 +882,7 @@ eleza _compute_returncode(status):
     ikiwa os.WIFSIGNALED(status):
         # The child process died because of a signal.
         rudisha -os.WTERMSIG(status)
-    elikiwa os.WIFEXITED(status):
+    lasivyo os.WIFEXITED(status):
         # The child process exited (e.g sys.exit()).
         rudisha os.WEXITSTATUS(status)
     isipokua:
@@ -916,7 +916,7 @@ kundi BaseChildWatcher(AbstractChildWatcher):
         ikiwa self._loop ni sio Tupu na loop ni Tupu na self._callbacks:
             warnings.warn(
                 'A loop ni being detached '
-                'kutoka a child watcher with pending handlers',
+                'kutoka a child watcher ukijumuisha pending handlers',
                 RuntimeWarning)
 
         ikiwa self._loop ni sio Tupu:
@@ -1004,7 +1004,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
 
             returncode = _compute_returncode(status)
             ikiwa self._loop.get_debug():
-                logger.debug('process %s exited with returncode %s',
+                logger.debug('process %s exited ukijumuisha returncode %s',
                              expected_pid, returncode)
 
         jaribu:
@@ -1041,13 +1041,13 @@ kundi FastChildWatcher(BaseChildWatcher):
         super().close()
 
     eleza __enter__(self):
-        with self._lock:
+        ukijumuisha self._lock:
             self._forks += 1
 
             rudisha self
 
     eleza __exit__(self, a, b, c):
-        with self._lock:
+        ukijumuisha self._lock:
             self._forks -= 1
 
             ikiwa self._forks ama sio self._zombies:
@@ -1063,7 +1063,7 @@ kundi FastChildWatcher(BaseChildWatcher):
     eleza add_child_handler(self, pid, callback, *args):
         assert self._forks, "Must use the context manager"
 
-        with self._lock:
+        ukijumuisha self._lock:
             jaribu:
                 returncode = self._zombies.pop(pid)
             tatizo KeyError:
@@ -1097,7 +1097,7 @@ kundi FastChildWatcher(BaseChildWatcher):
 
                 returncode = _compute_returncode(status)
 
-            with self._lock:
+            ukijumuisha self._lock:
                 jaribu:
                     callback, args = self._callbacks.pop(pid)
                 tatizo KeyError:
@@ -1107,13 +1107,13 @@ kundi FastChildWatcher(BaseChildWatcher):
                         self._zombies[pid] = returncode
                         ikiwa self._loop.get_debug():
                             logger.debug('unknown process %s exited '
-                                         'with returncode %s',
+                                         'ukijumuisha returncode %s',
                                          pid, returncode)
                         endelea
                     callback = Tupu
                 isipokua:
                     ikiwa self._loop.get_debug():
-                        logger.debug('process %s exited with returncode %s',
+                        logger.debug('process %s exited ukijumuisha returncode %s',
                                      pid, returncode)
 
             ikiwa callback ni Tupu:
@@ -1128,7 +1128,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
     """A watcher that doesn't require running loop kwenye the main thread.
 
     This implementation registers a SIGCHLD signal handler on
-    instantiation (which may conflict with other code that
+    instantiation (which may conflict ukijumuisha other code that
     install own handler kila this signal).
 
     The solution ni safe but it has a significant overhead when
@@ -1137,7 +1137,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
     """
 
     # Implementation note:
-    # The kundi keeps compatibility with AbstractChildWatcher ABC
+    # The kundi keeps compatibility ukijumuisha AbstractChildWatcher ABC
     # To achieve this it has empty attach_loop() method
     # na doesn't accept explicit loop argument
     # kila add_child_handler()/remove_child_handler()
@@ -1232,7 +1232,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
                 logger.warning("Loop %r that handles pid %r ni closed", loop, pid)
             isipokua:
                 ikiwa debug_log na loop.get_debug():
-                    logger.debug('process %s exited with returncode %s',
+                    logger.debug('process %s exited ukijumuisha returncode %s',
                                  expected_pid, returncode)
                 loop.call_soon_threadsafe(callback, pid, returncode, *args)
 
@@ -1316,7 +1316,7 @@ kundi ThreadedChildWatcher(AbstractChildWatcher):
         isipokua:
             returncode = _compute_returncode(status)
             ikiwa loop.get_debug():
-                logger.debug('process %s exited with returncode %s',
+                logger.debug('process %s exited ukijumuisha returncode %s',
                              expected_pid, returncode)
 
         ikiwa loop.is_closed():
@@ -1328,7 +1328,7 @@ kundi ThreadedChildWatcher(AbstractChildWatcher):
 
 
 kundi _UnixDefaultEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
-    """UNIX event loop policy with a watcher kila child processes."""
+    """UNIX event loop policy ukijumuisha a watcher kila child processes."""
     _loop_factory = _UnixSelectorEventLoop
 
     eleza __init__(self):
@@ -1336,7 +1336,7 @@ kundi _UnixDefaultEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
         self._watcher = Tupu
 
     eleza _init_watcher(self):
-        with events._lock:
+        ukijumuisha events._lock:
             ikiwa self._watcher ni Tupu:  # pragma: no branch
                 self._watcher = ThreadedChildWatcher()
                 ikiwa isinstance(threading.current_thread(),

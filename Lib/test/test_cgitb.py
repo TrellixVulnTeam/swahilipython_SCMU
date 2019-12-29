@@ -37,7 +37,7 @@ kundi TestCgitb(unittest.TestCase):
             self.assertIn("Hello World", text)
 
     eleza test_syshook_no_logdir_default_format(self):
-        with temp_dir() kama tracedir:
+        ukijumuisha temp_dir() kama tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(logdir=%s); '
@@ -52,7 +52,7 @@ kundi TestCgitb(unittest.TestCase):
 
     eleza test_syshook_no_logdir_text_format(self):
         # Issue 12890: we were emitting the <p> tag kwenye text mode.
-        with temp_dir() kama tracedir:
+        ukijumuisha temp_dir() kama tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(format="text", logdir=%s); '

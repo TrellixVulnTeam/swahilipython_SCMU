@@ -41,11 +41,11 @@ class AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
 
     def test_container(self):
         widget = self.create()
-        self.assertEqual(widget['container'], 0 if self.wantobjects else '0')
+        self.assertEqual(widget['container'], 0 if self.wantobjects isipokua '0')
         self.checkInvalidParam(widget, 'container', 1,
                 errmsg="can't modify -container option after widget is created")
         widget2 = self.create(container=True)
-        self.assertEqual(widget2['container'], 1 if self.wantobjects else '1')
+        self.assertEqual(widget2['container'], 1 if self.wantobjects isipokua '1')
 
     def test_visual(self):
         widget = self.create()

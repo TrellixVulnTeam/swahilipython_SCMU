@@ -1,5 +1,5 @@
 # This test module covers support kwenye various parts of the standard library
-# kila working with modules located inside zipfiles
+# kila working ukijumuisha modules located inside zipfiles
 # The tests are centralised kwenye this fashion to make it easy to drop them
 # ikiwa a platform doesn't support zipagiza
 agiza test.support
@@ -23,7 +23,7 @@ verbose = test.support.verbose
 #  inspect (Issue 4223)
 #  doctest (Issue 4197)
 
-# Other test modules with zipagiza related tests
+# Other test modules ukijumuisha zipagiza related tests
 #  test_zipagiza (of course!)
 #  test_cmd_line_script (covers the zipagiza support kwenye runpy)
 
@@ -47,7 +47,7 @@ eleza _run_object_doctest(obj, module):
     ikiwa f:
         ashiria test.support.TestFailed("%d of %d doctests failed" % (f, t))
     ikiwa verbose:
-        print ('doctest (%s) ... %d tests with zero failures' % (module.__name__, t))
+        print ('doctest (%s) ... %d tests ukijumuisha zero failures' % (module.__name__, t))
     rudisha f, t
 
 
@@ -77,7 +77,7 @@ kundi ZipSupportTests(unittest.TestCase):
 
     eleza test_inspect_getsource_issue4223(self):
         test_src = "eleza foo(): pita\n"
-        with test.support.temp_dir() kama d:
+        ukijumuisha test.support.temp_dir() kama d:
             init_name = make_script(d, '__init__', test_src)
             name_in_zip = os.path.join('zip_pkg',
                                        os.path.basename(init_name))
@@ -94,7 +94,7 @@ kundi ZipSupportTests(unittest.TestCase):
     eleza test_doctest_issue4197(self):
         # To avoid having to keep two copies of the doctest module's
         # unit tests kwenye sync, this test works by taking the source of
-        # test_doctest itself, rewriting it a bit to cope with a new
+        # test_doctest itself, rewriting it a bit to cope ukijumuisha a new
         # location, na then throwing it kwenye a zip file to make sure
         # everything still works correctly
         test_src = inspect.getsource(test_doctest)
@@ -117,16 +117,16 @@ kundi ZipSupportTests(unittest.TestCase):
             mod_name = mod_name.replace("sample_", "sample_zipped_")
             sample_sources[mod_name] = src
 
-        with test.support.temp_dir() kama d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'test_zipped_doctest',
                                             test_src)
             zip_name, run_name = make_zip_script(d, 'test_zip',
                                                 script_name)
-            with zipfile.ZipFile(zip_name, 'a') kama z:
+            ukijumuisha zipfile.ZipFile(zip_name, 'a') kama z:
                 kila mod_name, src kwenye sample_sources.items():
                     z.writestr(mod_name + ".py", src)
             ikiwa verbose:
-                with zipfile.ZipFile(zip_name, 'r') kama zip_file:
+                ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
                     print ('Contents of %r:' % zip_name)
                     zip_file.printdir()
             os.remove(script_name)
@@ -192,7 +192,7 @@ kundi ZipSupportTests(unittest.TestCase):
                     doctest.testmod()
                     """)
         pattern = 'File "%s", line 2, kwenye %s'
-        with test.support.temp_dir() kama d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'script', test_src)
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
@@ -219,7 +219,7 @@ kundi ZipSupportTests(unittest.TestCase):
                     agiza pdb
                     pdb.Pdb(nosigint=Kweli).runcall(f)
                     """)
-        with test.support.temp_dir() kama d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'script', test_src)
             p = spawn_python(script_name)
             p.stdin.write(b'l\n')

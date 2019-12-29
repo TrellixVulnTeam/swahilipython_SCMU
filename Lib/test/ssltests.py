@@ -22,7 +22,7 @@ eleza run_regrtests(*extra_args):
     ikiwa sio extra_args:
         args.extend([
             '-r',  # randomize
-            '-w',  # re-run failed tests with -v
+            '-w',  # re-run failed tests ukijumuisha -v
             '-u', 'network',  # use network
             '-u', 'urlfetch',  # download test vectors
             '-j', '0'  # use multiple CPUs

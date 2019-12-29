@@ -14,10 +14,10 @@ kundi FileCompareTestCase(unittest.TestCase):
         self.name_diff = support.TESTFN + '-diff'
         data = 'Contents of file go here.\n'
         kila name kwenye [self.name, self.name_same, self.name_diff]:
-            with open(name, 'w') kama output:
+            ukijumuisha open(name, 'w') kama output:
                 output.write(data)
 
-        with open(self.name_diff, 'a+') kama output:
+        ukijumuisha open(self.name_diff, 'a+') kama output:
             output.write('An extra line.\n')
         self.dir = tempfile.gettempdir()
 
@@ -69,10 +69,10 @@ kundi DirCompareTestCase(unittest.TestCase):
                 fn = 'FiLe'     # Verify case-insensitive comparison
             isipokua:
                 fn = 'file'
-            with open(os.path.join(dir, fn), 'w') kama output:
+            ukijumuisha open(os.path.join(dir, fn), 'w') kama output:
                 output.write(data)
 
-        with open(os.path.join(self.dir_diff, 'file2'), 'w') kama output:
+        ukijumuisha open(os.path.join(self.dir_diff, 'file2'), 'w') kama output:
             output.write('An extra file.\n')
 
     eleza tearDown(self):
@@ -90,7 +90,7 @@ kundi DirCompareTestCase(unittest.TestCase):
                         (['file'], [], []),
                         "Comparing directory to same fails")
 
-        # Try it with shallow=Uongo
+        # Try it ukijumuisha shallow=Uongo
         self.assertKweli(filecmp.cmpfiles(self.dir, self.dir, ['file'],
                                          shallow=Uongo) ==
                         (['file'], [], []),
@@ -100,7 +100,7 @@ kundi DirCompareTestCase(unittest.TestCase):
                         "Comparing directory to same fails")
 
         # Add different file2
-        with open(os.path.join(self.dir, 'file2'), 'w') kama output:
+        ukijumuisha open(os.path.join(self.dir, 'file2'), 'w') kama output:
             output.write('Different contents.\n')
 
         self.assertUongo(filecmp.cmpfiles(self.dir, self.dir_same,
@@ -173,7 +173,7 @@ kundi DirCompareTestCase(unittest.TestCase):
         self._assert_report(d.report, expected_report)
 
         # Add different file2
-        with open(os.path.join(self.dir_diff, 'file2'), 'w') kama output:
+        ukijumuisha open(os.path.join(self.dir_diff, 'file2'), 'w') kama output:
             output.write('Different contents.\n')
         d = filecmp.dircmp(self.dir, self.dir_diff)
         self.assertEqual(d.same_files, ['file'])
@@ -204,7 +204,7 @@ kundi DirCompareTestCase(unittest.TestCase):
         self._assert_report(d.report_full_closure, expected_report)
 
     eleza _assert_report(self, dircmp_report, expected_report_lines):
-        with support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             dircmp_report()
             report_lines = stdout.getvalue().strip().split('\n')
             self.assertEqual(report_lines, expected_report_lines)

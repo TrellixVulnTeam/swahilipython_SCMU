@@ -73,8 +73,8 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("async eleza f():\n await foo(); rudisha 42")
 
     eleza test_async_with_statement(self):
-        self.check_suite("async eleza f():\n async with 1: pita")
-        self.check_suite("async eleza f():\n async with a kama b, c kama d: pita")
+        self.check_suite("async eleza f():\n async ukijumuisha 1: pita")
+        self.check_suite("async eleza f():\n async ukijumuisha a kama b, c kama d: pita")
 
     eleza test_async_for_statement(self):
         self.check_suite("async eleza f():\n async kila i kwenye (): pita")
@@ -159,25 +159,25 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
                          "    eleza __init__(self, x: int) -> Tupu:\n"
                          "        self.x: int = x\n")
         # double check kila nonsense
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("2+2: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("[]: int = 5", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("x, *y, z: int = range(5)", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("x: int = 1, y = 2", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("u = v: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("Uongo: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("x.Uongo: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("x.y,: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("[0]: int", {}, {})
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             exec("f(): int", {}, {})
 
     eleza test_simple_augmented_assignments(self):
@@ -317,9 +317,9 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("assert alo < ahi na blo < bhi\n")
 
     eleza test_with(self):
-        self.check_suite("with open('x'): pita\n")
-        self.check_suite("with open('x') kama f: pita\n")
-        self.check_suite("with open('x') kama f, open('y') kama g: pita\n")
+        self.check_suite("ukijumuisha open('x'): pita\n")
+        self.check_suite("ukijumuisha open('x') kama f: pita\n")
+        self.check_suite("ukijumuisha open('x') kama f, open('y') kama g: pita\n")
 
     eleza test_try_stmt(self):
         self.check_suite("jaribu: pita\nexcept: pita\n")
@@ -333,7 +333,7 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
 
     eleza test_if_stmt(self):
         self.check_suite("ikiwa Kweli:\n  pita\nisipokua:\n  pita\n")
-        self.check_suite("ikiwa Kweli:\n  pita\nelikiwa Kweli:\n  pita\nisipokua:\n  pita\n")
+        self.check_suite("ikiwa Kweli:\n  pita\nlasivyo Kweli:\n  pita\nisipokua:\n  pita\n")
 
     eleza test_position(self):
         # An absolutely minimal test of position information.  Better
@@ -760,7 +760,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
             (341,
              (257, (0, '')),
               '\udcff')
-        with self.assertRaises(UnicodeEncodeError):
+        ukijumuisha self.assertRaises(UnicodeEncodeError):
             parser.sequence2st(tree)
 
     eleza test_invalid_node_id(self):
@@ -828,10 +828,10 @@ kundi CompileTestCase(unittest.TestCase):
             code = st.compile(filename)
             self.assertEqual(code.co_filename, 'file.py')
         kila filename kwenye bytearray(b'file.py'), memoryview(b'file.py'):
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 code = parser.compilest(st, filename)
             self.assertEqual(code.co_filename, 'file.py')
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 code = st.compile(filename)
             self.assertEqual(code.co_filename, 'file.py')
         self.assertRaises(TypeError, parser.compilest, st, list(b'file.py'))
@@ -916,7 +916,7 @@ kundi STObjectTestCase(unittest.TestCase):
         self.assertKweli(bottom <= bottom)
         self.assertKweli(mid <= mid)
         self.assertKweli(top <= top)
-        # interaction with other types
+        # interaction ukijumuisha other types
         self.assertEqual(st1 == 1588.602459, Uongo)
         self.assertEqual('spanish armada' != st2, Kweli)
         self.assertRaises(TypeError, operator.ge, st3, Tupu)
@@ -959,7 +959,7 @@ kundi STObjectTestCase(unittest.TestCase):
             hasstr = len(node) > 1 na isinstance(node[-1], str)
             ikiwa hasstr:
                 res += len(node[-1]) + 1
-            children = node[1:-1] ikiwa hasstr else node[1:]
+            children = node[1:-1] ikiwa hasstr isipokua node[1:]
             ikiwa children:
                 res += XXXROUNDUP(len(children)) * nodesize
                 kila child kwenye children:
@@ -984,7 +984,7 @@ kundi OtherParserCase(unittest.TestCase):
 
     eleza test_two_args_to_expr(self):
         # See bug #12264
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             parser.expr("a", "b")
 
 ikiwa __name__ == "__main__":

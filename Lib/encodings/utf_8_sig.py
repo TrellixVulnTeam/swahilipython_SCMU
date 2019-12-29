@@ -20,7 +20,7 @@ eleza decode(input, errors='strict'):
     if input[:3] == codecs.BOM_UTF8:
         input = input[3:]
         prefix = 3
-    (output, consumed) = codecs.utf_8_decode(input, errors, True)
+    (output, consumed) = codecs.utf_8_decode(input, errors, Kweli)
     rudisha (output, consumed+prefix)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
@@ -28,7 +28,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.first = 1
 
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         if self.first:
             self.first = 0
             rudisha codecs.BOM_UTF8 + \
@@ -74,7 +74,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     eleza getstate(self):
         state = codecs.BufferedIncrementalDecoder.getstate(self)
-        # state[1] must be 0 here, as it isn't passed along to the caller
+        # state[1] must be 0 here, as it isn't pitaed along to the caller
         rudisha (state[0], self.first)
 
     eleza setstate(self, state):
@@ -88,7 +88,7 @@ kundi StreamWriter(codecs.StreamWriter):
         jaribu:
             toa self.encode
         tatizo AttributeError:
-            pass
+            pita
 
     eleza encode(self, input, errors='strict'):
         self.encode = codecs.utf_8_encode
@@ -100,7 +100,7 @@ kundi StreamReader(codecs.StreamReader):
         jaribu:
             toa self.decode
         tatizo AttributeError:
-            pass
+            pita
 
     eleza decode(self, input, errors='strict'):
         if len(input) < 3:

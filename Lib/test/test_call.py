@@ -321,11 +321,11 @@ IGNORE_RESULT = object()
 
 @cpython_only
 kundi FastCallTests(unittest.TestCase):
-    # Test calls with positional arguments
+    # Test calls ukijumuisha positional arguments
     CALLS_POSARGS = (
         # (func, args: tuple, result)
 
-        # Python function with 2 arguments
+        # Python function ukijumuisha 2 arguments
         (pyfunc, (1, 2), [1, 2]),
 
         # Python function without argument
@@ -359,16 +359,16 @@ kundi FastCallTests(unittest.TestCase):
         # C type static method: METH_FASTCALL | METH_CLASS
         (int.kutoka_bytes, (b'\x01\x00', 'little'), 1),
 
-        # bpo-30524: Test that calling a C type static method with no argument
+        # bpo-30524: Test that calling a C type static method ukijumuisha no argument
         # doesn't crash (ignore the result): METH_FASTCALL | METH_CLASS
         (datetime.datetime.now, (), IGNORE_RESULT),
     )
 
-    # Test calls with positional na keyword arguments
+    # Test calls ukijumuisha positional na keyword arguments
     CALLS_KWARGS = (
         # (func, args: tuple, kwargs: dict, result)
 
-        # Python function with 2 arguments
+        # Python function ukijumuisha 2 arguments
         (pyfunc, (1,), {'arg2': 2}, [1, 2]),
         (pyfunc, (), {'arg1': 1, 'arg2': 2}, [1, 2]),
 
@@ -393,7 +393,7 @@ kundi FastCallTests(unittest.TestCase):
         # Test _PyObject_FastCall()
 
         kila func, args, expected kwenye self.CALLS_POSARGS:
-            with self.subTest(func=func, args=args):
+            ukijumuisha self.subTest(func=func, args=args):
                 result = _testcapi.pyobject_fastcall(func, args)
                 self.check_result(result, expected)
 
@@ -406,7 +406,7 @@ kundi FastCallTests(unittest.TestCase):
         # Test _PyObject_FastCallDict()
 
         kila func, args, expected kwenye self.CALLS_POSARGS:
-            with self.subTest(func=func, args=args):
+            ukijumuisha self.subTest(func=func, args=args):
                 # kwargs=NULL
                 result = _testcapi.pyobject_fastcalldict(func, args, Tupu)
                 self.check_result(result, expected)
@@ -425,7 +425,7 @@ kundi FastCallTests(unittest.TestCase):
                     self.check_result(result, expected)
 
         kila func, args, kwargs, expected kwenye self.CALLS_KWARGS:
-            with self.subTest(func=func, args=args, kwargs=kwargs):
+            ukijumuisha self.subTest(func=func, args=args, kwargs=kwargs):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
 
@@ -433,7 +433,7 @@ kundi FastCallTests(unittest.TestCase):
         # Test _PyObject_Vectorcall()
 
         kila func, args, expected kwenye self.CALLS_POSARGS:
-            with self.subTest(func=func, args=args):
+            ukijumuisha self.subTest(func=func, args=args):
                 # kwnames=NULL
                 result = _testcapi.pyobject_vectorcall(func, args, Tupu)
                 self.check_result(result, expected)
@@ -452,7 +452,7 @@ kundi FastCallTests(unittest.TestCase):
                     self.check_result(result, expected)
 
         kila func, args, kwargs, expected kwenye self.CALLS_KWARGS:
-            with self.subTest(func=func, args=args, kwargs=kwargs):
+            ukijumuisha self.subTest(func=func, args=args, kwargs=kwargs):
                 kwnames = tuple(kwargs.keys())
                 args = args + tuple(kwargs.values())
                 result = _testcapi.pyobject_vectorcall(func, args, kwnames)
@@ -562,7 +562,7 @@ kundi TestPEP590(unittest.TestCase):
             rudisha pyobject_vectorcall(func, args, kwnames)
 
         kila (func, args, kwargs, expected) kwenye calls:
-            with self.subTest(str(func)):
+            ukijumuisha self.subTest(str(func)):
                 ikiwa sio kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
@@ -594,7 +594,7 @@ kundi TestPEP590(unittest.TestCase):
         ]
 
         kila (func, args, kwargs, expected) kwenye calls:
-            with self.subTest(str(func)):
+            ukijumuisha self.subTest(str(func)):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)

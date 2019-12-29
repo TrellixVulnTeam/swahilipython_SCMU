@@ -22,7 +22,7 @@ kutoka test.support agiza _4G, bigmemtest, import_fresh_module
 kutoka test.support agiza requires_hashdigest
 kutoka http.client agiza HTTPException
 
-# Were we compiled --with-pydebug ama with #define Py_DEBUG?
+# Were we compiled --with-pydebug ama ukijumuisha #define Py_DEBUG?
 COMPILED_WITH_PYDEBUG = hasattr(sys, 'gettotalrefcount')
 
 c_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
@@ -65,7 +65,7 @@ eleza read_vectors(hash_name):
         testdata = support.open_urlresource(url)
     tatizo (OSError, HTTPException):
         ashiria unittest.SkipTest("Could sio retrieve {}".format(url))
-    with testdata:
+    ukijumuisha testdata:
         kila line kwenye testdata:
             line = line.strip()
             ikiwa line.startswith('#') ama sio line:
@@ -257,7 +257,7 @@ kundi HashLibTestCase(unittest.TestCase):
             kila digest kwenye h.digest, h.hexdigest:
                 self.assertRaises(ValueError, digest, -10)
                 kila length kwenye large_sizes:
-                    with self.assertRaises((ValueError, OverflowError)):
+                    ukijumuisha self.assertRaises((ValueError, OverflowError)):
                         digest(length)
 
     eleza test_name_attribute(self):
@@ -310,14 +310,14 @@ kundi HashLibTestCase(unittest.TestCase):
         self.assertGreaterEqual(len(constructors), 2)
         kila hash_object_constructor kwenye constructors:
             m = hash_object_constructor(data, **kwargs)
-            computed = m.hexdigest() ikiwa sio shake else m.hexdigest(length)
+            computed = m.hexdigest() ikiwa sio shake isipokua m.hexdigest(length)
             self.assertEqual(
                     computed, hexdigest,
                     "Hash algorithm %s constructed using %s rudishaed hexdigest"
                     " %r kila %d byte input data that should have hashed to %r."
                     % (name, hash_object_constructor,
                        computed, len(data), hexdigest))
-            computed = m.digest() ikiwa sio shake else m.digest(length)
+            computed = m.digest() ikiwa sio shake isipokua m.digest(length)
             digest = bytes.kutokahex(hexdigest)
             self.assertEqual(computed, digest)
             ikiwa sio shake:
@@ -797,7 +797,7 @@ kundi HashLibTestCase(unittest.TestCase):
             self.check('shake_256', msg, md, Kweli)
 
     eleza test_gil(self):
-        # Check things work fine with an input larger than the size required
+        # Check things work fine ukijumuisha an input larger than the size required
         # kila multithreaded operation (which ni hardwired to 2048).
         gil_minsize = 2048
 
@@ -939,7 +939,7 @@ kundi KDFTests(unittest.TestCase):
         self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', -1)
         self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, 0)
         self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, -1)
-        with self.assertRaisesRegex(ValueError, 'unsupported hash type'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'unsupported hash type'):
             pbkdf2('unknown', b'pita', b'salt', 1)
         out = pbkdf2(hash_name='sha1', pitaword=b'pitaword', salt=b'salt',
             iterations=1, dklen=Tupu)
@@ -964,32 +964,32 @@ kundi KDFTests(unittest.TestCase):
         # this values should work
         hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1)
         # pitaword na salt must be bytes-like
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             hashlib.scrypt('pitaword', salt=b'salt', n=2, r=8, p=1)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             hashlib.scrypt(b'pitaword', salt='salt', n=2, r=8, p=1)
         # require keyword args
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             hashlib.scrypt(b'pitaword')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             hashlib.scrypt(b'pitaword', b'salt')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             hashlib.scrypt(b'pitaword', 2, 8, 1, salt=b'salt')
         kila n kwenye [-1, 0, 1, Tupu]:
-            with self.assertRaises((ValueError, OverflowError, TypeError)):
+            ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
                 hashlib.scrypt(b'pitaword', salt=b'salt', n=n, r=8, p=1)
         kila r kwenye [-1, 0, Tupu]:
-            with self.assertRaises((ValueError, OverflowError, TypeError)):
+            ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
                 hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=r, p=1)
         kila p kwenye [-1, 0, Tupu]:
-            with self.assertRaises((ValueError, OverflowError, TypeError)):
+            ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
                 hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=p)
         kila maxmem kwenye [-1, Tupu]:
-            with self.assertRaises((ValueError, OverflowError, TypeError)):
+            ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
                 hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
                                maxmem=maxmem)
         kila dklen kwenye [-1, Tupu]:
-            with self.assertRaises((ValueError, OverflowError, TypeError)):
+            ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
                 hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
                                dklen=dklen)
 

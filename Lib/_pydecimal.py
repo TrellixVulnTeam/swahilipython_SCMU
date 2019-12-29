@@ -688,7 +688,7 @@ kundi Decimal(object):
 
         """
         if isinstance(f, int):                # handle integer inputs
-            sign = 0 if f >= 0 else 1
+            sign = 0 if f >= 0 isipokua 1
             k = 0
             coeff = str(abs(f))
         lasivyo isinstance(f, float):
@@ -959,8 +959,8 @@ kundi Decimal(object):
         isipokua:
             exp_hash = pow(_PyHASH_10INV, -self._exp, _PyHASH_MODULUS)
         hash_ = int(self._int) * exp_hash % _PyHASH_MODULUS
-        ans = hash_ if self >= 0 else -hash_
-        return -2 if ans == -1 else ans
+        ans = hash_ if self >= 0 isipokua -hash_
+        return -2 if ans == -1 isipokua ans
 
     def as_tuple(self):
         """Represents the number as a triple tuple.
@@ -1608,7 +1608,7 @@ kundi Decimal(object):
         if self._isnan():
             if self.is_snan():
                 raise ValueError("Cannot convert signaling NaN to float")
-            s = "-nan" if self._sign else "nan"
+            s = "-nan" if self._sign isipokua "nan"
         isipokua:
             s = str(self)
         return float(s)
@@ -3891,12 +3891,12 @@ kundi Context(object):
         tatizo NameError:
             pass
 
-        self.prec = prec if prec ni sio None else dc.prec
-        self.rounding = rounding if rounding ni sio None else dc.rounding
-        self.Emin = Emin if Emin ni sio None else dc.Emin
-        self.Emax = Emax if Emax ni sio None else dc.Emax
-        self.capitals = capitals if capitals ni sio None else dc.capitals
-        self.clamp = clamp if clamp ni sio None else dc.clamp
+        self.prec = prec if prec ni sio None isipokua dc.prec
+        self.rounding = rounding if rounding ni sio None isipokua dc.rounding
+        self.Emin = Emin if Emin ni sio None isipokua dc.Emin
+        self.Emax = Emax if Emax ni sio None isipokua dc.Emax
+        self.capitals = capitals if capitals ni sio None isipokua dc.capitals
+        self.clamp = clamp if clamp ni sio None isipokua dc.clamp
 
         if _ignored_flags is None:
             self._ignored_flags = []
@@ -5666,7 +5666,7 @@ def _normalize(op1, op2, prec = 0):
 _nbits = int.bit_length
 
 def _decimal_lshift_exact(n, e):
-    """ Given integers n and e, return n * 10**e if it's an integer, else None.
+    """ Given integers n and e, return n * 10**e if it's an integer, isipokua None.
 
     The computation is designed to avoid computing large powers of 10
     unnecessarily.
@@ -5684,7 +5684,7 @@ def _decimal_lshift_exact(n, e):
         # val_n = largest power of 10 dividing n.
         str_n = str(abs(n))
         val_n = len(str_n) - len(str_n.rstrip('0'))
-        return None if val_n < -e else n // 10**-e
+        return None if val_n < -e isipokua n // 10**-e
 
 def _sqrt_nearest(n, a):
     """Closest integer to the square root of the positive integer n.  a is
@@ -6346,7 +6346,7 @@ def _format_sign(is_negative, spec):
 def _format_number(is_negative, intpart, fracpart, exp, spec):
     """Format a number, given the following data:
 
-    is_negative: true if the number is negative, else false
+    is_negative: true if the number is negative, isipokua false
     intpart: string of digits that must appear before the decimal point
     fracpart: string of digits that must come after the point
     exp: exponent, as an integer

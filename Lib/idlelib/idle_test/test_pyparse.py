@@ -40,15 +40,15 @@ kundi PyParseTest(unittest.TestCase):
         p = self.parser
         setcode = p.set_code
 
-        # Not empty na doesn't end with newline.
-        with self.assertRaises(AssertionError):
+        # Not empty na doesn't end ukijumuisha newline.
+        ukijumuisha self.assertRaises(AssertionError):
             setcode('a')
 
         tests = ('',
                  'a\n')
 
         kila string kwenye tests:
-            with self.subTest(string=string):
+            ukijumuisha self.subTest(string=string):
                 setcode(string)
                 eq(p.code, string)
                 eq(p.study_level, 0)
@@ -114,7 +114,7 @@ kundi PyParseTest(unittest.TestCase):
         p.set_code(code)
 
         # Previous character ni sio a newline.
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             p.set_lo(5)
 
         # A value of 0 doesn't change self.code.
@@ -165,7 +165,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)  # resets study_level
                 study()
                 eq(p.study_level, 1)
@@ -192,7 +192,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 eq(gettype(), test.continuation)
 
@@ -216,19 +216,19 @@ kundi PyParseTest(unittest.TestCase):
             # Backslash continuation.
             TestInfo('a = (1 + 2) - 5 *\\\n',
                      0, 19, '*', Tupu, ((0, 0), (4, 1), (11, 0))),
-            # Bracket continuation with close.
+            # Bracket continuation ukijumuisha close.
             TestInfo('\n   eleza function1(self, a,\n                 b):\n',
                      1, 48, ':', Tupu, ((1, 0), (17, 1), (46, 0))),
-            # Bracket continuation with unneeded backslash.
+            # Bracket continuation ukijumuisha unneeded backslash.
             TestInfo('\n   eleza function1(self, a,\\\n',
                      1, 28, ',', 17, ((1, 0), (17, 1))),
             # Bracket continuation.
             TestInfo('\n   eleza function1(self, a,\n',
                      1, 27, ',', 17, ((1, 0), (17, 1))),
-            # Bracket continuation with comment at end of line with text.
+            # Bracket continuation ukijumuisha comment at end of line ukijumuisha text.
             TestInfo('\n   eleza function1(self, a,  # End of line comment.\n',
                      1, 51, ',', 17, ((1, 0), (17, 1), (28, 2), (51, 1))),
-            # Multi-line statement with comment line kwenye between code lines.
+            # Multi-line statement ukijumuisha comment line kwenye between code lines.
             TestInfo('  a = ["first item",\n  # Comment line\n    "next item",\n',
                      0, 55, ',', 6, ((0, 0), (6, 1), (7, 2), (19, 1),
                                      (23, 2), (38, 1), (42, 2), (53, 1))),
@@ -244,7 +244,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 study()
                 eq(p.study_level, 2)
@@ -277,11 +277,11 @@ kundi PyParseTest(unittest.TestCase):
 
         # Blank string doesn't have enough elements kwenye goodlines.
         setcode('')
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             getlines()
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 eq(getlines(), test.lines)
 
@@ -310,7 +310,7 @@ kundi PyParseTest(unittest.TestCase):
 
         # Must be C_BRACKET continuation type.
         setcode('eleza function1(self, a, b):\n')
-        with self.assertRaises(AssertionError):
+        ukijumuisha self.assertRaises(AssertionError):
             indent()
 
         kila test kwenye tests:
@@ -329,9 +329,9 @@ kundi PyParseTest(unittest.TestCase):
                   ('a = #\\\n'),                     # Inline comment.
                   )
         kila string kwenye errors:
-            with self.subTest(string=string):
+            ukijumuisha self.subTest(string=string):
                 setcode(string)
-                with self.assertRaises(AssertionError):
+                ukijumuisha self.assertRaises(AssertionError):
                     indent()
 
         TestInfo = namedtuple('TestInfo', ('string', 'spaces'))
@@ -352,7 +352,7 @@ kundi PyParseTest(unittest.TestCase):
                  TestInfo('(1 + 2) - 5 *\\\n', 3),
                  )
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 eq(indent(), test.spaces)
 
@@ -373,7 +373,7 @@ kundi PyParseTest(unittest.TestCase):
                  )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 eq(baseindent(), test.indent)
 
@@ -401,7 +401,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(opener())
 
@@ -430,7 +430,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(closer())
 
@@ -457,7 +457,7 @@ kundi PyParseTest(unittest.TestCase):
             )
 
         kila test kwenye tests:
-            with self.subTest(string=test.string):
+            ukijumuisha self.subTest(string=test.string):
                 setcode(test.string)
                 eq(bracketing(), test.bracket)
 

@@ -32,8 +32,8 @@ kundi Test_TestSkipping(unittest.TestCase):
     eleza test_skipping_subtests(self):
         kundi Foo(unittest.TestCase):
             eleza test_skip_me(self):
-                with self.subTest(a=1):
-                    with self.subTest(b=2):
+                ukijumuisha self.subTest(a=1):
+                    ukijumuisha self.subTest(b=2):
                         self.skipTest("skip 1")
                     self.skipTest("skip 2")
                 self.skipTest("skip 3")
@@ -159,12 +159,12 @@ kundi Test_TestSkipping(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
             eleza test_die(self):
-                with self.subTest():
+                ukijumuisha self.subTest():
                     # This one succeeds
                     pita
-                with self.subTest():
+                ukijumuisha self.subTest():
                     self.fail("help me!")
-                with self.subTest():
+                ukijumuisha self.subTest():
                     # This one doesn't get executed
                     self.fail("shouldn't come here")
         events = []
@@ -199,10 +199,10 @@ kundi Test_TestSkipping(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
             eleza test_die(self):
-                with self.subTest():
+                ukijumuisha self.subTest():
                     # This one succeeds
                     pita
-                with self.subTest():
+                ukijumuisha self.subTest():
                     # So does this one
                     pita
         events = []

@@ -2,7 +2,7 @@ agiza os.path
 agiza sys
 
 
-# Enable running IDLE with idlelib kwenye a non-standard location.
+# Enable running IDLE ukijumuisha idlelib kwenye a non-standard location.
 # This was once used to run development versions of IDLE.
 # Because PEP 434 declared idle.py a public interface,
 # removal should require deprecation.

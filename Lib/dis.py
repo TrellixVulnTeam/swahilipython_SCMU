@@ -422,7 +422,7 @@ def _unpack_opargs(code):
         op = code[i]
         if op >= HAVE_ARGUMENT:
             arg = code[i+1] | extended_arg
-            extended_arg = (arg << 8) if op == EXTENDED_ARG else 0
+            extended_arg = (arg << 8) if op == EXTENDED_ARG isipokua 0
         isipokua:
             arg = None
         yield (i, op, arg)

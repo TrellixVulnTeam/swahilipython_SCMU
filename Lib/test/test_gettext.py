@@ -119,15 +119,15 @@ kundi GettextBaseTest(unittest.TestCase):
     eleza setUp(self):
         ikiwa sio os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
-        with open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
-        with open(MOFILE_BAD_MAJOR_VERSION, 'wb') kama fp:
+        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MAJOR_VERSION))
-        with open(MOFILE_BAD_MINOR_VERSION, 'wb') kama fp:
+        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MINOR_VERSION))
-        with open(UMOFILE, 'wb') kama fp:
+        ukijumuisha open(UMOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(UMO_DATA))
-        with open(MMOFILE, 'wb') kama fp:
+        ukijumuisha open(MMOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(MMO_DATA))
         self.env = support.EnvironmentVarGuard()
         self.env['LANGUAGE'] = 'xx'
@@ -204,7 +204,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
     eleza test_the_alternative_interface(self):
         eq = self.assertEqual
         # test the alternative interface
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         # Install the translation object
         t.install()
@@ -239,8 +239,8 @@ kundi GettextTestCase2(GettextBaseTest):
         self.assertEqual(gettext.textdomain(), 'gettext')
 
     eleza test_bad_major_version(self):
-        with open(MOFILE_BAD_MAJOR_VERSION, 'rb') kama fp:
-            with self.assertRaises(OSError) kama cm:
+        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'rb') kama fp:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -249,8 +249,8 @@ kundi GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_BAD_MAJOR_VERSION)
 
     eleza test_bad_minor_version(self):
-        with open(MOFILE_BAD_MINOR_VERSION, 'rb') kama fp:
-            # Check that no error ni thrown with a bad minor version number
+        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'rb') kama fp:
+            # Check that no error ni thrown ukijumuisha a bad minor version number
             gettext.GNUTranslations(fp)
 
     eleza test_some_translations(self):
@@ -333,7 +333,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
 
     eleza test_plural_forms2(self):
         eq = self.assertEqual
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         x = t.ngettext('There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero')
@@ -342,7 +342,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
 
     eleza test_plural_context_forms2(self):
         eq = self.assertEqual
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         x = t.npgettext('With context',
                         'There ni %s file', 'There are %s files', 1)
@@ -468,7 +468,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
             'n>0x1', '+n', '-n', 'n()', 'n(1)', '1+', 'nn', 'n n',
         ]
         kila expr kwenye invalid_expressions:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 gettext.c2py(expr)
 
     eleza test_nested_condition_operator(self):
@@ -489,11 +489,11 @@ kundi PluralFormsTestCase(GettextBaseTest):
         f = gettext.c2py('n != 1')
         self.assertEqual(f(1), 0)
         self.assertEqual(f(2), 1)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(f(1.0), 0)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(f(2.0), 1)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(f(1.1), 1)
         self.assertRaises(TypeError, f, '2')
         self.assertRaises(TypeError, f, b'2')
@@ -508,178 +508,178 @@ kundi LGettextTestCase(GettextBaseTest):
 
     @contextlib.contextmanager
     eleza assertDeprecated(self, name):
-        with self.assertWarnsRegex(DeprecationWarning,
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    fr'^{name}\(\) ni deprecated'):
             tuma
 
     eleza test_lgettext(self):
         lgettext = gettext.lgettext
         ldgettext = gettext.ldgettext
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('mullusk'), b'bacon')
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('spam'), b'spam')
-        with self.assertDeprecated('ldgettext'):
+        ukijumuisha self.assertDeprecated('ldgettext'):
             self.assertEqual(ldgettext('gettext', 'mullusk'), b'bacon')
-        with self.assertDeprecated('ldgettext'):
+        ukijumuisha self.assertDeprecated('ldgettext'):
             self.assertEqual(ldgettext('gettext', 'spam'), b'spam')
 
     eleza test_lgettext_2(self):
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('mullusk'), b'bacon')
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('spam'), b'spam')
 
     eleza test_lgettext_bind_textdomain_codeset(self):
         lgettext = gettext.lgettext
         ldgettext = gettext.ldgettext
-        with self.assertDeprecated('bind_textdomain_codeset'):
+        ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
             saved_codeset = gettext.bind_textdomain_codeset('gettext')
         jaribu:
-            with self.assertDeprecated('bind_textdomain_codeset'):
+            ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', 'utf-16')
-            with self.assertDeprecated('lgettext'):
+            ukijumuisha self.assertDeprecated('lgettext'):
                 self.assertEqual(lgettext('mullusk'), 'bacon'.encode('utf-16'))
-            with self.assertDeprecated('lgettext'):
+            ukijumuisha self.assertDeprecated('lgettext'):
                 self.assertEqual(lgettext('spam'), 'spam'.encode('utf-16'))
-            with self.assertDeprecated('ldgettext'):
+            ukijumuisha self.assertDeprecated('ldgettext'):
                 self.assertEqual(ldgettext('gettext', 'mullusk'), 'bacon'.encode('utf-16'))
-            with self.assertDeprecated('ldgettext'):
+            ukijumuisha self.assertDeprecated('ldgettext'):
                 self.assertEqual(ldgettext('gettext', 'spam'), 'spam'.encode('utf-16'))
         mwishowe:
             toa gettext._localecodesets['gettext']
-            with self.assertDeprecated('bind_textdomain_codeset'):
+            ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lgettext_output_encoding(self):
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
-        with self.assertDeprecated('set_output_charset'):
+        ukijumuisha self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('mullusk'), 'bacon'.encode('utf-16'))
-        with self.assertDeprecated('lgettext'):
+        ukijumuisha self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('spam'), 'spam'.encode('utf-16'))
 
     eleza test_lngettext(self):
         lngettext = gettext.lngettext
         ldngettext = gettext.ldngettext
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 1)
         self.assertEqual(x, b'There ni %s directory')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
-        with self.assertDeprecated('ldngettext'):
+        ukijumuisha self.assertDeprecated('ldngettext'):
             x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
-        with self.assertDeprecated('ldngettext'):
+        ukijumuisha self.assertDeprecated('ldngettext'):
             x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
-        with self.assertDeprecated('ldngettext'):
+        ukijumuisha self.assertDeprecated('ldngettext'):
             x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 1)
         self.assertEqual(x, b'There ni %s directory')
-        with self.assertDeprecated('ldngettext'):
+        ukijumuisha self.assertDeprecated('ldngettext'):
             x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
     eleza test_lngettext_2(self):
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 1)
         self.assertEqual(x, b'There ni %s directory')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
     eleza test_lngettext_bind_textdomain_codeset(self):
         lngettext = gettext.lngettext
         ldngettext = gettext.ldngettext
-        with self.assertDeprecated('bind_textdomain_codeset'):
+        ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
             saved_codeset = gettext.bind_textdomain_codeset('gettext')
         jaribu:
-            with self.assertDeprecated('bind_textdomain_codeset'):
+            ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', 'utf-16')
-            with self.assertDeprecated('lngettext'):
+            ukijumuisha self.assertDeprecated('lngettext'):
                 x = lngettext('There ni %s file', 'There are %s files', 1)
             self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
-            with self.assertDeprecated('lngettext'):
+            ukijumuisha self.assertDeprecated('lngettext'):
                 x = lngettext('There ni %s file', 'There are %s files', 2)
             self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
-            with self.assertDeprecated('lngettext'):
+            ukijumuisha self.assertDeprecated('lngettext'):
                 x = lngettext('There ni %s directory', 'There are %s directories', 1)
             self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
-            with self.assertDeprecated('lngettext'):
+            ukijumuisha self.assertDeprecated('lngettext'):
                 x = lngettext('There ni %s directory', 'There are %s directories', 2)
             self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
-            with self.assertDeprecated('ldngettext'):
+            ukijumuisha self.assertDeprecated('ldngettext'):
                 x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 1)
             self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
-            with self.assertDeprecated('ldngettext'):
+            ukijumuisha self.assertDeprecated('ldngettext'):
                 x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 2)
             self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
-            with self.assertDeprecated('ldngettext'):
+            ukijumuisha self.assertDeprecated('ldngettext'):
                 x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 1)
             self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
-            with self.assertDeprecated('ldngettext'):
+            ukijumuisha self.assertDeprecated('ldngettext'):
                 x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 2)
             self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
         mwishowe:
             toa gettext._localecodesets['gettext']
-            with self.assertDeprecated('bind_textdomain_codeset'):
+            ukijumuisha self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lngettext_output_encoding(self):
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
-        with self.assertDeprecated('set_output_charset'):
+        ukijumuisha self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 1)
         self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
-        with self.assertDeprecated('lngettext'):
+        ukijumuisha self.assertDeprecated('lngettext'):
             x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
 
     eleza test_output_encoding(self):
-        with open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
-        with self.assertDeprecated('set_output_charset'):
+        ukijumuisha self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
-        with self.assertDeprecated('output_charset'):
+        ukijumuisha self.assertDeprecated('output_charset'):
             self.assertEqual(t.output_charset(), 'utf-16')
 
 
 kundi GNUTranslationParsingTest(GettextBaseTest):
     eleza test_plural_form_error_issue17898(self):
-        with open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') kama fp:
             # If this runs cleanly, the bug ni fixed.
             t = gettext.GNUTranslations(fp)
 
@@ -690,9 +690,9 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 
         are ignored.
         """
-        with open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
@@ -700,7 +700,7 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 kundi UnicodeTranslationsTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(UMOFILE, 'rb') kama fp:
+        ukijumuisha open(UMOFILE, 'rb') kama fp:
             self.t = gettext.GNUTranslations(fp)
         self._ = self.t.gettext
         self.pgettext = self.t.pgettext
@@ -720,7 +720,7 @@ kundi UnicodeTranslationsTest(GettextBaseTest):
 kundi UnicodeTranslationsPluralTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') kama fp:
             self.t = gettext.GNUTranslations(fp)
         self.ngettext = self.t.ngettext
         self.npgettext = self.t.npgettext
@@ -762,7 +762,7 @@ kundi UnicodeTranslationsPluralTest(GettextBaseTest):
 kundi WeirdMetadataTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MMOFILE, 'rb') kama fp:
+        ukijumuisha open(MMOFILE, 'rb') kama fp:
             jaribu:
                 self.t = gettext.GNUTranslations(fp)
             except:
@@ -807,13 +807,13 @@ kundi GettextCacheTestCase(GettextBaseTest):
         self.assertEqual(t.__class__, DummyGNUTranslations)
 
         # Test deprecated parameter codeset
-        with self.assertWarnsRegex(DeprecationWarning, 'parameter codeset'):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, 'parameter codeset'):
             t = gettext.translation('gettext', self.localedir,
                                     class_=DummyGNUTranslations,
                                     codeset='utf-16')
         self.assertEqual(len(gettext._translations), 2)
         self.assertEqual(t.__class__, DummyGNUTranslations)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertEqual(t.output_charset(), 'utf-16')
 
 

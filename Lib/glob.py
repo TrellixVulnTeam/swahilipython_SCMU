@@ -11,7 +11,7 @@ eleza glob(pathname, *, recursive=Uongo):
     """Return a list of paths matching a pathname pattern.
 
     The pattern may contain simple shell-style wildcards a la
-    fnmatch. However, unlike fnmatch, filenames starting with a
+    fnmatch. However, unlike fnmatch, filenames starting ukijumuisha a
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
@@ -24,7 +24,7 @@ eleza iglob(pathname, *, recursive=Uongo):
     """Return an iterator which tumas the paths matching a pathname pattern.
 
     The pattern may contain simple shell-style wildcards a la
-    fnmatch. However, unlike fnmatch, filenames starting with a
+    fnmatch. However, unlike fnmatch, filenames starting ukijumuisha a
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
@@ -46,7 +46,7 @@ eleza _iglob(pathname, recursive, dironly):
             ikiwa os.path.lexists(pathname):
                 tuma pathname
         isipokua:
-            # Patterns ending with a slash should match only directories
+            # Patterns ending ukijumuisha a slash should match only directories
             ikiwa os.path.isdir(dirname):
                 tuma pathname
         rudisha
@@ -86,7 +86,7 @@ eleza _glob1(dirname, pattern, dironly):
 
 eleza _glob0(dirname, basename, dironly):
     ikiwa sio basename:
-        # `os.path.split()` rudishas an empty basename kila paths ending with a
+        # `os.path.split()` rudishas an empty basename kila paths ending ukijumuisha a
         # directory separator.  'q*x/' should match only directories.
         ikiwa os.path.isdir(dirname):
             rudisha [basename]
@@ -120,7 +120,7 @@ eleza _iterdir(dirname, dironly):
         isipokua:
             dirname = os.curdir
     jaribu:
-        with os.scandir(dirname) kama it:
+        ukijumuisha os.scandir(dirname) kama it:
             kila entry kwenye it:
                 jaribu:
                     ikiwa sio dironly ama entry.is_dir():
@@ -136,7 +136,7 @@ eleza _rlistdir(dirname, dironly):
     kila x kwenye names:
         ikiwa sio _ishidden(x):
             tuma x
-            path = os.path.join(dirname, x) ikiwa dirname else x
+            path = os.path.join(dirname, x) ikiwa dirname isipokua x
             kila y kwenye _rlistdir(path, dironly):
                 tuma os.path.join(x, y)
 

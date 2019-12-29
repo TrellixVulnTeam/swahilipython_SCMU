@@ -16,9 +16,9 @@ kundi DictTest(unittest.TestCase):
         kundi Custom(dict):
             pita
         kila invalid kwenye {1 : 2}, Custom({1 : 2}):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 dict(**invalid)
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 {}.update(**invalid)
 
     eleza test_constructor(self):
@@ -287,7 +287,7 @@ kundi DictTest(unittest.TestCase):
         kila dict_size kwenye [10, 100, 1000, 10000, 100000]:
             dict_size = random.randrange(
                 dict_size // 2, dict_size + dict_size // 2)
-            with self.subTest(dict_size=dict_size):
+            ukijumuisha self.subTest(dict_size=dict_size):
                 d = {}
                 kila i kwenye range(dict_size):
                     d[i] = i
@@ -430,7 +430,7 @@ kundi DictTest(unittest.TestCase):
         self.assertRaises(KeyError, d.popitem)
 
     eleza test_pop(self):
-        # Tests kila pop with specified key
+        # Tests kila pop ukijumuisha specified key
         d = {}
         k, v = 'abc', 'def'
         d[k] = v
@@ -466,7 +466,7 @@ kundi DictTest(unittest.TestCase):
         # changing dict size during iteration
         d = {}
         d[1] = 1
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila i kwenye d:
                 d[i+1] = 1
 
@@ -474,7 +474,7 @@ kundi DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila i kwenye d:
                 toa d[0]
                 d[0] = 0
@@ -483,7 +483,7 @@ kundi DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila i kwenye d.values():
                 toa d[0]
                 d[0] = 0
@@ -492,7 +492,7 @@ kundi DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila i kwenye d.items():
                 toa d[0]
                 d[0] = 0
@@ -562,7 +562,7 @@ kundi DictTest(unittest.TestCase):
         d1 = {BadCmp(): 1}
         d2 = {1: 1}
 
-        with self.assertRaises(Exc):
+        ukijumuisha self.assertRaises(Exc):
             d1 == d2
 
     eleza test_keys_contained(self):
@@ -620,19 +620,19 @@ kundi DictTest(unittest.TestCase):
 
         d1 = {1: C()}
         d2 = {1: C()}
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d1.items() == d2.items()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d1.items() != d2.items()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d1.items() <= d2.items()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d1.items() >= d2.items()
 
         d3 = {1: C(), 2: C()}
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d2.items() < d3.items()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             d3.items() > d2.items()
 
     eleza test_dictview_set_operations_on_keys(self):
@@ -700,7 +700,7 @@ kundi DictTest(unittest.TestCase):
             eleza __missing__(self, key):
                 ashiria RuntimeError(key)
         e = E()
-        with self.assertRaises(RuntimeError) kama c:
+        ukijumuisha self.assertRaises(RuntimeError) kama c:
             e[42]
         self.assertEqual(c.exception.args, (42,))
 
@@ -709,21 +709,21 @@ kundi DictTest(unittest.TestCase):
                 # An instance variable __missing__ should have no effect
                 self.__missing__ = lambda key: Tupu
         f = F()
-        with self.assertRaises(KeyError) kama c:
+        ukijumuisha self.assertRaises(KeyError) kama c:
             f[42]
         self.assertEqual(c.exception.args, (42,))
 
         kundi G(dict):
             pita
         g = G()
-        with self.assertRaises(KeyError) kama c:
+        ukijumuisha self.assertRaises(KeyError) kama c:
             g[42]
         self.assertEqual(c.exception.args, (42,))
 
     eleza test_tuple_keyerror(self):
         # SF #1576657
         d = {}
-        with self.assertRaises(KeyError) kama c:
+        ukijumuisha self.assertRaises(KeyError) kama c:
             d[(1,)]
         self.assertEqual(c.exception.args, ((1,),))
 
@@ -752,7 +752,7 @@ kundi DictTest(unittest.TestCase):
                      'd.setdefault(x2, 42)',
                      'd.pop(x2)',
                      'd.update({x2: 2})']:
-            with self.assertRaises(CustomException):
+            ukijumuisha self.assertRaises(CustomException):
                 exec(stmt, locals())
 
     eleza test_resize1(self):
@@ -794,9 +794,9 @@ kundi DictTest(unittest.TestCase):
         d[9] = 6
 
     eleza test_empty_presized_dict_in_freelist(self):
-        # Bug #3537: ikiwa an empty but presized dict with a size larger
+        # Bug #3537: ikiwa an empty but presized dict ukijumuisha a size larger
         # than 7 was kwenye the freelist, it triggered an assertion failure
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             d = {'a': 1 // 0, 'b': Tupu, 'c': Tupu, 'd': Tupu, 'e': Tupu,
                  'f': Tupu, 'g': Tupu, 'h': Tupu}
         d = {}
@@ -840,7 +840,7 @@ kundi DictTest(unittest.TestCase):
         self._not_tracked({1: 2, (Tupu, Kweli, Uongo, ()): int})
         self._not_tracked({1: object()})
 
-        # Dicts with mutable elements are always tracked, even ikiwa those
+        # Dicts ukijumuisha mutable elements are always tracked, even ikiwa those
         # elements are sio tracked right now.
         self._tracked({1: []})
         self._tracked({1: ([],)})
@@ -955,7 +955,7 @@ kundi DictTest(unittest.TestCase):
         orig_size = sys.getsizeof(a)
 
         toa a['y']  # split table ni combined
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             toa a['y']
 
         self.assertGreater(sys.getsizeof(a), orig_size)
@@ -975,7 +975,7 @@ kundi DictTest(unittest.TestCase):
         orig_size = sys.getsizeof(a)
 
         a.pop('y')  # split table ni combined
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             a.pop('y')
 
         self.assertGreater(sys.getsizeof(a), orig_size)
@@ -993,7 +993,7 @@ kundi DictTest(unittest.TestCase):
         a, b = self.make_shared_key_dict(2)
 
         a['a'] = 4
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             b.pop('a')
 
     @support.cpython_only
@@ -1005,7 +1005,7 @@ kundi DictTest(unittest.TestCase):
 
         item = a.popitem()  # split table ni combined
         self.assertEqual(item, ('z', 3))
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             toa a['z']
 
         self.assertGreater(sys.getsizeof(a), orig_size)

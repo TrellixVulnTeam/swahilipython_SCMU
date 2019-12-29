@@ -29,7 +29,7 @@ agiza time
 
 
 eleza write_tests(filename, tests):
-    with open(filename, "w") kama fp:
+    ukijumuisha open(filename, "w") kama fp:
         kila name kwenye tests:
             andika(name, file=fp)
         fp.flush()
@@ -56,7 +56,7 @@ eleza list_cases(args):
     exitcode = proc.returncode
     ikiwa exitcode:
         cmd = format_shell_args(cmd)
-        andika("Failed to list tests: %s failed with exit code %s"
+        andika("Failed to list tests: %s failed ukijumuisha exit code %s"
               % (cmd, exitcode))
         sys.exit(exitcode)
     tests = proc.stdout.splitlines()
@@ -102,12 +102,12 @@ eleza main():
     args = parse_args()
 
     ikiwa args.input:
-        with open(args.input) kama fp:
+        ukijumuisha open(args.input) kama fp:
             tests = [line.strip() kila line kwenye fp]
     isipokua:
         tests = list_cases(args)
 
-    andika("Start bisection with %s tests" % len(tests))
+    andika("Start bisection ukijumuisha %s tests" % len(tests))
     andika("Test arguments: %s" % format_shell_args(args.test_args))
     andika("Bisection will stop when getting %s ama less tests "
           "(-n/--max-tests option), ama after %s iterations "
@@ -133,7 +133,7 @@ eleza main():
             andika("ran %s tests/%s" % (ntest, len(tests)))
             andika("exit", exitcode)
             ikiwa exitcode:
-                andika("Tests failed: continuing with this subtest")
+                andika("Tests failed: continuing ukijumuisha this subtest")
                 tests = subtests
                 output = write_output(args.output, tests)
             isipokua:

@@ -17,7 +17,7 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
            "Calendar", "TextCalendar", "HTMLCalendar", "LocaleTextCalendar",
            "LocaleHTMLCalendar", "weekheader"]
 
-# Exception ashiriad kila bad input (with string parameter kila details)
+# Exception ashiriad kila bad input (ukijumuisha string parameter kila details)
 error = ValueError
 
 # Exceptions ashiriad kila bad input
@@ -164,7 +164,7 @@ kundi Calendar(object):
 
     eleza iterweekdays(self):
         """
-        Return an iterator kila one week of weekday numbers starting with the
+        Return an iterator kila one week of weekday numbers starting ukijumuisha the
         configured first one.
         """
         kila i kwenye range(self.firstweekday, self.firstweekday + 7):
@@ -570,7 +570,7 @@ kundi LocaleTextCalendar(TextCalendar):
         self.locale = locale
 
     eleza formatweekday(self, day, width):
-        with different_locale(self.locale):
+        ukijumuisha different_locale(self.locale):
             ikiwa width >= 9:
                 names = day_name
             isipokua:
@@ -579,7 +579,7 @@ kundi LocaleTextCalendar(TextCalendar):
             rudisha name[:width].center(width)
 
     eleza formatmonthname(self, theyear, themonth, width, withyear=Kweli):
-        with different_locale(self.locale):
+        ukijumuisha different_locale(self.locale):
             s = month_name[themonth]
             ikiwa withyear:
                 s = "%s %r" % (s, theyear)
@@ -600,12 +600,12 @@ kundi LocaleHTMLCalendar(HTMLCalendar):
         self.locale = locale
 
     eleza formatweekday(self, day):
-        with different_locale(self.locale):
+        ukijumuisha different_locale(self.locale):
             s = day_abbr[day]
             rudisha '<th class="%s">%s</th>' % (self.cssclasses[day], s)
 
     eleza formatmonthname(self, theyear, themonth, withyear=Kweli):
-        with different_locale(self.locale):
+        ukijumuisha different_locale(self.locale):
             s = month_name[themonth]
             ikiwa withyear:
                 s = '%s %s' % (s, theyear)
@@ -739,7 +739,7 @@ eleza main(args):
         write = sys.stdout.buffer.write
         ikiwa options.year ni Tupu:
             write(cal.formatyearpage(datetime.date.today().year, **optdict))
-        elikiwa options.month ni Tupu:
+        lasivyo options.month ni Tupu:
             write(cal.formatyearpage(options.year, **optdict))
         isipokua:
             parser.error("incorrect number of arguments")
@@ -755,7 +755,7 @@ eleza main(args):
             optdict["m"] = options.months
         ikiwa options.year ni Tupu:
             result = cal.formatyear(datetime.date.today().year, **optdict)
-        elikiwa options.month ni Tupu:
+        lasivyo options.month ni Tupu:
             result = cal.formatyear(options.year, **optdict)
         isipokua:
             result = cal.formatmonth(options.year, options.month, **optdict)

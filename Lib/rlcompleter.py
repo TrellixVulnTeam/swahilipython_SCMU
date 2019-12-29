@@ -19,7 +19,7 @@ Notes:
   without some complicated hoopla to save, reset na restore the tty state.
 
 - The evaluation of the NAME.NAME... form may cause arbitrary application
-  defined code to be executed ikiwa an object with a __getattr__ hook ni found.
+  defined code to be executed ikiwa an object ukijumuisha a __getattr__ hook ni found.
   Since it ni the responsibility of the application (or the user) to enable this
   feature, I consider this an acceptable risk.  More complicated expressions
   (e.g. function calls ama indexing operations) are *not* evaluated.
@@ -66,8 +66,8 @@ kundi Completer:
     eleza complete(self, text, state):
         """Return the next possible completion kila 'text'.
 
-        This ni called successively with state == 0, 1, 2, ... until it
-        rudishas Tupu.  The completion should begin with 'text'.
+        This ni called successively ukijumuisha state == 0, 1, 2, ... until it
+        rudishas Tupu.  The completion should begin ukijumuisha 'text'.
 
         """
         ikiwa self.use_main_ns:
@@ -115,7 +115,7 @@ kundi Completer:
                 seen.add(word)
                 ikiwa word kwenye {'finally', 'try'}:
                     word = word + ':'
-                elikiwa word haiko kwenye {'Uongo', 'Tupu', 'Kweli',
+                lasivyo word haiko kwenye {'Uongo', 'Tupu', 'Kweli',
                                   'koma', 'endelea', 'pita',
                                   'else'}:
                     word = word + ' '
@@ -136,7 +136,7 @@ kundi Completer:
         instances, kundi members are also considered.)
 
         WARNING: this can still invoke arbitrary C code, ikiwa an object
-        with a __getattr__ hook ni evaluated.
+        ukijumuisha a __getattr__ hook ni evaluated.
 
         """
         agiza re
@@ -160,7 +160,7 @@ kundi Completer:
         n = len(attr)
         ikiwa attr == '':
             noprefix = '_'
-        elikiwa attr == '_':
+        lasivyo attr == '_':
             noprefix = '__'
         isipokua:
             noprefix = Tupu

@@ -69,7 +69,7 @@ eleza tabulate(r):
     The sizes are 2**i kila i kwenye r (the argument, a list).
 
     The output displays i, 2**i, na the time to sort arrays of 2**i
-    floating point numbers with the following properties:
+    floating point numbers ukijumuisha the following properties:
 
     *sort: random data
     \sort: descending data
@@ -102,7 +102,7 @@ eleza tabulate(r):
             L[i1], L[i2] = L[i2], L[i1]
         doit(L) # 3sort
 
-        # Replace the last 10 with random floats.
+        # Replace the last 10 ukijumuisha random floats.
         ikiwa n >= 10:
             L[-10:] = [random.random() kila dummy kwenye range(10)]
         doit(L) # +sort
@@ -116,7 +116,7 @@ eleza tabulate(r):
         ikiwa n > 4:
             toa L[4:]
             L = L * (n // 4)
-            # Force the elements to be distinct objects, else timings can be
+            # Force the elements to be distinct objects, isipokua timings can be
             # artificially low.
             L = list(map(lambda x: --x, L))
         doit(L) # ~sort

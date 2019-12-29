@@ -46,7 +46,7 @@ kundi NormalizationTest(unittest.TestCase):
         tatizo (OSError, HTTPException):
             self.fail(f"Could sio retrieve {TESTDATAURL}")
 
-        with testdata:
+        ukijumuisha testdata:
             self.run_normalization_tests(testdata)
 
     eleza run_normalization_tests(self, testdata):

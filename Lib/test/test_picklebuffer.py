@@ -18,8 +18,8 @@ kundi B(bytes):
 kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_memoryview(self, pb, equiv):
-        with memoryview(pb) kama m:
-            with memoryview(equiv) kama expected:
+        ukijumuisha memoryview(pb) kama m:
+            ukijumuisha memoryview(equiv) kama expected:
                 self.assertEqual(m.nbytes, expected.nbytes)
                 self.assertEqual(m.readonly, expected.readonly)
                 self.assertEqual(m.itemsize, expected.itemsize)
@@ -31,25 +31,25 @@ kundi PickleBufferTest(unittest.TestCase):
                 self.assertEqual(m.tobytes(), expected.tobytes())
 
     eleza test_constructor_failure(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             PickleBuffer()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             PickleBuffer("foo")
         # Released memoryview fails taking a buffer
         m = memoryview(b"foo")
         m.release()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             PickleBuffer(m)
 
     eleza test_basics(self):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) kama m:
+        ukijumuisha memoryview(pb) kama m:
             self.assertKweli(m.readonly)
 
         pb = PickleBuffer(bytearray(b"foo"))
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) kama m:
+        ukijumuisha memoryview(pb) kama m:
             self.assertUongo(m.readonly)
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
@@ -57,7 +57,7 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_release(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) kama ashirias:
+        ukijumuisha self.assertRaises(ValueError) kama ashirias:
             memoryview(pb)
         self.assertIn("operation forbidden on released PickleBuffer object",
                       str(ashirias.exception))
@@ -98,13 +98,13 @@ kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_raw(self, obj, equiv):
         pb = PickleBuffer(obj)
-        with pb.raw() kama m:
+        ukijumuisha pb.raw() kama m:
             self.assertIsInstance(m, memoryview)
             self.check_memoryview(m, equiv)
 
     eleza test_raw(self):
         kila obj kwenye (b"foo", bytearray(b"foo")):
-            with self.subTest(obj=obj):
+            ukijumuisha self.subTest(obj=obj):
                 self.check_raw(obj, obj)
 
     eleza test_raw_ndarray(self):
@@ -130,7 +130,7 @@ kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_raw_non_contiguous(self, obj):
         pb = PickleBuffer(obj)
-        with self.assertRaisesRegex(BufferError, "non-contiguous"):
+        ukijumuisha self.assertRaisesRegex(BufferError, "non-contiguous"):
             pb.raw()
 
     eleza test_raw_non_contiguous(self):
@@ -145,7 +145,7 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_raw_released(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) kama ashirias:
+        ukijumuisha self.assertRaises(ValueError) kama ashirias:
             pb.raw()
 
 

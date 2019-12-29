@@ -98,7 +98,7 @@ kundi TestSuper(unittest.TestCase):
             eleza f():
                 __class__
         self.assertIs(X.x, type(self))
-        with self.assertRaises(NameError) kama e:
+        ukijumuisha self.assertRaises(NameError) kama e:
             exec("""kundi X:
                 __class__
                 eleza f():
@@ -226,7 +226,7 @@ kundi TestSuper(unittest.TestCase):
         self.assertEqual(len(method_closure), 1)
         self.assertIs(class_cell, method_closure[0])
         # Ensure the cell reference *doesn't* get turned into an attribute
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             WithClassRef.__classcell__
 
     eleza test___classcell___missing(self):
@@ -247,22 +247,22 @@ kundi TestSuper(unittest.TestCase):
         # __class__ was sio set, na asking ikiwa __classcell__ was propagated
         # to type.__new__.
         expected_error = '__class__ sio set.*__classcell__ propagated'
-        with self.assertRaisesRegex(RuntimeError, expected_error):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, expected_error):
             kundi WithClassRef(metaclass=Meta):
                 eleza f(self):
                     rudisha __class__
 
     eleza test___classcell___overwrite(self):
         # See issue #23722
-        # Overwriting __classcell__ with nonsense ni explicitly prohibited
+        # Overwriting __classcell__ ukijumuisha nonsense ni explicitly prohibited
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace, cell):
                 namespace['__classcell__'] = cell
                 rudisha super().__new__(cls, name, bases, namespace)
 
         kila bad_cell kwenye (Tupu, 0, "", object()):
-            with self.subTest(bad_cell=bad_cell):
-                with self.assertRaises(TypeError):
+            ukijumuisha self.subTest(bad_cell=bad_cell):
+                ukijumuisha self.assertRaises(TypeError):
                     kundi A(metaclass=Meta, cell=bad_cell):
                         pita
 
@@ -275,7 +275,7 @@ kundi TestSuper(unittest.TestCase):
                 B = type("B", (), namespace)
                 rudisha cls
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi A(metaclass=Meta):
                 eleza f(self):
                     rudisha __class__

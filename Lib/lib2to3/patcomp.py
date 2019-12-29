@@ -116,10 +116,10 @@ kundi PatternCompiler(object):
             ikiwa child.type == token.STAR:
                 min = 0
                 max = pytree.HUGE
-            elikiwa child.type == token.PLUS:
+            lasivyo child.type == token.PLUS:
                 min = 1
                 max = pytree.HUGE
-            elikiwa child.type == token.LBRACE:
+            lasivyo child.type == token.LBRACE:
                 assert children[-1].type == token.RBRACE
                 assert  len(children) kwenye (3, 5)
                 min = max = self.get_int(children[1])
@@ -142,7 +142,7 @@ kundi PatternCompiler(object):
         ikiwa node.type == token.STRING:
             value = str(literals.evalString(node.value))
             rudisha pytree.LeafPattern(_type_of_literal(value), value)
-        elikiwa node.type == token.NAME:
+        lasivyo node.type == token.NAME:
             value = node.value
             ikiwa value.isupper():
                 ikiwa value haiko kwenye TOKEN_MAP:
@@ -153,7 +153,7 @@ kundi PatternCompiler(object):
             isipokua:
                 ikiwa value == "any":
                     type = Tupu
-                elikiwa sio value.startswith("_"):
+                lasivyo sio value.startswith("_"):
                     type = getattr(self.pysyms, value, Tupu)
                     ikiwa type ni Tupu:
                         ashiria PatternSyntaxError("Invalid symbol: %r" % value)
@@ -162,9 +162,9 @@ kundi PatternCompiler(object):
                 isipokua:
                     content = Tupu
                 rudisha pytree.NodePattern(type, content)
-        elikiwa node.value == "(":
+        lasivyo node.value == "(":
             rudisha self.compile_node(nodes[1])
-        elikiwa node.value == "[":
+        lasivyo node.value == "[":
             assert repeat ni Tupu
             subpattern = self.compile_node(nodes[1])
             rudisha pytree.WildcardPattern([[subpattern]], min=0, max=1)
@@ -185,7 +185,7 @@ TOKEN_MAP = {"NAME": token.NAME,
 eleza _type_of_literal(value):
     ikiwa value[0].isalpha():
         rudisha token.NAME
-    elikiwa value kwenye grammar.opmap:
+    lasivyo value kwenye grammar.opmap:
         rudisha grammar.opmap[value]
     isipokua:
         rudisha Tupu

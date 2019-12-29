@@ -14,7 +14,7 @@ kutoka idlelib agiza textview
 eleza build_bits():
     "Return bits kila platform."
     ikiwa sys.platform == 'darwin':
-        rudisha '64' ikiwa sys.maxsize > 2**32 else '32'
+        rudisha '64' ikiwa sys.maxsize > 2**32 isipokua '32'
     isipokua:
         rudisha architecture()[0][:2]
 
@@ -36,7 +36,7 @@ kundi AboutDialog(Toplevel):
         # place dialog below parent ikiwa running htest
         self.geometry("+%d+%d" % (
                         parent.winfo_rootx()+30,
-                        parent.winfo_rooty()+(30 ikiwa sio _htest else 100)))
+                        parent.winfo_rooty()+(30 ikiwa sio _htest isipokua 100)))
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
@@ -74,7 +74,7 @@ kundi AboutDialog(Toplevel):
         header.grid(row=0, column=0, sticky=E, padx=10, pady=10)
 
         tk_patchlevel = self.tk.call('info', 'patchlevel')
-        ext = '.png' ikiwa tk_patchlevel >= '8.6' else '.gif'
+        ext = '.png' ikiwa tk_patchlevel >= '8.6' isipokua '.gif'
         icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                             'Icons', f'idle_48{ext}')
         self.icon_image = PhotoImage(master=self._root(), file=icon)
@@ -174,7 +174,7 @@ kundi AboutDialog(Toplevel):
 
         Built-in constants have type _sitebuiltins._Printer.  The
         text ni extracted kutoka the built-in na then sent to a text
-        viewer with self kama the parent na title kama the title of
+        viewer ukijumuisha self kama the parent na title kama the title of
         the popup.
         """
         printer._Printer__setup()
@@ -186,7 +186,7 @@ kundi AboutDialog(Toplevel):
         """Create textview kila filename.
 
         The filename needs to be kwenye the current directory.  The path
-        ni sent to a text viewer with self kama the parent, title as
+        ni sent to a text viewer ukijumuisha self kama the parent, title as
         the title of the popup, na the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)

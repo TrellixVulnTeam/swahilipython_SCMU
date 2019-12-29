@@ -451,7 +451,7 @@ class TestEmailMessageBase:
     def message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [None if n is None else allparts[n] for n in body_parts]
+        expected = [None if n is None isipokua allparts[n] for n in body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -665,7 +665,7 @@ class TestEmailMessageBase:
     def subtype_as_add(self, method, subtype, outcome):
         m, msg_headers, payload = self._make_subtype_test_message(subtype)
         cm = self._TestSetContentManager()
-        add_method = 'add_attachment' if method=='mixed' else 'add_' + method
+        add_method = 'add_attachment' if method=='mixed' isipokua 'add_' + method
         if outcome == 'raises':
             self._check_disallowed_subtype_raises(m, method, subtype, add_method)
             return

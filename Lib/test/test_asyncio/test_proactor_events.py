@@ -484,7 +484,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         self.sock.fileno.return_value = 7
 
     def datagram_transport(self, address=None):
-        self.sock.getpeername.side_effect = None if address else OSError
+        self.sock.getpeername.side_effect = None if address isipokua OSError
         transport = _ProactorDatagramTransport(self.loop, self.sock,
                                                self.protocol,
                                                address=address)

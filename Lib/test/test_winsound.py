@@ -103,7 +103,7 @@ kundi PlaySoundTest(unittest.TestCase):
         safe_PlaySound(flags=winsound.SND_ALIAS, sound="SystemExit")
 
     eleza test_snd_memory(self):
-        with open(support.findfile('pluck-pcm8.wav',
+        ukijumuisha open(support.findfile('pluck-pcm8.wav',
                                    subdir='audiodata'), 'rb') kama f:
             audio_data = f.read()
         safe_PlaySound(audio_data, winsound.SND_MEMORY)
@@ -123,7 +123,7 @@ kundi PlaySoundTest(unittest.TestCase):
             "SystemQuestion",
         ]
         kila alias kwenye aliases:
-            with self.subTest(alias=alias):
+            ukijumuisha self.subTest(alias=alias):
                 safe_PlaySound(alias, winsound.SND_ALIAS)
 
     eleza test_alias_fallback(self):

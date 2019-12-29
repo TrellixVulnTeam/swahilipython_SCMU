@@ -15,7 +15,7 @@ ikiwa getattr(sys, 'float_repr_style', '') != 'short':
 
 strtod_parser = re.compile(r"""    # A numeric string consists of:
     (?P<sign>[-+])?          # an optional sign, followed by
-    (?=\d|\.\d)              # a number with at least one digit
+    (?=\d|\.\d)              # a number ukijumuisha at least one digit
     (?P<int>\d*)             # having a (possibly empty) integer part
     (?:\.(?P<frac>\d*))?     # followed by an optional fractional part
     (?:E(?P<exp>[-+]?\d+))?  # na an optional exponent
@@ -31,7 +31,7 @@ eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     stage."""
 
     # parse string into a pair of integers 'a' na 'b' such that
-    # abs(decimal value) = a/b, along with a boolean 'negative'.
+    # abs(decimal value) = a/b, along ukijumuisha a boolean 'negative'.
     m = strtod_parser(s)
     ikiwa m ni Tupu:
         ashiria ValueError('invalid numeric string')
@@ -43,12 +43,12 @@ eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
 
     # quick rudisha kila zeros
     ikiwa sio a:
-        rudisha '-0x0.0p+0' ikiwa negative else '0x0.0p+0'
+        rudisha '-0x0.0p+0' ikiwa negative isipokua '0x0.0p+0'
 
     # compute exponent e kila result; may be one too small kwenye the case
     # that the rounded value of a/b lies kwenye a different binade kutoka a/b
     d = a.bit_length() - b.bit_length()
-    d += (a >> d ikiwa d >= 0 else a << -d) >= b
+    d += (a >> d ikiwa d >= 0 isipokua a << -d) >= b
     e = max(d, min_exp) - mant_dig
 
     # approximate a/b by number of the form q * 2**e; adjust e ikiwa necessary
@@ -66,16 +66,16 @@ eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
 
     # check kila overflow na underflow
     ikiwa e + q.bit_length() > max_exp:
-        rudisha '-inf' ikiwa negative else 'inf'
+        rudisha '-inf' ikiwa negative isipokua 'inf'
     ikiwa sio q:
-        rudisha '-0x0.0p+0' ikiwa negative else '0x0.0p+0'
+        rudisha '-0x0.0p+0' ikiwa negative isipokua '0x0.0p+0'
 
     # kila hex representation, shift so # bits after point ni a multiple of 4
     hexdigs = 1 + (mant_dig-2)//4
     shift = 3 - (mant_dig-2)%4
     q, e = q << shift, e - shift
     rudisha '{}0x{:x}.{:0{}x}p{:+d}'.format(
-        '-' ikiwa negative else '',
+        '-' ikiwa negative isipokua '',
         q // 16**hexdigs,
         q % 16**hexdigs,
         hexdigs,
@@ -93,7 +93,7 @@ kundi StrtodTests(unittest.TestCase):
         jaribu:
             fs = float(s)
         tatizo OverflowError:
-            got = '-inf' ikiwa s[0] == '-' else 'inf'
+            got = '-inf' ikiwa s[0] == '-' isipokua 'inf'
         tatizo MemoryError:
             got = 'memory error'
         isipokua:
@@ -104,7 +104,7 @@ kundi StrtodTests(unittest.TestCase):
                          "expected {}, got {}".format(s, expected, got))
 
     eleza test_short_halfway_cases(self):
-        # exact halfway cases with a small number of significant digits
+        # exact halfway cases ukijumuisha a small number of significant digits
         kila k kwenye 0, 5, 10, 15, 20:
             # upper = smallest integer >= 2**54/5**k
             upper = -(-2**54//5**k)
@@ -115,7 +115,7 @@ kundi StrtodTests(unittest.TestCase):
             kila i kwenye range(TEST_SIZE):
                 # Select a random odd n kwenye [2**53/5**k,
                 # 2**54/5**k). Then n * 10**k gives a halfway case
-                # with small number of significant digits.
+                # ukijumuisha small number of significant digits.
                 n, e = random.randrange(lower, upper, 2), k
 
                 # Remove any additional powers of 5.
@@ -129,18 +129,18 @@ kundi StrtodTests(unittest.TestCase):
                 wakati digits < 10**20:
                     s = '{}e{}'.format(digits, exponent)
                     self.check_strtod(s)
-                    # Same again, but with extra trailing zeros.
+                    # Same again, but ukijumuisha extra trailing zeros.
                     s = '{}e{}'.format(digits * 10**40, exponent - 40)
                     self.check_strtod(s)
                     digits *= 2
 
                 # Try numbers of the form n * 5**p2 * 10**(e - p5), p5
-                # >= 0, with n * 5**p5 < 10**20.
+                # >= 0, ukijumuisha n * 5**p5 < 10**20.
                 digits, exponent = n, e
                 wakati digits < 10**20:
                     s = '{}e{}'.format(digits, exponent)
                     self.check_strtod(s)
-                    # Same again, but with extra trailing zeros.
+                    # Same again, but ukijumuisha extra trailing zeros.
                     s = '{}e{}'.format(digits * 10**40, exponent - 40)
                     self.check_strtod(s)
                     digits *= 5
@@ -195,7 +195,7 @@ kundi StrtodTests(unittest.TestCase):
     eleza test_underflow_boundary(self):
         # test values close to 2**-1075, the underflow boundary; similar
         # to boundary_tests, tatizo that the random error doesn't scale
-        # with n
+        # ukijumuisha n
         kila exponent kwenye range(-400, -320):
             base = 10**-exponent // 2**1075
             kila j kwenye range(TEST_SIZE):
@@ -252,12 +252,12 @@ kundi StrtodTests(unittest.TestCase):
     eleza test_oversized_digit_strings(self, maxsize):
         # Input string whose length doesn't fit kwenye an INT.
         s = "1." + "1" * maxsize
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             float(s)
         toa s
 
         s = "0." + "0" * maxsize + "1"
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             float(s)
         toa s
 
@@ -265,11 +265,11 @@ kundi StrtodTests(unittest.TestCase):
         # Verify that the clipping of the exponent kwenye strtod doesn't affect the
         # output values.
         eleza positive_exp(n):
-            """ Long string with value 1.0 na exponent n"""
+            """ Long string ukijumuisha value 1.0 na exponent n"""
             rudisha '0.{}1e+{}'.format('0'*(n-1), n)
 
         eleza negative_exp(n):
-            """ Long string with value 1.0 na exponent -n"""
+            """ Long string ukijumuisha value 1.0 na exponent -n"""
             rudisha '1{}e-{}'.format('0'*n, n)
 
         self.assertEqual(float(positive_exp(10000)), 1.0)
@@ -330,7 +330,7 @@ kundi StrtodTests(unittest.TestCase):
             # buggy; the exit condition was too strong
             '247032822920623295e-341',
             # demonstrate similar problem to issue 7632 bug1: crash
-            # with 'oversized quotient kwenye quorem' message.
+            # ukijumuisha 'oversized quotient kwenye quorem' message.
             '99037485700245683102805043437346965248029601286431e-373',
             '99617639833743863161109961162881027406769510558457e-373',
             '98852915025769345295749278351563179840130565591462e-372',

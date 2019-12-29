@@ -11,12 +11,12 @@ handler -- Base classes na constants which define the SAX 2 API for
            the 'client-side' of SAX kila Python.
 
 saxutils -- Implementation of the convenience classes commonly used to
-            work with SAX.
+            work ukijumuisha SAX.
 
 xmlreader -- Base classes na constants which define the SAX 2 API for
-             the parsers used with SAX kila Python.
+             the parsers used ukijumuisha SAX kila Python.
 
-expatreader -- Driver that allows use of the Expat parser with SAX.
+expatreader -- Driver that allows use of the Expat parser ukijumuisha SAX.
 """
 
 kutoka .xmlreader agiza InputSource

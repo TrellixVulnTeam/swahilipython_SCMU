@@ -57,7 +57,7 @@ kundi DictVersionTests(unittest.TestCase):
 
         d2 = self.check_version_dont_change(d, d.copy)
 
-        # dict.copy() must create a dictionary with a new unique version
+        # dict.copy() must create a dictionary ukijumuisha a new unique version
         self.check_version_unique(d2)
 
     eleza test_setitem(self):
@@ -78,11 +78,11 @@ kundi DictVersionTests(unittest.TestCase):
         # setting a key must change the version
         self.check_version_changed(d, d.__setitem__, 'key', value)
 
-        # setting a key to the same value with dict.__setitem__
+        # setting a key to the same value ukijumuisha dict.__setitem__
         # must change the version
         self.check_version_dont_change(d, d.__setitem__, 'key', value)
 
-        # setting a key to the same value with dict.update
+        # setting a key to the same value ukijumuisha dict.update
         # must change the version
         self.check_version_dont_change(d, d.update, key=value)
 
@@ -103,11 +103,11 @@ kundi DictVersionTests(unittest.TestCase):
         self.check_version_changed(d, d.__setitem__, 'key', value1)
 
         # setting a key to a value equal to the current value
-        # with dict.__setitem__() must change the version
+        # ukijumuisha dict.__setitem__() must change the version
         self.check_version_changed(d, d.__setitem__, 'key', value2)
 
         # setting a key to a value equal to the current value
-        # with dict.update() must change the version
+        # ukijumuisha dict.update() must change the version
         self.check_version_changed(d, d.update, key=value1)
 
         d2 = self.new_dict(key=value2)
@@ -116,7 +116,7 @@ kundi DictVersionTests(unittest.TestCase):
     eleza test_setdefault(self):
         d = self.new_dict()
 
-        # setting a key with dict.setdefault() must change the version
+        # setting a key ukijumuisha dict.setdefault() must change the version
         self.check_version_changed(d, d.setdefault, 'key', 'value1')
 
         # don't change the version ikiwa the key already exists
@@ -125,7 +125,7 @@ kundi DictVersionTests(unittest.TestCase):
     eleza test_delitem(self):
         d = self.new_dict(key='value')
 
-        # deleting a key with dict.__delitem__() must change the version
+        # deleting a key ukijumuisha dict.__delitem__() must change the version
         self.check_version_changed(d, d.__delitem__, 'key')
 
         # don't change the version ikiwa the key doesn't exist
@@ -155,7 +155,7 @@ kundi DictVersionTests(unittest.TestCase):
     eleza test_update(self):
         d = self.new_dict(key='value')
 
-        # update() calling with no argument must sio change the version
+        # update() calling ukijumuisha no argument must sio change the version
         self.check_version_dont_change(d, d.update)
 
         # update() must change the version

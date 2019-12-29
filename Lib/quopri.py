@@ -61,7 +61,7 @@ eleza encode(input, output, quotetabs, header=Uongo):
         # that trailing character encoded.
         ikiwa s na s[-1:] kwenye b' \t':
             output.write(s[:-1] + quote(s[-1:]) + lineEnd)
-        elikiwa s == b'.':
+        lasivyo s == b'.':
             output.write(quote(s) + lineEnd)
         isipokua:
             output.write(s + lineEnd)
@@ -141,13 +141,13 @@ eleza decode(input, output, header=Uongo):
             c = line[i:i+1]
             ikiwa c == b'_' na header:
                 new = new + b' '; i = i+1
-            elikiwa c != ESCAPE:
+            lasivyo c != ESCAPE:
                 new = new + c; i = i+1
-            elikiwa i+1 == n na sio partial:
+            lasivyo i+1 == n na sio partial:
                 partial = 1; koma
-            elikiwa i+1 < n na line[i+1:i+2] == ESCAPE:
+            lasivyo i+1 < n na line[i+1:i+2] == ESCAPE:
                 new = new + ESCAPE; i = i+2
-            elikiwa i+2 < n na ishex(line[i+1:i+2]) na ishex(line[i+2:i+3]):
+            lasivyo i+2 < n na ishex(line[i+1:i+2]) na ishex(line[i+2:i+3]):
                 new = new + bytes((unhex(line[i+1:i+3]),)); i = i+3
             isipokua: # Bad escape sequence -- leave it in
                 new = new + c; i = i+1
@@ -181,9 +181,9 @@ eleza unhex(s):
         c = bytes((c,))
         ikiwa b'0' <= c <= b'9':
             i = ord('0')
-        elikiwa b'a' <= c <= b'f':
+        lasivyo b'a' <= c <= b'f':
             i = ord('a')-10
-        elikiwa b'A' <= c <= b'F':
+        lasivyo b'A' <= c <= b'F':
             i = ord(b'A')-10
         isipokua:
             assert Uongo, "non-hex digit "+repr(c)

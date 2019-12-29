@@ -61,7 +61,7 @@ kundi Connection(object):
             rudisha Kweli
         ikiwa timeout <= 0.0:
             rudisha Uongo
-        with self._in.not_empty:
+        ukijumuisha self._in.not_empty:
             self._in.not_empty.wait(timeout)
         rudisha self._in.qsize() > 0
 

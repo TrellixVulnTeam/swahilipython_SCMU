@@ -54,14 +54,14 @@ kundi Popen(popen_fork.Popen):
         _parent_w = os.dup(w)
         self.finalizer = util.Finalize(self, util.close_fds,
                                        (_parent_w, self.sentinel))
-        with open(w, 'wb', closefd=Kweli) kama f:
+        ukijumuisha open(w, 'wb', closefd=Kweli) kama f:
             f.write(buf.getbuffer())
         self.pid = forkserver.read_signed(self.sentinel)
 
     eleza poll(self, flag=os.WNOHANG):
         ikiwa self.returncode ni Tupu:
             kutoka multiprocessing.connection agiza wait
-            timeout = 0 ikiwa flag == os.WNOHANG else Tupu
+            timeout = 0 ikiwa flag == os.WNOHANG isipokua Tupu
             ikiwa sio wait([self.sentinel], timeout):
                 rudisha Tupu
             jaribu:

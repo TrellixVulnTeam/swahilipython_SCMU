@@ -5,7 +5,7 @@ agiza unittest
 
 kutoka test agiza support
 
-# agiza json with na without accelerations
+# agiza json ukijumuisha na without accelerations
 cjson = support.import_fresh_module('json', fresh=['_json'])
 pyjson = support.import_fresh_module('json', blocked=['_json'])
 # JSONDecodeError ni cached inside the _json module

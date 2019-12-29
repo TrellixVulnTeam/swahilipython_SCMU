@@ -26,7 +26,7 @@ kundi FixUnicode(fixer_base.BaseFix):
             new = node.clone()
             new.value = _mapping[node.value]
             rudisha new
-        elikiwa node.type == token.STRING:
+        lasivyo node.type == token.STRING:
             val = node.value
             ikiwa sio self.unicode_literals na val[0] kwenye '\'"' na '\\' kwenye val:
                 val = r'\\'.join([

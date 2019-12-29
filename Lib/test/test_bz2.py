@@ -70,7 +70,7 @@ kundi BaseTest(unittest.TestCase):
     test_size = 0
     BIG_TEXT = bytearray(128*1024)
     kila fname kwenye glob.glob(os.path.join(os.path.dirname(__file__), '*.py')):
-        with open(fname, 'rb') kama fh:
+        ukijumuisha open(fname, 'rb') kama fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
         ikiwa test_size > 128*1024:
             koma
@@ -88,7 +88,7 @@ kundi BZ2FileTest(BaseTest):
     "Test the BZ2File class."
 
     eleza createTempFile(self, streams=1, suffix=b""):
-        with open(self.filename, "wb") kama f:
+        ukijumuisha open(self.filename, "wb") kama f:
             f.write(self.DATA * streams)
             f.write(suffix)
 
@@ -102,29 +102,29 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testRead(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT)
 
     eleza testReadBadFile(self):
         self.createTempFile(streams=0, suffix=self.BAD_DATA)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(OSError, bz2f.read)
 
     eleza testReadMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
     eleza testReadMonkeyMultiStream(self):
         # Test BZ2File.read() on a multi-stream archive where a stream
-        # boundary coincides with the end of the raw read buffer.
+        # boundary coincides ukijumuisha the end of the raw read buffer.
         buffer_size = _compression.BUFFER_SIZE
         _compression.BUFFER_SIZE = len(self.DATA)
         jaribu:
             self.createTempFile(streams=5)
-            with BZ2File(self.filename) kama bz2f:
+            ukijumuisha BZ2File(self.filename) kama bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT * 5)
         mwishowe:
@@ -132,23 +132,23 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testReadTrailingJunk(self):
         self.createTempFile(suffix=self.BAD_DATA)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(bz2f.read(), self.TEXT)
 
     eleza testReadMultiStreamTrailingJunk(self):
         self.createTempFile(streams=5, suffix=self.BAD_DATA)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
     eleza testRead0(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(0), b"")
 
     eleza testReadChunk10(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             text = b''
             wakati Kweli:
                 str = bz2f.read(10)
@@ -159,7 +159,7 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testReadChunk10MultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             text = b''
             wakati Kweli:
                 str = bz2f.read(10)
@@ -170,12 +170,12 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testRead100(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(bz2f.read(100), self.TEXT[:100])
 
     eleza testPeek(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             pdata = bz2f.peek()
             self.assertNotEqual(len(pdata), 0)
             self.assertKweli(self.TEXT.startswith(pdata))
@@ -183,7 +183,7 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testReadInto(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             n = 128
             b = bytearray(n)
             self.assertEqual(bz2f.readinto(b), n)
@@ -195,38 +195,38 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testReadLine(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.readline, Tupu)
             kila line kwenye self.TEXT_LINES:
                 self.assertEqual(bz2f.readline(), line)
 
     eleza testReadLineMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.readline, Tupu)
             kila line kwenye self.TEXT_LINES * 5:
                 self.assertEqual(bz2f.readline(), line)
 
     eleza testReadLines(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.readlines, Tupu)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES)
 
     eleza testReadLinesMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.readlines, Tupu)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES * 5)
 
     eleza testIterator(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES)
 
     eleza testIteratorMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES * 5)
 
     eleza testClosedIteratorDeadlock(self):
@@ -239,14 +239,14 @@ kundi BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, bz2f.readlines)
 
     eleza testWrite(self):
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with open(self.filename, 'rb') kama f:
+        ukijumuisha open(self.filename, 'rb') kama f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     eleza testWriteChunks10(self):
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             n = 0
             wakati Kweli:
                 str = self.TEXT[n*10:(n+1)*10]
@@ -254,68 +254,68 @@ kundi BZ2FileTest(BaseTest):
                     koma
                 bz2f.write(str)
                 n += 1
-        with open(self.filename, 'rb') kama f:
+        ukijumuisha open(self.filename, 'rb') kama f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     eleza testWriteNonDefaultCompressLevel(self):
         expected = bz2.compress(self.TEXT, compresslevel=5)
-        with BZ2File(self.filename, "w", compresslevel=5) kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w", compresslevel=5) kama bz2f:
             bz2f.write(self.TEXT)
-        with open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") kama f:
             self.assertEqual(f.read(), expected)
 
     eleza testWriteLines(self):
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             self.assertRaises(TypeError, bz2f.writelines)
             bz2f.writelines(self.TEXT_LINES)
         # Issue #1535500: Calling writelines() on a closed BZ2File
         # should ashiria an exception.
         self.assertRaises(ValueError, bz2f.writelines, ["a"])
-        with open(self.filename, 'rb') kama f:
+        ukijumuisha open(self.filename, 'rb') kama f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     eleza testWriteMethodsOnReadOnlyFile(self):
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             bz2f.write(b"abc")
 
-        with BZ2File(self.filename, "r") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "r") kama bz2f:
             self.assertRaises(OSError, bz2f.write, b"a")
             self.assertRaises(OSError, bz2f.writelines, [b"a"])
 
     eleza testAppend(self):
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with BZ2File(self.filename, "a") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "a") kama bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with open(self.filename, 'rb') kama f:
+        ukijumuisha open(self.filename, 'rb') kama f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT * 2)
 
     eleza testSeekForward(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     eleza testSeekForwardAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(len(self.TEXT) + 150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     eleza testSeekBackwards(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.read(500)
             bz2f.seek(-150, 1)
             self.assertEqual(bz2f.read(), self.TEXT[500-150:])
 
     eleza testSeekBackwardsAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             readto = len(self.TEXT) + 100
             wakati readto > 0:
                 readto -= len(bz2f.read(readto))
@@ -324,33 +324,33 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testSeekBackwardsFromEnd(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(-150, 2)
             self.assertEqual(bz2f.read(), self.TEXT[len(self.TEXT)-150:])
 
     eleza testSeekBackwardsFromEndAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(-1000, 2)
             self.assertEqual(bz2f.read(), (self.TEXT * 2)[-1000:])
 
     eleza testSeekPostEnd(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT))
             self.assertEqual(bz2f.read(), b"")
 
     eleza testSeekPostEndMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
             self.assertEqual(bz2f.read(), b"")
 
     eleza testSeekPostEndTwice(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(150000)
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT))
@@ -358,7 +358,7 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testSeekPostEndTwiceMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(150000)
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
@@ -366,21 +366,21 @@ kundi BZ2FileTest(BaseTest):
 
     eleza testSeekPreStart(self):
         self.createTempFile()
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT)
 
     eleza testSeekPreStartMultiStream(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT * 2)
 
     eleza testFileno(self):
         self.createTempFile()
-        with open(self.filename, 'rb') kama rawf:
+        ukijumuisha open(self.filename, 'rb') kama rawf:
             bz2f = BZ2File(rawf)
             jaribu:
                 self.assertEqual(bz2f.fileno(), rawf.fileno())
@@ -460,30 +460,30 @@ kundi BZ2FileTest(BaseTest):
     eleza testReadlinesNoNewline(self):
         # Issue #1191043: readlines() fails on a file containing no newline.
         data = b'BZh91AY&SY\xd9b\x89]\x00\x00\x00\x03\x80\x04\x00\x02\x00\x0c\x00 \x00!\x9ah3M\x13<]\xc9\x14\xe1BCe\x8a%t'
-        with open(self.filename, "wb") kama f:
+        ukijumuisha open(self.filename, "wb") kama f:
             f.write(data)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             lines = bz2f.readlines()
         self.assertEqual(lines, [b'Test'])
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             xlines = list(bz2f.readlines())
         self.assertEqual(xlines, [b'Test'])
 
     eleza testContextProtocol(self):
         f = Tupu
-        with BZ2File(self.filename, "wb") kama f:
+        ukijumuisha BZ2File(self.filename, "wb") kama f:
             f.write(b"xxx")
         f = BZ2File(self.filename, "rb")
         f.close()
         jaribu:
-            with f:
+            ukijumuisha f:
                 pita
         tatizo ValueError:
             pita
         isipokua:
             self.fail("__enter__ on a closed file didn't ashiria an exception")
         jaribu:
-            with BZ2File(self.filename, "wb") kama f:
+            ukijumuisha BZ2File(self.filename, "wb") kama f:
                 1/0
         tatizo ZeroDivisionError:
             pita
@@ -494,27 +494,27 @@ kundi BZ2FileTest(BaseTest):
         # Issue #7205: Using a BZ2File kutoka several threads shouldn't deadlock.
         data = b"1" * 2**20
         nthreads = 10
-        with BZ2File(self.filename, 'wb') kama f:
+        ukijumuisha BZ2File(self.filename, 'wb') kama f:
             eleza comp():
                 kila i kwenye range(5):
                     f.write(data)
             threads = [threading.Thread(target=comp) kila i kwenye range(nthreads)]
-            with support.start_threads(threads):
+            ukijumuisha support.start_threads(threads):
                 pita
 
     eleza testMixedIterationAndReads(self):
         self.createTempFile()
         linelen = len(self.TEXT_LINES[0])
         halflen = linelen // 2
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.read(halflen)
             self.assertEqual(next(bz2f), self.TEXT_LINES[0][halflen:])
             self.assertEqual(bz2f.read(), self.TEXT[linelen:])
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.readline()
             self.assertEqual(next(bz2f), self.TEXT_LINES[1])
             self.assertEqual(bz2f.readline(), self.TEXT_LINES[2])
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             bz2f.readlines()
             self.assertRaises(StopIteration, next, bz2f)
             self.assertEqual(bz2f.readlines(), [])
@@ -523,11 +523,11 @@ kundi BZ2FileTest(BaseTest):
         # Test the ordering of streams when reading a multi-stream archive.
         data1 = b"foo" * 1000
         data2 = b"bar" * 1000
-        with BZ2File(self.filename, "w") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "w") kama bz2f:
             bz2f.write(data1)
-        with BZ2File(self.filename, "a") kama bz2f:
+        ukijumuisha BZ2File(self.filename, "a") kama bz2f:
             bz2f.write(data2)
-        with BZ2File(self.filename) kama bz2f:
+        ukijumuisha BZ2File(self.filename) kama bz2f:
             self.assertEqual(bz2f.read(), data1 + data2)
 
     eleza testOpenBytesFilename(self):
@@ -536,19 +536,19 @@ kundi BZ2FileTest(BaseTest):
             bytes_filename = str_filename.encode("ascii")
         tatizo UnicodeEncodeError:
             self.skipTest("Temporary file name needs to be ASCII")
-        with BZ2File(bytes_filename, "wb") kama f:
+        ukijumuisha BZ2File(bytes_filename, "wb") kama f:
             f.write(self.DATA)
-        with BZ2File(bytes_filename, "rb") kama f:
+        ukijumuisha BZ2File(bytes_filename, "rb") kama f:
             self.assertEqual(f.read(), self.DATA)
         # Sanity check that we are actually operating on the right file.
-        with BZ2File(str_filename, "rb") kama f:
+        ukijumuisha BZ2File(str_filename, "rb") kama f:
             self.assertEqual(f.read(), self.DATA)
 
     eleza testOpenPathLikeFilename(self):
         filename = pathlib.Path(self.filename)
-        with BZ2File(filename, "wb") kama f:
+        ukijumuisha BZ2File(filename, "wb") kama f:
             f.write(self.DATA)
-        with BZ2File(filename, "rb") kama f:
+        ukijumuisha BZ2File(filename, "rb") kama f:
             self.assertEqual(f.read(), self.DATA)
 
     eleza testDecompressLimited(self):
@@ -566,38 +566,38 @@ kundi BZ2FileTest(BaseTest):
     # Tests kila a BZ2File wrapping another file object:
 
     eleza testReadBytesIO(self):
-        with BytesIO(self.DATA) kama bio:
-            with BZ2File(bio) kama bz2f:
+        ukijumuisha BytesIO(self.DATA) kama bio:
+            ukijumuisha BZ2File(bio) kama bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT)
             self.assertUongo(bio.closed)
 
     eleza testPeekBytesIO(self):
-        with BytesIO(self.DATA) kama bio:
-            with BZ2File(bio) kama bz2f:
+        ukijumuisha BytesIO(self.DATA) kama bio:
+            ukijumuisha BZ2File(bio) kama bz2f:
                 pdata = bz2f.peek()
                 self.assertNotEqual(len(pdata), 0)
                 self.assertKweli(self.TEXT.startswith(pdata))
                 self.assertEqual(bz2f.read(), self.TEXT)
 
     eleza testWriteBytesIO(self):
-        with BytesIO() kama bio:
-            with BZ2File(bio, "w") kama bz2f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha BZ2File(bio, "w") kama bz2f:
                 self.assertRaises(TypeError, bz2f.write)
                 bz2f.write(self.TEXT)
             self.assertEqual(ext_decompress(bio.getvalue()), self.TEXT)
             self.assertUongo(bio.closed)
 
     eleza testSeekForwardBytesIO(self):
-        with BytesIO(self.DATA) kama bio:
-            with BZ2File(bio) kama bz2f:
+        ukijumuisha BytesIO(self.DATA) kama bio:
+            ukijumuisha BZ2File(bio) kama bz2f:
                 self.assertRaises(TypeError, bz2f.seek)
                 bz2f.seek(150)
                 self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     eleza testSeekBackwardsBytesIO(self):
-        with BytesIO(self.DATA) kama bio:
-            with BZ2File(bio) kama bz2f:
+        ukijumuisha BytesIO(self.DATA) kama bio:
+            ukijumuisha BZ2File(bio) kama bz2f:
                 bz2f.read(500)
                 bz2f.seek(-150, 1)
                 self.assertEqual(bz2f.read(), self.TEXT[500-150:])
@@ -605,14 +605,14 @@ kundi BZ2FileTest(BaseTest):
     eleza test_read_truncated(self):
         # Drop the eos_magic field (6 bytes) na CRC (4 bytes).
         truncated = self.DATA[:-10]
-        with BZ2File(BytesIO(truncated)) kama f:
+        ukijumuisha BZ2File(BytesIO(truncated)) kama f:
             self.assertRaises(EOFError, f.read)
-        with BZ2File(BytesIO(truncated)) kama f:
+        ukijumuisha BZ2File(BytesIO(truncated)) kama f:
             self.assertEqual(f.read(len(self.TEXT)), self.TEXT)
             self.assertRaises(EOFError, f.read, 1)
         # Incomplete 4-byte file header, na block header of at least 146 bits.
         kila i kwenye range(22):
-            with BZ2File(BytesIO(truncated[:i])) kama f:
+            ukijumuisha BZ2File(BytesIO(truncated[:i])) kama f:
                 self.assertRaises(EOFError, f.read, 1)
 
 
@@ -646,7 +646,7 @@ kundi BZ2CompressorTest(BaseTest):
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=2)
     eleza testCompress4G(self, size):
-        # "Test BZ2Compressor.compress()/flush() with >4GiB input"
+        # "Test BZ2Compressor.compress()/flush() ukijumuisha >4GiB input"
         bz2c = BZ2Compressor()
         data = b"x" * size
         jaribu:
@@ -663,7 +663,7 @@ kundi BZ2CompressorTest(BaseTest):
 
     eleza testPickle(self):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 pickle.dumps(BZ2Compressor(), proto)
 
 
@@ -705,7 +705,7 @@ kundi BZ2DecompressorTest(BaseTest):
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3.3)
     eleza testDecompress4G(self, size):
-        # "Test BZ2Decompressor.decompress() with >4GiB input"
+        # "Test BZ2Decompressor.decompress() ukijumuisha >4GiB input"
         blocksize = 10 * 1024 * 1024
         block = random.getrandbits(blocksize * 8).to_bytes(blocksize, 'little')
         jaribu:
@@ -721,7 +721,7 @@ kundi BZ2DecompressorTest(BaseTest):
 
     eleza testPickle(self):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 pickle.dumps(BZ2Decompressor(), proto)
 
     eleza testDecompressorChunksMaxsize(self):
@@ -788,7 +788,7 @@ kundi BZ2DecompressorTest(BaseTest):
                                         max_length=0), b'')
         out.append(bzd.decompress(b''))
 
-        # Fill buffer with new data
+        # Fill buffer ukijumuisha new data
         out.append(bzd.decompress(self.DATA[200:280], 2))
 
         # Append some more data, sio enough to require resize
@@ -880,16 +880,16 @@ kundi OpenTest(BaseTest):
         kila mode kwenye ("wb", "xb"):
             ikiwa mode == "xb":
                 unlink(self.filename)
-            with self.open(self.filename, mode) kama f:
+            ukijumuisha self.open(self.filename, mode) kama f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT)
-            with self.open(self.filename, "rb") kama f:
+            ukijumuisha self.open(self.filename, "rb") kama f:
                 self.assertEqual(f.read(), self.TEXT)
-            with self.open(self.filename, "ab") kama f:
+            ukijumuisha self.open(self.filename, "ab") kama f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
@@ -898,16 +898,16 @@ kundi OpenTest(BaseTest):
         kila mode kwenye ("w", "x"):
             ikiwa mode == "x":
                 unlink(self.filename)
-            with self.open(self.filename, mode) kama f:
+            ukijumuisha self.open(self.filename, mode) kama f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT)
-            with self.open(self.filename, "r") kama f:
+            ukijumuisha self.open(self.filename, "r") kama f:
                 self.assertEqual(f.read(), self.TEXT)
-            with self.open(self.filename, "a") kama f:
+            ukijumuisha self.open(self.filename, "a") kama f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
@@ -917,35 +917,35 @@ kundi OpenTest(BaseTest):
         kila mode kwenye ("wt", "xt"):
             ikiwa mode == "xt":
                 unlink(self.filename)
-            with self.open(self.filename, mode) kama f:
+            ukijumuisha self.open(self.filename, mode) kama f:
                 f.write(text)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read()).decode("ascii")
                 self.assertEqual(file_data, text_native_eol)
-            with self.open(self.filename, "rt") kama f:
+            ukijumuisha self.open(self.filename, "rt") kama f:
                 self.assertEqual(f.read(), text)
-            with self.open(self.filename, "at") kama f:
+            ukijumuisha self.open(self.filename, "at") kama f:
                 f.write(text)
-            with open(self.filename, "rb") kama f:
+            ukijumuisha open(self.filename, "rb") kama f:
                 file_data = ext_decompress(f.read()).decode("ascii")
                 self.assertEqual(file_data, text_native_eol * 2)
 
     eleza test_x_mode(self):
         kila mode kwenye ("x", "xb", "xt"):
             unlink(self.filename)
-            with self.open(self.filename, mode) kama f:
+            ukijumuisha self.open(self.filename, mode) kama f:
                 pita
-            with self.assertRaises(FileExistsError):
-                with self.open(self.filename, mode) kama f:
+            ukijumuisha self.assertRaises(FileExistsError):
+                ukijumuisha self.open(self.filename, mode) kama f:
                     pita
 
     eleza test_fileobj(self):
-        with self.open(BytesIO(self.DATA), "r") kama f:
+        ukijumuisha self.open(BytesIO(self.DATA), "r") kama f:
             self.assertEqual(f.read(), self.TEXT)
-        with self.open(BytesIO(self.DATA), "rb") kama f:
+        ukijumuisha self.open(BytesIO(self.DATA), "rb") kama f:
             self.assertEqual(f.read(), self.TEXT)
         text = self.TEXT.decode("ascii")
-        with self.open(BytesIO(self.DATA), "rt") kama f:
+        ukijumuisha self.open(BytesIO(self.DATA), "rt") kama f:
             self.assertEqual(f.read(), text)
 
     eleza test_bad_params(self):
@@ -965,28 +965,28 @@ kundi OpenTest(BaseTest):
         # Test non-default encoding.
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
-        with self.open(self.filename, "wt", encoding="utf-16-le") kama f:
+        ukijumuisha self.open(self.filename, "wt", encoding="utf-16-le") kama f:
             f.write(text)
-        with open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") kama f:
             file_data = ext_decompress(f.read()).decode("utf-16-le")
             self.assertEqual(file_data, text_native_eol)
-        with self.open(self.filename, "rt", encoding="utf-16-le") kama f:
+        ukijumuisha self.open(self.filename, "rt", encoding="utf-16-le") kama f:
             self.assertEqual(f.read(), text)
 
     eleza test_encoding_error_handler(self):
-        # Test with non-default encoding error handler.
-        with self.open(self.filename, "wb") kama f:
+        # Test ukijumuisha non-default encoding error handler.
+        ukijumuisha self.open(self.filename, "wb") kama f:
             f.write(b"foo\xffbar")
-        with self.open(self.filename, "rt", encoding="ascii", errors="ignore") \
+        ukijumuisha self.open(self.filename, "rt", encoding="ascii", errors="ignore") \
                 kama f:
             self.assertEqual(f.read(), "foobar")
 
     eleza test_newline(self):
-        # Test with explicit newline (universal newline mode disabled).
+        # Test ukijumuisha explicit newline (universal newline mode disabled).
         text = self.TEXT.decode("ascii")
-        with self.open(self.filename, "wt", newline="\n") kama f:
+        ukijumuisha self.open(self.filename, "wt", newline="\n") kama f:
             f.write(text)
-        with self.open(self.filename, "rt", newline="\r") kama f:
+        ukijumuisha self.open(self.filename, "rt", newline="\r") kama f:
             self.assertEqual(f.readlines(), [text])
 
 

@@ -13,9 +13,9 @@ agiza unittest
                      'unnecessary on this platform')
 kundi OSXEnvironmentVariableTestCase(unittest.TestCase):
     eleza _check_sys(self, ev, cond, sv, val = sys.executable + 'dummy'):
-        with EnvironmentVarGuard() kama evg:
+        ukijumuisha EnvironmentVarGuard() kama evg:
             subpc = [str(sys.executable), '-c',
-                'agiza sys; sys.exit(2 ikiwa "%s" %s %s else 3)' % (val, cond, sv)]
+                'agiza sys; sys.exit(2 ikiwa "%s" %s %s isipokua 3)' % (val, cond, sv)]
             # ensure environment variable does sio exist
             evg.unset(ev)
             # test that test on sys.xxx normally fails

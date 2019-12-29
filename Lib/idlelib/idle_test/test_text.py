@@ -1,6 +1,6 @@
 ''' Test mock_tk.Text kundi against tkinter.Text class
 
-Run same tests with both by creating a mixin class.
+Run same tests ukijumuisha both by creating a mixin class.
 '''
 agiza unittest
 kutoka test.support agiza requires

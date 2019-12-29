@@ -64,7 +64,7 @@ kundi SemLock(object):
         isipokua:
             ashiria FileExistsError('cannot find name kila semaphore')
 
-        util.debug('created semlock with handle %s' % sl.handle)
+        util.debug('created semlock ukijumuisha handle %s' % sl.handle)
         self._make_methods()
 
         ikiwa sys.platform != 'win32':
@@ -73,7 +73,7 @@ kundi SemLock(object):
             util.register_after_fork(self, _after_fork)
 
         ikiwa self._semlock.name ni sio Tupu:
-            # We only get here ikiwa we are on Unix with forking
+            # We only get here ikiwa we are on Unix ukijumuisha forking
             # disabled.  When the object ni garbage collected ama the
             # process shuts down we unlink the semaphore name
             kutoka .resource_tracker agiza register
@@ -108,7 +108,7 @@ kundi SemLock(object):
 
     eleza __setstate__(self, state):
         self._semlock = _multiprocessing.SemLock._rebuild(*state)
-        util.debug('recreated blocker with handle %r' % state[0])
+        util.debug('recreated blocker ukijumuisha handle %r' % state[0])
         self._make_methods()
 
     @staticmethod
@@ -167,9 +167,9 @@ kundi Lock(SemLock):
                 name = process.current_process().name
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
-            elikiwa self._semlock._get_value() == 1:
+            lasivyo self._semlock._get_value() == 1:
                 name = 'Tupu'
-            elikiwa self._semlock._count() > 0:
+            lasivyo self._semlock._count() > 0:
                 name = 'SomeOtherThread'
             isipokua:
                 name = 'SomeOtherProcess'
@@ -193,9 +193,9 @@ kundi RLock(SemLock):
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
-            elikiwa self._semlock._get_value() == 1:
+            lasivyo self._semlock._get_value() == 1:
                 name, count = 'Tupu', 0
-            elikiwa self._semlock._count() > 0:
+            lasivyo self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
             isipokua:
                 name, count = 'SomeOtherProcess', 'nonzero'
@@ -325,24 +325,24 @@ kundi Event(object):
         self._flag = ctx.Semaphore(0)
 
     eleza is_set(self):
-        with self._cond:
+        ukijumuisha self._cond:
             ikiwa self._flag.acquire(Uongo):
                 self._flag.release()
                 rudisha Kweli
             rudisha Uongo
 
     eleza set(self):
-        with self._cond:
+        ukijumuisha self._cond:
             self._flag.acquire(Uongo)
             self._flag.release()
             self._cond.notify_all()
 
     eleza clear(self):
-        with self._cond:
+        ukijumuisha self._cond:
             self._flag.acquire(Uongo)
 
     eleza wait(self, timeout=Tupu):
-        with self._cond:
+        ukijumuisha self._cond:
             ikiwa self._flag.acquire(Uongo):
                 self._flag.release()
             isipokua:

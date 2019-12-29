@@ -37,7 +37,7 @@ Unpack generic sequence
     >>> a == 0 na b == 1 na c == 2
     Kweli
 
-Single element unpacking, with extra syntax
+Single element unpacking, ukijumuisha extra syntax
 
     >>> st = (99,)
     >>> sl = [100]
@@ -95,7 +95,7 @@ error
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3:
     ...             rudisha i
-    ...         elikiwa i == 3:
+    ...         lasivyo i == 3:
     ...             ashiria BozoError
     ...         isipokua:
     ...             ashiria IndexError

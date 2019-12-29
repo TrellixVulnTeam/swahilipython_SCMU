@@ -30,7 +30,7 @@ TO DO:
 - persistent user state (e.g. window na cursor positions, bindings)
 - make backups when saving
 - check file mtimes at various points
-- Pluggable interface with RCS/CVS/Perforce/Clearcase
+- Pluggable interface ukijumuisha RCS/CVS/Perforce/Clearcase
 - better help?
 - don't open second kundi browser on same module (nor second path browser)
 - unify kundi na path browsers
@@ -127,7 +127,7 @@ Things I'd like to see:
     - I'd like support kila shift-click extending the selection. There's a
       bug now that it doesn't work the first time you try it.
     - Printing ni needed. How hard can that be on Windows? FIRST CUT DONE
-    - The python-mode trick of autoindenting a line with <tab> ni neat and
+    - The python-mode trick of autoindenting a line ukijumuisha <tab> ni neat and
       very handy.
     - (someday) a spellchecker kila docstrings na comments.
     - a pagedown/up command key which moves to next class/eleza statement (top
@@ -150,7 +150,7 @@ possible.  (Gerrit Holl)
 
 - Hooks into the guts, like kwenye Emacs.  (Mike Romberg)
 
-- Sharing the editor with a remote tutor.  (Martijn Faassen)
+- Sharing the editor ukijumuisha a remote tutor.  (Martijn Faassen)
 
 - Multiple views on the same file.  (Tony J Ibbs)
 
@@ -179,7 +179,7 @@ it -- i.e. you can only edit the current command, na the cursor can't
 escape kutoka the command area.  (Albert Brandl)
 
 - Set X11 kundi to "idle/Idle", set icon na title to something
-beginning with "idle" -- kila window manangers.  (Randall Hopper)
+beginning ukijumuisha "idle" -- kila window manangers.  (Randall Hopper)
 
 - Config files editable through a preferences dialog.  (me) DONE
 
@@ -191,7 +191,7 @@ lines below the cursor, hitting Return should ignore ama delete those
 blank lines rather than deciding you're sio on the last line.  (me)
 
 - Run command (F5 c.s.) should be more like Pythonwin's Run -- a
-dialog with options to give command line arguments, run the debugger,
+dialog ukijumuisha options to give command line arguments, run the debugger,
 etc.  (me)
 
 - Shouldn't be able to delete part of the prompt (or any text before

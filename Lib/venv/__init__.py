@@ -80,7 +80,7 @@ kundi EnvBuilder:
             fn = os.path.join(path, fn)
             ikiwa os.path.islink(fn) ama os.path.isfile(fn):
                 os.remove(fn)
-            elikiwa os.path.isdir(fn):
+            lasivyo os.path.isdir(fn):
                 shutil.rmtree(fn)
 
     eleza ensure_directories(self, env_dir):
@@ -94,7 +94,7 @@ kundi EnvBuilder:
         eleza create_if_needed(d):
             ikiwa sio os.path.exists(d):
                 os.makedirs(d)
-            elikiwa os.path.islink(d) ama os.path.isfile(d):
+            lasivyo os.path.islink(d) ama os.path.isfile(d):
                 ashiria ValueError('Unable to create directory %r' % d)
 
         ikiwa os.path.exists(env_dir) na self.clear:
@@ -102,7 +102,7 @@ kundi EnvBuilder:
         context = types.SimpleNamespace()
         context.env_dir = env_dir
         context.env_name = os.path.split(env_dir)[1]
-        prompt = self.prompt ikiwa self.prompt ni sio Tupu else context.env_name
+        prompt = self.prompt ikiwa self.prompt ni sio Tupu isipokua context.env_name
         context.prompt = '(%s) ' % prompt
         create_if_needed(env_dir)
         executable = sys._base_executable
@@ -145,7 +145,7 @@ kundi EnvBuilder:
                         being processed.
         """
         context.cfg_path = path = os.path.join(context.env_dir, 'pyvenv.cfg')
-        with open(path, 'w', encoding='utf-8') kama f:
+        ukijumuisha open(path, 'w', encoding='utf-8') kama f:
             f.write('home = %s\n' % context.python_dir)
             ikiwa self.system_site_packages:
                 incl = 'true'
@@ -207,7 +207,7 @@ kundi EnvBuilder:
                     basename = basename[:-2]
                 ikiwa basename == 'python':
                     basename = 'venvlauncher'
-                elikiwa basename == 'pythonw':
+                lasivyo basename == 'pythonw':
                     basename = 'venvwlauncher'
                 src = os.path.join(os.path.dirname(src), basename + ext)
             isipokua:
@@ -315,10 +315,10 @@ kundi EnvBuilder:
 
     eleza replace_variables(self, text, context):
         """
-        Replace variable placeholders kwenye script text with context-specific
+        Replace variable placeholders kwenye script text ukijumuisha context-specific
         variables.
 
-        Return the text pitaed kwenye , but with variables replaced.
+        Return the text pitaed kwenye , but ukijumuisha variables replaced.
 
         :param text: The text kwenye which to replace placeholder variables.
         :param context: The information kila the environment creation request
@@ -341,7 +341,7 @@ kundi EnvBuilder:
                         Scripts kwenye the 'common' subdirectory of this directory,
                         na those kwenye the directory named kila the platform
                         being run on, are installed kwenye the created environment.
-                        Placeholder variables are replaced with environment-
+                        Placeholder variables are replaced ukijumuisha environment-
                         specific values.
         """
         binpath = context.bin_path
@@ -365,7 +365,7 @@ kundi EnvBuilder:
                 ikiwa sio os.path.exists(dstdir):
                     os.makedirs(dstdir)
                 dstfile = os.path.join(dstdir, f)
-                with open(srcfile, 'rb') kama f:
+                ukijumuisha open(srcfile, 'rb') kama f:
                     data = f.read()
                 ikiwa sio srcfile.endswith(('.exe', '.pdb')):
                     jaribu:
@@ -377,7 +377,7 @@ kundi EnvBuilder:
                         logger.warning('unable to copy script %r, '
                                        'may be binary: %s', srcfile, e)
                 ikiwa data ni sio Tupu:
-                    with open(dstfile, 'wb') kama f:
+                    ukijumuisha open(dstfile, 'wb') kama f:
                         f.write(data)
                     shutil.copymode(srcfile, dstfile)
 
@@ -394,10 +394,10 @@ eleza main(args=Tupu):
     compatible = Kweli
     ikiwa sys.version_info < (3, 3):
         compatible = Uongo
-    elikiwa sio hasattr(sys, 'base_prefix'):
+    lasivyo sio hasattr(sys, 'base_prefix'):
         compatible = Uongo
     ikiwa sio compatible:
-        ashiria ValueError('This script ni only kila use with Python >= 3.3')
+        ashiria ValueError('This script ni only kila use ukijumuisha Python >= 3.3')
     isipokua:
         agiza argparse
 

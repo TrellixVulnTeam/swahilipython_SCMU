@@ -14,7 +14,7 @@ line2 = 'b = a'
 
 
 kundi StoreTest(unittest.TestCase):
-    '''Tests History.__init__ na History.store with mock Text'''
+    '''Tests History.__init__ na History.store ukijumuisha mock Text'''
 
     @classmethod
     eleza setUpClass(cls):
@@ -66,7 +66,7 @@ kundi TextWrapper:
 
 
 kundi FetchTest(unittest.TestCase):
-    '''Test History.fetch with wrapped tk.Text.
+    '''Test History.fetch ukijumuisha wrapped tk.Text.
     '''
     @classmethod
     eleza setUpClass(cls):
@@ -117,7 +117,7 @@ kundi FetchTest(unittest.TestCase):
         test(Uongo, line2, prefix, 1)
         test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
 
-    # Prefix 'a' tests skip line2, which starts with 'b'
+    # Prefix 'a' tests skip line2, which starts ukijumuisha 'b'
     eleza test_fetch_prev_prefix(self):
         prefix = 'a'
         self.text.insert('iomark', prefix)

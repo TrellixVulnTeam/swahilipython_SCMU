@@ -11,7 +11,7 @@ __unittest = Kweli
 
 
 kundi _WritelnDecorator(object):
-    """Used to decorate file-like objects with a handy 'writeln' method"""
+    """Used to decorate file-like objects ukijumuisha a handy 'writeln' method"""
     eleza __init__(self,stream):
         self.stream = stream
 
@@ -59,7 +59,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addSuccess(test)
         ikiwa self.showAll:
             self.stream.writeln("ok")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('.')
             self.stream.flush()
 
@@ -67,7 +67,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addError(test, err)
         ikiwa self.showAll:
             self.stream.writeln("ERROR")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('E')
             self.stream.flush()
 
@@ -75,7 +75,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addFailure(test, err)
         ikiwa self.showAll:
             self.stream.writeln("FAIL")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('F')
             self.stream.flush()
 
@@ -83,7 +83,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addSkip(test, reason)
         ikiwa self.showAll:
             self.stream.writeln("skipped {0!r}".format(reason))
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("s")
             self.stream.flush()
 
@@ -91,7 +91,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addExpectedFailure(test, err)
         ikiwa self.showAll:
             self.stream.writeln("expected failure")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("x")
             self.stream.flush()
 
@@ -99,7 +99,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addUnexpectedSuccess(test)
         ikiwa self.showAll:
             self.stream.writeln("unexpected success")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("u")
             self.stream.flush()
 
@@ -155,7 +155,7 @@ kundi TextTestRunner(object):
         result.failfast = self.failfast
         result.buffer = self.buffer
         result.tb_locals = self.tb_locals
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             ikiwa self.warnings:
                 # ikiwa self.warnings ni set, use it to filter all the warnings
                 warnings.simplefilter(self.warnings)

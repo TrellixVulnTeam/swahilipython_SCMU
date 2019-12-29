@@ -187,10 +187,10 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
     V = _comparable_version
     ikiwa hasattr(os.path, 'realpath'):
         # Python 2.2 introduced os.path.realpath(); it ni used
-        # here to work around problems with Cygwin sio being
+        # here to work around problems ukijumuisha Cygwin sio being
         # able to open symlinks kila reading
         executable = os.path.realpath(executable)
-    with open(executable, 'rb') kama f:
+    ukijumuisha open(executable, 'rb') kama f:
         binary = f.read(chunksize)
         pos = 0
         wakati pos < len(binary):
@@ -207,17 +207,17 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
                 ikiwa sio m:
                     koma
             libcinit, glibc, glibcversion, so, threads, soversion = [
-                s.decode('latin1') ikiwa s ni sio Tupu else s
+                s.decode('latin1') ikiwa s ni sio Tupu isipokua s
                 kila s kwenye m.groups()]
             ikiwa libcinit na sio lib:
                 lib = 'libc'
-            elikiwa glibc:
+            lasivyo glibc:
                 ikiwa lib != 'glibc':
                     lib = 'glibc'
                     version = glibcversion
-                elikiwa V(glibcversion) > V(version):
+                lasivyo V(glibcversion) > V(version):
                     version = glibcversion
-            elikiwa so:
+            lasivyo so:
                 ikiwa lib != 'glibc':
                     lib = 'libc'
                     ikiwa soversion na (not version ama V(soversion) > V(version)):
@@ -348,7 +348,7 @@ eleza win32_edition():
     isipokua:
         jaribu:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            with winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) kama key:
+            ukijumuisha winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) kama key:
                 rudisha winreg.QueryValueEx(key, 'EditionId')[0]
         tatizo OSError:
             pita
@@ -395,7 +395,7 @@ eleza win32_ver(release='', version='', csd='', ptype=''):
     isipokua:
         jaribu:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            with winreg.OpenKeyEx(HKEY_LOCAL_MACHINE, cvkey) kama key:
+            ukijumuisha winreg.OpenKeyEx(HKEY_LOCAL_MACHINE, cvkey) kama key:
                 ptype = QueryValueEx(key, 'CurrentType')[0]
         except:
             pita
@@ -413,7 +413,7 @@ eleza _mac_ver_xml():
     tatizo ImportError:
         rudisha Tupu
 
-    with open(fn, 'rb') kama f:
+    ukijumuisha open(fn, 'rb') kama f:
         pl = plistlib.load(f)
     release = pl['ProductVersion']
     versioninfo = ('', '', '')
@@ -428,7 +428,7 @@ eleza _mac_ver_xml():
 eleza mac_ver(release='', versioninfo=('', '', ''), machine=''):
 
     """ Get macOS version information na rudisha it kama tuple (release,
-        versioninfo, machine) with versioninfo being a tuple (version,
+        versioninfo, machine) ukijumuisha versioninfo being a tuple (version,
         dev_stage, non_release_version).
 
         Entries which cannot be determined are set to the parameter values
@@ -459,7 +459,7 @@ eleza java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
 
     """ Version interface kila Jython.
 
-        Returns a tuple (release, vendor, vminfo, osinfo) with vminfo being
+        Returns a tuple (release, vendor, vminfo, osinfo) ukijumuisha vminfo being
         a tuple (vm_name, vm_release, vm_vendor) na osinfo being a
         tuple (os_name, os_version, os_arch).
 
@@ -521,8 +521,8 @@ eleza system_alias(system, release, version):
             # XXX Whatever the new SunOS marketing name is...
             system = 'Solaris'
 
-    elikiwa system == 'IRIX64':
-        # IRIX reports IRIX64 on platforms with 64-bit support; yet it
+    lasivyo system == 'IRIX64':
+        # IRIX reports IRIX64 on platforms ukijumuisha 64-bit support; yet it
         # ni really a version na sio a different platform, since 32-bit
         # apps are also supported..
         system = 'IRIX'
@@ -531,11 +531,11 @@ eleza system_alias(system, release, version):
         isipokua:
             version = '64bit'
 
-    elikiwa system kwenye ('win32', 'win16'):
+    lasivyo system kwenye ('win32', 'win16'):
         # In case one of the other tricks
         system = 'Windows'
 
-    # bpo-35516: Don't replace Darwin with macOS since input release and
+    # bpo-35516: Don't replace Darwin ukijumuisha macOS since input release and
     # version arguments can be different than the currently running version.
 
     rudisha system, release, version
@@ -680,7 +680,7 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
 
     """
     # Use the sizeof(pointer) kama default number of bits ikiwa nothing
-    # else ni given kama default.
+    # isipokua ni given kama default.
     ikiwa sio bits:
         agiza struct
         size = struct.calcsize('P')
@@ -711,24 +711,24 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
     # Bits
     ikiwa '32-bit' kwenye fileout:
         bits = '32bit'
-    elikiwa 'N32' kwenye fileout:
+    lasivyo 'N32' kwenye fileout:
         # On Irix only
         bits = 'n32bit'
-    elikiwa '64-bit' kwenye fileout:
+    lasivyo '64-bit' kwenye fileout:
         bits = '64bit'
 
     # Linkage
     ikiwa 'ELF' kwenye fileout:
         linkage = 'ELF'
-    elikiwa 'PE' kwenye fileout:
+    lasivyo 'PE' kwenye fileout:
         # E.g. Windows uses this format
         ikiwa 'Windows' kwenye fileout:
             linkage = 'WindowsPE'
         isipokua:
             linkage = 'PE'
-    elikiwa 'COFF' kwenye fileout:
+    lasivyo 'COFF' kwenye fileout:
         linkage = 'COFF'
-    elikiwa 'MS-DOS' kwenye fileout:
+    lasivyo 'MS-DOS' kwenye fileout:
         linkage = 'MSDOS'
     isipokua:
         # XXX the A.OUT format also falls under this class...
@@ -807,7 +807,7 @@ eleza uname():
             # (_syscmd_ver() tends to rudisha the vendor name kama well)
             ikiwa system == 'Microsoft Windows':
                 system = 'Windows'
-            elikiwa system == 'Microsoft' na release == 'Windows':
+            lasivyo system == 'Microsoft' na release == 'Windows':
                 # Under Windows Vista na Windows Server 2008,
                 # Microsoft changed the output of the ver command. The
                 # release ni no longer printed.  This causes the
@@ -828,7 +828,7 @@ eleza uname():
                     version = '16bit'
             system = 'Windows'
 
-        elikiwa system[:4] == 'java':
+        lasivyo system[:4] == 'java':
             release, vendor, vminfo, osinfo = java_ver()
             system = 'Java'
             version = ', '.join(vminfo)
@@ -856,7 +856,7 @@ eleza uname():
         # Get processor information kutoka the uname system command
         processor = _syscmd_uname('-p', '')
 
-    #If any unknowns still exist, replace them with ''s, which are more portable
+    #If any unknowns still exist, replace them ukijumuisha ''s, which are more portable
     ikiwa system == 'unknown':
         system = ''
     ikiwa node == 'unknown':
@@ -1016,7 +1016,7 @@ eleza _sys_version(sys_version=Tupu):
         buildno = ''
         builddate = ''
 
-    elikiwa sys.platform.startswith('java'):
+    lasivyo sys.platform.startswith('java'):
         # Jython
         name = 'Jython'
         match = _sys_version_parser.match(sys_version)
@@ -1029,7 +1029,7 @@ eleza _sys_version(sys_version=Tupu):
             builddate = ''
         compiler = sys.platform
 
-    elikiwa "PyPy" kwenye sys_version:
+    lasivyo "PyPy" kwenye sys_version:
         # PyPy
         name = "PyPy"
         match = _pypy_sys_version_parser.match(sys_version)
@@ -1051,12 +1051,12 @@ eleza _sys_version(sys_version=Tupu):
         name = 'CPython'
         ikiwa builddate ni Tupu:
             builddate = ''
-        elikiwa buildtime:
+        lasivyo buildtime:
             builddate = builddate + ' ' + buildtime
 
     ikiwa hasattr(sys, '_git'):
         _, branch, revision = sys._git
-    elikiwa hasattr(sys, '_mercurial'):
+    lasivyo hasattr(sys, '_mercurial'):
         _, branch, revision = sys._mercurial
     isipokua:
         branch = ''
@@ -1157,7 +1157,7 @@ _platform_cache = {}
 eleza platform(aliased=0, terse=0):
 
     """ Returns a single string identifying the underlying platform
-        with kama much useful information kama possible (but no more :).
+        ukijumuisha kama much useful information kama possible (but no more :).
 
         The output ni intended to be human readable rather than
         machine parseable. It may look different on different
@@ -1200,13 +1200,13 @@ eleza platform(aliased=0, terse=0):
         isipokua:
             platform = _platform(system, release, version, csd)
 
-    elikiwa system kwenye ('Linux',):
+    lasivyo system kwenye ('Linux',):
         # check kila libc vs. glibc
         libcname, libcversion = libc_ver(sys.executable)
         platform = _platform(system, release, machine, processor,
                              'with',
                              libcname+libcversion)
-    elikiwa system == 'Java':
+    lasivyo system == 'Java':
         # Java platforms
         r, v, vminfo, (os_name, os_version, os_arch) = java_ver()
         ikiwa terse ama sio os_name:

@@ -137,7 +137,7 @@ kundi IntTestCases(unittest.TestCase):
         self.assertEqual(int('2br45qb', 35), 4294967296)
         self.assertEqual(int('1z141z4', 36), 4294967296)
 
-        # tests with base 0
+        # tests ukijumuisha base 0
         # this fails on 3.0, but kwenye 2.x the old octal syntax ni allowed
         self.assertEqual(int(' 0o123  ', 0), 83)
         self.assertEqual(int(' 0o123  ', 0), 83)
@@ -153,7 +153,7 @@ kundi IntTestCases(unittest.TestCase):
         self.assertEqual(int('0123'), 123)
         self.assertEqual(int('0123', 10), 123)
 
-        # tests with prefix na base != 0
+        # tests ukijumuisha prefix na base != 0
         self.assertEqual(int('0x123', 16), 291)
         self.assertEqual(int('0o123', 8), 83)
         self.assertEqual(int('0b100', 2), 4)
@@ -224,7 +224,7 @@ kundi IntTestCases(unittest.TestCase):
             ikiwa any(ch kwenye lit kila ch kwenye '.eEjJ'):
                 endelea
             self.assertRaises(ValueError, int, lit, 0)
-        # Additional test cases with bases != 0, only kila the constructor:
+        # Additional test cases ukijumuisha bases != 0, only kila the constructor:
         self.assertEqual(int("1_00", 3), 9)
         self.assertEqual(int("0_100"), 100)  # sio valid kama a literal!
         self.assertEqual(int(b"1_00"), 100)  # byte underscore
@@ -247,9 +247,9 @@ kundi IntTestCases(unittest.TestCase):
     eleza test_keyword_args(self):
         # Test invoking int() using keyword arguments.
         self.assertEqual(int('100', base=2), 4)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             int(x=1.2)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             int(x='100', base=2)
         self.assertRaises(TypeError, int, base=10)
         self.assertRaises(TypeError, int, base=0)
@@ -257,15 +257,15 @@ kundi IntTestCases(unittest.TestCase):
     eleza test_int_base_limits(self):
         """Testing the supported limits of the int() base parameter."""
         self.assertEqual(int('0', 5), 0)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             int('0', 1)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             int('0', 37)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             int('0', -909)  # An old magic value base kutoka Python 2.
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             int('0', base=0-(2**234))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             int('0', base=2**234)
         # Bases 2 through 36 are supported.
         kila base kwenye range(2,37):
@@ -273,9 +273,9 @@ kundi IntTestCases(unittest.TestCase):
 
     eleza test_int_base_bad_types(self):
         """Not integer types are sio valid bases; issue16772."""
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             int('0', 5.5)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             int('0', 5.0)
 
     eleza test_int_base_indexable(self):
@@ -287,7 +287,7 @@ kundi IntTestCases(unittest.TestCase):
 
         # Check out of range bases.
         kila base kwenye 2**100, -2**100, 1, 37:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 int('43', base)
 
         # Check in-range bases.
@@ -319,15 +319,15 @@ kundi IntTestCases(unittest.TestCase):
 
         kila f kwenye factories:
             x = f(b'100')
-            with self.subTest(type(x)):
+            ukijumuisha self.subTest(type(x)):
                 self.assertEqual(int(x), 100)
                 ikiwa isinstance(x, (str, bytes, bytearray)):
                     self.assertEqual(int(x, 2), 4)
                 isipokua:
                     msg = "can't convert non-string"
-                    with self.assertRaisesRegex(TypeError, msg):
+                    ukijumuisha self.assertRaisesRegex(TypeError, msg):
                         int(x, 2)
-                with self.assertRaisesRegex(ValueError, 'invalid literal'):
+                ukijumuisha self.assertRaisesRegex(ValueError, 'invalid literal'):
                     int(f(b'A' * 0x10))
 
     eleza test_int_memoryview(self):
@@ -374,7 +374,7 @@ kundi IntTestCases(unittest.TestCase):
             kundi ExceptionalTrunc(base):
                 eleza __trunc__(self):
                     1 / 0
-            with self.assertRaises(ZeroDivisionError):
+            ukijumuisha self.assertRaises(ZeroDivisionError):
                 int(ExceptionalTrunc())
 
             kila trunc_result_base kwenye (object, Classic):
@@ -411,7 +411,7 @@ kundi IntTestCases(unittest.TestCase):
                                       "__trunc__ rudishaed non-Integral"
                                       " (type NonIntegral)")
                 isipokua:
-                    self.fail("Failed to ashiria TypeError with %s" %
+                    self.fail("Failed to ashiria TypeError ukijumuisha %s" %
                               ((base, trunc_result_base),))
 
                 # Regression test kila bugs.python.org/issue16060.
@@ -423,7 +423,7 @@ kundi IntTestCases(unittest.TestCase):
                     eleza __trunc__(self):
                         rudisha BadInt()
 
-                with self.assertRaises(TypeError):
+                ukijumuisha self.assertRaises(TypeError):
                     int(TruncReturnsBadInt())
 
     eleza test_int_subclass_with_index(self):
@@ -488,7 +488,7 @@ kundi IntTestCases(unittest.TestCase):
                 rudisha Kweli
 
         bad_int = BadIndex()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
@@ -499,25 +499,25 @@ kundi IntTestCases(unittest.TestCase):
         self.assertIs(type(n), int)
 
         bad_int = BadInt()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
 
         bad_int = BadInt2()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
 
         bad_int = TruncReturnsBadIndex()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
 
         bad_int = TruncReturnsBadInt()
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
@@ -532,28 +532,28 @@ kundi IntTestCases(unittest.TestCase):
 
     eleza test_error_message(self):
         eleza check(s, base=Tupu):
-            with self.assertRaises(ValueError,
+            ukijumuisha self.assertRaises(ValueError,
                                    msg="int(%r, %r)" % (s, base)) kama cm:
                 ikiwa base ni Tupu:
                     int(s)
                 isipokua:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
-                "invalid literal kila int() with base %d: %r" %
-                (10 ikiwa base ni Tupu else base, s))
+                "invalid literal kila int() ukijumuisha base %d: %r" %
+                (10 ikiwa base ni Tupu isipokua base, s))
 
         check('\xbd')
         check('123\xbd')
         check('  123 456  ')
 
         check('123\x00')
-        # SF bug 1545497: embedded NULs were sio detected with explicit base
+        # SF bug 1545497: embedded NULs were sio detected ukijumuisha explicit base
         check('123\x00', 10)
         check('123\x00 245', 20)
         check('123\x00 245', 16)
         check('123\x00245', 20)
         check('123\x00245', 16)
-        # byte string with embedded NUL
+        # byte string ukijumuisha embedded NUL
         check(b'123\x00')
         check(b'123\x00', 10)
         # non-UTF-8 byte string

@@ -36,7 +36,7 @@ Some of the things this checks:
   - Warns ikiwa the REQUEST_METHOD ni sio known (@@: probably too
     restrictive).
 
-  - That SCRIPT_NAME na PATH_INFO are empty ama start with /
+  - That SCRIPT_NAME na PATH_INFO are empty ama start ukijumuisha /
 
   - That at least one of SCRIPT_NAME ama PATH_INFO are set.
 
@@ -50,7 +50,7 @@ Some of the things this checks:
 
   - That wsgi.errors has the methods flush, write, writelines
 
-* The status ni a string, contains a space, starts with an integer,
+* The status ni a string, contains a space, starts ukijumuisha an integer,
   na that integer ni kwenye range (> 100).
 
 * That the headers ni a list (not a subclass, sio another kind of
@@ -72,12 +72,12 @@ Some of the things this checks:
 
 * That the exc_info argument to start_response ni a tuple ama Tupu.
 
-* That all calls to the writer are with strings, na no other methods
+* That all calls to the writer are ukijumuisha strings, na no other methods
   on the writer are accessed.
 
 * That wsgi.input ni used properly:
 
-  - .read() ni called with exactly one argument
+  - .read() ni called ukijumuisha exactly one argument
 
   - That it rudishas a string
 
@@ -89,7 +89,7 @@ Some of the things this checks:
 
 * That wsgi.errors ni used properly:
 
-  - .write() na .writelines() ni called with a string
+  - .write() na .writelines() ni called ukijumuisha a string
 
   - That .close() ni sio called, na no other methods are provided.
 
@@ -344,10 +344,10 @@ eleza check_environ(environ):
 
     assert_(not environ.get('SCRIPT_NAME')
             ama environ['SCRIPT_NAME'].startswith('/'),
-        "SCRIPT_NAME doesn't start with /: %r" % environ['SCRIPT_NAME'])
+        "SCRIPT_NAME doesn't start ukijumuisha /: %r" % environ['SCRIPT_NAME'])
     assert_(not environ.get('PATH_INFO')
             ama environ['PATH_INFO'].startswith('/'),
-        "PATH_INFO doesn't start with /: %r" % environ['PATH_INFO'])
+        "PATH_INFO doesn't start ukijumuisha /: %r" % environ['PATH_INFO'])
     ikiwa environ.get('CONTENT_LENGTH'):
         assert_(int(environ['CONTENT_LENGTH']) >= 0,
             "Invalid CONTENT_LENGTH: %r" % environ['CONTENT_LENGTH'])
@@ -399,7 +399,7 @@ eleza check_headers(headers):
         name = check_string_type(name, "Header name")
         value = check_string_type(value, "Header value")
         assert_(name.lower() != 'status',
-            "The Status header cannot be used; it conflicts with CGI "
+            "The Status header cannot be used; it conflicts ukijumuisha CGI "
             "script, na HTTP status ni sio given through headers "
             "(value: %r)." % value)
         assert_('\n' haiko kwenye name na ':' haiko kwenye name,

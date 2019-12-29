@@ -148,10 +148,10 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_io(self):
         pl = self._create()
-        with open(support.TESTFN, 'wb') kama fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             plistlib.dump(pl, fp)
 
-        with open(support.TESTFN, 'rb') kama fp:
+        ukijumuisha open(support.TESTFN, 'rb') kama fp:
             pl2 = plistlib.load(fp)
 
         self.assertEqual(dict(pl), dict(pl2))
@@ -163,22 +163,22 @@ kundi TestPlistlib(unittest.TestCase):
         pl = [ object() ]
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
     eleza test_invalid_uid(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             UID("not an int")
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             UID(2 ** 64)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             UID(-19)
 
     eleza test_int(self):
         kila pl kwenye [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
                    2**63-1, 2**64-1, 1, -2**63]:
             kila fmt kwenye ALL_FORMATS:
-                with self.subTest(pl=pl, fmt=fmt):
+                ukijumuisha self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(pl, fmt=fmt)
                     pl2 = plistlib.loads(data)
                     self.assertIsInstance(pl2, int)
@@ -188,14 +188,14 @@ kundi TestPlistlib(unittest.TestCase):
 
         kila fmt kwenye ALL_FORMATS:
             kila pl kwenye (2 ** 64 + 1, 2 ** 127-1, -2**64, -2 ** 127):
-                with self.subTest(pl=pl, fmt=fmt):
+                ukijumuisha self.subTest(pl=pl, fmt=fmt):
                     self.assertRaises(OverflowError, plistlib.dumps,
                                       pl, fmt=fmt)
 
     eleza test_bytearray(self):
         kila pl kwenye (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
             kila fmt kwenye ALL_FORMATS:
-                with self.subTest(pl=pl, fmt=fmt):
+                ukijumuisha self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(bytearray(pl), fmt=fmt)
                     pl2 = plistlib.loads(data)
                     self.assertIsInstance(pl2, bytes)
@@ -265,7 +265,7 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_appleformatting(self):
         kila use_builtin_types kwenye (Kweli, Uongo):
             kila fmt kwenye ALL_FORMATS:
-                with self.subTest(fmt=fmt, use_builtin_types=use_builtin_types):
+                ukijumuisha self.subTest(fmt=fmt, use_builtin_types=use_builtin_types):
                     pl = plistlib.loads(TESTDATA[fmt],
                         use_builtin_types=use_builtin_types)
                     data = plistlib.dumps(pl, fmt=fmt)
@@ -276,7 +276,7 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_appleformattingkutokaliteral(self):
         self.maxDiff = Tupu
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 pl = self._create(fmt=fmt)
                 pl2 = plistlib.loads(TESTDATA[fmt], fmt=fmt)
                 self.assertEqual(dict(pl), dict(pl2),
@@ -287,7 +287,7 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_bytesio(self):
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 b = BytesIO()
                 pl = self._create(fmt=fmt)
                 plistlib.dump(pl, b, fmt=fmt)
@@ -304,7 +304,7 @@ kundi TestPlistlib(unittest.TestCase):
 
         kila fmt kwenye ALL_FORMATS:
             kila sort_keys kwenye (Uongo, Kweli):
-                with self.subTest(fmt=fmt, sort_keys=sort_keys):
+                ukijumuisha self.subTest(fmt=fmt, sort_keys=sort_keys):
                     b = BytesIO()
 
                     plistlib.dump(pl, b, fmt=fmt, sort_keys=sort_keys)
@@ -325,7 +325,7 @@ kundi TestPlistlib(unittest.TestCase):
 
         kila fmt kwenye ALL_FORMATS:
             kila sort_keys kwenye (Uongo, Kweli):
-                with self.subTest(fmt=fmt, sort_keys=sort_keys):
+                ukijumuisha self.subTest(fmt=fmt, sort_keys=sort_keys):
                     data = plistlib.dumps(pl, fmt=fmt, sort_keys=sort_keys)
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
 
@@ -339,7 +339,7 @@ kundi TestPlistlib(unittest.TestCase):
         pl = { 42: 'aNumber' }
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
                 b = BytesIO()
@@ -352,7 +352,7 @@ kundi TestPlistlib(unittest.TestCase):
         }
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 data = plistlib.dumps(
                     pl, fmt=fmt, skipkeys=Kweli, sort_keys=Uongo)
 
@@ -374,7 +374,7 @@ kundi TestPlistlib(unittest.TestCase):
         }
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
                 self.assertEqual(pl2, {
@@ -393,7 +393,7 @@ kundi TestPlistlib(unittest.TestCase):
         }
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
                 self.assertEqual(pl2, {
@@ -411,7 +411,7 @@ kundi TestPlistlib(unittest.TestCase):
         }
 
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
                 self.assertEqual(pl2, {
@@ -431,28 +431,28 @@ kundi TestPlistlib(unittest.TestCase):
                 ikiwa c != "\r":
                     self.assertEqual(plistlib.loads(data), testString)
             isipokua:
-                with self.assertRaises(ValueError):
+                ukijumuisha self.assertRaises(ValueError):
                     plistlib.dumps(testString, fmt=plistlib.FMT_XML)
             plistlib.dumps(testString, fmt=plistlib.FMT_BINARY)
 
     eleza test_non_bmp_characters(self):
         pl = {'python': '\U0001f40d'}
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 self.assertEqual(plistlib.loads(data), pl)
 
     eleza test_lone_surrogates(self):
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
-                with self.assertRaises(UnicodeEncodeError):
+            ukijumuisha self.subTest(fmt=fmt):
+                ukijumuisha self.assertRaises(UnicodeEncodeError):
                     plistlib.dumps('\ud8ff', fmt=fmt)
-                with self.assertRaises(UnicodeEncodeError):
+                ukijumuisha self.assertRaises(UnicodeEncodeError):
                     plistlib.dumps('\udcff', fmt=fmt)
 
     eleza test_nondictroot(self):
         kila fmt kwenye ALL_FORMATS:
-            with self.subTest(fmt=fmt):
+            ukijumuisha self.subTest(fmt=fmt):
                 test1 = "abc"
                 test2 = [1, 2, 3, "abc"]
                 result1 = plistlib.loads(plistlib.dumps(test1, fmt=fmt))
@@ -499,7 +499,7 @@ kundi TestPlistlib(unittest.TestCase):
                 ]:
 
             pl = self._create(fmt=plistlib.FMT_XML)
-            with self.subTest(encoding=encoding):
+            ukijumuisha self.subTest(encoding=encoding):
                 data = base.replace(b'UTF-8', xml_encoding)
                 data = bom + data.decode('utf-8').encode(encoding)
                 pl2 = plistlib.loads(data)
@@ -526,7 +526,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   plistlib.Data(b'abcde'), bytearray(b'abcde'),
                   [12, 345], (12, 345), {'12': 345}):
-            with self.subTest(x=x):
+            ukijumuisha self.subTest(x=x):
                 data = plistlib.dumps([x]*1000, fmt=plistlib.FMT_BINARY)
                 self.assertLess(len(data), 1100, repr(data))
 
@@ -535,7 +535,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   plistlib.Data(b'abcde'), bytearray(b'abcde'),
                   [12, 345], (12, 345), {'12': 345}):
-            with self.subTest(x=x):
+            ukijumuisha self.subTest(x=x):
                 data = plistlib.dumps([x]*2, fmt=plistlib.FMT_BINARY)
                 a, b = plistlib.loads(data)
                 ikiwa isinstance(x, tuple):
@@ -564,7 +564,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
     eleza test_large_timestamp(self):
         # Issue #26709: 32-bit timestamp out of range
         kila ts kwenye -2**31-1, 2**31:
-            with self.subTest(ts=ts):
+            ukijumuisha self.subTest(ts=ts):
                 d = (datetime.datetime.utckutokatimestamp(0) +
                      datetime.timedelta(seconds=ts))
                 data = plistlib.dumps(d, fmt=plistlib.FMT_BINARY)
@@ -617,7 +617,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                 b'\x00\x00\x00\x00\x00\x00\x00\x00'
                 b'\x00\x00\x00\x00\x00\x00\x00\x0b',
                 ]:
-            with self.assertRaises(plistlib.InvalidFileException):
+            ukijumuisha self.assertRaises(plistlib.InvalidFileException):
                 plistlib.loads(b'bplist00' + data, fmt=plistlib.FMT_BINARY)
 
 
@@ -641,22 +641,22 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
         }
 
         self.addCleanup(support.unlink, support.TESTFN)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             plistlib.writePlist(pl_in, support.TESTFN)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             pl2 = plistlib.readPlist(support.TESTFN)
 
         self.assertEqual(pl_out, pl2)
 
         os.unlink(support.TESTFN)
 
-        with open(support.TESTFN, 'wb') kama fp:
-            with self.assertWarns(DeprecationWarning):
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 plistlib.writePlist(pl_in, fp)
 
-        with open(support.TESTFN, 'rb') kama fp:
-            with self.assertWarns(DeprecationWarning):
+        ukijumuisha open(support.TESTFN, 'rb') kama fp:
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 pl2 = plistlib.readPlist(fp)
 
         self.assertEqual(pl_out, pl2)
@@ -670,10 +670,10 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
                 'data': b'buffer',
             }
         }
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             data = plistlib.writePlistToBytes(pl)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             pl2 = plistlib.readPlistFromBytes(data)
 
         self.assertIsInstance(pl2, dict)
@@ -686,7 +686,7 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
             )
         ))
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             data2 = plistlib.writePlistToBytes(pl2)
         self.assertEqual(data, data2)
 
@@ -704,7 +704,7 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
         self.assertEqual(cur, out_data)
         self.assertEqual(cur, in_data)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             cur = plistlib.readPlistFromBytes(buf)
         self.assertEqual(cur, out_data)
         self.assertEqual(cur, in_data)

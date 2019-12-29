@@ -57,10 +57,10 @@ kundi FixNext(fixer_base.BaseFix):
                 base = [n.clone() kila n kwenye base]
                 base[0].prefix = ""
                 node.replace(Call(Name("next", prefix=node.prefix), base))
-        elikiwa name:
+        lasivyo name:
             n = Name("__next__", prefix=name.prefix)
             name.replace(n)
-        elikiwa attr:
+        lasivyo attr:
             # We don't do this transformation ikiwa we're assigning to "x.next".
             # Unfortunately, it doesn't seem possible to do this kwenye PATTERN,
             #  so it's being done here.
@@ -70,7 +70,7 @@ kundi FixNext(fixer_base.BaseFix):
                     self.warning(node, bind_warning)
                 rudisha
             attr.replace(Name("__next__"))
-        elikiwa "global" kwenye results:
+        lasivyo "global" kwenye results:
             self.warning(node, bind_warning)
             self.shadowed_next = Kweli
 
@@ -86,7 +86,7 @@ eleza is_assign_target(node):
     kila child kwenye assign.children:
         ikiwa child.type == token.EQUAL:
             rudisha Uongo
-        elikiwa is_subtree(child, node):
+        lasivyo is_subtree(child, node):
             rudisha Kweli
     rudisha Uongo
 

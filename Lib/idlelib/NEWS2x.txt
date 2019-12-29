@@ -130,8 +130,8 @@ What's New kwenye IDLE 2.6
 - Patch #1362975: Rework CodeContext indentation algorithm to
   avoid hard-coding pixel widths.
 
-- Bug #813342: Start the IDLE subprocess with -Qnew ikiwa the parent
-  ni started with that option.
+- Bug #813342: Start the IDLE subprocess ukijumuisha -Qnew ikiwa the parent
+  ni started ukijumuisha that option.
 
 - Honor the "Cancel" action kwenye the save dialog (Debian bug #299092)
 
@@ -274,7 +274,7 @@ What's New kwenye IDLE 1.1?
 =======================
 *Release date: 30-NOV-2004*
 
-- On OpenBSD, terminating IDLE with ctrl-c kutoka the command line caused a
+- On OpenBSD, terminating IDLE ukijumuisha ctrl-c kutoka the command line caused a
   stuck subprocess MainThread because only the SocketThread was exiting.
 
 - Saving a Keyset w/o making changes (by using the "Save kama New Custom Key Set"
@@ -345,7 +345,7 @@ What's New kwenye IDLE 1.1?
 - Print correct exception even ikiwa source file changed since shell was
   restarted.  IDLEfork Patch 869012 Noam Raphael
 
-- Keybindings with the Shift modifier now work correctly.  So do bindings which
+- Keybindings ukijumuisha the Shift modifier now work correctly.  So do bindings which
   use the Space key.  Limit unmodified user keybindings to the function keys.
   Python Bug 775353, IDLEfork Bugs 755647, 761557
 
@@ -377,7 +377,7 @@ What's New kwenye IDLE 1.0?
 
 - Fixed: Call Tip Trimming May Loop Forever. Python Patch 769142 (Daniels)
 
-- Replaced apply(f, args, kwds) with f(*args, **kwargs) to improve performance
+- Replaced apply(f, args, kwds) ukijumuisha f(*args, **kwargs) to improve performance
   Python Patch 768187
 
 - Break ama endelea statements outside a loop were causing IDLE crash
@@ -413,10 +413,10 @@ What's New kwenye IDLE 1.0?
 - Change to File / Open Module: always pop up the dialog, using the current
   selection kama the default value.  This ni easier to use habitually.
 
-- Avoided a problem with starting the subprocess when 'localhost' doesn't
+- Avoided a problem ukijumuisha starting the subprocess when 'localhost' doesn't
   resolve to the user's loopback interface.  SF 747772
 
-- Fixed an issue with highlighted errors never de-colorizing.  SF 747677.  Also
+- Fixed an issue ukijumuisha highlighted errors never de-colorizing.  SF 747677.  Also
   improved notification of Tabnanny Token Error.
 
 - File / New will by default save kwenye the directory of the Edit window kutoka
@@ -480,16 +480,16 @@ What's New kwenye IDLEfork 0.9b1?
   reload/agiza tricks must be use ikiwa user source code ni changed.)  This is
   helpful kila developing IDLE using IDLE, because one instance can be used to
   edit the code na a separate instance run to test changes.  (Multiple
-  concurrent IDLE instances with subprocesses ni a future feature)
+  concurrent IDLE instances ukijumuisha subprocesses ni a future feature)
 
-- Improve the error message a user gets when saving a file with non-ASCII
+- Improve the error message a user gets when saving a file ukijumuisha non-ASCII
   characters na no source encoding ni specified.  Done by adding a dialog
   'EncodingMessage', which contains the line to add kwenye a fixed-font entry
   widget, na which has a button to add that line to the file automatically.
   Also, add a configuration option 'EditorWindow/encoding', which has three
   possible values: none, utf-8, na locale. Tupu ni the default: IDLE will show
   this dialog when non-ASCII characters are encountered. utf-8 means that files
-  with non-ASCII characters are saved kama utf-8-with-bom. locale means that
+  ukijumuisha non-ASCII characters are saved kama utf-8-with-bom. locale means that
   files are saved kwenye the locale's encoding; the dialog ni only displayed ikiwa the
   source contains characters outside the locale's charset.  SF 710733 - Loewis
 
@@ -511,14 +511,14 @@ What's New kwenye IDLEfork 0.9b1?
   IDLE command prompt  SF 695861
 
 - Eliminate extra blank line kwenye shell output caused by sio flushing
-  stdout when user code ends with an unterminated print. SF 695861
+  stdout when user code ends ukijumuisha an unterminated print. SF 695861
 
 - Moved responsibility kila exception formatting (i.e. pruning IDLE internal
   calls) out of rpc.py into the client na server.
 
 - Exit IDLE cleanly even when doing subprocess I/O
 
-- Handle subprocess interrupt with an RPC message.
+- Handle subprocess interrupt ukijumuisha an RPC message.
 
 - Restart the subprocess ikiwa it terminates itself. (VPython programs do that)
 
@@ -534,10 +534,10 @@ What's New kwenye IDLEfork 0.9 Alpha 2?
 
 - Improved formatting kwenye IDLE Help.
 
-- Run menu: Replace "Run Script" with "Run Module".
+- Run menu: Replace "Run Script" ukijumuisha "Run Module".
 
 - Code encountering an unhandled exception under the debugger now shows
-  the correct traceback, with IDLE internal levels pruned out.
+  the correct traceback, ukijumuisha IDLE internal levels pruned out.
 
 - If an exception occurs entirely kwenye IDLE, don't prune the IDLE internal
   modules kutoka the traceback displayed.
@@ -547,7 +547,7 @@ What's New kwenye IDLEfork 0.9 Alpha 2?
 - IDLE icons will now install correctly even when setup.py ni run kutoka the
   build directory
 
-- Class Browser now compatible with Python2.3 version of pyclbr.py
+- Class Browser now compatible ukijumuisha Python2.3 version of pyclbr.py
 
 - Left cursor move kwenye presence of selected text now moves kutoka left end
   of the selection.
@@ -555,12 +555,12 @@ What's New kwenye IDLEfork 0.9 Alpha 2?
 - Add Meta keybindings to "IDLE Classic Windows" to handle reversed
   Alt/Meta on some Linux distros.
 
-- Change default: IDLE now starts with Python Shell.
+- Change default: IDLE now starts ukijumuisha Python Shell.
 
 - Removed the File Path kutoka the Additional Help Sources scrolled list.
 
 - Add capability to access Additional Help Sources on the web ikiwa the
-  Help File Path begins with //http ama www.  (Otherwise local path is
+  Help File Path begins ukijumuisha //http ama www.  (Otherwise local path is
   validated, kama before.)
 
 - Additional Help Sources were sio being posted on the Help menu kwenye the
@@ -587,7 +587,7 @@ What's New kwenye IDLEfork 0.9 Alpha 2?
   to parents.
 
 - Use os.startfile() to open both Additional Help na Python Help on the
-  Windows platform.  The application associated with the file type will act as
+  Windows platform.  The application associated ukijumuisha the file type will act as
   the viewer.  Windows help files (.chm) are now supported via the
   Settings/General/Additional Help facility.
 
@@ -610,11 +610,11 @@ What's New kwenye IDLEfork 0.9 Alpha 2?
 - Rearrange the Shell menu to put Stack Viewer entries adjacent.
 
 - Add the ability to restart the subprocess interpreter kutoka the shell window;
-  add an associated menu entry "Shell/Restart" with binding Control-F6.  Update
+  add an associated menu entry "Shell/Restart" ukijumuisha binding Control-F6.  Update
   IDLE help.
 
-- Upon a restart, annotate the shell window with a "restart boundary".  Add a
-  shell window menu "Shell/View Restart" with binding F6 to jump to the most
+- Upon a restart, annotate the shell window ukijumuisha a "restart boundary".  Add a
+  shell window menu "Shell/View Restart" ukijumuisha binding F6 to jump to the most
   recent restart boundary.
 
 - Add Shell menu to Python Shell; change "Settings" to "Options".
@@ -650,7 +650,7 @@ What's New kwenye IDLEfork 0.9 Alpha 1?
 
 - Introduced the configuration GUI na a new About dialog.
 
-- Removed David Scherer's Remote Procedure Call code na replaced with Guido
+- Removed David Scherer's Remote Procedure Call code na replaced ukijumuisha Guido
   van Rossum's.  GvR code has support kila the IDLE debugger na uses the shell
   to inspect the environment of code Run kutoka an Edit window.  Files removed:
   ExecBinding.py, loader.py, protocol.py, Remote.py, spawn.py

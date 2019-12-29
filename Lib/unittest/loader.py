@@ -189,9 +189,9 @@ kundi TestLoader(object):
 
         ikiwa isinstance(obj, types.ModuleType):
             rudisha self.loadTestsFromModule(obj)
-        elikiwa isinstance(obj, type) na issubclass(obj, case.TestCase):
+        lasivyo isinstance(obj, type) na issubclass(obj, case.TestCase):
             rudisha self.loadTestsFromTestCase(obj)
-        elikiwa (isinstance(obj, types.FunctionType) and
+        lasivyo (isinstance(obj, types.FunctionType) and
               isinstance(parent, type) and
               issubclass(parent, case.TestCase)):
             name = parts[-1]
@@ -199,13 +199,13 @@ kundi TestLoader(object):
             # static methods follow a different path
             ikiwa sio isinstance(getattr(inst, name), types.FunctionType):
                 rudisha self.suiteClass([inst])
-        elikiwa isinstance(obj, suite.TestSuite):
+        lasivyo isinstance(obj, suite.TestSuite):
             rudisha obj
         ikiwa callable(obj):
             test = obj()
             ikiwa isinstance(test, suite.TestSuite):
                 rudisha test
-            elikiwa isinstance(test, case.TestCase):
+            lasivyo isinstance(test, case.TestCase):
                 rudisha self.suiteClass([test])
             isipokua:
                 ashiria TypeError("calling %s rudishaed %s, sio a test" %
@@ -249,9 +249,9 @@ kundi TestLoader(object):
         If the start directory ni sio the top level directory then the top
         level directory must be specified separately.
 
-        If a test package name (directory with '__init__.py') matches the
+        If a test package name (directory ukijumuisha '__init__.py') matches the
         pattern then the package will be checked kila a 'load_tests' function. If
-        this exists then it will be called with (loader, tests, pattern) unless
+        this exists then it will be called ukijumuisha (loader, tests, pattern) unless
         the package has already had load_tests called kutoka the same discovery
         invocation, kwenye which case the package module object ni sio scanned for
         tests - this ensures that when a package uses discover to further
@@ -265,13 +265,13 @@ kundi TestLoader(object):
         load_tests does sio need to pita this argument kwenye to loader.discover().
 
         Paths are sorted before being imported to ensure reproducible execution
-        order even on filesystems with non-alphabetical ordering like ext3/4.
+        order even on filesystems ukijumuisha non-alphabetical ordering like ext3/4.
         """
         set_implicit_top = Uongo
         ikiwa top_level_dir ni Tupu na self._top_level_dir ni sio Tupu:
             # make top_level_dir optional ikiwa called kutoka load_tests kwenye a package
             top_level_dir = self._top_level_dir
-        elikiwa top_level_dir ni Tupu:
+        lasivyo top_level_dir ni Tupu:
             set_implicit_top = Kweli
             top_level_dir = start_dir
 
@@ -325,7 +325,7 @@ kundi TestLoader(object):
                                 tests.extend(self._find_tests(path,
                                                               pattern,
                                                               namespace=Kweli))
-                    elikiwa the_module.__name__ kwenye sys.builtin_module_names:
+                    lasivyo the_module.__name__ kwenye sys.builtin_module_names:
                         # builtin module
                         ashiria TypeError('Can sio use builtin modules '
                                         'as dotted module names') kutoka Tupu
@@ -389,7 +389,7 @@ kundi TestLoader(object):
         # definition sio a package).
         ikiwa name != '.' na name haiko kwenye self._loading_packages:
             # name ni kwenye self._loading_packages wakati we have called into
-            # loadTestsFromModule with name.
+            # loadTestsFromModule ukijumuisha name.
             tests, should_recurse = self._find_test_path(
                 start_dir, pattern, namespace)
             ikiwa tests ni sio Tupu:
@@ -458,7 +458,7 @@ kundi TestLoader(object):
                     ashiria ImportError(
                         msg % (mod_name, module_dir, expected_dir))
                 rudisha self.loadTestsFromModule(module, pattern=pattern), Uongo
-        elikiwa os.path.isdir(full_path):
+        lasivyo os.path.isdir(full_path):
             ikiwa (not namespace and
                 sio os.path.isfile(os.path.join(full_path, '__init__.py'))):
                 rudisha Tupu, Uongo

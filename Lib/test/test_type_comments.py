@@ -62,7 +62,7 @@ kila a kwenye []:  # type: int
 """
 
 withstmt = """\
-with context() kama a:  # type: int
+ukijumuisha context() kama a:  # type: int
     pita
 """
 
@@ -236,7 +236,7 @@ kundi TypeCommentTests(unittest.TestCase):
                 tatizo SyntaxError kama err:
                     ashiria SyntaxError(str(err) + f" feature_version={feature_version}")
             isipokua:
-                with self.assertRaisesRegex(SyntaxError, expected_regex,
+                ukijumuisha self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
                     self.parse(source, feature_version)
 
@@ -333,7 +333,7 @@ kundi TypeCommentTests(unittest.TestCase):
                     todo.remove(c)
                     ikiwa c == 'v':
                         arg = t.args.vararg
-                    elikiwa c == 'k':
+                    lasivyo c == 'k':
                         arg = t.args.kwarg
                     isipokua:
                         assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
@@ -354,8 +354,8 @@ kundi TypeCommentTests(unittest.TestCase):
     eleza test_inappropriate_type_comments(self):
         """Tests kila inappropriately-placed type comments.
 
-        These should be silently ignored with type comments off,
-        but ashiria SyntaxError with type comments on.
+        These should be silently ignored ukijumuisha type comments off,
+        but ashiria SyntaxError ukijumuisha type comments on.
 
         This ni sio meant to be exhaustive.
         """
@@ -398,13 +398,13 @@ kundi TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.argtypes[2].id, "Any")
         self.assertEqual(tree.rudishas.id, "float")
 
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(int, *str, *Any) -> float")
 
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(int, **str, Any) -> float")
 
-        with self.assertRaises(SyntaxError):
+        ukijumuisha self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(**int, **str) -> float")
 
 

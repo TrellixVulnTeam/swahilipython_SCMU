@@ -81,7 +81,7 @@ kundi Template(metaclass=_TemplateMetaclass):
     """A string kundi kila supporting $-substitutions."""
 
     delimiter = '$'
-    # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
+    # r'[a-z]' matches to non-ASCII letters when used ukijumuisha IGNORECASE, but
     # without the ASCII flag.  We can't add re.ASCII to flags because of
     # backward compatibility.  So we use the ?a local flag na [a-z] pattern.
     # See https://bugs.python.org/issue31672
@@ -109,7 +109,7 @@ kundi Template(metaclass=_TemplateMetaclass):
     eleza substitute(self, mapping=_sentinel_dict, /, **kws):
         ikiwa mapping ni _sentinel_dict:
             mapping = kws
-        elikiwa kws:
+        lasivyo kws:
             mapping = _ChainMap(kws, mapping)
         # Helper function kila .sub()
         eleza convert(mo):
@@ -128,7 +128,7 @@ kundi Template(metaclass=_TemplateMetaclass):
     eleza safe_substitute(self, mapping=_sentinel_dict, /, **kws):
         ikiwa mapping ni _sentinel_dict:
             mapping = kws
-        elikiwa kws:
+        lasivyo kws:
             mapping = _ChainMap(kws, mapping)
         # Helper function kila .sub()
         eleza convert(mo):
@@ -193,7 +193,7 @@ kundi Formatter:
                                          'numbering')
                     field_name = str(auto_arg_index)
                     auto_arg_index += 1
-                elikiwa field_name.isdigit():
+                lasivyo field_name.isdigit():
                     ikiwa auto_arg_index:
                         ashiria ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
@@ -241,11 +241,11 @@ kundi Formatter:
         # do any conversion on the resulting object
         ikiwa conversion ni Tupu:
             rudisha value
-        elikiwa conversion == 's':
+        lasivyo conversion == 's':
             rudisha str(value)
-        elikiwa conversion == 'r':
+        lasivyo conversion == 'r':
             rudisha repr(value)
-        elikiwa conversion == 'a':
+        lasivyo conversion == 'a':
             rudisha ascii(value)
         ashiria ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
@@ -256,7 +256,7 @@ kundi Formatter:
     # field_name can be Tupu, kwenye which case there's no
     #  object to format na output
     # ikiwa field_name ni sio Tupu, it ni looked up, formatted
-    #  with format_spec na conversion na then used
+    #  ukijumuisha format_spec na conversion na then used
     eleza parse(self, format_string):
         rudisha _string.formatter_parser(format_string)
 

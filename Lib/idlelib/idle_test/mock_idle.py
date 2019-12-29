@@ -31,7 +31,7 @@ kundi Func:
         self.kwds = kwds
         ikiwa isinstance(self.result, BaseException):
             ashiria self.result
-        elikiwa self.rudisha_self:
+        lasivyo self.rudisha_self:
             rudisha self
         isipokua:
             rudisha self.result

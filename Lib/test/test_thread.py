@@ -17,7 +17,7 @@ _print_mutex = thread.allocate_lock()
 eleza verbose_andika(arg):
     """Helper function kila printing out debugging output."""
     ikiwa support.verbose:
-        with _print_mutex:
+        ukijumuisha _print_mutex:
             andika(arg)
 
 
@@ -39,7 +39,7 @@ kundi BasicThreadTest(unittest.TestCase):
 kundi ThreadRunningTests(BasicThreadTest):
 
     eleza newtask(self):
-        with self.running_mutex:
+        ukijumuisha self.running_mutex:
             self.next_ident += 1
             verbose_andika("creating task %s" % self.next_ident)
             thread.start_new_thread(self.task, (self.next_ident,))
@@ -47,18 +47,18 @@ kundi ThreadRunningTests(BasicThreadTest):
             self.running += 1
 
     eleza task(self, ident):
-        with self.random_mutex:
+        ukijumuisha self.random_mutex:
             delay = random.random() / 10000.0
         verbose_andika("task %s will run kila %sus" % (ident, round(delay*1e6)))
         time.sleep(delay)
         verbose_andika("task %s done" % ident)
-        with self.running_mutex:
+        ukijumuisha self.running_mutex:
             self.running -= 1
             ikiwa self.created == NUMTASKS na self.running == 0:
                 self.done_mutex.release()
 
     eleza test_starting_threads(self):
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             # Basic test kila thread creation.
             kila i kwenye range(NUMTASKS):
                 self.newtask()
@@ -94,7 +94,7 @@ kundi ThreadRunningTests(BasicThreadTest):
             verbose_andika("trying stack_size = (%d)" % tss)
             self.next_ident = 0
             self.created = 0
-            with support.wait_threads_exit():
+            ukijumuisha support.wait_threads_exit():
                 kila i kwenye range(NUMTASKS):
                     self.newtask()
 
@@ -116,7 +116,7 @@ kundi ThreadRunningTests(BasicThreadTest):
             mut.acquire()
             mut.release()
 
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             thread.start_new_thread(task, ())
             wakati sio started:
                 time.sleep(POLL_SLEEP)
@@ -139,8 +139,8 @@ kundi ThreadRunningTests(BasicThreadTest):
             ashiria ValueError("task failed")
 
         started = thread.allocate_lock()
-        with support.catch_unraisable_exception() kama cm:
-            with support.wait_threads_exit():
+        ukijumuisha support.catch_unraisable_exception() kama cm:
+            ukijumuisha support.wait_threads_exit():
                 started.acquire()
                 thread.start_new_thread(task, ())
                 started.acquire()
@@ -180,7 +180,7 @@ kundi Barrier:
 kundi BarrierTest(BasicThreadTest):
 
     eleza test_barrier(self):
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             self.bar = Barrier(NUMTASKS)
             self.running = NUMTASKS
             kila i kwenye range(NUMTASKS):
@@ -197,7 +197,7 @@ kundi BarrierTest(BasicThreadTest):
                 # of the current one
                 delay = 0
             isipokua:
-                with self.random_mutex:
+                ukijumuisha self.random_mutex:
                     delay = random.random() / 10000.0
             verbose_andika("task %s will run kila %sus" %
                           (ident, round(delay * 1e6)))
@@ -205,9 +205,9 @@ kundi BarrierTest(BasicThreadTest):
             verbose_andika("task %s entering %s" % (ident, i))
             self.bar.enter()
             verbose_andika("task %s leaving barrier" % ident)
-        with self.running_mutex:
+        ukijumuisha self.running_mutex:
             self.running -= 1
-            # Must release mutex before releasing done, else the main thread can
+            # Must release mutex before releasing done, isipokua the main thread can
             # exit na set mutex to Tupu kama part of global teardown; then
             # mutex.release() ashirias AttributeError.
             finished = self.running == 0
@@ -244,7 +244,7 @@ kundi TestForkInThread(unittest.TestCase):
                 os.close(self.write_fd)
                 pid, status = os.waitpid(pid, 0)
 
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             thread.start_new_thread(thread1, ())
             self.assertEqual(os.read(self.read_fd, 2), b"OK",
                              "Unable to fork() kwenye thread")

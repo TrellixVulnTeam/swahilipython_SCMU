@@ -223,7 +223,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         # For attribute completion, a large list containing all variables, and
         # a small list containing non-private variables.
         # For file completion, a large list containing all files kwenye the path,
-        # na a small list containing files that do sio start with '.'.
+        # na a small list containing files that do sio start ukijumuisha '.'.
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
@@ -237,16 +237,16 @@ kundi AutoCompleteTest(unittest.TestCase):
         self.assertKweli(any(filter(lambda x: x.startswith('_'), b)))
 
         # Test smalll should respect to __all__.
-        with patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
+        ukijumuisha patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
             s, b = acp.fetch_completions('', ac.ATTRS)
             self.assertEqual(s, ['a', 'b'])
             self.assertIn('__name__', b)    # From __main__.__dict__
             self.assertIn('sum', b)         # From __main__.__builtins__.__dict__
 
-        # Test attributes with name entity.
+        # Test attributes ukijumuisha name entity.
         mock = Mock()
         mock._private = Mock()
-        with patch.dict('__main__.__dict__', {'foo': mock}):
+        ukijumuisha patch.dict('__main__.__dict__', {'foo': mock}):
             s, b = acp.fetch_completions('foo', ac.ATTRS)
             self.assertNotIn('_private', s)
             self.assertIn('_private', b)
@@ -260,7 +260,7 @@ kundi AutoCompleteTest(unittest.TestCase):
                 rudisha ['foo', 'bar', '.hidden']
             rudisha ['monty', 'python', '.hidden']
 
-        with patch.object(os, 'listdir', _listdir):
+        ukijumuisha patch.object(os, 'listdir', _listdir):
             s, b = acp.fetch_completions('', ac.FILES)
             self.assertEqual(s, ['bar', 'foo'])
             self.assertEqual(b, ['.hidden', 'bar', 'foo'])
@@ -279,17 +279,17 @@ kundi AutoCompleteTest(unittest.TestCase):
 
         # Test name kutoka sys.modules.
         mock = Mock()
-        with patch.dict('sys.modules', {'tempfile': mock}):
+        ukijumuisha patch.dict('sys.modules', {'tempfile': mock}):
             Equal(acp.get_entity('tempfile'), mock)
 
         # Test name kutoka __main__.__dict__.
         di = {'foo': 10, 'bar': 20}
-        with patch.dict('__main__.__dict__', {'d': di}):
+        ukijumuisha patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
         # Test name haiko kwenye namespace.
-        with patch.dict('__main__.__dict__', {}):
-            with self.assertRaises(NameError):
+        ukijumuisha patch.dict('__main__.__dict__', {}):
+            ukijumuisha self.assertRaises(NameError):
                 acp.get_entity('not_exist')
 
 

@@ -665,7 +665,7 @@ class Parameter(TokenList):
     def section_number(self):
         # Because the first token, the attribute (name) eats CFWS, the second
         # token is always the section if there is one.
-        return self[1].number if self.sectioned else 0
+        return self[1].number if self.sectioned isipokua 0
 
     @property
     def param_value(self):
@@ -801,7 +801,7 @@ class MimeParameters(TokenList):
             isipokua:
                 params.append(name)
         params = '; '.join(params)
-        return ' ' + params if params else ''
+        return ' ' + params if params isipokua ''
 
 
 class ParameterizedHeaderValue(TokenList):
@@ -890,7 +890,7 @@ class Terminal(str):
             self.__class__.__name__,
             self.token_type,
             super().__repr__(),
-            '' if sio self.defects else ' {}'.format(self.defects),
+            '' if sio self.defects isipokua ' {}'.format(self.defects),
             )]
 
     def pop_trailing_ws(self):
@@ -2743,7 +2743,7 @@ def _refold_parse_tree(parse_tree, *, policy):
     """
     # max_line_length 0/None means no limit, ie: infinitely long.
     maxlen = policy.max_line_length or sys.maxsize
-    encoding = 'utf-8' if policy.utf8 else 'us-ascii'
+    encoding = 'utf-8' if policy.utf8 isipokua 'us-ascii'
     lines = ['']
     last_ew = None
     wrap_as_ew_blocked = 0
@@ -2868,9 +2868,9 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
         # Likewise for the trailing space.
         trailing_wsp = to_encode[-1]
         to_encode = to_encode[:-1]
-    new_last_ew = len(lines[-1]) if last_ew is None else last_ew
+    new_last_ew = len(lines[-1]) if last_ew is None isipokua last_ew
 
-    encode_as = 'utf-8' if charset == 'us-ascii' else charset
+    encode_as = 'utf-8' if charset == 'us-ascii' isipokua charset
 
     # The RFC2047 chrome takes up 7 characters plus the length
     # of the charset name.
@@ -2903,7 +2903,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
             lines.append(' ')
             new_last_ew = len(lines[-1])
     lines[-1] += trailing_wsp
-    return new_last_ew if ew_combine_allowed else None
+    return new_last_ew if ew_combine_allowed isipokua None
 
 def _fold_mime_parameters(part, lines, maxlen, encoding):
     """Fold TokenList 'part' into the 'lines' list as mime parameters.

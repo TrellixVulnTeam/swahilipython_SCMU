@@ -75,7 +75,7 @@ kundi SMTPNotSupportedError(SMTPException):
     """The command ama option ni sio supported by the SMTP server.
 
     This exception ni ashiriad when an attempt ni made to run a command ama a
-    command with an option which ni sio supported by the server.
+    command ukijumuisha an option which ni sio supported by the server.
     """
 
 kundi SMTPServerDisconnected(SMTPException):
@@ -311,7 +311,7 @@ kundi SMTP:
     eleza connect(self, host='localhost', port=0, source_address=Tupu):
         """Connect to a host on a given port.
 
-        If the hostname ends with a colon (`:') followed by a number, and
+        If the hostname ends ukijumuisha a colon (`:') followed by a number, and
         there ni no port specified, that suffix will be stripped off na the
         number interpreted kama the port number to use.
 
@@ -458,7 +458,7 @@ kundi SMTP:
         resp = self.ehlo_resp.decode("latin-1").split('\n')
         toa resp[0]
         kila each kwenye resp:
-            # To be able to communicate with kama many SMTP servers kama possible,
+            # To be able to communicate ukijumuisha kama many SMTP servers kama possible,
             # we have to take the old-style auth advertisement into account,
             # because:
             # 1) Else our SMTP feature parser gets confused.
@@ -549,7 +549,7 @@ kundi SMTP:
     eleza data(self, msg):
         """SMTP 'DATA' command -- sends message data to server.
 
-        Automatically quotes lines beginning with a period per rfc821.
+        Automatically quotes lines beginning ukijumuisha a period per rfc821.
         Raises SMTPDataError ikiwa there ni an unexpected reply to the
         DATA command; the rudisha value kutoka this method ni the final
         response code received when the all data ni sent.  If msg
@@ -629,13 +629,13 @@ kundi SMTP:
         # methods support it.  By definition, ikiwa they rudisha something other
         # than Tupu when challenge ni Tupu, then they do.  See issue #15014.
         mechanism = mechanism.upper()
-        initial_response = (authobject() ikiwa initial_response_ok else Tupu)
+        initial_response = (authobject() ikiwa initial_response_ok isipokua Tupu)
         ikiwa initial_response ni sio Tupu:
             response = encode_base64(initial_response.encode('ascii'), eol='')
             (code, resp) = self.docmd("AUTH", mechanism + " " + response)
         isipokua:
             (code, resp) = self.docmd("AUTH", mechanism)
-        # If server responds with a challenge, send the response.
+        # If server responds ukijumuisha a challenge, send the response.
         ikiwa code == 334:
             challenge = base64.decodebytes(resp)
             response = encode_base64(
@@ -646,7 +646,7 @@ kundi SMTP:
         ashiria SMTPAuthenticationError(code, resp)
 
     eleza auth_cram_md5(self, challenge=Tupu):
-        """ Authobject to use with CRAM-MD5 authentication. Requires self.user
+        """ Authobject to use ukijumuisha CRAM-MD5 authentication. Requires self.user
         na self.pitaword to be set."""
         # CRAM-MD5 does sio support initial-response.
         ikiwa challenge ni Tupu:
@@ -655,12 +655,12 @@ kundi SMTP:
             self.pitaword.encode('ascii'), challenge, 'md5').hexdigest()
 
     eleza auth_plain(self, challenge=Tupu):
-        """ Authobject to use with PLAIN authentication. Requires self.user and
+        """ Authobject to use ukijumuisha PLAIN authentication. Requires self.user and
         self.pitaword to be set."""
         rudisha "\0%s\0%s" % (self.user, self.pitaword)
 
     eleza auth_login(self, challenge=Tupu):
-        """ Authobject to use with LOGIN authentication. Requires self.user and
+        """ Authobject to use ukijumuisha LOGIN authentication. Requires self.user and
         self.pitaword to be set."""
         ikiwa challenge ni Tupu:
             rudisha self.user
@@ -796,7 +796,7 @@ kundi SMTP:
         The arguments are:
             - kutoka_addr    : The address sending this mail.
             - to_addrs     : A list of addresses to send this mail to.  A bare
-                             string will be treated kama a list with 1 address.
+                             string will be treated kama a list ukijumuisha 1 address.
             - msg          : The message to send.
             - mail_options : List of ESMTP options (such kama 8bitmime) kila the
                              mail command.
@@ -813,7 +813,7 @@ kundi SMTP:
         fails, HELO will be tried na ESMTP options suppressed.
 
         This method will rudisha normally ikiwa the mail ni accepted kila at least
-        one recipient.  It rudishas a dictionary, with one entry kila each
+        one recipient.  It rudishas a dictionary, ukijumuisha one entry kila each
         recipient that was refused.  Each entry contains a tuple of the SMTP
         error code na the accompanying error message sent by the server.
 
@@ -824,7 +824,7 @@ kundi SMTP:
          SMTPRecipientsRefused  The server rejected ALL recipients
                                 (no mail was sent).
          SMTPSenderRefused      The server didn't accept the kutoka_addr.
-         SMTPDataError          The server replied with an unexpected
+         SMTPDataError          The server replied ukijumuisha an unexpected
                                 error code (other than a refusal of
                                 a recipient).
          SMTPNotSupportedError  The mail_options parameter includes 'SMTPUTF8'
@@ -848,7 +848,7 @@ kundi SMTP:
          >>> s.quit()
 
         In the above example, the message was accepted kila delivery to three
-        of the four addresses, na one was rejected, with the error code
+        of the four addresses, na one was rejected, ukijumuisha the error code
         550.  If all addresses are accepted, then the method will rudisha an
         empty dictionary.
 
@@ -907,7 +907,7 @@ kundi SMTP:
         object ni then serialized using email.generator.BytesGenerator and
         sendmail ni called to transmit the message.  If the sender ama any of
         the recipient addresses contain non-ASCII na the server advertises the
-        SMTPUTF8 capability, the policy ni cloned with utf8 set to Kweli kila the
+        SMTPUTF8 capability, the policy ni cloned ukijumuisha utf8 set to Kweli kila the
         serialization, na SMTPUTF8 na BODY=8BITMIME are asserted on the send.
         If the server does sio support SMTPUTF8, an SMTPNotSupported error is
         ashiriad.  Otherwise the generator ni called without modifying the
@@ -920,7 +920,7 @@ kundi SMTP:
         # unambiguously determine which one ni the most recent kwenye all cases,
         # so rather than guess we ashiria a ValueError kwenye that case.
         #
-        # TODO implement heuristics to guess the correct Resent-* block with an
+        # TODO implement heuristics to guess the correct Resent-* block ukijumuisha an
         # option allowing the user to enable the heuristics.  (It should be
         # possible to guess correctly almost all of the time.)
 
@@ -928,7 +928,7 @@ kundi SMTP:
         resent = msg.get_all('Resent-Date')
         ikiwa resent ni Tupu:
             header_prefix = ''
-        elikiwa len(resent) == 1:
+        lasivyo len(resent) == 1:
             header_prefix = 'Resent-'
         isipokua:
             ashiria ValueError("message has more than one 'Resent-' header block")
@@ -936,7 +936,7 @@ kundi SMTP:
             # Prefer the sender field per RFC 2822:3.6.2.
             kutoka_addr = (msg[header_prefix + 'Sender']
                            ikiwa (header_prefix + 'Sender') kwenye msg
-                           else msg[header_prefix + 'From'])
+                           isipokua msg[header_prefix + 'From'])
             kutoka_addr = email.utils.getaddresses([kutoka_addr])[0][1]
         ikiwa to_addrs ni Tupu:
             addr_fields = [f kila f kwenye (msg[header_prefix + 'To'],
@@ -958,7 +958,7 @@ kundi SMTP:
                     " internationalized email support, but the server"
                     " does sio advertise the required SMTPUTF8 capability")
             international = Kweli
-        with io.BytesIO() kama bytesmsg:
+        ukijumuisha io.BytesIO() kama bytesmsg:
             ikiwa international:
                 g = email.generator.BytesGenerator(
                     bytesmsg, policy=msg.policy.clone(utf8=Kweli))
@@ -986,7 +986,7 @@ kundi SMTP:
     eleza quit(self):
         """Terminate the SMTP session."""
         res = self.docmd("quit")
-        # A new EHLO ni required after reconnecting with connect()
+        # A new EHLO ni required after reconnecting ukijumuisha connect()
         self.ehlo_resp = self.helo_resp = Tupu
         self.esmtp_features = {}
         self.does_esmtp = Uongo
@@ -998,7 +998,7 @@ ikiwa _have_ssl:
     kundi SMTP_SSL(SMTP):
         """ This ni a subkundi derived kutoka SMTP that connects over an SSL
         encrypted socket (to use this kundi you need a socket module that was
-        compiled with SSL support). If host ni sio specified, '' (the local
+        compiled ukijumuisha SSL support). If host ni sio specified, '' (the local
         host) ni used. If port ni omitted, the standard SMTP-over-SSL port
         (465) ni used.  local_hostname na source_address have the same meaning
         kama they do kwenye the SMTP class.  keyfile na certfile are also optional -
@@ -1058,7 +1058,7 @@ kundi LMTP(SMTP):
     LMTP, so our connect() method must support that kama well kama a regular
     host:port server.  local_hostname na source_address have the same
     meaning kama they do kwenye the SMTP class.  To specify a Unix socket,
-    you must use an absolute path kama the host, starting with a '/'.
+    you must use an absolute path kama the host, starting ukijumuisha a '/'.
 
     Authentication ni supported, using the regular SMTP mechanism. When
     using a Unix socket, LMTP generally don't support ama require any
@@ -1105,7 +1105,7 @@ ikiwa __name__ == '__main__':
 
     kutokaaddr = prompt("From")
     toaddrs = prompt("To").split(',')
-    andika("Enter message, end with ^D:")
+    andika("Enter message, end ukijumuisha ^D:")
     msg = ''
     wakati 1:
         line = sys.stdin.readline()

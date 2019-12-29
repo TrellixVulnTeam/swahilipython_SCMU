@@ -336,7 +336,7 @@ kundi ModuleFinderTest(unittest.TestCase):
         base_path = os.path.join(TEST_DIR, 'a')
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
-        with open_file(source_path) kama file:
+        ukijumuisha open_file(source_path) kama file:
             file.write('testing_modulefinder = Kweli\n')
         py_compile.compile(source_path, cfile=bytecode_path)
         os.remove(source_path)
@@ -345,7 +345,7 @@ kundi ModuleFinderTest(unittest.TestCase):
     eleza test_replace_paths(self):
         old_path = os.path.join(TEST_DIR, 'a', 'module.py')
         new_path = os.path.join(TEST_DIR, 'a', 'spam.py')
-        with support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() kama output:
             self._do_test(maybe_test, debug=2,
                           replace_paths=[(old_path, new_path)])
         output = output.getvalue()

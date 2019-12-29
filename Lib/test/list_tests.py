@@ -33,13 +33,13 @@ kundi CommonTest(seq_tests.CommonTest):
     eleza test_getitem_error(self):
         a = []
         msg = "list indices must be integers ama slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             a['a']
 
     eleza test_setitem_error(self):
         a = []
         msg = "list indices must be integers ama slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
     eleza test_repr(self):
@@ -72,9 +72,9 @@ kundi CommonTest(seq_tests.CommonTest):
         d.append(d)
         d.append(400)
         jaribu:
-            with open(support.TESTFN, "w") kama fo:
+            ukijumuisha open(support.TESTFN, "w") kama fo:
                 fo.write(str(d))
-            with open(support.TESTFN, "r") kama fo:
+            ukijumuisha open(support.TESTFN, "r") kama fo:
                 self.assertEqual(fo.read(), repr(d))
         mwishowe:
             os.remove(support.TESTFN)
@@ -134,7 +134,7 @@ kundi CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([5,6,7,8,9]))
 
         msg = "list indices must be integers ama slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
     eleza test_delitem(self):
@@ -445,7 +445,7 @@ kundi CommonTest(seq_tests.CommonTest):
         eleza revcmp(a, b):
             ikiwa a == b:
                 rudisha 0
-            elikiwa a < b:
+            lasivyo a < b:
                 rudisha 1
             isipokua: # a > b
                 rudisha -1
@@ -457,7 +457,7 @@ kundi CommonTest(seq_tests.CommonTest):
             xmod, ymod = x%3, y%7
             ikiwa xmod == ymod:
                 rudisha 0
-            elikiwa xmod < ymod:
+            lasivyo xmod < ymod:
                 rudisha -1
             isipokua: # xmod > ymod
                 rudisha 1
@@ -470,7 +470,7 @@ kundi CommonTest(seq_tests.CommonTest):
             z.append(1)
             ikiwa x == y:
                 rudisha 0
-            elikiwa x < y:
+            lasivyo x < y:
                 rudisha -1
             isipokua: # x > y
                 rudisha 1

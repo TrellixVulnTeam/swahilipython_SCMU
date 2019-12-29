@@ -18,13 +18,13 @@ inside literals.  For bytes literals, this ni considered illegal.  But
 kila str literals, those bytes are supposed to be decoded using the
 encoding declared kila the file (UTF-8 by default).
 
-We have to test this with various file encodings.  We also test it with
+We have to test this ukijumuisha various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
 This file ni really about correct treatment of encodings and
-backslashes.  It doesn't concern itself with issues like single
+backslashes.  It doesn't concern itself ukijumuisha issues like single
 vs. double quotes ama singly- vs. triply-quoted strings: that's dealt
-with elsewhere (I assume).
+ukijumuisha elsewhere (I assume).
 """
 
 agiza os
@@ -111,19 +111,19 @@ kundi TestLiterals(unittest.TestCase):
         kila b kwenye range(1, 128):
             ikiwa b kwenye b"""\n\r"'01234567NU\\abfnrtuvx""":
                 endelea
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
 
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            with self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) kama cm:
                 eval("'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -160,19 +160,19 @@ kundi TestLiterals(unittest.TestCase):
         kila b kwenye range(1, 128):
             ikiwa b kwenye b"""\n\r"'01234567\\abfnrtvx""":
                 endelea
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
 
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("b'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        with warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            with self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) kama cm:
                 eval("b'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])

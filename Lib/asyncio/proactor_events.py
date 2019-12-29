@@ -1,7 +1,7 @@
 """Event loop using a proactor na related classes.
 
 A proactor ni a "notify-on-completion" multiplexer.  Currently a
-proactor ni only implemented on Windows with IOCP.
+proactor ni only implemented on Windows ukijumuisha IOCP.
 """
 
 __all__ = 'BaseProactorEventLoop',
@@ -73,7 +73,7 @@ kundi _ProactorBasePipeTransport(transports._FlowControlMixin,
         info = [self.__class__.__name__]
         ikiwa self._sock ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         ikiwa self._sock ni sio Tupu:
             info.append(f'fd={self._sock.fileno()}')
@@ -155,7 +155,7 @@ kundi _ProactorBasePipeTransport(transports._FlowControlMixin,
             self._protocol.connection_lost(exc)
         mwishowe:
             # XXX If there ni a pending overlapped read on the other
-            # end then it may fail with ERROR_NETNAME_DELETED ikiwa we
+            # end then it may fail ukijumuisha ERROR_NETNAME_DELETED ikiwa we
             # just close our end.  First calling shutdown() seems to
             # cure it, but maybe using DisconnectEx() would be better.
             ikiwa hasattr(self._sock, 'shutdown'):
@@ -196,10 +196,10 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         self._paused = Kweli
 
         # bpo-33694: Don't cancel self._read_fut because cancelling an
-        # overlapped WSASend() loss silently data with the current proactor
+        # overlapped WSASend() loss silently data ukijumuisha the current proactor
         # implementation.
         #
-        # If CancelIoEx() fails with ERROR_NOT_FOUND, it means that WSASend()
+        # If CancelIoEx() fails ukijumuisha ERROR_NOT_FOUND, it means that WSASend()
         # completed (even ikiwa HasOverlappedIoCompleted() rudishas 0), but
         # Overlapped.cancel() currently silently ignores the ERROR_NOT_FOUND
         # error. Once the overlapped ni ignored, the IOCP loop will ignores the
@@ -300,7 +300,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         tatizo ConnectionAbortedError kama exc:
             ikiwa sio self._closing:
                 self._fatal_error(exc, 'Fatal read error on pipe transport')
-            elikiwa self._loop.get_debug():
+            lasivyo self._loop.get_debug():
                 logger.debug("Read error on pipe transport wakati closing",
                              exc_info=Kweli)
         tatizo ConnectionResetError kama exc:
@@ -357,7 +357,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
             assert self._buffer ni Tupu
             # Pass a copy, tatizo ikiwa it's already immutable.
             self._loop_writing(data=bytes(data))
-        elikiwa sio self._buffer:  # WRITING -> BACKED UP
+        lasivyo sio self._buffer:  # WRITING -> BACKED UP
             # Make a mutable copy which we can extend.
             self._buffer = bytearray(data)
             self._maybe_pause_protocol()
@@ -713,12 +713,12 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
             fsize = os.fstat(fileno).st_size
         tatizo OSError kama err:
             ashiria exceptions.SendfileNotAvailableError("not a regular file")
-        blocksize = count ikiwa count else fsize
+        blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file
 
         blocksize = min(blocksize, 0xffff_ffff)
-        end_pos = min(offset + count, fsize) ikiwa count else fsize
+        end_pos = min(offset + count, fsize) ikiwa count isipokua fsize
         offset = min(offset, fsize)
         total_sent = 0
         jaribu:
@@ -823,7 +823,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
                         'socket': trsock.TransportSocket(sock),
                     })
                     sock.close()
-                elikiwa self._debug:
+                lasivyo self._debug:
                     logger.debug("Accept failed on socket %r",
                                  sock, exc_info=Kweli)
             tatizo exceptions.CancelledError:

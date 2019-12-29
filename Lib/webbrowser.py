@@ -21,7 +21,7 @@ _os_preferred_browser = Tupu    # The preferred browser
 
 eleza register(name, klass, instance=Tupu, *, preferred=Uongo):
     """Register a browser connector."""
-    with _lock:
+    ukijumuisha _lock:
         ikiwa _tryorder ni Tupu:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
@@ -37,7 +37,7 @@ eleza register(name, klass, instance=Tupu, *, preferred=Uongo):
 eleza get(using=Tupu):
     """Return a browser launcher instance appropriate kila the environment."""
     ikiwa _tryorder ni Tupu:
-        with _lock:
+        ukijumuisha _lock:
             ikiwa _tryorder ni Tupu:
                 register_standard_browsers()
     ikiwa using ni sio Tupu:
@@ -60,7 +60,7 @@ eleza get(using=Tupu):
                 command = _synthesize(browser)
             ikiwa command[1] ni sio Tupu:
                 rudisha command[1]
-            elikiwa command[0] ni sio Tupu:
+            lasivyo command[0] ni sio Tupu:
                 rudisha command[0]()
     ashiria Error("could sio locate runnable browser")
 
@@ -70,7 +70,7 @@ eleza get(using=Tupu):
 
 eleza open(url, new=0, autoashiria=Kweli):
     ikiwa _tryorder ni Tupu:
-        with _lock:
+        ukijumuisha _lock:
             ikiwa _tryorder ni Tupu:
                 register_standard_browsers()
     kila name kwenye _tryorder:
@@ -140,7 +140,7 @@ kundi BaseBrowser(object):
 
 
 kundi GenericBrowser(BaseBrowser):
-    """Class kila all browsers started with a command
+    """Class kila all browsers started ukijumuisha a command
        na without remote functionality."""
 
     eleza __init__(self, name):
@@ -148,7 +148,7 @@ kundi GenericBrowser(BaseBrowser):
             self.name = name
             self.args = ["%s"]
         isipokua:
-            # name should be a list with arguments
+            # name should be a list ukijumuisha arguments
             self.name = name[0]
             self.args = name[1:]
         self.basename = os.path.basename(self.name)
@@ -187,12 +187,12 @@ kundi BackgroundBrowser(GenericBrowser):
 
 
 kundi UnixBrowser(BaseBrowser):
-    """Parent kundi kila all Unix browsers with remote functionality."""
+    """Parent kundi kila all Unix browsers ukijumuisha remote functionality."""
 
     ashiria_opts = Tupu
     background = Uongo
     redirect_stdout = Kweli
-    # In remote_args, %s will be replaced with the requested URL.  %action will
+    # In remote_args, %s will be replaced ukijumuisha the requested URL.  %action will
     # be replaced depending on the value of 'new' pitaed to open.
     # remote_action ni used kila new=0 (open).  If newwin ni sio Tupu, it is
     # used kila new=1 (open_new).  If newtab ni sio Tupu, it ni used for
@@ -230,7 +230,7 @@ kundi UnixBrowser(BaseBrowser):
                 rudisha sio rc
             tatizo subprocess.TimeoutExpired:
                 rudisha Kweli
-        elikiwa self.background:
+        lasivyo self.background:
             ikiwa p.poll() ni Tupu:
                 rudisha Kweli
             isipokua:
@@ -242,9 +242,9 @@ kundi UnixBrowser(BaseBrowser):
         sys.audit("webbrowser.open", url)
         ikiwa new == 0:
             action = self.remote_action
-        elikiwa new == 1:
+        lasivyo new == 1:
             action = self.remote_action_newwin
-        elikiwa new == 2:
+        lasivyo new == 2:
             ikiwa self.remote_action_newtab ni Tupu:
                 action = self.remote_action_newwin
             isipokua:
@@ -475,7 +475,7 @@ eleza register_X_browsers():
     # Konqueror/kfm, the KDE browser.
     ikiwa shutil.which("kfm"):
         register("kfm", Konqueror, Konqueror("kfm"))
-    elikiwa shutil.which("konqueror"):
+    lasivyo shutil.which("konqueror"):
         register("konqueror", Konqueror, Konqueror("konqueror"))
 
     # Gnome's Galeon na Epiphany
@@ -559,7 +559,7 @@ eleza register_standard_browsers():
                 register("w3m", Tupu, GenericBrowser("w3m"))
 
     # OK, now that we know what the default preference orders kila each
-    # platform are, allow user to override them with the BROWSER variable.
+    # platform are, allow user to override them ukijumuisha the BROWSER variable.
     ikiwa "BROWSER" kwenye os.environ:
         userchoices = os.environ["BROWSER"].split(os.pathsep)
         userchoices.reverse()
@@ -586,7 +586,7 @@ ikiwa sys.platform[:3] == "win":
             jaribu:
                 os.startfile(url)
             tatizo OSError:
-                # [Error 22] No application ni associated with the specified
+                # [Error 22] No application ni associated ukijumuisha the specified
                 # file kila this operation: '<URL>'
                 rudisha Uongo
             isipokua:
@@ -683,7 +683,7 @@ eleza main():
     new_win = 0
     kila o, a kwenye opts:
         ikiwa o == '-n': new_win = 1
-        elikiwa o == '-t': new_win = 2
+        lasivyo o == '-t': new_win = 2
     ikiwa len(args) != 1:
         andika(usage, file=sys.stderr)
         sys.exit(1)

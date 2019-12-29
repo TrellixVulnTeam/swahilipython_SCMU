@@ -98,7 +98,7 @@ kundi ForkTest(ForkWait):
                 os._exit(0)
             self.wait_impl(pid)
 
-        # Check this works with various levels of nested
+        # Check this works ukijumuisha various levels of nested
         # agiza kwenye the main thread
         kila level kwenye range(5):
             fork_with_import_lock(level)

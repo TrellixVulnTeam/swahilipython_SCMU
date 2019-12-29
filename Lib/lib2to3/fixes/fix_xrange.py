@@ -28,7 +28,7 @@ kundi FixXrange(fixer_base.BaseFix):
         name = results["name"]
         ikiwa name.value == "xrange":
             rudisha self.transform_xrange(node, results)
-        elikiwa name.value == "range":
+        lasivyo name.value == "range":
             rudisha self.transform_range(node, results)
         isipokua:
             ashiria ValueError(repr(name))

@@ -41,9 +41,9 @@ kundi TestLowLevelInternals(unittest.TestCase):
     eleza test_infer_rudisha_type_multiples(self):
         self.assertIs(str, tempfile._infer_rudisha_type('', ''))
         self.assertIs(bytes, tempfile._infer_rudisha_type(b'', b''))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tempfile._infer_rudisha_type('', b'')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tempfile._infer_rudisha_type(b'', '')
 
     eleza test_infer_rudisha_type_multiples_and_none(self):
@@ -52,9 +52,9 @@ kundi TestLowLevelInternals(unittest.TestCase):
         self.assertIs(str, tempfile._infer_rudisha_type(Tupu, Tupu))
         self.assertIs(bytes, tempfile._infer_rudisha_type(b'', Tupu))
         self.assertIs(bytes, tempfile._infer_rudisha_type(Tupu, b''))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tempfile._infer_rudisha_type('', Tupu, b'')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tempfile._infer_rudisha_type(b'', Tupu, '')
 
     eleza test_infer_rudisha_type_pathlib(self):
@@ -91,10 +91,10 @@ kundi BaseTestCase(unittest.TestCase):
                 "unexpected rudisha type",
             )
         ikiwa pre ni sio Tupu:
-            self.assertIs(type(name), str ikiwa type(pre) ni str else bytes,
+            self.assertIs(type(name), str ikiwa type(pre) ni str isipokua bytes,
                           "unexpected rudisha type")
         ikiwa suf ni sio Tupu:
-            self.assertIs(type(name), str ikiwa type(suf) ni str else bytes,
+            self.assertIs(type(name), str ikiwa type(suf) ni str isipokua bytes,
                           "unexpected rudisha type")
         ikiwa (dir, pre, suf) == (Tupu, Tupu, Tupu):
             self.assertIs(type(name), str, "default rudisha type must be str")
@@ -103,12 +103,12 @@ kundi BaseTestCase(unittest.TestCase):
         self.assertEqual(os.path.abspath(ndir), os.path.abspath(dir),
                          "file %r haiko kwenye directory %r" % (name, dir))
         self.assertEqual(npre, pre,
-                         "file %r does sio begin with %r" % (nbase, pre))
+                         "file %r does sio begin ukijumuisha %r" % (nbase, pre))
         self.assertEqual(nsuf, suf,
-                         "file %r does sio end with %r" % (nbase, suf))
+                         "file %r does sio end ukijumuisha %r" % (nbase, suf))
 
         nbase = nbase[len(pre):len(nbase)-len(suf)]
-        check = self.str_check ikiwa isinstance(nbase, str) else self.b_check
+        check = self.str_check ikiwa isinstance(nbase, str) isipokua self.b_check
         self.assertKweli(check.match(nbase),
                         "random characters %r do sio match %r"
                         % (nbase, check.pattern))
@@ -232,7 +232,7 @@ kundi TestCandidateTempdirList(BaseTestCase):
         # _candidate_tempdir_list contains the expected directories
 
         # Make sure the interesting environment variables are all set.
-        with support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             kila envname kwenye 'TMPDIR', 'TEMP', 'TMP':
                 dirname = os.getenv(envname)
                 ikiwa sio dirname:
@@ -263,12 +263,12 @@ kundi TestGetDefaultTempdir(BaseTestCase):
 
     eleza test_no_files_left_behind(self):
         # use a private empty directory
-        with tempfile.TemporaryDirectory() kama our_temp_directory:
+        ukijumuisha tempfile.TemporaryDirectory() kama our_temp_directory:
             # force _get_default_tempdir() to consider our empty directory
             eleza our_candidate_list():
                 rudisha [our_temp_directory]
 
-            with support.swap_attr(tempfile, "_candidate_tempdir_list",
+            ukijumuisha support.swap_attr(tempfile, "_candidate_tempdir_list",
                                    our_candidate_list):
                 # verify our directory ni empty after _get_default_tempdir()
                 tempfile._get_default_tempdir()
@@ -277,9 +277,9 @@ kundi TestGetDefaultTempdir(BaseTestCase):
                 eleza ashiria_OSError(*args, **kwargs):
                     ashiria OSError()
 
-                with support.swap_attr(io, "open", ashiria_OSError):
-                    # test again with failing io.open()
-                    with self.assertRaises(FileNotFoundError):
+                ukijumuisha support.swap_attr(io, "open", ashiria_OSError):
+                    # test again ukijumuisha failing io.open()
+                    ukijumuisha self.assertRaises(FileNotFoundError):
                         tempfile._get_default_tempdir()
                     self.assertEqual(os.listdir(our_temp_directory), [])
 
@@ -288,9 +288,9 @@ kundi TestGetDefaultTempdir(BaseTestCase):
                     fp.write = ashiria_OSError
                     rudisha fp
 
-                with support.swap_attr(io, "open", bad_writer) kama orig_open:
-                    # test again with failing write()
-                    with self.assertRaises(FileNotFoundError):
+                ukijumuisha support.swap_attr(io, "open", bad_writer) kama orig_open:
+                    # test again ukijumuisha failing write()
+                    ukijumuisha self.assertRaises(FileNotFoundError):
                         tempfile._get_default_tempdir()
                     self.assertEqual(os.listdir(our_temp_directory), [])
 
@@ -315,7 +315,7 @@ kundi TestGetCandidateNames(BaseTestCase):
 eleza _inside_empty_temp_dir():
     dir = tempfile.mkdtemp()
     jaribu:
-        with support.swap_attr(tempfile, 'tempdir', dir):
+        ukijumuisha support.swap_attr(tempfile, 'tempdir', dir):
             tuma
     mwishowe:
         support.rmtree(dir)
@@ -330,32 +330,32 @@ eleza _mock_candidate_names(*names):
 kundi TestBadTempdir:
 
     eleza test_read_only_directory(self):
-        with _inside_empty_temp_dir():
+        ukijumuisha _inside_empty_temp_dir():
             oldmode = mode = os.stat(tempfile.tempdir).st_mode
             mode &= ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
             os.chmod(tempfile.tempdir, mode)
             jaribu:
                 ikiwa os.access(tempfile.tempdir, os.W_OK):
                     self.skipTest("can't set the directory read-only")
-                with self.assertRaises(PermissionError):
+                ukijumuisha self.assertRaises(PermissionError):
                     self.make_temp()
                 self.assertEqual(os.listdir(tempfile.tempdir), [])
             mwishowe:
                 os.chmod(tempfile.tempdir, oldmode)
 
     eleza test_nonexisting_directory(self):
-        with _inside_empty_temp_dir():
+        ukijumuisha _inside_empty_temp_dir():
             tempdir = os.path.join(tempfile.tempdir, 'nonexistent')
-            with support.swap_attr(tempfile, 'tempdir', tempdir):
-                with self.assertRaises(FileNotFoundError):
+            ukijumuisha support.swap_attr(tempfile, 'tempdir', tempdir):
+                ukijumuisha self.assertRaises(FileNotFoundError):
                     self.make_temp()
 
     eleza test_non_directory(self):
-        with _inside_empty_temp_dir():
+        ukijumuisha _inside_empty_temp_dir():
             tempdir = os.path.join(tempfile.tempdir, 'file')
             open(tempdir, 'wb').close()
-            with support.swap_attr(tempfile, 'tempdir', tempdir):
-                with self.assertRaises((NotADirectoryError, FileNotFoundError)):
+            ukijumuisha support.swap_attr(tempfile, 'tempdir', tempdir):
+                ukijumuisha self.assertRaises((NotADirectoryError, FileNotFoundError)):
                     self.make_temp()
 
 
@@ -416,11 +416,11 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
         self.do_create(dir=dir_b, pre=b"a", suf=b"b").write(b"blat")
         self.do_create(dir=dir_b, pre=b"aa", suf=b".txt").write(b"blat")
         # Can't mix str & binary types kwenye the args.
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir="", suf=b"").write(b"blat")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir=dir_b, pre="").write(b"blat")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir=dir_b, pre=b"", suf="").write(b"blat")
 
     eleza test_basic_many(self):
@@ -439,7 +439,7 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
             os.rmdir(dir)
 
     eleza test_file_mode(self):
-        # _mkstemp_inner creates files with the proper mode
+        # _mkstemp_inner creates files ukijumuisha the proper mode
 
         file = self.do_create()
         mode = stat.S_IMODE(os.stat(file.name).st_mode)
@@ -475,8 +475,8 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
         tester = os.path.join(os.path.dirname(os.path.abspath(me)),
                               "tf_inherit_check.py")
 
-        # On Windows a spawn* /path/ with embedded spaces shouldn't be quoted,
-        # but an arg with embedded spaces should be decorated with double
+        # On Windows a spawn* /path/ ukijumuisha embedded spaces shouldn't be quoted,
+        # but an arg ukijumuisha embedded spaces should be decorated ukijumuisha double
         # quotes on each end
         ikiwa sys.platform == 'win32':
             decorated = '"%s"' % sys.executable
@@ -510,7 +510,7 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
     eleza test_collision_with_existing_file(self):
         # _mkstemp_inner tries another name when a file with
         # the chosen name already exists
-        with _inside_empty_temp_dir(), \
+        ukijumuisha _inside_empty_temp_dir(), \
              _mock_candidate_names('aaa', 'aaa', 'bbb'):
             (fd1, name1) = self.make_temp()
             os.close(fd1)
@@ -523,7 +523,7 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
     eleza test_collision_with_existing_directory(self):
         # _mkstemp_inner tries another name when a directory with
         # the chosen name already exists
-        with _inside_empty_temp_dir(), \
+        ukijumuisha _inside_empty_temp_dir(), \
              _mock_candidate_names('aaa', 'aaa', 'bbb'):
             dir = tempfile.mkdtemp()
             self.assertKweli(dir.endswith('aaa'))
@@ -583,7 +583,7 @@ kundi TestGetTempDir(BaseTestCase):
         # sneaky: just instantiate a NamedTemporaryFile, which
         # defaults to writing into the directory rudishaed by
         # gettempdir.
-        with tempfile.NamedTemporaryFile() kama file:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file:
             file.write(b"blat")
 
     eleza test_same_thing(self):
@@ -602,7 +602,7 @@ kundi TestGetTempDir(BaseTestCase):
         case_sensitive_tempdir = tempfile.mkdtemp("-Temp")
         _tempdir, tempfile.tempdir = tempfile.tempdir, Tupu
         jaribu:
-            with support.EnvironmentVarGuard() kama env:
+            ukijumuisha support.EnvironmentVarGuard() kama env:
                 # Fake the first env var which ni checked kama a candidate
                 env["TMPDIR"] = case_sensitive_tempdir
                 self.assertEqual(tempfile.gettempdir(), case_sensitive_tempdir)
@@ -656,11 +656,11 @@ kundi TestMkstemp(BaseTestCase):
         self.do_create(dir=d, pre=b"a", suf=b"b")
         self.do_create(dir=d, pre=b"aa", suf=b".txt")
         self.do_create(dir=b".")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir=".", pre=b"aa", suf=b".txt")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir=b".", pre="aa", suf=b".txt")
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.do_create(dir=b".", pre=b"aa", suf=".txt")
 
 
@@ -716,11 +716,11 @@ kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
         os.rmdir(self.do_create(dir=d, suf=b"b"))
         os.rmdir(self.do_create(dir=d, pre=b"a", suf=b"b"))
         os.rmdir(self.do_create(dir=d, pre=b"aa", suf=b".txt"))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.rmdir(self.do_create(dir=d, pre="aa", suf=b".txt"))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.rmdir(self.do_create(dir=d, pre=b"aa", suf=".txt"))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             os.rmdir(self.do_create(dir="", pre=b"aa", suf=b".txt"))
 
     eleza test_basic_many(self):
@@ -744,7 +744,7 @@ kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
             os.rmdir(dir)
 
     eleza test_mode(self):
-        # mkdtemp creates directories with the proper mode
+        # mkdtemp creates directories ukijumuisha the proper mode
 
         dir = self.do_create()
         jaribu:
@@ -763,7 +763,7 @@ kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
     eleza test_collision_with_existing_file(self):
         # mkdtemp tries another name when a file with
         # the chosen name already exists
-        with _inside_empty_temp_dir(), \
+        ukijumuisha _inside_empty_temp_dir(), \
              _mock_candidate_names('aaa', 'aaa', 'bbb'):
             file = tempfile.NamedTemporaryFile(delete=Uongo)
             file.close()
@@ -774,7 +774,7 @@ kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
     eleza test_collision_with_existing_directory(self):
         # mkdtemp tries another name when a directory with
         # the chosen name already exists
-        with _inside_empty_temp_dir(), \
+        ukijumuisha _inside_empty_temp_dir(), \
              _mock_candidate_names('aaa', 'aaa', 'bbb'):
             dir1 = tempfile.mkdtemp()
             self.assertKweli(dir1.endswith('aaa'))
@@ -893,7 +893,7 @@ kundi TestNamedTemporaryFile(BaseTestCase):
         self.assertEqual(i, len(lines) - 1)
 
     eleza test_creates_named(self):
-        # NamedTemporaryFile creates files with names
+        # NamedTemporaryFile creates files ukijumuisha names
         f = tempfile.NamedTemporaryFile()
         self.assertKweli(os.path.exists(f.name),
                         "NamedTemporaryFile %s does sio exist" % f.name)
@@ -902,7 +902,7 @@ kundi TestNamedTemporaryFile(BaseTestCase):
         # A NamedTemporaryFile ni deleted when closed
         dir = tempfile.mkdtemp()
         jaribu:
-            with tempfile.NamedTemporaryFile(dir=dir) kama f:
+            ukijumuisha tempfile.NamedTemporaryFile(dir=dir) kama f:
                 f.write(b'blat')
             self.assertUongo(os.path.exists(f.name),
                         "NamedTemporaryFile %s exists after close" % f.name)
@@ -935,11 +935,11 @@ kundi TestNamedTemporaryFile(BaseTestCase):
 
     eleza test_context_manager(self):
         # A NamedTemporaryFile can be used kama a context manager
-        with tempfile.NamedTemporaryFile() kama f:
+        ukijumuisha tempfile.NamedTemporaryFile() kama f:
             self.assertKweli(os.path.exists(f.name))
         self.assertUongo(os.path.exists(f.name))
         eleza use_closed():
-            with f:
+            ukijumuisha f:
                 pita
         self.assertRaises(ValueError, use_closed)
 
@@ -951,17 +951,17 @@ kundi TestNamedTemporaryFile(BaseTestCase):
             closed.append(fd)
             os_close(fd)
 
-        with mock.patch('os.close', side_effect=close):
-            with mock.patch('io.open', side_effect=ValueError):
+        ukijumuisha mock.patch('os.close', side_effect=close):
+            ukijumuisha mock.patch('io.open', side_effect=ValueError):
                 self.assertRaises(ValueError, tempfile.NamedTemporaryFile)
                 self.assertEqual(len(closed), 1)
 
     eleza test_bad_mode(self):
         dir = tempfile.mkdtemp()
         self.addCleanup(support.rmtree, dir)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             tempfile.NamedTemporaryFile(mode='wr', dir=dir)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             tempfile.NamedTemporaryFile(mode=2, dir=dir)
         self.assertEqual(os.listdir(dir), [])
 
@@ -1022,7 +1022,7 @@ kundi TestSpooledTemporaryFile(BaseTestCase):
         self.assertKweli(f._rolled)
 
     eleza test_writelines(self):
-        # Verify writelines with a SpooledTemporaryFile
+        # Verify writelines ukijumuisha a SpooledTemporaryFile
         f = self.do_create()
         f.writelines((b'x', b'y', b'z'))
         f.seek(0)
@@ -1093,26 +1093,26 @@ kundi TestSpooledTemporaryFile(BaseTestCase):
         self.assertUongo(f._rolled)
         self.assertEqual(f.mode, 'w+b')
         self.assertIsTupu(f.name)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.newlines
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.encoding
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.errors
 
         f.write(b'x')
         self.assertKweli(f._rolled)
         self.assertEqual(f.mode, 'rb+')
         self.assertIsNotTupu(f.name)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.newlines
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.encoding
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             f.errors
 
     eleza test_text_mode(self):
-        # Creating a SpooledTemporaryFile with a text mode should produce
+        # Creating a SpooledTemporaryFile ukijumuisha a text mode should produce
         # a file object reading na writing (Unicode) text strings.
         f = tempfile.SpooledTemporaryFile(mode='w+', max_size=10)
         f.write("abc\n")
@@ -1168,18 +1168,18 @@ kundi TestSpooledTemporaryFile(BaseTestCase):
 
     eleza test_context_manager_before_rollover(self):
         # A SpooledTemporaryFile can be used kama a context manager
-        with tempfile.SpooledTemporaryFile(max_size=1) kama f:
+        ukijumuisha tempfile.SpooledTemporaryFile(max_size=1) kama f:
             self.assertUongo(f._rolled)
             self.assertUongo(f.closed)
         self.assertKweli(f.closed)
         eleza use_closed():
-            with f:
+            ukijumuisha f:
                 pita
         self.assertRaises(ValueError, use_closed)
 
     eleza test_context_manager_during_rollover(self):
         # A SpooledTemporaryFile can be used kama a context manager
-        with tempfile.SpooledTemporaryFile(max_size=1) kama f:
+        ukijumuisha tempfile.SpooledTemporaryFile(max_size=1) kama f:
             self.assertUongo(f._rolled)
             f.write(b'abc\n')
             f.flush()
@@ -1187,7 +1187,7 @@ kundi TestSpooledTemporaryFile(BaseTestCase):
             self.assertUongo(f.closed)
         self.assertKweli(f.closed)
         eleza use_closed():
-            with f:
+            ukijumuisha f:
                 pita
         self.assertRaises(ValueError, use_closed)
 
@@ -1197,11 +1197,11 @@ kundi TestSpooledTemporaryFile(BaseTestCase):
         f.write(b'abc\n')
         f.flush()
         self.assertKweli(f._rolled)
-        with f:
+        ukijumuisha f:
             self.assertUongo(f.closed)
         self.assertKweli(f.closed)
         eleza use_closed():
-            with f:
+            ukijumuisha f:
                 pita
         self.assertRaises(ValueError, use_closed)
 
@@ -1238,7 +1238,7 @@ ikiwa tempfile.NamedTemporaryFile ni sio tempfile.TemporaryFile:
             tempfile.TemporaryFile()
 
         eleza test_has_no_name(self):
-            # TemporaryFile creates files with no names (on this system)
+            # TemporaryFile creates files ukijumuisha no names (on this system)
             dir = tempfile.mkdtemp()
             f = tempfile.TemporaryFile(dir=dir)
             f.write(b'blat')
@@ -1265,7 +1265,7 @@ ikiwa tempfile.NamedTemporaryFile ni sio tempfile.TemporaryFile:
         eleza test_mode_and_encoding(self):
 
             eleza roundtrip(input, *args, **kwargs):
-                with tempfile.TemporaryFile(*args, **kwargs) kama fileobj:
+                ukijumuisha tempfile.TemporaryFile(*args, **kwargs) kama fileobj:
                     fileobj.write(input)
                     fileobj.seek(0)
                     self.assertEqual(input, fileobj.read())
@@ -1283,8 +1283,8 @@ ikiwa tempfile.NamedTemporaryFile ni sio tempfile.TemporaryFile:
                 closed.append(fd)
                 os_close(fd)
 
-            with mock.patch('os.close', side_effect=close):
-                with mock.patch('io.open', side_effect=ValueError):
+            ukijumuisha mock.patch('os.close', side_effect=close):
+                ukijumuisha mock.patch('io.open', side_effect=ValueError):
                     self.assertRaises(ValueError, tempfile.TemporaryFile)
                     self.assertEqual(len(closed), 1)
 
@@ -1325,16 +1325,16 @@ kundi TestTemporaryDirectory(BaseTestCase):
                 os.mkdir(name)
                 self.do_create2(name, recurse-1, dirs, files)
         kila i kwenye range(files):
-            with open(os.path.join(path, "test%d.txt" % i), "wb") kama f:
+            ukijumuisha open(os.path.join(path, "test%d.txt" % i), "wb") kama f:
                 f.write(b"Hello world!")
 
     eleza test_mkdtemp_failure(self):
         # Check no additional exception ikiwa mkdtemp fails
         # Previously would ashiria AttributeError instead
         # (noted kama part of Issue #10188)
-        with tempfile.TemporaryDirectory() kama nonexistent:
+        ukijumuisha tempfile.TemporaryDirectory() kama nonexistent:
             pita
-        with self.assertRaises(FileNotFoundError) kama cm:
+        ukijumuisha self.assertRaises(FileNotFoundError) kama cm:
             tempfile.TemporaryDirectory(dir=nonexistent)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
 
@@ -1387,7 +1387,7 @@ kundi TestTemporaryDirectory(BaseTestCase):
 
     eleza test_del_on_shutdown(self):
         # A TemporaryDirectory may be cleaned up during shutdown
-        with self.do_create() kama dir:
+        ukijumuisha self.do_create() kama dir:
             kila mod kwenye ('builtins', 'os', 'shutil', 'sys', 'tempfile', 'warnings'):
                 code = """ikiwa Kweli:
                     agiza builtins
@@ -1402,7 +1402,7 @@ kundi TestTemporaryDirectory(BaseTestCase):
 
                     tmp2 = os.path.join(tmp.name, 'test_dir')
                     os.mkdir(tmp2)
-                    with open(os.path.join(tmp2, "test0.txt"), "w") kama f:
+                    ukijumuisha open(os.path.join(tmp2, "test0.txt"), "w") kama f:
                         f.write("Hello world!")
 
                     {mod}.tmp = tmp
@@ -1419,14 +1419,14 @@ kundi TestTemporaryDirectory(BaseTestCase):
 
     eleza test_exit_on_shutdown(self):
         # Issue #22427
-        with self.do_create() kama dir:
+        ukijumuisha self.do_create() kama dir:
             code = """ikiwa Kweli:
                 agiza sys
                 agiza tempfile
                 agiza warnings
 
                 eleza generator():
-                    with tempfile.TemporaryDirectory(dir={dir!r}) kama tmp:
+                    ukijumuisha tempfile.TemporaryDirectory(dir={dir!r}) kama tmp:
                         tuma tmp
                 g = generator()
                 sys.stdout.buffer.write(next(g).encode())
@@ -1443,12 +1443,12 @@ kundi TestTemporaryDirectory(BaseTestCase):
 
     eleza test_warnings_on_cleanup(self):
         # ResourceWarning will be triggered by __del__
-        with self.do_create() kama dir:
+        ukijumuisha self.do_create() kama dir:
             d = self.do_create(dir=dir, recurse=3)
             name = d.name
 
             # Check kila the resource warning
-            with support.check_warnings(('Implicitly', ResourceWarning), quiet=Uongo):
+            ukijumuisha support.check_warnings(('Implicitly', ResourceWarning), quiet=Uongo):
                 warnings.filterwarnings("always", category=ResourceWarning)
                 toa d
                 support.gc_collect()
@@ -1465,7 +1465,7 @@ kundi TestTemporaryDirectory(BaseTestCase):
     eleza test_context_manager(self):
         # Can be used kama a context manager
         d = self.do_create()
-        with d kama name:
+        ukijumuisha d kama name:
             self.assertKweli(os.path.exists(name))
             self.assertEqual(name, d.name)
         self.assertUongo(os.path.exists(name))
@@ -1473,9 +1473,9 @@ kundi TestTemporaryDirectory(BaseTestCase):
     eleza test_modes(self):
         kila mode kwenye range(8):
             mode <<= 6
-            with self.subTest(mode=format(mode, '03o')):
+            ukijumuisha self.subTest(mode=format(mode, '03o')):
                 d = self.do_create(recurse=3, dirs=2, files=2)
-                with d:
+                ukijumuisha d:
                     # Change files na directories mode recursively.
                     kila root, dirs, files kwenye os.walk(d.name, topdown=Uongo):
                         kila name kwenye files:
@@ -1488,7 +1488,7 @@ kundi TestTemporaryDirectory(BaseTestCase):
     eleza test_flags(self):
         flags = stat.UF_IMMUTABLE | stat.UF_NOUNLINK
         d = self.do_create(recurse=3, dirs=2, files=2)
-        with d:
+        ukijumuisha d:
             # Change files na directories flags recursively.
             kila root, dirs, files kwenye os.walk(d.name, topdown=Uongo):
                 kila name kwenye files:

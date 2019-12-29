@@ -27,7 +27,7 @@ kundi CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: keebler='E=mc2'>",
              'output': 'Set-Cookie: keebler=E=mc2'},
 
-            # Cookies with ':' character kwenye their name. Though sio mentioned in
+            # Cookies ukijumuisha ':' character kwenye their name. Though sio mentioned in
             # RFC, servers / browsers allow it.
 
              {'data': 'key:term=value:term',
@@ -124,7 +124,7 @@ kundi CookieTests(unittest.TestCase):
     eleza test_samesite_attrs(self):
         samesite_values = ['Strict', 'Lax', 'strict', 'lax']
         kila val kwenye samesite_values:
-            with self.subTest(val=val):
+            ukijumuisha self.subTest(val=val):
                 C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
                 C['Customer']['samesite'] = val
                 self.assertEqual(C.output(),
@@ -166,7 +166,7 @@ kundi CookieTests(unittest.TestCase):
             'Set-Cookie: eggs=scrambled; Path=bar; Secure\r\nSet-Cookie: foo=foo')
 
     eleza test_quoted_meta(self):
-        # Try cookie with quoted meta-data
+        # Try cookie ukijumuisha quoted meta-data
         C = cookies.SimpleCookie()
         C.load('Customer="WILE_E_COYOTE"; Version="1"; Path="/acme"')
         self.assertEqual(C['Customer'].value, 'WILE_E_COYOTE')
@@ -210,14 +210,14 @@ kundi CookieTests(unittest.TestCase):
         self.assertEqual(C.output(), expected_output)
 
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 C1 = pickle.loads(pickle.dumps(C, protocol=proto))
                 self.assertEqual(C1.output(), expected_output)
 
     eleza test_illegal_chars(self):
         rawdata = "a=b; c,d=e"
         C = cookies.SimpleCookie()
-        with self.assertRaises(cookies.CookieError):
+        ukijumuisha self.assertRaises(cookies.CookieError):
             C.load(rawdata)
 
     eleza test_comment_quoting(self):
@@ -291,11 +291,11 @@ kundi MorselTests(unittest.TestCase):
 
     eleza test_set_properties(self):
         morsel = cookies.Morsel()
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             morsel.key = ''
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             morsel.value = ''
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             morsel.coded_value = ''
 
     eleza test_eq(self):
@@ -320,7 +320,7 @@ kundi MorselTests(unittest.TestCase):
             ('mismatch', 'value', '"value"'),
         )
         kila case_b kwenye cases:
-            with self.subTest(case_b):
+            ukijumuisha self.subTest(case_b):
                 morsel_b = cookies.Morsel()
                 morsel_b.update(attribs)
                 morsel_b.set(*case_b)
@@ -376,7 +376,7 @@ kundi MorselTests(unittest.TestCase):
         morsel['DOMAIN'] = 'example.com'
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        ukijumuisha self.assertRaises(cookies.CookieError):
             morsel['invalid'] = 'value'
         self.assertNotIn('invalid', morsel)
 
@@ -394,7 +394,7 @@ kundi MorselTests(unittest.TestCase):
         self.assertEqual(morsel.setdefault('DOMAIN', 'value'), 'example.com')
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        ukijumuisha self.assertRaises(cookies.CookieError):
             morsel.setdefault('invalid', 'value')
         self.assertNotIn('invalid', morsel)
 
@@ -419,7 +419,7 @@ kundi MorselTests(unittest.TestCase):
         self.assertEqual(morsel['version'], 2)
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        ukijumuisha self.assertRaises(cookies.CookieError):
             morsel.update({'invalid': 'value'})
         self.assertNotIn('invalid', morsel)
         self.assertRaises(TypeError, morsel.update)
@@ -433,7 +433,7 @@ kundi MorselTests(unittest.TestCase):
             'comment': 'foo',
         })
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            ukijumuisha self.subTest(proto=proto):
                 morsel_b = pickle.loads(pickle.dumps(morsel_a, proto))
                 self.assertIsInstance(morsel_b, cookies.Morsel)
                 self.assertEqual(morsel_b, morsel_a)

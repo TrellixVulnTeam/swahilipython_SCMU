@@ -86,7 +86,7 @@ eleza idle_showwarning(
 _warnings_showwarning = Tupu
 
 eleza capture_warnings(capture):
-    "Replace warning.showwarning with idle_showwarning, ama reverse."
+    "Replace warning.showwarning ukijumuisha idle_showwarning, ama reverse."
 
     global _warnings_showwarning
     ikiwa capture:
@@ -233,24 +233,24 @@ kundi PyShellEditorWindow(EditorWindow):
         #     temp file ni created may differ kutoka the komas at the last
         #     permanent save of the file.  Currently, a koma introduced
         #     after a save will be effective, but sio persistent.
-        #     This ni necessary to keep the saved komas synched with the
+        #     This ni necessary to keep the saved komas synched ukijumuisha the
         #     saved file.
         #
         #     Breakpoints are set kama tagged ranges kwenye the text.
         #     Since a modified file has to be saved before it is
         #     run, na since self.komapoints (kutoka which the subprocess
         #     debugger ni loaded) ni updated during the save, the visible
-        #     komas stay synched with the subprocess even ikiwa one of these
+        #     komas stay synched ukijumuisha the subprocess even ikiwa one of these
         #     unexpected komapoint deletions occurs.
         komas = self.komapoints
         filename = self.io.filename
         jaribu:
-            with open(self.komapointPath, "r") kama fp:
+            ukijumuisha open(self.komapointPath, "r") kama fp:
                 lines = fp.readlines()
         tatizo OSError:
             lines = []
         jaribu:
-            with open(self.komapointPath, "w") kama new_file:
+            ukijumuisha open(self.komapointPath, "w") kama new_file:
                 kila line kwenye lines:
                     ikiwa sio line.startswith(filename + '='):
                         new_file.write(line)
@@ -275,7 +275,7 @@ kundi PyShellEditorWindow(EditorWindow):
         ikiwa filename ni Tupu:
             rudisha
         ikiwa os.path.isfile(self.komapointPath):
-            with open(self.komapointPath, "r") kama fp:
+            ukijumuisha open(self.komapointPath, "r") kama fp:
                 lines = fp.readlines()
             kila line kwenye lines:
                 ikiwa line.startswith(filename + '='):
@@ -389,10 +389,10 @@ kundi MyRPCClient(rpc.RPCClient):
         ashiria EOFError
 
 eleza restart_line(width, filename):  # See bpo-38141.
-    """Return width long restart line formatted with filename.
+    """Return width long restart line formatted ukijumuisha filename.
 
-    Fill line with balanced '='s, with any extras na at least one at
-    the beginning.  Do sio end with a trailing space.
+    Fill line ukijumuisha balanced '='s, ukijumuisha any extras na at least one at
+    the beginning.  Do sio end ukijumuisha a trailing space.
     """
     tag = f"= RESTART: {filename ama 'Shell'} ="
     ikiwa width >= len(tag):
@@ -449,7 +449,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             rudisha Tupu
         # ikiwa PORT was 0, system will assign an 'ephemeral' port. Find it out:
         self.port = self.rpcclt.listening_sock.getsockname()[1]
-        # ikiwa PORT was sio 0, probably working with a remote execution server
+        # ikiwa PORT was sio 0, probably working ukijumuisha a remote execution server
         ikiwa PORT != 0:
             # To allow reconnection within the 2MSL wait (cf. Stevens TCP
             # V1, 18.6),  set SO_REUSEADDR.  Note that this can be problematic
@@ -591,10 +591,10 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             ikiwa how == "OK":
                 ikiwa what ni sio Tupu:
                     andika(repr(what), file=console)
-            elikiwa how == "EXCEPTION":
+            lasivyo how == "EXCEPTION":
                 ikiwa self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
                     self.remote_stack_viewer()
-            elikiwa how == "ERROR":
+            lasivyo how == "ERROR":
                 errmsg = "pyshell.ModifiedInterpreter: Subprocess ERROR:\n"
                 andika(errmsg, what, file=sys.__stderr__)
                 andika(errmsg, what, file=console)
@@ -656,7 +656,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
     eleza execfile(self, filename, source=Tupu):
         "Execute an existing file"
         ikiwa source ni Tupu:
-            with tokenize.open(filename) kama fp:
+            ukijumuisha tokenize.open(filename) kama fp:
                 source = fp.read()
                 ikiwa use_subprocess:
                     source = (f"__file__ = r'''{os.path.abspath(filename)}'''\n"
@@ -692,7 +692,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         rudisha filename
 
     eleza prepend_syspath(self, filename):
-        "Prepend sys.path with file's directory ikiwa sio already included"
+        "Prepend sys.path ukijumuisha file's directory ikiwa sio already included"
         self.runcommand("""ikiwa 1:
             _filename = %r
             agiza sys kama _sys
@@ -707,7 +707,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         """Override Interactive Interpreter method: Use Colorizing
 
         Color the offending position instead of printing it na pointing at it
-        with a caret.
+        ukijumuisha a caret.
 
         """
         tkconsole = self.tkconsole
@@ -766,7 +766,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             ikiwa sio debugger na self.rpcclt ni sio Tupu:
                 self.active_seq = self.rpcclt.asyncqueue("exec", "runcode",
                                                         (code,), {})
-            elikiwa debugger:
+            lasivyo debugger:
                 debugger.run(code, self.locals)
             isipokua:
                 exec(code, self.locals)
@@ -809,9 +809,9 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         tkMessageBox.showerror(
             "Port Binding Error",
             "IDLE can't bind to a TCP/IP port, which ni necessary to "
-            "communicate with its Python execution server.  This might be "
+            "communicate ukijumuisha its Python execution server.  This might be "
             "because no networking ni installed on this computer.  "
-            "Run IDLE with the -n command line switch to start without a "
+            "Run IDLE ukijumuisha the -n command line switch to start without a "
             "subprocess na refer to Help/IDLE Help 'Running without a "
             "subprocess' kila further details.",
             parent=self.tkconsole.text)
@@ -878,7 +878,7 @@ kundi PyShell(OutputWindow):
         # indentwidth must be 8 when using tabs.  See note kwenye EditorWindow:
         self.indentwidth = 8
 
-        self.sys_ps1 = sys.ps1 ikiwa hasattr(sys, 'ps1') else '>>> '
+        self.sys_ps1 = sys.ps1 ikiwa hasattr(sys, 'ps1') isipokua '>>> '
         self.prompt_last_line = self.sys_ps1.split('\n')[-1]
         self.prompt = self.sys_ps1  # Changes when debug active
 
@@ -1083,7 +1083,7 @@ kundi PyShell(OutputWindow):
             self._stop_readline_flag = Uongo
             rudisha ""
         line = self.text.get("iomark", "end-1c")
-        ikiwa len(line) == 0:  # may be EOF ikiwa we quit our mainloop with Ctrl-C
+        ikiwa len(line) == 0:  # may be EOF ikiwa we quit our mainloop ukijumuisha Ctrl-C
             line = "\n"
         self.resetoutput()
         ikiwa self.canceled:
@@ -1226,7 +1226,7 @@ kundi PyShell(OutputWindow):
                 new_base_indent  = re.search(r'^([ \t]*)', prefix).group(0)
                 kila line kwenye lines[1:]:
                     ikiwa line.startswith(orig_base_indent):
-                        # replace orig base indentation with new indentation
+                        # replace orig base indentation ukijumuisha new indentation
                         line = new_base_indent + line[len(orig_base_indent):]
                     self.text.insert('insert', '\n'+line.rstrip())
         mwishowe:
@@ -1366,11 +1366,11 @@ idle
         Open an edit window ama shell depending on IDLE's configuration.
 
 idle foo.py foobar.py
-        Edit the files, also open a shell ikiwa configured to start with shell.
+        Edit the files, also open a shell ikiwa configured to start ukijumuisha shell.
 
 idle -est "Baz" foo.py
         Run $IDLESTARTUP ama $PYTHONSTARTUP, edit foo.py, na open a shell
-        window with the title "Baz".
+        window ukijumuisha the title "Baz".
 
 idle -c "agiza sys; andika(sys.argv)" "foo"
         Open a shell window na run the command, pitaing "-c" kwenye sys.argv[0]
@@ -1447,11 +1447,11 @@ eleza main():
         sys.path[i] = os.path.abspath(sys.path[i])
     ikiwa args na args[0] == '-':
         sys.argv = [''] + args[1:]
-    elikiwa cmd:
+    lasivyo cmd:
         sys.argv = ['-c'] + args
-    elikiwa script:
+    lasivyo script:
         sys.argv = [script] + args
-    elikiwa args:
+    lasivyo args:
         enable_edit = Kweli
         pathx = []
         kila filename kwenye args:
@@ -1484,8 +1484,8 @@ eleza main():
     ikiwa system() == 'Windows':
         iconfile = os.path.join(icondir, 'idle.ico')
         root.wm_iconbitmap(default=iconfile)
-    elikiwa sio macosx.isAquaTk():
-        ext = '.png' ikiwa TkVersion >= 8.6 else '.gif'
+    lasivyo sio macosx.isAquaTk():
+        ext = '.png' ikiwa TkVersion >= 8.6 isipokua '.gif'
         iconfiles = [os.path.join(icondir, 'idle_%d%s' % (size, ext))
                      kila size kwenye (16, 32, 48)]
         icons = [PhotoImage(master=root, file=iconfile)
@@ -1537,10 +1537,10 @@ eleza main():
             \n""" % (sys.argv,))
         ikiwa cmd:
             shell.interp.execsource(cmd)
-        elikiwa script:
+        lasivyo script:
             shell.interp.prepend_syspath(script)
             shell.interp.execfile(script)
-    elikiwa shell:
+    lasivyo shell:
         # If there ni a shell window na no cmd ama script kwenye progress,
         # check kila problematic issues na print warning message(s) in
         # the IDLE shell window; this ni less intrusive than always

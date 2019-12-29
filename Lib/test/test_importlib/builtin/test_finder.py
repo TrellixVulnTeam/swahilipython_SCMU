@@ -14,7 +14,7 @@ kundi FindSpecTests(abc.FinderTests):
 
     eleza test_module(self):
         # Common case.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name)
             self.assertKweli(found)
             self.assertEqual(found.origin, 'built-in')
@@ -39,7 +39,7 @@ kundi FindSpecTests(abc.FinderTests):
 
     eleza test_ignore_path(self):
         # The value kila 'path' should always trigger a failed agiza.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             spec = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name,
                                                             ['pkg'])
             self.assertIsTupu(spec)
@@ -57,7 +57,7 @@ kundi FinderTests(abc.FinderTests):
 
     eleza test_module(self):
         # Common case.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name)
             self.assertKweli(found)
             self.assertKweli(hasattr(found, 'load_module'))
@@ -75,7 +75,7 @@ kundi FinderTests(abc.FinderTests):
 
     eleza test_ignore_path(self):
         # The value kila 'path' should always trigger a failed agiza.
-        with util.uncache(util.BUILTINS.good_name):
+        ukijumuisha util.uncache(util.BUILTINS.good_name):
             loader = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name,
                                                             ['pkg'])
             self.assertIsTupu(loader)

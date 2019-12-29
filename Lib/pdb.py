@@ -12,7 +12,7 @@ To use the debugger kwenye its simplest form:
 The debugger's prompt ni '(Pdb) '.  This will stop kwenye the first
 function call kwenye <a statement>.
 
-Alternatively, ikiwa a statement terminated with an unhandled exception,
+Alternatively, ikiwa a statement terminated ukijumuisha an unhandled exception,
 you can use pdb's post-mortem facility to inspect the contents of the
 traceback:
 
@@ -33,7 +33,7 @@ A blank line repeats the previous command literally, tatizo for
 
 Commands that the debugger doesn't recognize are assumed to be Python
 statements na are executed kwenye the context of the program being
-debugged.  Python statements can also be prefixed with an exclamation
+debugged.  Python statements can also be prefixed ukijumuisha an exclamation
 point ('!').  This ni a powerful way to inspect the program being
 debugged; it ni even possible to change variables ama call functions.
 When an exception occurs kwenye such a statement, the exception name is
@@ -96,7 +96,7 @@ eleza find_function(funcname, filename):
     tatizo OSError:
         rudisha Tupu
     # consumer of this info expects the first line to be 1
-    with fp:
+    ukijumuisha fp:
         kila lineno, line kwenye enumerate(fp, start=1):
             ikiwa cre.match(line):
                 rudisha funcname, filename, lineno
@@ -107,7 +107,7 @@ eleza getsourcelines(obj):
     ikiwa inspect.isframe(obj) na obj.f_globals ni obj.f_locals:
         # must be a module frame: do sio try to cut a block out of it
         rudisha lines, 1
-    elikiwa inspect.ismodule(obj):
+    lasivyo inspect.ismodule(obj):
         rudisha lines, 1
     rudisha inspect.getblock(lines[lineno:]), lineno+1
 
@@ -164,12 +164,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self.rcLines = []
         ikiwa readrc:
             jaribu:
-                with open(os.path.expanduser('~/.pdbrc')) kama rcFile:
+                ukijumuisha open(os.path.expanduser('~/.pdbrc')) kama rcFile:
                     self.rcLines.extend(rcFile)
             tatizo OSError:
                 pita
             jaribu:
-                with open(".pdbrc") kama rcFile:
+                ukijumuisha open(".pdbrc") kama rcFile:
                     self.rcLines.extend(rcFile)
             tatizo OSError:
                 pita
@@ -206,7 +206,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self.forget()
         self.stack, self.curindex = self.get_stack(f, tb)
         wakati tb:
-            # when setting up post-mortem debugging with a traceback, save all
+            # when setting up post-mortem debugging ukijumuisha a traceback, save all
             # the original line numbers to be displayed along the current line
             # numbers (which can be different, e.g. due to finally clauses)
             lineno = lasti2lineno(tb.tb_frame.f_code, tb.tb_lasti)
@@ -305,7 +305,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # actually occurred kwenye this case. The debugger uses this debug event to
         # stop when the debuggee ni rudishaing kutoka such generators.
         prefix = 'Internal ' ikiwa (not exc_traceback
-                                    na exc_type ni StopIteration) else ''
+                                    na exc_type ni StopIteration) isipokua ''
         self.message('%s%s' % (prefix,
             traceback.format_exception_only(exc_type, exc_value)[-1].strip()))
         self.interaction(frame, exc_traceback)
@@ -430,7 +430,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa cmd == 'silent':
             self.commands_silent[self.commands_bnum] = Kweli
             rudisha # endelea to handle other cmd eleza kwenye the cmd list
-        elikiwa cmd == 'end':
+        lasivyo cmd == 'end':
             self.cmdqueue = []
             rudisha 1 # end of cmd list
         cmdlist = self.commands[self.commands_bnum]
@@ -476,13 +476,13 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         kila fn kwenye globs:
             ikiwa os.path.isdir(fn):
                 ret.append(fn + '/')
-            elikiwa os.path.isfile(fn) na fn.lower().endswith(('.py', '.pyw')):
+            lasivyo os.path.isfile(fn) na fn.lower().endswith(('.py', '.pyw')):
                 ret.append(fn + ':')
         rudisha ret
 
     eleza _complete_bpnumber(self, text, line, begidx, endidx):
         # Complete a komapoint number.  (This would be more helpful ikiwa we could
-        # display additional info along with the completions, such kama file/line
+        # display additional info along ukijumuisha the completions, such kama file/line
         # of the komapoint.)
         rudisha [str(i) kila i, bp kwenye enumerate(bdb.Breakpoint.bpbynumber)
                 ikiwa bp ni sio Tupu na str(i).startswith(text)]
@@ -528,7 +528,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         The commands are executed when the komapoint ni hit.
 
         To remove all commands kutoka a komapoint, type commands and
-        follow it immediately with end; that is, give no commands.
+        follow it immediately ukijumuisha end; that is, give no commands.
 
         With no bpnumber argument, commands refers to the last
         komapoint set.
@@ -541,7 +541,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         step, next, rudisha, jump, quit na their abbreviations)
         terminates the command list (as ikiwa that command was
         immediately followed by end).  This ni because any time you
-        resume execution (even with a simple next ama step), you may
+        resume execution (even ukijumuisha a simple next ama step), you may
         encounter another komapoint -- which could have its own
         command list, leading to ambiguities about which list to
         execute.
@@ -605,7 +605,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         present, it ni a string specifying an expression which must
         evaluate to true before the komapoint ni honored.
 
-        The line number may be prefixed with a filename na a colon,
+        The line number may be prefixed ukijumuisha a filename na a colon,
         to specify a komapoint kwenye another file (probably one that
         hasn't been loaded yet).  The file ni searched kila on
         sys.path; the .py suffix may be omitted.
@@ -716,7 +716,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa len(idstring) == 1:
             # haiko kwenye single quotes
             id = idstring[0].strip()
-        elikiwa len(idstring) == 3:
+        lasivyo len(idstring) == 3:
             # quoted
             id = idstring[1].strip()
         isipokua:
@@ -750,7 +750,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         # this method should be callable before starting debugging, so default
         # to "no globals" ikiwa there ni no current frame
-        globs = self.curframe.f_globals ikiwa hasattr(self, 'curframe') else Tupu
+        globs = self.curframe.f_globals ikiwa hasattr(self, 'curframe') isipokua Tupu
         line = linecache.getline(filename, lineno, globs)
         ikiwa sio line:
             self.message('End of file')
@@ -915,7 +915,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_where(self, arg):
         """w(here)
-        Print a stack trace, with the most recent frame at the bottom.
+        Print a stack trace, ukijumuisha the most recent frame at the bottom.
         An arrow indicates the "current frame", which determines the
         context of most commands.  'bt' ni an alias kila this command.
         """
@@ -973,9 +973,9 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_until(self, arg):
         """unt(il) [lineno]
-        Without argument, endelea execution until the line with a
+        Without argument, endelea execution until the line ukijumuisha a
         number greater than the current one ni reached.  With a line
-        number, endelea execution until a line with a number greater
+        number, endelea execution until a line ukijumuisha a number greater
         ama equal to that ni reached.  In both cases, also stop when
         the current frame rudishas.
         """
@@ -1017,7 +1017,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     eleza do_run(self, arg):
         """run [args...]
         Restart the debugged python program. If a string ni supplied
-        it ni split with "shlex", na the result ni used kama the new
+        it ni split ukijumuisha "shlex", na the result ni used kama the new
         sys.argv.  History, komapoints, actions na debugger options
         are preserved.  "restart" ni an alias kila "run".
         """
@@ -1229,7 +1229,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             tatizo ValueError:
                 self.error('Error kwenye argument: %r' % arg)
                 rudisha
-        elikiwa self.lineno ni Tupu ama arg == '.':
+        lasivyo self.lineno ni Tupu ama arg == '.':
             first = max(1, self.curframe.f_lineno - 5)
         isipokua:
             first = self.lineno + 1
@@ -1296,7 +1296,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 s += ' '
             ikiwa lineno == current_lineno:
                 s += '->'
-            elikiwa lineno == exc_lineno:
+            lasivyo lineno == exc_lineno:
                 s += '>>'
             self.message(s + '\t' + line.rstrip())
 
@@ -1393,7 +1393,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
         Aliases may be nested na can contain anything that can be
         legally typed at the pdb prompt.  Note!  You *can* override
-        internal pdb commands with aliases!  Those internal commands
+        internal pdb commands ukijumuisha aliases!  Those internal commands
         are then hidden until the alias ni removed.  Aliasing is
         recursively applied to the first word of the command line; all
         other words kwenye the line are left alone.
@@ -1437,8 +1437,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     # The most recently entered frame ni printed last;
     # this ni different kutoka dbx na gdb, but consistent with
     # the Python interpreter's stack trace.
-    # It ni also consistent with the up/down commands (which are
-    # compatible with dbx na gdb: up moves towards 'main()'
+    # It ni also consistent ukijumuisha the up/down commands (which are
+    # compatible ukijumuisha dbx na gdb: up moves towards 'main()'
     # na down moves towards the most recent stack frame).
 
     eleza print_stack_trace(self):
@@ -1478,7 +1478,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             self.error('No help kila %r' % arg)
         isipokua:
             ikiwa sys.flags.optimize >= 2:
-                self.error('No help kila %r; please do sio run Python with -OO '
+                self.error('No help kila %r; please do sio run Python ukijumuisha -OO '
                            'ikiwa you need command help' % arg)
                 rudisha
             self.message(command.__doc__.rstrip())
@@ -1491,7 +1491,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         stack frame.  The exclamation point can be omitted unless the
         first word of the statement resembles a debugger command.  To
         assign to a global variable you must always prefix the command
-        with a 'global' command, e.g.:
+        ukijumuisha a 'global' command, e.g.:
         (Pdb) global list_options; list_options = ['-l']
         (Pdb)
         """
@@ -1565,12 +1565,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self._wait_for_mainpyfile = Kweli
         self.mainpyfile = self.canonic(filename)
         self._user_requested_quit = Uongo
-        with open(filename, "rb") kama fp:
+        ukijumuisha open(filename, "rb") kama fp:
             statement = "exec(compile(%r, %r, 'exec'))" % \
                         (fp.read(), self.mainpyfile)
         self.run(statement)
 
-# Collect all command help into docstring, ikiwa sio run with -OO
+# Collect all command help into docstring, ikiwa sio run ukijumuisha -OO
 
 ikiwa __doc__ ni sio Tupu:
     # unfortunately we can't guess this order kutoka the kundi definition
@@ -1672,9 +1672,9 @@ eleza main():
         ikiwa opt kwenye ['-h', '--help']:
             andika(_usage)
             sys.exit()
-        elikiwa opt kwenye ['-c', '--command']:
+        lasivyo opt kwenye ['-c', '--command']:
             commands.append(optarg)
-        elikiwa opt kwenye ['-m']:
+        lasivyo opt kwenye ['-m']:
             run_as_module = Kweli
 
     mainpyfile = args[0]     # Get script filename
@@ -1684,7 +1684,7 @@ eleza main():
 
     sys.argv[:] = args      # Hide "pdb.py" na pdb options kutoka argument list
 
-    # Replace pdb's dir with script's dir kwenye front of module search path.
+    # Replace pdb's dir ukijumuisha script's dir kwenye front of module search path.
     ikiwa sio run_as_module:
         sys.path[0] = os.path.dirname(mainpyfile)
 
@@ -1704,7 +1704,7 @@ eleza main():
                 koma
             andika("The program finished na will be restarted")
         tatizo Restart:
-            andika("Restarting", mainpyfile, "with arguments:")
+            andika("Restarting", mainpyfile, "ukijumuisha arguments:")
             andika("\t" + " ".join(args))
         tatizo SystemExit:
             # In most cases SystemExit does sio warrant a post-mortem session.

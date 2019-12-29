@@ -482,7 +482,7 @@ class ComboboxTest(EntryTest, unittest.TestCase):
             self.assertEqual(self.combo.current(), currval)
 
         self.assertEqual(self.combo['values'],
-                         () if tcl_version < (8, 5) else '')
+                         () if tcl_version < (8, 5) isipokua '')
         check_get_current('', -1)
 
         self.checkParam(self.combo, 'values', 'mon tue wed thur',
@@ -534,7 +534,7 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         # testing creating combobox with empty string in values
         combo2 = ttk.Combobox(self.root, values=[1, 2, ''])
         self.assertEqual(combo2['values'],
-                         ('1', '2', '') if self.wantobjects else '1 2 {}')
+                         ('1', '2', '') if self.wantobjects isipokua '1 2 {}')
         combo2.destroy()
 
 
@@ -642,10 +642,10 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.paned.add(child)
         self.assertIsInstance(self.paned.pane(0), dict)
         self.assertEqual(self.paned.pane(0, weight=None),
-                         0 if self.wantobjects else '0')
+                         0 if self.wantobjects isipokua '0')
         # newer form for querying a single option
         self.assertEqual(self.paned.pane(0, 'weight'),
-                         0 if self.wantobjects else '0')
+                         0 if self.wantobjects isipokua '0')
         self.assertEqual(self.paned.pane(0), self.paned.pane(str(child)))
 
         self.assertRaises(tkinter.TclError, self.paned.pane, 0,
@@ -1239,7 +1239,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
 
     def test_values(self):
         self.assertEqual(self.spin['values'],
-                         () if tcl_version < (8, 5) else '')
+                         () if tcl_version < (8, 5) isipokua '')
         self.checkParam(self.spin, 'values', 'mon tue wed thur',
                         expected=('mon', 'tue', 'wed', 'thur'))
         self.checkParam(self.spin, 'values', ('mon', 'tue', 'wed', 'thur'))
@@ -1278,7 +1278,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         # testing creating spinbox with empty string in values
         spin2 = ttk.Spinbox(self.root, values=[1, 2, ''])
         self.assertEqual(spin2['values'],
-                         ('1', '2', '') if self.wantobjects else '1 2 {}')
+                         ('1', '2', '') if self.wantobjects isipokua '1 2 {}')
         spin2.destroy()
 
 
@@ -1404,9 +1404,9 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.column('#0', width=10)
         # testing new way to get option value
         self.assertEqual(self.tv.column('#0', 'width'),
-                         10 if self.wantobjects else '10')
+                         10 if self.wantobjects isipokua '10')
         self.assertEqual(self.tv.column('#0', width=None),
-                         10 if self.wantobjects else '10')
+                         10 if self.wantobjects isipokua '10')
         # check read-only option
         self.assertRaises(tkinter.TclError, self.tv.column, '#0', id='X')
 
@@ -1620,13 +1620,13 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         value = '\xe1ba'
         item = self.tv.insert('', 'end', values=(value, ))
         self.assertEqual(self.tv.item(item, 'values'),
-                         (value,) if self.wantobjects else value)
+                         (value,) if self.wantobjects isipokua value)
         self.assertEqual(self.tv.item(item, values=None),
-                         (value,) if self.wantobjects else value)
+                         (value,) if self.wantobjects isipokua value)
 
         self.tv.item(item, values=self.root.splitlist(self.tv.item(item, values=None)))
         self.assertEqual(self.tv.item(item, values=None),
-                         (value,) if self.wantobjects else value)
+                         (value,) if self.wantobjects isipokua value)
 
         self.assertIsInstance(self.tv.item(item), dict)
 
@@ -1643,7 +1643,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertFalse(self.tv.item(item, tags=None))
         self.tv.item(item, tags=(1, 2))
         self.assertEqual(self.tv.item(item, tags=None),
-                         ('1', '2') if self.wantobjects else '1 2')
+                         ('1', '2') if self.wantobjects isipokua '1 2')
 
         # values with spaces
         item = self.tv.insert('', 'end', values=('a b c',
@@ -1748,7 +1748,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         self.tv.set(item, 'B', 'a')
         self.assertEqual(self.tv.item(item, values=None),
-                         ('a', 'a') if self.wantobjects else 'a a')
+                         ('a', 'a') if self.wantobjects isipokua 'a a')
 
         self.tv['columns'] = ['B']
         self.assertEqual(self.tv.set(item), {'B': 'a'})
@@ -1756,15 +1756,15 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.set(item, 'B', 'b')
         self.assertEqual(self.tv.set(item, column='B'), 'b')
         self.assertEqual(self.tv.item(item, values=None),
-                         ('b', 'a') if self.wantobjects else 'b a')
+                         ('b', 'a') if self.wantobjects isipokua 'b a')
 
         self.tv.set(item, 'B', 123)
         self.assertEqual(self.tv.set(item, 'B'),
-                         123 if self.wantobjects else '123')
+                         123 if self.wantobjects isipokua '123')
         self.assertEqual(self.tv.item(item, values=None),
-                         (123, 'a') if self.wantobjects else '123 a')
+                         (123, 'a') if self.wantobjects isipokua '123 a')
         self.assertEqual(self.tv.set(item),
-                         {'B': 123} if self.wantobjects else {'B': '123'})
+                         {'B': 123} if self.wantobjects isipokua {'B': '123'})
 
         # inexistent column
         self.assertRaises(tkinter.TclError, self.tv.set, item, 'A')

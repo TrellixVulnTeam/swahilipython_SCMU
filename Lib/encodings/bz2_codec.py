@@ -32,7 +32,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.errors = errors
         self.compressobj = bz2.BZ2Compressor()
 
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         if final:
             c = self.compressobj.compress(input)
             rudisha c + self.compressobj.flush()
@@ -48,7 +48,7 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         self.errors = errors
         self.decompressobj = bz2.BZ2Decompressor()
 
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         jaribu:
             rudisha self.decompressobj.decompress(input)
         tatizo EOFError:
@@ -74,5 +74,5 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )

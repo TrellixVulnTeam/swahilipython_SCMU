@@ -13,15 +13,15 @@ agiza codecs, sys
 encode = codecs.utf_16_encode
 
 eleza decode(input, errors='strict'):
-    rudisha codecs.utf_16_decode(input, errors, True)
+    rudisha codecs.utf_16_decode(input, errors, Kweli)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
     eleza __init__(self, errors='strict'):
         codecs.IncrementalEncoder.__init__(self, errors)
-        self.encoder = None
+        self.encoder = Tupu
 
-    eleza encode(self, input, final=False):
-        if self.encoder is None:
+    eleza encode(self, input, final=Uongo):
+        if self.encoder is Tupu:
             result = codecs.utf_16_encode(input, self.errors)[0]
             if sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
@@ -32,18 +32,18 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
 
     eleza reset(self):
         codecs.IncrementalEncoder.reset(self)
-        self.encoder = None
+        self.encoder = Tupu
 
     eleza getstate(self):
         # state info we rudisha to the caller:
         # 0: stream is in natural order for this platform
         # 2: endianness hasn't been determined yet
         # (we're never writing in unnatural order)
-        rudisha (2 if self.encoder is None else 0)
+        rudisha (2 if self.encoder is Tupu isipokua 0)
 
     eleza setstate(self, state):
         if state:
-            self.encoder = None
+            self.encoder = Tupu
         isipokua:
             if sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
@@ -53,10 +53,10 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     eleza __init__(self, errors='strict'):
         codecs.BufferedIncrementalDecoder.__init__(self, errors)
-        self.decoder = None
+        self.decoder = Tupu
 
     eleza _buffer_decode(self, input, errors, final):
-        if self.decoder is None:
+        if self.decoder is Tupu:
             (output, consumed, byteorder) = \
                 codecs.utf_16_ex_decode(input, errors, 0, final)
             if byteorder == -1:
@@ -70,17 +70,17 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     eleza reset(self):
         codecs.BufferedIncrementalDecoder.reset(self)
-        self.decoder = None
+        self.decoder = Tupu
 
     eleza getstate(self):
-        # additional state info from the base kundi must be None here,
-        # as it isn't passed along to the caller
+        # additional state info from the base kundi must be Tupu here,
+        # as it isn't pitaed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
-        # additional state info we pass to the caller:
+        # additional state info we pita to the caller:
         # 0: stream is in natural order for this platform
         # 1: stream is in unnatural order
         # 2: endianness hasn't been determined yet
-        if self.decoder is None:
+        if self.decoder is Tupu:
             rudisha (state, 2)
         addstate = int((sys.byteorder == "big") !=
                        (self.decoder is codecs.utf_16_be_decode))
@@ -93,25 +93,25 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         if state == 0:
             self.decoder = (codecs.utf_16_be_decode
                             if sys.byteorder == "big"
-                            else codecs.utf_16_le_decode)
+                            isipokua codecs.utf_16_le_decode)
         lasivyo state == 1:
             self.decoder = (codecs.utf_16_le_decode
                             if sys.byteorder == "big"
-                            else codecs.utf_16_be_decode)
+                            isipokua codecs.utf_16_be_decode)
         isipokua:
-            self.decoder = None
+            self.decoder = Tupu
 
 kundi StreamWriter(codecs.StreamWriter):
     eleza __init__(self, stream, errors='strict'):
         codecs.StreamWriter.__init__(self, stream, errors)
-        self.encoder = None
+        self.encoder = Tupu
 
     eleza reset(self):
         codecs.StreamWriter.reset(self)
-        self.encoder = None
+        self.encoder = Tupu
 
     eleza encode(self, input, errors='strict'):
-        if self.encoder is None:
+        if self.encoder is Tupu:
             result = codecs.utf_16_encode(input, errors)
             if sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
@@ -128,11 +128,11 @@ kundi StreamReader(codecs.StreamReader):
         jaribu:
             toa self.decode
         tatizo AttributeError:
-            pass
+            pita
 
     eleza decode(self, input, errors='strict'):
         (object, consumed, byteorder) = \
-            codecs.utf_16_ex_decode(input, errors, 0, False)
+            codecs.utf_16_ex_decode(input, errors, 0, Uongo)
         if byteorder == -1:
             self.decode = codecs.utf_16_le_decode
         lasivyo byteorder == 1:

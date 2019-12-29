@@ -93,13 +93,13 @@ kundi TestFail:
 
     eleza test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                 'keys must be str, int, float, bool ama Tupu, sio tuple'):
             self.dumps(data)
 
     eleza test_not_serializable(self):
         agiza sys
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                 'Object of type module ni sio JSON serializable'):
             self.dumps(sys)
 
@@ -126,7 +126,7 @@ kundi TestFail:
             ('"spam', 'Unterminated string starting at', 0),
         ]
         kila data, msg, idx kwenye test_cases:
-            with self.assertRaises(self.JSONDecodeError) kama cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -162,7 +162,7 @@ kundi TestFail:
             ('{"spam":42,}', 'Expecting property name enclosed kwenye double quotes', 11),
         ]
         kila data, msg, idx kwenye test_cases:
-            with self.assertRaises(self.JSONDecodeError) kama cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -185,7 +185,7 @@ kundi TestFail:
             ('"spam",42', 'Extra data', 6),
         ]
         kila data, msg, idx kwenye test_cases:
-            with self.assertRaises(self.JSONDecodeError) kama cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -204,7 +204,7 @@ kundi TestFail:
             ('\n  \n\n     !', 4, 6, 10),
         ]
         kila data, line, col, idx kwenye test_cases:
-            with self.assertRaises(self.JSONDecodeError) kama cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, 'Expecting value')

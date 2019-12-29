@@ -94,7 +94,7 @@ kundi TestEPoll(unittest.TestCase):
             self.assertRaises(OSError, select.epoll, flags=12356)
 
     eleza test_context_manager(self):
-        with select.epoll(16) kama ep:
+        ukijumuisha select.epoll(16) kama ep:
             self.assertGreater(ep.fileno(), 0)
             self.assertUongo(ep.closed)
         self.assertKweli(ep.closed)
@@ -141,7 +141,7 @@ kundi TestEPoll(unittest.TestCase):
     eleza test_kutokafd(self):
         server, client = self._connected_pair()
 
-        with select.epoll(2) kama ep:
+        ukijumuisha select.epoll(2) kama ep:
             ep2 = select.epoll.kutokafd(ep.fileno())
 
             ep2.register(server.fileno(), select.EPOLLIN | select.EPOLLOUT)
@@ -245,7 +245,7 @@ kundi TestEPoll(unittest.TestCase):
         # close() can be called more than once
         epoll.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail ukijumuisha ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, epoll.modify, fd, select.EPOLLIN)
         self.assertRaises(ValueError, epoll.poll, 1.0)
         self.assertRaises(ValueError, epoll.register, fd, select.EPOLLIN)

@@ -430,7 +430,7 @@ kundi BaseTest:
         # Warnings sio ashiriad when arguments are incorrect kama Argument Clinic
         # handles that before the warning can be ashiriad.
         nb_warnings = 2
-        with warnings.catch_warnings(record=Kweli) kama r:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama r:
             warnings.filterwarnings("always",
                                     message=r"(to|kutoka)string\(\) ni deprecated",
                                     category=DeprecationWarning)
@@ -743,7 +743,7 @@ kundi BaseTest:
         )
 
     eleza test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing
+        # Test extended slicing by comparing ukijumuisha list slicing
         # (Assumes list conversion works correctly, too)
         a = array.array(self.typecode, self.example)
         indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
@@ -852,7 +852,7 @@ kundi BaseTest:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
                     # Make sure we have a slice of exactly the right length,
-                    # but with (hopefully) different data.
+                    # but ukijumuisha (hopefully) different data.
                     data = L[start:stop:step]
                     data.reverse()
                     L[start:stop:step] = data
@@ -1064,10 +1064,10 @@ kundi BaseTest:
 
     eleza test_initialize_with_unicode(self):
         ikiwa self.typecode != 'u':
-            with self.assertRaises(TypeError) kama cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
-            with self.assertRaises(TypeError) kama cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, array.array('u', 'foo'))
             self.assertIn("cannot use a unicode array", str(cm.exception))
         isipokua:
@@ -1127,7 +1127,7 @@ kundi UnicodeTest(StringTest, unittest.TestCase):
             # U+FFFFFFFF ni an invalid code point kwenye Unicode 6.0
             invalid_str = b'\xff\xff\xff\xff'
         isipokua:
-            # PyUnicode_FromUnicode() cannot fail with 16-bit wchar_t
+            # PyUnicode_FromUnicode() cannot fail ukijumuisha 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
         a = array.array('u', invalid_str)
         self.assertRaises(ValueError, a.tounicode)
@@ -1235,9 +1235,9 @@ kundi IntegerNumberTest(NumberTest):
     eleza test_type_error(self):
         a = array.array(self.typecode)
         a.append(42)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a.append(42.0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             a[0] = 42.0
 
 kundi Intable:

@@ -18,7 +18,7 @@ kundi Wait4Test(ForkWait):
         option = os.WNOHANG
         ikiwa sys.platform.startswith('aix'):
             # Issue #11185: wait4 ni broken on AIX na will always rudisha 0
-            # with WNOHANG.
+            # ukijumuisha WNOHANG.
             option = 0
         deadline = time.monotonic() + 10.0
         wakati time.monotonic() <= deadline:

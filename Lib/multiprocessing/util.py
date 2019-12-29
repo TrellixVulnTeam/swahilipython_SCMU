@@ -168,7 +168,7 @@ kundi Finalize(object):
 
         ikiwa obj ni sio Tupu:
             self._weakref = weakref.ref(obj, self)
-        elikiwa exitpriority ni Tupu:
+        lasivyo exitpriority ni Tupu:
             ashiria ValueError("Without object, exitpriority cannot be Tupu")
 
         self._callback = callback
@@ -196,7 +196,7 @@ kundi Finalize(object):
                 sub_debug('finalizer ignored because different process')
                 res = Tupu
             isipokua:
-                sub_debug('finalizer calling %s with args %s na kwargs %s',
+                sub_debug('finalizer calling %s ukijumuisha args %s na kwargs %s',
                           self._callback, self._args, self._kwargs)
                 res = self._callback(*self._args, **self._kwargs)
             self._weakref = self._callback = self._args = \
@@ -246,7 +246,7 @@ eleza _run_finalizers(minpriority=Tupu):
     '''
     Run all finalizers whose exit priority ni sio Tupu na at least minpriority
 
-    Finalizers with highest priority are called first; finalizers with
+    Finalizers ukijumuisha highest priority are called first; finalizers with
     the same priority will be called kwenye reverse order of creation.
     '''
     ikiwa _finalizer_registry ni Tupu:
@@ -307,7 +307,7 @@ eleza _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
         _exiting = Kweli
 
         info('process shutting down')
-        debug('running all "atexit" finalizers with priority >= 0')
+        debug('running all "atexit" finalizers ukijumuisha priority >= 0')
         _run_finalizers(0)
 
         ikiwa current_process() ni sio Tupu:
@@ -318,9 +318,9 @@ eleza _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # situation where this can happen ni ikiwa someone has
             # manipulated sys.modules, causing this module to be
             # garbage collected.  The destructor kila the module type
-            # then replaces all values kwenye the module dict with Tupu.
+            # then replaces all values kwenye the module dict ukijumuisha Tupu.
             # For instance, after setuptools runs a test it replaces
-            # sys.modules with a copy created earlier.  See issues
+            # sys.modules ukijumuisha a copy created earlier.  See issues
             # #9775 na #15881.  Also related: #4106, #9205, and
             # #9207.
 
@@ -381,7 +381,7 @@ eleza close_all_fds_except(fds):
     kila i kwenye range(len(fds) - 1):
         os.closerange(fds[i]+1, fds[i+1])
 #
-# Close sys.stdin na replace stdin with os.devnull
+# Close sys.stdin na replace stdin ukijumuisha os.devnull
 #
 
 eleza _close_stdin():
@@ -418,7 +418,7 @@ eleza _flush_std_streams():
         pita
 
 #
-# Start a program with only specified fds kept open
+# Start a program ukijumuisha only specified fds kept open
 #
 
 eleza spawnv_pitafds(path, args, pitafds):

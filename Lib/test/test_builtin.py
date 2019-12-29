@@ -161,8 +161,8 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, __import__, 1, 2, 3, 4)
         self.assertRaises(ValueError, __import__, '')
         self.assertRaises(TypeError, __import__, 'sys', name='sys')
-        # Relative agiza outside of a package with no __package__ ama __spec__ (bpo-37409).
-        with self.assertWarns(ImportWarning):
+        # Relative agiza outside of a package ukijumuisha no __package__ ama __spec__ (bpo-37409).
+        ukijumuisha self.assertWarns(ImportWarning):
             self.assertRaises(ImportError, __import__, '',
                               {'__package__': Tupu, '__spec__': Tupu, '__name__': '__main__'},
                               locals={}, kutokalist=('foo',), level=1)
@@ -373,9 +373,9 @@ kundi BuiltinTest(unittest.TestCase):
     eleza test_compile_top_level_await(self):
         """Test whether code some top level await can be compiled.
 
-        Make sure it compiles only with the PyCF_ALLOW_TOP_LEVEL_AWAIT flag
+        Make sure it compiles only ukijumuisha the PyCF_ALLOW_TOP_LEVEL_AWAIT flag
         set, na make sure the generated code object has the CO_COROUTINE flag
-        set kwenye order to execute it with  `await eval(.....)` instead of exec,
+        set kwenye order to execute it ukijumuisha  `await eval(.....)` instead of exec,
         ama via a FunctionType.
         """
 
@@ -389,14 +389,14 @@ kundi BuiltinTest(unittest.TestCase):
             '''a = await asyncio.sleep(0, result=1)''',
             '''async kila i kwenye arange(1):
                    a = 1''',
-            '''async with asyncio.Lock() kama l:
+            '''async ukijumuisha asyncio.Lock() kama l:
                    a = 1'''
         ]
         policy = maybe_get_event_loop_policy()
         jaribu:
             kila mode, code_sample kwenye product(modes, code_samples):
                 source = dedent(code_sample)
-                with self.assertRaises(
+                ukijumuisha self.assertRaises(
                         SyntaxError, msg=f"source={source} mode={mode}"):
                     compile(source, '?', mode)
 
@@ -424,7 +424,7 @@ kundi BuiltinTest(unittest.TestCase):
     eleza test_compile_async_generator(self):
         """
         With the PyCF_ALLOW_TOP_LEVEL_AWAIT flag added kwenye 3.8, we want to
-        make sure AsyncGenerators are still properly sio marked with the
+        make sure AsyncGenerators are still properly sio marked ukijumuisha the
         CO_COROUTINE flag.
         """
         code = dedent("""async eleza ticker():
@@ -643,7 +643,7 @@ kundi BuiltinTest(unittest.TestCase):
         g = {}
         l = {}
 
-        with check_warnings():
+        ukijumuisha check_warnings():
             warnings.filterwarnings("ignore", "global statement",
                     module="<string>")
             exec('global a; a = 1; b = 2', g, l)
@@ -1082,7 +1082,7 @@ kundi BuiltinTest(unittest.TestCase):
         # NB the first 4 lines are also used to test input, below
         fp = open(TESTFN, 'w')
         self.addCleanup(unlink, TESTFN)
-        with fp:
+        ukijumuisha fp:
             fp.write('1+1\n')
             fp.write('The quick brown fox jumps over the lazy dog')
             fp.write('.\n')
@@ -1093,7 +1093,7 @@ kundi BuiltinTest(unittest.TestCase):
     eleza test_open(self):
         self.write_testfile()
         fp = open(TESTFN, 'r')
-        with fp:
+        ukijumuisha fp:
             self.assertEqual(fp.readline(4), '1+1\n')
             self.assertEqual(fp.readline(), 'The quick brown fox jumps over the lazy dog.\n')
             self.assertEqual(fp.readline(4), 'Dear')
@@ -1119,7 +1119,7 @@ kundi BuiltinTest(unittest.TestCase):
             self.write_testfile()
             current_locale_encoding = locale.getpreferredencoding(Uongo)
             fp = open(TESTFN, 'w')
-            with fp:
+            ukijumuisha fp:
                 self.assertEqual(fp.encoding, current_locale_encoding)
         mwishowe:
             os.environ.clear()
@@ -1127,7 +1127,7 @@ kundi BuiltinTest(unittest.TestCase):
 
     eleza test_open_non_inheritable(self):
         fileobj = open(__file__)
-        with fileobj:
+        ukijumuisha fileobj:
             self.assertUongo(os.get_inheritable(fileobj.fileno()))
 
     eleza test_ord(self):
@@ -1502,7 +1502,7 @@ kundi BuiltinTest(unittest.TestCase):
             eleza __iter__(self):
                 ashiria exception
 
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             zip(BadIterable())
 
         self.assertIs(cm.exception, exception)
@@ -1579,7 +1579,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, object().__format__, Tupu)
 
         # --------------------------------------------------------------------
-        # Issue #7994: object.__format__ with a non-empty format string is
+        # Issue #7994: object.__format__ ukijumuisha a non-empty format string is
         # disallowed
         kundi A:
             eleza __format__(self, fmt_str):
@@ -1599,7 +1599,7 @@ kundi BuiltinTest(unittest.TestCase):
             obj = cls()
             self.assertEqual(format(obj), str(obj))
             self.assertEqual(format(obj, ''), str(obj))
-            with self.assertRaisesRegex(TypeError,
+            ukijumuisha self.assertRaisesRegex(TypeError,
                                         r'\b%s\b' % re.escape(cls.__name__)):
                 format(obj, 's')
         # --------------------------------------------------------------------
@@ -1638,7 +1638,7 @@ kundi BuiltinTest(unittest.TestCase):
 kundi TestBreakpoint(unittest.TestCase):
     eleza setUp(self):
         # These tests require a clean slate environment.  For example, ikiwa the
-        # test suite ni run with $PYTHONBREAKPOINT set to something else, it
+        # test suite ni run ukijumuisha $PYTHONBREAKPOINT set to something else, it
         # will mess up these tests.  Similarly kila sys.komapointhook.
         # Cleaning the slate here means you can't use komapoint() to debug
         # these tests, but I think that's okay.  Just use pdb.set_trace() if
@@ -1651,7 +1651,7 @@ kundi TestBreakpoint(unittest.TestCase):
             swap_attr(sys, 'komapointhook', sys.__komapointhook__))
 
     eleza test_komapoint(self):
-        with patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') kama mock:
             komapoint()
         mock.assert_called_once()
 
@@ -1668,7 +1668,7 @@ kundi TestBreakpoint(unittest.TestCase):
         my_komapointhook.assert_called_once_with()
         # Reset the hook na it will sio be called again.
         sys.komapointhook = sys.__komapointhook__
-        with patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') kama mock:
             komapoint()
             mock.assert_called_once_with()
         my_komapointhook.assert_called_once_with()
@@ -1688,28 +1688,28 @@ kundi TestBreakpoint(unittest.TestCase):
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_builtin(self):
         self.env['PYTHONBREAKPOINT'] = 'int'
-        with patch('builtins.int') kama mock:
+        ukijumuisha patch('builtins.int') kama mock:
             komapoint('7')
             mock.assert_called_once_with('7')
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_other(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
-        with patch('sys.exit') kama mock:
+        ukijumuisha patch('sys.exit') kama mock:
             komapoint()
             mock.assert_called_once_with()
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_noop_0(self):
         self.env['PYTHONBREAKPOINT'] = '0'
-        with patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') kama mock:
             komapoint()
             mock.assert_not_called()
 
     eleza test_envar_good_path_empty_string(self):
         # PYTHONBREAKPOINT='' ni the same kama it sio being set.
         self.env['PYTHONBREAKPOINT'] = ''
-        with patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') kama mock:
             komapoint()
             mock.assert_called_once_with()
 
@@ -1721,7 +1721,7 @@ kundi TestBreakpoint(unittest.TestCase):
                 'nosuchbuiltin',
                 'nosuchmodule.nosuchcallable',
                 ):
-            with self.subTest(envar=envar):
+            ukijumuisha self.subTest(envar=envar):
                 self.env['PYTHONBREAKPOINT'] = envar
                 mock = self.resources.enter_context(patch('pdb.set_trace'))
                 w = self.resources.enter_context(check_warnings(quiet=Kweli))
@@ -1734,7 +1734,7 @@ kundi TestBreakpoint(unittest.TestCase):
 
     eleza test_envar_ignored_when_hook_is_set(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
-        with patch('sys.exit') kama mock:
+        ukijumuisha patch('sys.exit') kama mock:
             sys.komapointhook = int
             komapoint()
             mock.assert_not_called()
@@ -1760,7 +1760,7 @@ kundi PtyTests(unittest.TestCase):
                 # Make sure we don't get stuck ikiwa there's a problem
                 signal.alarm(2)
                 os.close(r)
-                with open(w, "w") kama wpipe:
+                ukijumuisha open(w, "w") kama wpipe:
                     child(wpipe)
             except:
                 traceback.print_exc()
@@ -1771,7 +1771,7 @@ kundi PtyTests(unittest.TestCase):
         os.close(w)
         os.write(fd, terminal_input)
         # Get results kutoka the pipe
-        with open(r, "r") kama rpipe:
+        ukijumuisha open(r, "r") kama rpipe:
             lines = []
             wakati Kweli:
                 line = rpipe.readline().strip()
@@ -1877,11 +1877,11 @@ kundi TestSorted(unittest.TestCase):
     eleza test_bad_arguments(self):
         # Issue #29327: The first argument ni positional-only.
         sorted([])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             sorted(iterable=[])
         # Other arguments are keyword-only
         sorted([], key=Tupu)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             sorted([], Tupu)
 
     eleza test_inputtypes(self):
@@ -1966,41 +1966,41 @@ kundi TestType(unittest.TestCase):
         self.assertEqual(x.to_bytes(2, 'little'), b'\x2a\x00')
 
     eleza test_type_nokwargs(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('a', (), {}, x=5)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('a', (), dict={})
 
     eleza test_type_name(self):
         kila name kwenye 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
-            with self.subTest(name=name):
+            ukijumuisha self.subTest(name=name):
                 A = type(name, (), {})
                 self.assertEqual(A.__name__, name)
                 self.assertEqual(A.__qualname__, name)
                 self.assertEqual(A.__module__, __name__)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             type('A\x00B', (), {})
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             type('A\udcdcB', (), {})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type(b'A', (), {})
 
         C = type('C', (), {})
         kila name kwenye 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
-            with self.subTest(name=name):
+            ukijumuisha self.subTest(name=name):
                 C.__name__ = name
                 self.assertEqual(C.__name__, name)
                 self.assertEqual(C.__qualname__, 'C')
                 self.assertEqual(C.__module__, __name__)
 
         A = type('C', (), {})
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             A.__name__ = 'A\x00B'
         self.assertEqual(A.__name__, 'C')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             A.__name__ = 'A\udcdcB'
         self.assertEqual(A.__name__, 'C')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             A.__name__ = b'A'
         self.assertEqual(A.__name__, 'C')
 
@@ -2009,14 +2009,14 @@ kundi TestType(unittest.TestCase):
         self.assertEqual(A.__name__, 'A')
         self.assertEqual(A.__qualname__, 'B.C')
         self.assertEqual(A.__module__, __name__)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__qualname__': b'B'})
         self.assertEqual(A.__qualname__, 'B.C')
 
         A.__qualname__ = 'D.E'
         self.assertEqual(A.__name__, 'A')
         self.assertEqual(A.__qualname__, 'D.E')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             A.__qualname__ = b'B'
         self.assertEqual(A.__qualname__, 'D.E')
 
@@ -2024,7 +2024,7 @@ kundi TestType(unittest.TestCase):
         kila doc kwenye 'x', '\xc4', '\U0001f40d', 'x\x00y', b'x', 42, Tupu:
             A = type('A', (), {'__doc__': doc})
             self.assertEqual(A.__doc__, doc)
-        with self.assertRaises(UnicodeEncodeError):
+        ukijumuisha self.assertRaises(UnicodeEncodeError):
             type('A', (), {'__doc__': 'x\udcdcy'})
 
         A = type('A', (), {})
@@ -2034,48 +2034,48 @@ kundi TestType(unittest.TestCase):
             self.assertEqual(A.__doc__, doc)
 
     eleza test_bad_args(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', ())
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {}, ())
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), dict={})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', [], {})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), types.MappingProxyType({}))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (Tupu,), {})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (bool,), {})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (int, str), {})
 
     eleza test_bad_slots(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': b'x'})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (int,), {'__slots__': 'x'})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': ''})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': '42'})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': 'x\x00y'})
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             type('A', (), {'__slots__': 'x', 'x': 0})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': ('__dict__', '__dict__')})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (), {'__slots__': ('__weakref__', '__weakref__')})
 
         kundi B:
             pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__dict__'})
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__weakref__'})
 
     eleza test_namespace_order(self):

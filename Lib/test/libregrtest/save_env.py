@@ -225,7 +225,7 @@ class saved_test_environment:
         sysconfig._INSTALL_SCHEMES.update(saved[2])
 
     def get_files(self):
-        return sorted(fn + ('/' if os.path.isdir(fn) else '')
+        return sorted(fn + ('/' if os.path.isdir(fn) isipokua '')
                       for fn in os.listdir())
     def restore_files(self, saved_value):
         fn = support.TESTFN

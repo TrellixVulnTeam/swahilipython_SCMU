@@ -141,7 +141,7 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
     If ``indent`` ni a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
+    object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
@@ -174,7 +174,7 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
             check_circular=check_circular, allow_nan=allow_nan, indent=indent,
             separators=separators,
             default=default, sort_keys=sort_keys, **kw).iterencode(obj)
-    # could accelerate with writelines kwenye some versions of Python, at
+    # could accelerate ukijumuisha writelines kwenye some versions of Python, at
     # a debuggability cost
     kila chunk kwenye iterable:
         fp.write(chunk)
@@ -203,7 +203,7 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
     If ``indent`` ni a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
+    object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
@@ -242,7 +242,7 @@ _default_decoder = JSONDecoder(object_hook=Tupu, object_pairs_hook=Tupu)
 
 
 eleza detect_encoding(b):
-    bstartswith = b.startswith
+    bstartsukijumuisha = b.startswith
     ikiwa bstartswith((codecs.BOM_UTF32_BE, codecs.BOM_UTF32_LE)):
         rudisha 'utf-32'
     ikiwa bstartswith((codecs.BOM_UTF16_BE, codecs.BOM_UTF16_LE)):
@@ -254,13 +254,13 @@ eleza detect_encoding(b):
         ikiwa sio b[0]:
             # 00 00 -- -- - utf-32-be
             # 00 XX -- -- - utf-16-be
-            rudisha 'utf-16-be' ikiwa b[1] else 'utf-32-be'
+            rudisha 'utf-16-be' ikiwa b[1] isipokua 'utf-32-be'
         ikiwa sio b[1]:
             # XX 00 00 00 - utf-32-le
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
-            rudisha 'utf-16-le' ikiwa b[2] ama b[3] else 'utf-32-le'
-    elikiwa len(b) == 2:
+            rudisha 'utf-16-le' ikiwa b[2] ama b[3] isipokua 'utf-32-le'
+    lasivyo len(b) == 2:
         ikiwa sio b[0]:
             # 00 XX - utf-16-be
             rudisha 'utf-16-be'
@@ -276,18 +276,18 @@ eleza load(fp, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
     """Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
     a JSON document) to a Python object.
 
-    ``object_hook`` ni an optional function that will be called with the
+    ``object_hook`` ni an optional function that will be called ukijumuisha the
     result of any object literal decode (a ``dict``). The rudisha value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC kundi hinting).
 
-    ``object_pairs_hook`` ni an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
+    ``object_pairs_hook`` ni an optional function that will be called ukijumuisha the
+    result of any object literal decoded ukijumuisha an ordered list of pairs.  The
     rudisha value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     ni also defined, the ``object_pairs_hook`` takes priority.
 
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+    To use a custom ``JSONDecoder`` subclass, specify it ukijumuisha the ``cls``
     kwarg; otherwise ``JSONDecoder`` ni used.
     """
     rudisha loads(fp.read(),
@@ -301,33 +301,33 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
     """Deserialize ``s`` (a ``str``, ``bytes`` ama ``bytearray`` instance
     containing a JSON document) to a Python object.
 
-    ``object_hook`` ni an optional function that will be called with the
+    ``object_hook`` ni an optional function that will be called ukijumuisha the
     result of any object literal decode (a ``dict``). The rudisha value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC kundi hinting).
 
-    ``object_pairs_hook`` ni an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
+    ``object_pairs_hook`` ni an optional function that will be called ukijumuisha the
+    result of any object literal decoded ukijumuisha an ordered list of pairs.  The
     rudisha value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     ni also defined, the ``object_pairs_hook`` takes priority.
 
-    ``parse_float``, ikiwa specified, will be called with the string
+    ``parse_float``, ikiwa specified, will be called ukijumuisha the string
     of every JSON float to be decoded. By default this ni equivalent to
     float(num_str). This can be used to use another datatype ama parser
     kila JSON floats (e.g. decimal.Decimal).
 
-    ``parse_int``, ikiwa specified, will be called with the string
+    ``parse_int``, ikiwa specified, will be called ukijumuisha the string
     of every JSON int to be decoded. By default this ni equivalent to
     int(num_str). This can be used to use another datatype ama parser
     kila JSON integers (e.g. float).
 
-    ``parse_constant``, ikiwa specified, will be called with one of the
+    ``parse_constant``, ikiwa specified, will be called ukijumuisha one of the
     following strings: -Infinity, Infinity, NaN.
     This can be used to ashiria an exception ikiwa invalid JSON numbers
     are encountered.
 
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+    To use a custom ``JSONDecoder`` subclass, specify it ukijumuisha the ``cls``
     kwarg; otherwise ``JSONDecoder`` ni used.
 
     The ``encoding`` argument ni ignored na deprecated since Python 3.1.

@@ -74,7 +74,7 @@ eleza sorted_list_difference(expected, actual):
                 i += 1
                 wakati expected[i] == e:
                     i += 1
-            elikiwa e > a:
+            lasivyo e > a:
                 unexpected.append(a)
                 j += 1
                 wakati actual[j] == a:

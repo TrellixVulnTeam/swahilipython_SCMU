@@ -83,7 +83,7 @@ kundi Queue(object):
         ikiwa sio self._sem.acquire(block, timeout):
             ashiria Full
 
-        with self._notempty:
+        ukijumuisha self._notempty:
             ikiwa self._thread ni Tupu:
                 self._start_thread()
             self._buffer.append(obj)
@@ -93,7 +93,7 @@ kundi Queue(object):
         ikiwa self._closed:
             ashiria ValueError(f"Queue {self!r} ni closed")
         ikiwa block na timeout ni Tupu:
-            with self._rlock:
+            ukijumuisha self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
         isipokua:
@@ -106,7 +106,7 @@ kundi Queue(object):
                     timeout = deadline - time.monotonic()
                     ikiwa sio self._poll(timeout):
                         ashiria Empty
-                elikiwa sio self._poll():
+                lasivyo sio self._poll():
                     ashiria Empty
                 res = self._recv_bytes()
                 self._sem.release()
@@ -200,7 +200,7 @@ kundi Queue(object):
     @staticmethod
     eleza _finalize_close(buffer, notempty):
         debug('telling queue thread to quit')
-        with notempty:
+        ukijumuisha notempty:
             buffer.append(_sentinel)
             notempty.notify()
 
@@ -306,7 +306,7 @@ kundi JoinableQueue(Queue):
         ikiwa sio self._sem.acquire(block, timeout):
             ashiria Full
 
-        with self._notempty, self._cond:
+        ukijumuisha self._notempty, self._cond:
             ikiwa self._thread ni Tupu:
                 self._start_thread()
             self._buffer.append(obj)
@@ -314,14 +314,14 @@ kundi JoinableQueue(Queue):
             self._notempty.notify()
 
     eleza task_done(self):
-        with self._cond:
+        ukijumuisha self._cond:
             ikiwa sio self._unfinished_tasks.acquire(Uongo):
                 ashiria ValueError('task_done() called too many times')
             ikiwa self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 
     eleza join(self):
-        with self._cond:
+        ukijumuisha self._cond:
             ikiwa sio self._unfinished_tasks._semlock._is_zero():
                 self._cond.wait()
 
@@ -352,7 +352,7 @@ kundi SimpleQueue(object):
         self._poll = self._reader.poll
 
     eleza get(self):
-        with self._rlock:
+        ukijumuisha self._rlock:
             res = self._reader.recv_bytes()
         # unserialize the data after having released the lock
         rudisha _ForkingPickler.loads(res)
@@ -364,5 +364,5 @@ kundi SimpleQueue(object):
             # writes to a message oriented win32 pipe are atomic
             self._writer.send_bytes(obj)
         isipokua:
-            with self._wlock:
+            ukijumuisha self._wlock:
                 self._writer.send_bytes(obj)

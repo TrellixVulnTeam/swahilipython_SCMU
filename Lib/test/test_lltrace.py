@@ -11,9 +11,9 @@ kundi TestLLTrace(unittest.TestCase):
     eleza test_lltrace_does_not_crash_on_subscript_operator(self):
         # If this test fails, it will reproduce a crash reported as
         # bpo-34113. The crash happened at the command line console of
-        # debug Python builds with __ltrace__ enabled (only possible kwenye console),
+        # debug Python builds ukijumuisha __ltrace__ enabled (only possible kwenye console),
         # when the interal Python stack was negatively adjusted
-        with open(support.TESTFN, 'w') kama fd:
+        ukijumuisha open(support.TESTFN, 'w') kama fd:
             self.addCleanup(os.unlink, support.TESTFN)
             fd.write(textwrap.dedent("""\
             agiza code

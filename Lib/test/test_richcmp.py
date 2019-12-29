@@ -110,7 +110,7 @@ kundi VectorTest(unittest.TestCase):
 
     eleza test_mixed(self):
         # check that comparisons involving Vector objects
-        # which rudisha rich results (i.e. Vectors with itemwise
+        # which rudisha rich results (i.e. Vectors ukijumuisha itemwise
         # comparison results) work
         a = Vector(range(2))
         b = Vector(range(3))
@@ -273,8 +273,8 @@ kundi MiscTest(unittest.TestCase):
             (lambda: Spam() <= Spam(), r"'<=' .* of 'Spam' na 'Spam'"),
         ]
         kila i, test kwenye enumerate(tests):
-            with self.subTest(test=i):
-                with self.assertRaisesRegex(TypeError, test[1]):
+            ukijumuisha self.subTest(test=i):
+                ukijumuisha self.assertRaisesRegex(TypeError, test[1]):
                     test[0]()
 
 

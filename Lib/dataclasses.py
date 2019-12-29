@@ -760,7 +760,7 @@ def _hash_set_none(cls, fields):
     return None
 
 def _hash_add(cls, fields):
-    flds = [f for f in fields if (f.compare if f.hash is None else f.hash)]
+    flds = [f for f in fields if (f.compare if f.hash is None isipokua f.hash)]
     return _hash_fn(flds)
 
 def _hash_exception(cls, fields):
@@ -913,7 +913,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
                                     # param in __init__.  Use "self"
                                     # if possible.
                                     '__dataclass_self__' if 'self' in fields
-                                            else 'self',
+                                            isipokua 'self',
                           ))
 
     # Get the fields as a list, and include only real fields.  This is
@@ -1026,7 +1026,7 @@ def _is_dataclass_instance(obj):
 def is_dataclass(obj):
     """Returns True if obj is a datakundi or an instance of a
     dataclass."""
-    cls = obj if isinstance(obj, type) else type(obj)
+    cls = obj if isinstance(obj, type) isipokua type(obj)
     return hasattr(cls, _FIELDS)
 
 

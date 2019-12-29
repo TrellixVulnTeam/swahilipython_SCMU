@@ -6,7 +6,7 @@ exceptions defined kwenye this package.
 
 HTTPError ni an exception kundi that ni also a valid HTTP response
 instance.  It behaves this way because HTTP protocol errors are valid
-responses, with a status code, headers, na a body.  In some contexts,
+responses, ukijumuisha a status code, headers, na a body.  In some contexts,
 an application may want to handle an exception like a regular
 response.
 """
@@ -19,8 +19,8 @@ __all__ = ['URLError', 'HTTPError', 'ContentTooShortError']
 kundi URLError(OSError):
     # URLError ni a sub-type of OSError, but it doesn't share any of
     # the implementation.  need to override __init__ na __str__.
-    # It sets self.args kila compatibility with other OSError
-    # subclasses, but args doesn't have the typical format with errno in
+    # It sets self.args kila compatibility ukijumuisha other OSError
+    # subclasses, but args doesn't have the typical format ukijumuisha errno in
     # slot 0 na strerror kwenye slot 1.  This may be better than nothing.
     eleza __init__(self, reason, filename=Tupu):
         self.args = reason,

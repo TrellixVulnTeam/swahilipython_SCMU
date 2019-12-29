@@ -38,7 +38,7 @@ eleza _task_get_stack(task, limit):
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    elikiwa task._exception ni sio Tupu:
+    lasivyo task._exception ni sio Tupu:
         tb = task._exception.__traceback__
         wakati tb ni sio Tupu:
             ikiwa limit ni sio Tupu:
@@ -67,7 +67,7 @@ eleza _task_print_stack(task, limit, file):
     exc = task._exception
     ikiwa sio extracted_list:
         andika(f'No stack kila {task!r}', file=file)
-    elikiwa exc ni sio Tupu:
+    lasivyo exc ni sio Tupu:
         andika(f'Traceback kila {task!r} (most recent call last):', file=file)
     isipokua:
         andika(f'Stack kila {task!r} (most recent call last):', file=file)

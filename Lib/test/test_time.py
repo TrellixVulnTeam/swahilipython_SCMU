@@ -32,7 +32,7 @@ kundi _PyTime(enum.IntEnum):
     ROUND_FLOOR = 0
     # Round towards infinity (+inf)
     ROUND_CEILING = 1
-    # Round to nearest with ties going to nearest even integer
+    # Round to nearest ukijumuisha ties going to nearest even integer
     ROUND_HALF_EVEN = 2
     # Round away kutoka zero
     ROUND_UP = 3
@@ -114,7 +114,7 @@ kundi TimeTestCase(unittest.TestCase):
         # when kwenye 32-bit mode AIX only rudishas the predefined constant
         ikiwa sio platform.system() == "AIX":
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
-        elikiwa (sys.maxsize.bit_length() > 32):
+        lasivyo (sys.maxsize.bit_length() > 32):
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         isipokua:
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
@@ -247,7 +247,7 @@ kundi TimeTestCase(unittest.TestCase):
         # sio change output based on its value na no test kila year
         # because systems vary kwenye their support kila year 0.
         expected = "2000 01 01 00 00 00 1 001"
-        with support.check_warnings():
+        ukijumuisha support.check_warnings():
             result = time.strftime("%Y %m %d %H %M %S %w %j", (2000,)+(0,)*8)
         self.assertEqual(expected, result)
 
@@ -264,7 +264,7 @@ kundi TimeTestCase(unittest.TestCase):
             jaribu:
                 time.strptime(strf_output, format)
             tatizo ValueError:
-                self.fail("conversion specifier %r failed with '%s' input." %
+                self.fail("conversion specifier %r failed ukijumuisha '%s' input." %
                           (format, strf_output))
 
     eleza test_strptime_bytes(self):
@@ -274,11 +274,11 @@ kundi TimeTestCase(unittest.TestCase):
 
     eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) kama e:
             time.strptime('', '%D')
         self.assertIs(e.exception.__suppress_context__, Kweli)
         # additional check kila IndexError branch (issue #19545)
-        with self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) kama e:
             time.strptime('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, Kweli)
 
@@ -386,7 +386,7 @@ kundi TimeTestCase(unittest.TestCase):
             # rely on it.
             ikiwa org_TZ ni sio Tupu:
                 environ['TZ'] = org_TZ
-            elikiwa 'TZ' kwenye environ:
+            lasivyo 'TZ' kwenye environ:
                 toa environ['TZ']
             time.tzset()
 
@@ -511,7 +511,7 @@ kundi TimeTestCase(unittest.TestCase):
     eleza test_monotonic_settime(self):
         t1 = time.monotonic()
         realtime = time.clock_gettime(time.CLOCK_REALTIME)
-        # jump backward with an offset of 1 hour
+        # jump backward ukijumuisha an offset of 1 hour
         jaribu:
             time.clock_settime(time.CLOCK_REALTIME, realtime - 3600)
         tatizo PermissionError kama err:
@@ -613,7 +613,7 @@ kundi _TestStrftimeYear:
             self.test_year('%04d', func=year4d)
 
     eleza skip_if_not_supported(y):
-        msg = "strftime() ni limited to [1; 9999] with Visual Studio"
+        msg = "strftime() ni limited to [1; 9999] ukijumuisha Visual Studio"
         # Check that it doesn't crash kila year > 9999
         jaribu:
             time.strftime('%Y', (y,) + (0,) * 8)
@@ -662,7 +662,7 @@ kundi _Test4dYear:
         self.assertEqual(self.yearstr(TIME_MINYEAR), str(TIME_MINYEAR))
         # Modules/timemodule.c checks kila underflow
         self.assertRaises(OverflowError, self.yearstr, TIME_MINYEAR - 1)
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             self.yearstr(-TIME_MAXYEAR - 1)
 
 
@@ -785,7 +785,7 @@ kundi CPyTimeTestCase:
         kila seconds kwenye (_testcapi.INT_MIN, _testcapi.INT_MAX):
             ns_timestamps.append(seconds * SEC_TO_NS)
         ikiwa use_float:
-            # numbers with an exact representation kwenye IEEE 754 (base 2)
+            # numbers ukijumuisha an exact representation kwenye IEEE 754 (base 2)
             kila pow2 kwenye (3, 7, 10, 15):
                 ns = 2.0 ** (-pow2)
                 ns_timestamps.extend((-ns, ns))
@@ -817,7 +817,7 @@ kundi CPyTimeTestCase:
         ns_timestamps = self._rounding_values(use_float)
         valid_values = convert_values(ns_timestamps)
         kila time_rnd, decimal_rnd kwenye ROUNDING_MODES :
-            with decimal.localcontext() kama context:
+            ukijumuisha decimal.localcontext() kama context:
                 context.rounding = decimal_rnd
 
                 kila value kwenye valid_values:
@@ -838,7 +838,7 @@ kundi CPyTimeTestCase:
         kila time_rnd, _ kwenye ROUNDING_MODES :
             kila value kwenye overflow_values:
                 debug_info = {'value': value, 'rounding': time_rnd}
-                with self.assertRaises(OverflowError, msg=debug_info):
+                ukijumuisha self.assertRaises(OverflowError, msg=debug_info):
                     pytime_converter(value, time_rnd)
 
     eleza check_int_rounding(self, pytime_converter, expected_func,
@@ -877,7 +877,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         kila time_rnd, _ kwenye ROUNDING_MODES:
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 PyTime_FromSeconds(float('nan'))
 
     eleza test_FromSecondsObject(self):
@@ -893,7 +893,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         kila time_rnd, _ kwenye ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 PyTime_FromSecondsObject(float('nan'), time_rnd)
 
     eleza test_AsSecondsDouble(self):
@@ -911,7 +911,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         kila time_rnd, _ kwenye ROUNDING_MODES:
-            with self.assertRaises(TypeError):
+            ukijumuisha self.assertRaises(TypeError):
                 PyTime_AsSecondsDouble(float('nan'))
 
     eleza create_decimal_converter(self, denominator):
@@ -1002,7 +1002,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
             ikiwa floatpart < 0:
                 floatpart += sec_to_unit
                 intpart -= 1
-            elikiwa floatpart >= sec_to_unit:
+            lasivyo floatpart >= sec_to_unit:
                 floatpart -= sec_to_unit
                 intpart += 1
             rudisha (intpart, floatpart)
@@ -1021,7 +1021,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
 
          # test nan
         kila time_rnd, _ kwenye ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 pytime_object_to_timeval(float('nan'), time_rnd)
 
     eleza test_object_to_timespec(self):
@@ -1037,7 +1037,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         kila time_rnd, _ kwenye ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 pytime_object_to_timespec(float('nan'), time_rnd)
 
 

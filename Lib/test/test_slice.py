@@ -13,7 +13,7 @@ kutoka test agiza support
 eleza evaluate_slice_index(arg):
     """
     Helper function to convert a slice argument to an integer, na ashiria
-    TypeError with a suitable message on failure.
+    TypeError ukijumuisha a suitable message on failure.
 
     """
     ikiwa hasattr(arg, '__index__'):
@@ -30,7 +30,7 @@ eleza slice_indices(slice, length):
     """
     # Compute step na length kama integers.
     length = operator.index(length)
-    step = 1 ikiwa slice.step ni Tupu else evaluate_slice_index(slice.step)
+    step = 1 ikiwa slice.step ni Tupu isipokua evaluate_slice_index(slice.step)
 
     # Raise ValueError kila negative length ama zero step.
     ikiwa length < 0:
@@ -39,22 +39,22 @@ eleza slice_indices(slice, length):
         ashiria ValueError("slice step cannot be zero")
 
     # Find lower na upper bounds kila start na stop.
-    lower = -1 ikiwa step < 0 else 0
-    upper = length - 1 ikiwa step < 0 else length
+    lower = -1 ikiwa step < 0 isipokua 0
+    upper = length - 1 ikiwa step < 0 isipokua length
 
     # Compute start.
     ikiwa slice.start ni Tupu:
-        start = upper ikiwa step < 0 else lower
+        start = upper ikiwa step < 0 isipokua lower
     isipokua:
         start = evaluate_slice_index(slice.start)
-        start = max(start + length, lower) ikiwa start < 0 else min(start, upper)
+        start = max(start + length, lower) ikiwa start < 0 isipokua min(start, upper)
 
     # Compute stop.
     ikiwa slice.stop ni Tupu:
-        stop = lower ikiwa step < 0 else upper
+        stop = lower ikiwa step < 0 isipokua upper
     isipokua:
         stop = evaluate_slice_index(slice.stop)
-        stop = max(stop + length, lower) ikiwa stop < 0 else min(stop, upper)
+        stop = max(stop + length, lower) ikiwa stop < 0 isipokua min(stop, upper)
 
     rudisha start, stop, step
 
@@ -81,7 +81,7 @@ kundi SliceTest(unittest.TestCase):
     eleza test_hash(self):
         # Verify clearing of SF bug #800796
         self.assertRaises(TypeError, hash, slice(5))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             slice(5).__hash__()
 
     eleza test_cmp(self):
@@ -199,22 +199,22 @@ kundi SliceTest(unittest.TestCase):
         self.check_indices(slice(0, 10, 1), -3)
 
         # Negative length should ashiria ValueError
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             slice(Tupu).indices(-1)
 
         # Zero step should ashiria ValueError
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             slice(0, 10, 0).indices(5)
 
         # Using a start, stop ama step ama length that can't be interpreted kama an
         # integer should give a TypeError ...
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             slice(0.0, 10, 1).indices(5)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             slice(0, 10.0, 1).indices(5)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             slice(0, 10, 1.0).indices(5)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             slice(0, 10, 1).indices(5.0)
 
         # ... but it should be fine to use a custom kundi that provides index.

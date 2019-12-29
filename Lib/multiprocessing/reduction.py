@@ -1,5 +1,5 @@
 #
-# Module which deals with pickling of objects.
+# Module which deals ukijumuisha pickling of objects.
 #
 # multiprocessing/reduction.py
 #
@@ -180,12 +180,12 @@ isipokua:
 
     eleza send_handle(conn, handle, destination_pid):
         '''Send a handle over a local connection.'''
-        with socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             sendfds(s, [handle])
 
     eleza recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        with socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
+        ukijumuisha socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             rudisha recvfds(s, 1)[0]
 
     eleza DupFd(fd):
@@ -193,7 +193,7 @@ isipokua:
         popen_obj = context.get_spawning_popen()
         ikiwa popen_obj ni sio Tupu:
             rudisha popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
-        elikiwa HAVE_SEND_HANDLE:
+        lasivyo HAVE_SEND_HANDLE:
             kutoka . agiza resource_sharer
             rudisha resource_sharer.DupFd(fd)
         isipokua:

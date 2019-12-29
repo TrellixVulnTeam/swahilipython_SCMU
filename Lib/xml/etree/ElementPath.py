@@ -26,7 +26,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# na will comply with the following terms na conditions:
+# na will comply ukijumuisha the following terms na conditions:
 #
 # Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
@@ -71,7 +71,7 @@ xpath_tokenizer_re = re.compile(
     )
 
 eleza xpath_tokenizer(pattern, namespaces=Tupu):
-    default_namespace = namespaces.get('') ikiwa namespaces else Tupu
+    default_namespace = namespaces.get('') ikiwa namespaces isipokua Tupu
     parsing_attribute = Uongo
     kila token kwenye xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
@@ -84,7 +84,7 @@ eleza xpath_tokenizer(pattern, namespaces=Tupu):
                     tuma ttype, "{%s}%s" % (namespaces[prefix], uri)
                 tatizo KeyError:
                     ashiria SyntaxError("prefix %r sio found kwenye prefix map" % prefix) kutoka Tupu
-            elikiwa default_namespace na sio parsing_attribute:
+            lasivyo default_namespace na sio parsing_attribute:
                 tuma ttype, "{%s}%s" % (default_namespace, tag)
             isipokua:
                 tuma token
@@ -118,14 +118,14 @@ eleza _prepare_tag(tag):
             kila elem kwenye result:
                 ikiwa _isinstance(elem.tag, _str):
                     tuma elem
-    elikiwa tag == '{}*':
+    lasivyo tag == '{}*':
         # Any tag that ni haiko kwenye a namespace.
         eleza select(context, result):
             kila elem kwenye result:
                 el_tag = elem.tag
                 ikiwa _isinstance(el_tag, _str) na el_tag[0] != '{':
                     tuma elem
-    elikiwa tag[:3] == '{*}':
+    lasivyo tag[:3] == '{*}':
         # The tag kwenye any (or no) namespace.
         suffix = tag[2:]  # '}name'
         no_ns = slice(-len(suffix), Tupu)
@@ -135,7 +135,7 @@ eleza _prepare_tag(tag):
                 el_tag = elem.tag
                 ikiwa el_tag == tag ama _isinstance(el_tag, _str) na el_tag[no_ns] == suffix:
                     tuma elem
-    elikiwa tag[-2:] == '}*':
+    lasivyo tag[-2:] == '}*':
         # Any tag kwenye the given namespace.
         ns = tag[:-1]
         ns_only = slice(Tupu, len(ns))
@@ -186,7 +186,7 @@ eleza prepare_descendant(next, token):
         rudisha
     ikiwa token[0] == "*":
         tag = "*"
-    elikiwa sio token[0]:
+    lasivyo sio token[0]:
         tag = token[1]
     isipokua:
         ashiria SyntaxError("invalid descendant")
@@ -224,7 +224,7 @@ eleza prepare_parent(next, token):
     rudisha select
 
 eleza prepare_predicate(next, token):
-    # FIXME: replace with real parser!!! refs:
+    # FIXME: replace ukijumuisha real parser!!! refs:
     # http://effbot.org/zone/simple-iterator-parser.htm
     # http://javascript.crockford.com/tdop/tdop.html
     signature = []

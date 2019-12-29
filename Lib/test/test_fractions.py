@@ -15,7 +15,7 @@ F = fractions.Fraction
 gcd = fractions.gcd
 
 kundi DummyFloat(object):
-    """Dummy float kundi kila testing comparisons with Fractions"""
+    """Dummy float kundi kila testing comparisons ukijumuisha Fractions"""
 
     eleza __init__(self, value):
         ikiwa sio isinstance(value, float):
@@ -25,7 +25,7 @@ kundi DummyFloat(object):
     eleza _richcmp(self, other, op):
         ikiwa isinstance(other, numbers.Rational):
             rudisha op(F.kutoka_float(self.value), other)
-        elikiwa isinstance(other, DummyFloat):
+        lasivyo isinstance(other, DummyFloat):
             rudisha op(self.value, other.value)
         isipokua:
             rudisha NotImplemented
@@ -47,7 +47,7 @@ kundi DummyFloat(object):
 
 
 kundi DummyRational(object):
-    """Test comparison of Fraction with a naive rational implementation."""
+    """Test comparison of Fraction ukijumuisha a naive rational implementation."""
 
     eleza __init__(self, num, den):
         g = math.gcd(num, den)
@@ -85,9 +85,9 @@ kundi GcdTest(unittest.TestCase):
 
     eleza testMisc(self):
         # fractions.gcd() ni deprecated
-        with self.assertWarnsRegex(DeprecationWarning, r'fractions\.gcd'):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, r'fractions\.gcd'):
             gcd(1, 1)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings('ignore', r'fractions\.gcd',
                                     DeprecationWarning)
             self.assertEqual(0, gcd(0, 0))
@@ -163,7 +163,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual((0, 1), _components(F(-0.0)))
         self.assertEqual((3602879701896397, 36028797018963968),
                          _components(F(0.1)))
-        # bug 16469: error types should be consistent with float -> int
+        # bug 16469: error types should be consistent ukijumuisha float -> int
         self.assertRaises(ValueError, F, float('nan'))
         self.assertRaises(OverflowError, F, float('inf'))
         self.assertRaises(OverflowError, F, float('-inf'))
@@ -175,7 +175,7 @@ kundi FractionTest(unittest.TestCase):
                          _components(F(Decimal('3.5e-2'))))
         self.assertEqual((0, 1),
                          _components(F(Decimal('.000e20'))))
-        # bug 16469: error types should be consistent with decimal -> int
+        # bug 16469: error types should be consistent ukijumuisha decimal -> int
         self.assertRaises(ValueError, F, Decimal('nan'))
         self.assertRaises(ValueError, F, Decimal('snan'))
         self.assertRaises(OverflowError, F, Decimal('inf'))
@@ -267,7 +267,7 @@ kundi FractionTest(unittest.TestCase):
 
         inf = 1e1000
         nan = inf - inf
-        # bug 16469: error types should be consistent with float -> int
+        # bug 16469: error types should be consistent ukijumuisha float -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
             F.kutoka_float, inf)
@@ -288,7 +288,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual(1 - F(1, 10**30),
                          F.kutoka_decimal(Decimal("0." + "9" * 30)))
 
-        # bug 16469: error types should be consistent with decimal -> int
+        # bug 16469: error types should be consistent ukijumuisha decimal -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
             F.kutoka_decimal, Decimal("inf"))
@@ -644,7 +644,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertNotEqual(hash(float(10**23)), hash(F(10**23)))
         self.assertEqual(hinf, hash(F(1, hmod)))
         # Check that __hash__ produces the same value kama hash(), for
-        # consistency with int na Decimal.  (See issue #10356.)
+        # consistency ukijumuisha int na Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 
     eleza testApproximatePi(self):

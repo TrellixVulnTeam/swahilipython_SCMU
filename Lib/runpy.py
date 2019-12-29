@@ -3,7 +3,7 @@
 Provides support kila locating na running Python scripts using the Python
 module namespace instead of the native filesystem.
 
-This allows Python code to play nicely with non-filesystem based PEP 302
+This allows Python code to play nicely ukijumuisha non-filesystem based PEP 302
 importers when locating support scripts kama well kama when agizaing modules.
 """
 # Written by Nick Coghlan <ncoghlan at gmail.com>
@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 kundi _TempModule(object):
-    """Temporarily replace a module kwenye sys.modules with an empty namespace"""
+    """Temporarily replace a module kwenye sys.modules ukijumuisha an empty namespace"""
     eleza __init__(self, mod_name):
         self.mod_name = mod_name
         self.module = types.ModuleType(mod_name)
@@ -58,7 +58,7 @@ kundi _ModifiedArgv0(object):
         self.value = self._sentinel
         sys.argv[0] = self._saved_value
 
-# TODO: Replace these helpers with importlib._bootstrap_external functions.
+# TODO: Replace these helpers ukijumuisha importlib._bootstrap_external functions.
 eleza _run_code(code, run_globals, init_globals=Tupu,
               mod_name=Tupu, mod_spec=Tupu,
               pkg_name=Tupu, script_name=Tupu):
@@ -88,9 +88,9 @@ eleza _run_code(code, run_globals, init_globals=Tupu,
 eleza _run_module_code(code, init_globals=Tupu,
                     mod_name=Tupu, mod_spec=Tupu,
                     pkg_name=Tupu, script_name=Tupu):
-    """Helper to run code kwenye new namespace with sys modified"""
-    fname = script_name ikiwa mod_spec ni Tupu else mod_spec.origin
-    with _TempModule(mod_name) kama temp_module, _ModifiedArgv0(fname):
+    """Helper to run code kwenye new namespace ukijumuisha sys modified"""
+    fname = script_name ikiwa mod_spec ni Tupu isipokua mod_spec.origin
+    ukijumuisha _TempModule(mod_name) kama temp_module, _ModifiedArgv0(fname):
         mod_globals = temp_module.module.__dict__
         _run_code(code, mod_globals, init_globals,
                   mod_name, mod_spec, pkg_name, script_name)
@@ -111,7 +111,7 @@ eleza _get_module_details(mod_name, error=ImportError):
             # If the parent ama higher ancestor package ni missing, let the
             # error be ashiriad by find_spec() below na then be caught. But do
             # sio allow other errors to be caught.
-            ikiwa e.name ni Tupu ama (e.name != pkg_name and
+            ikiwa e.name ni Tupu ama (e.name != pkg_name na
                     sio pkg_name.startswith(e.name + ".")):
                 ashiria
         # Warn ikiwa the module has already been imported under its normal name
@@ -228,11 +228,11 @@ eleza _get_main_module_details(error=ImportError):
 
 eleza _get_code_kutoka_file(run_name, fname):
     # Check kila a compiled file first
-    with open(fname, "rb") kama f:
+    ukijumuisha open(fname, "rb") kama f:
         code = read_code(f)
     ikiwa code ni Tupu:
         # That didn't work, so try it kama normal source code
-        with open(fname, "rb") kama f:
+        ukijumuisha open(fname, "rb") kama f:
             code = compile(f.read(), fname, 'exec')
     rudisha code, fname
 
@@ -242,7 +242,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
        Returns the resulting top level namespace dictionary
 
        The file path may refer directly to a Python script (i.e.
-       one that could be directly executed with execfile) ama else
+       one that could be directly executed ukijumuisha execfile) ama else
        it may refer to a zipfile ama directory containing a top
        level __main__.py script.
     """
@@ -273,7 +273,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
             # code. If we don't do this, a __loader__ attribute kwenye the
             # existing __main__ module may prevent location of the new module.
             mod_name, mod_spec, code = _get_main_module_details()
-            with _TempModule(run_name) kama temp_module, \
+            ukijumuisha _TempModule(run_name) kama temp_module, \
                  _ModifiedArgv0(path_name):
                 mod_globals = temp_module.module.__dict__
                 rudisha _run_code(code, mod_globals, init_globals,

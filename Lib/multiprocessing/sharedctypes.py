@@ -106,7 +106,7 @@ eleza synchronized(obj, lock=Tupu, ctx=Tupu):
 
     ikiwa isinstance(obj, ctypes._SimpleCData):
         rudisha Synchronized(obj, lock, ctx)
-    elikiwa isinstance(obj, ctypes.Array):
+    lasivyo isinstance(obj, ctypes.Array):
         ikiwa obj._type_ ni ctypes.c_char:
             rudisha SynchronizedString(obj, lock, ctx)
         rudisha SynchronizedArray(obj, lock, ctx)
@@ -219,19 +219,19 @@ kundi SynchronizedArray(SynchronizedBase):
         rudisha len(self._obj)
 
     eleza __getitem__(self, i):
-        with self:
+        ukijumuisha self:
             rudisha self._obj[i]
 
     eleza __setitem__(self, i, value):
-        with self:
+        ukijumuisha self:
             self._obj[i] = value
 
     eleza __getslice__(self, start, stop):
-        with self:
+        ukijumuisha self:
             rudisha self._obj[start:stop]
 
     eleza __setslice__(self, start, stop, values):
-        with self:
+        ukijumuisha self:
             self._obj[start:stop] = values
 
 

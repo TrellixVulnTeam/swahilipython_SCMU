@@ -68,7 +68,7 @@ kundi CursorFactoryTests(unittest.TestCase):
     eleza CheckInvalidFactory(self):
         # sio a callable at all
         self.assertRaises(TypeError, self.con.cursor, Tupu)
-        # invalid callable with sio exact one argument
+        # invalid callable ukijumuisha sio exact one argument
         self.assertRaises(TypeError, self.con.cursor, lambda: Tupu)
         # invalid callable rudishaing non-cursor
         self.assertRaises(TypeError, self.con.cursor, lambda con: Tupu)
@@ -112,26 +112,26 @@ kundi RowFactoryTests(unittest.TestCase):
         self.assertEqual(row[-1], 2, "by index: wrong result kila column -1")
         self.assertEqual(row[-2], 1, "by index: wrong result kila column -2")
 
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row['c']
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row['a_\x11']
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row['a\x7f1']
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row[2]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row[-3]
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row[2**1000]
 
     eleza CheckSqliteRowIndexUnicode(self):
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 kama \xff").fetchone()
         self.assertEqual(row["\xff"], 1)
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row['\u0178']
-        with self.assertRaises(IndexError):
+        ukijumuisha self.assertRaises(IndexError):
             row['\xdf']
 
     eleza CheckSqliteRowSlice(self):
@@ -197,13 +197,13 @@ kundi RowFactoryTests(unittest.TestCase):
         self.assertKweli(row_1 != row_5)
         self.assertKweli(row_1 != object())
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             row_1 > row_2
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             row_1 < row_2
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             row_1 >= row_2
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             row_1 <= row_2
 
         self.assertEqual(hash(row_1), hash(row_2))

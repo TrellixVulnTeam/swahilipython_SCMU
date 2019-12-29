@@ -21,7 +21,7 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             ikiwa child.type == token.NAME:
                 member = child.value
                 name_node = child
-            elikiwa child.type == token.STAR:
+            lasivyo child.type == token.STAR:
                 # Just leave the agiza kama is.
                 rudisha
             isipokua:
@@ -31,10 +31,10 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             ikiwa member_name kwenye ('imap', 'izip', 'ifilter'):
                 child.value = Tupu
                 child.remove()
-            elikiwa member_name kwenye ('ifilterfalse', 'izip_longest'):
+            lasivyo member_name kwenye ('ifilterfalse', 'izip_longest'):
                 node.changed()
                 name_node.value = ('filterfalse' ikiwa member_name[1] == 'f'
-                                   else 'zip_longest')
+                                   isipokua 'zip_longest')
 
         # Make sure the agiza statement ni still sane
         children = agizas.children[:] ama [agizas]

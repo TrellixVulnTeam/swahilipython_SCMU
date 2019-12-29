@@ -137,10 +137,10 @@ kundi TestProgram(object):
             ikiwa __name__ == '__main__':
                 # to support python -m unittest ...
                 self.module = Tupu
-        elikiwa self.defaultTest ni Tupu:
+        lasivyo self.defaultTest ni Tupu:
             # createTests will load tests kutoka self.module
             self.testNames = Tupu
-        elikiwa isinstance(self.defaultTest, str):
+        lasivyo isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
         isipokua:
             self.testNames = list(self.defaultTest)
@@ -150,9 +150,9 @@ kundi TestProgram(object):
         ikiwa self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
         ikiwa kutoka_discovery:
-            loader = self.testLoader ikiwa Loader ni Tupu else Loader()
+            loader = self.testLoader ikiwa Loader ni Tupu isipokua Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        elikiwa self.testNames ni Tupu:
+        lasivyo self.testNames ni Tupu:
             self.test = self.testLoader.loadTestsFromModule(self.module)
         isipokua:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,

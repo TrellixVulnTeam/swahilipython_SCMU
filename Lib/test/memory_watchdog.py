@@ -2,7 +2,7 @@
 and print it out, until terminated."""
 # stdin should refer to the process' /proc/<PID>/statm: we don't pita the
 # process' PID to avoid a race condition kwenye case of - unlikely - PID recycling.
-# If the process crashes, reading kutoka the /proc entry will fail with ESRCH.
+# If the process crashes, reading kutoka the /proc entry will fail ukijumuisha ESRCH.
 
 
 agiza os

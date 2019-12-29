@@ -9,7 +9,7 @@ kundi TestPEP479(unittest.TestCase):
             ashiria StopIteration
         eleza g():
             tuma f()
-        with self.assertRaisesRegex(RuntimeError,
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
                                     "generator ashiriad StopIteration"):
             next(g())
 

@@ -48,15 +48,15 @@ ikiwa hName kwenye ('_md5', '_sha'):
     exec('agiza '+hName)
     exec('creatorFunc = '+hName+'.new')
     andika("testing speed of old", hName, "legacy interface")
-elikiwa hName == '_hashlib' na len(sys.argv) > 3:
+lasivyo hName == '_hashlib' na len(sys.argv) > 3:
     agiza _hashlib
     exec('creatorFunc = _hashlib.%s' % sys.argv[2])
     andika("testing speed of _hashlib.%s" % sys.argv[2], getattr(_hashlib, sys.argv[2]))
-elikiwa hName == '_hashlib' na len(sys.argv) == 3:
+lasivyo hName == '_hashlib' na len(sys.argv) == 3:
     agiza _hashlib
     exec('creatorFunc = lambda x=_hashlib.new : x(%r)' % sys.argv[2])
     andika("testing speed of _hashlib.new(%r)" % sys.argv[2])
-elikiwa hasattr(hashlib, hName) na hasattr(getattr(hashlib, hName), '__call__'):
+lasivyo hasattr(hashlib, hName) na hasattr(getattr(hashlib, hName), '__call__'):
     creatorFunc = getattr(hashlib, hName)
     andika("testing speed of hashlib."+hName, getattr(hashlib, hName))
 isipokua:

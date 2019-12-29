@@ -118,7 +118,7 @@ eleza spawn_main(pipe_handle, parent_pid=Tupu, tracker_fd=Tupu):
 
 
 eleza _main(fd, parent_sentinel):
-    with os.fdopen(fd, 'rb', closefd=Kweli) kama kutoka_parent:
+    ukijumuisha os.fdopen(fd, 'rb', closefd=Kweli) kama kutoka_parent:
         process.current_process()._inheriting = Kweli
         jaribu:
             preparation_data = reduction.pickle.load(kutoka_parent)
@@ -183,7 +183,7 @@ eleza get_preparation_data(name):
     main_mod_name = getattr(main_module.__spec__, "name", Tupu)
     ikiwa main_mod_name ni sio Tupu:
         d['init_main_kutoka_name'] = main_mod_name
-    elikiwa sys.platform != 'win32' ama (not WINEXE na sio WINSERVICE):
+    lasivyo sys.platform != 'win32' ama (not WINEXE na sio WINSERVICE):
         main_path = getattr(main_module, '__file__', Tupu)
         ikiwa main_path ni sio Tupu:
             ikiwa (not os.path.isabs(main_path) and
@@ -232,7 +232,7 @@ eleza prepare(data):
 
     ikiwa 'init_main_kutoka_name' kwenye data:
         _fixup_main_kutoka_name(data['init_main_kutoka_name'])
-    elikiwa 'init_main_kutoka_path' kwenye data:
+    lasivyo 'init_main_kutoka_path' kwenye data:
         _fixup_main_kutoka_path(data['init_main_kutoka_path'])
 
 # Multiprocessing module helpers to fix up the main module in

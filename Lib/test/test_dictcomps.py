@@ -73,11 +73,11 @@ kundi DictComprehensionTest(unittest.TestCase):
         self.assertEqual(v, "Local variable")
 
     eleza test_illegal_assignment(self):
-        with self.assertRaisesRegex(SyntaxError, "cannot assign"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "cannot assign"):
             compile("{x: y kila y, x kwenye ((1, 2), (3, 4))} = 5", "<test>",
                     "exec")
 
-        with self.assertRaisesRegex(SyntaxError, "cannot assign"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "cannot assign"):
             compile("{x: y kila y, x kwenye ((1, 2), (3, 4))} += 5", "<test>",
                     "exec")
 

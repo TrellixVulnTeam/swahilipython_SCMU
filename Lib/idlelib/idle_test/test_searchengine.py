@@ -11,7 +11,7 @@ agiza re
 
 # With mock replacements, the module does sio use any gui widgets.
 # The use of tk.Text ni avoided (kila now, until mock Text ni improved)
-# by patching instances with an index function rudishaing what ni needed.
+# by patching instances ukijumuisha an index function rudishaing what ni needed.
 # This works because mock Text.get does sio use .index.
 # The tkinter agizas are used to restore searchengine.
 
@@ -209,7 +209,7 @@ kundi SearchTest(unittest.TestCase):
         cls.text = mockText()
         test_text = (
             'First line\n'
-            'Line with target\n'
+            'Line ukijumuisha target\n'
             'Last line\n')
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
@@ -277,7 +277,7 @@ kundi ForwardBackwardTest(unittest.TestCase):
         cls.text.index = lambda index: '4.0'
         test_text = (
             'First line\n'
-            'Line with target\n'
+            'Line ukijumuisha target\n'
             'Last line\n')
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
@@ -289,7 +289,7 @@ kundi ForwardBackwardTest(unittest.TestCase):
         eleza search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
             # res ni (line, matchobject) ama Tupu
-            rudisha (res[0], res[1].span()) ikiwa res else res
+            rudisha (res[0], res[1].span()) ikiwa res isipokua res
         rudisha search
 
     eleza test_search_forward(self):

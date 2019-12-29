@@ -29,7 +29,7 @@ kundi Headers:
     """Manage a collection of HTTP response headers"""
 
     eleza __init__(self, headers=Tupu):
-        headers = headers ikiwa headers ni sio Tupu else []
+        headers = headers ikiwa headers ni sio Tupu isipokua []
         ikiwa type(headers) ni sio list:
             ashiria TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
@@ -85,7 +85,7 @@ kundi Headers:
         These will be sorted kwenye the order they appeared kwenye the original header
         list ama were added to this instance, na may contain duplicates.  Any
         fields deleted na re-inserted are always appended to the header list.
-        If no fields exist with the given name, rudishas an empty list.
+        If no fields exist ukijumuisha the given name, rudishas an empty list.
         """
         name = self._convert_string_type(name.lower())
         rudisha [kv[1] kila kv kwenye self._headers ikiwa kv[0].lower()==name]
@@ -134,7 +134,7 @@ kundi Headers:
         rudisha "%s(%r)" % (self.__class__.__name__, self._headers)
 
     eleza __str__(self):
-        """str() rudishas the formatted headers, complete with end line,
+        """str() rudishas the formatted headers, complete ukijumuisha end line,
         suitable kila direct HTTP transmission."""
         rudisha '\r\n'.join(["%s: %s" % kv kila kv kwenye self._headers]+['',''])
 
@@ -144,7 +144,7 @@ kundi Headers:
     eleza setdefault(self,name,value):
         """Return first matching header value kila 'name', ama 'value'
 
-        If there ni no header named 'name', add a new header with name 'name'
+        If there ni no header named 'name', add a new header ukijumuisha name 'name'
         na value 'value'."""
         result = self.get(name)
         ikiwa result ni Tupu:
@@ -158,7 +158,7 @@ kundi Headers:
         """Extended header setting.
 
         _name ni the header field to add.  keyword arguments can be used to set
-        additional parameters kila the header field, with underscores converted
+        additional parameters kila the header field, ukijumuisha underscores converted
         to dashes.  Normally the parameter will be added kama key="value" unless
         value ni Tupu, kwenye which case only the key will be added.
 

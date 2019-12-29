@@ -213,13 +213,13 @@ kundi TestCommandLineArgs(unittest.TestCase):
                 self.assertIs(getattr(program, attr), Kweli)
 
                 setattr(program, attr, Uongo)
-                with support.captured_stderr() kama stderr, \
+                ukijumuisha support.captured_stderr() kama stderr, \
                     self.assertRaises(SystemExit) kama cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
                 setattr(program, attr, Kweli)
-                with support.captured_stderr() kama stderr, \
+                ukijumuisha support.captured_stderr() kama stderr, \
                     self.assertRaises(SystemExit) kama cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
@@ -342,7 +342,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
 
     eleza testParseArgsFileNames(self):
-        # running tests with filenames instead of module names
+        # running tests ukijumuisha filenames instead of module names
         program = self.program
         argv = ['progname', 'foo.py', 'bar.Py', 'baz.PY', 'wing.txt']
         self._patch_isfile(argv)
@@ -423,7 +423,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         eleza run_unittest(args):
             p = subprocess.Popen([sys.executable, '-m', 'unittest'] + args,
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, cwd=os.path.dirname(__file__))
-            with p:
+            ukijumuisha p:
                 _, stderr = p.communicate()
             rudisha stderr.decode()
 

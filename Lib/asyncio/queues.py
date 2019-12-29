@@ -26,7 +26,7 @@ kundi Queue:
     queue reaches maxsize, until an item ni removed by get().
 
     Unlike the standard library Queue, you can reliably know this Queue's size
-    with qsize(), since your single-threaded asyncio application won't be
+    ukijumuisha qsize(), since your single-threaded asyncio application won't be
     interrupted between calling qsize() na doing an operation on the Queue.
     """
 
@@ -104,7 +104,7 @@ kundi Queue:
     eleza full(self):
         """Return Kweli ikiwa there are maxsize items kwenye the queue.
 
-        Note: ikiwa the Queue was initialized with maxsize=0 (the default),
+        Note: ikiwa the Queue was initialized ukijumuisha maxsize=0 (the default),
         then full() ni never Kweli.
         """
         ikiwa self._maxsize <= 0:
@@ -180,7 +180,7 @@ kundi Queue:
     eleza get_nowait(self):
         """Remove na rudisha an item kutoka the queue.
 
-        Return an item ikiwa one ni immediately available, else ashiria QueueEmpty.
+        Return an item ikiwa one ni immediately available, isipokua ashiria QueueEmpty.
         """
         ikiwa self.empty():
             ashiria QueueEmpty

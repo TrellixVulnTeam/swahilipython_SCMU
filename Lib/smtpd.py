@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-"""An RFC 5321 smtp proxy with optional RFC 1870 na RFC 6531 extensions.
+"""An RFC 5321 smtp proxy ukijumuisha optional RFC 1870 na RFC 6531 extensions.
 
 Usage: %(program)s [options] [localhost:localport [remotehost:remoteport]]
 
@@ -56,15 +56,15 @@ and ikiwa remoteport ni sio given, then 25 ni used.
 #   DebuggingServer - simply prints each message it receives on stdout.
 #
 #   PureProxy - Proxies all messages to a real smtpd which does final
-#   delivery.  One known problem with this kundi ni that it doesn't handle
+#   delivery.  One known problem ukijumuisha this kundi ni that it doesn't handle
 #   SMTP errors kutoka the backend server at all.  This should be fixed
 #   (contributions are welcome!).
 #
-#   MailmanProxy - An experimental hack to work with GNU Mailman
+#   MailmanProxy - An experimental hack to work ukijumuisha GNU Mailman
 #   <www.list.org>.  Using this server kama your real incoming smtpd, your
 #   mailhost will automatically recognize na accept mail destined to Mailman
 #   lists when those lists are created.  Every message sio destined kila a list
-#   gets forwarded to a real backend smtpd, kama with PureProxy.  Again, errors
+#   gets forwarded to a real backend smtpd, kama ukijumuisha PureProxy.  Again, errors
 #   are sio handled correctly yet.
 #
 #
@@ -310,18 +310,18 @@ kundi SMTPChannel(asynchat.async_chat):
     # Overrides base kundi kila convenience.
     eleza push(self, msg):
         asynchat.async_chat.push(self, bytes(
-            msg + '\r\n', 'utf-8' ikiwa self.require_SMTPUTF8 else 'ascii'))
+            msg + '\r\n', 'utf-8' ikiwa self.require_SMTPUTF8 isipokua 'ascii'))
 
     # Implementation of base kundi abstract method
     eleza collect_incoming_data(self, data):
         limit = Tupu
         ikiwa self.smtp_state == self.COMMAND:
             limit = self.max_command_size_limit
-        elikiwa self.smtp_state == self.DATA:
+        lasivyo self.smtp_state == self.DATA:
             limit = self.data_size_limit
         ikiwa limit na self.num_bytes > limit:
             rudisha
-        elikiwa limit:
+        lasivyo limit:
             self.num_bytes += len(data)
         ikiwa self._decode_data:
             self.received_lines.append(str(data, 'utf-8'))
@@ -348,7 +348,7 @@ kundi SMTPChannel(asynchat.async_chat):
                 command = line[:i].upper()
                 arg = line[i+1:].strip()
             max_sz = (self.command_size_limits[command]
-                        ikiwa self.extended_smtp else self.command_size_limit)
+                        ikiwa self.extended_smtp isipokua self.command_size_limit)
             ikiwa sz > max_sz:
                 self.push('500 Error: line too long')
                 rudisha
@@ -461,7 +461,7 @@ kundi SMTPChannel(asynchat.async_chat):
             param, eq, value = param.partition('=')
             ikiwa sio param.isalnum() ama eq na sio value:
                 rudisha Tupu
-            result[param] = value ikiwa eq else Kweli
+            result[param] = value ikiwa eq isipokua Kweli
         rudisha result
 
     eleza smtp_HELP(self, arg):
@@ -470,27 +470,27 @@ kundi SMTPChannel(asynchat.async_chat):
             lc_arg = arg.upper()
             ikiwa lc_arg == 'EHLO':
                 self.push('250 Syntax: EHLO hostname')
-            elikiwa lc_arg == 'HELO':
+            lasivyo lc_arg == 'HELO':
                 self.push('250 Syntax: HELO hostname')
-            elikiwa lc_arg == 'MAIL':
+            lasivyo lc_arg == 'MAIL':
                 msg = '250 Syntax: MAIL FROM: <address>'
                 ikiwa self.extended_smtp:
                     msg += extended
                 self.push(msg)
-            elikiwa lc_arg == 'RCPT':
+            lasivyo lc_arg == 'RCPT':
                 msg = '250 Syntax: RCPT TO: <address>'
                 ikiwa self.extended_smtp:
                     msg += extended
                 self.push(msg)
-            elikiwa lc_arg == 'DATA':
+            lasivyo lc_arg == 'DATA':
                 self.push('250 Syntax: DATA')
-            elikiwa lc_arg == 'RSET':
+            lasivyo lc_arg == 'RSET':
                 self.push('250 Syntax: RSET')
-            elikiwa lc_arg == 'NOOP':
+            lasivyo lc_arg == 'NOOP':
                 self.push('250 Syntax: NOOP')
-            elikiwa lc_arg == 'QUIT':
+            lasivyo lc_arg == 'QUIT':
                 self.push('250 Syntax: QUIT')
-            elikiwa lc_arg == 'VRFY':
+            lasivyo lc_arg == 'VRFY':
                 self.push('250 Syntax: VRFY <address>')
             isipokua:
                 self.push('501 Supported commands: EHLO HELO MAIL RCPT '
@@ -546,7 +546,7 @@ kundi SMTPChannel(asynchat.async_chat):
             smtputf8 = params.pop('SMTPUTF8', Uongo)
             ikiwa smtputf8 ni Kweli:
                 self.require_SMTPUTF8 = Kweli
-            elikiwa smtputf8 ni sio Uongo:
+            lasivyo smtputf8 ni sio Uongo:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
                 rudisha
         size = params.pop('SIZE', Tupu)
@@ -554,7 +554,7 @@ kundi SMTPChannel(asynchat.async_chat):
             ikiwa sio size.isdigit():
                 self.push(syntaxerr)
                 rudisha
-            elikiwa self.data_size_limit na int(size) > self.data_size_limit:
+            lasivyo self.data_size_limit na int(size) > self.data_size_limit:
                 self.push('552 Error: message size exceeds fixed maximum message size')
                 rudisha
         ikiwa len(params.keys()) > 0:
@@ -618,7 +618,7 @@ kundi SMTPChannel(asynchat.async_chat):
             rudisha
         self.smtp_state = self.DATA
         self.set_terminator(b'\r\n.\r\n')
-        self.push('354 End data with <CR><LF>.<CR><LF>')
+        self.push('354 End data ukijumuisha <CR><LF>.<CR><LF>')
 
     # Commands that have sio been implemented
     eleza smtp_EXPN(self, arg):
@@ -667,7 +667,7 @@ kundi SMTPServer(asyncore.dispatcher):
                                      self.enable_SMTPUTF8,
                                      self._decode_data)
 
-    # API kila "doing something useful with the message"
+    # API kila "doing something useful ukijumuisha the message"
     eleza process_message(self, peer, mailkutoka, rcpttos, data, **kwargs):
         """Override this abstract method to handle messages kutoka the client.
 
@@ -749,7 +749,7 @@ kundi PureProxy(SMTPServer):
         lines.insert(i, 'X-Peer: %s' % peer[0])
         data = NEWLINE.join(lines)
         refused = self._deliver(mailkutoka, rcpttos, data)
-        # TBD: what to do with refused addresses?
+        # TBD: what to do ukijumuisha refused addresses?
         andika('we got some refusals:', refused, file=DEBUGSTREAM)
 
     eleza _deliver(self, mailkutoka, rcpttos, data):
@@ -768,7 +768,7 @@ kundi PureProxy(SMTPServer):
         tatizo (OSError, smtplib.SMTPException) kama e:
             andika('got', e.__class__, file=DEBUGSTREAM)
             # All recipients were refused.  If the exception had an associated
-            # error code, use it.  Otherwise,fake it with a non-triggering
+            # error code, use it.  Otherwise,fake it ukijumuisha a non-triggering
             # exception code.
             errcode = getattr(e, 'smtp_code', -1)
             errmsg = getattr(e, 'smtp_error', 'ignore')
@@ -822,7 +822,7 @@ kundi MailmanProxy(PureProxy):
         andika('forwarding recips:', ' '.join(rcpttos), file=DEBUGSTREAM)
         ikiwa rcpttos:
             refused = self._deliver(mailkutoka, rcpttos, data)
-            # TBD: what to do with refused addresses?
+            # TBD: what to do ukijumuisha refused addresses?
             andika('we got refusals:', refused, file=DEBUGSTREAM)
         # Now deliver directly to the list commands
         mlists = {}
@@ -845,13 +845,13 @@ kundi MailmanProxy(PureProxy):
             ikiwa command == '':
                 # post
                 msg.Enqueue(mlist, tolist=1)
-            elikiwa command == 'admin':
+            lasivyo command == 'admin':
                 msg.Enqueue(mlist, toadmin=1)
-            elikiwa command == 'owner':
+            lasivyo command == 'owner':
                 msg.Enqueue(mlist, toowner=1)
-            elikiwa command == 'request':
+            lasivyo command == 'request':
                 msg.Enqueue(mlist, torequest=1)
-            elikiwa command kwenye ('join', 'leave'):
+            lasivyo command kwenye ('join', 'leave'):
                 # TBD: this ni a hack!
                 ikiwa command == 'join':
                     msg['Subject'] = 'subscribe'
@@ -881,18 +881,18 @@ eleza parseargs():
     kila opt, arg kwenye opts:
         ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elikiwa opt kwenye ('-V', '--version'):
+        lasivyo opt kwenye ('-V', '--version'):
             andika(__version__)
             sys.exit(0)
-        elikiwa opt kwenye ('-n', '--nosetuid'):
+        lasivyo opt kwenye ('-n', '--nosetuid'):
             options.setuid = Uongo
-        elikiwa opt kwenye ('-c', '--class'):
+        lasivyo opt kwenye ('-c', '--class'):
             options.classname = arg
-        elikiwa opt kwenye ('-d', '--debug'):
+        lasivyo opt kwenye ('-d', '--debug'):
             DEBUGSTREAM = sys.stderr
-        elikiwa opt kwenye ('-u', '--smtputf8'):
+        lasivyo opt kwenye ('-u', '--smtputf8'):
             options.enable_SMTPUTF8 = Kweli
-        elikiwa opt kwenye ('-s', '--size'):
+        lasivyo opt kwenye ('-s', '--size'):
             jaribu:
                 int_size = int(arg)
                 options.size_limit = int_size
@@ -904,10 +904,10 @@ eleza parseargs():
     ikiwa len(args) < 1:
         localspec = 'localhost:8025'
         remotespec = 'localhost:25'
-    elikiwa len(args) < 2:
+    lasivyo len(args) < 2:
         localspec = args[0]
         remotespec = 'localhost:25'
-    elikiwa len(args) < 3:
+    lasivyo len(args) < 3:
         localspec = args[0]
         remotespec = args[1]
     isipokua:
@@ -951,13 +951,13 @@ ikiwa __name__ == '__main__':
         jaribu:
             agiza pwd
         tatizo ImportError:
-            andika('Cannot agiza module "pwd"; try running with -n option.', file=sys.stderr)
+            andika('Cannot agiza module "pwd"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         jaribu:
             os.setuid(nobody)
         tatizo PermissionError:
-            andika('Cannot setuid "nobody"; try running with -n option.', file=sys.stderr)
+            andika('Cannot setuid "nobody"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
     jaribu:
         asyncore.loop()

@@ -31,7 +31,7 @@ async eleza open_connection(host=Tupu, port=Tupu, *,
 
     The arguments are all the usual arguments to create_connection()
     tatizo protocol_factory; most common are positional host na port,
-    with various optional keyword arguments following.
+    ukijumuisha various optional keyword arguments following.
 
     Additional optional keyword arguments are loop (to set the event loop
     instance to use) na limit (to set the buffer limit pitaed to the
@@ -68,7 +68,7 @@ async eleza start_server(client_connected_cb, host=Tupu, port=Tupu, *,
 
     The rest of the arguments are all the usual arguments to
     loop.create_server() tatizo protocol_factory; most common are
-    positional host na port, with various optional keyword arguments
+    positional host na port, ukijumuisha various optional keyword arguments
     following.  The rudisha value ni the same kama loop.create_server().
 
     Additional optional keyword arguments are loop (to set the event loop
@@ -99,7 +99,7 @@ ikiwa hasattr(socket, 'AF_UNIX'):
 
     async eleza open_unix_connection(path=Tupu, *,
                                    loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
-        """Similar to `open_connection` but works with UNIX Domain Sockets."""
+        """Similar to `open_connection` but works ukijumuisha UNIX Domain Sockets."""
         ikiwa loop ni Tupu:
             loop = events.get_event_loop()
         isipokua:
@@ -115,7 +115,7 @@ ikiwa hasattr(socket, 'AF_UNIX'):
 
     async eleza start_unix_server(client_connected_cb, path=Tupu, *,
                                 loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
-        """Similar to `start_server` but works with UNIX Domain Sockets."""
+        """Similar to `start_server` but works ukijumuisha UNIX Domain Sockets."""
         ikiwa loop ni Tupu:
             loop = events.get_event_loop()
         isipokua:
@@ -538,7 +538,7 @@ kundi StreamReader:
     async eleza readline(self):
         """Read chunk of data kutoka the stream until newline (b'\n') ni found.
 
-        On success, rudisha chunk that ends with newline. If only partial
+        On success, rudisha chunk that ends ukijumuisha newline. If only partial
         line can be read due to EOF, rudisha incomplete line without
         terminating newline. When EOF was reached wakati no bytes read, empty
         bytes object ni rudishaed.
@@ -636,7 +636,7 @@ kundi StreamReader:
                         'Separator ni sio found, na chunk exceed the limit',
                         offset)
 
-            # Complete message (with full separator) may be present kwenye buffer
+            # Complete message (ukijumuisha full separator) may be present kwenye buffer
             # even when EOF flag ni set. This may happen when the last chunk
             # adds data which makes separator be found. That's why we check for
             # EOF *ater* inspecting the buffer.
@@ -671,7 +671,7 @@ kundi StreamReader:
         received before any byte ni read, this function rudishas empty byte
         object.
 
-        Returned value ni sio limited with limit, configured at stream
+        Returned value ni sio limited ukijumuisha limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if
@@ -716,7 +716,7 @@ kundi StreamReader:
 
         ikiwa n ni zero, rudisha empty bytes object.
 
-        Returned value ni sio limited with limit, configured at stream
+        Returned value ni sio limited ukijumuisha limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if

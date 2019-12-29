@@ -24,7 +24,7 @@ kutoka test agiza support
 
 # Between fork() na exec(), only async-safe functions are allowed (issues
 # #12316 na #11870), na fork() kutoka a worker thread ni known to trigger
-# problems with some operating systems (issue #3863): skip problematic tests
+# problems ukijumuisha some operating systems (issue #3863): skip problematic tests
 # on platforms known to behave badly.
 platforms_to_skip = ('netbsd5', 'hp-ux11')
 
@@ -54,8 +54,8 @@ kundi TestThread(threading.Thread):
             andika('task %s will run kila %.1f usec' %
                   (self.name, delay * 1e6))
 
-        with self.sema:
-            with self.mutex:
+        ukijumuisha self.sema:
+            ukijumuisha self.mutex:
                 self.nrunning.inc()
                 ikiwa verbose:
                     andika(self.nrunning.get(), 'tasks are running')
@@ -65,7 +65,7 @@ kundi TestThread(threading.Thread):
             ikiwa verbose:
                 andika('task', self.name, 'done')
 
-            with self.mutex:
+            ukijumuisha self.mutex:
                 self.nrunning.dec()
                 self.testcase.assertGreaterEqual(self.nrunning.get(), 0)
                 ikiwa verbose:
@@ -130,17 +130,17 @@ kundi ThreadTests(BaseTestCase):
             done.set()
         done = threading.Event()
         ident = []
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             tid = _thread.start_new_thread(f, ())
             done.wait()
             self.assertEqual(ident[0], tid)
         # Kill the "immortal" _DummyThread
         toa threading._active[ident[0]]
 
-    # run with a small(ish) thread stack size (256 KiB)
+    # run ukijumuisha a small(ish) thread stack size (256 KiB)
     eleza test_various_ops_small_stack(self):
         ikiwa verbose:
-            andika('with 256 KiB thread stack size...')
+            andika('ukijumuisha 256 KiB thread stack size...')
         jaribu:
             threading.stack_size(262144)
         tatizo _thread.error:
@@ -149,10 +149,10 @@ kundi ThreadTests(BaseTestCase):
         self.test_various_ops()
         threading.stack_size(0)
 
-    # run with a large thread stack size (1 MiB)
+    # run ukijumuisha a large thread stack size (1 MiB)
     eleza test_various_ops_large_stack(self):
         ikiwa verbose:
-            andika('with 1 MiB thread stack size...')
+            andika('ukijumuisha 1 MiB thread stack size...')
         jaribu:
             threading.stack_size(0x100000)
         tatizo _thread.error:
@@ -171,7 +171,7 @@ kundi ThreadTests(BaseTestCase):
 
         mutex = threading.Lock()
         mutex.acquire()
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             tid = _thread.start_new_thread(f, (mutex,))
             # Wait kila the thread to finish.
             mutex.acquire()
@@ -270,7 +270,7 @@ kundi ThreadTests(BaseTestCase):
             andika("    all OK -- joining worker")
         ikiwa t.finished:
             t.join()
-        # else the thread ni still running, na we have no way to kill it
+        # isipokua the thread ni still running, na we have no way to kill it
 
     eleza test_limbo_cleanup(self):
         # Issue 7481: Failure to start thread should cleanup the limbo map.
@@ -421,7 +421,7 @@ kundi ThreadTests(BaseTestCase):
         t.setDaemon(Kweli)
         t.getName()
         t.setName("name")
-        with self.assertWarnsRegex(DeprecationWarning, 'use is_alive()'):
+        ukijumuisha self.assertWarnsRegex(DeprecationWarning, 'use is_alive()'):
             t.isAlive()
         e = threading.Event()
         e.isSet()
@@ -483,7 +483,7 @@ kundi ThreadTests(BaseTestCase):
             t.start()
             pid = os.fork()
             ikiwa pid == 0:
-                os._exit(11 ikiwa t.is_alive() else 10)
+                os._exit(11 ikiwa t.is_alive() isipokua 10)
             isipokua:
                 t.join()
 
@@ -741,7 +741,7 @@ kundi ThreadTests(BaseTestCase):
     @cpython_only
     eleza test_shutdown_locks(self):
         kila daemon kwenye (Uongo, Kweli):
-            with self.subTest(daemon=daemon):
+            ukijumuisha self.subTest(daemon=daemon):
                 event = threading.Event()
                 thread = threading.Thread(target=event.wait, daemon=daemon)
 
@@ -853,9 +853,9 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
             eleza random_io():
                 '''Loop kila a wakati sleeping random tiny amounts na doing some I/O.'''
                 wakati Kweli:
-                    with open(os.__file__, 'rb') kama in_f:
+                    ukijumuisha open(os.__file__, 'rb') kama in_f:
                         stuff = in_f.read(200)
-                        with open(os.devnull, 'wb') kama null_f:
+                        ukijumuisha open(os.devnull, 'wb') kama null_f:
                             null_f.write(stuff)
                             time.sleep(random.random() / 1995)
                     thread_has_run.add(threading.current_thread())
@@ -1016,7 +1016,7 @@ kundi SubinterpThreadingTests(BaseTestCase):
 
             _testcapi.run_in_subinterp(%r)
             """ % (subinterp_code,)
-        with test.support.SuppressCrashReport():
+        ukijumuisha test.support.SuppressCrashReport():
             rc, out, err = assert_python_failure("-c", script)
         self.assertIn("Fatal Python error: Py_EndInterpreter: "
                       "not the last thread", err.decode())
@@ -1191,7 +1191,7 @@ kundi ThreadRunFail(threading.Thread):
 
 kundi ExceptHookTests(BaseTestCase):
     eleza test_excepthook(self):
-        with support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") kama stderr:
             thread = ThreadRunFail(name="excepthook thread")
             thread.start()
             thread.join()
@@ -1204,9 +1204,9 @@ kundi ExceptHookTests(BaseTestCase):
 
     @support.cpython_only
     eleza test_excepthook_thread_Tupu(self):
-        # threading.excepthook called with thread=Tupu: log the thread
+        # threading.excepthook called ukijumuisha thread=Tupu: log the thread
         # identifier kwenye this case.
-        with support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") kama stderr:
             jaribu:
                 ashiria ValueError("bug")
             tatizo Exception kama exc:
@@ -1229,7 +1229,7 @@ kundi ExceptHookTests(BaseTestCase):
                 sys.exit(1)
 
         # threading.excepthook() silently ignores SystemExit
-        with support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") kama stderr:
             thread = ThreadExit()
             thread.start()
             thread.join()
@@ -1244,7 +1244,7 @@ kundi ExceptHookTests(BaseTestCase):
             args = hook_args
 
         jaribu:
-            with support.swap_attr(threading, 'excepthook', hook):
+            ukijumuisha support.swap_attr(threading, 'excepthook', hook):
                 thread = ThreadRunFail()
                 thread.start()
                 thread.join()
@@ -1267,7 +1267,7 @@ kundi ExceptHookTests(BaseTestCase):
             nonlocal err_str
             err_str = str(exc_value)
 
-        with support.swap_attr(threading, 'excepthook', threading_hook), \
+        ukijumuisha support.swap_attr(threading, 'excepthook', threading_hook), \
              support.swap_attr(sys, 'excepthook', sys_hook), \
              support.captured_output('stderr') kama stderr:
             thread = ThreadRunFail()
@@ -1347,12 +1347,12 @@ kundi MiscTestCase(unittest.TestCase):
 
 kundi InterruptMainTests(unittest.TestCase):
     eleza test_interrupt_main_subthread(self):
-        # Calling start_new_thread with a function that executes interrupt_main
+        # Calling start_new_thread ukijumuisha a function that executes interrupt_main
         # should ashiria KeyboardInterrupt upon completion.
         eleza call_interrupt():
             _thread.interrupt_main()
         t = threading.Thread(target=call_interrupt)
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             t.start()
             t.join()
         t.join()
@@ -1360,7 +1360,7 @@ kundi InterruptMainTests(unittest.TestCase):
     eleza test_interrupt_main_mainthread(self):
         # Make sure that ikiwa interrupt_main ni called kwenye main thread that
         # KeyboardInterrupt ni ashiriad instantly.
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             _thread.interrupt_main()
 
     eleza test_interrupt_main_noerror(self):

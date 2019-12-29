@@ -39,7 +39,7 @@ eleza send_signals():
 kundi ThreadSignals(unittest.TestCase):
 
     eleza test_signals(self):
-        with support.wait_threads_exit():
+        ukijumuisha support.wait_threads_exit():
             # Test signal handling semantics of threads.
             # We spawn a thread, have the thread send two signals, and
             # wait kila it to finish. Check that we got both signals
@@ -86,7 +86,7 @@ kundi ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     eleza test_lock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM wakati stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) ukijumuisha SIGALRM wakati stuck
         # kwenye a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks ni used kwenye thread_pthread.h, see issue #11223.
@@ -117,7 +117,7 @@ kundi ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     eleza test_rlock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM wakati stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) ukijumuisha SIGALRM wakati stuck
         # kwenye a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks ni used kwenye thread_pthread.h, see issue #11223.
@@ -129,7 +129,7 @@ kundi ThreadSignals(unittest.TestCase):
             eleza other_thread():
                 rlock.acquire()
 
-            with support.wait_threads_exit():
+            ukijumuisha support.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
                 wakati rlock.acquire(blocking=Uongo):
@@ -157,7 +157,7 @@ kundi ThreadSignals(unittest.TestCase):
                 # RLocks.
                 lock.acquire()
                 # Wait until the main thread ni blocked kwenye the lock acquire, and
-                # then wake it up with this.
+                # then wake it up ukijumuisha this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)
                 # Let the main thread take the interrupt, handle it, na retry
@@ -165,7 +165,7 @@ kundi ThreadSignals(unittest.TestCase):
                 time.sleep(0.5)
                 lock.release()
 
-            with support.wait_threads_exit():
+            ukijumuisha support.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
                 wakati lock.acquire(blocking=Uongo):
@@ -212,7 +212,7 @@ kundi ThreadSignals(unittest.TestCase):
                     os.kill(process_pid, signal.SIGUSR1)
                 done.release()
 
-            with support.wait_threads_exit():
+            ukijumuisha support.wait_threads_exit():
                 # Send the signals kutoka the non-main thread, since the main thread
                 # ni the only one that can process signals.
                 thread.start_new_thread(send_signals, ())

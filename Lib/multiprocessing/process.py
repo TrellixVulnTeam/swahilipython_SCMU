@@ -260,11 +260,11 @@ kundi BaseProcess(object):
         exitcode = Tupu
         ikiwa self ni _current_process:
             status = 'started'
-        elikiwa self._closed:
+        lasivyo self._closed:
             status = 'closed'
-        elikiwa self._parent_pid != os.getpid():
+        lasivyo self._parent_pid != os.getpid():
             status = 'unknown'
-        elikiwa self._popen ni Tupu:
+        lasivyo self._popen ni Tupu:
             status = 'initial'
         isipokua:
             exitcode = self._popen.poll()
@@ -317,7 +317,7 @@ kundi BaseProcess(object):
         tatizo SystemExit kama e:
             ikiwa sio e.args:
                 exitcode = 1
-            elikiwa isinstance(e.args[0], int):
+            lasivyo isinstance(e.args[0], int):
                 exitcode = e.args[0]
             isipokua:
                 sys.stderr.write(str(e.args[0]) + '\n')
@@ -329,7 +329,7 @@ kundi BaseProcess(object):
             traceback.print_exc()
         mwishowe:
             threading._shutdown()
-            util.info('process exiting with exitcode %d' % exitcode)
+            util.info('process exiting ukijumuisha exitcode %d' % exitcode)
             util._flush_std_streams()
 
         rudisha exitcode

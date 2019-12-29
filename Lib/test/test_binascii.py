@@ -60,7 +60,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertIsInstance(binascii.crc32(raw), int)
 
     eleza test_base64valid(self):
-        # Test base64 with valid data
+        # Test base64 ukijumuisha valid data
         MAX_BASE64 = 57
         lines = []
         kila i kwenye range(0, len(self.rawdata), MAX_BASE64):
@@ -75,7 +75,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(res, self.rawdata)
 
     eleza test_base64invalid(self):
-        # Test base64 with random invalid characters sprinkled throughout
+        # Test base64 ukijumuisha random invalid characters sprinkled throughout
         # (This requires a new version of binascii.)
         MAX_BASE64 = 57
         lines = []
@@ -107,14 +107,14 @@ kundi BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 with just invalid characters, which should rudisha
+        # Test base64 ukijumuisha just invalid characters, which should rudisha
         # empty strings. TBD: shouldn't it ashiria an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
     eleza test_base64errors(self):
-        # Test base64 with invalid padding
+        # Test base64 ukijumuisha invalid padding
         eleza assertIncorrectPadding(data):
-            with self.assertRaisesRegex(binascii.Error, r'(?i)Incorrect padding'):
+            ukijumuisha self.assertRaisesRegex(binascii.Error, r'(?i)Incorrect padding'):
                 binascii.a2b_base64(self.type2test(data))
 
         assertIncorrectPadding(b'ab')
@@ -126,12 +126,12 @@ kundi BinASCIITest(unittest.TestCase):
         assertIncorrectPadding(b'a=b=')
         assertIncorrectPadding(b'a\nb=')
 
-        # Test base64 with invalid number of valid characters (1 mod 4)
+        # Test base64 ukijumuisha invalid number of valid characters (1 mod 4)
         eleza assertInvalidLength(data):
             n_data_chars = len(re.sub(br'[^A-Za-z0-9/+]', br'', data))
             expected_errmsg_re = \
                 r'(?i)Invalid.+number of data characters.+' + str(n_data_chars)
-            with self.assertRaisesRegex(binascii.Error, expected_errmsg_re):
+            ukijumuisha self.assertRaisesRegex(binascii.Error, expected_errmsg_re):
                 binascii.a2b_base64(self.type2test(data))
 
         assertInvalidLength(b'a')
@@ -176,7 +176,7 @@ kundi BinASCIITest(unittest.TestCase):
                          b'$`$-A=```\n')
         self.assertEqual(binascii.a2b_uu(b'$`$-A=```\n'),
                          binascii.a2b_uu(b'$ $-A=   \n'))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             binascii.b2a_uu(b"", Kweli)
 
     eleza test_crc_hqx(self):
@@ -209,7 +209,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(res, self.rawdata)
 
     eleza test_rle(self):
-        # test repetition with a repetition longer than the limit of 255
+        # test repetition ukijumuisha a repetition longer than the limit of 255
         data = (b'a' * 100 + b'b' + b'c' * 300)
 
         encoded = binascii.rlecode_hqx(data)

@@ -58,7 +58,7 @@ kundi Error(Exception): pita
 kundi error_reply(Error): pita          # unexpected [123]xx reply
 kundi error_temp(Error): pita           # 4xx errors
 kundi error_perm(Error): pita           # 5xx errors
-kundi error_proto(Error): pita          # response does sio begin with [1-5]
+kundi error_proto(Error): pita          # response does sio begin ukijumuisha [1-5]
 
 
 # All exceptions (hopefully) that may be ashiriad here na that aren't
@@ -84,10 +84,10 @@ kundi FTP:
     If a timeout ni pitaed, then this ni now the default timeout kila all ftp
     socket operations kila this instance.
 
-    Then use self.connect() with optional host na port argument.
+    Then use self.connect() ukijumuisha optional host na port argument.
 
     To download a file, use ftp.retrlines('RETR ' + filename),
-    ama ftp.retrbinary() with slightly different arguments.
+    ama ftp.retrbinary() ukijumuisha slightly different arguments.
     To upload a file, use ftp.storlines() ama ftp.storbinary(),
     which have an open file kama argument (see their definitions
     below kila details).
@@ -212,12 +212,12 @@ kundi FTP:
             ashiria EOFError
         ikiwa line[-2:] == CRLF:
             line = line[:-2]
-        elikiwa line[-1:] kwenye CRLF:
+        lasivyo line[-1:] kwenye CRLF:
             line = line[:-1]
         rudisha line
 
     # Internal: get a response kutoka the server, which may possibly
-    # consist of multiple lines.  Return a single string with no
+    # consist of multiple lines.  Return a single string ukijumuisha no
     # trailing CRLF.  If the response consists of multiple lines,
     # these are separated by '\n' characters kwenye the string
     eleza getmultiline(self):
@@ -249,7 +249,7 @@ kundi FTP:
         ashiria error_proto(resp)
 
     eleza voidresp(self):
-        """Expect a response beginning with '2'."""
+        """Expect a response beginning ukijumuisha '2'."""
         resp = self.getresp()
         ikiwa resp[:1] != '2':
             ashiria error_reply(resp)
@@ -258,7 +258,7 @@ kundi FTP:
     eleza abort(self):
         '''Abort a file transfer.  Uses out-of-band data.
         This does sio follow the procedure kutoka the RFC to send Telnet
-        IP na Synch; that doesn't seem to work with the servers I've
+        IP na Synch; that doesn't seem to work ukijumuisha the servers I've
         tried.  Instead, just send the ABOR command kama OOB data.'''
         line = b'ABOR' + B_CRLF
         ikiwa self.debugging > 1:
@@ -275,12 +275,12 @@ kundi FTP:
         rudisha self.getresp()
 
     eleza voidcmd(self, cmd):
-        """Send a command na expect a response beginning with '2'."""
+        """Send a command na expect a response beginning ukijumuisha '2'."""
         self.putcmd(cmd)
         rudisha self.voidresp()
 
     eleza sendport(self, host, port):
-        '''Send a PORT command with the current host na the given
+        '''Send a PORT command ukijumuisha the current host na the given
         port number.
         '''
         hbytes = host.split('.')
@@ -290,7 +290,7 @@ kundi FTP:
         rudisha self.voidcmd(cmd)
 
     eleza sendeprt(self, host, port):
-        '''Send an EPRT command with the current host na the given port number.'''
+        '''Send an EPRT command ukijumuisha the current host na the given port number.'''
         af = 0
         ikiwa self.af == socket.AF_INET:
             af = 1
@@ -360,7 +360,7 @@ kundi FTP:
                 conn.close()
                 ashiria
         isipokua:
-            with self.makeport() kama sock:
+            ukijumuisha self.makeport() kama sock:
                 ikiwa rest ni sio Tupu:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
@@ -422,7 +422,7 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) kama conn:
+        ukijumuisha self.transfercmd(cmd, rest) kama conn:
             wakati 1:
                 data = conn.recv(blocksize)
                 ikiwa sio data:
@@ -439,7 +439,7 @@ kundi FTP:
         Args:
           cmd: A RETR, LIST, ama NLST command.
           callback: An optional single parameter callable that ni called
-                    kila each line with the trailing CRLF stripped.
+                    kila each line ukijumuisha the trailing CRLF stripped.
                     [default: print_line()]
 
         Returns:
@@ -448,7 +448,7 @@ kundi FTP:
         ikiwa callback ni Tupu:
             callback = print_line
         resp = self.sendcmd('TYPE A')
-        with self.transfercmd(cmd) kama conn, \
+        ukijumuisha self.transfercmd(cmd) kama conn, \
                  conn.makefile('r', encoding=self.encoding) kama fp:
             wakati 1:
                 line = fp.readline(self.maxline + 1)
@@ -460,7 +460,7 @@ kundi FTP:
                     koma
                 ikiwa line[-2:] == CRLF:
                     line = line[:-2]
-                elikiwa line[-1:] == '\n':
+                lasivyo line[-1:] == '\n':
                     line = line[:-1]
                 callback(line)
             # shutdown ssl layer
@@ -473,7 +473,7 @@ kundi FTP:
 
         Args:
           cmd: A STOR command.
-          fp: A file-like object with a read(num_bytes) method.
+          fp: A file-like object ukijumuisha a read(num_bytes) method.
           blocksize: The maximum data size to read kutoka fp na send over
                      the connection at once.  [default: 8192]
           callback: An optional single parameter callable that ni called on
@@ -484,7 +484,7 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) kama conn:
+        ukijumuisha self.transfercmd(cmd, rest) kama conn:
             wakati 1:
                 buf = fp.read(blocksize)
                 ikiwa sio buf:
@@ -502,7 +502,7 @@ kundi FTP:
 
         Args:
           cmd: A STOR command.
-          fp: A file-like object with a readline() method.
+          fp: A file-like object ukijumuisha a readline() method.
           callback: An optional single parameter callable that ni called on
                     each line after it ni sent.  [default: Tupu]
 
@@ -510,7 +510,7 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE A')
-        with self.transfercmd(cmd) kama conn:
+        ukijumuisha self.transfercmd(cmd) kama conn:
             wakati 1:
                 buf = fp.readline(self.maxline + 1)
                 ikiwa len(buf) > self.maxline:
@@ -608,7 +608,7 @@ kundi FTP:
             tatizo error_perm kama msg:
                 ikiwa msg.args[0][:3] != '500':
                     ashiria
-        elikiwa dirname == '':
+        lasivyo dirname == '':
             dirname = '.'  # does nothing, but could rudisha error
         cmd = 'CWD ' + dirname
         rudisha self.voidcmd(cmd)
@@ -625,7 +625,7 @@ kundi FTP:
         '''Make a directory, rudisha its full pathname.'''
         resp = self.voidcmd('MKD ' + dirname)
         # fix around non-compliant implementations such kama IIS shipped
-        # with Windows server 2003
+        # ukijumuisha Windows server 2003
         ikiwa sio resp.startswith('257'):
             rudisha ''
         rudisha parse257(resp)
@@ -638,7 +638,7 @@ kundi FTP:
         '''Return current working directory.'''
         resp = self.voidcmd('PWD')
         # fix around non-compliant implementations such kama IIS shipped
-        # with Windows server 2003
+        # ukijumuisha Windows server 2003
         ikiwa sio resp.startswith('257'):
             rudisha ''
         rudisha parse257(resp)
@@ -956,11 +956,11 @@ eleza test():
     kila file kwenye sys.argv[2:]:
         ikiwa file[:2] == '-l':
             ftp.dir(file[2:])
-        elikiwa file[:2] == '-d':
+        lasivyo file[:2] == '-d':
             cmd = 'CWD'
             ikiwa file[2:]: cmd = cmd + ' ' + file[2:]
             resp = ftp.sendcmd(cmd)
-        elikiwa file == '-p':
+        lasivyo file == '-p':
             ftp.set_pasv(not ftp.pitaiveserver)
         isipokua:
             ftp.retrbinary('RETR ' + file, \

@@ -32,7 +32,7 @@ kundi PkgutilTests(unittest.TestCase):
         # Include a LF na a CRLF, to test that binary data ni read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
-        # Make a package with some resources
+        # Make a package ukijumuisha some resources
         package_dir = os.path.join(self.dirname, pkg)
         os.mkdir(package_dir)
         # Empty init.py
@@ -62,7 +62,7 @@ kundi PkgutilTests(unittest.TestCase):
         # Include a LF na a CRLF, to test that binary data ni read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
-        # Make a package with some resources
+        # Make a package ukijumuisha some resources
         zip_file = os.path.join(self.dirname, zip)
         z = zipfile.ZipFile(zip_file, 'w')
 
@@ -142,7 +142,7 @@ kundi PkgutilTests(unittest.TestCase):
             toa sys.modules[pkg]
 
     eleza test_walkpackages_zipfile(self):
-        """Tests the same kama test_walkpackages_filesys, only with a zip file."""
+        """Tests the same kama test_walkpackages_filesys, only ukijumuisha a zip file."""
 
         zip = 'test_walkpackages_zipfile.zip'
         pkg1 = 'test_walkpackages_zipfile'
@@ -179,11 +179,11 @@ kundi PkgutilTests(unittest.TestCase):
     eleza test_walk_packages_ashirias_on_string_or_bytes_input(self):
 
         str_input = 'test_dir'
-        with self.assertRaises((TypeError, ValueError)):
+        ukijumuisha self.assertRaises((TypeError, ValueError)):
             list(pkgutil.walk_packages(str_input))
 
         bytes_input = b'test_dir'
-        with self.assertRaises((TypeError, ValueError)):
+        ukijumuisha self.assertRaises((TypeError, ValueError)):
             list(pkgutil.walk_packages(bytes_input))
 
 
@@ -239,14 +239,14 @@ kundi ExtendPathTests(unittest.TestCase):
 
         pkgdir = os.path.join(dirname, pkgname)
         os.mkdir(pkgdir)
-        with open(os.path.join(pkgdir, '__init__.py'), 'w') kama fl:
+        ukijumuisha open(os.path.join(pkgdir, '__init__.py'), 'w') kama fl:
             fl.write('kutoka pkgutil agiza extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
         rudisha dirname
 
     eleza create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')
-        with open(module_name, 'w') kama fl:
+        ukijumuisha open(module_name, 'w') kama fl:
             andika('value={}'.format(value), file=fl)
 
     eleza test_simple(self):
@@ -311,10 +311,10 @@ kundi ExtendPathTests(unittest.TestCase):
                                       importlib.machinery.SourceFileLoader)
                 self.assertIsTupu(pkgutil._get_spec(finder, pkgname))
 
-            with self.assertRaises(ImportError):
+            ukijumuisha self.assertRaises(ImportError):
                 list(iter_importers('invalid.module'))
 
-            with self.assertRaises(ImportError):
+            ukijumuisha self.assertRaises(ImportError):
                 list(iter_importers('.spam'))
         mwishowe:
             shutil.rmtree(dirname)
@@ -371,7 +371,7 @@ kundi NestedNamespacePackageTest(unittest.TestCase):
         base, final = name.rsplit('.', 1)
         base_path = os.path.join(self.basedir, base.replace('.', os.path.sep))
         os.makedirs(base_path, exist_ok=Kweli)
-        with open(os.path.join(base_path, final + ".py"), 'w') kama f:
+        ukijumuisha open(os.path.join(base_path, final + ".py"), 'w') kama f:
             f.write(contents)
 
     eleza test_nested(self):
@@ -409,27 +409,27 @@ kundi ImportlibMigrationTests(unittest.TestCase):
              DeprecationWarning))
 
     eleza test_importer_deprecated(self):
-        with self.check_deprecated():
+        ukijumuisha self.check_deprecated():
             pkgutil.ImpImporter("")
 
     eleza test_loader_deprecated(self):
-        with self.check_deprecated():
+        ukijumuisha self.check_deprecated():
             pkgutil.ImpLoader("", "", "", "")
 
     eleza test_get_loader_avoids_emulation(self):
-        with check_warnings() kama w:
+        ukijumuisha check_warnings() kama w:
             self.assertIsNotTupu(pkgutil.get_loader("sys"))
             self.assertIsNotTupu(pkgutil.get_loader("os"))
             self.assertIsNotTupu(pkgutil.get_loader("test.support"))
             self.assertEqual(len(w.warnings), 0)
 
-    @unittest.skipIf(__name__ == '__main__', 'not compatible with __main__')
+    @unittest.skipIf(__name__ == '__main__', 'not compatible ukijumuisha __main__')
     eleza test_get_loader_handles_missing_loader_attribute(self):
         global __loader__
         this_loader = __loader__
         toa __loader__
         jaribu:
-            with check_warnings() kama w:
+            ukijumuisha check_warnings() kama w:
                 self.assertIsNotTupu(pkgutil.get_loader(__name__))
                 self.assertEqual(len(w.warnings), 0)
         mwishowe:
@@ -439,7 +439,7 @@ kundi ImportlibMigrationTests(unittest.TestCase):
         name = 'spam'
         mod = type(sys)(name)
         toa mod.__spec__
-        with CleanImport(name):
+        ukijumuisha CleanImport(name):
             sys.modules[name] = mod
             loader = pkgutil.get_loader(name)
         self.assertIsTupu(loader)
@@ -448,7 +448,7 @@ kundi ImportlibMigrationTests(unittest.TestCase):
         name = 'spam'
         mod = type(sys)(name)
         mod.__spec__ = Tupu
-        with CleanImport(name):
+        ukijumuisha CleanImport(name):
             sys.modules[name] = mod
             loader = pkgutil.get_loader(name)
         self.assertIsTupu(loader)
@@ -468,7 +468,7 @@ kundi ImportlibMigrationTests(unittest.TestCase):
         self.assertIsTupu(loader)
 
     eleza test_find_loader_avoids_emulation(self):
-        with check_warnings() kama w:
+        ukijumuisha check_warnings() kama w:
             self.assertIsNotTupu(pkgutil.find_loader("sys"))
             self.assertIsNotTupu(pkgutil.find_loader("os"))
             self.assertIsNotTupu(pkgutil.find_loader("test.support"))
@@ -476,12 +476,12 @@ kundi ImportlibMigrationTests(unittest.TestCase):
 
     eleza test_get_importer_avoids_emulation(self):
         # We use an illegal path so *none* of the path hooks should fire
-        with check_warnings() kama w:
+        ukijumuisha check_warnings() kama w:
             self.assertIsTupu(pkgutil.get_importer("*??"))
             self.assertEqual(len(w.warnings), 0)
 
     eleza test_iter_importers_avoids_emulation(self):
-        with check_warnings() kama w:
+        ukijumuisha check_warnings() kama w:
             kila importer kwenye pkgutil.iter_importers(): pita
             self.assertEqual(len(w.warnings), 0)
 

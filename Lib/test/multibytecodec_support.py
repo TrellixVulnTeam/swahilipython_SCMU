@@ -14,11 +14,11 @@ kutoka io agiza BytesIO
 
 kundi TestBase:
     encoding        = ''   # codec name
-    codec           = Tupu # codec tuple (with 4 elements)
+    codec           = Tupu # codec tuple (ukijumuisha 4 elements)
     tstring         = Tupu # must set. 2 strings to test StreamReader
 
     codectests      = Tupu # must set. codec test tuple
-    roundtriptest   = 1    # set ikiwa roundtrip ni possible with unicode
+    roundtriptest   = 1    # set ikiwa roundtrip ni possible ukijumuisha unicode
     has_iso10646    = 0    # set ikiwa this encoding contains whole iso10646 map
     xmlcharnametest = Tupu # string to test xmlcharrefreplace
     unmappedunicode = '\udeee' # a unicode code point that ni sio mapped.
@@ -279,7 +279,7 @@ kundi TestBase:
 
     eleza test_incrementalencoder_del_segfault(self):
         e = self.incrementalencoder()
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa e.errors
 
 
@@ -308,7 +308,7 @@ kundi TestBase_Mapping(unittest.TestCase):
         unichrs = lambda s: ''.join(map(chr, map(eval, s.split('+'))))
         urt_wa = {}
 
-        with self.open_mapping_file() kama f:
+        ukijumuisha self.open_mapping_file() kama f:
             kila line kwenye f:
                 ikiwa sio line:
                     koma
@@ -319,13 +319,13 @@ kundi TestBase_Mapping(unittest.TestCase):
                 csetval = eval(data[0])
                 ikiwa csetval <= 0x7F:
                     csetch = bytes([csetval & 0xff])
-                elikiwa csetval >= 0x1000000:
+                lasivyo csetval >= 0x1000000:
                     csetch = bytes([(csetval >> 24), ((csetval >> 16) & 0xff),
                                     ((csetval >> 8) & 0xff), (csetval & 0xff)])
-                elikiwa csetval >= 0x10000:
+                lasivyo csetval >= 0x10000:
                     csetch = bytes([(csetval >> 16), ((csetval >> 8) & 0xff),
                                     (csetval & 0xff)])
-                elikiwa csetval >= 0x100:
+                lasivyo csetval >= 0x100:
                     csetch = bytes([(csetval >> 8), (csetval & 0xff)])
                 isipokua:
                     endelea
@@ -338,7 +338,7 @@ kundi TestBase_Mapping(unittest.TestCase):
                 self._testpoint(csetch, unich)
 
     eleza _test_mapping_file_ucm(self):
-        with self.open_mapping_file() kama f:
+        ukijumuisha self.open_mapping_file() kama f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
         kila uni, coded kwenye uc:
@@ -382,8 +382,8 @@ kundi TestBase_Mapping(unittest.TestCase):
 
 eleza load_teststring(name):
     dir = os.path.join(os.path.dirname(__file__), 'cjkencodings')
-    with open(os.path.join(dir, name + '.txt'), 'rb') kama f:
+    ukijumuisha open(os.path.join(dir, name + '.txt'), 'rb') kama f:
         encoded = f.read()
-    with open(os.path.join(dir, name + '-utf8.txt'), 'rb') kama f:
+    ukijumuisha open(os.path.join(dir, name + '-utf8.txt'), 'rb') kama f:
         utf8 = f.read()
     rudisha encoded, utf8

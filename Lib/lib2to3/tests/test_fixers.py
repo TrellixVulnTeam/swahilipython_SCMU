@@ -3059,7 +3059,7 @@ kundi Test_map(FixerTestCase):
 
     eleza test_Tupu_with_multiple_arguments(self):
         s = """x = map(Tupu, a, b, c)"""
-        self.warns_unchanged(s, "cannot convert map(Tupu, ...) with "
+        self.warns_unchanged(s, "cannot convert map(Tupu, ...) ukijumuisha "
                              "multiple arguments")
 
     eleza test_map_basic(self):
@@ -3663,7 +3663,7 @@ kundi Test_itertools(FixerTestCase):
     fixer = "itertools"
 
     eleza checkall(self, before, after):
-        # Because we need to check with na without the itertools prefix
+        # Because we need to check ukijumuisha na without the itertools prefix
         # na on each of the three functions, these loops make it all
         # much easier
         kila i kwenye ('itertools.', ''):
@@ -3823,7 +3823,7 @@ kundi Test_agiza(FixerTestCase):
 
     eleza test_files_checked(self):
         eleza p(path):
-            # Takes a unix path na rudishas a path with correct separators
+            # Takes a unix path na rudishas a path ukijumuisha correct separators
             rudisha os.path.pathsep.join(path.split("/"))
 
         self.always_exists = Uongo
@@ -4628,11 +4628,11 @@ kundi Test_asserts(FixerTestCase):
         b = '  self.assertEquals (2, 3)'
         a = '  self.assertEqual (2, 3)'
         self.check(b, a)
-        b = 'with self.failUnlessRaises(Explosion): explode()'
-        a = 'with self.assertRaises(Explosion): explode()'
+        b = 'ukijumuisha self.failUnlessRaises(Explosion): explode()'
+        a = 'ukijumuisha self.assertRaises(Explosion): explode()'
         self.check(b, a)
-        b = 'with self.failUnlessRaises(Explosion) kama cm: explode()'
-        a = 'with self.assertRaises(Explosion) kama cm: explode()'
+        b = 'ukijumuisha self.failUnlessRaises(Explosion) kama cm: explode()'
+        a = 'ukijumuisha self.assertRaises(Explosion) kama cm: explode()'
         self.check(b, a)
 
     eleza test_unchanged(self):

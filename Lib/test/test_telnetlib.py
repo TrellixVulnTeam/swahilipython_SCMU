@@ -42,7 +42,7 @@ kundi GeneralTests(unittest.TestCase):
         telnet.sock.close()
 
     eleza testContextManager(self):
-        with telnetlib.Telnet(HOST, self.port) kama tn:
+        ukijumuisha telnetlib.Telnet(HOST, self.port) kama tn:
             self.assertIsNotTupu(tn.get_socket())
         self.assertIsTupu(tn.get_socket())
 
@@ -110,7 +110,7 @@ kundi TelnetAlike(telnetlib.Telnet):
     eleza sock_avail(self):
         rudisha (not self.sock.block)
     eleza msg(self, msg, *args):
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             telnetlib.Telnet.msg(self, msg, *args)
         self._messages += out.getvalue()
         rudisha
@@ -164,7 +164,7 @@ eleza test_telnet(reads=(), cls=TelnetAlike):
         reads queued up to be read '''
     kila x kwenye reads:
         assert type(x) ni bytes, x
-    with test_socket(reads):
+    ukijumuisha test_socket(reads):
         telnet = cls('dummy', 0)
         telnet._messages = '' # debuglevel output
     rudisha telnet
@@ -376,7 +376,7 @@ kundi OptionTests(unittest.TestCase):
 
     eleza test_debug_accepts_str_port(self):
         # Issue 10695
-        with test_socket([]):
+        ukijumuisha test_socket([]):
             telnet = TelnetAlike('dummy', '0')
             telnet._messages = ''
         telnet.set_debuglevel(1)

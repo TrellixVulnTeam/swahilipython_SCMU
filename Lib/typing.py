@@ -23,7 +23,7 @@ agiza collections.abc
 agiza contextlib
 agiza functools
 agiza operator
-agiza re kama stdlib_re  # Avoid confusion with the re we export.
+agiza re kama stdlib_re  # Avoid confusion ukijumuisha the re we export.
 agiza sys
 agiza types
 kutoka types agiza WrapperDescriptorType, MethodWrapperType, MethodDescriptorType
@@ -185,7 +185,7 @@ eleza _collect_type_vars(types):
 
 
 eleza _subs_tvars(tp, tvars, subs):
-    """Substitute type variables 'tvars' with substitutions 'subs'.
+    """Substitute type variables 'tvars' ukijumuisha substitutions 'subs'.
     These two must have the same length.
     """
     ikiwa sio isinstance(tp, _GenericAlias):
@@ -212,7 +212,7 @@ eleza _check_generic(cls, parameters):
     alen = len(parameters)
     elen = len(cls.__parameters__)
     ikiwa alen != elen:
-        ashiria TypeError(f"Too {'many' ikiwa alen > elen else 'few'} parameters kila {cls};"
+        ashiria TypeError(f"Too {'many' ikiwa alen > elen isipokua 'few'} parameters kila {cls};"
                         f" actual {alen}, expected {elen}")
 
 
@@ -225,7 +225,7 @@ eleza _remove_dups_flatten(parameters):
     kila p kwenye parameters:
         ikiwa isinstance(p, _GenericAlias) na p.__origin__ ni Union:
             params.extend(p.__args__)
-        elikiwa isinstance(p, tuple) na len(p) > 0 na p[0] ni Union:
+        lasivyo isinstance(p, tuple) na len(p) > 0 na p[0] ni Union:
             params.extend(p[1:])
         isipokua:
             params.append(p)
@@ -246,7 +246,7 @@ _cleanups = []
 
 
 eleza _tp_cache(func):
-    """Internal wrapper caching __getitem__ of generic types with a fallback to
+    """Internal wrapper caching __getitem__ of generic types ukijumuisha a fallback to
     original function kila non-hashable arguments.
     """
     cached = functools.lru_cache()(func)
@@ -339,10 +339,10 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
         ashiria TypeError(f"Cannot instantiate {self!r}")
 
     eleza __instancecheck__(self, obj):
-        ashiria TypeError(f"{self} cannot be used with isinstance()")
+        ashiria TypeError(f"{self} cannot be used ukijumuisha isinstance()")
 
     eleza __subclasscheck__(self, cls):
-        ashiria TypeError(f"{self} cannot be used with issubclass()")
+        ashiria TypeError(f"{self} cannot be used ukijumuisha issubclass()")
 
     @_tp_cache
     eleza __getitem__(self, parameters):
@@ -373,12 +373,12 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
 Any = _SpecialForm('Any', doc=
     """Special type indicating an unconstrained type.
 
-    - Any ni compatible with every type.
+    - Any ni compatible ukijumuisha every type.
     - Any assumed to have all methods.
     - All values assumed to be instances of Any.
 
     Note that all the above statements are true kutoka the point of view of
-    static type checkers. At runtime, Any should sio be used with instance
+    static type checkers. At runtime, Any should sio be used ukijumuisha instance
     ama kundi checks.
     """)
 
@@ -409,7 +409,7 @@ ClassVar = _SpecialForm('ClassVar', doc=
     ClassVar accepts only types na cannot be further subscribed.
 
     Note that ClassVar ni sio a kundi itself, na should not
-    be used with isinstance() ama issubclass().
+    be used ukijumuisha isinstance() ama issubclass().
     """)
 
 Final = _SpecialForm('Final', doc=
@@ -510,9 +510,9 @@ kundi ForwardRef(_Final, _root=Kweli):
         ikiwa sio self.__forward_evaluated__ ama localns ni sio globalns:
             ikiwa globalns ni Tupu na localns ni Tupu:
                 globalns = localns = {}
-            elikiwa globalns ni Tupu:
+            lasivyo globalns ni Tupu:
                 globalns = localns
-            elikiwa localns ni Tupu:
+            lasivyo localns ni Tupu:
                 localns = globalns
             self.__forward_value__ = _type_check(
                 eval(self.__forward_code__, globalns, localns),
@@ -555,7 +555,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
 
       eleza longest(x: A, y: A) -> A:
           '''Return the longest of two strings.'''
-          rudisha x ikiwa len(x) >= len(y) else y
+          rudisha x ikiwa len(x) >= len(y) isipokua y
 
     The latter example's signature ni essentially the overloading
     of (str, str) -> str na (bytes, bytes) -> bytes.  Also note
@@ -564,7 +564,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
 
     At runtime, isinstance(x, T) na issubclass(C, T) will ashiria TypeError.
 
-    Type variables defined with covariant=Kweli ama contravariant=Kweli
+    Type variables defined ukijumuisha covariant=Kweli ama contravariant=Kweli
     can be used to declare covariant ama contravariant generic types.
     See PEP 484 kila more details. By default generic types are invariant
     kwenye all type variables.
@@ -591,7 +591,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
         self.__covariant__ = bool(covariant)
         self.__contravariant__ = bool(contravariant)
         ikiwa constraints na bound ni sio Tupu:
-            ashiria TypeError("Constraints cannot be combined with bound=...")
+            ashiria TypeError("Constraints cannot be combined ukijumuisha bound=...")
         ikiwa constraints na len(constraints) == 1:
             ashiria TypeError("A single constraint ni sio allowed")
         msg = "TypeVar(name, constraint, ...): constraints must be types."
@@ -607,7 +607,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
     eleza __repr__(self):
         ikiwa self.__covariant__:
             prefix = '+'
-        elikiwa self.__contravariant__:
+        lasivyo self.__contravariant__:
             prefix = '-'
         isipokua:
             prefix = '~'
@@ -629,7 +629,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
 
 
 # Mapping kutoka non-generic type names that have a generic alias kwenye typing
-# but with a different name.
+# but ukijumuisha a different name.
 _normalize_alias = {'list': 'List',
                     'tuple': 'Tuple',
                     'dict': 'Dict',
@@ -647,7 +647,7 @@ eleza _is_dunder(attr):
 kundi _GenericAlias(_Final, _root=Kweli):
     """The central part of internal API.
 
-    This represents a generic version of type 'origin' with type arguments 'params'.
+    This represents a generic version of type 'origin' ukijumuisha type arguments 'params'.
     There are two kind of these aliases: user defined na special. The special ones
     are wrappers around builtin collections na ABCs kwenye collections.abc. These must
     have 'name' always set. If 'inst' ni Uongo, then the alias can't be instantiated,
@@ -843,7 +843,7 @@ kundi Generic:
     """Abstract base kundi kila generic types.
 
     A generic type ni typically declared by inheriting kutoka
-    this kundi parameterized with one ama more type variables.
+    this kundi parameterized ukijumuisha one ama more type variables.
     For example, a generic mapping type might be defined as::
 
       kundi Mapping(Generic[KT, VT]):
@@ -882,7 +882,7 @@ kundi Generic:
         msg = "Parameters to generic types must be types."
         params = tuple(_type_check(p, msg) kila p kwenye params)
         ikiwa cls kwenye (Generic, Protocol):
-            # Generic na Protocol can only be subscripted with unique type variables.
+            # Generic na Protocol can only be subscripted ukijumuisha unique type variables.
             ikiwa sio all(isinstance(p, TypeVar) kila p kwenye params):
                 ashiria TypeError(
                     f"Parameters to {cls.__name__}[...] must all be type variables")
@@ -970,7 +970,7 @@ eleza _get_protocol_attrs(cls):
 
 
 eleza _is_callable_members_only(cls):
-    # PEP 544 prohibits using issubclass() with protocols that have non-method members.
+    # PEP 544 prohibits using issubclass() ukijumuisha protocols that have non-method members.
     rudisha all(callable(getattr(cls, attr, Tupu)) kila attr kwenye _get_protocol_attrs(cls))
 
 
@@ -1029,7 +1029,7 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
             eleza meth(self) -> int:
                 ...
 
-    Such classes are primarily used with static type checkers that recognize
+    Such classes are primarily used ukijumuisha static type checkers that recognize
     structural subtyping (static duck-typing), kila example::
 
         kundi C:
@@ -1075,7 +1075,7 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
             ikiwa sio _is_callable_members_only(cls):
                 ikiwa _allow_reckless_class_cheks():
                     rudisha NotImplemented
-                ashiria TypeError("Protocols with non-method members"
+                ashiria TypeError("Protocols ukijumuisha non-method members"
                                 " don't support issubclass()")
             ikiwa sio isinstance(other, type):
                 # Same error message kama kila issubclass(1, int).
@@ -1121,7 +1121,7 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
 eleza runtime_checkable(cls):
     """Mark a protocol kundi kama a runtime protocol.
 
-    Such protocol can be used with isinstance() na issubclass().
+    Such protocol can be used ukijumuisha isinstance() na issubclass().
     Raise TypeError ikiwa applied to a non-protocol class.
     This allows a simple-minded structural check very similar to
     one trick ponies kwenye collections.abc such kama Iterable.
@@ -1166,7 +1166,7 @@ eleza _get_defaults(func):
     arg_names = arg_names[:pos_count]
     defaults = func.__defaults__ ama ()
     kwdefaults = func.__kwdefaults__
-    res = dict(kwdefaults) ikiwa kwdefaults else {}
+    res = dict(kwdefaults) ikiwa kwdefaults isipokua {}
     pos_offset = pos_count - len(defaults)
     kila name, value kwenye zip(arg_names[pos_offset:], defaults):
         assert name haiko kwenye res
@@ -1195,7 +1195,7 @@ eleza get_type_hints(obj, globalns=Tupu, localns=Tupu):
     present.
 
     BEWARE -- the behavior of globalns na localns ni counterintuitive
-    (unless you are familiar with how eval() na exec() work).  The
+    (unless you are familiar ukijumuisha how eval() na exec() work).  The
     search order ni locals first, then globals.
 
     - If no dict arguments are pitaed, an attempt ni made to use the
@@ -1237,7 +1237,7 @@ eleza get_type_hints(obj, globalns=Tupu, localns=Tupu):
             globalns = getattr(obj, '__globals__', {})
         ikiwa localns ni Tupu:
             localns = globalns
-    elikiwa localns ni Tupu:
+    lasivyo localns ni Tupu:
         localns = globalns
     hints = getattr(obj, '__annotations__', Tupu)
     ikiwa hints ni Tupu:
@@ -1283,7 +1283,7 @@ eleza get_origin(tp):
 
 
 eleza get_args(tp):
-    """Get type arguments with all substitutions performed.
+    """Get type arguments ukijumuisha all substitutions performed.
 
     For unions, basic simplifications used by Union constructor are performed.
     Examples::
@@ -1330,7 +1330,7 @@ eleza no_type_check(arg):
 eleza no_type_check_decorator(decorator):
     """Decorator to give another decorator the @no_type_check effect.
 
-    This wraps the decorator with something that wraps the decorated
+    This wraps the decorator ukijumuisha something that wraps the decorated
     function kwenye @no_type_check.
     """
 
@@ -1356,7 +1356,7 @@ eleza overload(func):
     """Decorator kila overloaded functions/methods.
 
     In a stub file, place two ama more stub definitions kila the same
-    function kwenye a row, each decorated with @overload.  For example:
+    function kwenye a row, each decorated ukijumuisha @overload.  For example:
 
       @overload
       eleza utf8(value: Tupu) -> Tupu: ...
@@ -1366,8 +1366,8 @@ eleza overload(func):
       eleza utf8(value: str) -> bytes: ...
 
     In a non-stub file (i.e. a regular .py file), do the same but
-    follow it with an implementation.  The implementation should *not*
-    be decorated with @overload.  For example:
+    follow it ukijumuisha an implementation.  The implementation should *not*
+    be decorated ukijumuisha @overload.  For example:
 
       @overload
       eleza utf8(value: Tupu) -> Tupu: ...
@@ -1419,7 +1419,7 @@ T_contra = TypeVar('T_contra', contravariant=Kweli)  # Ditto contravariant.
 # Internal type variable used kila Type[].
 CT_co = TypeVar('CT_co', covariant=Kweli, bound=type)
 
-# A useful type variable with constraints.  This represents string types.
+# A useful type variable ukijumuisha constraints.  This represents string types.
 # (This one *is* kila export!)
 AnyStr = TypeVar('AnyStr', bytes, str)
 
@@ -1443,7 +1443,7 @@ Callable = _VariadicGenericAlias(collections.abc.Callable, (), special=Kweli)
 Callable.__doc__ = \
     """Callable type; Callable[[int], str] ni a function of (int) -> str.
 
-    The subscription syntax must always be used with exactly two
+    The subscription syntax must always be used ukijumuisha exactly two
     values: the argument list na the rudisha type.  The argument list
     must be a list of types ama ellipsis; the rudisha type must be a single type.
 
@@ -1513,7 +1513,7 @@ Type.__doc__ = \
 
 @runtime_checkable
 kundi SupportsInt(Protocol):
-    """An ABC with one abstract method __int__."""
+    """An ABC ukijumuisha one abstract method __int__."""
     __slots__ = ()
 
     @abstractmethod
@@ -1523,7 +1523,7 @@ kundi SupportsInt(Protocol):
 
 @runtime_checkable
 kundi SupportsFloat(Protocol):
-    """An ABC with one abstract method __float__."""
+    """An ABC ukijumuisha one abstract method __float__."""
     __slots__ = ()
 
     @abstractmethod
@@ -1533,7 +1533,7 @@ kundi SupportsFloat(Protocol):
 
 @runtime_checkable
 kundi SupportsComplex(Protocol):
-    """An ABC with one abstract method __complex__."""
+    """An ABC ukijumuisha one abstract method __complex__."""
     __slots__ = ()
 
     @abstractmethod
@@ -1543,7 +1543,7 @@ kundi SupportsComplex(Protocol):
 
 @runtime_checkable
 kundi SupportsBytes(Protocol):
-    """An ABC with one abstract method __bytes__."""
+    """An ABC ukijumuisha one abstract method __bytes__."""
     __slots__ = ()
 
     @abstractmethod
@@ -1553,7 +1553,7 @@ kundi SupportsBytes(Protocol):
 
 @runtime_checkable
 kundi SupportsIndex(Protocol):
-    """An ABC with one abstract method __index__."""
+    """An ABC ukijumuisha one abstract method __index__."""
     __slots__ = ()
 
     @abstractmethod
@@ -1563,7 +1563,7 @@ kundi SupportsIndex(Protocol):
 
 @runtime_checkable
 kundi SupportsAbs(Protocol[T_co]):
-    """An ABC with one abstract method __abs__ that ni covariant kwenye its rudisha type."""
+    """An ABC ukijumuisha one abstract method __abs__ that ni covariant kwenye its rudisha type."""
     __slots__ = ()
 
     @abstractmethod
@@ -1573,7 +1573,7 @@ kundi SupportsAbs(Protocol[T_co]):
 
 @runtime_checkable
 kundi SupportsRound(Protocol[T_co]):
-    """An ABC with one abstract method __round__ that ni covariant kwenye its rudisha type."""
+    """An ABC ukijumuisha one abstract method __round__ that ni covariant kwenye its rudisha type."""
     __slots__ = ()
 
     @abstractmethod
@@ -1617,7 +1617,7 @@ kundi NamedTupleMeta(type):
                 default_value = ns[field_name]
                 defaults.append(default_value)
                 defaults_dict[field_name] = default_value
-            elikiwa defaults:
+            lasivyo defaults:
                 ashiria TypeError("Non-default namedtuple field {field_name} cannot "
                                 "follow default field(s) {default_names}"
                                 .format(field_name=field_name,
@@ -1629,7 +1629,7 @@ kundi NamedTupleMeta(type):
         kila key kwenye ns:
             ikiwa key kwenye _prohibited:
                 ashiria AttributeError("Cannot overwrite NamedTuple attribute " + key)
-            elikiwa key haiko kwenye _special na key haiko kwenye nm_tpl._fields:
+            lasivyo key haiko kwenye _special na key haiko kwenye nm_tpl._fields:
                 setattr(nm_tpl, key, ns[key])
         rudisha nm_tpl
 
@@ -1666,7 +1666,7 @@ kundi NamedTuple(metaclass=NamedTupleMeta):
         cls, *args = args  # allow the "cls" keyword be pitaed
         ikiwa args:
             typename, *args = args # allow the "typename" keyword be pitaed
-        elikiwa 'typename' kwenye kwargs:
+        lasivyo 'typename' kwenye kwargs:
             typename = kwargs.pop('typename')
             agiza warnings
             warnings.warn("Passing 'typename' kama keyword argument ni deprecated",
@@ -1681,7 +1681,7 @@ kundi NamedTuple(metaclass=NamedTupleMeta):
                 ashiria TypeError(f'NamedTuple.__new__() takes kutoka 2 to 3 '
                                 f'positional arguments but {len(args) + 2} '
                                 f'were given') kutoka Tupu
-        elikiwa 'fields' kwenye kwargs na len(kwargs) == 1:
+        lasivyo 'fields' kwenye kwargs na len(kwargs) == 1:
             fields = kwargs.pop('fields')
             agiza warnings
             warnings.warn("Passing 'fields' kama keyword argument ni deprecated",
@@ -1691,7 +1691,7 @@ kundi NamedTuple(metaclass=NamedTupleMeta):
 
         ikiwa fields ni Tupu:
             fields = kwargs.items()
-        elikiwa kwargs:
+        lasivyo kwargs:
             ashiria TypeError("Either list of fields ama keywords"
                             " can be provided to NamedTuple, sio both")
         rudisha _make_nmtuple(typename, fields)
@@ -1705,7 +1705,7 @@ eleza _dict_new(cls, /, *args, **kwargs):
 eleza _typeddict_new(cls, typename, fields=Tupu, /, *, total=Kweli, **kwargs):
     ikiwa fields ni Tupu:
         fields = kwargs
-    elikiwa kwargs:
+    lasivyo kwargs:
         ashiria TypeError("TypedDict takes either a dict ama keyword arguments,"
                         " but sio both")
 
@@ -1734,7 +1734,7 @@ kundi _TypedDictMeta(type):
         Subclasses na instances of TypedDict rudisha actual dictionaries
         via _dict_new.
         """
-        ns['__new__'] = _typeddict_new ikiwa name == 'TypedDict' else _dict_new
+        ns['__new__'] = _typeddict_new ikiwa name == 'TypedDict' isipokua _dict_new
         tp_dict = super(_TypedDictMeta, cls).__new__(cls, name, (dict,), ns)
 
         anns = ns.get('__annotations__', {})
@@ -1755,7 +1755,7 @@ kundi TypedDict(dict, metaclass=_TypedDictMeta):
 
     TypedDict creates a dictionary type that expects all of its
     instances to have a certain set of keys, where each key is
-    associated with a value of a consistent type. This expectation
+    associated ukijumuisha a value of a consistent type. This expectation
     ni sio checked at runtime but ni only enforced by type checkers.
     Usage::
 
@@ -1781,7 +1781,7 @@ kundi TypedDict(dict, metaclass=_TypedDictMeta):
 
 
 eleza NewType(name, tp):
-    """NewType creates simple unique types with almost zero
+    """NewType creates simple unique types ukijumuisha almost zero
     runtime overhead. NewType(name, tp) ni considered a subtype of tp
     by static type checkers. At runtime, NewType(name, tp) rudishas
     a dummy function that simply rudishas its argument. Usage::

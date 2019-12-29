@@ -91,7 +91,7 @@ kundi TypesTests(unittest.TestCase):
             self.assertEqual(f.__format__('e'), result)
             self.assertEqual('%e' % f, result)
 
-        # test all 2 digit exponents, both with __format__ na with
+        # test all 2 digit exponents, both ukijumuisha __format__ na with
         #  '%' formatting
         kila i kwenye range(-99, 100):
             test(float('1.5e'+str(i)), '1.500000e{0:+03d}'.format(i))
@@ -326,7 +326,7 @@ kundi TypesTests(unittest.TestCase):
         test(1234567, ',', '1,234,567')
         test(-1234567, ',', '-1,234,567')
 
-        # issue 5782, commas with no specifier type
+        # issue 5782, commas ukijumuisha no specifier type
         test(1234, '010,', '00,001,234')
 
         # Unified type kila integers
@@ -337,16 +337,16 @@ kundi TypesTests(unittest.TestCase):
 
         # precision disallowed
         self.assertRaises(ValueError, 3 .__format__, "1.3")
-        # sign sio allowed with 'c'
+        # sign sio allowed ukijumuisha 'c'
         self.assertRaises(ValueError, 3 .__format__, "+c")
         # format spec must be string
         self.assertRaises(TypeError, 3 .__format__, Tupu)
         self.assertRaises(TypeError, 3 .__format__, 0)
-        # can't have ',' with 'n'
+        # can't have ',' ukijumuisha 'n'
         self.assertRaises(ValueError, 3 .__format__, ",n")
-        # can't have ',' with 'c'
+        # can't have ',' ukijumuisha 'c'
         self.assertRaises(ValueError, 3 .__format__, ",c")
-        # can't have '#' with 'c'
+        # can't have '#' ukijumuisha 'c'
         self.assertRaises(ValueError, 3 .__format__, "#c")
 
         # ensure that only int na float type specifiers work
@@ -484,10 +484,10 @@ kundi TypesTests(unittest.TestCase):
         test(-1234.12341234, '013f', '-01234.123412')
         test(-123456.12341234, '011.2f', '-0123456.12')
 
-        # issue 5782, commas with no specifier type
+        # issue 5782, commas ukijumuisha no specifier type
         test(1.2, '010,.2', '0,000,001.2')
 
-        # 0 padding with commas
+        # 0 padding ukijumuisha commas
         test(1234., '011,f', '1,234.000000')
         test(1234., '012,f', '1,234.000000')
         test(1234., '013,f', '01,234.000000')
@@ -562,13 +562,13 @@ kundi TypesTests(unittest.TestCase):
         # into a C long.
         self.assertRaises(ValueError, format, 0, '1'*10000 + 'd')
 
-        # Similar with the precision.
+        # Similar ukijumuisha the precision.
         self.assertRaises(ValueError, format, 0, '.' + '1'*10000 + 'd')
 
         # And may kama well test both.
         self.assertRaises(ValueError, format, 0, '1'*1000 + '.' + '1'*10000 + 'd')
 
-        # Make sure commas aren't allowed with various type codes
+        # Make sure commas aren't allowed ukijumuisha various type codes
         kila code kwenye 'xXobns':
             self.assertRaises(ValueError, format, 0, ',' + code)
 
@@ -877,7 +877,7 @@ kundi ClassCreationTests(unittest.TestCase):
             eleza __mro_entries__(self, bases):
                 rudisha A
         c = C()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.new_class('D', (c,), {})
 
     eleza test_new_class_with_mro_entry_multiple(self):
@@ -936,7 +936,7 @@ kundi ClassCreationTests(unittest.TestCase):
             @classmethod
             eleza __prepare__(*args):
                 rudisha Tupu
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
                                     r'rudisha a mapping, sio TupuType$'):
             kundi Foo(metaclass=BadMeta):
@@ -946,7 +946,7 @@ kundi ClassCreationTests(unittest.TestCase):
             @classmethod
             eleza __prepare__(*args):
                 rudisha Tupu
-        with self.assertRaisesRegex(TypeError,
+        ukijumuisha self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
                                     r'rudisha a mapping, sio TupuType$'):
             kundi Bar(metaclass=BadMeta()):
@@ -1000,7 +1000,7 @@ kundi ClassCreationTests(unittest.TestCase):
         new_calls.clear()
 
         B = types.new_class("B", (), {"metaclass": BMeta})
-        # BMeta.__new__ calls AMeta.__new__ with super:
+        # BMeta.__new__ calls AMeta.__new__ ukijumuisha super:
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
 
@@ -1098,7 +1098,7 @@ kundi ClassCreationTests(unittest.TestCase):
 
         # This ni a TypeError, because of a metakundi conflict:
         # BNotMeta ni neither a subclass, nor a superkundi of type
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             D = types.new_class("D", (C,), {"metaclass": type})
 
         E = types.new_class("E", (C,), {"metaclass": ANotMeta})
@@ -1124,9 +1124,9 @@ kundi ClassCreationTests(unittest.TestCase):
 
         # TypeError: BNotMeta ni neither a
         # subclass, nor a superkundi of int
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X = types.new_class("X", (C, int()))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             X = types.new_class("X", (int(), C))
 
     eleza test_one_argument_type(self):
@@ -1137,13 +1137,13 @@ kundi ClassCreationTests(unittest.TestCase):
 
         kundi M(type):
             pita
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             M(5)
         self.assertEqual(str(cm.exception), expected_message)
 
         kundi N(type, metaclass=M):
             pita
-        with self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             N(5)
         self.assertEqual(str(cm.exception), expected_message)
 
@@ -1155,9 +1155,9 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         ns2 = types.SimpleNamespace(x=1, y=2)
         ns3 = types.SimpleNamespace(**dict(x=1, y=2))
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace(1, 2, 3)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace(**{1: 2})
 
         self.assertEqual(len(ns1.__dict__), 0)
@@ -1191,7 +1191,7 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(ns.x, 1)
         self.assertEqual(ns.y, 2)
         self.assertEqual(ns.w, 3)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             ns.z
 
     eleza test_attrset(self):
@@ -1209,9 +1209,9 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2, w=3)
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa ns1.spam
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa ns2.spam
 
         toa ns2.y
@@ -1291,13 +1291,13 @@ kundi SimpleNamespaceTests(unittest.TestCase):
     eleza test_as_dict(self):
         ns = types.SimpleNamespace(spam='spamspamspam')
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             len(ns)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             iter(ns)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'spam' kwenye ns
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             ns['spam']
 
     eleza test_subclass(self):
@@ -1329,13 +1329,13 @@ kundi SimpleNamespaceTests(unittest.TestCase):
             __class__ = types.SimpleNamespace
         self.assertUongo(types.SimpleNamespace() == FakeSimpleNamespace())
         self.assertKweli(types.SimpleNamespace() != FakeSimpleNamespace())
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace() < FakeSimpleNamespace()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace() <= FakeSimpleNamespace()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace() > FakeSimpleNamespace()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             types.SimpleNamespace() >= FakeSimpleNamespace()
 
 
@@ -1343,7 +1343,7 @@ kundi CoroutineTests(unittest.TestCase):
     eleza test_wrong_args(self):
         samples = [Tupu, 1, object()]
         kila sample kwenye samples:
-            with self.assertRaisesRegex(TypeError,
+            ukijumuisha self.assertRaisesRegex(TypeError,
                                         'types.coroutine.*expects a callable'):
                 types.coroutine(sample)
 
@@ -1451,7 +1451,7 @@ kundi CoroutineTests(unittest.TestCase):
         # Test AttributeErrors
         kila name kwenye {'gi_running', 'gi_frame', 'gi_code', 'gi_tumakutoka',
                      'cr_running', 'cr_frame', 'cr_code', 'cr_await'}:
-            with self.assertRaises(AttributeError):
+            ukijumuisha self.assertRaises(AttributeError):
                 getattr(wrapper, name)
 
         # Test attributes pita-through
@@ -1503,13 +1503,13 @@ kundi CoroutineTests(unittest.TestCase):
 
         # Test invalid args
         gen.reset_mock()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             wrapper.throw()
         self.assertUongo(gen.throw.called)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             wrapper.close(1)
         self.assertUongo(gen.close.called)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             wrapper.send()
         self.assertUongo(gen.send.called)
 
@@ -1592,13 +1592,13 @@ kundi CoroutineTests(unittest.TestCase):
 
         self.assertEqual(next(wrapper), 1)
         self.assertEqual(wrapper.send(Tupu), 2)
-        with self.assertRaisesRegex(StopIteration, 'spam'):
+        ukijumuisha self.assertRaisesRegex(StopIteration, 'spam'):
             wrapper.send('spam')
 
         gen = gen_func()
         wrapper = foo()
         wrapper.send(Tupu)
-        with self.assertRaisesRegex(Exception, 'ham'):
+        ukijumuisha self.assertRaisesRegex(Exception, 'ham'):
             wrapper.throw(Exception, Exception('ham'))
 
         # decorate foo second time

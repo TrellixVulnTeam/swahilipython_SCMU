@@ -30,7 +30,7 @@ kundi OrderedDictTests:
 
     eleza test_init(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             OrderedDict([('a', 1), ('b', 2)], Tupu)                                 # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         self.assertEqual(sorted(OrderedDict(dict(pairs)).items()), pairs)           # dict input
@@ -39,7 +39,7 @@ kundi OrderedDictTests:
         self.assertEqual(list(OrderedDict([('a', 1), ('b', 2), ('c', 9), ('d', 4)],
                                           c=3, e=5).items()), pairs)                # mixed input
 
-        # make sure no positional args conflict with possible kwdargs
+        # make sure no positional args conflict ukijumuisha possible kwdargs
         self.assertEqual(list(OrderedDict(self=42).items()), [('self', 42)])
         self.assertEqual(list(OrderedDict(other=42).items()), [('other', 42)])
         self.assertRaises(TypeError, OrderedDict, 42)
@@ -62,7 +62,7 @@ kundi OrderedDictTests:
 
     eleza test_update(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             OrderedDict().update([('a', 1), ('b', 2)], Tupu)                        # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict()
@@ -148,7 +148,7 @@ kundi OrderedDictTests:
         od = OrderedDict(pairs)
         toa od['a']
         self.assertNotIn('a', od)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             toa od['a']
         self.assertEqual(list(od.items()), pairs[:2] + pairs[3:])
 
@@ -183,14 +183,14 @@ kundi OrderedDictTests:
         it = iter(od)
         key = next(it)
         toa od[key]
-        with self.assertRaises(Exception):
+        ukijumuisha self.assertRaises(Exception):
             # Note, the exact exception ashiriad ni sio guaranteed
             # The only guarantee that the next() will sio succeed
             next(it)
 
     eleza test_sorted_iterators(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             OrderedDict([('a', 1), ('b', 2)], Tupu)
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict(pairs)
@@ -221,7 +221,7 @@ kundi OrderedDictTests:
         od = OrderedDict(pairs)
         wakati pairs:
             self.assertEqual(od.popitem(), pairs.pop())
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             od.popitem()
         self.assertEqual(len(od), 0)
 
@@ -245,7 +245,7 @@ kundi OrderedDictTests:
         wakati pairs:
             k, v = pairs.pop()
             self.assertEqual(od.pop(k), v)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             od.pop('xyz')
         self.assertEqual(len(od), 0)
         self.assertEqual(od.pop(k, 12345), 12345)
@@ -259,7 +259,7 @@ kundi OrderedDictTests:
         self.assertEqual(m.pop('a', 6), 1)
         self.assertEqual(m.pop('a', 6), 6)
         self.assertEqual(m.pop('a', default=6), 6)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             m.pop('a')
 
     eleza test_equality(self):
@@ -295,9 +295,9 @@ kundi OrderedDictTests:
         check(copy.copy(od))
         check(copy.deepcopy(od))
         # pickle directly pulls the module, so we have to fake it
-        with replaced_module('collections', self.module):
+        ukijumuisha replaced_module('collections', self.module):
             kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(proto=proto):
+                ukijumuisha self.subTest(proto=proto):
                     check(pickle.loads(pickle.dumps(od, proto)))
         check(eval(repr(od)))
         update_test = OrderedDict()
@@ -332,7 +332,7 @@ kundi OrderedDictTests:
         od[1] = od
 
         # pickle directly pulls the module, so we have to fake it
-        with replaced_module('collections', self.module):
+        ukijumuisha replaced_module('collections', self.module):
             kila proto kwenye range(-1, pickle.HIGHEST_PROTOCOL + 1):
                 dup = pickle.loads(pickle.dumps(od, proto))
                 self.assertIsNot(dup, od)
@@ -415,9 +415,9 @@ kundi OrderedDictTests:
         self.assertEqual(list(od), list('cabde'))
         od.move_to_end('b', last=Uongo)
         self.assertEqual(list(od), list('bcade'))
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             od.move_to_end('x')
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             od.move_to_end('x', 0)
 
     eleza test_move_to_end_issue25406(self):
@@ -538,13 +538,13 @@ kundi OrderedDictTests:
             od[key] = i
 
         # These should sio crash.
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             list(od.values())
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             list(od.items())
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             repr(od)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             od.copy()
 
     eleza test_issue24348(self):
@@ -596,7 +596,7 @@ kundi OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.__delitem__(od, 'spam')
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             repr(od)
 
     eleza test_dict_clear(self):
@@ -613,7 +613,7 @@ kundi OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.pop(od, 'spam')
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             repr(od)
 
     eleza test_dict_popitem(self):
@@ -622,7 +622,7 @@ kundi OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.popitem(od)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             repr(od)
 
     eleza test_dict_setdefault(self):
@@ -724,14 +724,14 @@ kundi CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
 
         od = OrderedDict.kutokakeys('abcde')
         self.assertEqual(list(od), list('abcde'))
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila i, k kwenye enumerate(od):
                 od.move_to_end(k)
                 self.assertLess(i, 5)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila k kwenye od:
                 od['f'] = Tupu
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             kila k kwenye od:
                 toa od['c']
         self.assertEqual(list(od), list('bdeaf'))
@@ -745,7 +745,7 @@ kundi CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
             meth = getattr(od, method_name)
             expected = list(meth())[1:]
             kila i kwenye range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(method_name=method_name, protocol=i):
+                ukijumuisha self.subTest(method_name=method_name, protocol=i):
                     it = iter(meth())
                     next(it)
                     p = pickle.dumps(it, i)

@@ -36,7 +36,7 @@ kundi GetpitaGetuserTest(unittest.TestCase):
         expected_name = 'some_name'
         environ.get.rudisha_value = Tupu
         ikiwa pwd:
-            with mock.patch('os.getuid') kama uid, \
+            ukijumuisha mock.patch('os.getuid') kama uid, \
                     mock.patch('pwd.getpwuid') kama getpw:
                 uid.rudisha_value = 42
                 getpw.rudisha_value = [expected_name]
@@ -59,7 +59,7 @@ kundi GetpitaRawinputTest(unittest.TestCase):
     eleza test_uses_stderr_as_default(self):
         input = StringIO('input_string')
         prompt = 'some_prompt'
-        with mock.patch('sys.stderr') kama stderr:
+        ukijumuisha mock.patch('sys.stderr') kama stderr:
             getpita._raw_input(prompt, input=input)
             stderr.write.assert_called_once_with(prompt)
 
@@ -91,11 +91,11 @@ kundi GetpitaRawinputTest(unittest.TestCase):
 # on the screen, unless we are falling back to stderr/stdin.
 
 # Some of these might run on platforms without termios, but play it safe.
-@unittest.skipUnless(termios, 'tests require system with termios')
+@unittest.skipUnless(termios, 'tests require system ukijumuisha termios')
 kundi UnixGetpitaTest(unittest.TestCase):
 
     eleza test_uses_tty_directly(self):
-        with mock.patch('os.open') kama open, \
+        ukijumuisha mock.patch('os.open') kama open, \
                 mock.patch('io.FileIO') kama fileio, \
                 mock.patch('io.TextIOWrapper') kama textio:
             # By setting open's rudisha value to Tupu the implementation will
@@ -109,7 +109,7 @@ kundi UnixGetpitaTest(unittest.TestCase):
             textio.assert_called_once_with(fileio.rudisha_value)
 
     eleza test_resets_termios(self):
-        with mock.patch('os.open') kama open, \
+        ukijumuisha mock.patch('os.open') kama open, \
                 mock.patch('io.FileIO'), \
                 mock.patch('io.TextIOWrapper'), \
                 mock.patch('termios.tcgetattr') kama tcgetattr, \
@@ -121,7 +121,7 @@ kundi UnixGetpitaTest(unittest.TestCase):
             tcsetattr.assert_called_with(3, mock.ANY, fake_attrs)
 
     eleza test_falls_back_to_fallback_if_termios_ashirias(self):
-        with mock.patch('os.open') kama open, \
+        ukijumuisha mock.patch('os.open') kama open, \
                 mock.patch('io.FileIO') kama fileio, \
                 mock.patch('io.TextIOWrapper') kama textio, \
                 mock.patch('termios.tcgetattr'), \
@@ -136,7 +136,7 @@ kundi UnixGetpitaTest(unittest.TestCase):
 
     eleza test_flushes_stream_after_input(self):
         # issue 7208
-        with mock.patch('os.open') kama open, \
+        ukijumuisha mock.patch('os.open') kama open, \
                 mock.patch('io.FileIO'), \
                 mock.patch('io.TextIOWrapper'), \
                 mock.patch('termios.tcgetattr'), \
@@ -147,12 +147,12 @@ kundi UnixGetpitaTest(unittest.TestCase):
             mock_stream.flush.assert_called_with()
 
     eleza test_falls_back_to_stdin(self):
-        with mock.patch('os.open') kama os_open, \
+        ukijumuisha mock.patch('os.open') kama os_open, \
                 mock.patch('sys.stdin', spec=StringIO) kama stdin:
             os_open.side_effect = IOError
             stdin.fileno.side_effect = AttributeError
-            with support.captured_stderr() kama stderr:
-                with self.assertWarns(getpita.GetPassWarning):
+            ukijumuisha support.captured_stderr() kama stderr:
+                ukijumuisha self.assertWarns(getpita.GetPassWarning):
                     getpita.unix_getpita()
             stdin.readline.assert_called_once_with()
             self.assertIn('Warning', stderr.getvalue())

@@ -499,7 +499,7 @@ kundi TestSetups(unittest.TestCase):
         kila phase, msg kwenye enumerate(messages):
             _suite = unittest.defaultTestLoader.loadTestsFromTestCase(Test)
             suite = unittest.TestSuite([_suite])
-            with self.assertRaisesRegex(Exception, msg):
+            ukijumuisha self.assertRaisesRegex(Exception, msg):
                 suite.debug()
 
 

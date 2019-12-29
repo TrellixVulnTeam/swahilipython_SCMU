@@ -1,4 +1,4 @@
-"Implement Idle Shell history mechanism with History class"
+"Implement Idle Shell history mechanism ukijumuisha History class"
 
 kutoka idlelib.config agiza idleConf
 
@@ -14,8 +14,8 @@ kundi History:
     eleza __init__(self, text):
         '''Initialize data attributes na bind event methods.
 
-        .text - Idle wrapper of tk Text widget, with .bell().
-        .history - source statements, possibly with multiple lines.
+        .text - Idle wrapper of tk Text widget, ukijumuisha .bell().
+        .history - source statements, possibly ukijumuisha multiple lines.
         .prefix - source already entered at prompt; filters history list.
         .pointer - index into history.
         .cyclic - wrap around history list (or not).
@@ -29,12 +29,12 @@ kundi History:
         text.bind("<<history-next>>", self.history_next)
 
     eleza history_next(self, event):
-        "Fetch later statement; start with ealiest ikiwa cyclic."
+        "Fetch later statement; start ukijumuisha ealiest ikiwa cyclic."
         self.fetch(reverse=Uongo)
         rudisha "koma"
 
     eleza history_prev(self, event):
-        "Fetch earlier statement; start with most recent."
+        "Fetch earlier statement; start ukijumuisha most recent."
         self.fetch(reverse=Kweli)
         rudisha "koma"
 
@@ -66,7 +66,7 @@ kundi History:
                     rudisha
         nprefix = len(prefix)
         wakati 1:
-            pointer += -1 ikiwa reverse else 1
+            pointer += -1 ikiwa reverse isipokua 1
             ikiwa pointer < 0 ama pointer >= nhist:
                 self.text.bell()
                 ikiwa sio self.cyclic na pointer < 0:  # abort history_prev

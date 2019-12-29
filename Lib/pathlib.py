@@ -106,7 +106,7 @@ kundi _Flavour(object):
         ikiwa root2:
             ikiwa sio drv2 na drv:
                 rudisha drv, root2, [drv + root2] + parts2[1:]
-        elikiwa drv2:
+        lasivyo drv2:
             ikiwa drv2 == drv ama self.casefold(drv2) == self.casefold(drv):
                 # Same drive => second path ni relative to the first
                 rudisha drv, root, parts + parts2[1:]
@@ -252,9 +252,9 @@ kundi _WindowsFlavour(_Flavour):
     eleza gethomedir(self, username):
         ikiwa 'HOME' kwenye os.environ:
             userhome = os.environ['HOME']
-        elikiwa 'USERPROFILE' kwenye os.environ:
+        lasivyo 'USERPROFILE' kwenye os.environ:
             userhome = os.environ['USERPROFILE']
-        elikiwa 'HOMEPATH' kwenye os.environ:
+        lasivyo 'HOMEPATH' kwenye os.environ:
             jaribu:
                 drv = os.environ['HOMEDRIVE']
             tatizo KeyError:
@@ -293,7 +293,7 @@ kundi _PosixFlavour(_Flavour):
             stripped_part = part.lstrip(sep)
             # According to POSIX path resolution:
             # http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap04.html#tag_04_11
-            # "A pathname that begins with two successive slashes may be
+            # "A pathname that begins ukijumuisha two successive slashes may be
             # interpreted kwenye an implementation-defined manner, although more
             # than two leading slashes shall be treated kama a single slash".
             ikiwa len(part) - len(stripped_part) == 2:
@@ -351,7 +351,7 @@ kundi _PosixFlavour(_Flavour):
             rudisha path
         # NOTE: according to POSIX, getcwd() cannot contain path components
         # which are symlinks.
-        base = '' ikiwa path.is_absolute() else os.getcwd()
+        base = '' ikiwa path.is_absolute() isipokua os.getcwd()
         rudisha _resolve(base, str(path)) ama sep
 
     eleza is_reserved(self, parts):
@@ -451,9 +451,9 @@ eleza _make_selector(pattern_parts):
     child_parts = pattern_parts[1:]
     ikiwa pat == '**':
         cls = _RecursiveWildcardSelector
-    elikiwa '**' kwenye pat:
+    lasivyo '**' kwenye pat:
         ashiria ValueError("Invalid pattern: '**' can only be an entire path component")
-    elikiwa _is_wildcard_pattern(pat):
+    lasivyo _is_wildcard_pattern(pat):
         cls = _WildcardSelector
     isipokua:
         cls = _PreciseSelector
@@ -503,7 +503,7 @@ kundi _PreciseSelector(_Selector):
     eleza _select_kutoka(self, parent_path, is_dir, exists, scandir):
         jaribu:
             path = parent_path._make_child_relpath(self.name)
-            ikiwa (is_dir ikiwa self.dironly else exists)(path):
+            ikiwa (is_dir ikiwa self.dironly isipokua exists)(path):
                 kila p kwenye self.successor._select_kutoka(path, is_dir, exists, scandir):
                     tuma p
         tatizo PermissionError:
@@ -631,7 +631,7 @@ kundi PurePath(object):
         new PurePath object.
         """
         ikiwa cls ni PurePath:
-            cls = PureWindowsPath ikiwa os.name == 'nt' else PurePosixPath
+            cls = PureWindowsPath ikiwa os.name == 'nt' isipokua PurePosixPath
         rudisha cls._kutoka_parts(args)
 
     eleza __reduce__(self):
@@ -713,7 +713,7 @@ kundi PurePath(object):
         rudisha str(self)
 
     eleza as_posix(self):
-        """Return the string representation of the path with forward (/)
+        """Return the string representation of the path ukijumuisha forward (/)
         slashes."""
         f = self._flavour
         rudisha str(self).replace(f.sep, '/')
@@ -789,7 +789,7 @@ kundi PurePath(object):
     eleza name(self):
         """The final path component, ikiwa any."""
         parts = self._parts
-        ikiwa len(parts) == (1 ikiwa (self._drv ama self._root) else 0):
+        ikiwa len(parts) == (1 ikiwa (self._drv ama self._root) isipokua 0):
             rudisha ''
         rudisha parts[-1]
 
@@ -823,7 +823,7 @@ kundi PurePath(object):
             rudisha name
 
     eleza with_name(self, name):
-        """Return a new path with the file name changed."""
+        """Return a new path ukijumuisha the file name changed."""
         ikiwa sio self.name:
             ashiria ValueError("%r has an empty name" % (self,))
         drv, root, parts = self._flavour.parse_parts((name,))
@@ -834,7 +834,7 @@ kundi PurePath(object):
                                        self._parts[:-1] + [name])
 
     eleza with_suffix(self, suffix):
-        """Return a new path with the file suffix changed.  If the path
+        """Return a new path ukijumuisha the file suffix changed.  If the path
         has no suffix, add given suffix.  If the given suffix ni an empty
         string, remove the suffix kutoka the path.
         """
@@ -879,11 +879,11 @@ kundi PurePath(object):
             to_abs_parts = to_parts
         n = len(to_abs_parts)
         cf = self._flavour.casefold_parts
-        ikiwa (root ama drv) ikiwa n == 0 else cf(abs_parts[:n]) != cf(to_abs_parts):
+        ikiwa (root ama drv) ikiwa n == 0 isipokua cf(abs_parts[:n]) != cf(to_abs_parts):
             formatted = self._format_parsed_parts(to_drv, to_root, to_parts)
-            ashiria ValueError("{!r} does sio start with {!r}"
+            ashiria ValueError("{!r} does sio start ukijumuisha {!r}"
                              .format(str(self), str(formatted)))
-        rudisha self._kutoka_parsed_parts('', root ikiwa n == 1 else '',
+        rudisha self._kutoka_parsed_parts('', root ikiwa n == 1 isipokua '',
                                        abs_parts[n:])
 
     @property
@@ -899,7 +899,7 @@ kundi PurePath(object):
             rudisha self._pparts
 
     eleza joinpath(self, *args):
-        """Combine this path with one ama several arguments, na rudisha a
+        """Combine this path ukijumuisha one ama several arguments, na rudisha a
         new path representing either a subpath (ikiwa all arguments are relative
         paths) ama a totally different path (ikiwa one of the arguments is
         anchored).
@@ -963,7 +963,7 @@ kundi PurePath(object):
             ikiwa len(pat_parts) != len(parts):
                 rudisha Uongo
             pat_parts = pat_parts[1:]
-        elikiwa len(pat_parts) > len(parts):
+        lasivyo len(pat_parts) > len(parts):
             rudisha Uongo
         kila part, pat kwenye zip(reversed(parts), reversed(pat_parts)):
             ikiwa sio fnmatch.fnmatchcase(part, pat):
@@ -1014,7 +1014,7 @@ kundi Path(PurePath):
 
     eleza __new__(cls, *args, **kwargs):
         ikiwa cls ni Path:
-            cls = WindowsPath ikiwa os.name == 'nt' else PosixPath
+            cls = WindowsPath ikiwa os.name == 'nt' isipokua PosixPath
         self = cls._kutoka_parts(args, init=Uongo)
         ikiwa sio self._flavour.is_supported:
             ashiria NotImplementedError("cannot instantiate %r on your system"
@@ -1204,14 +1204,14 @@ kundi Path(PurePath):
         """
         Open the file kwenye bytes mode, read it, na close the file.
         """
-        with self.open(mode='rb') kama f:
+        ukijumuisha self.open(mode='rb') kama f:
             rudisha f.read()
 
     eleza read_text(self, encoding=Tupu, errors=Tupu):
         """
         Open the file kwenye text mode, read it, na close the file.
         """
-        with self.open(mode='r', encoding=encoding, errors=errors) kama f:
+        ukijumuisha self.open(mode='r', encoding=encoding, errors=errors) kama f:
             rudisha f.read()
 
     eleza write_bytes(self, data):
@@ -1220,7 +1220,7 @@ kundi Path(PurePath):
         """
         # type-check kila the buffer interface before truncating the file
         view = memoryview(data)
-        with self.open(mode='wb') kama f:
+        ukijumuisha self.open(mode='wb') kama f:
             rudisha f.write(view)
 
     eleza write_text(self, data, encoding=Tupu, errors=Tupu):
@@ -1230,12 +1230,12 @@ kundi Path(PurePath):
         ikiwa sio isinstance(data, str):
             ashiria TypeError('data must be str, sio %s' %
                             data.__class__.__name__)
-        with self.open(mode='w', encoding=encoding, errors=errors) kama f:
+        ukijumuisha self.open(mode='w', encoding=encoding, errors=errors) kama f:
             rudisha f.write(data)
 
     eleza touch(self, mode=0o666, exist_ok=Kweli):
         """
-        Create this file with the given access mode, ikiwa it doesn't exist.
+        Create this file ukijumuisha the given access mode, ikiwa it doesn't exist.
         """
         ikiwa self._closed:
             self._ashiria_closed()
@@ -1511,7 +1511,7 @@ kundi Path(PurePath):
             rudisha Uongo
 
     eleza expanduser(self):
-        """ Return a new path with expanded ~ na ~user constructs
+        """ Return a new path ukijumuisha expanded ~ na ~user constructs
         (as rudishaed by os.path.expanduser)
         """
         ikiwa (not (self._drv ama self._root) and

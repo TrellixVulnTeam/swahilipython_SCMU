@@ -17,7 +17,7 @@ kundi lllTests(unittest.TestCase):
 
     @support.skip_unless_symlink
     eleza test_lll_multiple_dirs(self):
-        with tempfile.TemporaryDirectory() kama dir1, \
+        ukijumuisha tempfile.TemporaryDirectory() kama dir1, \
              tempfile.TemporaryDirectory() kama dir2:
             fn1 = os.path.join(dir1, 'foo1')
             fn2 = os.path.join(dir2, 'foo2')
@@ -25,9 +25,9 @@ kundi lllTests(unittest.TestCase):
                 open(fn, 'w').close()
                 os.symlink(fn, os.path.join(dir, 'symlink'))
 
-            with support.captured_stdout() kama output:
+            ukijumuisha support.captured_stdout() kama output:
                 self.lll.main([dir1, dir2])
-            prefix = '\\\\?\\' ikiwa os.name == 'nt' else ''
+            prefix = '\\\\?\\' ikiwa os.name == 'nt' isipokua ''
             self.assertEqual(output.getvalue(),
                 f'{dir1}:\n'
                 f'symlink -> {prefix}{fn1}\n'

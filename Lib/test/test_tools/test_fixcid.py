@@ -60,9 +60,9 @@ kundi Test(unittest.TestCase):
         os.mkdir(support.TESTFN)
         self.addCleanup(support.rmtree, support.TESTFN)
         c_filename = os.path.join(support.TESTFN, "file.c")
-        with open(c_filename, "w") kama file:
+        ukijumuisha open(c_filename, "w") kama file:
             file.write("int xx;\n")
-        with open(os.path.join(support.TESTFN, "file.py"), "w") kama file:
+        ukijumuisha open(os.path.join(support.TESTFN, "file.py"), "w") kama file:
             file.write("xx = 'unaltered'\n")
         script = os.path.join(scriptsdir, "fixcid.py")
         output = self.run_script(args=(support.TESTFN,))
@@ -75,13 +75,13 @@ kundi Test(unittest.TestCase):
 
     eleza run_script(self, input="", *, args=("-",), substfile="xx yy\n"):
         substfilename = support.TESTFN + ".subst"
-        with open(substfilename, "w") kama file:
+        ukijumuisha open(substfilename, "w") kama file:
             file.write(substfile)
         self.addCleanup(support.unlink, substfilename)
 
         argv = ["fixcid.py", "-s", substfilename] + list(args)
         script = os.path.join(scriptsdir, "fixcid.py")
-        with support.swap_attr(sys, "argv", argv), \
+        ukijumuisha support.swap_attr(sys, "argv", argv), \
                 support.swap_attr(sys, "stdin", StringIO(input)), \
                 support.captured_stdout() kama output, \
                 support.captured_stderr():

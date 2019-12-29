@@ -469,23 +469,23 @@ kundi OutputTestCase(unittest.TestCase):
         )
 
     eleza test_prweek(self):
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             week = [(1,0), (2,1), (3,2), (4,3), (5,4), (6,5), (7,6)]
             calendar.TextCalendar().prweek(week, 1)
             self.assertEqual(out.getvalue(), " 1  2  3  4  5  6  7")
 
     eleza test_prmonth(self):
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.TextCalendar().prmonth(2004, 1)
             self.assertEqual(out.getvalue(), result_2004_01_text)
 
     eleza test_pryear(self):
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.TextCalendar().pryear(2004)
             self.assertEqual(out.getvalue(), result_2004_text)
 
     eleza test_format(self):
-        with support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
@@ -512,7 +512,7 @@ kundi CalendarTestCase(unittest.TestCase):
         calendar.setfirstweekday(orig)
 
     eleza test_illegal_weekday_reported(self):
-        with self.assertRaisesRegex(calendar.IllegalWeekdayError, '123'):
+        ukijumuisha self.assertRaisesRegex(calendar.IllegalWeekdayError, '123'):
             calendar.setfirstweekday(123)
 
     eleza test_enumerate_weekdays(self):
@@ -753,16 +753,16 @@ kundi MonthRangeTestCase(unittest.TestCase):
 
     eleza test_zeroth_month(self):
         # Tests low invalid boundary case.
-        with self.assertRaises(calendar.IllegalMonthError):
+        ukijumuisha self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 0)
 
     eleza test_thirteenth_month(self):
         # Tests high invalid boundary case.
-        with self.assertRaises(calendar.IllegalMonthError):
+        ukijumuisha self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 13)
 
     eleza test_illegal_month_reported(self):
-        with self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
+        ukijumuisha self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
             calendar.monthrange(2004, 65)
 
 kundi LeapdaysTestCase(unittest.TestCase):

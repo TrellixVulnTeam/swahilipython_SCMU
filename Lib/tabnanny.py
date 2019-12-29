@@ -165,7 +165,7 @@ kundi Whitespace:
             ikiwa ch == S:
                 n = n + 1
                 b = b + 1
-            elikiwa ch == T:
+            lasivyo ch == T:
                 n = n + 1
                 nt = nt + 1
                 ikiwa b >= len(count):
@@ -291,7 +291,7 @@ eleza process_tokens(tokens):
             # be undone when we see the INDENT.
             check_equal = 1
 
-        elikiwa type == INDENT:
+        lasivyo type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
             ikiwa sio indents[-1].less(thisguy):
@@ -300,7 +300,7 @@ eleza process_tokens(tokens):
                 ashiria NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
-        elikiwa type == DEDENT:
+        lasivyo type == DEDENT:
             # there's nothing we need to check here!  what's agizaant is
             # that when the run of DEDENTs ends, the indentation of the
             # program statement (or ENDMARKER) that triggered the run is
@@ -309,17 +309,17 @@ eleza process_tokens(tokens):
             # Ouch!  This assert triggers ikiwa the last line of the source
             # ni indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
-            # assert check_equal  # else no earlier NEWLINE, ama an earlier INDENT
+            # assert check_equal  # isipokua no earlier NEWLINE, ama an earlier INDENT
             check_equal = 1
 
             toa indents[-1]
 
-        elikiwa check_equal na type haiko kwenye JUNK:
+        lasivyo check_equal na type haiko kwenye JUNK:
             # this ni the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, ama an
             # ENDMARKER; the "line" argument exposes the leading whitespace
             # kila this statement; kwenye the case of ENDMARKER, line ni an empty
-            # string, so will properly match the empty string with which the
+            # string, so will properly match the empty string ukijumuisha which the
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)

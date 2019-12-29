@@ -16,7 +16,7 @@ backslash on Windows) it ni treated kama the path to a Python source file.
 Run "pydoc -k <keyword>" to search kila a keyword kwenye the synopsis lines
 of all available modules.
 
-Run "pydoc -n <hostname>" to start an HTTP server with the given
+Run "pydoc -n <hostname>" to start an HTTP server ukijumuisha the given
 hostname (default: localhost) on the local machine.
 
 Run "pydoc -p <port>" to start an HTTP server on the given port on the
@@ -51,7 +51,7 @@ Richard Chamberlain, kila the first implementation of textdoc.
 #   - synopsis() cannot be prevented kutoka clobbering existing
 #     loaded modules.
 #   - If the __file__ attribute on a module ni a relative path and
-#     the current directory ni changed with os.chdir(), an incorrect
+#     the current directory ni changed ukijumuisha os.chdir(), an incorrect
 #     path will be displayed.
 
 agiza builtins
@@ -99,12 +99,12 @@ eleza splitdoc(doc):
     lines = doc.strip().split('\n')
     ikiwa len(lines) == 1:
         rudisha lines[0], ''
-    elikiwa len(lines) >= 2 na sio lines[1].rstrip():
+    lasivyo len(lines) >= 2 na sio lines[1].rstrip():
         rudisha lines[0], '\n'.join(lines[2:])
     rudisha '', '\n'.join(lines)
 
 eleza classname(object, modname):
-    """Get a kundi name na qualify it with a module name ikiwa necessary."""
+    """Get a kundi name na qualify it ukijumuisha a module name ikiwa necessary."""
     name = object.__name__
     ikiwa object.__module__ != modname:
         name = object.__module__ + '.' + name
@@ -188,7 +188,7 @@ eleza visiblename(name, all=Tupu, obj=Tupu):
         rudisha 0
     # Private names are hidden, but special names are displayed.
     ikiwa name.startswith('__') na name.endswith('__'): rudisha 1
-    # Namedtuples have public fields na methods with a single leading underscore
+    # Namedtuples have public fields na methods ukijumuisha a single leading underscore
     ikiwa name.startswith('_') na hasattr(obj, '_fields'):
         rudisha Kweli
     ikiwa all ni sio Tupu:
@@ -198,7 +198,7 @@ eleza visiblename(name, all=Tupu, obj=Tupu):
         rudisha sio name.startswith('_')
 
 eleza classify_class_attrs(object):
-    """Wrap inspect.classify_class_attrs, with fixup kila data descriptors."""
+    """Wrap inspect.classify_class_attrs, ukijumuisha fixup kila data descriptors."""
     results = []
     kila (name, kind, cls, value) kwenye inspect.classify_class_attrs(object):
         ikiwa inspect.isdatadescriptor(value):
@@ -255,7 +255,7 @@ eleza synopsis(filename, cache={}):
         # Look kila binary suffixes first, falling back to source.
         ikiwa filename.endswith(tuple(importlib.machinery.BYTECODE_SUFFIXES)):
             loader_cls = importlib.machinery.SourcelessFileLoader
-        elikiwa filename.endswith(tuple(importlib.machinery.EXTENSION_SUFFIXES)):
+        lasivyo filename.endswith(tuple(importlib.machinery.EXTENSION_SUFFIXES)):
             loader_cls = importlib.machinery.ExtensionFileLoader
         isipokua:
             loader_cls = Tupu
@@ -268,7 +268,7 @@ eleza synopsis(filename, cache={}):
                 # module can't be opened, so skip it
                 rudisha Tupu
             # text modules can be directly examined
-            with file:
+            ukijumuisha file:
                 result = source_synopsis(file)
         isipokua:
             # Must be a binary module, which has to be imported.
@@ -281,7 +281,7 @@ eleza synopsis(filename, cache={}):
             except:
                 rudisha Tupu
             toa sys.modules['__temp__']
-            result = module.__doc__.splitlines()[0] ikiwa module.__doc__ else Tupu
+            result = module.__doc__.splitlines()[0] ikiwa module.__doc__ isipokua Tupu
         # Cache the result.
         cache[filename] = (mtime, result)
     rudisha result
@@ -299,7 +299,7 @@ kundi ErrorDuringImport(Exception):
 eleza agizafile(path):
     """Import a Python source file ama compiled file given its path."""
     magic = importlib.util.MAGIC_NUMBER
-    with open(path, 'rb') kama file:
+    ukijumuisha open(path, 'rb') kama file:
         is_bytecode = magic == file.read(len(magic))
     filename = os.path.basename(path)
     name, ext = os.path.splitext(filename)
@@ -330,7 +330,7 @@ eleza safeagiza(path, forceload=0, cache={}):
         ikiwa forceload na path kwenye sys.modules:
             ikiwa path haiko kwenye sys.builtin_module_names:
                 # Remove the module kutoka sys.modules na re-agiza to try
-                # na avoid problems with partially loaded modules.
+                # na avoid problems ukijumuisha partially loaded modules.
                 # Also remove any submodules because they won't appear
                 # kwenye the newly loaded module's namespace ikiwa they're already
                 # kwenye sys.modules.
@@ -346,10 +346,10 @@ eleza safeagiza(path, forceload=0, cache={}):
         ikiwa path kwenye sys.modules:
             # An error occurred wakati executing the imported module.
             ashiria ErrorDuringImport(sys.modules[path].__file__, info)
-        elikiwa exc ni SyntaxError:
+        lasivyo exc ni SyntaxError:
             # A SyntaxError occurred before we could execute the module.
             ashiria ErrorDuringImport(value.filename, info)
-        elikiwa issubclass(exc, ImportError) na value.name == path:
+        lasivyo issubclass(exc, ImportError) na value.name == path:
             # No such module kwenye the path.
             rudisha Tupu
         isipokua:
@@ -496,7 +496,7 @@ kundi HTMLDoc(Doc):
 
     eleza section(self, title, fgcol, bgcol, contents, width=6,
                 prelude='', marginalia=Tupu, gap='&nbsp;'):
-        """Format a section with a heading."""
+        """Format a section ukijumuisha a heading."""
         ikiwa marginalia ni Tupu:
             marginalia = '<tt>' + '&nbsp;' * width + '</tt>'
         result = '''<p>
@@ -517,7 +517,7 @@ kundi HTMLDoc(Doc):
         rudisha result + '\n<td width="100%%">%s</td></tr></table>' % contents
 
     eleza bigsection(self, title, *args):
-        """Format a section with a big heading."""
+        """Format a section ukijumuisha a big heading."""
         title = '<big><strong>%s</strong></big>' % title
         rudisha self.section(title, *args)
 
@@ -599,20 +599,20 @@ kundi HTMLDoc(Doc):
             ikiwa scheme:
                 url = escape(all).replace('"', '&quot;')
                 results.append('<a href="%s">%s</a>' % (url, url))
-            elikiwa rfc:
+            lasivyo rfc:
                 url = 'http://www.rfc-editor.org/rfc/rfc%d.txt' % int(rfc)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa pep:
+            lasivyo pep:
                 url = 'http://www.python.org/dev/peps/pep-%04d/' % int(pep)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa selfdot:
+            lasivyo selfdot:
                 # Create a link kila methods like 'self.method(...)'
                 # na use <strong> kila attributes like 'self.attr'
                 ikiwa text[end:end+1] == '(':
                     results.append('self.' + self.namelink(name, methods))
                 isipokua:
                     results.append('self.<strong>%s</strong>' % name)
-            elikiwa text[end:end+1] == '(':
+            lasivyo text[end:end+1] == '(':
                 results.append(self.namelink(name, methods, funcs, classes))
             isipokua:
                 results.append(self.namelink(name, classes))
@@ -636,7 +636,7 @@ kundi HTMLDoc(Doc):
                         parents.append(self.classlink(base, modname))
                     result = result + '(' + ', '.join(parents) + ')'
                 result = result + '\n</font></dt>'
-            elikiwa type(entry) ni type([]):
+            lasivyo type(entry) ni type([]):
                 result = result + '<dd>\n%s</dd>\n' % self.formattree(
                     entry, modname, c)
         rudisha '<dl>\n%s</dl>\n' % result
@@ -725,7 +725,7 @@ kundi HTMLDoc(Doc):
             contents = self.multicolumn(modpkgs, self.modpkglink)
             result = result + self.bigsection(
                 'Package Contents', '#ffffff', '#aa55cc', contents)
-        elikiwa modules:
+        lasivyo modules:
             contents = self.multicolumn(
                 modules, lambda t: self.modulelink(t[1]))
             result = result + self.bigsection(
@@ -870,7 +870,7 @@ kundi HTMLDoc(Doc):
             ikiwa object ni sio builtins.object na thiskundi ni builtins.object:
                 attrs = inherited
                 endelea
-            elikiwa thiskundi ni object:
+            lasivyo thiskundi ni object:
                 tag = 'defined here'
             isipokua:
                 tag = 'inherited kutoka %s' % self.classlink(thisclass,
@@ -1086,7 +1086,7 @@ kundi TextDoc(Doc):
         rudisha '\n'.join(lines)
 
     eleza section(self, title, contents):
-        """Format a section with a given heading."""
+        """Format a section ukijumuisha a given heading."""
         clean_contents = self.indent(contents).rstrip()
         rudisha self.bold(title) + '\n' + clean_contents + '\n\n'
 
@@ -1103,7 +1103,7 @@ kundi TextDoc(Doc):
                     parents = (classname(c, modname) kila c kwenye bases)
                     result = result + '(%s)' % ', '.join(parents)
                 result = result + '\n'
-            elikiwa type(entry) ni type([]):
+            lasivyo type(entry) ni type([]):
                 result = result + self.formattree(
                     entry, modname, c, prefix + '    ')
         rudisha result
@@ -1336,7 +1336,7 @@ location listed above.
             ikiwa object ni sio builtins.object na thiskundi ni builtins.object:
                 attrs = inherited
                 endelea
-            elikiwa thiskundi ni object:
+            lasivyo thiskundi ni object:
                 tag = "defined here"
             isipokua:
                 tag = "inherited kutoka %s" % classname(thisclass,
@@ -1478,7 +1478,7 @@ eleza getpager():
     ikiwa use_pager:
         ikiwa sys.platform == 'win32': # pipes completely broken kwenye Windows
             rudisha lambda text: tempfilepager(plain(text), use_pager)
-        elikiwa os.environ.get('TERM') kwenye ('dumb', 'emacs'):
+        lasivyo os.environ.get('TERM') kwenye ('dumb', 'emacs'):
             rudisha lambda text: pipepager(plain(text), use_pager)
         isipokua:
             rudisha lambda text: pipepager(text, use_pager)
@@ -1509,7 +1509,7 @@ eleza pipepager(text, cmd):
     agiza subprocess
     proc = subprocess.Popen(cmd, shell=Kweli, stdin=subprocess.PIPE)
     jaribu:
-        with io.TextIOWrapper(proc.stdin, errors='backslashreplace') kama pipe:
+        ukijumuisha io.TextIOWrapper(proc.stdin, errors='backslashreplace') kama pipe:
             jaribu:
                 pipe.write(text)
             tatizo KeyboardInterrupt:
@@ -1531,7 +1531,7 @@ eleza tempfilepager(text, cmd):
     """Page through text by invoking a program on a temporary file."""
     agiza tempfile
     filename = tempfile.mktemp()
-    with open(filename, 'w', errors='backslashreplace') kama file:
+    ukijumuisha open(filename, 'w', errors='backslashreplace') kama file:
         file.write(text)
     jaribu:
         os.system(cmd + ' "' + filename + '"')
@@ -1573,7 +1573,7 @@ eleza ttypager(text):
             ikiwa c kwenye ('q', 'Q'):
                 sys.stdout.write('\r          \r')
                 koma
-            elikiwa c kwenye ('\r', '\n'):
+            lasivyo c kwenye ('\r', '\n'):
                 sys.stdout.write('\r          \r' + lines[r] + '\n')
                 r = r + 1
                 endelea
@@ -1655,7 +1655,7 @@ Use help(str) kila help on the str class.''' % thing)
         rudisha object, thing
     isipokua:
         name = getattr(thing, '__name__', Tupu)
-        rudisha thing, name ikiwa isinstance(name, str) else Tupu
+        rudisha thing, name ikiwa isinstance(name, str) isipokua Tupu
 
 eleza render_doc(thing, title='Python Library Documentation: %s', forceload=0,
         renderer=Tupu):
@@ -1667,7 +1667,7 @@ eleza render_doc(thing, title='Python Library Documentation: %s', forceload=0,
     module = inspect.getmodule(object)
     ikiwa name na '.' kwenye name:
         desc += ' kwenye ' + name[:name.rfind('.')]
-    elikiwa module na module ni sio object:
+    lasivyo module na module ni sio object:
         desc += ' kwenye module ' + module.__name__
 
     ikiwa sio (inspect.ismodule(object) or
@@ -1696,7 +1696,7 @@ eleza writedoc(thing, forceload=0):
     jaribu:
         object, name = resolve(thing, forceload)
         page = html.page(describe(object), html.document(object, name))
-        with open(name + '.html', 'w', encoding='utf-8') kama file:
+        ukijumuisha open(name + '.html', 'w', encoding='utf-8') kama file:
             file.write(page)
         andika('wrote', name + '.html')
     tatizo (ImportError, ErrorDuringImport) kama value:
@@ -1951,20 +1951,20 @@ has the same effect kama typing a particular string at the help> prompt.
         ikiwa type(request) ni type(''):
             request = request.strip()
             ikiwa request == 'keywords': self.listkeywords()
-            elikiwa request == 'symbols': self.listsymbols()
-            elikiwa request == 'topics': self.listtopics()
-            elikiwa request == 'modules': self.listmodules()
-            elikiwa request[:8] == 'modules ':
+            lasivyo request == 'symbols': self.listsymbols()
+            lasivyo request == 'topics': self.listtopics()
+            lasivyo request == 'modules': self.listmodules()
+            lasivyo request[:8] == 'modules ':
                 self.listmodules(request.split()[1])
-            elikiwa request kwenye self.symbols: self.showsymbol(request)
-            elikiwa request kwenye ['Kweli', 'Uongo', 'Tupu']:
+            lasivyo request kwenye self.symbols: self.showsymbol(request)
+            lasivyo request kwenye ['Kweli', 'Uongo', 'Tupu']:
                 # special case these keywords since they are objects too
                 doc(eval(request), 'Help on %s:')
-            elikiwa request kwenye self.keywords: self.showtopic(request)
-            elikiwa request kwenye self.topics: self.showtopic(request)
-            elikiwa request: doc(request, 'Help on %s:', output=self._output)
+            lasivyo request kwenye self.keywords: self.showtopic(request)
+            lasivyo request kwenye self.topics: self.showtopic(request)
+            lasivyo request: doc(request, 'Help on %s:', output=self._output)
             isipokua: doc(str, 'Help on %s:', output=self._output)
-        elikiwa isinstance(request, Helper): self()
+        lasivyo isinstance(request, Helper): self()
         isipokua: doc(request, 'Help on %s:', output=self._output)
         self.output.write('\n')
 
@@ -1981,7 +1981,7 @@ rudisha to the interpreter, just type "quit".
 
 To get a list of available modules, keywords, symbols, ama topics, type
 "modules", "keywords", "symbols", ama "topics".  Each module also comes
-with a one-line summary of what it does; to list the modules whose name
+ukijumuisha a one-line summary of what it does; to list the modules whose name
 or summary contain a given string such kama "spam", type "modules spam".
 '''.format('%d.%d' % sys.version_info[:2]))
 
@@ -2166,7 +2166,7 @@ kundi ModuleScanner:
                         ikiwa onerror:
                             onerror(modname)
                         endelea
-                    desc = module.__doc__.splitlines()[0] ikiwa module.__doc__ else ''
+                    desc = module.__doc__.splitlines()[0] ikiwa module.__doc__ isipokua ''
                     path = getattr(module,'__file__',Tupu)
                 name = modname + ' - ' + desc
                 ikiwa name.lower().find(key) >= 0:
@@ -2183,7 +2183,7 @@ eleza apropos(key):
         andika(modname, desc na '- ' + desc)
     eleza onerror(modname):
         pita
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore') # ignore problems during agiza
         ModuleScanner().run(callback, key, onerror=onerror)
 
@@ -2193,7 +2193,7 @@ eleza _start_server(urlhandler, hostname, port):
     """Start an HTTP server thread on a specific port.
 
     Start an HTML/text server thread, so HTML ama text documents can be
-    browsed dynamically na interactively with a Web browser.  Example use:
+    browsed dynamically na interactively ukijumuisha a Web browser.  Example use:
 
         >>> agiza time
         >>> agiza pydoc
@@ -2342,7 +2342,7 @@ eleza _start_server(urlhandler, hostname, port):
 
 
 eleza _url_handler(url, content_type="text/html"):
-    """The pydoc url handler kila use with the pydoc server.
+    """The pydoc url handler kila use ukijumuisha the pydoc server.
 
     If the content_type ni 'text/css', the _pydoc.css style
     sheet ni read na rudishaed ikiwa it exits.
@@ -2433,7 +2433,7 @@ eleza _url_handler(url, content_type="text/html"):
                 modname = modname[:-9] + ' (package)'
             search_result.append((modname, desc na '- ' + desc))
 
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings('ignore') # ignore problems during agiza
             eleza onerror(modname):
                 pita
@@ -2456,7 +2456,7 @@ eleza _url_handler(url, content_type="text/html"):
     eleza html_getfile(path):
         """Get na display a source file listing safely."""
         path = urllib.parse.unquote(path)
-        with tokenize.open(path) kama fp:
+        ukijumuisha tokenize.open(path) kama fp:
             lines = html.escape(fp.read())
         body = '<pre>%s</pre>' % lines
         heading = html.heading(
@@ -2549,23 +2549,23 @@ eleza _url_handler(url, content_type="text/html"):
         jaribu:
             ikiwa url kwenye ("", "index"):
                 title, content = html_index()
-            elikiwa url == "topics":
+            lasivyo url == "topics":
                 title, content = html_topics()
-            elikiwa url == "keywords":
+            lasivyo url == "keywords":
                 title, content = html_keywords()
-            elikiwa '=' kwenye url:
+            lasivyo '=' kwenye url:
                 op, _, url = url.partition('=')
                 ikiwa op == "search?key":
                     title, content = html_search(url)
-                elikiwa op == "getfile?key":
+                lasivyo op == "getfile?key":
                     title, content = html_getfile(url)
-                elikiwa op == "topic?key":
+                lasivyo op == "topic?key":
                     # try topics first, then objects.
                     jaribu:
                         title, content = html_topicpage(url)
                     tatizo ValueError:
                         title, content = html_getobj(url)
-                elikiwa op == "get?key":
+                lasivyo op == "get?key":
                     # try objects first, then topics.
                     ikiwa url kwenye ("", "index"):
                         title, content = html_index()
@@ -2588,9 +2588,9 @@ eleza _url_handler(url, content_type="text/html"):
     ikiwa content_type == 'text/css':
         path_here = os.path.dirname(os.path.realpath(__file__))
         css_path = os.path.join(path_here, url)
-        with open(css_path) kama fp:
+        ukijumuisha open(css_path) kama fp:
             rudisha ''.join(fp.readlines())
-    elikiwa content_type == 'text/html':
+    lasivyo content_type == 'text/html':
         rudisha get_html_page(url)
     # Errors outside the url handler are caught by the server.
     ashiria TypeError('unknown content type %r kila url %s' % (content_type, url))
@@ -2619,7 +2619,7 @@ eleza browse(port=0, *, open_browser=Kweli, hostname='localhost'):
                 cmd = cmd.lower()
                 ikiwa cmd == 'q':
                     koma
-                elikiwa cmd == 'b':
+                lasivyo cmd == 'b':
                     webbrowser.open(serverthread.url)
                 isipokua:
                     andika(server_help_msg)
@@ -2644,7 +2644,7 @@ eleza _get_revised_path(given_path, argv0):
     Returns a new path entry list, ama Tupu ikiwa no adjustment ni needed.
     """
     # Scripts may get the current directory kwenye their path by default ikiwa they're
-    # run with the -m switch, ama directly kutoka the current directory.
+    # run ukijumuisha the -m switch, ama directly kutoka the current directory.
     # The interactive prompt also allows agizas kutoka the current directory.
 
     # Accordingly, ikiwa the current directory ni already present, don't make
@@ -2742,7 +2742,7 @@ eleza cli():
     Search kila a keyword kwenye the synopsis lines of all available modules.
 
 {cmd} -n <hostname>
-    Start an HTTP server with the given hostname (default: localhost).
+    Start an HTTP server ukijumuisha the given hostname (default: localhost).
 
 {cmd} -p <port>
     Start an HTTP server on the given port on the local machine.  Port
@@ -2751,7 +2751,7 @@ eleza cli():
 {cmd} -b
     Start an HTTP server on an arbitrary unused port na open a Web browser
     to interactively browse documentation.  This option can be used in
-    combination with -n and/or -p.
+    combination ukijumuisha -n and/or -p.
 
 {cmd} -w <name> ...
     Write out the HTML documentation kila a module to a file kwenye the current

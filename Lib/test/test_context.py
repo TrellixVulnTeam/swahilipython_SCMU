@@ -24,16 +24,16 @@ eleza isolated_context(func):
 
 kundi ContextTest(unittest.TestCase):
     eleza test_context_var_new_1(self):
-        with self.assertRaisesRegex(TypeError, 'takes exactly 1'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'takes exactly 1'):
             contextvars.ContextVar()
 
-        with self.assertRaisesRegex(TypeError, 'must be a str'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'must be a str'):
             contextvars.ContextVar(1)
 
         c = contextvars.ContextVar('aaa')
         self.assertEqual(c.name, 'aaa')
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             c.name = 'bbb'
 
         self.assertNotEqual(hash(c), hash('aaa'))
@@ -62,36 +62,36 @@ kundi ContextTest(unittest.TestCase):
         self.assertIn(' used ', repr(t))
 
     eleza test_context_subclassing_1(self):
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
                 pita
 
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContext(contextvars.Context):
                 pita
 
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyToken(contextvars.Token):
                 pita
 
     eleza test_context_new_1(self):
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(1)
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(1, a=1)
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(a=1)
         contextvars.Context(**{})
 
     eleza test_context_typerrors_1(self):
         ctx = contextvars.Context()
 
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx[1]
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             1 kwenye ctx
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx.get(1)
 
     eleza test_context_get_context_1(self):
@@ -101,7 +101,7 @@ kundi ContextTest(unittest.TestCase):
     eleza test_context_run_1(self):
         ctx = contextvars.Context()
 
-        with self.assertRaisesRegex(TypeError, 'missing 1 required'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'missing 1 required'):
             ctx.run()
 
     eleza test_context_run_2(self):
@@ -138,11 +138,11 @@ kundi ContextTest(unittest.TestCase):
         eleza func(*args, **kwargs):
             1 / 0
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             ctx.run(func)
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             ctx.run(func, 1, 2)
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             ctx.run(func, 1, 2, a=123)
 
     @isolated_context
@@ -179,7 +179,7 @@ kundi ContextTest(unittest.TestCase):
             var.set('spam')
             1 / 0
 
-        with self.assertRaises(ZeroDivisionError):
+        ukijumuisha self.assertRaises(ZeroDivisionError):
             ctx.run(func)
 
         self.assertIsTupu(var.get(Tupu))
@@ -202,7 +202,7 @@ kundi ContextTest(unittest.TestCase):
         ctx = contextvars.Context()
 
         eleza fun():
-            with self.assertRaisesRegex(RuntimeError, 'is already entered'):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, 'is already entered'):
                 ctx.run(fun)
 
         ctx.run(fun)
@@ -210,7 +210,7 @@ kundi ContextTest(unittest.TestCase):
     @isolated_context
     eleza test_context_getset_1(self):
         c = contextvars.ContextVar('c')
-        with self.assertRaises(LookupError):
+        ukijumuisha self.assertRaises(LookupError):
             c.get()
 
         self.assertIsTupu(c.get(Tupu))
@@ -232,7 +232,7 @@ kundi ContextTest(unittest.TestCase):
         self.assertEqual(c.get(Tupu), 42)
 
         c.set('spam2')
-        with self.assertRaisesRegex(RuntimeError, 'has already been used'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t)
         self.assertEqual(c.get(), 'spam2')
 
@@ -240,7 +240,7 @@ kundi ContextTest(unittest.TestCase):
         self.assertIn(c, ctx1)
 
         c.reset(t0)
-        with self.assertRaisesRegex(RuntimeError, 'has already been used'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t0)
         self.assertIsTupu(c.get(Tupu))
 
@@ -255,7 +255,7 @@ kundi ContextTest(unittest.TestCase):
 
         ctx2 = contextvars.copy_context()
         self.assertNotIn(c, ctx2)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             ctx2[c]
         self.assertEqual(ctx2.get(c, 'aa'), 'aa')
         self.assertEqual(len(ctx2), 0)
@@ -267,7 +267,7 @@ kundi ContextTest(unittest.TestCase):
         v2 = contextvars.ContextVar('v2')
 
         t1 = v1.set(42)
-        with self.assertRaisesRegex(ValueError, 'by a different'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'by a different'):
             v2.reset(t1)
 
     @isolated_context
@@ -277,7 +277,7 @@ kundi ContextTest(unittest.TestCase):
 
         eleza fun():
             self.assertEqual(c.get(), 42)
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 ctx[c]
             self.assertIsTupu(ctx.get(c))
             self.assertEqual(ctx.get(c, 'spam'), 'spam')
@@ -290,7 +290,7 @@ kundi ContextTest(unittest.TestCase):
 
             c.reset(t)
             self.assertEqual(list(ctx.keys()), [])
-            with self.assertRaises(KeyError):
+            ukijumuisha self.assertRaises(KeyError):
                 ctx[c]
 
         ctx.run(fun)
@@ -302,7 +302,7 @@ kundi ContextTest(unittest.TestCase):
 
         tok = ctx.run(c.set, 1)
 
-        with self.assertRaisesRegex(ValueError, 'different Context'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'different Context'):
             c.reset(tok)
 
     @isolated_context
@@ -551,15 +551,15 @@ kundi HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 ikiwa sio (i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=Kweli):
-                        with self.assertRaises(HashingError):
+                    ukijumuisha HaskKeyCrasher(error_on_hash=Kweli):
+                        ukijumuisha self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
                 ikiwa sio (i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=Kweli):
-                        with self.assertRaises(EqError):
+                    ukijumuisha HaskKeyCrasher(error_on_eq=Kweli):
+                        ukijumuisha self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
 
                 d[key] = i
@@ -580,13 +580,13 @@ kundi HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 ikiwa sio (iter_i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=Kweli):
-                        with self.assertRaises(HashingError):
+                    ukijumuisha HaskKeyCrasher(error_on_hash=Kweli):
+                        ukijumuisha self.assertRaises(HashingError):
                             h.delete(key)
 
                 ikiwa sio (iter_i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=Kweli):
-                        with self.assertRaises(EqError):
+                    ukijumuisha HaskKeyCrasher(error_on_eq=Kweli):
+                        ukijumuisha self.assertRaises(EqError):
                             h.delete(KeyStr(i))
 
                 h = h.delete(key)
@@ -654,7 +654,7 @@ kundi HamtTest(unittest.TestCase):
         h = h.delete(C)
         self.assertEqual(len(h), orig_len - 1)
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(D)
@@ -698,7 +698,7 @@ kundi HamtTest(unittest.TestCase):
         #             <Key name:B hash:201001>: 'b'
         #             <Key name:C hash:101001>: 'c'
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(Z)
@@ -972,10 +972,10 @@ kundi HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(Er, 'a')
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 == h2
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 != h2
 
     eleza test_hamt_gc_1(self):
@@ -1033,12 +1033,12 @@ kundi HamtTest(unittest.TestCase):
         self.assertKweli(A kwenye h)
         self.assertUongo(B kwenye h)
 
-        with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=Kweli):
+        ukijumuisha self.assertRaises(EqError):
+            ukijumuisha HaskKeyCrasher(error_on_eq=Kweli):
                 AA kwenye h
 
-        with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=Kweli):
+        ukijumuisha self.assertRaises(HashingError):
+            ukijumuisha HaskKeyCrasher(error_on_hash=Kweli):
                 AA kwenye h
 
     eleza test_hamt_getitem_1(self):
@@ -1053,15 +1053,15 @@ kundi HamtTest(unittest.TestCase):
         self.assertEqual(h[A], 1)
         self.assertEqual(h[AA], 1)
 
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             h[B]
 
-        with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=Kweli):
+        ukijumuisha self.assertRaises(EqError):
+            ukijumuisha HaskKeyCrasher(error_on_eq=Kweli):
                 h[AA]
 
-        with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=Kweli):
+        ukijumuisha self.assertRaises(HashingError):
+            ukijumuisha HaskKeyCrasher(error_on_hash=Kweli):
                 h[AA]
 
 

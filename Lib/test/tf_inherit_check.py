@@ -6,7 +6,7 @@ agiza sys
 agiza os
 kutoka test.support agiza SuppressCrashReport
 
-with SuppressCrashReport():
+ukijumuisha SuppressCrashReport():
     verbose = (sys.argv[1] == 'v')
     jaribu:
         fd = int(sys.argv[2])

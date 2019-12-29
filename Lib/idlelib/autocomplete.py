@@ -25,7 +25,7 @@ TRY_F = Uongo,    Uongo,    Uongo,   FILES  # '/' kwenye quotes kila file name.
 # TODO Update this here na elsewhere.
 ID_CHARS = string.ascii_letters + string.digits + "_"
 
-SEPS = f"{os.sep}{os.altsep ikiwa os.altsep else ''}"
+SEPS = f"{os.sep}{os.altsep ikiwa os.altsep isipokua ''}"
 TRIGGERS = f".{SEPS}"
 
 kundi AutoComplete:
@@ -63,7 +63,7 @@ kundi AutoComplete:
         "(tab) Complete word ama open list ikiwa multiple options."
         ikiwa hasattr(event, "mc_state") na event.mc_state or\
                 sio self.text.get("insert linestart", "insert").strip():
-            # A modifier was pressed along with the tab or
+            # A modifier was pressed along ukijumuisha the tab or
             # there ni only previous whitespace on this line, so tab.
             rudisha Tupu
         ikiwa self.autocompletewindow na self.autocompletewindow.is_active():
@@ -71,13 +71,13 @@ kundi AutoComplete:
             rudisha "koma"
         isipokua:
             opened = self.open_completions(TAB)
-            rudisha "koma" ikiwa opened else Tupu
+            rudisha "koma" ikiwa opened isipokua Tupu
 
     eleza try_open_completions_event(self, event=Tupu):
-        "(./) Open completion list after pause with no movement."
+        "(./) Open completion list after pause ukijumuisha no movement."
         lastchar = self.text.get("insert-1c")
         ikiwa lastchar kwenye TRIGGERS:
-            args = TRY_A ikiwa lastchar == "." else TRY_F
+            args = TRY_A ikiwa lastchar == "." isipokua TRY_F
             self._delayed_completion_index = self.text.index("insert")
             ikiwa self._delayed_completion_id ni sio Tupu:
                 self.text.after_cancel(self._delayed_completion_id)
@@ -123,13 +123,13 @@ kundi AutoComplete:
             wakati i na curline[i-1] haiko kwenye "'\"":
                 i -= 1
             comp_what = curline[i:j]
-        elikiwa hp.is_in_code() na (not mode ama mode==ATTRS):
+        lasivyo hp.is_in_code() na (not mode ama mode==ATTRS):
             self._remove_autocomplete_window()
             mode = ATTRS
             wakati i na (curline[i-1] kwenye ID_CHARS ama ord(curline[i-1]) > 127):
                 i -= 1
             comp_start = curline[i:j]
-            ikiwa i na curline[i-1] == '.':  # Need object with attributes.
+            ikiwa i na curline[i-1] == '.':  # Need object ukijumuisha attributes.
                 hp.set_index("insert-%dc" % (len(curline)-(i-1)))
                 comp_what = hp.get_expression()
                 ikiwa (not comp_what or
@@ -192,7 +192,7 @@ kundi AutoComplete:
                     except:
                         rudisha [], []
 
-            elikiwa mode == FILES:
+            lasivyo mode == FILES:
                 ikiwa what == "":
                     what = "."
                 jaribu:

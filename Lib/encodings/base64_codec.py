@@ -25,12 +25,12 @@ kundi Codec(codecs.Codec):
         rudisha base64_decode(input, errors)
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
-    eleza encode(self, input, final=False):
+    eleza encode(self, input, final=Uongo):
         assert self.errors == 'strict'
         rudisha base64.encodebytes(input)
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         assert self.errors == 'strict'
         rudisha base64.decodebytes(input)
 
@@ -51,5 +51,5 @@ eleza getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Uongo,
     )

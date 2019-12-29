@@ -20,7 +20,7 @@ eleza escape(data, entities={}):
 
     You can escape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced ukijumuisha its corresponding value.
     """
 
     # must do ampersand first
@@ -36,7 +36,7 @@ eleza unescape(data, entities={}):
 
     You can unescape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced ukijumuisha its corresponding value.
     """
     data = data.replace("&lt;", "<")
     data = data.replace("&gt;", ">")
@@ -54,7 +54,7 @@ eleza quoteattr(data, entities={}):
 
     You can escape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced ukijumuisha its corresponding value.
     """
     entities = {**entities, '\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
     data = escape(data, entities)
@@ -81,7 +81,7 @@ eleza _gettextwriter(out, encoding):
         # use a codecs stream writer kama is
         rudisha out
 
-    # wrap a binary writer with TextIOWrapper
+    # wrap a binary writer ukijumuisha TextIOWrapper
     ikiwa isinstance(out, io.RawIOBase):
         # Keep the original file open when the TextIOWrapper is
         # destroyed
@@ -343,7 +343,7 @@ eleza prepare_input_source(source, base=""):
         source = os.fspath(source)
     ikiwa isinstance(source, str):
         source = xmlreader.InputSource(source)
-    elikiwa hasattr(source, "read"):
+    lasivyo hasattr(source, "read"):
         f = source
         source = xmlreader.InputSource()
         ikiwa isinstance(f.read(0), str):

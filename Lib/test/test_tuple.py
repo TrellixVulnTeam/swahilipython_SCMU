@@ -10,7 +10,7 @@ agiza pickle
 # run more anyway.  That's usually of real interest only when analyzing,
 # ama changing, the hash algorithm.  In which case it's usually also
 # most useful to set JUST_SHOW_HASH_RESULTS, to see all the results
-# instead of wrestling with test "failures".  See the bottom of the
+# instead of wrestling ukijumuisha test "failures".  See the bottom of the
 # file kila extensive notes on what we're testing here na why.
 RUN_ALL_HASH_TESTS = Uongo
 JUST_SHOW_HASH_RESULTS = Uongo # ikiwa RUN_ALL_HASH_TESTS, just display
@@ -21,7 +21,7 @@ kundi TupleTest(seq_tests.CommonTest):
     eleza test_getitem_error(self):
         t = ()
         msg = "tuple indices must be integers ama slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        ukijumuisha self.assertRaisesRegex(TypeError, msg):
             t['a']
 
     eleza test_constructors(self):
@@ -39,7 +39,7 @@ kundi TupleTest(seq_tests.CommonTest):
                          (1, 3, 5, 7, 9))
 
     eleza test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             tuple(sequence=())
 
     eleza test_truth(self):
@@ -76,11 +76,11 @@ kundi TupleTest(seq_tests.CommonTest):
 
     # We expect tuples whose base components have deterministic hashes to
     # have deterministic hashes too - and, indeed, the same hashes across
-    # platforms with hash codes of the same bit width.
+    # platforms ukijumuisha hash codes of the same bit width.
     eleza test_hash_exact(self):
         eleza check_one_exact(t, e32, e64):
             got = hash(t)
-            expected = e32 ikiwa support.NHASHBITS == 32 else e64
+            expected = e32 ikiwa support.NHASHBITS == 32 isipokua e64
             ikiwa got != expected:
                 msg = f"FAIL hash({t!r}) == {got} != {expected}"
                 self.fail(msg)
@@ -145,7 +145,7 @@ kundi TupleTest(seq_tests.CommonTest):
             tryone_inner(tag + f"; {NHASHBITS}-bit hash codes",
                          1 << NHASHBITS,
                          hashes,
-                         native32 ikiwa NHASHBITS == 32 else native64,
+                         native32 ikiwa NHASHBITS == 32 isipokua native64,
                          zlimit)
 
             ikiwa NHASHBITS > 32:
@@ -288,7 +288,7 @@ kundi TupleTest(seq_tests.CommonTest):
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
-        # Tuples with mutable elements are always tracked, even ikiwa those
+        # Tuples ukijumuisha mutable elements are always tracked, even ikiwa those
         # elements are sio tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
@@ -299,7 +299,7 @@ kundi TupleTest(seq_tests.CommonTest):
     eleza check_track_dynamic(self, tp, always_track):
         x, y, z = 1.5, "a", []
 
-        check = self._tracked ikiwa always_track else self._not_tracked
+        check = self._tracked ikiwa always_track isipokua self._not_tracked
         check(tp())
         check(tp([]))
         check(tp(set()))
@@ -378,7 +378,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # optimization causes failures kwenye code that relies on distinct
         # function addresses.
         kundi T(tuple): pita
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             [3,] + T((1,2))
 
     eleza test_lexicographic_ordering(self):
@@ -472,7 +472,7 @@ kundi TupleTest(seq_tests.CommonTest):
 # fine kila practical use.
 #
 # This isn't, which ni what Python 3.7.1 produced kila the hashes of
-# itertools.product([0, 0.5], repeat=18).  Even with a fat 64-bit
+# itertools.product([0, 0.5], repeat=18).  Even ukijumuisha a fat 64-bit
 # hashcode, the highest pileup was over 16,000 - making a dict/set
 # lookup on one of the colliding values thousands of times slower (on
 # average) than we expect.

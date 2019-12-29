@@ -186,7 +186,7 @@ kundi Telnet:
 
     set_option_negotiation_callback(callback)
         Each time a telnet option ni read on the input flow, this callback
-        (ikiwa set) ni called with the following parameters :
+        (ikiwa set) ni called ukijumuisha the following parameters :
         callback(telnet socket, command, option)
             option will be chr(0) when there ni no option.
         No other action ni done afterwards by telnetlib.
@@ -309,7 +309,7 @@ kundi Telnet:
             rudisha buf
         ikiwa timeout ni sio Tupu:
             deadline = _time() + timeout
-        with _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
             wakati sio self.eof:
                 ikiwa selector.select(timeout):
@@ -442,7 +442,7 @@ kundi Telnet:
                         endelea
                     isipokua:
                         self.iacseq += c
-                elikiwa len(self.iacseq) == 1:
+                lasivyo len(self.iacseq) == 1:
                     # 'IAC: IAC CMD [OPTION only kila WILL/WONT/DO/DONT]'
                     ikiwa c kwenye (DO, DONT, WILL, WONT):
                         self.iacseq += c
@@ -455,7 +455,7 @@ kundi Telnet:
                         ikiwa c == SB: # SB ... SE start.
                             self.sb = 1
                             self.sbdataq = b''
-                        elikiwa c == SE:
+                        lasivyo c == SE:
                             self.sb = 0
                             self.sbdataq = self.sbdataq + buf[1]
                             buf[1] = b''
@@ -468,7 +468,7 @@ kundi Telnet:
                             # suboptions. Alas, we should sio get any
                             # unless we did a WILL/DO before.
                             self.msg('IAC %d sio recognized' % ord(c))
-                elikiwa len(self.iacseq) == 2:
+                lasivyo len(self.iacseq) == 2:
                     cmd = self.iacseq[1:2]
                     self.iacseq = b''
                     opt = c
@@ -479,7 +479,7 @@ kundi Telnet:
                             self.option_callback(self.sock, cmd, opt)
                         isipokua:
                             self.sock.sendall(IAC + WONT + opt)
-                    elikiwa cmd kwenye (WILL, WONT):
+                    lasivyo cmd kwenye (WILL, WONT):
                         self.msg('IAC %s %d',
                             cmd == WILL na 'WILL' ama 'WONT', ord(opt))
                         ikiwa self.option_callback:
@@ -530,7 +530,7 @@ kundi Telnet:
 
     eleza sock_avail(self):
         """Test whether data ni available on the socket."""
-        with _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
             rudisha bool(selector.select(0))
 
@@ -539,7 +539,7 @@ kundi Telnet:
         ikiwa sys.platform == "win32":
             self.mt_interact()
             rudisha
-        with _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
 
@@ -554,7 +554,7 @@ kundi Telnet:
                         ikiwa text:
                             sys.stdout.write(text.decode('ascii'))
                             sys.stdout.flush()
-                    elikiwa key.fileobj ni sys.stdin:
+                    lasivyo key.fileobj ni sys.stdin:
                         line = sys.stdin.readline().encode('ascii')
                         ikiwa sio line:
                             rudisha
@@ -600,7 +600,7 @@ kundi Telnet:
         text ni the text received so far (may be the empty string ikiwa a
         timeout happened).
 
-        If a regular expression ends with a greedy match (e.g. '.*')
+        If a regular expression ends ukijumuisha a greedy match (e.g. '.*')
         ama ikiwa more than one expression can match the same input, the
         results are undeterministic, na may depend on the I/O timing.
 
@@ -614,7 +614,7 @@ kundi Telnet:
                 list[i] = re.compile(list[i])
         ikiwa timeout ni sio Tupu:
             deadline = _time() + timeout
-        with _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
             wakati sio self.eof:
                 self.process_rawq()
@@ -668,7 +668,7 @@ eleza test():
             port = int(portstr)
         tatizo ValueError:
             port = socket.getservbyname(portstr, 'tcp')
-    with Telnet() kama tn:
+    ukijumuisha Telnet() kama tn:
         tn.set_debuglevel(debuglevel)
         tn.open(host, port, timeout=0.5)
         tn.interact()

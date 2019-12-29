@@ -20,9 +20,9 @@ kundi BoolTest(unittest.TestCase):
 
     eleza test_andika(self):
         jaribu:
-            with open(support.TESTFN, "w") kama fo:
+            ukijumuisha open(support.TESTFN, "w") kama fo:
                 andika(Uongo, Kweli, file=fo)
-            with open(support.TESTFN, "r") kama fi:
+            ukijumuisha open(support.TESTFN, "r") kama fi:
                 self.assertEqual(fi.read(), 'Uongo Kweli\n')
         mwishowe:
             os.remove(support.TESTFN)
@@ -169,7 +169,7 @@ kundi BoolTest(unittest.TestCase):
         self.assertIs(bool(), Uongo)
 
     eleza test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             bool(x=10)
 
     eleza test_format(self):
@@ -243,7 +243,7 @@ kundi BoolTest(unittest.TestCase):
 
     eleza test_fileclosed(self):
         jaribu:
-            with open(support.TESTFN, "w") kama f:
+            ukijumuisha open(support.TESTFN, "w") kama f:
                 self.assertIs(f.closed, Uongo)
             self.assertIs(f.closed, Kweli)
         mwishowe:

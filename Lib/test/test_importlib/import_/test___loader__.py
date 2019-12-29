@@ -22,7 +22,7 @@ kundi SpecLoaderAttributeTests:
 
     eleza test___loader__(self):
         loader = SpecLoaderMock()
-        with util.uncache('blah'), util.import_state(meta_path=[loader]):
+        ukijumuisha util.uncache('blah'), util.import_state(meta_path=[loader]):
             module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 
@@ -52,7 +52,7 @@ kundi LoaderAttributeTests:
             pita
         loader = LoaderMock()
         loader.module = module
-        with util.uncache('blah'), util.import_state(meta_path=[loader]):
+        ukijumuisha util.uncache('blah'), util.import_state(meta_path=[loader]):
             module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 
@@ -61,7 +61,7 @@ kundi LoaderAttributeTests:
         module.__loader__ = Tupu
         loader = LoaderMock()
         loader.module = module
-        with util.uncache('blah'), util.import_state(meta_path=[loader]):
+        ukijumuisha util.uncache('blah'), util.import_state(meta_path=[loader]):
             rudishaed_module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 

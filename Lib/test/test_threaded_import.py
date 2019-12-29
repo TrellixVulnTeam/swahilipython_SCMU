@@ -78,7 +78,7 @@ kundi Finder:
         # are properly serialized, `x` will end up the same kama `numcalls`.
         # Otherwise not.
         assert imp.lock_held()
-        with self.lock:
+        ukijumuisha self.lock:
             self.numcalls += 1
         x = self.x
         time.sleep(0.01)
@@ -124,7 +124,7 @@ kundi ThreadedImportTests(unittest.TestCase):
             done_tasks = []
             done.clear()
             t0 = time.monotonic()
-            with start_threads(threading.Thread(target=task,
+            ukijumuisha start_threads(threading.Thread(target=task,
                                                 args=(N, done, done_tasks, errors,))
                                kila i kwenye range(N)):
                 pita
@@ -202,7 +202,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         self.addCleanup(sys.path.remove, TESTFN)
         kila name, contents kwenye circular_agizas_modules.items():
             contents = contents % {'delay': delay}
-            with open(os.path.join(TESTFN, name + ".py"), "wb") kama f:
+            ukijumuisha open(os.path.join(TESTFN, name + ".py"), "wb") kama f:
                 f.write(contents.encode('utf-8'))
             self.addCleanup(forget, name)
 
@@ -235,7 +235,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         self.addCleanup(sys.path.remove, os.curdir)
         filename = TESTFN + ".py"
-        with open(filename, "wb") kama f:
+        ukijumuisha open(filename, "wb") kama f:
             f.write(code.encode('utf-8'))
         self.addCleanup(unlink, filename)
         self.addCleanup(forget, TESTFN)

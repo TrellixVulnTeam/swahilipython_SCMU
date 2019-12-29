@@ -302,7 +302,7 @@ kundi _TestProcess(BaseTestCase):
         p.start()
 
         ikiwa sio rconn.poll(timeout=60):
-            ashiria AssertionError("Could sio communicate with child process")
+            ashiria AssertionError("Could sio communicate ukijumuisha child process")
         parent_process_status = rconn.recv()
         self.assertEqual(parent_process_status, "alive")
 
@@ -310,7 +310,7 @@ kundi _TestProcess(BaseTestCase):
         p.join()
 
         ikiwa sio rconn.poll(timeout=60):
-            ashiria AssertionError("Could sio communicate with child process")
+            ashiria AssertionError("Could sio communicate ukijumuisha child process")
         parent_process_status = rconn.recv()
         self.assertEqual(parent_process_status, "not alive")
 
@@ -323,9 +323,9 @@ kundi _TestProcess(BaseTestCase):
     @classmethod
     eleza _test_report_parent_status(cls, wconn):
         kutoka multiprocessing.process agiza parent_process
-        wconn.send("alive" ikiwa parent_process().is_alive() else "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "not alive")
         parent_process().join(timeout=5)
-        wconn.send("alive" ikiwa parent_process().is_alive() else "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "not alive")
 
     eleza test_process(self):
         q = self.Queue(1)
@@ -497,7 +497,7 @@ kundi _TestProcess(BaseTestCase):
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
         event = self.Event()
         p = self.Process(target=self._test_sentinel, args=(event,))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             p.sentinel
         p.start()
         self.addCleanup(p.join)
@@ -523,7 +523,7 @@ kundi _TestProcess(BaseTestCase):
         p.start()
         self.assertEqual(p.is_alive(), Kweli)
         # Child ni still alive, cannot close
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             p.close()
 
         q.put(Tupu)
@@ -531,11 +531,11 @@ kundi _TestProcess(BaseTestCase):
         self.assertEqual(p.is_alive(), Uongo)
         self.assertEqual(p.exitcode, 0)
         p.close()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             p.is_alive()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             p.join()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             p.terminate()
         p.close()
 
@@ -551,9 +551,9 @@ kundi _TestProcess(BaseTestCase):
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
 
         sm = multiprocessing.get_start_method()
-        N = 5 ikiwa sm == 'spawn' else 100
+        N = 5 ikiwa sm == 'spawn' isipokua 100
 
-        # Try to overwhelm the forkserver loop with events
+        # Try to overwhelm the forkserver loop ukijumuisha events
         procs = [self.Process(target=self._test_sleep, args=(0.01,))
                  kila i kwenye range(N)]
         kila p kwenye procs:
@@ -576,7 +576,7 @@ kundi _TestProcess(BaseTestCase):
             exitcodes = [-signal.SIGTERM]
             ikiwa sys.platform == 'darwin':
                 # bpo-31510: On macOS, killing a freshly started process with
-                # SIGTERM sometimes kills the process with SIGKILL.
+                # SIGTERM sometimes kills the process ukijumuisha SIGKILL.
                 exitcodes.append(-signal.SIGKILL)
             kila p kwenye procs:
                 self.assertIn(p.exitcode, exitcodes)
@@ -599,7 +599,7 @@ kundi _TestProcess(BaseTestCase):
         evt.wait()
 
     eleza test_child_fd_inflation(self):
-        # Number of fds kwenye child processes should sio grow with the
+        # Number of fds kwenye child processes should sio grow ukijumuisha the
         # number of running children.
         ikiwa self.TYPE == 'threads':
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
@@ -667,7 +667,7 @@ kundi _TestProcess(BaseTestCase):
         evt.set()
 
     eleza test_error_on_stdio_flush_1(self):
-        # Check that Process works with broken standard streams
+        # Check that Process works ukijumuisha broken standard streams
         streams = [io.StringIO(), Tupu]
         streams[0].close()
         kila stream_name kwenye ('stdout', 'stderr'):
@@ -804,7 +804,7 @@ kundi _TestSubclassingProcess(BaseTestCase):
         proc = self.Process(target=self._test_stderr_flush, args=(testfn,))
         proc.start()
         proc.join()
-        with open(testfn, 'r') kama f:
+        ukijumuisha open(testfn, 'r') kama f:
             err = f.read()
             # The whole traceback was printed
             self.assertIn("ZeroDivisionError", err)
@@ -842,7 +842,7 @@ kundi _TestSubclassingProcess(BaseTestCase):
             join_process(p)
             self.assertEqual(p.exitcode, 1)
 
-            with open(testfn, 'r') kama f:
+            ukijumuisha open(testfn, 'r') kama f:
                 content = f.read()
             self.assertEqual(content.rstrip(), str(reason))
 
@@ -1085,9 +1085,9 @@ kundi _TestQueue(BaseTestCase):
         close_queue(queue)
 
     eleza test_no_import_lock_contention(self):
-        with test.support.temp_cwd():
+        ukijumuisha test.support.temp_cwd():
             module_name = 'imported_by_an_imported_module'
-            with open(module_name + '.py', 'w') kama f:
+            ukijumuisha open(module_name + '.py', 'w') kama f:
                 f.write("""ikiwa 1:
                     agiza multiprocessing
 
@@ -1098,7 +1098,7 @@ kundi _TestQueue(BaseTestCase):
                     toa q
                 """)
 
-            with test.support.DirsOnSysPath(os.getcwd()):
+            ukijumuisha test.support.DirsOnSysPath(os.getcwd()):
                 jaribu:
                     __import__(module_name)
                 tatizo pyqueue.Empty:
@@ -1124,14 +1124,14 @@ kundi _TestQueue(BaseTestCase):
         kundi NotSerializable(object):
             eleza __reduce__(self):
                 ashiria AttributeError
-        with test.support.captured_stderr():
+        ukijumuisha test.support.captured_stderr():
             q = self.Queue()
             q.put(NotSerializable())
             q.put(Kweli)
             self.assertKweli(q.get(timeout=TIMEOUT))
             close_queue(q)
 
-        with test.support.captured_stderr():
+        ukijumuisha test.support.captured_stderr():
             # bpo-33078: verify that the queue size ni correctly handled
             # on errors.
             q = self.Queue(maxsize=1)
@@ -1166,7 +1166,7 @@ kundi _TestQueue(BaseTestCase):
                 ashiria AttributeError
 
         kundi SafeQueue(multiprocessing.queues.Queue):
-            """Queue with overloaded _on_queue_feeder_error hook"""
+            """Queue ukijumuisha overloaded _on_queue_feeder_error hook"""
             @staticmethod
             eleza _on_queue_feeder_error(e, obj):
                 ikiwa (isinstance(e, AttributeError) and
@@ -1175,7 +1175,7 @@ kundi _TestQueue(BaseTestCase):
 
         not_serializable_obj = NotSerializable()
         # The captured_stderr reduces the noise kwenye the test report
-        with test.support.captured_stderr():
+        ukijumuisha test.support.captured_stderr():
             q = SafeQueue(ctx=multiprocessing.get_context())
             q.put(not_serializable_obj)
 
@@ -1190,9 +1190,9 @@ kundi _TestQueue(BaseTestCase):
     eleza test_closed_queue_put_get_exceptions(self):
         kila q kwenye multiprocessing.Queue(), multiprocessing.JoinableQueue():
             q.close()
-            with self.assertRaisesRegex(ValueError, 'is closed'):
+            ukijumuisha self.assertRaisesRegex(ValueError, 'is closed'):
                 q.put('foo')
-            with self.assertRaisesRegex(ValueError, 'is closed'):
+            ukijumuisha self.assertRaisesRegex(ValueError, 'is closed'):
                 q.get()
 #
 #
@@ -1218,7 +1218,7 @@ kundi _TestLock(BaseTestCase):
         self.assertRaises((AssertionError, RuntimeError), lock.release)
 
     eleza test_lock_context(self):
-        with self.Lock():
+        ukijumuisha self.Lock():
             pita
 
 
@@ -1476,7 +1476,7 @@ kundi _TestCondition(BaseTestCase):
 
     @classmethod
     eleza _test_waitfor_f(cls, cond, state):
-        with cond:
+        ukijumuisha cond:
             state.value = 0
             cond.notify()
             result = cond.wait_for(lambda : state.value==4)
@@ -1493,14 +1493,14 @@ kundi _TestCondition(BaseTestCase):
         p.daemon = Kweli
         p.start()
 
-        with cond:
+        ukijumuisha cond:
             result = cond.wait_for(lambda : state.value==0)
             self.assertKweli(result)
             self.assertEqual(state.value, 0)
 
         kila i kwenye range(4):
             time.sleep(0.01)
-            with cond:
+            ukijumuisha cond:
                 state.value += 1
                 cond.notify()
 
@@ -1510,7 +1510,7 @@ kundi _TestCondition(BaseTestCase):
     @classmethod
     eleza _test_waitfor_timeout_f(cls, cond, state, success, sem):
         sem.release()
-        with cond:
+        ukijumuisha cond:
             expected = 0.1
             dt = time.monotonic()
             result = cond.wait_for(lambda : state.value==4, timeout=expected)
@@ -1536,7 +1536,7 @@ kundi _TestCondition(BaseTestCase):
         # Only increment 3 times, so state == 4 ni never reached.
         kila i kwenye range(3):
             time.sleep(0.01)
-            with cond:
+            ukijumuisha cond:
                 state.value += 1
                 cond.notify()
 
@@ -1545,7 +1545,7 @@ kundi _TestCondition(BaseTestCase):
 
     @classmethod
     eleza _test_wait_result(cls, c, pid):
-        with c:
+        ukijumuisha c:
             c.notify()
         time.sleep(1)
         ikiwa pid ni sio Tupu:
@@ -1558,7 +1558,7 @@ kundi _TestCondition(BaseTestCase):
             pid = Tupu
 
         c = self.Condition()
-        with c:
+        ukijumuisha c:
             self.assertUongo(c.wait(0))
             self.assertUongo(c.wait(0.1))
 
@@ -1584,11 +1584,11 @@ kundi _TestEvent(BaseTestCase):
         wait = TimingWrapper(event.wait)
 
         # Removed temporarily, due to API shear, this does not
-        # work with threading._Event objects. is_set == isSet
+        # work ukijumuisha threading._Event objects. is_set == isSet
         self.assertEqual(event.is_set(), Uongo)
 
         # Removed, threading.Event.wait() will rudisha the value of the __flag
-        # instead of Tupu. API Shear with the semaphore backed mp.Event
+        # instead of Tupu. API Shear ukijumuisha the semaphore backed mp.Event
         self.assertEqual(wait(0.0), Uongo)
         self.assertTimingAlmostEqual(wait.elapsed, 0.0)
         self.assertEqual(wait(TIMEOUT1), Uongo)
@@ -1639,11 +1639,11 @@ kundi _DummyList(object):
         rudisha (self._wrapper, self._lock)
 
     eleza append(self, _):
-        with self._lock:
+        ukijumuisha self._lock:
             self._lengthbuf[0] += 1
 
     eleza __len__(self):
-        with self._lock:
+        ukijumuisha self._lock:
             rudisha self._lengthbuf[0]
 
 eleza _wait():
@@ -1732,7 +1732,7 @@ kundi _TestBarrier(BaseTestCase):
     eleza DummyList(self):
         ikiwa self.TYPE == 'threads':
             rudisha []
-        elikiwa self.TYPE == 'manager':
+        lasivyo self.TYPE == 'manager':
             rudisha self.manager.list()
         isipokua:
             rudisha _DummyList()
@@ -1946,7 +1946,7 @@ kundi _TestBarrier(BaseTestCase):
     eleza _test_thousand_f(cls, barrier, pitaes, conn, lock):
         kila i kwenye range(pitaes):
             barrier.wait()
-            with lock:
+            ukijumuisha lock:
                 conn.send(i)
 
     eleza test_thousand(self):
@@ -2350,7 +2350,7 @@ kundi _TestPool(BaseTestCase):
                          list(map(sqr, list(range(10)))))
 
     eleza test_map_async_callbacks(self):
-        call_args = self.manager.list() ikiwa self.TYPE == 'manager' else []
+        call_args = self.manager.list() ikiwa self.TYPE == 'manager' isipokua []
         self.pool.map_async(int, ['1'],
                             callback=call_args.append,
                             error_callback=call_args.append).wait()
@@ -2369,27 +2369,27 @@ kundi _TestPool(BaseTestCase):
         kundi A(object):
             eleza __reduce__(self):
                 ashiria RuntimeError('cannot pickle')
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.pool.map(sqr, [A()]*10)
 
     eleza test_map_chunksize(self):
         jaribu:
             self.pool.map_async(sqr, [], chunksize=1).get(timeout=TIMEOUT1)
         tatizo multiprocessing.TimeoutError:
-            self.fail("pool.map_async with chunksize stalled on null list")
+            self.fail("pool.map_async ukijumuisha chunksize stalled on null list")
 
     eleza test_map_handle_iterable_exception(self):
         ikiwa self.TYPE == 'manager':
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
 
         # SayWhenError seen at the very first of the iterable
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             self.pool.map(sqr, exception_throwing_generator(1, -1), 1)
         # again, make sure it's reentrant
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             self.pool.map(sqr, exception_throwing_generator(1, -1), 1)
 
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             self.pool.map(sqr, exception_throwing_generator(10, 3), 1)
 
         kundi SpecialIterable:
@@ -2399,9 +2399,9 @@ kundi _TestPool(BaseTestCase):
                 ashiria SayWhenError
             eleza __len__(self):
                 rudisha 1
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             self.pool.map(sqr, SpecialIterable(), 1)
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             self.pool.map(sqr, SpecialIterable(), 1)
 
     eleza test_async(self):
@@ -2482,7 +2482,7 @@ kundi _TestPool(BaseTestCase):
                                       exception_throwing_generator(10, 3),
                                       1)
         expected_values = list(map(sqr, list(range(10))))
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             # imap_unordered makes it difficult to anticipate the SayWhenError
             kila i kwenye range(10):
                 value = next(it)
@@ -2493,7 +2493,7 @@ kundi _TestPool(BaseTestCase):
                                       exception_throwing_generator(20, 7),
                                       2)
         expected_values = list(map(sqr, list(range(20))))
-        with self.assertRaises(SayWhenError):
+        ukijumuisha self.assertRaises(SayWhenError):
             kila i kwenye range(20):
                 value = next(it)
                 self.assertIn(value, expected_values)
@@ -2501,7 +2501,7 @@ kundi _TestPool(BaseTestCase):
 
     eleza test_make_pool(self):
         expected_error = (RemoteError ikiwa self.TYPE == 'manager'
-                          else ValueError)
+                          isipokua ValueError)
 
         self.assertRaises(expected_error, self.Pool, -1)
         self.assertRaises(expected_error, self.Pool, 0)
@@ -2540,7 +2540,7 @@ kundi _TestPool(BaseTestCase):
         ikiwa self.TYPE == 'processes':
             L = list(range(10))
             expected = [sqr(i) kila i kwenye L]
-            with self.Pool(2) kama p:
+            ukijumuisha self.Pool(2) kama p:
                 r = p.map_async(sqr, L)
                 self.assertEqual(r.get(), expected)
             p.join()
@@ -2554,7 +2554,7 @@ kundi _TestPool(BaseTestCase):
         # We want ensure that the traceback kutoka the child process is
         # contained kwenye the traceback ashiriad kwenye the main process.
         ikiwa self.TYPE == 'processes':
-            with self.Pool(1) kama p:
+            ukijumuisha self.Pool(1) kama p:
                 jaribu:
                     p.apply(self._test_traceback)
                 tatizo Exception kama e:
@@ -2568,7 +2568,7 @@ kundi _TestPool(BaseTestCase):
             self.assertIs(type(cause), multiprocessing.pool.RemoteTraceback)
             self.assertIn('ashiria RuntimeError(123) # some comment', cause.tb)
 
-            with test.support.captured_stderr() kama f1:
+            ukijumuisha test.support.captured_stderr() kama f1:
                 jaribu:
                     ashiria exc
                 tatizo RuntimeError:
@@ -2577,7 +2577,7 @@ kundi _TestPool(BaseTestCase):
                           f1.getvalue())
             # _helper_reashirias_exception should sio make the error
             # a remote exception
-            with self.Pool(1) kama p:
+            ukijumuisha self.Pool(1) kama p:
                 jaribu:
                     p.map(sqr, exception_throwing_generator(1, -1), 1)
                 tatizo Exception kama e:
@@ -2594,8 +2594,8 @@ kundi _TestPool(BaseTestCase):
 
     eleza test_wrapped_exception(self):
         # Issue #20980: Should sio wrap exception when using thread pool
-        with self.Pool(1) kama p:
-            with self.assertRaises(RuntimeError):
+        ukijumuisha self.Pool(1) kama p:
+            ukijumuisha self.assertRaises(RuntimeError):
                 p.apply(self._test_wrapped_exception)
         p.join()
 
@@ -2607,8 +2607,8 @@ kundi _TestPool(BaseTestCase):
 
         t_start = time.monotonic()
 
-        with self.assertRaises(ValueError):
-            with self.Pool(2) kama p:
+        ukijumuisha self.assertRaises(ValueError):
+            ukijumuisha self.Pool(2) kama p:
                 jaribu:
                     p.map(ashiria_large_valuerror, [0, 1])
                 mwishowe:
@@ -2621,7 +2621,7 @@ kundi _TestPool(BaseTestCase):
 
     eleza test_release_task_refs(self):
         # Issue #29861: task arguments na results should sio be kept
-        # alive after we are done with them.
+        # alive after we are done ukijumuisha them.
         objs = [CountedObject() kila i kwenye range(10)]
         refs = [weakref.ref(o) kila o kwenye objs]
         self.pool.map(identity, objs)
@@ -2638,14 +2638,14 @@ kundi _TestPool(BaseTestCase):
             self.skipTest("test sio applicable to manager")
 
         pool = self.Pool(1)
-        with pool:
+        ukijumuisha pool:
             pita
             # call pool.terminate()
         # pool ni no longer running
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             # bpo-35477: pool.__enter__() fails ikiwa the pool ni sio running
-            with pool:
+            ukijumuisha pool:
                 pita
         pool.join()
 
@@ -2660,7 +2660,7 @@ kundi _TestPool(BaseTestCase):
         # force state to RUN to emit ResourceWarning kwenye __del__()
         pool._state = multiprocessing.pool.RUN
 
-        with support.check_warnings(('unclosed running multiprocessing pool',
+        ukijumuisha support.check_warnings(('unclosed running multiprocessing pool',
                                      ResourceWarning)):
             pool = Tupu
             support.gc_collect()
@@ -2805,7 +2805,7 @@ kundi _TestMyManager(BaseTestCase):
         self.assertIn(manager._process.exitcode, (0, -signal.SIGTERM))
 
     eleza test_mymanager_context(self):
-        with MyManager() kama manager:
+        ukijumuisha MyManager() kama manager:
             self.common(manager)
         # bpo-30356: BaseManager._finalize_manager() sends SIGTERM
         # to the manager process ikiwa it takes longer than 1 second to stop,
@@ -2815,7 +2815,7 @@ kundi _TestMyManager(BaseTestCase):
     eleza test_mymanager_context_prestarted(self):
         manager = MyManager()
         manager.start()
-        with manager:
+        ukijumuisha manager:
             self.common(manager)
         self.assertEqual(manager._process.exitcode, 0)
 
@@ -3145,20 +3145,20 @@ kundi _TestConnection(BaseTestCase):
     @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
     eleza test_fd_transfer(self):
         ikiwa self.TYPE != 'processes':
-            self.skipTest("only makes sense with processes")
+            self.skipTest("only makes sense ukijumuisha processes")
         conn, child_conn = self.Pipe(duplex=Kweli)
 
         p = self.Process(target=self._writefd, args=(child_conn, b"foo"))
         p.daemon = Kweli
         p.start()
         self.addCleanup(test.support.unlink, test.support.TESTFN)
-        with open(test.support.TESTFN, "wb") kama f:
+        ukijumuisha open(test.support.TESTFN, "wb") kama f:
             fd = f.fileno()
             ikiwa msvcrt:
                 fd = msvcrt.get_osfhandle(fd)
             reduction.send_handle(conn, fd, p.pid)
         p.join()
-        with open(test.support.TESTFN, "rb") kama f:
+        ukijumuisha open(test.support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"foo")
 
     @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
@@ -3171,14 +3171,14 @@ kundi _TestConnection(BaseTestCase):
     eleza test_large_fd_transfer(self):
         # With fd > 256 (issue #11657)
         ikiwa self.TYPE != 'processes':
-            self.skipTest("only makes sense with processes")
+            self.skipTest("only makes sense ukijumuisha processes")
         conn, child_conn = self.Pipe(duplex=Kweli)
 
         p = self.Process(target=self._writefd, args=(child_conn, b"bar", Kweli))
         p.daemon = Kweli
         p.start()
         self.addCleanup(test.support.unlink, test.support.TESTFN)
-        with open(test.support.TESTFN, "wb") kama f:
+        ukijumuisha open(test.support.TESTFN, "wb") kama f:
             fd = f.fileno()
             kila newfd kwenye range(256, MAXFD):
                 ikiwa sio self._is_fd_assigned(newfd):
@@ -3191,7 +3191,7 @@ kundi _TestConnection(BaseTestCase):
             mwishowe:
                 os.close(newfd)
         p.join()
-        with open(test.support.TESTFN, "rb") kama f:
+        ukijumuisha open(test.support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"bar")
 
     @classmethod
@@ -3204,7 +3204,7 @@ kundi _TestConnection(BaseTestCase):
         # Check that exception ni ashiriad when received data ni not
         # accompanied by a file descriptor kwenye ancillary data.
         ikiwa self.TYPE != 'processes':
-            self.skipTest("only makes sense with processes")
+            self.skipTest("only makes sense ukijumuisha processes")
         conn, child_conn = self.Pipe(duplex=Kweli)
 
         p = self.Process(target=self._send_data_without_fd, args=(child_conn,))
@@ -3216,7 +3216,7 @@ kundi _TestConnection(BaseTestCase):
     eleza test_context(self):
         a, b = self.Pipe()
 
-        with a, b:
+        ukijumuisha a, b:
             a.send(1729)
             self.assertEqual(b.recv(), 1729)
             ikiwa self.TYPE == 'processes':
@@ -3241,9 +3241,9 @@ kundi _TestListener(BaseTestCase):
                               l.address, family)
 
     eleza test_context(self):
-        with self.connection.Listener() kama l:
-            with self.connection.Client(l.address) kama c:
-                with l.accept() kama d:
+        ukijumuisha self.connection.Listener() kama l:
+            ukijumuisha self.connection.Client(l.address) kama c:
+                ukijumuisha l.accept() kama d:
                     c.send(1729)
                     self.assertEqual(d.recv(), 1729)
 
@@ -3279,7 +3279,7 @@ kundi _TestListenerClient(BaseTestCase):
         time.sleep(1)
         # On Windows the client process should by now have connected,
         # written data na closed the pipe handle by now.  This causes
-        # ConnectNamdedPipe() to fail with ERROR_NO_DATA.  See Issue
+        # ConnectNamdedPipe() to fail ukijumuisha ERROR_NO_DATA.  See Issue
         # 14725.
         conn = l.accept()
         self.assertEqual(conn.recv(), 'hello')
@@ -3549,7 +3549,7 @@ kundi _TestHeap(BaseTestCase):
             toa b
 
         # verify the state of the heap
-        with heap._lock:
+        ukijumuisha heap._lock:
             all = []
             free = 0
             occupied = 0
@@ -3606,7 +3606,7 @@ kundi _TestHeap(BaseTestCase):
         self.addCleanup(gc.set_threshold, *thresholds)
         gc.set_threshold(10)
 
-        # perform numerous block allocations, with cyclic references to make
+        # perform numerous block allocations, ukijumuisha cyclic references to make
         # sure objects are collected asynchronously by the gc
         kila i kwenye range(5000):
             a = multiprocessing.heap.BufferWrapper(1)
@@ -3726,7 +3726,7 @@ kundi _TestSharedMemory(BaseTestCase):
             # manages unlinking on its own na unlink() does nothing).
             # Kweli release of shared memory segment does sio necessarily
             # happen until process exits, depending on the OS platform.
-            with self.assertRaises(FileNotFoundError):
+            ukijumuisha self.assertRaises(FileNotFoundError):
                 sms_uno = shared_memory.SharedMemory(
                     'test01_dblunlink',
                     create=Kweli,
@@ -3744,8 +3744,8 @@ kundi _TestSharedMemory(BaseTestCase):
                 mwishowe:
                     sms_uno.unlink()  # A second shm_unlink() call ni bad.
 
-        with self.assertRaises(FileExistsError):
-            # Attempting to create a new shared memory segment with a
+        ukijumuisha self.assertRaises(FileExistsError):
+            # Attempting to create a new shared memory segment ukijumuisha a
             # name that ni already kwenye use triggers an exception.
             there_can_only_be_one_sms = shared_memory.SharedMemory(
                 'test01_tsmb',
@@ -3754,7 +3754,7 @@ kundi _TestSharedMemory(BaseTestCase):
             )
 
         ikiwa shared_memory._USE_POSIX:
-            # Requesting creation of a shared memory segment with the option
+            # Requesting creation of a shared memory segment ukijumuisha the option
             # to attach to an existing segment, ikiwa that name ni currently in
             # use, should sio trigger an exception.
             # Note:  Using a smaller size could possibly cause truncation of
@@ -3767,8 +3767,8 @@ kundi _TestSharedMemory(BaseTestCase):
             ok_if_exists_sms.close()
 
         # Attempting to attach to an existing shared memory segment when
-        # no segment exists with the supplied name triggers an exception.
-        with self.assertRaises(FileNotFoundError):
+        # no segment exists ukijumuisha the supplied name triggers an exception.
+        ukijumuisha self.assertRaises(FileNotFoundError):
             nonexisting_sms = shared_memory.SharedMemory('test01_notthere')
             nonexisting_sms.unlink()  # Error should occur on prior line.
 
@@ -3811,7 +3811,7 @@ kundi _TestSharedMemory(BaseTestCase):
         sl = smm.ShareableList(range(10))
 
         # the manager's server should ignore KeyboardInterrupt signals, and
-        # maintain its connection with the current process, na success when
+        # maintain its connection ukijumuisha the current process, na success when
         # asked to deliver memory segments.
         os.kill(smm._process.pid, signal.SIGINT)
 
@@ -3819,7 +3819,7 @@ kundi _TestSharedMemory(BaseTestCase):
 
         # test that the custom signal handler registered kwenye the Manager does
         # sio affect signal handling kwenye the parent process.
-        with self.assertRaises(KeyboardInterrupt):
+        ukijumuisha self.assertRaises(KeyboardInterrupt):
             os.kill(os.getpid(), signal.SIGINT)
 
         smm.shutdown()
@@ -3847,7 +3847,7 @@ kundi _TestSharedMemory(BaseTestCase):
 
     eleza test_shared_memory_SharedMemoryManager_basics(self):
         smm1 = multiprocessing.managers.SharedMemoryManager()
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             smm1.SharedMemory(size=9)  # Fails ikiwa SharedMemoryServer sio started
         smm1.start()
         lol = [ smm1.ShareableList(range(i)) kila i kwenye range(5, 10) ]
@@ -3861,16 +3861,16 @@ kundi _TestSharedMemory(BaseTestCase):
         ikiwa sys.platform != "win32":
             # Calls to unlink() have no effect on Windows platform; shared
             # memory will only be released once final process exits.
-            with self.assertRaises(FileNotFoundError):
+            ukijumuisha self.assertRaises(FileNotFoundError):
                 # No longer there to be attached to again.
                 absent_shm = shared_memory.SharedMemory(name=held_name)
 
-        with multiprocessing.managers.SharedMemoryManager() kama smm2:
+        ukijumuisha multiprocessing.managers.SharedMemoryManager() kama smm2:
             sl = smm2.ShareableList("howdy")
             shm = smm2.SharedMemory(size=128)
             held_name = sl.shm.name
         ikiwa sys.platform != "win32":
-            with self.assertRaises(FileNotFoundError):
+            ukijumuisha self.assertRaises(FileNotFoundError):
                 # No longer there to be attached to again.
                 absent_sl = shared_memory.ShareableList(name=held_name)
 
@@ -3888,10 +3888,10 @@ kundi _TestSharedMemory(BaseTestCase):
         self.assertEqual(len(sl), 7)
 
         # Exercise index().
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             # Suppress BytesWarning when comparing against b'HoWdY'.
             warnings.simplefilter('ignore')
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 sl.index('100')
             self.assertEqual(sl.index(100), 3)
 
@@ -3911,12 +3911,12 @@ kundi _TestSharedMemory(BaseTestCase):
         sl[4] = 'some'  # Change type at a given position.
         self.assertEqual(sl[4], 'some')
         self.assertEqual(sl.format, '8s8sdq8sxxxxxxx?q')
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             sl[4] = 'far too many'  # Exceeds available storage.
         self.assertEqual(sl[4], 'some')
 
         # Exercise count().
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             # Suppress BytesWarning when comparing against b'HoWdY'.
             warnings.simplefilter('ignore')
             self.assertEqual(sl.count(42), 2)
@@ -3952,7 +3952,7 @@ kundi _TestSharedMemory(BaseTestCase):
             self.assertEqual(len(empty_sl), 0)
             self.assertEqual(empty_sl.format, '')
             self.assertEqual(empty_sl.count('any'), 0)
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 empty_sl.index(Tupu)
             empty_sl.shm.close()
         mwishowe:
@@ -3994,7 +3994,7 @@ kundi _TestSharedMemory(BaseTestCase):
             sys.stdout.flush()
             time.sleep(100)
         '''
-        with subprocess.Popen([sys.executable, '-E', '-c', cmd],
+        ukijumuisha subprocess.Popen([sys.executable, '-E', '-c', cmd],
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE) kama p:
             name = p.stdout.readline().strip().decode()
@@ -4135,7 +4135,7 @@ kundi _TestFinalize(BaseTestCase):
             gc.set_threshold(5, 5, 5)
             threads = [threading.Thread(target=run_finalizers),
                        threading.Thread(target=make_finalizers)]
-            with test.support.start_threads(threads):
+            ukijumuisha test.support.start_threads(threads):
                 time.sleep(4.0)  # Wait a bit to trigger race condition
                 finish = Kweli
             ikiwa exc ni sio Tupu:
@@ -4259,7 +4259,7 @@ kundi _TestLogging(BaseTestCase):
 #         assert self.__handled
 
 #
-# Check that Process.join() retries ikiwa os.waitpid() fails with EINTR
+# Check that Process.join() retries ikiwa os.waitpid() fails ukijumuisha EINTR
 #
 
 kundi _TestPollEintr(BaseTestCase):
@@ -4335,7 +4335,7 @@ kundi OtherTest(unittest.TestCase):
                 self.count += 1
                 ikiwa self.count == 1:
                     rudisha multiprocessing.connection.CHALLENGE
-                elikiwa self.count == 2:
+                lasivyo self.count == 2:
                     rudisha b'something bogus'
                 rudisha b''
             eleza send_bytes(self, data):
@@ -4626,12 +4626,12 @@ kundi TestInvalidFamily(unittest.TestCase):
 
     @unittest.skipIf(WIN32, "skipped on Windows")
     eleza test_invalid_family(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             multiprocessing.connection.Listener(r'\\.\test')
 
     @unittest.skipUnless(WIN32, "skipped on non-Windows platforms")
     eleza test_invalid_family_win32(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             multiprocessing.connection.Listener('/var/test.pipe')
 
 #
@@ -4667,7 +4667,7 @@ kundi TestFlags(unittest.TestCase):
         self.assertEqual(child_flags, grandchild_flags)
 
 #
-# Test interaction with socket timeouts - see Issue #6056
+# Test interaction ukijumuisha socket timeouts - see Issue #6056
 #
 
 kundi TestTimeouts(unittest.TestCase):
@@ -4701,7 +4701,7 @@ kundi TestTimeouts(unittest.TestCase):
             socket.setdefaulttimeout(old_timeout)
 
 #
-# Test what happens with no "ikiwa __name__ == '__main__'"
+# Test what happens ukijumuisha no "ikiwa __name__ == '__main__'"
 #
 
 kundi TestNoForkBomb(unittest.TestCase):
@@ -4761,7 +4761,7 @@ kundi TestCloseFds(unittest.TestCase):
             # ikiwa there ni a handle of the same number.
             rudisha socket.socket().detach()
         isipokua:
-            # We want to produce a socket with an fd high enough that a
+            # We want to produce a socket ukijumuisha an fd high enough that a
             # freshly created child process will sio have any fds kama high.
             fd = socket.socket().detach()
             to_close = []
@@ -4861,7 +4861,7 @@ kundi TestIgnoreEINTR(unittest.TestCase):
         eleza handler(signum, frame):
             pita
         signal.signal(signal.SIGUSR1, handler)
-        with multiprocessing.connection.Listener() kama l:
+        ukijumuisha multiprocessing.connection.Listener() kama l:
             conn.send(l.address)
             a = l.accept()
             a.send('welcome')
@@ -4977,7 +4977,7 @@ kundi TestResourceTracker(unittest.TestCase):
                 ikiwa rtype == "semaphore":
                     lock = mp.Lock()
                     rudisha lock, lock._semlock.name
-                elikiwa rtype == "shared_memory":
+                lasivyo rtype == "shared_memory":
                     sm = SharedMemory(create=Kweli, size=10)
                     rudisha sm, sm._name
                 isipokua:
@@ -4994,7 +4994,7 @@ kundi TestResourceTracker(unittest.TestCase):
             time.sleep(10)
         '''
         kila rtype kwenye resource_tracker._CLEANUP_FUNCS:
-            with self.subTest(rtype=rtype):
+            ukijumuisha self.subTest(rtype=rtype):
                 ikiwa rtype == "noop":
                     # Artefact resource type used by the resource_tracker
                     endelea
@@ -5004,7 +5004,7 @@ kundi TestResourceTracker(unittest.TestCase):
                                      pita_fds=[w],
                                      stderr=subprocess.PIPE)
                 os.close(w)
-                with open(r, 'rb', closefd=Kweli) kama f:
+                ukijumuisha open(r, 'rb', closefd=Kweli) kama f:
                     name1 = f.readline().rstrip().decode('ascii')
                     name2 = f.readline().rstrip().decode('ascii')
                 _resource_unlink(name1, rtype)
@@ -5041,7 +5041,7 @@ kundi TestResourceTracker(unittest.TestCase):
         ikiwa pid ni sio Tupu:
             os.kill(pid, signal.SIGKILL)
             os.waitpid(pid, 0)
-        with warnings.catch_warnings():
+        ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore")
             _resource_tracker.ensure_running()
         pid = _resource_tracker._pid
@@ -5050,7 +5050,7 @@ kundi TestResourceTracker(unittest.TestCase):
         time.sleep(1.0)  # give it time to die
 
         ctx = multiprocessing.get_context("spawn")
-        with warnings.catch_warnings(record=Kweli) kama all_warn:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama all_warn:
             warnings.simplefilter("always")
             sem = ctx.Semaphore()
             sem.acquire()
@@ -5180,7 +5180,7 @@ kundi TestPoolNotLeakOnFailure(unittest.TestCase):
             eleza is_alive(self):
                 rudisha self.state == 'started' ama self.state == 'stopping'
 
-        with self.assertRaisesRegex(OSError, 'Manually induced OSError'):
+        ukijumuisha self.assertRaisesRegex(OSError, 'Manually induced OSError'):
             p = multiprocessing.pool.Pool(5, context=unittest.mock.MagicMock(
                 Process=FailingForkProcess))
             p.close()
@@ -5324,7 +5324,7 @@ kundi TestSyncManagerTypes(unittest.TestCase):
     @classmethod
     eleza _test_pool(cls, obj):
         # TODO: fix https://bugs.python.org/issue35919
-        with obj:
+        ukijumuisha obj:
             pita
 
     eleza test_pool(self):
@@ -5590,7 +5590,7 @@ eleza install_tests_in_module_dict(remote_globs, start_method):
                 Temp.__name__ = Temp.__qualname__ = newname
                 Temp.__module__ = __module__
                 remote_globs[newname] = Temp
-        elikiwa issubclass(base, unittest.TestCase):
+        lasivyo issubclass(base, unittest.TestCase):
             kundi Temp(base, object):
                 pita
             Temp.__name__ = Temp.__qualname__ = name

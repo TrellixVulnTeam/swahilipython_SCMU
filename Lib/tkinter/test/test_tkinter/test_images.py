@@ -143,7 +143,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertEqual(image['data'], data if self.wantobjects
-                                        else data.decode('latin1'))
+                                        isipokua data.decode('latin1'))
         self.assertEqual(image['file'], '')
         self.assertIn('::img::test', self.root.image_names())
         toa image
@@ -182,7 +182,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
             data = f.read()
         image.configure(data=data)
         self.assertEqual(image['data'], data if self.wantobjects
-                                        else data.decode('latin1'))
+                                        isipokua data.decode('latin1'))
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
 
@@ -191,7 +191,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image['format'], '')
         image.configure(file=self.testfile, format='gif')
         self.assertEqual(image['format'], ('gif',) if self.wantobjects
-                                          else 'gif')
+                                          isipokua 'gif')
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
 
@@ -274,7 +274,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.get(4, 6), self.colorlist(255, 0, 0))
         self.assertEqual(image.get(5, 6),
                          self.colorlist(0, 128 if tkinter.TkVersion >= 8.6
-                                           else 255, 0))
+                                           isipokua 255, 0))
         self.assertEqual(image.get(4, 7), self.colorlist(0, 0, 255))
         self.assertEqual(image.get(5, 7), self.colorlist(255, 255, 0))
 

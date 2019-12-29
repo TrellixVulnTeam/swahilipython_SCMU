@@ -24,7 +24,7 @@ kundi OpcodeTest(unittest.TestCase):
     eleza test_setup_annotations_line(self):
         # check that SETUP_ANNOTATIONS does sio create spurious line numbers
         jaribu:
-            with open(ann_module.__file__) kama f:
+            ukijumuisha open(ann_module.__file__) kama f:
                 txt = f.read()
             co = compile(txt, ann_module.__file__, 'exec')
             self.assertEqual(co.co_firstlineno, 3)
@@ -33,7 +33,7 @@ kundi OpcodeTest(unittest.TestCase):
 
     eleza test_no_annotations_if_not_needed(self):
         kundi C: pita
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             C.__annotations__
 
     eleza test_use_existing_annotations(self):
@@ -43,11 +43,11 @@ kundi OpcodeTest(unittest.TestCase):
 
     eleza test_do_not_recreate_annotations(self):
         # Don't rely on the existence of the '__annotations__' global.
-        with support.swap_item(globals(), '__annotations__', {}):
+        ukijumuisha support.swap_item(globals(), '__annotations__', {}):
             toa globals()['__annotations__']
             kundi C:
                 toa __annotations__
-                with self.assertRaises(NameError):
+                ukijumuisha self.assertRaises(NameError):
                     x: int
 
     eleza test_ashiria_class_exceptions(self):

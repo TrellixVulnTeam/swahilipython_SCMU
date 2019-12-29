@@ -148,7 +148,7 @@ _contains_disallowed_url_pchar_re = re.compile('[\x00-\x20\x7f]')
 # We are more lenient kila assumed real world compatibility purposes.
 
 # We always set the Content-Length header kila these methods because some
-# servers will otherwise respond with a 411
+# servers will otherwise respond ukijumuisha a 411
 _METHODS_EXPECTING_BODY = {'PATCH', 'POST', 'PUT'}
 
 
@@ -191,7 +191,7 @@ kundi HTTPMessage(email.message.Message):
         kila line kwenye self.keys():
             ikiwa line[:n].lower() == name:
                 hit = 1
-            elikiwa sio line[:1].isspace():
+            lasivyo sio line[:1].isspace():
                 hit = 0
             ikiwa hit:
                 lst.append(line)
@@ -319,7 +319,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         ikiwa version kwenye ("HTTP/1.0", "HTTP/0.9"):
             # Some servers might still rudisha "0.9", treat it kama 1.0 anyway
             self.version = 10
-        elikiwa version.startswith("HTTP/1."):
+        lasivyo version.startswith("HTTP/1."):
             self.version = 11   # use HTTP/1.1 code kila HTTP/1.x where x>=1
         isipokua:
             ashiria UnknownProtocol(version)
@@ -500,7 +500,7 @@ kundi HTTPResponse(io.BufferedIOBase):
             # Ideally, we would ashiria IncompleteRead ikiwa the content-length
             # wasn't satisfied, but it might koma compatibility.
             self._close_conn()
-        elikiwa self.length ni sio Tupu:
+        lasivyo self.length ni sio Tupu:
             self.length -= n
             ikiwa sio self.length:
                 self._close_conn()
@@ -619,7 +619,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         rudisha n
 
     eleza read1(self, n=-1):
-        """Read with at most one underlying system call.  If at least one
+        """Read ukijumuisha at most one underlying system call.  If at least one
         byte ni buffered, rudisha that instead.
         """
         ikiwa self.fp ni Tupu ama self._method == "HEAD":
@@ -631,7 +631,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         result = self.fp.read1(n)
         ikiwa sio result na n:
             self._close_conn()
-        elikiwa self.length ni sio Tupu:
+        lasivyo self.length ni sio Tupu:
             self.length -= len(result)
         rudisha result
 
@@ -655,7 +655,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         result = self.fp.readline(limit)
         ikiwa sio result na limit:
             self._close_conn()
-        elikiwa self.length ni sio Tupu:
+        lasivyo self.length ni sio Tupu:
             self.length -= len(result)
         rudisha result
 
@@ -720,11 +720,11 @@ kundi HTTPResponse(io.BufferedIOBase):
     eleza __iter__(self):
         rudisha self
 
-    # For compatibility with old-style urllib responses.
+    # For compatibility ukijumuisha old-style urllib responses.
 
     eleza info(self):
         '''Returns an instance of the kundi mimetools.Message containing
-        meta-information associated with the URL.
+        meta-information associated ukijumuisha the URL.
 
         When the method ni HTTP, these headers are those rudishaed by
         the server at the head of the retrieved HTML page (including
@@ -758,7 +758,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         rudisha self.url
 
     eleza getcode(self):
-        '''Return the HTTP status code that was sent with the response,
+        '''Return the HTTP status code that was sent ukijumuisha the response,
         ama Tupu ikiwa the URL ni sio an HTTP URL.
 
         '''
@@ -829,7 +829,7 @@ kundi HTTPConnection:
         (self.host, self.port) = self._get_hostport(host, port)
 
         # This ni stored kama an instance variable to allow unit
-        # tests to replace it with a suitable mockup
+        # tests to replace it ukijumuisha a suitable mockup
         self._create_connection = socket.create_connection
 
     eleza set_tunnel(self, host, port=Tupu, headers=Tupu):
@@ -844,7 +844,7 @@ kundi HTTPConnection:
         established.
 
         The headers argument should be a mapping of extra HTTP headers to send
-        with the CONNECT request.
+        ukijumuisha the CONNECT request.
         """
 
         ikiwa self.sock:
@@ -974,7 +974,7 @@ kundi HTTPConnection:
     eleza _output(self, s):
         """Add a line of output to the current request buffer.
 
-        Assumes that the line does *not* end with \\r\\n.
+        Assumes that the line does *not* end ukijumuisha \\r\\n.
         """
         self._buffer.append(s)
 
@@ -1136,7 +1136,7 @@ kundi HTTPConnection:
                     tatizo UnicodeEncodeError:
                         host_enc = host.encode("idna")
 
-                    # As per RFC 273, IPv6 address should be wrapped with []
+                    # As per RFC 273, IPv6 address should be wrapped ukijumuisha []
                     # when used kama Host header
 
                     ikiwa host.find(':') >= 0:
@@ -1149,7 +1149,7 @@ kundi HTTPConnection:
                         self.putheader('Host', "%s:%s" % (host_enc, port))
 
             # note: we are assuming that clients will sio attempt to set these
-            #       headers since *this* library must deal with the
+            #       headers since *this* library must deal ukijumuisha the
             #       consequences. this also means that when the supporting
             #       libraries are updated to recognize other forms, then this
             #       code should be changed (removed ama updated).
@@ -1201,7 +1201,7 @@ kundi HTTPConnection:
         kila i, one_value kwenye enumerate(values):
             ikiwa hasattr(one_value, 'encode'):
                 values[i] = one_value.encode('latin-1')
-            elikiwa isinstance(one_value, int):
+            lasivyo isinstance(one_value, int):
                 values[i] = str(one_value).encode('ascii')
 
             ikiwa _is_illegal_header_value(values[i]):
@@ -1215,7 +1215,7 @@ kundi HTTPConnection:
         """Indicate that the last header line has been sent to the server.
 
         This method sends the request to the server.  The optional message_body
-        argument can be used to pita a message body associated with the
+        argument can be used to pita a message body associated ukijumuisha the
         request.
         """
         ikiwa self.__state == _CS_REQ_STARTED:
@@ -1374,7 +1374,7 @@ isipokua:
             ikiwa check_hostname ni Tupu:
                 check_hostname = context.check_hostname
             ikiwa check_hostname na sio will_verify:
-                ashiria ValueError("check_hostname needs a SSL context with "
+                ashiria ValueError("check_hostname needs a SSL context ukijumuisha "
                                  "either CERT_OPTIONAL ama CERT_REQUIRED")
             ikiwa key_file ama cert_file:
                 context.load_cert_chain(cert_file, key_file)

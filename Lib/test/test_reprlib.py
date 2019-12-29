@@ -217,7 +217,7 @@ kundi ReprTests(unittest.TestCase):
         r(z)
 
 eleza write_file(path, text):
-    with open(path, 'w', encoding='ASCII') kama fp:
+    ukijumuisha open(path, 'w', encoding='ASCII') kama fp:
         fp.write(text)
 
 kundi LongReprTest(unittest.TestCase):
@@ -236,7 +236,7 @@ kundi LongReprTest(unittest.TestCase):
         # Remember where we are
         self.here = os.getcwd()
         sys.path.insert(0, self.here)
-        # When regrtest ni run with its -j option, this command alone ni not
+        # When regrtest ni run ukijumuisha its -j option, this command alone ni not
         # enough.
         importlib.invalidate_caches()
 
@@ -270,7 +270,7 @@ kundi LongReprTest(unittest.TestCase):
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) kila Windows' 260 character limit"
                           % cached_path_len)
-        elikiwa os.name == 'nt' na verbose:
+        lasivyo os.name == 'nt' na verbose:
             andika("cached_path_len =", cached_path_len)
 
     eleza test_module(self):
@@ -297,7 +297,7 @@ kundi foo(object):
 
     @unittest.skip('need a suitable object')
     eleza test_object(self):
-        # XXX Test the repr of a type with a really long tp_name but with no
+        # XXX Test the repr of a type ukijumuisha a really long tp_name but ukijumuisha no
         # tp_repr.  WIBNI we had ::Inline? :)
         pita
 
@@ -309,7 +309,7 @@ kundi bar:
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza bar
-        # Module name may be prefixed with "test.", depending on how run.
+        # Module name may be prefixed ukijumuisha "test.", depending on how run.
         self.assertEqual(repr(bar.bar), "<kundi '%s.bar'>" % bar.__name__)
 
     eleza test_instance(self):
@@ -343,9 +343,9 @@ kundi aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             '<bound method aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.amethod of <%s.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa object at 0x' \
             % (qux.__name__,) ), r)
 
-    @unittest.skip('needs a built-in function with a really long name')
+    @unittest.skip('needs a built-in function ukijumuisha a really long name')
     eleza test_builtin_function(self):
-        # XXX test built-in functions na methods with really long names
+        # XXX test built-in functions na methods ukijumuisha really long names
         pita
 
 kundi ClassWithRepr:

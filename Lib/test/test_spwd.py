@@ -42,7 +42,7 @@ kundi TestSpwdRoot(unittest.TestCase):
         self.assertEqual(entry.sp_expire, entry[7])
         self.assertIsInstance(entry.sp_flag, int)
         self.assertEqual(entry.sp_flag, entry[8])
-        with self.assertRaises(KeyError) kama cx:
+        ukijumuisha self.assertRaises(KeyError) kama cx:
             spwd.getspnam('invalid user name')
         self.assertEqual(str(cx.exception), "'getspnam(): name sio found'")
         self.assertRaises(TypeError, spwd.getspnam)
@@ -63,7 +63,7 @@ kundi TestSpwdNonRoot(unittest.TestCase):
     eleza test_getspnam_exception(self):
         name = 'bin'
         jaribu:
-            with self.assertRaises(PermissionError) kama cm:
+            ukijumuisha self.assertRaises(PermissionError) kama cm:
                 spwd.getspnam(name)
         tatizo KeyError kama exc:
             self.skipTest("spwd entry %r doesn't exist: %s" % (name, exc))

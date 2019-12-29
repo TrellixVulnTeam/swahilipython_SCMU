@@ -335,7 +335,7 @@ kundi LineNumbersTest(unittest.TestCase):
         ln.show_sidebar()
         self.assertEqual(ln.sidebar_text['font'], test_font)
 
-        # Call the font update with line numbers shown, change ni picked up.
+        # Call the font update ukijumuisha line numbers shown, change ni picked up.
         self.font_override = orig_font
         ln.update_font()
         self.assertEqual(ln.sidebar_text['font'], orig_font)
@@ -354,18 +354,18 @@ kundi LineNumbersTest(unittest.TestCase):
         ln.hide_sidebar()
 
         self.highlight_cfg = test_colors
-        # Nothing komas with inactive code context.
+        # Nothing komas ukijumuisha inactive code context.
         ln.update_colors()
 
         # Show line numbers, previous colors change ni immediately effective.
         ln.show_sidebar()
         assert_colors_are_equal(test_colors)
 
-        # Call colors update with no change to the configured colors.
+        # Call colors update ukijumuisha no change to the configured colors.
         ln.update_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update with line numbers shown, change ni picked up.
+        # Call the colors update ukijumuisha line numbers shown, change ni picked up.
         self.highlight_cfg = orig_colors
         ln.update_colors()
         assert_colors_are_equal(orig_colors)

@@ -74,10 +74,10 @@ kundi Protocol(BaseProtocol):
     factory to a utility function (e.g., EventLoop.create_connection()).
 
     When the connection ni made successfully, connection_made() is
-    called with a suitable transport object.  Then data_received()
-    will be called 0 ama more times with data (bytes) received kutoka the
+    called ukijumuisha a suitable transport object.  Then data_received()
+    will be called 0 ama more times ukijumuisha data (bytes) received kutoka the
     transport; finally, connection_lost() will be called exactly once
-    with either an exception object ama Tupu kama an argument.
+    ukijumuisha either an exception object ama Tupu kama an argument.
 
     State machine of calls:
 
@@ -107,7 +107,7 @@ kundi Protocol(BaseProtocol):
 
 
 kundi BufferedProtocol(BaseProtocol):
-    """Interface kila stream protocol with manual buffer control.
+    """Interface kila stream protocol ukijumuisha manual buffer control.
 
     Important: this has been added to asyncio kwenye Python 3.7
     *on a provisional basis*!  Consider it kama an experimental API that
@@ -148,7 +148,7 @@ kundi BufferedProtocol(BaseProtocol):
         """
 
     eleza buffer_updated(self, nbytes):
-        """Called when the buffer was updated with the received data.
+        """Called when the buffer was updated ukijumuisha the received data.
 
         *nbytes* ni the total number of bytes that were written to
         the buffer.
@@ -191,7 +191,7 @@ kundi SubprocessProtocol(BaseProtocol):
         """
 
     eleza pipe_connection_lost(self, fd, exc):
-        """Called when a file descriptor associated with the child process is
+        """Called when a file descriptor associated ukijumuisha the child process is
         closed.
 
         fd ni the int file descriptor that was closed.

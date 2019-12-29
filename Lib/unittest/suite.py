@@ -346,7 +346,7 @@ kundi _ErrorHolder(object):
         rudisha 0
 
 eleza _isnotsuite(test):
-    "A crude way to tell apart testcases na suites with duck-typing"
+    "A crude way to tell apart testcases na suites ukijumuisha duck-typing"
     jaribu:
         iter(test)
     tatizo TypeError:

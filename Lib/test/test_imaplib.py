@@ -73,17 +73,17 @@ kundi TestImaplib(unittest.TestCase):
 
     eleza test_imap4_host_default_value(self):
         # Check whether the IMAP4_PORT ni truly unavailable.
-        with socket.socket() kama s:
+        ukijumuisha socket.socket() kama s:
             jaribu:
                 s.connect(('', imaplib.IMAP4_PORT))
                 self.skipTest(
-                    "Cannot run the test with local IMAP server running.")
+                    "Cannot run the test ukijumuisha local IMAP server running.")
             tatizo socket.error:
                 pita
 
         # This ni the exception that should be ashiriad.
         expected_errnos = support.get_socket_conn_refused_errs()
-        with self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             imaplib.IMAP4()
         self.assertIn(cm.exception.errno, expected_errnos)
 
@@ -176,7 +176,7 @@ kundi SimpleIMAPHandler(socketserver.StreamRequestHandler):
     eleza cmd_CAPABILITY(self, tag, args):
         caps = ('IMAP4rev1 ' + self.capabilities
                 ikiwa self.capabilities
-                else 'IMAP4rev1')
+                isipokua 'IMAP4rev1')
         self._send_textline('* CAPABILITY ' + caps)
         self._send_tagged(tag, 'OK', 'CAPABILITY completed')
 
@@ -265,13 +265,13 @@ kundi NewIMAPTestsMixin():
             capabilities = 'AUTH ENABLE UTF8=ACCEPT'
         client, _ = self._setup(EnableHandler)
         self.assertUongo(client.utf8_enabled)
-        with self.assertRaisesRegex(imaplib.IMAP4.error, 'ENABLE.*NONAUTH'):
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error, 'ENABLE.*NONAUTH'):
             client.enable('foo')
         self.assertUongo(client.utf8_enabled)
 
     eleza test_enable_ashirias_error_if_no_capability(self):
         client, _ = self._setup(SimpleIMAPHandler)
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 'does sio support ENABLE'):
             client.enable('foo')
 
@@ -279,7 +279,7 @@ kundi NewIMAPTestsMixin():
         client, _ = self._setup(SimpleIMAPHandler)
         typ, data = client.login('user', 'pita')
         self.assertEqual(typ, 'OK')
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 'does sio support ENABLE'):
             client.enable('UTF8=ACCEPT')
 
@@ -325,7 +325,7 @@ kundi NewIMAPTestsMixin():
         typ, _ = client.enable('UTF8=ACCEPT')
         self.assertEqual(typ, 'OK')
         self.assertKweli(client.utf8_enabled)
-        with self.assertRaisesRegex(imaplib.IMAP4.error, 'charset.*UTF8'):
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error, 'charset.*UTF8'):
             client.search('foo', 'bar')
 
     eleza test_bad_auth_name(self):
@@ -334,7 +334,7 @@ kundi NewIMAPTestsMixin():
                 self._send_tagged(tag, 'NO',
                     'unrecognized authentication type {}'.format(args[0]))
         client, _ = self._setup(MyServer)
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 'unrecognized authentication type METHOD'):
             client.authenticate('METHOD', lambda: 1)
 
@@ -345,7 +345,7 @@ kundi NewIMAPTestsMixin():
                 self.response = tuma
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
         client, _ = self._setup(MyServer)
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 r'\[AUTHENTICATIONFAILED\] invalid'):
             client.authenticate('MYAUTH', lambda x: b'fake')
 
@@ -420,7 +420,7 @@ kundi NewIMAPTestsMixin():
                 isipokua:
                     self._send_tagged(tag, 'OK', 'MYAUTH successful')
         client, _ = self._setup(MyServer)
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 r'\[AUTHENTICATIONFAILED\] aborted'):
             client.authenticate('MYAUTH', lambda x: Tupu)
 
@@ -431,26 +431,26 @@ kundi NewIMAPTestsMixin():
                 # send response line longer than the limit set kwenye the next line
                 self.wfile.write(b'* OK ' + 11 * b'x' + b'\r\n')
         _, server = self._setup(TooLongHandler, connect=Uongo)
-        with self.assertRaisesRegex(imaplib.IMAP4.error,
+        ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 'got more than 10 bytes'):
             self.imap_class(*server.server_address)
 
     eleza test_simple_with_statement(self):
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
-        with self.imap_class(*server.server_address):
+        ukijumuisha self.imap_class(*server.server_address):
             pita
 
     eleza test_with_statement(self):
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
-        with self.imap_class(*server.server_address) kama imap:
+        ukijumuisha self.imap_class(*server.server_address) kama imap:
             imap.login('user', 'pita')
             self.assertEqual(server.logged, 'user')
         self.assertIsTupu(server.logged)
 
     eleza test_with_statement_logout(self):
-        # It ni legal to log out explicitly inside the with block
+        # It ni legal to log out explicitly inside the ukijumuisha block
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
-        with self.imap_class(*server.server_address) kama imap:
+        ukijumuisha self.imap_class(*server.server_address) kama imap:
             imap.login('user', 'pita')
             self.assertEqual(server.logged, 'user')
             imap.logout()
@@ -504,7 +504,7 @@ kundi NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
         self.assertEqual(ssl_context.check_hostname, Kweli)
         ssl_context.load_verify_locations(CAFILE)
 
-        with self.assertRaisesRegex(ssl.CertificateError,
+        ukijumuisha self.assertRaisesRegex(ssl.CertificateError,
                 "IP address mismatch, certificate ni sio valid kila "
                 "'127.0.0.1'"):
             _, server = self._setup(SimpleIMAPHandler)
@@ -525,9 +525,9 @@ kundi NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
     # to CPython stdlib
     @cpython_only
     eleza test_certfile_arg_warn(self):
-        with support.check_warnings(('', DeprecationWarning)):
-            with mock.patch.object(self.imap_class, 'open'):
-                with mock.patch.object(self.imap_class, '_connect'):
+        ukijumuisha support.check_warnings(('', DeprecationWarning)):
+            ukijumuisha mock.patch.object(self.imap_class, 'open'):
+                ukijumuisha mock.patch.object(self.imap_class, '_connect'):
                     self.imap_class('localhost', 143, certfile=CERTFILE)
 
 kundi ThreadedNetworkedTests(unittest.TestCase):
@@ -585,7 +585,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @contextmanager
     eleza reaped_pair(self, hdlr):
-        with self.reaped_server(hdlr) kama server:
+        ukijumuisha self.reaped_server(hdlr) kama server:
             client = self.imap_class(*server.server_address)
             jaribu:
                 tuma server, client
@@ -594,7 +594,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @reap_threads
     eleza test_connect(self):
-        with self.reaped_server(SimpleIMAPHandler) kama server:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
             client = self.imap_class(*server.server_address)
             client.shutdown()
 
@@ -636,7 +636,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send_line(msg.encode('ascii'))
                 self._send_tagged(tag, 'OK', 'STORE completed.')
 
-        with self.reaped_pair(BracketFlagHandler) kama (server, client):
+        ukijumuisha self.reaped_pair(BracketFlagHandler) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response, b'ZmFrZQ==\r\n')
@@ -655,7 +655,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 # EOF without sending a complete welcome message.
                 self.wfile.write(b'* OK')
 
-        with self.reaped_server(EOFHandler) kama server:
+        ukijumuisha self.reaped_server(EOFHandler) kama server:
             self.assertRaises(imaplib.IMAP4.abort,
                               self.imap_class, *server.server_address)
 
@@ -668,7 +668,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send(b'* CAPABILITY IMAP4rev1 AUTH\n')
                 self._send_tagged(tag, 'OK', 'CAPABILITY completed')
 
-        with self.reaped_server(BadNewlineHandler) kama server:
+        ukijumuisha self.reaped_server(BadNewlineHandler) kama server:
             self.assertRaises(imaplib.IMAP4.abort,
                               self.imap_class, *server.server_address)
 
@@ -685,7 +685,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @reap_threads
     eleza test_enable_ashirias_error_if_not_AUTH(self):
-        with self.reaped_pair(self.UTF8Server) kama (server, client):
+        ukijumuisha self.reaped_pair(self.UTF8Server) kama (server, client):
             self.assertUongo(client.utf8_enabled)
             self.assertRaises(imaplib.IMAP4.error, client.enable, 'foo')
             self.assertUongo(client.utf8_enabled)
@@ -696,15 +696,15 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
     eleza test_enable_ashirias_error_if_no_capability(self):
         kundi NoEnableServer(self.UTF8Server):
             capabilities = 'AUTH'
-        with self.reaped_pair(NoEnableServer) kama (server, client):
+        ukijumuisha self.reaped_pair(NoEnableServer) kama (server, client):
             self.assertRaises(imaplib.IMAP4.error, client.enable, 'foo')
 
     @reap_threads
     eleza test_enable_UTF8_ashirias_error_if_not_supported(self):
         kundi NonUTF8Server(SimpleIMAPHandler):
             pita
-        with self.assertRaises(imaplib.IMAP4.error):
-            with self.reaped_pair(NonUTF8Server) kama (server, client):
+        ukijumuisha self.assertRaises(imaplib.IMAP4.error):
+            ukijumuisha self.reaped_pair(NonUTF8Server) kama (server, client):
                 typ, data = client.login('user', 'pita')
                 self.assertEqual(typ, 'OK')
                 client.enable('UTF8=ACCEPT')
@@ -719,7 +719,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'okay')
 
-        with self.reaped_pair(UTF8AppendServer) kama (server, client):
+        ukijumuisha self.reaped_pair(UTF8AppendServer) kama (server, client):
             self.assertEqual(client._encoding, 'ascii')
             code, _ = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
@@ -742,7 +742,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @reap_threads
     eleza test_search_disallows_charset_in_utf8_mode(self):
-        with self.reaped_pair(self.UTF8Server) kama (server, client):
+        ukijumuisha self.reaped_pair(self.UTF8Server) kama (server, client):
             typ, _ = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(typ, 'OK')
             typ, _ = client.enable('UTF8=ACCEPT')
@@ -759,8 +759,8 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send_tagged(tag, 'NO', 'unrecognized authentication '
                                   'type {}'.format(args[0]))
 
-        with self.reaped_pair(MyServer) kama (server, client):
-            with self.assertRaises(imaplib.IMAP4.error):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
+            ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 client.authenticate('METHOD', lambda: 1)
 
     @reap_threads
@@ -773,8 +773,8 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self.response = tuma
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
 
-        with self.reaped_pair(MyServer) kama (server, client):
-            with self.assertRaises(imaplib.IMAP4.error):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
+            ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 code, data = client.authenticate('MYAUTH', lambda x: b'fake')
 
     @reap_threads
@@ -787,13 +787,13 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
-        with self.reaped_pair(MyServer) kama (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response,
                              b'ZmFrZQ==\r\n')  # b64 encoded 'fake'
 
-        with self.reaped_pair(MyServer) kama (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: 'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response,
@@ -817,12 +817,12 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 isipokua:
                     self._send_tagged(tag, 'NO', 'No access')
 
-        with self.reaped_pair(AuthHandler) kama (server, client):
+        ukijumuisha self.reaped_pair(AuthHandler) kama (server, client):
             self.assertKweli('AUTH=CRAM-MD5' kwenye client.capabilities)
             ret, data = client.login_cram_md5("tim", "tanstaaftanstaaf")
             self.assertEqual(ret, "OK")
 
-        with self.reaped_pair(AuthHandler) kama (server, client):
+        ukijumuisha self.reaped_pair(AuthHandler) kama (server, client):
             self.assertKweli('AUTH=CRAM-MD5' kwenye client.capabilities)
             ret, data = client.login_cram_md5("tim", b"tanstaaftanstaaf")
             self.assertEqual(ret, "OK")
@@ -842,8 +842,8 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 isipokua:
                     self._send_tagged(tag, 'OK', 'MYAUTH successful')
 
-        with self.reaped_pair(MyServer) kama (server, client):
-            with self.assertRaises(imaplib.IMAP4.error):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
+            ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 code, data = client.authenticate('MYAUTH', lambda x: Tupu)
 
 
@@ -853,21 +853,21 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 # Send a very long response line
                 self.wfile.write(b'* OK ' + imaplib._MAXLINE * b'x' + b'\r\n')
 
-        with self.reaped_server(TooLongHandler) kama server:
+        ukijumuisha self.reaped_server(TooLongHandler) kama server:
             self.assertRaises(imaplib.IMAP4.error,
                               self.imap_class, *server.server_address)
 
     @reap_threads
     eleza test_simple_with_statement(self):
         # simplest call
-        with self.reaped_server(SimpleIMAPHandler) kama server:
-            with self.imap_class(*server.server_address):
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.imap_class(*server.server_address):
                 pita
 
     @reap_threads
     eleza test_with_statement(self):
-        with self.reaped_server(SimpleIMAPHandler) kama server:
-            with self.imap_class(*server.server_address) kama imap:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.imap_class(*server.server_address) kama imap:
                 imap.login('user', 'pita')
                 self.assertEqual(server.logged, 'user')
             self.assertIsTupu(server.logged)
@@ -875,8 +875,8 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
     @reap_threads
     eleza test_with_statement_logout(self):
         # what happens ikiwa already logout kwenye the block?
-        with self.reaped_server(SimpleIMAPHandler) kama server:
-            with self.imap_class(*server.server_address) kama imap:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.imap_class(*server.server_address) kama imap:
                 imap.login('user', 'pita')
                 self.assertEqual(server.logged, 'user')
                 imap.logout()
@@ -894,16 +894,16 @@ kundi ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ssl_context.load_verify_locations(CAFILE)
 
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ssl.CertificateError,
                 "IP address mismatch, certificate ni sio valid kila "
                 "'127.0.0.1'"):
-            with self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
                 client = self.imap_class(*server.server_address,
                                          ssl_context=ssl_context)
                 client.shutdown()
 
-        with self.reaped_server(SimpleIMAPHandler) kama server:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
             client = self.imap_class("localhost", server.server_address[1],
                                      ssl_context=ssl_context)
             client.shutdown()
@@ -919,16 +919,16 @@ kundi RemoteIMAPTest(unittest.TestCase):
     imap_kundi = imaplib.IMAP4
 
     eleza setUp(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             self.server = self.imap_class(self.host, self.port)
 
     eleza tearDown(self):
         ikiwa self.server ni sio Tupu:
-            with transient_internet(self.host):
+            ukijumuisha transient_internet(self.host):
                 self.server.logout()
 
     eleza test_logincapa(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             kila cap kwenye self.server.capabilities:
                 self.assertIsInstance(cap, str)
             self.assertIn('LOGINDISABLED', self.server.capabilities)
@@ -937,7 +937,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
             self.assertEqual(rs[0], 'OK')
 
     eleza test_logout(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             rs = self.server.logout()
             self.server = Tupu
             self.assertEqual(rs[0], 'BYE', rs)
@@ -950,7 +950,7 @@ kundi RemoteIMAP_STARTTLSTest(RemoteIMAPTest):
 
     eleza setUp(self):
         super().setUp()
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             rs = self.server.starttls()
             self.assertEqual(rs[0], 'OK')
 
@@ -990,24 +990,24 @@ kundi RemoteIMAP_SSLTest(RemoteIMAPTest):
             server.logout()
 
     eleza test_logincapa(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             _server = self.imap_class(self.host, self.port)
             self.check_logincapa(_server)
 
     eleza test_logout(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             _server = self.imap_class(self.host, self.port)
             rs = _server.logout()
             self.assertEqual(rs[0], 'BYE', rs)
 
     eleza test_ssl_context_certfile_exclusive(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             self.assertRaises(
                 ValueError, self.imap_class, self.host, self.port,
                 certfile=CERTFILE, ssl_context=self.create_ssl_context())
 
     eleza test_ssl_context_keyfile_exclusive(self):
-        with transient_internet(self.host):
+        ukijumuisha transient_internet(self.host):
             self.assertRaises(
                 ValueError, self.imap_class, self.host, self.port,
                 keyfile=CERTFILE, ssl_context=self.create_ssl_context())

@@ -166,7 +166,7 @@ def get_build_version():
         minorVersion = 0
     if majorVersion >= 6:
         return majorVersion + minorVersion
-    # else we don't know what version of the compiler this is
+    # isipokua we don't know what version of the compiler this is
     return None
 
 def get_build_architecture():

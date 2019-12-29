@@ -30,7 +30,7 @@ eleza fixdir(lst):
 # XXX Things to test
 #
 # agiza package without __init__
-# agiza package with __init__
+# agiza package ukijumuisha __init__
 # __init__ agizaing submodule
 # __init__ agizaing global module
 # __init__ defining variables
@@ -83,7 +83,7 @@ kundi TestPkg(unittest.TestCase):
             ikiwa contents ni Tupu:
                 os.mkdir(fullname)
             isipokua:
-                with open(fullname, "w") kama f:
+                ukijumuisha open(fullname, "w") kama f:
                     f.write(contents)
                     ikiwa sio contents.endswith('\n'):
                         f.write('\n')
@@ -281,7 +281,7 @@ kundi TestPkg(unittest.TestCase):
         self.assertUongo(subsub)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 na above")
+                     "Docstrings are omitted ukijumuisha -O2 na above")
     eleza test_8(self):
         hier = [
                 ("t8", Tupu),

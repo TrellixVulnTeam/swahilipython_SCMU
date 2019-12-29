@@ -87,7 +87,7 @@ eleza test_pickle_dump_load(assertion, source, target=Tupu):
 
 eleza test_pickle_exception(assertion, exception, obj):
     kila protocol kwenye range(HIGHEST_PROTOCOL + 1):
-        with assertion(exception):
+        ukijumuisha assertion(exception):
             dumps(obj, protocol=protocol)
 
 kundi TestHelpers(unittest.TestCase):
@@ -252,14 +252,14 @@ kundi TestEnum(unittest.TestCase):
         Season = self.Season
         self.assertEqual(Season.SPRING.name, 'SPRING')
         self.assertEqual(Season.SPRING.value, 1)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             Season.SPRING.name = 'invierno'
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             Season.SPRING.value = 2
 
     eleza test_changing_member(self):
         Season = self.Season
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             Season.WINTER = 'really cold'
 
     eleza test_attribute_deletion(self):
@@ -276,11 +276,11 @@ kundi TestEnum(unittest.TestCase):
         toa Season.spam
         self.assertUongo(hasattr(Season, 'spam'))
 
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa Season.SPRING
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa Season.DRY
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             toa Season.SPRING.name
 
     eleza test_bool_of_class(self):
@@ -297,19 +297,19 @@ kundi TestEnum(unittest.TestCase):
             self.assertKweli(bool(member))
 
     eleza test_invalid_names(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Wrong(Enum):
                 mro = 9
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Wrong(Enum):
                 _create_= 11
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Wrong(Enum):
                 _get_mixins_ = 9
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Wrong(Enum):
                 _find_new_ = 1
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Wrong(Enum):
                 _any_name_ = 9
 
@@ -338,9 +338,9 @@ kundi TestEnum(unittest.TestCase):
     eleza test_contains(self):
         Season = self.Season
         self.assertIn(Season.AUTUMN, Season)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             3 kwenye Season
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'AUTUMN' kwenye Season
 
         val = Season(3)
@@ -352,9 +352,9 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_comparisons(self):
         Season = self.Season
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             Season.SPRING < Season.WINTER
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             Season.SPRING > 4
 
         self.assertNotEqual(Season.SPRING, 1)
@@ -365,7 +365,7 @@ kundi TestEnum(unittest.TestCase):
             BARREL = 3
 
         self.assertNotEqual(Season.SPRING, Part.SPRING)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             Season.SPRING < Part.CLIP
 
     eleza test_enum_duplicates(self):
@@ -393,14 +393,14 @@ kundi TestEnum(unittest.TestCase):
                 )
 
     eleza test_duplicate_name(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi Color(Enum):
                 red = 1
                 green = 2
                 blue = 3
                 red = 4
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi Color(Enum):
                 red = 1
                 green = 2
@@ -408,7 +408,7 @@ kundi TestEnum(unittest.TestCase):
                 eleza red(self):
                     rudisha 'red'
 
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi Color(Enum):
                 @property
                 eleza red(self):
@@ -598,14 +598,14 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_intenum_kutoka_bytes(self):
         self.assertIs(IntStooges.kutoka_bytes(b'\x00\x03', 'big'), IntStooges.MOE)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             IntStooges.kutoka_bytes(b'\x00\x05', 'big')
 
     eleza test_floatenum_kutokahex(self):
         h = float.hex(FloatStooges.MOE.value)
         self.assertIs(FloatStooges.kutokahex(h), FloatStooges.MOE)
         h = float.hex(FloatStooges.MOE.value + 0.01)
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             FloatStooges.kutokahex(h)
 
     eleza test_pickle_enum(self):
@@ -894,7 +894,7 @@ kundi TestEnum(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi MoreColor(Color):
                 cyan = 4
                 magenta = 5
@@ -910,7 +910,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual(whatever.this.really(), 'no, sio that')
 
     eleza test_wrong_inheritance_order(self):
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi Wrong(Enum, str):
                 NotHere = 'error before this point'
 
@@ -996,9 +996,9 @@ kundi TestEnum(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             Color(4)
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             Color['chartreuse']
 
     eleza test_new_repr(self):
@@ -1505,7 +1505,7 @@ kundi TestEnum(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             kundi MoreColor(Color):
                 cyan = 4
                 magenta = 5
@@ -1557,7 +1557,7 @@ kundi TestEnum(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             kundi Color(UniqueEnum):
                 red = 1
                 green = 2
@@ -1718,10 +1718,10 @@ kundi TestEnum(unittest.TestCase):
             eleza _missing_(cls, item):
                 ikiwa item == 'three':
                     rudisha cls.blue
-                elikiwa item == 'bad rudisha':
+                lasivyo item == 'bad rudisha':
                     # trigger internal error
                     rudisha 5
-                elikiwa item == 'error out':
+                lasivyo item == 'error out':
                     ashiria ZeroDivisionError
                 isipokua:
                     # trigger sio found
@@ -1859,7 +1859,7 @@ kundi TestEnum(unittest.TestCase):
             RETRY = "RETRY"
 
     eleza test_empty_globals(self):
-        # bpo-35717: sys._getframe(2).f_globals['__name__'] fails with KeyError
+        # bpo-35717: sys._getframe(2).f_globals['__name__'] fails ukijumuisha KeyError
         # when using compile na exec because f_globals ni empty
         code = "kutoka enum agiza Enum; Enum('Animal', 'ANT BEE CAT DOG')"
         code = compile(code, "<string>", "exec")
@@ -1886,7 +1886,7 @@ kundi TestOrder(unittest.TestCase):
             verde = green
 
     eleza test_same_members_wrong_order(self):
-        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -1894,7 +1894,7 @@ kundi TestOrder(unittest.TestCase):
                 green = 2
 
     eleza test_order_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -1902,7 +1902,7 @@ kundi TestOrder(unittest.TestCase):
                 blue = 3
 
     eleza test_order_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -1911,7 +1911,7 @@ kundi TestOrder(unittest.TestCase):
                 verde = green
 
     eleza test_enum_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -1920,7 +1920,7 @@ kundi TestOrder(unittest.TestCase):
                 purple = 4
 
     eleza test_enum_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -2157,13 +2157,13 @@ kundi TestFlag(unittest.TestCase):
         Color = self.Color
         self.assertUongo(Color.BLACK kwenye Open)
         self.assertUongo(Open.RO kwenye Color)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'BLACK' kwenye Color
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'RO' kwenye Open
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             1 kwenye Color
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             1 kwenye Open
 
     eleza test_member_contains(self):
@@ -2198,7 +2198,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(Color.green.value, 4)
 
     eleza test_auto_number_garbage(self):
-        with self.assertRaisesRegex(TypeError, 'Invalid Flag value: .not an int.'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'Invalid Flag value: .not an int.'):
             kundi Color(Flag):
                 red = 'not an int'
                 blue = auto()
@@ -2303,7 +2303,7 @@ kundi TestFlag(unittest.TestCase):
                 threading.Thread(target=cycle_enum)
                 kila _ kwenye range(8)
                 ]
-        with support.start_threads(threads):
+        ukijumuisha support.start_threads(threads):
             pita
         # check that only 248 members were created
         self.assertUongo(
@@ -2609,13 +2609,13 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertKweli(Open.RW kwenye Open)
         self.assertUongo(Color.GREEN kwenye Open)
         self.assertUongo(Open.RW kwenye Color)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'GREEN' kwenye Color
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             'RW' kwenye Open
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             2 kwenye Color
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             2 kwenye Open
 
     eleza test_member_contains(self):
@@ -2637,7 +2637,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertUongo(R kwenye WX)
         self.assertUongo(W kwenye RX)
         self.assertUongo(X kwenye RW)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.assertUongo('test' kwenye RW)
 
     eleza test_bool(self):
@@ -2721,7 +2721,7 @@ kundi TestIntFlag(unittest.TestCase):
                 threading.Thread(target=cycle_enum)
                 kila _ kwenye range(8)
                 ]
-        with support.start_threads(threads):
+        ukijumuisha support.start_threads(threads):
             pita
         # check that only 248 members were created
         self.assertUongo(
@@ -2733,7 +2733,7 @@ kundi TestIntFlag(unittest.TestCase):
 kundi TestEmptyAndNonLatinStrings(unittest.TestCase):
 
     eleza test_empty_string(self):
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             empty_abc = Enum('empty_abc', ('', 'B', 'C'))
 
     eleza test_non_latin_character_string(self):
@@ -2762,13 +2762,13 @@ kundi TestUnique(unittest.TestCase):
             triple = 3
 
     eleza test_unique_dirty(self):
-        with self.assertRaisesRegex(ValueError, 'tres.*one'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'tres.*one'):
             @unique
             kundi Dirty(Enum):
                 one = 1
                 two = 'dos'
                 tres = 1
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ValueError,
                 'double.*single.*turkey.*triple',
                 ):
@@ -2989,7 +2989,7 @@ kundi TestIntEnumConvert(unittest.TestCase):
     @unittest.skipUnless(sys.version_info[:2] == (3, 8),
                          '_convert was deprecated kwenye 3.8')
     eleza test_convert_warn(self):
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             enum.IntEnum._convert(
                 'UnittestConvert',
                 ('test.test_enum', '__main__')[__name__=='__main__'],
@@ -2998,7 +2998,7 @@ kundi TestIntEnumConvert(unittest.TestCase):
     @unittest.skipUnless(sys.version_info >= (3, 9),
                          '_convert was removed kwenye 3.9')
     eleza test_convert_ashiria(self):
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             enum.IntEnum._convert(
                 'UnittestConvert',
                 ('test.test_enum', '__main__')[__name__=='__main__'],

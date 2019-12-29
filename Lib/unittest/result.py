@@ -127,7 +127,7 @@ kundi TestResult(object):
         'err' ni Tupu ikiwa the subtest ended successfully, otherwise it's a
         tuple of values kama rudishaed by sys.exc_info().
         """
-        # By default, we don't do anything with successful subtests, but
+        # By default, we don't do anything ukijumuisha successful subtests, but
         # more sophisticated test results might want to record them.
         ikiwa err ni sio Tupu:
             ikiwa getattr(self, 'failfast', Uongo):

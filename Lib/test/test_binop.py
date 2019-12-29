@@ -149,7 +149,7 @@ kundi Rat(object):
         """Divide two Rats, rudishaing the floored result."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa sio isRat(other):
+        lasivyo sio isRat(other):
             rudisha NotImplemented
         x = self/other
         rudisha x.__num // x.__den
@@ -163,7 +163,7 @@ kundi Rat(object):
         """Divide two Rats, rudishaing quotient na remainder."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa sio isRat(other):
+        lasivyo sio isRat(other):
             rudisha NotImplemented
         x = self//other
         rudisha (x, self - other * x)
@@ -172,7 +172,7 @@ kundi Rat(object):
         """Divide two Rats, rudishaing quotient na remainder (reversed args)."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa sio isRat(other):
+        lasivyo sio isRat(other):
             rudisha NotImplemented
         rudisha divmod(other, self)
 
@@ -301,7 +301,7 @@ kundi RatTestCase(unittest.TestCase):
 
 
 kundi OperationLogger:
-    """Base kundi kila classes with operation logging."""
+    """Base kundi kila classes ukijumuisha operation logging."""
     eleza __init__(self, logger):
         self.logger = logger
     eleza log_operation(self, *args):

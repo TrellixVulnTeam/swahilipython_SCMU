@@ -88,11 +88,11 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_in_memory_shelf(self):
         d1 = byteskeydict()
-        with shelve.Shelf(d1, protocol=0) kama s:
+        ukijumuisha shelve.Shelf(d1, protocol=0) kama s:
             s['key1'] = (1,2,3,4)
             self.assertEqual(s['key1'], (1,2,3,4))
         d2 = byteskeydict()
-        with shelve.Shelf(d2, protocol=1) kama s:
+        ukijumuisha shelve.Shelf(d2, protocol=1) kama s:
             s['key1'] = (1,2,3,4)
             self.assertEqual(s['key1'], (1,2,3,4))
 
@@ -102,14 +102,14 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_mutable_entry(self):
         d1 = byteskeydict()
-        with shelve.Shelf(d1, protocol=2, writeback=Uongo) kama s:
+        ukijumuisha shelve.Shelf(d1, protocol=2, writeback=Uongo) kama s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
             self.assertEqual(s['key1'], [1,2,3,4])
 
         d2 = byteskeydict()
-        with shelve.Shelf(d2, protocol=2, writeback=Kweli) kama s:
+        ukijumuisha shelve.Shelf(d2, protocol=2, writeback=Kweli) kama s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
@@ -127,7 +127,7 @@ kundi TestCase(unittest.TestCase):
         # but a different one can be given
         shelve.Shelf(d, keyencoding='latin-1')[key] = [1]
         self.assertIn(key.encode('latin-1'), d)
-        # with all consequences
+        # ukijumuisha all consequences
         s = shelve.Shelf(d, keyencoding='ascii')
         self.assertRaises(UnicodeEncodeError, s.__setitem__, key, [1])
 
@@ -136,7 +136,7 @@ kundi TestCase(unittest.TestCase):
         d = {}
         key = 'key'
         encodedkey = key.encode('utf-8')
-        with shelve.Shelf(d, writeback=Kweli) kama s:
+        ukijumuisha shelve.Shelf(d, writeback=Kweli) kama s:
             s[key] = [1]
             p1 = d[encodedkey]  # Will give a KeyError ikiwa backing store sio updated
             s['key'].append(2)
@@ -145,7 +145,7 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_with(self):
         d1 = {}
-        with shelve.Shelf(d1, protocol=2, writeback=Uongo) kama s:
+        ukijumuisha shelve.Shelf(d1, protocol=2, writeback=Uongo) kama s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             self.assertEqual(len(s), 1)
@@ -158,7 +158,7 @@ kundi TestCase(unittest.TestCase):
             self.fail('Closed shelf should sio find a key')
 
     eleza test_default_protocol(self):
-        with shelve.Shelf({}) kama s:
+        ukijumuisha shelve.Shelf({}) kama s:
             self.assertEqual(s._protocol, 3)
 
 kutoka test agiza mapping_tests

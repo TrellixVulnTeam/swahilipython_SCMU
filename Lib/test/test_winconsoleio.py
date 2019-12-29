@@ -25,7 +25,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         self.assertRaisesRegex(ValueError,
             "negative file descriptor", ConIO, -1)
 
-        with tempfile.TemporaryFile() kama tmpfile:
+        ukijumuisha tempfile.TemporaryFile() kama tmpfile:
             fd = tmpfile.fileno()
             # Windows 10: "Cannot open non-console file"
             # Earlier: "Cannot open console output buffer kila reading"
@@ -113,14 +113,14 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         conout_path = os.path.join(temp_path, 'CONOUT$')
 
-        with open(conout_path, 'wb', buffering=0) kama f:
+        ukijumuisha open(conout_path, 'wb', buffering=0) kama f:
             ikiwa sys.getwindowsversion()[:2] > (6, 1):
                 self.assertIsInstance(f, ConIO)
             isipokua:
                 self.assertNotIsInstance(f, ConIO)
 
     eleza test_write_empty_data(self):
-        with ConIO('CONOUT$', 'w') kama f:
+        ukijumuisha ConIO('CONOUT$', 'w') kama f:
             self.assertEqual(f.write(b''), 0)
 
     eleza assertStdinRoundTrip(self, text):
@@ -153,7 +153,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         source = 'ϼўТλФЙ\r\n'.encode('utf-16-le')
         expected = 'ϼўТλФЙ\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
-            with open('CONIN$', 'rb', buffering=0) kama stdin:
+            ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
                 write_input(stdin, source)
 
                 actual = b''
@@ -170,7 +170,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         source = '\U00101FFF\U00101001\r\n'.encode('utf-16-le')
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
-            with open('CONIN$', 'rb', buffering=0) kama stdin:
+            ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
                 write_input(stdin, source)
 
                 actual = b''
@@ -181,7 +181,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
                 self.assertEqual(actual, expected, 'stdin.read({})'.format(read_count))
 
     eleza test_ctrl_z(self):
-        with open('CONIN$', 'rb', buffering=0) kama stdin:
+        ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
             source = '\xC4\x1A\r\n'.encode('utf-16-le')
             expected = '\xC4'.encode('utf-8')
             write_input(stdin, source)

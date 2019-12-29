@@ -199,7 +199,7 @@ kundi HyperParser:
             # character kila an identifier.
             ikiwa sio str[i:pos].isidentifier():
                 rudisha 0
-        elikiwa i < pos:
+        lasivyo i < pos:
             # All characters kwenye str[i:pos] are valid ASCII identifier
             # characters, so it ni enough to check that the first is
             # valid kama the first character of an identifier.
@@ -220,7 +220,7 @@ kundi HyperParser:
     _whitespace_chars = " \t\n\\"
 
     eleza get_expression(self):
-        """Return a string with the Python expression which ends at the
+        """Return a string ukijumuisha the Python expression which ends at the
         given index, which ni empty ikiwa there ni no real one.
         """
         ikiwa sio self.is_in_code():
@@ -243,14 +243,14 @@ kundi HyperParser:
                 ikiwa pos>brck_limit na rawtext[pos-1] kwenye self._whitespace_chars:
                     # Eat a whitespace
                     pos -= 1
-                elikiwa (not postdot_phase and
+                lasivyo (not postdot_phase and
                       pos > brck_limit na rawtext[pos-1] == '.'):
                     # Eat a dot
                     pos -= 1
                     postdot_phase = Kweli
                 # The next line will fail ikiwa we are *inside* a comment,
                 # but we shouldn't be.
-                elikiwa (pos == brck_limit na brck_index > 0 and
+                lasivyo (pos == brck_limit na brck_index > 0 and
                       rawtext[bracketing[brck_index-1][0]] == '#'):
                     # Eat a comment
                     brck_index -= 2
@@ -274,7 +274,7 @@ kundi HyperParser:
                 postdot_phase = Uongo
                 # (the loop endeleas now)
 
-            elikiwa pos == brck_limit:
+            lasivyo pos == brck_limit:
                 # We are at a bracketing limit. If it ni a closing
                 # bracket, eat the bracket, otherwise, stop the search.
                 level = bracketing[brck_index][1]

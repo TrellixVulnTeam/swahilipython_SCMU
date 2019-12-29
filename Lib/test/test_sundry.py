@@ -8,7 +8,7 @@ agiza unittest
 kundi TestUntestedModules(unittest.TestCase):
     eleza test_untested_modules_can_be_imported(self):
         untested = ('encodings', 'formatter')
-        with support.check_warnings(quiet=Kweli):
+        ukijumuisha support.check_warnings(quiet=Kweli):
             kila name kwenye untested:
                 jaribu:
                     support.import_module('test.test_{}'.format(name))

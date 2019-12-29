@@ -20,12 +20,12 @@ __all__ = [
 
 
 ModuleInfo = namedtuple('ModuleInfo', 'module_finder name ispkg')
-ModuleInfo.__doc__ = 'A namedtuple with minimal info about a module.'
+ModuleInfo.__doc__ = 'A namedtuple ukijumuisha minimal info about a module.'
 
 
 eleza _get_spec(finder, name):
     """Return the finder-specific module spec."""
-    # Works with legacy finders.
+    # Works ukijumuisha legacy finders.
     jaribu:
         find_spec = finder.find_spec
     tatizo AttributeError:
@@ -64,7 +64,7 @@ eleza walk_packages(path=Tupu, prefix='', onerror=Tupu):
     modules!) on the given path, kwenye order to access the __path__
     attribute to find submodules.
 
-    'onerror' ni a function which gets called with one argument (the
+    'onerror' ni a function which gets called ukijumuisha one argument (the
     name of the package which was being imported) ikiwa any exception
     occurs wakati trying to agiza a package.  If no onerror function is
     supplied, ImportErrors are caught na ignored, wakati all other
@@ -119,7 +119,7 @@ eleza iter_modules(path=Tupu, prefix=''):
     """
     ikiwa path ni Tupu:
         importers = iter_importers()
-    elikiwa isinstance(path, str):
+    lasivyo isinstance(path, str):
         ashiria ValueError("path must be Tupu ama list of paths to look kila "
                         "modules in")
     isipokua:
@@ -187,7 +187,7 @@ iter_importer_modules.register(
 
 eleza _import_imp():
     global imp
-    with warnings.catch_warnings():
+    ukijumuisha warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
         imp = importlib.import_module('imp')
 
@@ -291,7 +291,7 @@ kundi ImpLoader:
         rudisha mod
 
     eleza get_data(self, pathname):
-        with open(pathname, "rb") kama file:
+        ukijumuisha open(pathname, "rb") kama file:
             rudisha file.read()
 
     eleza _reopen(self):
@@ -299,13 +299,13 @@ kundi ImpLoader:
             mod_type = self.etc[2]
             ikiwa mod_type==imp.PY_SOURCE:
                 self.file = open(self.filename, 'r')
-            elikiwa mod_type kwenye (imp.PY_COMPILED, imp.C_EXTENSION):
+            lasivyo mod_type kwenye (imp.PY_COMPILED, imp.C_EXTENSION):
                 self.file = open(self.filename, 'rb')
 
     eleza _fix_name(self, fullname):
         ikiwa fullname ni Tupu:
             fullname = self.fullname
-        elikiwa fullname != self.fullname:
+        lasivyo fullname != self.fullname:
             ashiria ImportError("Loader kila module %s cannot handle "
                               "module %s" % (self.fullname, fullname))
         rudisha fullname
@@ -321,13 +321,13 @@ kundi ImpLoader:
             ikiwa mod_type==imp.PY_SOURCE:
                 source = self.get_source(fullname)
                 self.code = compile(source, self.filename, 'exec')
-            elikiwa mod_type==imp.PY_COMPILED:
+            lasivyo mod_type==imp.PY_COMPILED:
                 self._reopen()
                 jaribu:
                     self.code = read_code(self.file)
                 mwishowe:
                     self.file.close()
-            elikiwa mod_type==imp.PKG_DIRECTORY:
+            lasivyo mod_type==imp.PKG_DIRECTORY:
                 self.code = self._get_delegate().get_code()
         rudisha self.code
 
@@ -341,11 +341,11 @@ kundi ImpLoader:
                     self.source = self.file.read()
                 mwishowe:
                     self.file.close()
-            elikiwa mod_type==imp.PY_COMPILED:
+            lasivyo mod_type==imp.PY_COMPILED:
                 ikiwa os.path.exists(self.filename[:-1]):
-                    with open(self.filename[:-1], 'r') kama f:
+                    ukijumuisha open(self.filename[:-1], 'r') kama f:
                         self.source = f.read()
-            elikiwa mod_type==imp.PKG_DIRECTORY:
+            lasivyo mod_type==imp.PKG_DIRECTORY:
                 self.source = self._get_delegate().get_source()
         rudisha self.source
 
@@ -359,7 +359,7 @@ kundi ImpLoader:
         mod_type = self.etc[2]
         ikiwa mod_type==imp.PKG_DIRECTORY:
             rudisha self._get_delegate().get_filename()
-        elikiwa mod_type kwenye (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
+        lasivyo mod_type kwenye (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
             rudisha self.filename
         rudisha Tupu
 
@@ -497,7 +497,7 @@ eleza find_loader(fullname):
         # pkgutil previously ashiriad ImportError
         msg = "Error wakati finding loader kila {!r} ({}: {})"
         ashiria ImportError(msg.format(fullname, type(ex), ex)) kutoka ex
-    rudisha spec.loader ikiwa spec ni sio Tupu else Tupu
+    rudisha spec.loader ikiwa spec ni sio Tupu isipokua Tupu
 
 
 eleza extend_path(path, name):
@@ -515,7 +515,7 @@ eleza extend_path(path, name):
 
     It also looks kila *.pkg files beginning where * matches the name
     argument.  This feature ni similar to *.pth files (see site.py),
-    tatizo that it doesn't special-case lines starting with 'agiza'.
+    tatizo that it doesn't special-case lines starting ukijumuisha 'agiza'.
     A *.pkg file ni trusted at face value: apart kutoka checking for
     duplicates, all entries found kwenye a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
@@ -530,7 +530,7 @@ eleza extend_path(path, name):
     are sio (unicode ama 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
     errors when used kama filenames may cause this function to ashiria an
-    exception (in line with os.path.isdir() behavior).
+    exception (in line ukijumuisha os.path.isdir() behavior).
     """
 
     ikiwa sio isinstance(path, list):
@@ -540,7 +540,7 @@ eleza extend_path(path, name):
 
     sname_pkg = name + ".pkg"
 
-    path = path[:] # Start with a copy of the existing path
+    path = path[:] # Start ukijumuisha a copy of the existing path
 
     parent_package, _, final_name = name.rpartition('.')
     ikiwa parent_package:
@@ -565,7 +565,7 @@ eleza extend_path(path, name):
                 ikiwa spec ni sio Tupu:
                     portions = spec.submodule_search_locations ama []
             # Is this finder PEP 420 compliant?
-            elikiwa hasattr(finder, 'find_loader'):
+            lasivyo hasattr(finder, 'find_loader'):
                 _, portions = finder.find_loader(final_name)
 
             kila portion kwenye portions:
@@ -584,7 +584,7 @@ eleza extend_path(path, name):
                 sys.stderr.write("Can't open %s: %s\n" %
                                  (pkgfile, msg))
             isipokua:
-                with f:
+                ukijumuisha f:
                     kila line kwenye f:
                         line = line.rstrip('\n')
                         ikiwa sio line ama line.startswith('#'):
@@ -601,7 +601,7 @@ eleza get_data(package, resource):
     argument should be the name of a package, kwenye standard module format
     (foo.bar). The resource argument should be kwenye the form of a relative
     filename, using '/' kama the path separator. The parent directory name '..'
-    ni sio allowed, na nor ni a rooted name (starting with a '/').
+    ni sio allowed, na nor ni a rooted name (starting ukijumuisha a '/').
 
     The function rudishas a binary string, which ni the contents of the
     specified resource.
@@ -628,8 +628,8 @@ eleza get_data(package, resource):
     ikiwa mod ni Tupu ama sio hasattr(mod, '__file__'):
         rudisha Tupu
 
-    # Modify the resource name to be compatible with the loader.get_data
-    # signature - an os.path format "filename" starting with the dirname of
+    # Modify the resource name to be compatible ukijumuisha the loader.get_data
+    # signature - an os.path format "filename" starting ukijumuisha the dirname of
     # the package's __file__
     parts = resource.split('/')
     parts.insert(0, os.path.dirname(mod.__file__))

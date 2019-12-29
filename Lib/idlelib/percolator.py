@@ -83,9 +83,9 @@ eleza _percolator(parent):  # htest #
     t2 = Tracer("t2")
 
     eleza toggle1():
-        (pin ikiwa var1.get() else pout)(t1)
+        (pin ikiwa var1.get() isipokua pout)(t1)
     eleza toggle2():
-        (pin ikiwa var2.get() else pout)(t2)
+        (pin ikiwa var2.get() isipokua pout)(t2)
 
     text.pack()
     var1 = tk.IntVar(parent)

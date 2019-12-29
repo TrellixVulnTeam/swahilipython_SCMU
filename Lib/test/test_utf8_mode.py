@@ -40,7 +40,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         code = 'agiza sys; andika(sys.flags.utf8_mode)'
 
         kila loc kwenye POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            ukijumuisha self.subTest(LC_ALL=loc):
                 out = self.get_output('-c', code, LC_ALL=loc)
                 self.assertEqual(out, '1')
 
@@ -84,7 +84,7 @@ kundi UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
-        # Cannot test with the POSIX locale, since the POSIX locale enables
+        # Cannot test ukijumuisha the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
         ikiwa sio self.posix_locale():
             # PYTHONUTF8 should be ignored ikiwa -E ni used
@@ -153,7 +153,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         code = textwrap.dedent('''
             agiza sys
             filename = sys.argv[1]
-            with open(filename) kama fp:
+            ukijumuisha open(filename) kama fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
@@ -174,7 +174,7 @@ kundi UTF8ModeTests(unittest.TestCase):
             agiza sys
             kutoka %s agiza open
             filename = sys.argv[1]
-            with open(filename, %s) kama fp:
+            ukijumuisha open(filename, %s) kama fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
@@ -204,7 +204,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         self.assertEqual(out, 'UTF-8 UTF-8')
 
         kila loc kwenye POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            ukijumuisha self.subTest(LC_ALL=loc):
                 out = self.get_output('-X', 'utf8', '-c', code, LC_ALL=loc)
                 self.assertEqual(out, 'UTF-8 UTF-8')
 
@@ -222,24 +222,24 @@ kundi UTF8ModeTests(unittest.TestCase):
 
         check('utf8', [arg_utf8])
         kila loc kwenye POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            ukijumuisha self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
         ikiwa sys.platform == 'darwin' ama support.is_android ama VXWORKS:
             c_arg = arg_utf8
-        elikiwa sys.platform.startswith("aix"):
+        lasivyo sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
         isipokua:
             c_arg = arg_ascii
         kila loc kwenye POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            ukijumuisha self.subTest(LC_ALL=loc):
                 check('utf8=0', [c_arg], LC_ALL=loc)
 
     eleza test_optim_level(self):
         # CPython: check that Py_Main() doesn't increment Py_OptimizeFlag
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
-        # configuration ni read again with the new encoding).
+        # configuration ni read again ukijumuisha the new encoding).
         code = 'agiza sys; andika(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')

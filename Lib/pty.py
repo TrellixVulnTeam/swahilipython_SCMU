@@ -4,7 +4,7 @@
 #       Only tested on Linux.
 # See:  W. Richard Stevens. 1992.  Advanced Programming kwenye the
 #       UNIX Environment.  Chapter 19.
-# Author: Steen Lumholt -- with additions by Guido.
+# Author: Steen Lumholt -- ukijumuisha additions by Guido.
 
 kutoka select agiza select
 agiza os
@@ -78,7 +78,7 @@ eleza slave_open(tty_name):
 
 eleza fork():
     """fork() -> (pid, master_fd)
-    Fork na make the child a session leader with a controlling terminal."""
+    Fork na make the child a session leader ukijumuisha a controlling terminal."""
 
     jaribu:
         pid, fd = os.forkpty()

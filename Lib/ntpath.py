@@ -54,9 +54,9 @@ eleza normcase(s):
 
 # Return whether a path ni absolute.
 # Trivial kwenye Posix, harder on Windows.
-# For Windows it ni absolute ikiwa it starts with a slash ama backslash (current
+# For Windows it ni absolute ikiwa it starts ukijumuisha a slash ama backslash (current
 # volume), ama ikiwa a pathname after the volume-letter-and-colon ama UNC-resource
-# starts with a slash ama backslash.
+# starts ukijumuisha a slash ama backslash.
 
 eleza isabs(s):
     """Test whether a path ni absolute"""
@@ -88,7 +88,7 @@ eleza join(path, *paths):
                     result_drive = p_drive
                 result_path = p_path
                 endelea
-            elikiwa p_drive na p_drive != result_drive:
+            lasivyo p_drive na p_drive != result_drive:
                 ikiwa p_drive.lower() != result_drive.lower():
                     # Different drives => ignore the first path entirely
                     result_drive = p_drive
@@ -269,11 +269,11 @@ eleza ismount(path):
         rudisha Uongo
 
 
-# Expand paths beginning with '~' ama '~user'.
+# Expand paths beginning ukijumuisha '~' ama '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', ama ikiwa the user ama $HOME ni unknown,
+# If the path doesn't begin ukijumuisha '~', ama ikiwa the user ama $HOME ni unknown,
 # the path ni rudishaed unchanged (leaving error reporting to whatever
-# function ni called with the expanded path kama argument).
+# function ni called ukijumuisha the expanded path kama argument).
 # See also module 'glob' kila expansion of *, ? na [...] kwenye pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
@@ -295,7 +295,7 @@ eleza expanduser(path):
 
     ikiwa 'USERPROFILE' kwenye os.environ:
         userhome = os.environ['USERPROFILE']
-    elikiwa sio 'HOMEPATH' kwenye os.environ:
+    lasivyo sio 'HOMEPATH' kwenye os.environ:
         rudisha path
     isipokua:
         jaribu:
@@ -367,7 +367,7 @@ eleza expandvars(path):
             tatizo ValueError:
                 res += c + path
                 index = pathlen - 1
-        elikiwa c == percent:  # variable ama '%'
+        lasivyo c == percent:  # variable ama '%'
             ikiwa path[index + 1:index + 2] == percent:
                 res += c
                 index += 1
@@ -389,11 +389,11 @@ eleza expandvars(path):
                     tatizo KeyError:
                         value = percent + var + percent
                     res += value
-        elikiwa c == dollar:  # variable ama '$$'
+        lasivyo c == dollar:  # variable ama '$$'
             ikiwa path[index + 1:index + 2] == dollar:
                 res += c
                 index += 1
-            elikiwa path[index + 1:index + 2] == brace:
+            lasivyo path[index + 1:index + 2] == brace:
                 path = path[index+2:]
                 pathlen = len(path)
                 jaribu:
@@ -455,7 +455,7 @@ eleza normpath(path):
         pardir = '..'
         special_prefixes = ('\\\\.\\', '\\\\?\\')
     ikiwa path.startswith(special_prefixes):
-        # kwenye the case of paths with these prefixes:
+        # kwenye the case of paths ukijumuisha these prefixes:
         # \\.\ -> device names
         # \\?\ -> literal paths
         # do sio do any normalization, but rudisha the path
@@ -474,11 +474,11 @@ eleza normpath(path):
     wakati i < len(comps):
         ikiwa sio comps[i] ama comps[i] == curdir:
             toa comps[i]
-        elikiwa comps[i] == pardir:
+        lasivyo comps[i] == pardir:
             ikiwa i > 0 na comps[i-1] != pardir:
                 toa comps[i-1:i+1]
                 i -= 1
-            elikiwa i == 0 na prefix.endswith(sep):
+            lasivyo i == 0 na prefix.endswith(sep):
                 toa comps[i]
             isipokua:
                 i += 1
@@ -536,7 +536,7 @@ isipokua:
         # 2: ERROR_FILE_NOT_FOUND
         # 3: ERROR_DIRECTORY_NOT_FOUND
         # 5: ERROR_ACCESS_DENIED
-        # 21: ERROR_NOT_READY (implies drive with no media)
+        # 21: ERROR_NOT_READY (implies drive ukijumuisha no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
         # 50: ERROR_NOT_SUPPORTED (implies no support kila reparse points)
         # 67: ERROR_BAD_NET_NAME (implies remote server unavailable)
@@ -566,7 +566,7 @@ isipokua:
         # 2: ERROR_FILE_NOT_FOUND
         # 3: ERROR_DIRECTORY_NOT_FOUND
         # 5: ERROR_ACCESS_DENIED
-        # 21: ERROR_NOT_READY (implies drive with no media)
+        # 21: ERROR_NOT_READY (implies drive ukijumuisha no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
         # 50: ERROR_NOT_SUPPORTED
         # 67: ERROR_BAD_NET_NAME (implies remote server unavailable)
@@ -584,7 +584,7 @@ isipokua:
             jaribu:
                 path = _readlink_deep(path, seen)
                 path = _getfinalpathname(path)
-                rudisha join(path, tail) ikiwa tail else path
+                rudisha join(path, tail) ikiwa tail isipokua path
             tatizo OSError kama ex:
                 ikiwa ex.winerror haiko kwenye allowed_winerror:
                     ashiria
@@ -594,7 +594,7 @@ isipokua:
                 # kama best we have it
                 ikiwa path na sio name:
                     rudisha abspath(path + tail)
-                tail = join(name, tail) ikiwa tail else name
+                tail = join(name, tail) ikiwa tail isipokua name
         rudisha abspath(tail)
 
     eleza realpath(path):
@@ -616,7 +616,7 @@ isipokua:
         tatizo OSError kama ex:
             initial_winerror = ex.winerror
             path = _getfinalpathname_nonstrict(path)
-        # The path rudishaed by _getfinalpathname will always start with \\?\ -
+        # The path rudishaed by _getfinalpathname will always start ukijumuisha \\?\ -
         # strip off that prefix unless it was already provided on the original
         # path.
         ikiwa sio had_prefix na path.startswith(prefix):
@@ -743,7 +743,7 @@ eleza commonpath(paths):
         isipokua:
             common = common[:len(s1)]
 
-        prefix = drive + sep ikiwa isabs else drive
+        prefix = drive + sep ikiwa isabs isipokua drive
         rudisha prefix + sep.join(common)
     tatizo (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)

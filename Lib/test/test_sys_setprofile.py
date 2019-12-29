@@ -60,7 +60,7 @@ kundi ProfileSimulator(HookWatcher):
         HookWatcher.__init__(self)
 
     eleza callback(self, frame, event, arg):
-        # Callback registered with sys.setprofile()/sys.settrace()
+        # Callback registered ukijumuisha sys.setprofile()/sys.settrace()
         self.dispatch[event](self, frame)
 
     eleza trace_call(self, frame):
@@ -334,7 +334,7 @@ kundi ProfileSimulatorTestCase(TestCaseBase):
                               (1, 'rudisha', j_ident),
                               ])
 
-    # bpo-34125: profiling method_descriptor with **kwargs
+    # bpo-34125: profiling method_descriptor ukijumuisha **kwargs
     eleza test_unbound_method(self):
         kwargs = {}
         eleza f(p):

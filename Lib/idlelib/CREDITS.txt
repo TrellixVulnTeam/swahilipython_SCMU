@@ -6,7 +6,7 @@ IDLE's recent development was carried out kwenye the SF IDLEfork project. The
 objective was to develop a version of IDLE which had an execution environment
 which could be initialized prior to each run of user code.
 
-The IDLEfork project was initiated by David Scherer, with some help kutoka Peter
+The IDLEfork project was initiated by David Scherer, ukijumuisha some help kutoka Peter
 Schneider-Kamp na Nicholas Riley.  David wrote the first version of the RPC
 code na designed a fast turn-around environment kila VPython.  Guido developed
 the RPC code na Remote Debugger currently integrated kwenye IDLE.  Bruce Sherwood

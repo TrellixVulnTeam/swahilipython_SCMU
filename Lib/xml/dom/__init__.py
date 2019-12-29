@@ -5,7 +5,7 @@ Python Library Reference kwenye the section on the xml.dom package.
 
 This package contains the following modules:
 
-minidom -- A simple implementation of the Level 1 DOM with namespace
+minidom -- A simple implementation of the Level 1 DOM ukijumuisha namespace
            support added (based on the Level 2 specification) na other
            minor Level 2 functionality.
 
@@ -61,7 +61,7 @@ VALIDATION_ERR                 = 16
 
 kundi DOMException(Exception):
     """Abstract base kundi kila DOM exceptions.
-    Exceptions with specific codes are specializations of this class."""
+    Exceptions ukijumuisha specific codes are specializations of this class."""
 
     eleza __init__(self, *args, **kw):
         ikiwa self.__class__ ni DOMException:

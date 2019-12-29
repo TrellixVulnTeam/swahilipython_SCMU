@@ -19,7 +19,7 @@ eleza resolve_address(host, port):
     We must perform name resolution before timeout tests, otherwise it will be
     performed by connect().
     """
-    with support.transient_internet(host):
+    ukijumuisha support.transient_internet(host):
         rudisha socket.getaddrinfo(host, port, socket.AF_INET,
                                   socket.SOCK_STREAM)[0][4]
 
@@ -171,13 +171,13 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
         whitehole = resolve_address('whitehole.snakebite.net', 56667)
 
         # This address has been configured to immediately drop any incoming
-        # packets kama well, but it does it respectfully with regards to the
+        # packets kama well, but it does it respectfully ukijumuisha regards to the
         # incoming protocol.  RSTs are sent kila TCP packets, na ICMP UNREACH
         # ni sent kila UDP/ICMP packets.  This means our attempts to connect to
-        # it should be met immediately with ECONNREFUSED.  The test case has
+        # it should be met immediately ukijumuisha ECONNREFUSED.  The test case has
         # been structured around this premise: ikiwa we get an ECONNREFUSED kutoka
-        # the whitehole, we proceed with testing connect timeout against the
-        # blackhole.  If we don't, we skip the test (with a message about not
+        # the whitehole, we proceed ukijumuisha testing connect timeout against the
+        # blackhole.  If we don't, we skip the test (ukijumuisha a message about not
         # getting the required RST kutoka the whitehole within the required
         # timeframe).
 
@@ -232,12 +232,12 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
         # All that hard work just to test ikiwa connect times out kwenye 0.001s ;-)
         self.addr_remote = blackhole
-        with support.transient_internet(self.addr_remote[0]):
+        ukijumuisha support.transient_internet(self.addr_remote[0]):
             self._sock_operation(1, 0.001, 'connect', self.addr_remote)
 
     eleza testRecvTimeout(self):
         # Test recv() timeout
-        with support.transient_internet(self.addr_remote[0]):
+        ukijumuisha support.transient_internet(self.addr_remote[0]):
             self.sock.connect(self.addr_remote)
             self._sock_operation(1, 1.5, 'recv', 1024)
 
@@ -249,7 +249,7 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
     eleza testSend(self):
         # Test send() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
@@ -258,7 +258,7 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
     eleza testSendto(self):
         # Test sendto() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
@@ -268,7 +268,7 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
     eleza testSendall(self):
         # Test sendall() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
