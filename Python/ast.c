@@ -1276,7 +1276,7 @@ ast_for_comp_op(struct compiling *c, const node *n)
             case NAME:
                 if (strcmp(STR(CHILD(n, 1)), "in") == 0 || strcmp(STR(CHILD(n, 1)), "kwenye") == 0)
                     return NotIn;
-                if (strcmp(STR(CHILD(n, 0)), "is") == 0 || strcmp(STR(CHILD(n, 0)), "ni"))
+                if (strcmp(STR(CHILD(n, 0)), "is") == 0 || strcmp(STR(CHILD(n, 0)), "ni") == 0)
                     return IsNot;
                 /* fall through */
             default:

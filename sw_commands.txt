@@ -1,0 +1,3 @@
+"/opt/komodo11/lib/python/bin/python" "/opt/komodo11/lib/sdk/bin/koext" startext "/windows/metro/CodeCentral/Python/CustomPython/PySW"
+
+"/opt/komodo11/lib/python/bin/python" "/opt/komodo11/lib/sdk/bin/koext" startlang "PythonSW" --ext .py -d "/windows/metro/CodeCentral/Python/CustomPython/PySW"
