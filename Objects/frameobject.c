@@ -638,7 +638,7 @@ _PyFrame_New_NoTrack(PyThreadState *tstate, PyCodeObject *code,
             builtins = PyDict_New();
             if (builtins == NULL ||
                 PyDict_SetItemString(
-                    builtins, "None", Py_None) < 0)
+                    builtins, "Tupu", Py_None) < 0)
                 return NULL;
         }
         else

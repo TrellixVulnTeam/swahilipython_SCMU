@@ -513,7 +513,7 @@ be part of a module definition::
            Py_XINCREF(temp);         /* Add a reference to new callback */
            Py_XDECREF(my_callback);  /* Dispose of previous callback */
            my_callback = temp;       /* Remember new callback */
-           /* Boilerplate to return "None" */
+           /* Boilerplate to return "Tupu" */
            Py_INCREF(Py_None);
            result = Py_None;
        }

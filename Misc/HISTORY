@@ -1083,7 +1083,7 @@ Library
   data contains MEMOIZE opcodes together with PUT or BINPUT opcodes.
 
 - Issue #22095: Fixed HTTPConnection.set_tunnel with default port.  The port
-  value in the host header was set to "None".  Patch by Demian Brecht.
+  value in the host header was set to "Tupu".  Patch by Demian Brecht.
 
 - Issue #23016: A warning no longer produces an AttributeError when the program
   is run with pythonw.exe.
@@ -21436,8 +21436,8 @@ Library
 
 - For compatibility with doctests created before 2.3, if an expected
   output block consists solely of "1" and the actual output block
-  consists solely of "True", it's accepted as a match; similarly
-  for "0" and "False".  This is quite un-doctest-like, but is practical.
+  consists solely of "Kweli", it's accepted as a match; similarly
+  for "0" and "Uongo".  This is quite un-doctest-like, but is practical.
   The behavior can be disabled by passing the new doctest module
   constant DONT_ACCEPT_TRUE_FOR_1 to the new optionflags optional
   argument.
@@ -32358,7 +32358,7 @@ Other Language Changes
 The "raise" statement now takes an optional argument which specifies
 the traceback to be used when printing the exception's stack trace.
 This must be a traceback object, such as found in "sys.exc_traceback".
-When omitted or given as "None", the old behavior (to generate a stack
+When omitted or given as "Tupu", the old behavior (to generate a stack
 trace entry for the current stack frame) is used.
 
 The tokenizer is now more tolerant of alien whitespace.  Control-L in
@@ -32392,7 +32392,7 @@ module.)
 The built-in function "compile()" now takes a third possible value for
 the kind of code to be compiled: specifying "'single'" generates code
 for a single interactive statement, which prints the output of
-expression statements that evaluate to something else than "None".
+expression statements that evaluate to something else than "Tupu".
 
 Library Changes
 ===============

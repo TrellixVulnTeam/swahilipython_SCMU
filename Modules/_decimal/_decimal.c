@@ -603,7 +603,7 @@ signaldict_repr(PyObject *self)
 
     for (cm=signal_map, i=0; cm->name != NULL; cm++, i++) {
         n[i] = cm->fqname;
-        b[i] = SdFlags(self)&cm->flag ? "True" : "False";
+        b[i] = SdFlags(self)&cm->flag ? "Kweli" : "Uongo";
     }
     return PyUnicode_FromFormat(
         "{<class '%s'>:%s, <class '%s'>:%s, <class '%s'>:%s, "

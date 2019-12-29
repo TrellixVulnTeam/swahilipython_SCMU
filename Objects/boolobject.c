@@ -3,7 +3,7 @@
 #include "Python.h"
 #include "longintrepr.h"
 
-/* We define bool_repr to return "False" or "True" */
+/* We define bool_repr to return "Uongo" or "Kweli" */
 
 static PyObject *false_str = NULL;
 static PyObject *true_str = NULL;
@@ -15,10 +15,10 @@ bool_repr(PyObject *self)
 
     if (self == Py_True)
         s = true_str ? true_str :
-            (true_str = PyUnicode_InternFromString("True"));
+            (true_str = PyUnicode_InternFromString("Kweli"));
     else
         s = false_str ? false_str :
-            (false_str = PyUnicode_InternFromString("False"));
+            (false_str = PyUnicode_InternFromString("Uongo"));
     Py_XINCREF(s);
     return s;
 }

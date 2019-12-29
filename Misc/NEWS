@@ -20380,7 +20380,7 @@ Library
   data contains MEMOIZE opcodes together with PUT or BINPUT opcodes.
 
 - bpo-22095: Fixed HTTPConnection.set_tunnel with default port.  The port
-  value in the host header was set to "None".  Patch by Demian Brecht.
+  value in the host header was set to "Tupu".  Patch by Demian Brecht.
 
 - bpo-23016: A warning no longer produces an AttributeError when the program
   is run with pythonw.exe.

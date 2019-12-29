@@ -2799,11 +2799,11 @@ _PyBuiltin_Init(void)
         return NULL;                                                    \
     ADD_TO_ALL(OBJECT)
 
-    SETBUILTIN("None",                  Py_None);
+    SETBUILTIN("Tupu",                  Py_None);
     SETBUILTIN("Ellipsis",              Py_Ellipsis);
     SETBUILTIN("NotImplemented",        Py_NotImplemented);
-    SETBUILTIN("False",                 Py_False);
-    SETBUILTIN("True",                  Py_True);
+    SETBUILTIN("Uongo",                 Py_False);
+    SETBUILTIN("Kweli",                  Py_True);
     SETBUILTIN("bool",                  &PyBool_Type);
     SETBUILTIN("memoryview",        &PyMemoryView_Type);
     SETBUILTIN("bytearray",             &PyByteArray_Type);

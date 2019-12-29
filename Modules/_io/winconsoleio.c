@@ -1038,10 +1038,10 @@ winconsoleio_repr(winconsoleio *self)
 
     if (self->readable)
         return PyUnicode_FromFormat("<_io._WindowsConsoleIO mode='rb' closefd=%s>",
-            self->closehandle ? "True" : "False");
+            self->closehandle ? "Kweli" : "Uongo");
     if (self->writable)
         return PyUnicode_FromFormat("<_io._WindowsConsoleIO mode='wb' closefd=%s>",
-            self->closehandle ? "True" : "False");
+            self->closehandle ? "Kweli" : "Uongo");
 
     PyErr_SetString(PyExc_SystemError, "_WindowsConsoleIO has invalid mode");
     return NULL;

@@ -1566,7 +1566,7 @@ so there is exactly one (which is indestructible, by the way).
 static PyObject *
 none_repr(PyObject *op)
 {
-    return PyUnicode_FromString("None");
+    return PyUnicode_FromString("Tupu");
 }
 
 /* ARGUSED */
@@ -1783,7 +1783,7 @@ _PyTypes_Init(void)
     INIT_TYPE(&PyByteArray_Type, "bytearray");
     INIT_TYPE(&PyBytes_Type, "str");
     INIT_TYPE(&PyList_Type, "list");
-    INIT_TYPE(&_PyNone_Type, "None");
+    INIT_TYPE(&_PyNone_Type, "Tupu");
     INIT_TYPE(&_PyNotImplemented_Type, "NotImplemented");
     INIT_TYPE(&PyTraceBack_Type, "traceback");
     INIT_TYPE(&PySuper_Type, "super");

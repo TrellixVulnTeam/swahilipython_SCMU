@@ -3494,9 +3494,9 @@ compiler_nameop(struct compiler *c, identifier name, expr_context_ty ctx)
     PyObject *mangled;
     /* XXX AugStore isn't used anywhere! */
 
-    assert(!_PyUnicode_EqualToASCIIString(name, "None") &&
-           !_PyUnicode_EqualToASCIIString(name, "True") &&
-           !_PyUnicode_EqualToASCIIString(name, "False"));
+    assert(!_PyUnicode_EqualToASCIIString(name, "Tupu") &&
+           !_PyUnicode_EqualToASCIIString(name, "Kweli") &&
+           !_PyUnicode_EqualToASCIIString(name, "Uongo"));
 
     mangled = _Py_Mangle(c->u->u_private, name);
     if (!mangled)

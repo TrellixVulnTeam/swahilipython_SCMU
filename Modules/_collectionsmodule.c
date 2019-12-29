@@ -2097,7 +2097,7 @@ defdict_repr(defdictobject *dd)
     if (baserepr == NULL)
         return NULL;
     if (dd->default_factory == NULL)
-        defrepr = PyUnicode_FromString("None");
+        defrepr = PyUnicode_FromString("Tupu");
     else
     {
         int status = Py_ReprEnter(dd->default_factory);
